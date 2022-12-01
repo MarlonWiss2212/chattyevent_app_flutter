@@ -10,7 +10,7 @@ class UserRepositoryImpl implements UserRepository {
   UserRepositoryImpl({required this.graphQlDatasource});
 
   @override
-  Future<Either<Failure, UserEntity>> getUserFromApi(
+  Future<Either<Failure, UserEntity>> getUserViaApi(
       {String? userId, String? email}) async {
     try {
       Map<String, String> input = {};
@@ -41,7 +41,7 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future<Either<Failure, List<UserEntity>>> searchForUsersFromApi(
+  Future<Either<Failure, List<UserEntity>>> getUsersViaApi(
       String? search) async {
     try {
       final response = await graphQlDatasource.query(
@@ -66,5 +66,17 @@ class UserRepositoryImpl implements UserRepository {
     } catch (e) {
       return Left(ServerFailure());
     }
+  }
+
+  @override
+  Future<Either<Failure, UserEntity>> updateUserViaApi() {
+    // TODO: implement updateUserViaApi
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<Failure, UserEntity>> deleteUserViaApi() {
+    // TODO: implement deleteUserViaApi
+    throw UnimplementedError();
   }
 }

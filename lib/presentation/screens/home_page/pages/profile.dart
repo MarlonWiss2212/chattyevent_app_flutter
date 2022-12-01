@@ -1,11 +1,9 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/user_profile/user_profile_bloc.dart';
-import 'package:social_media_app_flutter/infastructure/models/user_model.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -57,7 +55,8 @@ class _ProfileState extends State<Profile> {
                               Container(
                                 margin: const EdgeInsets.only(top: 20),
                                 child: Text(
-                                  state.userProfile.username,
+                                  state.userProfile.username ??
+                                      "Kein Benutzername",
                                   style: const TextStyle(
                                       fontSize: 18,
                                       fontWeight: FontWeight.bold),
@@ -70,7 +69,7 @@ class _ProfileState extends State<Profile> {
                     ],
                   );
                 } else if (state is UserProfileStateLoading) {
-                  return const CircularProgressIndicator();
+                  return const Center(child: CircularProgressIndicator());
                 } else {
                   return Center(
                     child: TextButton(

@@ -18,7 +18,7 @@ class UserProfileBloc extends Bloc<UserProfileEvent, UserProfileState> {
       emit(UserProfileStateLoading());
 
       final Either<Failure, UserEntity> userProfileOrFailure =
-          await userUseCases.getUserProfileUseCase(
+          await userUseCases.getUserViaApi(
         userId: event.userId,
         email: event.email,
       );

@@ -7,16 +7,16 @@ class UserUseCases {
   final UserRepository userProfileRepository;
   UserUseCases({required this.userProfileRepository});
 
-  Future<Either<Failure, UserEntity>> getUserProfileUseCase(
+  Future<Either<Failure, UserEntity>> getUserViaApi(
       {String? userId, String? email}) async {
-    return await userProfileRepository.getUserFromApi(
+    return await userProfileRepository.getUserViaApi(
       userId: userId,
       email: email,
     );
   }
 
-  Future<Either<Failure, List<UserEntity>>> searchUsersUseCase(
+  Future<Either<Failure, List<UserEntity>>> getUsersViaApi(
       String? search) async {
-    return await userProfileRepository.searchForUsersFromApi(search);
+    return await userProfileRepository.getUsersViaApi(search);
   }
 }

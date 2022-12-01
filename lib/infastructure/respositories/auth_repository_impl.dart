@@ -23,6 +23,11 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
+  Future<void> saveAuthTokenInStorage(String token) {
+    return sharedPrefrencesDatasource.saveToStorage("access_token", token);
+  }
+
+  @override
   Future<Either<Failure, String>> login(String email, String password) async {
     try {
       final response = await graphQlDatasource.mutation(
@@ -44,11 +49,6 @@ class AuthRepositoryImpl implements AuthRepository {
       if (response.hasException) {
         return Left(GeneralFailure());
       }
-
-      await sharedPrefrencesDatasource.saveToStorage(
-        "access_token",
-        response.data!["login"]["access_token"],
-      );
       return Right(response.data!["login"]["access_token"]);
     } catch (e) {
       return Left(ServerFailure());

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_bloc.dart';
 
 class LoginPage extends StatefulWidget {
@@ -47,10 +46,6 @@ class _LoginPageState extends State<LoginPage> {
                       password: passwordFieldController.text,
                     ),
                   );
-                  if (BlocProvider.of<AuthBloc>(context).state
-                      is AuthStateLoaded) {
-                    Navigator.popAndPushNamed(context, '/');
-                  }
                 },
                 child: const Text("Einloggen"),
               ),

@@ -1,125 +1,105 @@
 import 'dart:async';
-import 'dart:io';
+import 'package:auto_route/auto_route.dart';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graphql/client.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_bloc.dart';
+import 'package:social_media_app_flutter/application/bloc/chat/chat_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/user_profile/user_profile_bloc.dart';
-import 'package:social_media_app_flutter/application/bloc/user_search/user_search_bloc.dart';
+import 'package:social_media_app_flutter/application/bloc/user/user_bloc.dart';
+import 'package:social_media_app_flutter/application/bloc/message/message_bloc.dart';
+import 'package:social_media_app_flutter/application/bloc/private_event/private_event_bloc.dart';
 import 'package:social_media_app_flutter/colors.dart';
-import 'package:social_media_app_flutter/presentation/screens/chat_page.dart';
-import 'package:social_media_app_flutter/presentation/screens/home_page/home_page.dart';
-import 'package:social_media_app_flutter/presentation/screens/login_page.dart';
-import 'package:social_media_app_flutter/presentation/screens/new_event_page.dart';
-import 'package:social_media_app_flutter/presentation/screens/new_groupchat_page.dart';
-import 'package:social_media_app_flutter/presentation/screens/register_page.dart';
+import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 
 import 'injection.dart' as di;
-import 'injection.dart';
+import 'presentation/router/router.gr.dart' as r;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final sharedPrefs = await SharedPreferences.getInstance();
-  di.init(sharedPrefs);
-  runApp(BlocInitializer(sharedPrefs: sharedPrefs));
+  di.init();
+  runApp(const BlocInitializer());
 }
 
 class BlocInitializer extends StatelessWidget {
-  final SharedPreferences sharedPrefs;
-  const BlocInitializer({required this.sharedPrefs, super.key});
+  const BlocInitializer({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => serviceLocator<AuthBloc>(),
+          create: (context) => di.serviceLocator<AuthBloc>(),
         ),
         BlocProvider(
-          create: (context) => serviceLocator<UserProfileBloc>(),
+          create: (context) => di.serviceLocator<MessageBloc>(),
         ),
         BlocProvider(
-          create: (context) => serviceLocator<UserSearchBloc>(),
-        )
+          create: (context) => di.serviceLocator<UserProfileBloc>(),
+        ),
+        BlocProvider(
+          create: (context) => di.serviceLocator<UserBloc>(),
+        ),
+        BlocProvider(
+          create: (context) => di.serviceLocator<ChatBloc>(),
+        ),
+        BlocProvider(
+          create: (context) => di.serviceLocator<PrivateEventBloc>(),
+        ),
       ],
-      child: AuthWidget(sharedPrefs: sharedPrefs),
-    );
-  }
-}
-
-class AuthWidget extends StatelessWidget {
-  final SharedPreferences sharedPrefs;
-  const AuthWidget({required this.sharedPrefs, super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<AuthBloc, AuthState>(
-      bloc: BlocProvider.of<AuthBloc>(context)..add(AuthGetTokenEvent()),
-      builder: (context, state) {
-        final HttpLink httpLink = HttpLink("http://localhost:3000/graphql");
-        if (state is AuthStateLoaded) {
-          final AuthLink authLink = AuthLink(
-            getToken: () => "Bearer ${state.token}",
-          );
-
-          serviceLocator.reset();
-          di.init(sharedPrefs, link: authLink.concat(httpLink));
-          return const App(initialRoute: '/');
-        } else if (state is AuthStateLoading) {
-          return const CircularProgressIndicator();
-        } else if (state is AuthStateError) {
-          return const App(initialRoute: '/login');
-        } else {
-          return Container();
-        }
-      },
+      child: App(),
     );
   }
 }
 
 class App extends StatelessWidget {
-  final String initialRoute;
-  const App({required this.initialRoute, super.key});
+  final AppRouter _appRouter = r.AppRouter();
+  App({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return DynamicColorBuilder(
-      builder: (lightDynamic, darkDynamic) {
-        ColorScheme lightColorScheme;
-        ColorScheme darkColorScheme;
-
-        lightDynamic != null
-            ? lightColorScheme = lightDynamic
-            : lightColorScheme = lightColorSchemeStatic;
-        darkDynamic != null
-            ? darkColorScheme = darkDynamic
-            : darkColorScheme = darkColorSchemeStatic;
-
-        return MaterialApp(
-          title: 'Social Media App',
-          theme: ThemeData(
-            useMaterial3: true,
-            colorScheme: lightColorScheme,
-          ),
-          darkTheme: ThemeData(
-            useMaterial3: true,
-            colorScheme: darkColorScheme,
-          ),
-          initialRoute: initialRoute,
-          routes: {
-            '/login': (context) => const LoginPage(),
-            '/register': (context) => const RegisterPage(),
-            '/': (context) => const HomePage(),
-            '/newEvent': (context) => const NewPrivateEvent(),
-            '/newGroupchat': (context) => const NewGroupchat(),
-            ChatPage.routeName: (context) => const ChatPage()
-          },
-          themeMode: ThemeMode.system,
-        );
+    return BlocListener<AuthBloc, AuthState>(
+      bloc: BlocProvider.of<AuthBloc>(context)..add(AuthGetTokenEvent()),
+      listener: (context, state) async {
+        if (state is AuthStateLoaded) {
+          final HttpLink httpLink = HttpLink("http://localhost:3000/graphql");
+          final AuthLink authLink = AuthLink(
+            getToken: () => "Bearer ${state.token}",
+          );
+          await di.serviceLocator.reset();
+          await di.init(link: authLink.concat(httpLink));
+          _appRouter.replace(const HomePageRoute());
+        }
       },
+      child: DynamicColorBuilder(
+        builder: (lightDynamic, darkDynamic) {
+          ColorScheme lightColorScheme;
+          ColorScheme darkColorScheme;
+
+          lightDynamic != null
+              ? lightColorScheme = lightDynamic
+              : lightColorScheme = lightColorSchemeStatic;
+          darkDynamic != null
+              ? darkColorScheme = darkDynamic
+              : darkColorScheme = darkColorSchemeStatic;
+
+          return MaterialApp.router(
+            title: 'Social Media App',
+            routeInformationParser: _appRouter.defaultRouteParser(),
+            routerDelegate: _appRouter.delegate(),
+            theme: ThemeData(
+              useMaterial3: true,
+              colorScheme: lightColorScheme,
+            ),
+            darkTheme: ThemeData(
+              useMaterial3: true,
+              colorScheme: darkColorScheme,
+            ),
+            themeMode: ThemeMode.system,
+          );
+        },
+      ),
     );
   }
 }

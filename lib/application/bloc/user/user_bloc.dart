@@ -5,26 +5,26 @@ import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
 import 'package:social_media_app_flutter/domain/failures/failures.dart';
 import 'package:social_media_app_flutter/domain/usecases/user_usecases.dart';
 
-part 'user_search_event.dart';
-part 'user_search_state.dart';
+part 'user_event.dart';
+part 'user_state.dart';
 
-class UserSearchBloc extends Bloc<UserSearchEvent, UserSearchState> {
+class UserBloc extends Bloc<UserEvent, UserState> {
   final UserUseCases userUseCases;
 
-  UserSearchBloc({required this.userUseCases}) : super(UserSearchInitial()) {
-    on<UserSearchEvent>((event, emit) {});
-    on<UserSearchRequestEvent>((event, emit) async {
-      emit(UserSearchStateLoading());
+  UserBloc({required this.userUseCases}) : super(UserInitial()) {
+    on<UserEvent>((event, emit) {});
+    on<UserRequestEvent>((event, emit) async {
+      emit(UserStateLoading());
 
       final Either<Failure, List<UserEntity>> usersOrFailure =
-          await userUseCases.searchUsersUseCase("");
+          await userUseCases.getUsersViaApi("");
 
       usersOrFailure.fold(
-        (error) => emit(UserSearchStateError(
+        (error) => emit(UserStateError(
           message: mapFailureToMessage(error),
         )),
         (users) => emit(
-          UserSearchStateLoaded(users: users),
+          UserStateLoaded(users: users),
         ),
       );
     });

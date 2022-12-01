@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
-class NewGroupchat extends StatefulWidget {
-  const NewGroupchat({super.key});
+class NewGroupchatPage extends StatefulWidget {
+  const NewGroupchatPage({super.key});
 
   @override
-  State<NewGroupchat> createState() => _NewGroupchatState();
+  State<NewGroupchatPage> createState() => _NewGroupchatPageState();
 }
 
-class _NewGroupchatState extends State<NewGroupchat> {
+class _NewGroupchatPageState extends State<NewGroupchatPage> {
   final titleFieldController = TextEditingController();
   final descriptionFieldController = TextEditingController();
 

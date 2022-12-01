@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
-class NewPrivateEvent extends StatefulWidget {
-  const NewPrivateEvent({super.key});
+class NewPrivateEventPage extends StatefulWidget {
+  const NewPrivateEventPage({super.key});
 
   @override
-  State<NewPrivateEvent> createState() => _NewPrivateEventState();
+  State<NewPrivateEventPage> createState() => _NewPrivateEventPageState();
 }
 
-class _NewPrivateEventState extends State<NewPrivateEvent> {
+class _NewPrivateEventPageState extends State<NewPrivateEventPage> {
   DateTime date = DateTime.now();
   final titleFieldController = TextEditingController();
   final groupchatFieldController = TextEditingController();
