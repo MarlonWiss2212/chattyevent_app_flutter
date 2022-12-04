@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
+import 'package:dartz/dartz.dart';
 import 'package:meta/meta.dart';
-import 'package:social_media_app_flutter/domain/entities/message_entity.dart';
+import 'package:social_media_app_flutter/domain/entities/message/message_entity.dart';
 import 'package:social_media_app_flutter/domain/failures/failures.dart';
 import 'package:social_media_app_flutter/domain/usecases/message_usecases.dart';
 
@@ -15,7 +16,8 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
     on<MessageRequestEvent>((event, emit) async {
       emit(MessageStateLoading());
 
-      final messagesOrFailure = await messageUseCases.getMessagesViaApi();
+      final Either<Failure, List<MessageEntity>> messagesOrFailure =
+          await messageUseCases.getMessagesViaApi();
 
       messagesOrFailure.fold(
         (error) => emit(

@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:social_media_app_flutter/domain/failures/failures.dart';
 import 'package:social_media_app_flutter/domain/repositories/auth_repository.dart';
+import 'package:social_media_app_flutter/gql.dart';
 
 class AuthUseCases {
   final AuthRepository authRepository;
@@ -12,7 +13,10 @@ class AuthUseCases {
 
     await tokenOrFailure.fold(
       (error) => null,
-      (token) async => await authRepository.saveAuthTokenInStorage(token),
+      (token) async {
+        await authRepository.saveAuthTokenInStorage(token);
+        await resetDiWithNewGraphQlLink(token);
+      },
     );
 
     return tokenOrFailure;
@@ -25,7 +29,10 @@ class AuthUseCases {
 
     await tokenOrFailure.fold(
       (error) => null,
-      (token) async => await authRepository.saveAuthTokenInStorage(token),
+      (token) async {
+        await authRepository.saveAuthTokenInStorage(token);
+        await resetDiWithNewGraphQlLink(token);
+      },
     );
     return tokenOrFailure;
   }
@@ -34,8 +41,10 @@ class AuthUseCases {
     final Either<Failure, String> tokenOrFailure =
         await authRepository.getAuthTokenFromStorage();
 
-    await tokenOrFailure.fold((error) => null,
-        (token) async => await authRepository.saveAuthTokenInStorage(token));
+    tokenOrFailure.fold(
+      (error) => null,
+      (token) async => await resetDiWithNewGraphQlLink(token),
+    );
     return tokenOrFailure;
   }
 }

@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/private_event_bloc.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
-import 'package:social_media_app_flutter/presentation/screens/new_event_page.dart';
 
 class Event extends StatefulWidget {
   const Event({super.key});
@@ -26,7 +25,11 @@ class _EventState extends State<Event> {
               padding: const EdgeInsets.all(8),
               itemBuilder: (context, index) {
                 return GestureDetector(
-                  onTap: () => print(1),
+                  onTap: () => AutoRouter.of(context).push(
+                    PrivateEventPageRoute(
+                      privateEvent: state.privateEvents[index],
+                    ),
+                  ),
                   child: Card(
                     elevation: 0,
                     color: Theme.of(context).colorScheme.surfaceVariant,

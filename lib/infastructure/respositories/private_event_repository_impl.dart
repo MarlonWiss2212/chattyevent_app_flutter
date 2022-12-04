@@ -30,6 +30,7 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
           findPrivateEvents {
             _id
             title
+            connectedGroupchat
           }
         }
       """);

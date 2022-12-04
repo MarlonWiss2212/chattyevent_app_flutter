@@ -1,4 +1,6 @@
-import 'package:social_media_app_flutter/domain/entities/message_entity.dart';
+import 'package:social_media_app_flutter/domain/entities/message/message_emoji_reaction_entity.dart';
+import 'package:social_media_app_flutter/domain/entities/message/message_entity.dart';
+import 'package:social_media_app_flutter/infastructure/models/message/message_emoji_reaction_model.dart';
 
 class MessageModel extends MessageEntity {
   MessageModel({
@@ -7,7 +9,7 @@ class MessageModel extends MessageEntity {
     String? fileLink,
     String? groupchatTo,
     String? messageToReactTo,
-    dynamic emojiReactions,
+    required List<MessageEmojiReactionEntity> emojiReactions,
     String? createdBy,
     String? createdAt,
   }) : super(
@@ -22,13 +24,23 @@ class MessageModel extends MessageEntity {
         );
 
   factory MessageModel.fromJson(Map<String, dynamic> json) {
+    List<MessageEmojiReactionEntity> messageEmojiReactions = [];
+
+    if (json["emojiReactions"] != null) {
+      for (final messageEmojiReaction in json["emojiReactions"]) {
+        messageEmojiReactions.add(
+          MessageEmojiReactionModel.fromJson(messageEmojiReaction),
+        );
+      }
+    }
+
     return MessageModel(
       id: json['_id'],
       message: json['message'],
       fileLink: json['fileLink'],
       groupchatTo: json["groupchatTo"],
       messageToReactTo: json["messageToReactTo"],
-      emojiReactions: json["emojiReactions"],
+      emojiReactions: messageEmojiReactions,
       createdBy: json["createdBy"],
       createdAt: json["createdAt"],
     );

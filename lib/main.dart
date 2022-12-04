@@ -1,9 +1,7 @@
 import 'dart:async';
-import 'package:auto_route/auto_route.dart';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:graphql/client.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/chat_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/user_profile/user_profile_bloc.dart';
@@ -11,14 +9,17 @@ import 'package:social_media_app_flutter/application/bloc/user/user_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/message/message_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/private_event_bloc.dart';
 import 'package:social_media_app_flutter/colors.dart';
+import 'package:social_media_app_flutter/presentation/router/auth_guard.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'injection.dart' as di;
 import 'presentation/router/router.gr.dart' as r;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  di.init();
+  await dotenv.load(fileName: '.env');
+  await di.init();
   runApp(const BlocInitializer());
 }
 
@@ -48,27 +49,25 @@ class BlocInitializer extends StatelessWidget {
           create: (context) => di.serviceLocator<PrivateEventBloc>(),
         ),
       ],
-      child: App(),
+      child: const App(),
     );
   }
 }
 
 class App extends StatelessWidget {
-  final AppRouter _appRouter = r.AppRouter();
-  App({super.key});
+  const App({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final AppRouter _appRouter = r.AppRouter(
+      authGuard: AuthGuard(state: BlocProvider.of<AuthBloc>(context).state),
+    );
+
     return BlocListener<AuthBloc, AuthState>(
       bloc: BlocProvider.of<AuthBloc>(context)..add(AuthGetTokenEvent()),
       listener: (context, state) async {
+        _appRouter.authGuard.state = state;
         if (state is AuthStateLoaded) {
-          final HttpLink httpLink = HttpLink("http://localhost:3000/graphql");
-          final AuthLink authLink = AuthLink(
-            getToken: () => "Bearer ${state.token}",
-          );
-          await di.serviceLocator.reset();
-          await di.init(link: authLink.concat(httpLink));
           _appRouter.replace(const HomePageRoute());
         }
       },

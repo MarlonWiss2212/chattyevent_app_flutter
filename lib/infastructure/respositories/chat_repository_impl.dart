@@ -1,9 +1,10 @@
+import 'package:social_media_app_flutter/domain/dto/groupchat/create_groupchat_dto.dart';
 import 'package:social_media_app_flutter/domain/failures/failures.dart';
-import 'package:social_media_app_flutter/domain/entities/groupchat_entity.dart';
+import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:dartz/dartz.dart';
 import 'package:social_media_app_flutter/domain/repositories/chat_repository.dart';
 import 'package:social_media_app_flutter/infastructure/datasources/graphql.dart';
-import 'package:social_media_app_flutter/infastructure/models/groupchat_model.dart';
+import 'package:social_media_app_flutter/infastructure/models/groupchat/groupchat_model.dart';
 
 class ChatRepositoryImpl implements ChatRepository {
   final GraphQlDatasource graphQlDatasource;
@@ -11,15 +12,9 @@ class ChatRepositoryImpl implements ChatRepository {
 
   @override
   Future<Either<Failure, GroupchatEntity>> createGroupchatViaApi(
-      GroupchatEntity groupchat) async {
+      CreateGroupchatDto createGroupchatDto) async {
     try {
-      Map<dynamic, String> variables = {};
-
-      groupchat.title != null
-          ? variables.addAll({"title": groupchat.title!})
-          : null;
-
-      final response = await graphQlDatasource.query(
+      final response = await graphQlDatasource.mutation(
         """
         mutation CreateGroupchat(\$input: CreateGroupchatInput!) {
           createGroupchat(createGroupchatInput: \$input) {
@@ -28,7 +23,7 @@ class ChatRepositoryImpl implements ChatRepository {
           }
         }
       """,
-        variables: {"input": variables},
+        variables: {"input": createGroupchatDto.toMap()},
       );
 
       if (response.hasException) {
@@ -49,17 +44,17 @@ class ChatRepositoryImpl implements ChatRepository {
   @override
   Future<Either<Failure, List<GroupchatEntity>>> getGroupchatsViaApi() async {
     try {
-      final response = await graphQlDatasource.query(
-        """
+      final response = await graphQlDatasource.query("""
         query FindGroupchats {
           findGroupchats {
             _id
             title
+            users {
+              userId
+            }
           }
         }
-        """,
-        variables: {},
-      );
+        """);
 
       if (response.hasException) {
         return Left(GeneralFailure());

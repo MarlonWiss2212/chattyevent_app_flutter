@@ -33,8 +33,9 @@ class _ChatState extends State<Chat> {
                   ),
                   title: Text(state.chats[index].title ?? "Kein Titel"),
                   onTap: () {
-                    AutoRouter.of(context)
-                        .push(const ChatPageRoute()); // state.chats[index]
+                    AutoRouter.of(context).push(
+                      ChatPageRoute(groupchat: state.chats[index]),
+                    );
                     ;
                   },
                 );

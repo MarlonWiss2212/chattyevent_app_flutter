@@ -1,8 +1,9 @@
 import 'package:social_media_app_flutter/domain/failures/failures.dart';
-import 'package:social_media_app_flutter/domain/entities/message_entity.dart';
+import 'package:social_media_app_flutter/domain/entities/message/message_entity.dart';
 import 'package:dartz/dartz.dart';
 import 'package:social_media_app_flutter/domain/repositories/message_repository.dart';
 import 'package:social_media_app_flutter/infastructure/datasources/graphql.dart';
+import 'package:social_media_app_flutter/infastructure/models/message/message_model.dart';
 
 class MessageRepositoryImpl implements MessageRepository {
   final GraphQlDatasource graphQlDatasource;
@@ -41,7 +42,7 @@ class MessageRepositoryImpl implements MessageRepository {
 
       final List<MessageEntity> messages = [];
       for (final message in response.data!["findMessages"]) {
-        messages.add(message);
+        messages.add(MessageModel.fromJson(message));
       }
       return Right(messages);
     } catch (e) {

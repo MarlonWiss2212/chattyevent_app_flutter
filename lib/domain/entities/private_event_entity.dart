@@ -2,8 +2,8 @@ class PrivateEventEntity {
   final String id;
   final String? title;
   final String? coverImageLink;
-  final dynamic usersThatWillBeThere;
-  final dynamic usersThatWillNotBeThere;
+  final List<String>? usersThatWillBeThere;
+  final List<String>? usersThatWillNotBeThere;
   final String? eventDate;
   final String? connectedGroupchat;
   final String? createdBy;

@@ -1,10 +1,11 @@
 import 'package:dartz/dartz.dart';
-import 'package:social_media_app_flutter/domain/entities/groupchat_entity.dart';
+import 'package:social_media_app_flutter/domain/dto/groupchat/create_groupchat_dto.dart';
+import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:social_media_app_flutter/domain/failures/failures.dart';
 
 abstract class ChatRepository {
   Future<Either<Failure, GroupchatEntity>> createGroupchatViaApi(
-    GroupchatEntity groupchat,
+    CreateGroupchatDto createGroupchatDto,
   );
   Future<Either<Failure, GroupchatEntity>> getGroupchatViaApi();
   Future<Either<Failure, List<GroupchatEntity>>> getGroupchatsViaApi();
