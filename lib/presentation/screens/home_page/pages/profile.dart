@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_bloc.dart';
-import 'package:social_media_app_flutter/application/bloc/user_profile/user_profile_bloc.dart';
+import 'package:social_media_app_flutter/application/bloc/user/user_bloc.dart';
+import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -23,13 +24,27 @@ class _ProfileState extends State<Profile> {
           if (state is AuthStateLoaded) {
             Map<String, dynamic> tokenPayload = Jwt.parseJwt(state.token);
 
-            return BlocBuilder<UserProfileBloc, UserProfileState>(
-              bloc: BlocProvider.of<UserProfileBloc>(context)
+            return BlocBuilder<UserBloc, UserState>(
+              bloc: BlocProvider.of<UserBloc>(context)
                 ..add(
-                  UserProfileRequestEvent(userId: tokenPayload["sub"]),
+                  GetOneUserEvent(userId: tokenPayload["sub"]),
                 ),
               builder: (context, state) {
-                if (state is UserProfileStateLoaded) {
+                if (state is UserStateLoaded) {
+                  UserEntity? foundUser;
+                  for (final user in state.users) {
+                    if (user.id == tokenPayload["sub"]) {
+                      foundUser = user;
+                    }
+                  }
+
+                  if (foundUser == null) {
+                    return UserErrorUi(
+                      userIdForRequest: tokenPayload["sub"],
+                      errorMessage: "Fehler beim Laden vom User",
+                    );
+                  }
+
                   return ListView(
                     padding: const EdgeInsets.all(8),
                     children: [
@@ -55,8 +70,7 @@ class _ProfileState extends State<Profile> {
                               Container(
                                 margin: const EdgeInsets.only(top: 20),
                                 child: Text(
-                                  state.userProfile.username ??
-                                      "Kein Benutzername",
+                                  foundUser.username ?? "Kein Benutzername",
                                   style: const TextStyle(
                                       fontSize: 18,
                                       fontWeight: FontWeight.bold),
@@ -68,21 +82,14 @@ class _ProfileState extends State<Profile> {
                       ),
                     ],
                   );
-                } else if (state is UserProfileStateLoading) {
+                } else if (state is UserStateLoading) {
                   return const Center(child: CircularProgressIndicator());
                 } else {
-                  return Center(
-                    child: TextButton(
-                      child: Text(
-                        state is UserProfileStateError
-                            ? state.message
-                            : "Daten laden",
-                      ),
-                      onPressed: () =>
-                          BlocProvider.of<UserProfileBloc>(context).add(
-                        UserProfileRequestEvent(userId: tokenPayload["sub"]),
-                      ),
-                    ),
+                  return UserErrorUi(
+                    userIdForRequest: tokenPayload["sub"],
+                    errorMessage: state is UserStateError
+                        ? state.message
+                        : "Fehler beim Laden vom User",
                   );
                 }
               },
@@ -92,5 +99,30 @@ class _ProfileState extends State<Profile> {
         },
       ),
     );
+  }
+}
+
+class UserErrorUi extends StatelessWidget {
+  final String userIdForRequest;
+  final String? errorMessage;
+  const UserErrorUi({
+    super.key,
+    required this.userIdForRequest,
+    this.errorMessage,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: TextButton(
+        child: Text(
+          errorMessage ?? "Daten laden",
+        ),
+        onPressed: () => BlocProvider.of<UserBloc>(context).add(
+          GetOneUserEvent(userId: userIdForRequest),
+        ),
+      ),
+    );
+    ;
   }
 }

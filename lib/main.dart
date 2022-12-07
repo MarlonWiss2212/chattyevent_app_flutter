@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/chat_bloc.dart';
-import 'package:social_media_app_flutter/application/bloc/user_profile/user_profile_bloc.dart';
+import 'package:social_media_app_flutter/application/bloc/user_search/user_search_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/message/message_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/private_event_bloc.dart';
@@ -37,7 +37,7 @@ class BlocInitializer extends StatelessWidget {
           create: (context) => di.serviceLocator<MessageBloc>(),
         ),
         BlocProvider(
-          create: (context) => di.serviceLocator<UserProfileBloc>(),
+          create: (context) => di.serviceLocator<UserSearchBloc>(),
         ),
         BlocProvider(
           create: (context) => di.serviceLocator<UserBloc>(),

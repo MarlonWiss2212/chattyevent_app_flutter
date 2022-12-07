@@ -7,7 +7,7 @@ import 'package:social_media_app_flutter/application/bloc/chat/chat_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/message/message_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/private_event_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_bloc.dart';
-import 'package:social_media_app_flutter/application/bloc/user_profile/user_profile_bloc.dart';
+import 'package:social_media_app_flutter/application/bloc/user_search/user_search_bloc.dart';
 import 'package:social_media_app_flutter/domain/repositories/auth_repository.dart';
 import 'package:social_media_app_flutter/domain/repositories/chat_repository.dart';
 import 'package:social_media_app_flutter/domain/repositories/message_repository.dart';
@@ -37,7 +37,7 @@ Future<void> init({Link? link}) async {
     ),
   );
   serviceLocator.registerFactory(
-    () => UserProfileBloc(
+    () => UserSearchBloc(
       userUseCases: serviceLocator(),
     ),
   );
@@ -133,6 +133,10 @@ Future<void> init({Link? link}) async {
     () => GraphQLClient(
       link: link ?? HttpLink(dotenv.get("API_BASE_URL")),
       cache: GraphQLCache(),
+      defaultPolicies: DefaultPolicies(
+        query: Policies(fetch: FetchPolicy.noCache),
+        mutate: Policies(fetch: FetchPolicy.noCache),
+      ),
     ),
   );
 }

@@ -14,5 +14,7 @@ class UserStateError extends UserState {
 
 class UserStateLoaded extends UserState {
   final List<UserEntity> users;
-  UserStateLoaded({required this.users});
+  final String? errorMessage;
+
+  UserStateLoaded({required this.users, this.errorMessage});
 }

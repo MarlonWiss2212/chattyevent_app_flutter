@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/private_event_bloc.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
+import 'package:social_media_app_flutter/presentation/widgets/event_list_item.dart';
 
 class Event extends StatefulWidget {
   const Event({super.key});
@@ -24,31 +25,15 @@ class _EventState extends State<Event> {
             return GridView.builder(
               padding: const EdgeInsets.all(8),
               itemBuilder: (context, index) {
-                return GestureDetector(
-                  onTap: () => AutoRouter.of(context).push(
-                    PrivateEventPageRoute(
-                      privateEvent: state.privateEvents[index],
-                    ),
-                  ),
-                  child: Card(
-                    elevation: 0,
-                    color: Theme.of(context).colorScheme.surfaceVariant,
-                    child: Container(
-                      padding: const EdgeInsets.all(8),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            state.privateEvents[index].title ?? "Kein Titel",
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
+                return EventListItem(
+                  privateEvent: state.privateEvents[index],
+                  onPress: () {
+                    AutoRouter.of(context).push(
+                      PrivateEventPageRoute(
+                        privateEvent: state.privateEvents[index],
                       ),
-                    ),
-                  ),
+                    );
+                  },
                 );
               },
               itemCount: state.privateEvents.length,

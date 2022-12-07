@@ -1,6 +1,9 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:social_media_app_flutter/application/bloc/user/user_bloc.dart';
+import 'package:social_media_app_flutter/application/bloc/user_search/user_search_bloc.dart';
+import 'package:social_media_app_flutter/presentation/widgets/user_list_item.dart';
 
 class Search extends StatefulWidget {
   const Search({super.key});
@@ -13,36 +16,41 @@ class _SearchState extends State<Search> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: BlocBuilder<UserBloc, UserState>(
-      bloc: BlocProvider.of<UserBloc>(context)
+        body: BlocBuilder<UserSearchBloc, UserSearchState>(
+      bloc: BlocProvider.of<UserSearchBloc>(context)
         ..add(
-          UserRequestEvent(),
+          SearchUsersEvent(),
         ),
       builder: (context, state) {
-        if (state is UserStateLoaded) {
-          return ListView.builder(
-            padding: const EdgeInsets.all(10),
+        if (state is UserSearchStateLoaded) {
+          return GridView.builder(
+            padding: const EdgeInsets.all(8),
             itemBuilder: (context, index) {
-              return ListTile(
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(5)),
-                ),
-                title: Text(state.users[index].username ?? "Kein Benutzername"),
-                onTap: () {},
+              return UserListItem(
+                user: state.users[index],
+                onPress: () {},
               );
             },
             itemCount: state.users.length,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: max(
+                (MediaQuery.of(context).size.width ~/ 150).toInt(),
+                1,
+              ),
+              mainAxisSpacing: 8,
+              crossAxisSpacing: 8,
+            ),
           );
-        } else if (state is UserStateLoading) {
+        } else if (state is UserSearchStateLoading) {
           return const Center(child: CircularProgressIndicator());
         } else {
           return Center(
             child: TextButton(
               child: Text(
-                state is UserStateError ? state.message : "Daten laden",
+                state is UserSearchStateError ? state.message : "User laden",
               ),
-              onPressed: () => BlocProvider.of<UserBloc>(context).add(
-                UserRequestEvent(),
+              onPressed: () => BlocProvider.of<UserSearchBloc>(context).add(
+                SearchUsersEvent(),
               ),
             ),
           );

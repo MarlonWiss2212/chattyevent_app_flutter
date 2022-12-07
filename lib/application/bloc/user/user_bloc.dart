@@ -13,7 +13,64 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
   UserBloc({required this.userUseCases}) : super(UserInitial()) {
     on<UserEvent>((event, emit) {});
-    on<UserRequestEvent>((event, emit) async {
+    on<GetOneUserEvent>((event, emit) async {
+      final Either<Failure, UserEntity> userOrFailure =
+          await userUseCases.getUserViaApi(
+        userId: event.userId,
+        email: event.email,
+      );
+
+      userOrFailure.fold(
+        (error) {
+          if (state is UserStateLoaded) {
+            final state = this.state as UserStateLoaded;
+            emit(
+              UserStateLoaded(
+                users: state.users,
+                errorMessage: mapFailureToMessage(error),
+              ),
+            );
+          } else {
+            emit(
+              UserStateError(
+                message: mapFailureToMessage(error),
+              ),
+            );
+          }
+        },
+        (user) {
+          if (state is UserStateLoaded) {
+            final state = this.state as UserStateLoaded;
+
+            int foundIndex = -1;
+            state.users.asMap().forEach((index, userToFind) {
+              if (userToFind.id == user.id) {
+                foundIndex = index;
+              }
+            });
+
+            if (foundIndex != -1) {
+              List<UserEntity> newUsers = state.users;
+              newUsers[foundIndex] = user;
+              emit(
+                UserStateLoaded(users: newUsers),
+              );
+            } else {
+              emit(
+                UserStateLoaded(users: List.from(state.users)..add(user)),
+              );
+            }
+          } else {
+            emit(
+              UserStateLoaded(
+                users: [user],
+              ),
+            );
+          }
+        },
+      );
+    });
+    on<GetUsersEvent>((event, emit) async {
       emit(UserStateLoading());
 
       final Either<Failure, List<UserEntity>> usersOrFailure =

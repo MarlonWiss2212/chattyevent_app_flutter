@@ -15,7 +15,10 @@ class GraphQlDatasourceImpl implements GraphQlDatasource {
   Future<QueryResult<Object?>> query(String options,
       {Map<String, dynamic> variables = const {}}) {
     return client.query(
-      QueryOptions(document: gql(options), variables: variables),
+      QueryOptions(
+        document: gql(options),
+        variables: variables,
+      ),
     );
   }
 

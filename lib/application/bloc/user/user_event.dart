@@ -3,7 +3,13 @@ part of 'user_bloc.dart';
 @immutable
 abstract class UserEvent {}
 
-class UserRequestEvent extends UserEvent {
+class GetUsersEvent extends UserEvent {
   final String? search;
-  UserRequestEvent({this.search});
+  GetUsersEvent({this.search});
+}
+
+class GetOneUserEvent extends UserEvent {
+  final String? email;
+  final String? userId;
+  GetOneUserEvent({this.email, this.userId});
 }
