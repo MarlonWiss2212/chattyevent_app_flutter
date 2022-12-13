@@ -10,7 +10,7 @@ class UserModel extends UserEntity {
     String? emailVerified,
     String? birthdate,
     String? lastTimeOnline,
-    String? createdAt,
+    DateTime? createdAt,
   }) : super(
           id: id,
           username: username,
@@ -24,6 +24,9 @@ class UserModel extends UserEntity {
         );
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
+    final createdAt = json["createdAt"] != null
+        ? DateTime.parse(json["createdAt"]).toLocal()
+        : null;
     return UserModel(
       id: json['_id'],
       username: json['username'],
@@ -33,7 +36,7 @@ class UserModel extends UserEntity {
       emailVerified: json["emailVerified"],
       birthdate: json["birthdate"],
       lastTimeOnline: json["lastTimeOnline"],
-      createdAt: json["createdAt"],
+      createdAt: createdAt,
     );
   }
 }

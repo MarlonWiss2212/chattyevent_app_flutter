@@ -1,3 +1,4 @@
+import 'package:social_media_app_flutter/domain/dto/create_private_event_dto.dart';
 import 'package:social_media_app_flutter/domain/failures/failures.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event_entity.dart';
 import 'package:dartz/dartz.dart';
@@ -10,9 +11,27 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
   PrivateEventRepositoryImpl({required this.graphQlDatasource});
 
   @override
-  Future<Either<Failure, PrivateEventEntity>> createPrivateEventViaApi() {
-    // TODO: implement createPrivateEventViaApi
-    throw UnimplementedError();
+  Future<Either<Failure, PrivateEventEntity>> createPrivateEventViaApi(
+      CreatePrivateEventDto createPrivateEventDto) async {
+    try {
+      final response = await graphQlDatasource.mutation("""
+        mutation CreatePrivatEvent(\$input: CreatePrivateEventInput!) {
+          createPrivateEvent(createPrivateEventInput: \$input) {
+            _id
+            title
+            connectedGroupchat
+          }
+        }
+      """, variables: {'input': createPrivateEventDto.toMap()});
+
+      if (response.hasException) {
+        return Left(GeneralFailure());
+      }
+
+      return Right(response.data!['createPrivateEvent']);
+    } catch (e) {
+      return Left(ServerFailure());
+    }
   }
 
   @override

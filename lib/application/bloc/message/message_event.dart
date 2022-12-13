@@ -4,3 +4,8 @@ part of 'message_bloc.dart';
 abstract class MessageEvent {}
 
 class MessageRequestEvent extends MessageEvent {}
+
+class MessageCreateEvent extends MessageEvent {
+  final CreateMessageDto createMessageDto;
+  MessageCreateEvent({required this.createMessageDto});
+}

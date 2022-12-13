@@ -7,7 +7,7 @@ class PrivateEventEntity {
   final String? eventDate;
   final String? connectedGroupchat;
   final String? createdBy;
-  final String? createdAt;
+  final DateTime? createdAt;
 
   PrivateEventEntity({
     required this.id,

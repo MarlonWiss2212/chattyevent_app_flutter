@@ -1,3 +1,4 @@
+import 'package:social_media_app_flutter/domain/dto/create_user_dto.dart';
 import 'package:social_media_app_flutter/domain/failures/failures.dart';
 import 'package:dartz/dartz.dart';
 import 'package:social_media_app_flutter/domain/repositories/auth_repository.dart';
@@ -56,8 +57,25 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<Failure, String>> register(
-      String email, String password) async {
-    throw UnimplementedError();
+  Future<Either<Failure, String>> register(CreateUserDto createUserDto) async {
+    try {
+      final response = await graphQlDatasource.mutation(
+        """
+          mutation signup(\$input: CreateUserInput!) {
+            signup(createUserInput: \$input) {
+              access_token
+            }
+          }
+        """,
+        variables: {'input': createUserDto.toMap()},
+      );
+
+      if (response.hasException) {
+        return Left(GeneralFailure());
+      }
+      return Right(response.data!["signup"]["access_token"]);
+    } catch (e) {
+      return Left(ServerFailure());
+    }
   }
 }

@@ -1,7 +1,7 @@
 class MessageEmojiReactionEntity {
   final String id;
   final String? emoji;
-  final String? createdAt;
+  final DateTime? createdAt;
   final String? createdBy;
 
   MessageEmojiReactionEntity({

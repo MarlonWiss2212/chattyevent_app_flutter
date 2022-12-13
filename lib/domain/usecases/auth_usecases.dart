@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:social_media_app_flutter/domain/dto/create_user_dto.dart';
 import 'package:social_media_app_flutter/domain/failures/failures.dart';
 import 'package:social_media_app_flutter/domain/repositories/auth_repository.dart';
 import 'package:social_media_app_flutter/gql.dart';
@@ -22,10 +23,9 @@ class AuthUseCases {
     return tokenOrFailure;
   }
 
-  Future<Either<Failure, String>> register(
-      String email, String password) async {
+  Future<Either<Failure, String>> register(CreateUserDto createUserDto) async {
     final Either<Failure, String> tokenOrFailure =
-        await authRepository.register(email, password);
+        await authRepository.register(createUserDto);
 
     await tokenOrFailure.fold(
       (error) => null,

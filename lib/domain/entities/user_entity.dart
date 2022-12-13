@@ -7,7 +7,7 @@ class UserEntity {
   final String? emailVerified;
   final String? birthdate;
   final String? lastTimeOnline;
-  final String? createdAt;
+  final DateTime? createdAt;
 
   UserEntity({
     required this.id,

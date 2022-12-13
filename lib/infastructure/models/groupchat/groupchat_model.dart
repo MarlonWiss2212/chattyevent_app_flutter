@@ -15,7 +15,7 @@ class GroupchatModel extends GroupchatEntity {
     String? description,
     String? chatColorCode,
     String? createdBy,
-    String? createdAt,
+    DateTime? createdAt,
   }) : super(
           id: id,
           title: title,
@@ -43,6 +43,10 @@ class GroupchatModel extends GroupchatEntity {
       }
     }
 
+    final createdAt = json["createdAt"] != null
+        ? DateTime.parse(json["createdAt"]).toLocal()
+        : null;
+
     return GroupchatModel(
       id: json['_id'],
       title: json['title'],
@@ -52,7 +56,7 @@ class GroupchatModel extends GroupchatEntity {
       description: json["description"],
       chatColorCode: json["chatColorCode"],
       createdBy: json["createdBy"],
-      createdAt: json["createdAt"],
+      createdAt: createdAt,
     );
   }
 }

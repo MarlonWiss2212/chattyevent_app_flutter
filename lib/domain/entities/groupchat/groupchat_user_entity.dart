@@ -1,7 +1,7 @@
 class GroupchatUserEntity {
   final String userId;
   final bool? admin;
-  final String? joinedAt;
+  final DateTime? joinedAt;
 
   GroupchatUserEntity({
     required this.userId,

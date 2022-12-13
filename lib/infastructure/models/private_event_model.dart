@@ -10,7 +10,7 @@ class PrivateEventModel extends PrivateEventEntity {
     String? eventDate,
     String? connectedGroupchat,
     String? createdBy,
-    String? createdAt,
+    DateTime? createdAt,
   }) : super(
           id: id,
           title: title,
@@ -24,6 +24,9 @@ class PrivateEventModel extends PrivateEventEntity {
         );
 
   factory PrivateEventModel.fromJson(Map<String, dynamic> json) {
+    final createdAt = json["createdAt"] != null
+        ? DateTime.parse(json["createdAt"]).toLocal()
+        : null;
     return PrivateEventModel(
       id: json['_id'],
       title: json['title'],
@@ -33,7 +36,7 @@ class PrivateEventModel extends PrivateEventEntity {
       eventDate: json["eventDate"],
       connectedGroupchat: json["connectedGroupchat"],
       createdBy: json["createdBy"],
-      createdAt: json["createdAt"],
+      createdAt: createdAt,
     );
   }
 }

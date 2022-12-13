@@ -14,5 +14,7 @@ class MessageStateError extends MessageState {
 
 class MessageStateLoaded extends MessageState {
   final List<MessageEntity> messages;
-  MessageStateLoaded({required this.messages});
+  final String? errorMessage;
+
+  MessageStateLoaded({required this.messages, this.errorMessage});
 }

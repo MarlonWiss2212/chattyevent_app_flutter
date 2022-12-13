@@ -1,5 +1,9 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:social_media_app_flutter/application/bloc/private_event/private_event_bloc.dart';
+import 'package:social_media_app_flutter/domain/dto/create_private_event_dto.dart';
 
 class NewPrivateEventPage extends StatefulWidget {
   const NewPrivateEventPage({super.key});
@@ -39,10 +43,21 @@ class _NewPrivateEventPageState extends State<NewPrivateEventPage> {
                 firstDate: currentDate,
                 lastDate: DateTime(currentDate.year + 10),
               );
+              TimeOfDay currentTime = TimeOfDay.now();
+              TimeOfDay? newTime = await showTimePicker(
+                context: context,
+                initialTime: currentTime,
+              );
 
-              if (newDate == null) return;
+              if (newDate == null || newTime == null) return;
               setState(() {
-                date = newDate;
+                date = DateTime(
+                  newDate.year,
+                  newDate.month,
+                  newDate.day,
+                  newTime.hour,
+                  newTime.minute,
+                );
               });
             },
           ),
@@ -53,39 +68,25 @@ class _NewPrivateEventPageState extends State<NewPrivateEventPage> {
             ),
           ),
           const SizedBox(height: 8),
-          Mutation(
-            options: MutationOptions(
-              document: gql("""
-                mutation createPrivateEvent(\$input: CreatePrivateEventInput!) {
-                  createPrivateEvent(createPrivateEventInput: \$input) {
-                    _id
-                  }
-                }
-              """),
-              onCompleted: (data) {
-                if (data != null) {
-                  Navigator.pop(context);
-                }
-              },
-              onError: (error) {
-                print(error);
-              },
-            ),
-            builder: (runMutation, result) {
-              return ElevatedButton(
-                onPressed: () {
-                  runMutation({
-                    'input': {
-                      'title': titleFieldController.text,
-                      'eventDate': date.toIso8601String(),
-                      'connectedGroupchat': groupchatFieldController.text
-                    }
-                  });
-                },
-                child: const Text("Speichern"),
-              );
+          BlocListener<PrivateEventBloc, PrivateEventState>(
+            listener: (context, state) {
+              AutoRouter.of(context).pop();
             },
-          )
+            child: ElevatedButton(
+              onPressed: () {
+                BlocProvider.of<PrivateEventBloc>(context).add(
+                  PrivateEventCreateEvent(
+                    createPrivateEventDto: CreatePrivateEventDto(
+                      title: titleFieldController.text,
+                      eventDate: date,
+                      connectedGroupchat: groupchatFieldController.text,
+                    ),
+                  ),
+                );
+              },
+              child: const Text("Speichern"),
+            ),
+          ),
         ],
       ),
     );

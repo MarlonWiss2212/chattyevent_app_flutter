@@ -1,7 +1,10 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_bloc.dart';
+import 'package:social_media_app_flutter/domain/dto/create_user_dto.dart';
+import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -78,46 +81,32 @@ class _RegisterPageState extends State<RegisterPage> {
               decoration: const InputDecoration(hintText: 'Passwort'),
             ),
             const SizedBox(height: 8),
-            Mutation(
-              options: MutationOptions(
-                document: gql("""
-                    mutation signup(\$input: CreateUserInput!) {
-                      signup(loginUserInput: \$input) {
-                        access_token
-                      }
-                    }
-                    """),
-                onCompleted: (data) {
-                  if (data != null) {
-                    BlocProvider.of<AuthBloc>(context).add(
-                      AuthRegisterEvent(
-                          email: emailFieldController.text,
-                          password: passwordFieldController.text),
-                    );
-                    Navigator.popAndPushNamed(context, '/');
-                  }
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () {
+                  BlocProvider.of<AuthBloc>(context).add(
+                    AuthRegisterEvent(
+                      createUserDto: CreateUserDto(
+                        username: usernameFieldController.text,
+                        firstname: firstnameFieldController.text,
+                        lastname: lastnameFieldController.text,
+                        birthdate: birthdate,
+                        email: emailFieldController.text,
+                        password: passwordFieldController.text,
+                      ),
+                    ),
+                  );
                 },
+                child: const Text("Registrieren"),
               ),
-              builder: (runMutation, result) {
-                return SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      runMutation({
-                        'input': {
-                          'username': usernameFieldController.text,
-                          'firstname': firstnameFieldController.text,
-                          'lastname': lastnameFieldController.text,
-                          'birthdate': birthdate.toIso8601String(),
-                          'email': emailFieldController.text,
-                          'password': passwordFieldController.text
-                        }
-                      });
-                    },
-                    child: const Text("Registrieren"),
-                  ),
-                );
+            ),
+            const SizedBox(height: 16),
+            TextButton(
+              onPressed: () {
+                AutoRouter.of(context).replace(const LoginPageRoute());
               },
+              child: const Text("Login?"),
             )
           ],
         ),

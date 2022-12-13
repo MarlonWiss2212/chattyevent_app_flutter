@@ -4,16 +4,19 @@ class MessageEmojiReactionModel extends MessageEmojiReactionEntity {
   MessageEmojiReactionModel({
     required String id,
     String? emoji,
-    String? createdAt,
+    DateTime? createdAt,
     String? createdBy,
   }) : super(id: id, emoji: emoji, createdAt: createdAt, createdBy: createdBy);
 
   factory MessageEmojiReactionModel.fromJson(Map<String, dynamic> json) {
+    final createdAt = json["createdAt"] != null
+        ? DateTime.parse(json["createdAt"]).toLocal()
+        : null;
     return MessageEmojiReactionModel(
       id: json['_id'],
       emoji: json['emoji'],
       createdBy: json["createdBy"],
-      createdAt: json["createdAt"],
+      createdAt: createdAt,
     );
   }
 }

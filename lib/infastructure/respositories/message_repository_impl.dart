@@ -1,3 +1,4 @@
+import 'package:social_media_app_flutter/domain/dto/create_message_dto.dart';
 import 'package:social_media_app_flutter/domain/failures/failures.dart';
 import 'package:social_media_app_flutter/domain/entities/message/message_entity.dart';
 import 'package:dartz/dartz.dart';
@@ -10,9 +11,32 @@ class MessageRepositoryImpl implements MessageRepository {
   MessageRepositoryImpl({required this.graphQlDatasource});
 
   @override
-  Future<Either<Failure, MessageEntity>> createMessageViaApi() async {
-    // TODO: implement createMessageViaApi
-    throw UnimplementedError();
+  Future<Either<Failure, MessageEntity>> createMessageViaApi({
+    required CreateMessageDto createMessageDto,
+  }) async {
+    try {
+      final response = await graphQlDatasource.mutation(
+        """
+        mutation createMessage(\$input: CreateMessageInput!) {
+          createMessage(createMessageInput: \$input) {
+            _id
+            message
+            groupchatTo
+            createdBy
+            createdAt
+          }
+        }
+      """,
+        variables: {"input": createMessageDto.toMap()},
+      );
+
+      if (response.hasException) {
+        return Left(GeneralFailure());
+      }
+      return Right(MessageModel.fromJson(response.data!["createMessage"]));
+    } catch (e) {
+      return Left(ServerFailure());
+    }
   }
 
   @override

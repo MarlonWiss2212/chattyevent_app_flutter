@@ -1,6 +1,6 @@
 class GroupchatLeftUserEntity {
   final String userId;
-  final String? leftAt;
+  final DateTime? leftAt;
 
   GroupchatLeftUserEntity({
     required this.userId,

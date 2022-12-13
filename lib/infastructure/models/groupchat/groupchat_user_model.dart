@@ -4,7 +4,7 @@ class GroupchatUserModel extends GroupchatUserEntity {
   GroupchatUserModel({
     required String userId,
     bool? admin,
-    String? joinedAt,
+    DateTime? joinedAt,
   }) : super(
           userId: userId,
           admin: admin,
@@ -12,10 +12,14 @@ class GroupchatUserModel extends GroupchatUserEntity {
         );
 
   factory GroupchatUserModel.fromJson(Map<String, dynamic> json) {
+    final joinedAt = json["joinedAt"] != null
+        ? DateTime.parse(json["joinedAt"]).toLocal()
+        : null;
+
     return GroupchatUserModel(
       userId: json['userId'],
       admin: json['admin'],
-      joinedAt: json['joinedAt'],
+      joinedAt: joinedAt,
     );
   }
 }

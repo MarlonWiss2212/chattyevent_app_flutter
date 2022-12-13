@@ -10,7 +10,7 @@ class GroupchatEntity {
   final String? description;
   final String? chatColorCode;
   final String? createdBy;
-  final String? createdAt;
+  final DateTime? createdAt;
 
   GroupchatEntity({
     required this.id,

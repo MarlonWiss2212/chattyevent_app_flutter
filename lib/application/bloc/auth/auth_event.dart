@@ -10,9 +10,8 @@ class AuthLoginEvent extends AuthEvent {
 }
 
 class AuthRegisterEvent extends AuthEvent {
-  final String email;
-  final String password;
-  AuthRegisterEvent({required this.email, required this.password});
+  final CreateUserDto createUserDto;
+  AuthRegisterEvent({required this.createUserDto});
 }
 
 class AuthGetTokenEvent extends AuthEvent {}

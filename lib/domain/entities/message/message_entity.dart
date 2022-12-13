@@ -8,7 +8,7 @@ class MessageEntity {
   final String? messageToReactTo;
   final List<MessageEmojiReactionEntity> emojiReactions;
   final String? createdBy;
-  final String? createdAt;
+  final DateTime? createdAt;
 
   MessageEntity({
     required this.id,

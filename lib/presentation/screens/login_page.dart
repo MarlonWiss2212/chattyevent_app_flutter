@@ -1,6 +1,8 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_bloc.dart';
+import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -49,6 +51,13 @@ class _LoginPageState extends State<LoginPage> {
                 },
                 child: const Text("Einloggen"),
               ),
+            ),
+            const SizedBox(height: 16),
+            TextButton(
+              onPressed: () {
+                AutoRouter.of(context).replace(const RegisterPageRoute());
+              },
+              child: const Text("Registrieren?"),
             )
           ],
         ),

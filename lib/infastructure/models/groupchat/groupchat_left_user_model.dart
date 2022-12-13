@@ -3,16 +3,19 @@ import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_lef
 class GroupchatLeftUserModel extends GroupchatLeftUserEntity {
   GroupchatLeftUserModel({
     required String userId,
-    String? leftAt,
+    DateTime? leftAt,
   }) : super(
           userId: userId,
           leftAt: leftAt,
         );
 
   factory GroupchatLeftUserModel.fromJson(Map<String, dynamic> json) {
+    final leftAt = json["leftAt"] != null
+        ? DateTime.parse(json["leftAt"]).toLocal()
+        : null;
     return GroupchatLeftUserModel(
       userId: json['userId'],
-      leftAt: json['leftAt'],
+      leftAt: leftAt,
     );
   }
 }

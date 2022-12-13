@@ -4,3 +4,9 @@ part of 'private_event_bloc.dart';
 abstract class PrivateEventEvent {}
 
 class PrivateEventsRequestEvent extends PrivateEventEvent {}
+
+class PrivateEventCreateEvent extends PrivateEventEvent {
+  final CreatePrivateEventDto createPrivateEventDto;
+
+  PrivateEventCreateEvent({required this.createPrivateEventDto});
+}
