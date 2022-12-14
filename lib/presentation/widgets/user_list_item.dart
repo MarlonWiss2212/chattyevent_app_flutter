@@ -5,14 +5,12 @@ class UserListItem extends StatelessWidget {
   final UserEntity user;
   final Function? onLongPress;
   final Function? onPress;
-  final Color? backgroundColor;
 
   const UserListItem({
     super.key,
     required this.user,
     this.onLongPress,
     this.onPress,
-    this.backgroundColor,
   });
 
   @override

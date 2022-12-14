@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_bloc.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
+import 'package:social_media_app_flutter/presentation/widgets/ok_button.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -38,18 +39,37 @@ class _LoginPageState extends State<LoginPage> {
               decoration: const InputDecoration(hintText: 'Passwort'),
             ),
             const SizedBox(height: 8),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {
-                  BlocProvider.of<AuthBloc>(context).add(
-                    AuthLoginEvent(
-                      email: emailFieldController.text,
-                      password: passwordFieldController.text,
-                    ),
+            BlocListener<AuthBloc, AuthState>(
+              listenWhen: (previous, current) {
+                return current is AuthStateError;
+              },
+              listener: (context, state) async {
+                if (state is AuthStateError) {
+                  return await showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: Text(state.title ?? "Kein Titel"),
+                        content: Text(state.message),
+                        actions: const [OKButton()],
+                      );
+                    },
                   );
-                },
-                child: const Text("Einloggen"),
+                }
+              },
+              child: SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () {
+                    BlocProvider.of<AuthBloc>(context).add(
+                      AuthLoginEvent(
+                        email: emailFieldController.text,
+                        password: passwordFieldController.text,
+                      ),
+                    );
+                  },
+                  child: const Text("Einloggen"),
+                ),
               ),
             ),
             const SizedBox(height: 16),

@@ -11,54 +11,65 @@
 // ignore_for_file: type=lint
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:auto_route/auto_route.dart' as _i9;
-import 'package:flutter/material.dart' as _i10;
+import 'package:auto_route/auto_route.dart' as _i10;
+import 'package:flutter/material.dart' as _i11;
 
-import '../../domain/entities/groupchat/groupchat_entity.dart' as _i12;
-import '../../domain/entities/private_event_entity.dart' as _i13;
-import '../screens/chat_page.dart' as _i4;
-import '../screens/home_page/home_page.dart' as _i3;
+import '../../domain/entities/groupchat/groupchat_entity.dart' as _i13;
+import '../../domain/entities/private_event_entity.dart' as _i14;
+import '../screens/chat_page.dart' as _i5;
+import '../screens/home_page/home_page.dart' as _i4;
 import '../screens/login_page.dart' as _i1;
-import '../screens/new_event_page.dart' as _i8;
-import '../screens/new_groupchat/new_groupchat_page.dart' as _i6;
-import '../screens/new_groupchat/new_groupchat_select_users_page.dart' as _i7;
-import '../screens/private_event_page.dart' as _i5;
+import '../screens/new_event_page.dart' as _i9;
+import '../screens/new_groupchat/new_groupchat_page.dart' as _i7;
+import '../screens/new_groupchat/new_groupchat_select_users_page.dart' as _i8;
+import '../screens/private_event_page.dart' as _i6;
+import '../screens/profile_page.dart' as _i3;
 import '../screens/register_page.dart' as _i2;
-import 'auth_guard.dart' as _i11;
+import 'auth_guard.dart' as _i12;
 
-class AppRouter extends _i9.RootStackRouter {
+class AppRouter extends _i10.RootStackRouter {
   AppRouter({
-    _i10.GlobalKey<_i10.NavigatorState>? navigatorKey,
+    _i11.GlobalKey<_i11.NavigatorState>? navigatorKey,
     required this.authGuard,
   }) : super(navigatorKey);
 
-  final _i11.AuthGuard authGuard;
+  final _i12.AuthGuard authGuard;
 
   @override
-  final Map<String, _i9.PageFactory> pagesMap = {
+  final Map<String, _i10.PageFactory> pagesMap = {
     LoginPageRoute.name: (routeData) {
-      return _i9.MaterialPageX<dynamic>(
+      return _i10.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i1.LoginPage(),
       );
     },
     RegisterPageRoute.name: (routeData) {
-      return _i9.MaterialPageX<dynamic>(
+      return _i10.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i2.RegisterPage(),
       );
     },
-    HomePageRoute.name: (routeData) {
-      return _i9.MaterialPageX<dynamic>(
+    ProfilePageRoute.name: (routeData) {
+      final args = routeData.argsAs<ProfilePageRouteArgs>();
+      return _i10.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i3.HomePage(),
+        child: _i3.ProfilePage(
+          key: args.key,
+          userId: args.userId,
+        ),
+      );
+    },
+    HomePageRoute.name: (routeData) {
+      return _i10.MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: const _i4.HomePage(),
       );
     },
     ChatPageRoute.name: (routeData) {
       final args = routeData.argsAs<ChatPageRouteArgs>();
-      return _i9.MaterialPageX<dynamic>(
+      return _i10.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: _i4.ChatPage(
+        child: _i5.ChatPage(
           groupchat: args.groupchat,
           key: args.key,
         ),
@@ -66,25 +77,25 @@ class AppRouter extends _i9.RootStackRouter {
     },
     PrivateEventPageRoute.name: (routeData) {
       final args = routeData.argsAs<PrivateEventPageRouteArgs>();
-      return _i9.MaterialPageX<dynamic>(
+      return _i10.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: _i5.PrivateEventPage(
+        child: _i6.PrivateEventPage(
           privateEvent: args.privateEvent,
           key: args.key,
         ),
       );
     },
     NewGroupchatPageRoute.name: (routeData) {
-      return _i9.MaterialPageX<dynamic>(
+      return _i10.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i6.NewGroupchatPage(),
+        child: const _i7.NewGroupchatPage(),
       );
     },
     NewGroupchatPageSelectUsersPageRoute.name: (routeData) {
       final args = routeData.argsAs<NewGroupchatPageSelectUsersPageRouteArgs>();
-      return _i9.MaterialPageX<dynamic>(
+      return _i10.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: _i7.NewGroupchatPageSelectUsersPage(
+        child: _i8.NewGroupchatPageSelectUsersPage(
           key: args.key,
           title: args.title,
           description: args.description,
@@ -92,49 +103,54 @@ class AppRouter extends _i9.RootStackRouter {
       );
     },
     NewPrivateEventPageRoute.name: (routeData) {
-      return _i9.MaterialPageX<dynamic>(
+      return _i10.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i8.NewPrivateEventPage(),
+        child: const _i9.NewPrivateEventPage(),
       );
     },
   };
 
   @override
-  List<_i9.RouteConfig> get routes => [
-        _i9.RouteConfig(
+  List<_i10.RouteConfig> get routes => [
+        _i10.RouteConfig(
           LoginPageRoute.name,
           path: '/login-page',
         ),
-        _i9.RouteConfig(
+        _i10.RouteConfig(
           RegisterPageRoute.name,
           path: '/register-page',
         ),
-        _i9.RouteConfig(
+        _i10.RouteConfig(
+          ProfilePageRoute.name,
+          path: '/',
+          guards: [authGuard],
+        ),
+        _i10.RouteConfig(
           HomePageRoute.name,
           path: '/',
           guards: [authGuard],
         ),
-        _i9.RouteConfig(
+        _i10.RouteConfig(
           ChatPageRoute.name,
           path: '/chat-page',
           guards: [authGuard],
         ),
-        _i9.RouteConfig(
+        _i10.RouteConfig(
           PrivateEventPageRoute.name,
           path: '/private-event-page',
           guards: [authGuard],
         ),
-        _i9.RouteConfig(
+        _i10.RouteConfig(
           NewGroupchatPageRoute.name,
           path: '/new-groupchat-page',
           guards: [authGuard],
         ),
-        _i9.RouteConfig(
+        _i10.RouteConfig(
           NewGroupchatPageSelectUsersPageRoute.name,
           path: '/new-groupchat-page-select-users-page',
           guards: [authGuard],
         ),
-        _i9.RouteConfig(
+        _i10.RouteConfig(
           NewPrivateEventPageRoute.name,
           path: '/new-private-event-page',
           guards: [authGuard],
@@ -144,7 +160,7 @@ class AppRouter extends _i9.RootStackRouter {
 
 /// generated route for
 /// [_i1.LoginPage]
-class LoginPageRoute extends _i9.PageRouteInfo<void> {
+class LoginPageRoute extends _i10.PageRouteInfo<void> {
   const LoginPageRoute()
       : super(
           LoginPageRoute.name,
@@ -156,7 +172,7 @@ class LoginPageRoute extends _i9.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i2.RegisterPage]
-class RegisterPageRoute extends _i9.PageRouteInfo<void> {
+class RegisterPageRoute extends _i10.PageRouteInfo<void> {
   const RegisterPageRoute()
       : super(
           RegisterPageRoute.name,
@@ -167,8 +183,42 @@ class RegisterPageRoute extends _i9.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i3.HomePage]
-class HomePageRoute extends _i9.PageRouteInfo<void> {
+/// [_i3.ProfilePage]
+class ProfilePageRoute extends _i10.PageRouteInfo<ProfilePageRouteArgs> {
+  ProfilePageRoute({
+    _i11.Key? key,
+    required String userId,
+  }) : super(
+          ProfilePageRoute.name,
+          path: '/',
+          args: ProfilePageRouteArgs(
+            key: key,
+            userId: userId,
+          ),
+        );
+
+  static const String name = 'ProfilePageRoute';
+}
+
+class ProfilePageRouteArgs {
+  const ProfilePageRouteArgs({
+    this.key,
+    required this.userId,
+  });
+
+  final _i11.Key? key;
+
+  final String userId;
+
+  @override
+  String toString() {
+    return 'ProfilePageRouteArgs{key: $key, userId: $userId}';
+  }
+}
+
+/// generated route for
+/// [_i4.HomePage]
+class HomePageRoute extends _i10.PageRouteInfo<void> {
   const HomePageRoute()
       : super(
           HomePageRoute.name,
@@ -179,11 +229,11 @@ class HomePageRoute extends _i9.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i4.ChatPage]
-class ChatPageRoute extends _i9.PageRouteInfo<ChatPageRouteArgs> {
+/// [_i5.ChatPage]
+class ChatPageRoute extends _i10.PageRouteInfo<ChatPageRouteArgs> {
   ChatPageRoute({
-    required _i12.GroupchatEntity groupchat,
-    _i10.Key? key,
+    required _i13.GroupchatEntity groupchat,
+    _i11.Key? key,
   }) : super(
           ChatPageRoute.name,
           path: '/chat-page',
@@ -202,9 +252,9 @@ class ChatPageRouteArgs {
     this.key,
   });
 
-  final _i12.GroupchatEntity groupchat;
+  final _i13.GroupchatEntity groupchat;
 
-  final _i10.Key? key;
+  final _i11.Key? key;
 
   @override
   String toString() {
@@ -213,12 +263,12 @@ class ChatPageRouteArgs {
 }
 
 /// generated route for
-/// [_i5.PrivateEventPage]
+/// [_i6.PrivateEventPage]
 class PrivateEventPageRoute
-    extends _i9.PageRouteInfo<PrivateEventPageRouteArgs> {
+    extends _i10.PageRouteInfo<PrivateEventPageRouteArgs> {
   PrivateEventPageRoute({
-    required _i13.PrivateEventEntity privateEvent,
-    _i10.Key? key,
+    required _i14.PrivateEventEntity privateEvent,
+    _i11.Key? key,
   }) : super(
           PrivateEventPageRoute.name,
           path: '/private-event-page',
@@ -237,9 +287,9 @@ class PrivateEventPageRouteArgs {
     this.key,
   });
 
-  final _i13.PrivateEventEntity privateEvent;
+  final _i14.PrivateEventEntity privateEvent;
 
-  final _i10.Key? key;
+  final _i11.Key? key;
 
   @override
   String toString() {
@@ -248,8 +298,8 @@ class PrivateEventPageRouteArgs {
 }
 
 /// generated route for
-/// [_i6.NewGroupchatPage]
-class NewGroupchatPageRoute extends _i9.PageRouteInfo<void> {
+/// [_i7.NewGroupchatPage]
+class NewGroupchatPageRoute extends _i10.PageRouteInfo<void> {
   const NewGroupchatPageRoute()
       : super(
           NewGroupchatPageRoute.name,
@@ -260,11 +310,11 @@ class NewGroupchatPageRoute extends _i9.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i7.NewGroupchatPageSelectUsersPage]
+/// [_i8.NewGroupchatPageSelectUsersPage]
 class NewGroupchatPageSelectUsersPageRoute
-    extends _i9.PageRouteInfo<NewGroupchatPageSelectUsersPageRouteArgs> {
+    extends _i10.PageRouteInfo<NewGroupchatPageSelectUsersPageRouteArgs> {
   NewGroupchatPageSelectUsersPageRoute({
-    _i10.Key? key,
+    _i11.Key? key,
     required String title,
     String? description,
   }) : super(
@@ -287,7 +337,7 @@ class NewGroupchatPageSelectUsersPageRouteArgs {
     this.description,
   });
 
-  final _i10.Key? key;
+  final _i11.Key? key;
 
   final String title;
 
@@ -300,8 +350,8 @@ class NewGroupchatPageSelectUsersPageRouteArgs {
 }
 
 /// generated route for
-/// [_i8.NewPrivateEventPage]
-class NewPrivateEventPageRoute extends _i9.PageRouteInfo<void> {
+/// [_i9.NewPrivateEventPage]
+class NewPrivateEventPageRoute extends _i10.PageRouteInfo<void> {
   const NewPrivateEventPageRoute()
       : super(
           NewPrivateEventPageRoute.name,

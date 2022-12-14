@@ -20,7 +20,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
       authTokenOrFailure.fold(
         (error) => emit(
-          AuthStateError(message: mapFailureToMessage(error)),
+          AuthStateError(
+            title: "Login Fehler",
+            message: mapFailureToMessage(error),
+          ),
         ),
         (token) => emit(AuthStateLoaded(token: token)),
       );
@@ -33,7 +36,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
       authTokenOrFailure.fold(
         (error) => emit(
-          AuthStateError(message: mapFailureToMessage(error)),
+          AuthStateError(
+            title: "Registrier Fehler",
+            message: mapFailureToMessage(error),
+          ),
         ),
         (token) => emit(AuthStateLoaded(token: token)),
       );

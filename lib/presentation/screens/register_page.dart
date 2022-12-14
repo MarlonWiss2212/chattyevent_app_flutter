@@ -5,6 +5,7 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_bloc.dart';
 import 'package:social_media_app_flutter/domain/dto/create_user_dto.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
+import 'package:social_media_app_flutter/presentation/widgets/ok_button.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -81,24 +82,43 @@ class _RegisterPageState extends State<RegisterPage> {
               decoration: const InputDecoration(hintText: 'Passwort'),
             ),
             const SizedBox(height: 8),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {
-                  BlocProvider.of<AuthBloc>(context).add(
-                    AuthRegisterEvent(
-                      createUserDto: CreateUserDto(
-                        username: usernameFieldController.text,
-                        firstname: firstnameFieldController.text,
-                        lastname: lastnameFieldController.text,
-                        birthdate: birthdate,
-                        email: emailFieldController.text,
-                        password: passwordFieldController.text,
-                      ),
-                    ),
+            BlocListener<AuthBloc, AuthState>(
+              listenWhen: (previous, current) {
+                return current is AuthStateError;
+              },
+              listener: (context, state) async {
+                if (state is AuthStateError) {
+                  return await showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: Text(state.title ?? "Kein Titel"),
+                        content: Text(state.message),
+                        actions: const [OKButton()],
+                      );
+                    },
                   );
-                },
-                child: const Text("Registrieren"),
+                }
+              },
+              child: SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () {
+                    BlocProvider.of<AuthBloc>(context).add(
+                      AuthRegisterEvent(
+                        createUserDto: CreateUserDto(
+                          username: usernameFieldController.text,
+                          firstname: firstnameFieldController.text,
+                          lastname: lastnameFieldController.text,
+                          birthdate: birthdate,
+                          email: emailFieldController.text,
+                          password: passwordFieldController.text,
+                        ),
+                      ),
+                    );
+                  },
+                  child: const Text("Registrieren"),
+                ),
               ),
             ),
             const SizedBox(height: 16),

@@ -8,6 +8,7 @@ import 'package:social_media_app_flutter/domain/dto/groupchat/create_user_groupc
 import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 import 'package:social_media_app_flutter/presentation/screens/new_groupchat/new_groupchat_select_users_page.dart';
+import 'package:social_media_app_flutter/presentation/widgets/ok_button.dart';
 import 'package:social_media_app_flutter/presentation/widgets/user_list_item.dart';
 
 class NewGroupchatPage extends StatefulWidget {
@@ -60,16 +61,10 @@ class _NewGroupchatPageState extends State<NewGroupchatPage> {
                     return await showDialog(
                       context: context,
                       builder: (context) {
-                        return AlertDialog(
-                          title: const Text("Fehler"),
-                          content: const Text(
-                              "Sie müssen erst einen Namen vergeben"),
-                          actions: [
-                            TextButton(
-                              onPressed: () => Navigator.of(context).pop(),
-                              child: const Text("OK"),
-                            )
-                          ],
+                        return const AlertDialog(
+                          title: Text("Fehler"),
+                          content: Text("Sie müssen erst einen Namen vergeben"),
+                          actions: [OKButton()],
                         );
                       },
                     );
