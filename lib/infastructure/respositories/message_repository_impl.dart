@@ -2,6 +2,7 @@ import 'package:social_media_app_flutter/domain/dto/create_message_dto.dart';
 import 'package:social_media_app_flutter/domain/failures/failures.dart';
 import 'package:social_media_app_flutter/domain/entities/message/message_entity.dart';
 import 'package:dartz/dartz.dart';
+import 'package:social_media_app_flutter/domain/filter/get_messages_filter.dart';
 import 'package:social_media_app_flutter/domain/repositories/message_repository.dart';
 import 'package:social_media_app_flutter/infastructure/datasources/graphql.dart';
 import 'package:social_media_app_flutter/infastructure/models/message/message_model.dart';
@@ -46,11 +47,14 @@ class MessageRepositoryImpl implements MessageRepository {
   }
 
   @override
-  Future<Either<Failure, List<MessageEntity>>> getMessagesViaApi() async {
+  Future<Either<Failure, List<MessageEntity>>> getMessagesViaApi({
+    required GetMessagesFilter getMessagesFilter,
+  }) async {
     try {
-      final response = await graphQlDatasource.query("""
-        query FindMessages {
-          findMessages {
+      final response = await graphQlDatasource.query(
+        """
+        query FindMessages(\$input: FindMessagesInput!) {
+          findMessages(filter: \$input) {
             _id
             message
             groupchatTo
@@ -58,7 +62,11 @@ class MessageRepositoryImpl implements MessageRepository {
             createdAt
           }
         }
-      """);
+      """,
+        variables: {
+          "input": getMessagesFilter.toMap(),
+        },
+      );
 
       if (response.hasException) {
         return Left(GeneralFailure());

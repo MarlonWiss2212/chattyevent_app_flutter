@@ -14,6 +14,10 @@ class UserSearchBloc extends Bloc<UserSearchEvent, UserSearchState> {
   UserSearchBloc({required this.userUseCases}) : super(UserSearchInitial()) {
     on<UserSearchEvent>((event, emit) {});
 
+    on<UserSearchInitialEvent>((event, emit) {
+      emit(UserSearchInitial());
+    });
+
     on<SearchUsersEvent>((event, emit) async {
       emit(UserSearchStateLoading());
 

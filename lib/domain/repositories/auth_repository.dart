@@ -7,4 +7,5 @@ abstract class AuthRepository {
   Future<Either<Failure, String>> register(CreateUserDto createUserDto);
   Future<Either<Failure, String>> getAuthTokenFromStorage();
   Future<void> saveAuthTokenInStorage(String token);
+  Future<void> logout();
 }

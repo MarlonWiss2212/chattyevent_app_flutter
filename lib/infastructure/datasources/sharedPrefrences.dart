@@ -5,6 +5,7 @@ import 'package:social_media_app_flutter/domain/failures/failures.dart';
 abstract class SharedPrefrencesDatasource {
   Future<Either<Failure, String>> getFromStorage(String name);
   Future<void> saveToStorage(String name, String value);
+  Future<void> deleteFromStorage(String name);
 }
 
 class SharedPrefrencesDatasourceImpl implements SharedPrefrencesDatasource {
@@ -25,5 +26,10 @@ class SharedPrefrencesDatasourceImpl implements SharedPrefrencesDatasource {
   @override
   Future<void> saveToStorage(String name, String value) {
     return sharedPreferences.setString(name, value);
+  }
+
+  @override
+  Future<void> deleteFromStorage(String name) {
+    return sharedPreferences.remove(name);
   }
 }

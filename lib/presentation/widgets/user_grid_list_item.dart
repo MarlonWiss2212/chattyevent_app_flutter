@@ -28,17 +28,15 @@ class UserGridListItem extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const SizedBox(),
-                Container(
-                  width: 80,
-                  height: 80,
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.secondaryContainer,
-                    borderRadius: const BorderRadius.all(
-                      Radius.circular(100000000000000),
-                    ),
-                  ),
+                CircleAvatar(
+                  backgroundColor:
+                      Theme.of(context).colorScheme.secondaryContainer,
                 ),
-                Text(user.username ?? "Kein Name")
+                Text(
+                  user.username ?? "Kein Name",
+                  overflow: TextOverflow.ellipsis,
+                  softWrap: true,
+                )
               ],
             ),
           ),

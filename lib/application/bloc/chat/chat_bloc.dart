@@ -15,6 +15,9 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   ChatBloc({required this.chatUseCases}) : super(ChatInitial()) {
     on<ChatEvent>((event, emit) {});
 
+    on<ChatInitialEvent>((event, emit) {
+      emit(ChatInitial());
+    });
     on<ChatCreateEvent>((event, emit) async {
       final Either<Failure, GroupchatEntity> groupchatOrFailure =
           await chatUseCases.createGroupchatViaApi(

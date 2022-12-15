@@ -4,6 +4,7 @@ import 'package:jwt_decode/jwt_decode.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_bloc.dart';
 import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
+import 'package:social_media_app_flutter/domain/filter/get_one_user_filter.dart';
 import 'package:social_media_app_flutter/presentation/widgets/profile/user_profile_data_page.dart';
 
 class Profile extends StatefulWidget {
@@ -25,7 +26,11 @@ class _ProfileState extends State<Profile> {
             return BlocBuilder<UserBloc, UserState>(
               bloc: BlocProvider.of<UserBloc>(context)
                 ..add(
-                  GetOneUserEvent(userId: tokenPayload["sub"]),
+                  GetOneUserEvent(
+                    getOneUserFilter: GetOneUserFilter(
+                      id: tokenPayload["sub"],
+                    ),
+                  ),
                 ),
               builder: (context, state) {
                 if (state is UserStateLoaded) {
@@ -41,7 +46,11 @@ class _ProfileState extends State<Profile> {
                       child: TextButton(
                         child: const Text("Keinen User gefunden"),
                         onPressed: () => BlocProvider.of<UserBloc>(context).add(
-                          GetOneUserEvent(userId: tokenPayload["sub"]),
+                          GetOneUserEvent(
+                            getOneUserFilter: GetOneUserFilter(
+                              id: tokenPayload["sub"],
+                            ),
+                          ),
                         ),
                       ),
                     );
@@ -57,7 +66,11 @@ class _ProfileState extends State<Profile> {
                         state is UserStateError ? state.message : "User laden",
                       ),
                       onPressed: () => BlocProvider.of<UserBloc>(context).add(
-                        GetOneUserEvent(userId: tokenPayload["sub"]),
+                        GetOneUserEvent(
+                          getOneUserFilter: GetOneUserFilter(
+                            id: tokenPayload["sub"],
+                          ),
+                        ),
                       ),
                     ),
                   );

@@ -16,6 +16,10 @@ class PrivateEventBloc extends Bloc<PrivateEventEvent, PrivateEventState> {
       : super(PrivateEventInitial()) {
     on<PrivateEventEvent>((event, emit) {});
 
+    on<PrivateEventInitialEvent>((event, emit) {
+      emit(PrivateEventInitial());
+    });
+
     on<PrivateEventCreateEvent>((event, emit) async {
       final Either<Failure, PrivateEventEntity> privateEventOrFailure =
           await privateEventUseCases

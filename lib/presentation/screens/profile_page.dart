@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_bloc.dart';
 import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
+import 'package:social_media_app_flutter/domain/filter/get_messages_filter.dart';
+import 'package:social_media_app_flutter/domain/filter/get_one_user_filter.dart';
 import 'package:social_media_app_flutter/presentation/widgets/profile/user_profile_data_page.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -22,7 +24,9 @@ class _ProfilePageState extends State<ProfilePage> {
       body: BlocBuilder<UserBloc, UserState>(
         bloc: BlocProvider.of<UserBloc>(context)
           ..add(
-            GetOneUserEvent(userId: widget.user.id),
+            GetOneUserEvent(
+              getOneUserFilter: GetOneUserFilter(id: widget.user.id),
+            ),
           ),
         builder: (context, state) {
           if (state is UserStateLoaded) {
@@ -38,7 +42,9 @@ class _ProfilePageState extends State<ProfilePage> {
                 child: TextButton(
                   child: const Text("Keinen User gefunden"),
                   onPressed: () => BlocProvider.of<UserBloc>(context).add(
-                    GetOneUserEvent(userId: widget.user.id),
+                    GetOneUserEvent(
+                      getOneUserFilter: GetOneUserFilter(id: widget.user.id),
+                    ),
                   ),
                 ),
               );
@@ -54,7 +60,9 @@ class _ProfilePageState extends State<ProfilePage> {
                   state is UserStateError ? state.message : "User Laden",
                 ),
                 onPressed: () => BlocProvider.of<UserBloc>(context).add(
-                  GetOneUserEvent(userId: widget.user.id),
+                  GetOneUserEvent(
+                    getOneUserFilter: GetOneUserFilter(id: widget.user.id),
+                  ),
                 ),
               ),
             );

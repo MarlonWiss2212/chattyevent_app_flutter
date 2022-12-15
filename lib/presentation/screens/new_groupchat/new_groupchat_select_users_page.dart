@@ -1,8 +1,11 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:social_media_app_flutter/application/bloc/auth/auth_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/chat_bloc.dart';
 import 'package:social_media_app_flutter/domain/dto/groupchat/create_groupchat_dto.dart';
 import 'package:social_media_app_flutter/domain/dto/groupchat/create_user_groupchat_dto.dart';
+import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 import 'package:social_media_app_flutter/presentation/widgets/new_groupchat/SelectableUserGridList.dart';
 import 'package:social_media_app_flutter/presentation/widgets/new_groupchat/SelectedUsersChipList.dart';
 
@@ -84,7 +87,18 @@ class _NewGroupchatPageSelectUsersPageState
             const SizedBox(height: 8),
             // button to save groupchat
             BlocListener<ChatBloc, ChatState>(
-              listener: (context, state) {},
+              listener: (context, state) {
+                if (state is ChatStateLoaded) {
+                  for (final chat in state.chats) {
+                    if (chat.title == widget.title) {
+                      AutoRouter.of(context).popUntilRoot();
+                      AutoRouter.of(context).push(
+                        ChatPageRoute(groupchat: chat),
+                      );
+                    }
+                  }
+                }
+              },
               child: SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(

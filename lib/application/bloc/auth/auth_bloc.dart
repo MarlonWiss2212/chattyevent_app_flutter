@@ -57,5 +57,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         (token) => emit(AuthStateLoaded(token: token)),
       );
     });
+    on<AuthLogoutEvent>((event, emit) async {
+      await authUseCases.logout();
+      emit(AuthInitial());
+    });
   }
 }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:grouped_list/grouped_list.dart';
+import 'package:intl/intl.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_bloc.dart';
@@ -37,13 +39,13 @@ class _MessageListState extends State<MessageList> {
 
           return BlocBuilder<UserBloc, UserState>(
             builder: (context, state) {
-              return ListView.separated(
+              return GroupedListView<MessageEntity, String>(
                 padding: const EdgeInsets.only(top: 8),
-                itemBuilder: (context, index) {
+                itemBuilder: (context, messageEntity) {
                   UserEntity? foundUser;
                   if (state is UserStateLoaded) {
                     for (final user in state.users) {
-                      if (user.id == widget.messages[index].createdBy) {
+                      if (user.id == messageEntity.createdBy) {
                         foundUser = user;
                       }
                     }
@@ -51,22 +53,54 @@ class _MessageListState extends State<MessageList> {
 
                   return MessageContainer(
                     title: foundUser == null
-                        ? widget.messages[index].createdBy ??
-                            "Keine Id gefunden"
+                        ? messageEntity.createdBy ?? "Keine Id gefunden"
                         : foundUser.username ??
-                            widget.messages[index].createdBy ??
+                            messageEntity.createdBy ??
                             "Keine Id gefunden",
-                    date: widget.messages[index].createdAt != null
-                        ? "${widget.messages[index].createdAt!.year.toString()}.${widget.messages[index].createdAt!.month.toString()}.${widget.messages[index].createdAt!.day.toString()}, ${widget.messages[index].createdAt!.hour.toString()}:${widget.messages[index].createdAt!.minute.toString()}"
+                    date: messageEntity.createdAt != null
+                        ? DateFormat.Hm().format(messageEntity.createdAt!)
                         : "Fehler",
-                    content: widget.messages[index].message ?? "Kein Inhalt",
-                    alignStart:
-                        widget.messages[index].createdBy != tokenPayload["sub"],
+                    content: messageEntity.message ?? "Kein Inhalt",
+                    alignStart: messageEntity.createdBy != tokenPayload["sub"],
                   );
                 },
-                itemCount: widget.messages.length,
-                separatorBuilder: (BuildContext context, int index) {
-                  return const SizedBox(height: 4);
+                elements: widget.messages,
+                useStickyGroupSeparators: true,
+                reverse: true,
+                order: GroupedListOrder.DESC,
+                floatingHeader: true,
+                groupBy: (messageEntity) {
+                  if (messageEntity.createdAt == null) {
+                    return "Fehler";
+                  }
+                  return DateTime(
+                    messageEntity.createdAt!.year,
+                    messageEntity.createdAt!.month,
+                    messageEntity.createdAt!.day,
+                  ).toString();
+                },
+                groupHeaderBuilder: (messageEntity) {
+                  return SizedBox(
+                    height: 40,
+                    child: Center(
+                      child: Card(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8),
+                          child: Text(
+                            messageEntity.createdAt == null
+                                ? "Kein Datum gefunden"
+                                : DateFormat.yMMMd()
+                                    .format(messageEntity.createdAt!),
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                },
+                groupSeparatorBuilder: (value) {
+                  return const SizedBox(
+                    height: 8,
+                  );
                 },
               );
             },

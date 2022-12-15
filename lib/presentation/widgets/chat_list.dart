@@ -13,12 +13,20 @@ class ChatList extends StatelessWidget {
       padding: const EdgeInsets.all(8),
       itemBuilder: (context, index) {
         return ListTile(
+          leading: CircleAvatar(
+            backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+          ),
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(
               Radius.circular(5),
             ),
           ),
           title: Text(chats[index].title ?? "Kein Titel"),
+          subtitle: const Text(
+            "Letzte Nachricht",
+            softWrap: true,
+            overflow: TextOverflow.ellipsis,
+          ),
           onTap: () {
             AutoRouter.of(context).push(
               ChatPageRoute(groupchat: chats[index]),

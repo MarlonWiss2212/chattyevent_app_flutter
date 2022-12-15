@@ -19,15 +19,9 @@ class UserProfileDataPage extends StatelessWidget {
           child: Column(
             children: [
               // Profile Image
-              Container(
-                width: min(size.width / 3, 150),
-                height: min(size.width / 3, 150),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.primaryContainer,
-                  borderRadius: const BorderRadius.all(
-                    Radius.circular(100000000000000),
-                  ),
-                ),
+              CircleAvatar(
+                backgroundColor:
+                    Theme.of(context).colorScheme.secondaryContainer,
               ),
               // name
               Container(
@@ -35,7 +29,10 @@ class UserProfileDataPage extends StatelessWidget {
                 child: Text(
                   user.username ?? "Kein Benutzername",
                   style: const TextStyle(
-                      fontSize: 18, fontWeight: FontWeight.bold),
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  overflow: TextOverflow.ellipsis,
                 ),
               )
             ],

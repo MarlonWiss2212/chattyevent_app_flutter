@@ -47,4 +47,8 @@ class AuthUseCases {
     );
     return tokenOrFailure;
   }
+
+  Future<void> logout() async {
+    return await authRepository.logout();
+  }
 }

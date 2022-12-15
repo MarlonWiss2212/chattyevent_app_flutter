@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
 import 'package:social_media_app_flutter/domain/failures/failures.dart';
+import 'package:social_media_app_flutter/domain/filter/get_one_user_filter.dart';
 import 'package:social_media_app_flutter/domain/repositories/user_repository.dart';
 import 'package:social_media_app_flutter/infastructure/datasources/graphql.dart';
 import 'package:social_media_app_flutter/infastructure/models/user_model.dart';
@@ -10,13 +11,10 @@ class UserRepositoryImpl implements UserRepository {
   UserRepositoryImpl({required this.graphQlDatasource});
 
   @override
-  Future<Either<Failure, UserEntity>> getUserViaApi(
-      {String? userId, String? email}) async {
+  Future<Either<Failure, UserEntity>> getUserViaApi({
+    required GetOneUserFilter getOneUserFilter,
+  }) async {
     try {
-      Map<String, String> input = {};
-      userId != null ? input.addAll({"_id": userId}) : null;
-      email != null ? input.addAll({"email": email}) : null;
-
       final response = await graphQlDatasource.query(
         """
         query FindUser(\$input: FindOneUserInput!) {
@@ -27,7 +25,7 @@ class UserRepositoryImpl implements UserRepository {
           }
         }
         """,
-        variables: {"input": input},
+        variables: {"input": getOneUserFilter.toMap()},
       );
 
       if (response.hasException) {

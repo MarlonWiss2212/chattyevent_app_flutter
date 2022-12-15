@@ -4,6 +4,7 @@ import 'package:meta/meta.dart';
 import 'package:social_media_app_flutter/domain/dto/create_message_dto.dart';
 import 'package:social_media_app_flutter/domain/entities/message/message_entity.dart';
 import 'package:social_media_app_flutter/domain/failures/failures.dart';
+import 'package:social_media_app_flutter/domain/filter/get_messages_filter.dart';
 import 'package:social_media_app_flutter/domain/usecases/message_usecases.dart';
 
 part 'message_event.dart';
@@ -14,6 +15,10 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
 
   MessageBloc({required this.messageUseCases}) : super(MessageInitial()) {
     on<MessageEvent>((event, emit) {});
+
+    on<MessageInitialEvent>((event, emit) {
+      emit(MessageInitial());
+    });
 
     on<MessageCreateEvent>((event, emit) async {
       final Either<Failure, MessageEntity> messageOrFailure =
@@ -50,7 +55,9 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
       emit(MessageStateLoading());
 
       final Either<Failure, List<MessageEntity>> messagesOrFailure =
-          await messageUseCases.getMessagesViaApi();
+          await messageUseCases.getMessagesViaApi(
+        getMessagesFilter: event.getMessagesFilter,
+      );
 
       messagesOrFailure.fold(
         (error) => emit(

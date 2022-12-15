@@ -78,4 +78,9 @@ class AuthRepositoryImpl implements AuthRepository {
       return Left(ServerFailure());
     }
   }
+
+  @override
+  Future<void> logout() {
+    return sharedPrefrencesDatasource.deleteFromStorage("access_token");
+  }
 }

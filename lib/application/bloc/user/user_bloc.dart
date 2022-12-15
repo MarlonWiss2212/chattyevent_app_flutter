@@ -3,6 +3,7 @@ import 'package:dartz/dartz.dart';
 import 'package:meta/meta.dart';
 import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
 import 'package:social_media_app_flutter/domain/failures/failures.dart';
+import 'package:social_media_app_flutter/domain/filter/get_one_user_filter.dart';
 import 'package:social_media_app_flutter/domain/usecases/user_usecases.dart';
 
 part 'user_event.dart';
@@ -13,11 +14,15 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
   UserBloc({required this.userUseCases}) : super(UserInitial()) {
     on<UserEvent>((event, emit) {});
+
+    on<UserInitialEvent>((event, emit) {
+      emit(UserInitial());
+    });
+
     on<GetOneUserEvent>((event, emit) async {
       final Either<Failure, UserEntity> userOrFailure =
           await userUseCases.getUserViaApi(
-        userId: event.userId,
-        email: event.email,
+        getOneUserFilter: event.getOneUserFilter,
       );
 
       userOrFailure.fold(

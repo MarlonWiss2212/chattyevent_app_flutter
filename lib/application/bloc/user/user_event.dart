@@ -8,8 +8,9 @@ class GetUsersEvent extends UserEvent {
   GetUsersEvent({this.search});
 }
 
+class UserInitialEvent extends UserEvent {}
+
 class GetOneUserEvent extends UserEvent {
-  final String? email;
-  final String? userId;
-  GetOneUserEvent({this.email, this.userId});
+  final GetOneUserFilter getOneUserFilter;
+  GetOneUserEvent({required this.getOneUserFilter});
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/message/message_bloc.dart';
 import 'package:social_media_app_flutter/domain/entities/message/message_entity.dart';
+import 'package:social_media_app_flutter/domain/filter/get_messages_filter.dart';
 import 'package:social_media_app_flutter/presentation/widgets/message_list.dart';
 
 class MessageArea extends StatelessWidget {
@@ -12,7 +13,12 @@ class MessageArea extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: BlocBuilder<MessageBloc, MessageState>(
-        bloc: BlocProvider.of<MessageBloc>(context)..add(MessageRequestEvent()),
+        bloc: BlocProvider.of<MessageBloc>(context)
+          ..add(
+            MessageRequestEvent(
+              getMessagesFilter: GetMessagesFilter(),
+            ),
+          ),
         builder: (context, state) {
           if (state is MessageStateLoaded) {
             List<MessageEntity> filteredMessages = [];
@@ -37,7 +43,9 @@ class MessageArea extends StatelessWidget {
                   state is MessageStateError ? state.message : "Daten laden",
                 ),
                 onPressed: () => BlocProvider.of<MessageBloc>(context).add(
-                  MessageRequestEvent(),
+                  MessageRequestEvent(
+                    getMessagesFilter: GetMessagesFilter(),
+                  ),
                 ),
               ),
             );

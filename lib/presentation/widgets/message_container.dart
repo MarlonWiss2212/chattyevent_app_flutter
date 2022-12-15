@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 
 class MessageContainer extends StatelessWidget {
@@ -25,6 +23,20 @@ class MessageContainer extends StatelessWidget {
           alignStart ? MainAxisAlignment.start : MainAxisAlignment.end,
       children: [
         Card(
+          elevation: 4,
+          shape: RoundedRectangleBorder(
+            borderRadius: alignStart
+                ? const BorderRadius.only(
+                    bottomLeft: Radius.circular(20),
+                    bottomRight: Radius.circular(20),
+                    topRight: Radius.circular(20),
+                  )
+                : const BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    bottomLeft: Radius.circular(20),
+                    bottomRight: Radius.circular(20),
+                  ),
+          ),
           color: alignStart
               ? Theme.of(context).colorScheme.secondaryContainer
               : Theme.of(context).colorScheme.primaryContainer,

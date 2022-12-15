@@ -1,4 +1,13 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:social_media_app_flutter/application/bloc/auth/auth_bloc.dart';
+import 'package:social_media_app_flutter/application/bloc/chat/chat_bloc.dart';
+import 'package:social_media_app_flutter/application/bloc/message/message_bloc.dart';
+import 'package:social_media_app_flutter/application/bloc/private_event/private_event_bloc.dart';
+import 'package:social_media_app_flutter/application/bloc/user/user_bloc.dart';
+import 'package:social_media_app_flutter/application/bloc/user_search/user_search_bloc.dart';
+import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 import 'package:social_media_app_flutter/presentation/screens/home_page/pages/chat.dart';
 import 'package:social_media_app_flutter/presentation/screens/home_page/pages/profile.dart';
 import 'package:social_media_app_flutter/presentation/screens/home_page/pages/search.dart';
@@ -19,6 +28,26 @@ class _MyHomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Social Media App'),
+        actions: [
+          IconButton(
+            onPressed: () {
+              BlocProvider.of<AuthBloc>(context).add(AuthLogoutEvent());
+
+              BlocProvider.of<ChatBloc>(context).add(ChatInitialEvent());
+              BlocProvider.of<MessageBloc>(context).add(MessageInitialEvent());
+              BlocProvider.of<PrivateEventBloc>(context).add(
+                PrivateEventInitialEvent(),
+              );
+              BlocProvider.of<UserBloc>(context).add(UserInitialEvent());
+              BlocProvider.of<UserSearchBloc>(context).add(
+                UserSearchInitialEvent(),
+              );
+
+              AutoRouter.of(context).replace(const LoginPageRoute());
+            },
+            icon: const Icon(Icons.logout),
+          ),
+        ],
       ),
       body: IndexedStack(
         index: currentIndex,
