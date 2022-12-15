@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_bloc.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
-import 'package:social_media_app_flutter/presentation/widgets/ok_button.dart';
+import 'package:social_media_app_flutter/presentation/widgets/dialog/ok_button.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});

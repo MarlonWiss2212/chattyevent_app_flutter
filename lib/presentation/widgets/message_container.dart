@@ -1,42 +1,55 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 class MessageContainer extends StatelessWidget {
-  const MessageContainer(
-      {super.key,
-      required this.title,
-      required this.date,
-      required this.subtitle});
+  const MessageContainer({
+    super.key,
+    required this.title,
+    required this.date,
+    required this.content,
+    required this.alignStart,
+  });
 
   final String title;
   final String date;
-  final String subtitle;
+  final String content;
+  final bool alignStart;
 
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
 
     return Row(
+      mainAxisAlignment:
+          alignStart ? MainAxisAlignment.start : MainAxisAlignment.end,
       children: [
-        ConstrainedBox(
-          constraints: BoxConstraints(maxWidth: size.width * 0.8),
-          child: ListTile(
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(
-                Radius.circular(8),
-              ),
-            ),
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        Card(
+          color: alignStart
+              ? Theme.of(context).colorScheme.secondaryContainer
+              : Theme.of(context).colorScheme.primaryContainer,
+          child: Padding(
+            padding: const EdgeInsets.all(8),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(title),
-                Text(date),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(title),
+                    const SizedBox(width: 8),
+                    Text(date),
+                  ],
+                ),
+                Text(
+                  content,
+                  overflow: TextOverflow.ellipsis,
+                  softWrap: true,
+                ),
               ],
             ),
-            subtitle: Text(subtitle),
-            tileColor: Theme.of(context).colorScheme.primaryContainer,
           ),
         ),
-        const Expanded(child: Text(""))
       ],
     );
   }

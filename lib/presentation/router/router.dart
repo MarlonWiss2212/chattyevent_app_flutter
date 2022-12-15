@@ -6,7 +6,7 @@ import 'package:social_media_app_flutter/presentation/screens/login_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/new_event_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/new_groupchat/new_groupchat_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/new_groupchat/new_groupchat_select_users_page.dart';
-import 'package:social_media_app_flutter/presentation/screens/private_event_page.dart';
+import 'package:social_media_app_flutter/presentation/screens/private_event_page/private_event_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/profile_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/register_page.dart';
 

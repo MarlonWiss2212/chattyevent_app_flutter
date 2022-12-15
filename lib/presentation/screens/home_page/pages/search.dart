@@ -1,11 +1,9 @@
-import 'dart:math';
-
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/user_search/user_search_bloc.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
-import 'package:social_media_app_flutter/presentation/widgets/user_list_item.dart';
+import 'package:social_media_app_flutter/presentation/widgets/user_grid_list.dart';
 
 class Search extends StatefulWidget {
   const Search({super.key});
@@ -25,27 +23,11 @@ class _SearchState extends State<Search> {
           ),
         builder: (context, state) {
           if (state is UserSearchStateLoaded) {
-            return GridView.builder(
-              padding: const EdgeInsets.all(8),
-              itemBuilder: (context, index) {
-                return UserListItem(
-                  user: state.users[index],
-                  onPress: () {
-                    AutoRouter.of(context).push(
-                      ProfilePageRoute(userId: state.users[index].id),
-                    );
-                  },
-                );
+            return UserGridList(
+              users: state.users,
+              onPress: (user) {
+                AutoRouter.of(context).push(ProfilePageRoute(user: user));
               },
-              itemCount: state.users.length,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: max(
-                  (MediaQuery.of(context).size.width ~/ 150).toInt(),
-                  1,
-                ),
-                mainAxisSpacing: 8,
-                crossAxisSpacing: 8,
-              ),
             );
           } else if (state is UserSearchStateLoading) {
             return const Center(child: CircularProgressIndicator());

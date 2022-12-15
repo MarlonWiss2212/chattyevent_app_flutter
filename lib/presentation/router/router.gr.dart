@@ -14,15 +14,16 @@
 import 'package:auto_route/auto_route.dart' as _i10;
 import 'package:flutter/material.dart' as _i11;
 
-import '../../domain/entities/groupchat/groupchat_entity.dart' as _i13;
-import '../../domain/entities/private_event_entity.dart' as _i14;
+import '../../domain/entities/groupchat/groupchat_entity.dart' as _i14;
+import '../../domain/entities/private_event_entity.dart' as _i15;
+import '../../domain/entities/user_entity.dart' as _i13;
 import '../screens/chat_page.dart' as _i5;
 import '../screens/home_page/home_page.dart' as _i4;
 import '../screens/login_page.dart' as _i1;
 import '../screens/new_event_page.dart' as _i9;
 import '../screens/new_groupchat/new_groupchat_page.dart' as _i7;
 import '../screens/new_groupchat/new_groupchat_select_users_page.dart' as _i8;
-import '../screens/private_event_page.dart' as _i6;
+import '../screens/private_event_page/private_event_page.dart' as _i6;
 import '../screens/profile_page.dart' as _i3;
 import '../screens/register_page.dart' as _i2;
 import 'auth_guard.dart' as _i12;
@@ -55,7 +56,7 @@ class AppRouter extends _i10.RootStackRouter {
         routeData: routeData,
         child: _i3.ProfilePage(
           key: args.key,
-          userId: args.userId,
+          user: args.user,
         ),
       );
     },
@@ -187,13 +188,13 @@ class RegisterPageRoute extends _i10.PageRouteInfo<void> {
 class ProfilePageRoute extends _i10.PageRouteInfo<ProfilePageRouteArgs> {
   ProfilePageRoute({
     _i11.Key? key,
-    required String userId,
+    required _i13.UserEntity user,
   }) : super(
           ProfilePageRoute.name,
           path: '/',
           args: ProfilePageRouteArgs(
             key: key,
-            userId: userId,
+            user: user,
           ),
         );
 
@@ -203,16 +204,16 @@ class ProfilePageRoute extends _i10.PageRouteInfo<ProfilePageRouteArgs> {
 class ProfilePageRouteArgs {
   const ProfilePageRouteArgs({
     this.key,
-    required this.userId,
+    required this.user,
   });
 
   final _i11.Key? key;
 
-  final String userId;
+  final _i13.UserEntity user;
 
   @override
   String toString() {
-    return 'ProfilePageRouteArgs{key: $key, userId: $userId}';
+    return 'ProfilePageRouteArgs{key: $key, user: $user}';
   }
 }
 
@@ -232,7 +233,7 @@ class HomePageRoute extends _i10.PageRouteInfo<void> {
 /// [_i5.ChatPage]
 class ChatPageRoute extends _i10.PageRouteInfo<ChatPageRouteArgs> {
   ChatPageRoute({
-    required _i13.GroupchatEntity groupchat,
+    required _i14.GroupchatEntity groupchat,
     _i11.Key? key,
   }) : super(
           ChatPageRoute.name,
@@ -252,7 +253,7 @@ class ChatPageRouteArgs {
     this.key,
   });
 
-  final _i13.GroupchatEntity groupchat;
+  final _i14.GroupchatEntity groupchat;
 
   final _i11.Key? key;
 
@@ -267,7 +268,7 @@ class ChatPageRouteArgs {
 class PrivateEventPageRoute
     extends _i10.PageRouteInfo<PrivateEventPageRouteArgs> {
   PrivateEventPageRoute({
-    required _i14.PrivateEventEntity privateEvent,
+    required _i15.PrivateEventEntity privateEvent,
     _i11.Key? key,
   }) : super(
           PrivateEventPageRoute.name,
@@ -287,7 +288,7 @@ class PrivateEventPageRouteArgs {
     this.key,
   });
 
-  final _i14.PrivateEventEntity privateEvent;
+  final _i15.PrivateEventEntity privateEvent;
 
   final _i11.Key? key;
 

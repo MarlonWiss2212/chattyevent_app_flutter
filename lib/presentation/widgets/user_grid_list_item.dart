@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
 
-class UserListItem extends StatelessWidget {
+class UserGridListItem extends StatelessWidget {
   final UserEntity user;
   final Function? onLongPress;
   final Function? onPress;
 
-  const UserListItem({
+  const UserGridListItem({
     super.key,
     required this.user,
     this.onLongPress,

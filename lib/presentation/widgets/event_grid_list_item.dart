@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event_entity.dart';
 
-class EventListItem extends StatelessWidget {
+class EventGridListItem extends StatelessWidget {
   final PrivateEventEntity privateEvent;
   final Function? onLongPress;
   final Function? onPress;
   final Color? backgroundColor;
 
-  const EventListItem({
+  const EventGridListItem({
     super.key,
     required this.privateEvent,
     this.onLongPress,

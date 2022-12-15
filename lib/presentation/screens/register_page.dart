@@ -5,7 +5,7 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_bloc.dart';
 import 'package:social_media_app_flutter/domain/dto/create_user_dto.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
-import 'package:social_media_app_flutter/presentation/widgets/ok_button.dart';
+import 'package:social_media_app_flutter/presentation/widgets/dialog/ok_button.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});

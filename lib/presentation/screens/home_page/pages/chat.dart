@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/chat_bloc.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
+import 'package:social_media_app_flutter/presentation/widgets/chat_list.dart';
 
 class Chat extends StatefulWidget {
   const Chat({super.key});
@@ -22,33 +23,14 @@ class _ChatState extends State<Chat> {
           ),
         builder: (context, state) {
           if (state is ChatStateLoaded) {
-            return ListView.builder(
-              padding: const EdgeInsets.all(8),
-              itemBuilder: (context, index) {
-                return ListTile(
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(5),
-                    ),
-                  ),
-                  title: Text(state.chats[index].title ?? "Kein Titel"),
-                  onTap: () {
-                    AutoRouter.of(context).push(
-                      ChatPageRoute(groupchat: state.chats[index]),
-                    );
-                    ;
-                  },
-                );
-              },
-              itemCount: state.chats.length,
-            );
+            return ChatList(chats: state.chats);
           } else if (state is ChatStateLoading) {
             return const Center(child: CircularProgressIndicator());
           } else {
             return Center(
               child: TextButton(
                 child: Text(
-                  state is ChatStateError ? state.message : "Daten laden",
+                  state is ChatStateError ? state.message : "Daten Laden",
                 ),
                 onPressed: () => BlocProvider.of<ChatBloc>(context).add(
                   ChatRequestEvent(),
@@ -59,8 +41,9 @@ class _ChatState extends State<Chat> {
         },
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () =>
-            AutoRouter.of(context).push(const NewGroupchatPageRoute()),
+        onPressed: () => AutoRouter.of(context).push(
+          const NewGroupchatPageRoute(),
+        ),
         icon: const Icon(Icons.chat_bubble),
         label: const Text('Neuer Chat'),
       ),
