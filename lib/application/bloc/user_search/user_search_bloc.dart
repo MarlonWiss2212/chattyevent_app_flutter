@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
 import 'package:social_media_app_flutter/domain/failures/failures.dart';
+import 'package:social_media_app_flutter/domain/filter/get_users_filter.dart';
 import 'package:social_media_app_flutter/domain/usecases/user_usecases.dart';
 
 part 'user_search_event.dart';
@@ -22,7 +23,9 @@ class UserSearchBloc extends Bloc<UserSearchEvent, UserSearchState> {
       emit(UserSearchStateLoading());
 
       final Either<Failure, List<UserEntity>> userSearchOrFailure =
-          await userUseCases.getUsersViaApi(event.search);
+          await userUseCases.getUsersViaApi(
+        getUsersFilter: event.getUsersFilter,
+      );
 
       userSearchOrFailure.fold(
         (error) => emit(

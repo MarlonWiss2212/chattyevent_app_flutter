@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:social_media_app_flutter/application/bloc/user_search/user_search_bloc.dart';
+import 'package:social_media_app_flutter/domain/filter/get_users_filter.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 import 'package:social_media_app_flutter/presentation/widgets/user_grid_list.dart';
 
@@ -17,7 +18,9 @@ class UserGridListWithSearchbar extends StatelessWidget {
           child: PlatformTextField(
             onChanged: (text) {
               BlocProvider.of<UserSearchBloc>(context).add(
-                UserSearchGetUsersEvent(search: text),
+                UserSearchGetUsersEvent(
+                  getUsersFilterParam: GetUsersFilter(search: text),
+                ),
               );
             },
             hintText: "User Suche: ",

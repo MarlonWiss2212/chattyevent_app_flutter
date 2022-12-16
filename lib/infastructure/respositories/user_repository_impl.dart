@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
 import 'package:social_media_app_flutter/domain/failures/failures.dart';
 import 'package:social_media_app_flutter/domain/filter/get_one_user_filter.dart';
+import 'package:social_media_app_flutter/domain/filter/get_users_filter.dart';
 import 'package:social_media_app_flutter/domain/repositories/user_repository.dart';
 import 'package:social_media_app_flutter/infastructure/datasources/graphql.dart';
 import 'package:social_media_app_flutter/infastructure/models/user_model.dart';
@@ -39,18 +40,20 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future<Either<Failure, List<UserEntity>>> getUsersViaApi(
-      String? search) async {
+  Future<Either<Failure, List<UserEntity>>> getUsersViaApi({
+    required GetUsersFilter getUsersFilter,
+  }) async {
     try {
       final response = await graphQlDatasource.query(
         """
-        query FindUsers {
-          findUsers {
+        query FindUsers(\$input: FindUsersInput!) {
+          findUsers(filter: \$input) {
             _id
             username
           }
         }
         """,
+        variables: {"input": getUsersFilter.toMap()},
       );
       if (response.hasException) {
         return Left(GeneralFailure());

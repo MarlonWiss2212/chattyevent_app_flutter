@@ -6,6 +6,11 @@ abstract class UserSearchEvent {}
 class UserSearchInitialEvent extends UserSearchEvent {}
 
 class UserSearchGetUsersEvent extends UserSearchEvent {
-  final String search;
-  UserSearchGetUsersEvent({this.search = ""});
+  late final GetUsersFilter getUsersFilter;
+
+  UserSearchGetUsersEvent({GetUsersFilter? getUsersFilterParam}) {
+    getUsersFilterParam == null
+        ? getUsersFilter = GetUsersFilter()
+        : getUsersFilter = getUsersFilterParam;
+  }
 }

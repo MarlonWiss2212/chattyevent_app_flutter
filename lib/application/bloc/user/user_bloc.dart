@@ -4,6 +4,7 @@ import 'package:meta/meta.dart';
 import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
 import 'package:social_media_app_flutter/domain/failures/failures.dart';
 import 'package:social_media_app_flutter/domain/filter/get_one_user_filter.dart';
+import 'package:social_media_app_flutter/domain/filter/get_users_filter.dart';
 import 'package:social_media_app_flutter/domain/usecases/user_usecases.dart';
 
 part 'user_event.dart';
@@ -79,7 +80,9 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       emit(UserStateLoading());
 
       final Either<Failure, List<UserEntity>> usersOrFailure =
-          await userUseCases.getUsersViaApi("");
+          await userUseCases.getUsersViaApi(
+        getUsersFilter: event.getUsersFilter,
+      );
 
       usersOrFailure.fold(
         (error) => emit(UserStateError(

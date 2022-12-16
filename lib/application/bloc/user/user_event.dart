@@ -4,8 +4,15 @@ part of 'user_bloc.dart';
 abstract class UserEvent {}
 
 class GetUsersEvent extends UserEvent {
-  final String? search;
-  GetUsersEvent({this.search});
+  late final GetUsersFilter getUsersFilter;
+
+  GetUsersEvent({GetUsersFilter? getUsersFilterParam}) {
+    if (getUsersFilterParam == null) {
+      getUsersFilter = GetUsersFilter();
+    } else {
+      getUsersFilter = getUsersFilterParam;
+    }
+  }
 }
 
 class UserInitialEvent extends UserEvent {}
