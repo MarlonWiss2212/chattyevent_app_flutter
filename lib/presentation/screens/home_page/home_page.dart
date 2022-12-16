@@ -26,29 +26,6 @@ class _MyHomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Social Media App'),
-        actions: [
-          IconButton(
-            onPressed: () {
-              BlocProvider.of<AuthBloc>(context).add(AuthLogoutEvent());
-
-              BlocProvider.of<ChatBloc>(context).add(ChatInitialEvent());
-              BlocProvider.of<MessageBloc>(context).add(MessageInitialEvent());
-              BlocProvider.of<PrivateEventBloc>(context).add(
-                PrivateEventInitialEvent(),
-              );
-              BlocProvider.of<UserBloc>(context).add(UserInitialEvent());
-              BlocProvider.of<UserSearchBloc>(context).add(
-                UserSearchInitialEvent(),
-              );
-
-              AutoRouter.of(context).replace(const LoginPageRoute());
-            },
-            icon: const Icon(Icons.logout),
-          ),
-        ],
-      ),
       body: IndexedStack(
         index: currentIndex,
         children: const [

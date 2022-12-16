@@ -10,8 +10,11 @@ class Map extends StatefulWidget {
 class _MapState extends State<Map> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(child: Text("Karte konnte nicht geladen werden")),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Social Media App'),
+      ),
+      body: const Center(child: Text("Karte konnte nicht geladen werden")),
     );
   }
 }

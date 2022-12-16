@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_bloc.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 import 'package:social_media_app_flutter/presentation/widgets/dialog/ok_button.dart';
@@ -18,8 +19,8 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
+    return PlatformScaffold(
+      appBar: PlatformAppBar(
         title: const Text("Login"),
       ),
       body: Padding(
@@ -28,15 +29,15 @@ class _LoginPageState extends State<LoginPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            TextField(
+            PlatformTextField(
               controller: emailFieldController,
-              decoration: const InputDecoration(hintText: 'E-Mail'),
+              hintText: 'E-Mail',
             ),
             const SizedBox(height: 8),
-            TextField(
+            PlatformTextField(
               controller: passwordFieldController,
-              keyboardType: TextInputType.visiblePassword,
-              decoration: const InputDecoration(hintText: 'Passwort'),
+              obscureText: true,
+              hintText: 'Passwort',
             ),
             const SizedBox(height: 8),
             BlocListener<AuthBloc, AuthState>(
@@ -48,7 +49,7 @@ class _LoginPageState extends State<LoginPage> {
                   return await showDialog(
                     context: context,
                     builder: (context) {
-                      return AlertDialog(
+                      return PlatformAlertDialog(
                         title: Text(state.title ?? "Kein Titel"),
                         content: Text(state.message),
                         actions: const [OKButton()],
@@ -59,7 +60,7 @@ class _LoginPageState extends State<LoginPage> {
               },
               child: SizedBox(
                 width: double.infinity,
-                child: ElevatedButton(
+                child: PlatformElevatedButton(
                   onPressed: () {
                     BlocProvider.of<AuthBloc>(context).add(
                       AuthLoginEvent(
@@ -68,12 +69,12 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     );
                   },
-                  child: const Text("Einloggen"),
+                  child: Text("Einloggen"),
                 ),
               ),
             ),
             const SizedBox(height: 16),
-            TextButton(
+            PlatformTextButton(
               onPressed: () {
                 AutoRouter.of(context).replace(const RegisterPageRoute());
               },

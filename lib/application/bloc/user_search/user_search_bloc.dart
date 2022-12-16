@@ -18,7 +18,7 @@ class UserSearchBloc extends Bloc<UserSearchEvent, UserSearchState> {
       emit(UserSearchInitial());
     });
 
-    on<SearchUsersEvent>((event, emit) async {
+    on<UserSearchGetUsersEvent>((event, emit) async {
       emit(UserSearchStateLoading());
 
       final Either<Failure, List<UserEntity>> userSearchOrFailure =

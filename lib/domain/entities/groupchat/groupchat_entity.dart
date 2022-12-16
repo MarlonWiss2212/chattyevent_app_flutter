@@ -8,7 +8,6 @@ class GroupchatEntity {
   final List<GroupchatUserEntity> users;
   final List<GroupchatLeftUserEntity> leftUsers;
   final String? description;
-  final String? chatColorCode;
   final String? createdBy;
   final DateTime? createdAt;
 
@@ -19,7 +18,6 @@ class GroupchatEntity {
     this.profileImageLink,
     required this.users,
     required this.leftUsers,
-    this.chatColorCode,
     this.createdBy,
     this.createdAt,
   });

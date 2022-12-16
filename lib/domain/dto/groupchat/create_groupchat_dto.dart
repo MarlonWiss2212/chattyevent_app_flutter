@@ -5,14 +5,12 @@ class CreateGroupchatDto {
   String? profileImageLink;
   String? description;
   List<CreateUserGroupchatDto>? users;
-  String? chatColorCode;
 
   CreateGroupchatDto({
     required this.title,
     this.profileImageLink,
     this.description,
     this.users,
-    this.chatColorCode,
   });
 
   Map<dynamic, dynamic> toMap() {
@@ -33,10 +31,6 @@ class CreateGroupchatDto {
       }
 
       variables.addAll({'users': mappedUsers});
-    }
-
-    if (chatColorCode != null) {
-      variables.addAll({'chatColorCode': chatColorCode!});
     }
 
     return variables;

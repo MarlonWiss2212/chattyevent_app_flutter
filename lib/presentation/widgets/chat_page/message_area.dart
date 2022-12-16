@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:social_media_app_flutter/application/bloc/message/message_bloc.dart';
 import 'package:social_media_app_flutter/domain/entities/message/message_entity.dart';
 import 'package:social_media_app_flutter/domain/filter/get_messages_filter.dart';
@@ -35,10 +36,10 @@ class MessageArea extends StatelessWidget {
               messages: filteredMessages,
             );
           } else if (state is MessageStateLoading) {
-            return const Center(child: CircularProgressIndicator());
+            return Center(child: PlatformCircularProgressIndicator());
           } else {
             return Center(
-              child: TextButton(
+              child: PlatformTextButton(
                 child: Text(
                   state is MessageStateError ? state.message : "Daten laden",
                 ),

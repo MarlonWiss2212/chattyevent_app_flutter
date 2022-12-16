@@ -5,7 +5,7 @@ abstract class UserSearchEvent {}
 
 class UserSearchInitialEvent extends UserSearchEvent {}
 
-class SearchUsersEvent extends UserSearchEvent {
+class UserSearchGetUsersEvent extends UserSearchEvent {
   final String search;
-  SearchUsersEvent({this.search = ""});
+  UserSearchGetUsersEvent({this.search = ""});
 }

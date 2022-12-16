@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_bloc.dart';
 import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
-import 'package:social_media_app_flutter/domain/filter/get_messages_filter.dart';
 import 'package:social_media_app_flutter/domain/filter/get_one_user_filter.dart';
 import 'package:social_media_app_flutter/presentation/widgets/profile/user_profile_data_page.dart';
 
@@ -17,8 +17,8 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
+    return PlatformScaffold(
+      appBar: PlatformAppBar(
         title: Text(widget.user.username ?? "Profilseite"),
       ),
       body: BlocBuilder<UserBloc, UserState>(
@@ -39,7 +39,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
             if (foundUser == null) {
               return Center(
-                child: TextButton(
+                child: PlatformTextButton(
                   child: const Text("Keinen User gefunden"),
                   onPressed: () => BlocProvider.of<UserBloc>(context).add(
                     GetOneUserEvent(
@@ -52,10 +52,10 @@ class _ProfilePageState extends State<ProfilePage> {
 
             return UserProfileDataPage(user: foundUser);
           } else if (state is UserStateLoading) {
-            return const Center(child: CircularProgressIndicator());
+            return Center(child: PlatformCircularProgressIndicator());
           } else {
             return Center(
-              child: TextButton(
+              child: PlatformTextButton(
                 child: Text(
                   state is UserStateError ? state.message : "User Laden",
                 ),

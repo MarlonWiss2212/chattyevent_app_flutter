@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'package:dynamic_color/dynamic_color.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/chat_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/user_search/user_search_bloc.dart';
@@ -83,19 +85,24 @@ class App extends StatelessWidget {
               ? darkColorScheme = darkDynamic
               : darkColorScheme = darkColorSchemeStatic;
 
-          return MaterialApp.router(
+          return PlatformApp.router(
             title: 'Social Media App',
             routeInformationParser: _appRouter.defaultRouteParser(),
             routerDelegate: _appRouter.delegate(),
-            theme: ThemeData(
-              useMaterial3: true,
-              colorScheme: lightColorScheme,
+            material: (context, platform) => MaterialAppRouterData(
+              theme: ThemeData(
+                useMaterial3: true,
+                colorScheme: lightColorScheme,
+              ),
+              darkTheme: ThemeData(
+                useMaterial3: true,
+                colorScheme: darkColorScheme,
+              ),
+              themeMode: ThemeMode.system,
             ),
-            darkTheme: ThemeData(
-              useMaterial3: true,
-              colorScheme: darkColorScheme,
+            cupertino: (context, platform) => CupertinoAppRouterData(
+              theme: const CupertinoThemeData(),
             ),
-            themeMode: ThemeMode.system,
           );
         },
       ),

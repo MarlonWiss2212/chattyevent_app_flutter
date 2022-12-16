@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_bloc.dart';
 import 'package:social_media_app_flutter/domain/dto/create_user_dto.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
@@ -25,8 +25,8 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
+    return PlatformScaffold(
+      appBar: PlatformAppBar(
         title: const Text("Registrieren"),
       ),
       body: Padding(
@@ -35,24 +35,24 @@ class _RegisterPageState extends State<RegisterPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            TextField(
+            PlatformTextField(
               controller: usernameFieldController,
-              decoration: const InputDecoration(hintText: 'Benutzername'),
+              hintText: 'Benutzername',
             ),
             const SizedBox(height: 8),
-            TextField(
+            PlatformTextField(
               controller: firstnameFieldController,
-              decoration: const InputDecoration(hintText: 'Vorname'),
+              hintText: 'Vorname',
             ),
             const SizedBox(height: 8),
-            TextField(
+            PlatformTextField(
               controller: lastnameFieldController,
-              decoration: const InputDecoration(hintText: 'Nachname'),
+              hintText: 'Nachname',
             ),
             const SizedBox(height: 8),
             SizedBox(
               width: double.infinity,
-              child: ElevatedButton(
+              child: PlatformElevatedButton(
                 onPressed: () async {
                   DateTime currentDate = DateTime.now();
                   DateTime? newDate = await showDatePicker(
@@ -71,15 +71,15 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
             ),
             const SizedBox(height: 8),
-            TextField(
+            PlatformTextField(
               controller: emailFieldController,
-              decoration: const InputDecoration(hintText: 'E-Mail'),
+              hintText: 'E-Mail',
             ),
             const SizedBox(height: 8),
-            TextField(
+            PlatformTextField(
               controller: passwordFieldController,
-              keyboardType: TextInputType.visiblePassword,
-              decoration: const InputDecoration(hintText: 'Passwort'),
+              obscureText: true,
+              hintText: 'Passwort',
             ),
             const SizedBox(height: 8),
             BlocListener<AuthBloc, AuthState>(
@@ -91,7 +91,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   return await showDialog(
                     context: context,
                     builder: (context) {
-                      return AlertDialog(
+                      return PlatformAlertDialog(
                         title: Text(state.title ?? "Kein Titel"),
                         content: Text(state.message),
                         actions: const [OKButton()],
@@ -102,7 +102,7 @@ class _RegisterPageState extends State<RegisterPage> {
               },
               child: SizedBox(
                 width: double.infinity,
-                child: ElevatedButton(
+                child: PlatformElevatedButton(
                   onPressed: () {
                     BlocProvider.of<AuthBloc>(context).add(
                       AuthRegisterEvent(
@@ -122,7 +122,7 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
             ),
             const SizedBox(height: 16),
-            TextButton(
+            PlatformTextButton(
               onPressed: () {
                 AutoRouter.of(context).replace(const LoginPageRoute());
               },

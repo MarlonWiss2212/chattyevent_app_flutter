@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:social_media_app_flutter/application/bloc/user_search/user_search_bloc.dart';
 import 'package:social_media_app_flutter/domain/dto/groupchat/create_user_groupchat_dto.dart';
 import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
@@ -51,15 +52,15 @@ class SelectableUserGridList extends StatelessWidget {
               },
             );
           } else if (state is UserSearchStateLoading) {
-            return const Center(child: CircularProgressIndicator());
+            return Center(child: PlatformCircularProgressIndicator());
           } else {
             return Center(
-              child: TextButton(
+              child: PlatformTextButton(
                 child: Text(
                   state is UserSearchStateError ? state.message : "User laden",
                 ),
                 onPressed: () => BlocProvider.of<UserSearchBloc>(context).add(
-                  SearchUsersEvent(),
+                  UserSearchGetUsersEvent(),
                 ),
               ),
             );

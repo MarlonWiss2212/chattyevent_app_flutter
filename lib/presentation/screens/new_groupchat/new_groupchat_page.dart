@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 import 'package:social_media_app_flutter/presentation/widgets/dialog/ok_button.dart';
 
@@ -16,9 +17,9 @@ class _NewGroupchatPageState extends State<NewGroupchatPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Neuer Gruppenchat'),
+    return PlatformScaffold(
+      appBar: PlatformAppBar(
+        title: Text('Neuer Gruppenchat'),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -28,18 +29,14 @@ class _NewGroupchatPageState extends State<NewGroupchatPage> {
               child: ListView(
                 children: [
                   const SizedBox(height: 8.0),
-                  TextField(
+                  PlatformTextField(
                     controller: titleFieldController,
-                    decoration: const InputDecoration(
-                      hintText: 'Name*',
-                    ),
+                    hintText: 'Name*',
                   ),
                   const SizedBox(height: 8),
-                  TextField(
+                  PlatformTextField(
                     controller: descriptionFieldController,
-                    decoration: const InputDecoration(
-                      hintText: 'Beschreibung',
-                    ),
+                    hintText: 'Beschreibung',
                   ),
                 ],
               ),
@@ -47,16 +44,18 @@ class _NewGroupchatPageState extends State<NewGroupchatPage> {
             const SizedBox(height: 8.0),
             SizedBox(
               width: double.infinity,
-              child: ElevatedButton(
+              child: PlatformElevatedButton(
                 onPressed: () async {
                   if (titleFieldController.text.isEmpty) {
                     return await showDialog(
                       context: context,
                       builder: (context) {
-                        return const AlertDialog(
-                          title: Text("Fehler"),
-                          content: Text("Sie müssen erst einen Namen vergeben"),
-                          actions: [OKButton()],
+                        return PlatformAlertDialog(
+                          title: const Text("Fehler"),
+                          content: const Text(
+                            "Sie müssen erst einen Namen vergeben",
+                          ),
+                          actions: const [OKButton()],
                         );
                       },
                     );

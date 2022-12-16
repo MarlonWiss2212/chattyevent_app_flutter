@@ -1,7 +1,6 @@
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_left_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
-import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
 import 'package:social_media_app_flutter/infastructure/models/groupchat/groupchat_left_user_model.dart';
 import 'package:social_media_app_flutter/infastructure/models/groupchat/groupchat_user_model.dart';
 
@@ -13,7 +12,6 @@ class GroupchatModel extends GroupchatEntity {
     required List<GroupchatUserEntity> users,
     required List<GroupchatLeftUserEntity> leftUsers,
     String? description,
-    String? chatColorCode,
     String? createdBy,
     DateTime? createdAt,
   }) : super(
@@ -23,7 +21,6 @@ class GroupchatModel extends GroupchatEntity {
           users: users,
           leftUsers: leftUsers,
           description: description,
-          chatColorCode: chatColorCode,
           createdAt: createdAt,
           createdBy: createdBy,
         );
@@ -54,7 +51,6 @@ class GroupchatModel extends GroupchatEntity {
       users: users,
       leftUsers: leftUsers,
       description: json["description"],
-      chatColorCode: json["chatColorCode"],
       createdBy: json["createdBy"],
       createdAt: createdAt,
     );

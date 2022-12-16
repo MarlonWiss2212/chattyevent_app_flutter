@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/chat_bloc.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:social_media_app_flutter/presentation/widgets/chat_page/message_area.dart';
@@ -45,12 +46,12 @@ class GroupchatTab extends StatelessWidget {
             ),
           );
         } else if (state is ChatStateLoading) {
-          return const Center(
-            child: CircularProgressIndicator(),
+          return Center(
+            child: PlatformCircularProgressIndicator(),
           );
         } else {
           return Center(
-            child: TextButton(
+            child: PlatformTextButton(
               child: Text(
                 state is ChatStateError ? state.message : "Daten laden",
               ),

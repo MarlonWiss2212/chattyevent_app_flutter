@@ -16,6 +16,9 @@ class _ChatState extends State<Chat> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Social Media App'),
+      ),
       body: BlocBuilder<ChatBloc, ChatState>(
         bloc: BlocProvider.of<ChatBloc>(context)
           ..add(

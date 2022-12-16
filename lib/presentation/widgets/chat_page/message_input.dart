@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:social_media_app_flutter/application/bloc/message/message_bloc.dart';
 import 'package:social_media_app_flutter/domain/dto/create_message_dto.dart';
 
@@ -31,29 +32,31 @@ class _MessageInputState extends State<MessageInput> {
                 color: Theme.of(context).cardColor,
                 borderRadius: BorderRadius.circular(8),
               ),
-              child: TextField(
+              child: PlatformTextField(
                 controller: messageInputController,
-                decoration: const InputDecoration.collapsed(
-                  hintText: 'Nachricht',
-                ),
+                hintText: 'Nachricht',
               ),
             ),
           ),
           const SizedBox(width: 8),
           // send button
-          TextButton(
-            style: ButtonStyle(
-              shape: MaterialStateProperty.resolveWith(
-                (states) => const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(8),
+          PlatformTextButton(
+            // ios style missing
+            material: ((context, platform) => MaterialTextButtonData(
+                  style: ButtonStyle(
+                    shape: MaterialStateProperty.resolveWith(
+                      (states) => const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(8),
+                        ),
+                      ),
+                    ),
+                    backgroundColor: MaterialStateProperty.resolveWith(
+                      (states) =>
+                          Theme.of(context).colorScheme.primaryContainer,
+                    ),
                   ),
-                ),
-              ),
-              backgroundColor: MaterialStateProperty.resolveWith(
-                (states) => Theme.of(context).colorScheme.primaryContainer,
-              ),
-            ),
+                )),
             onPressed: () {
               BlocProvider.of<MessageBloc>(context).add(
                 MessageCreateEvent(

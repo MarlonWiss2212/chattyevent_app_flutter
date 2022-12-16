@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/private_event_bloc.dart';
 import 'package:social_media_app_flutter/domain/dto/create_private_event_dto.dart';
@@ -19,21 +20,19 @@ class _NewPrivateEventPageState extends State<NewPrivateEventPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
+    return PlatformScaffold(
+      appBar: PlatformAppBar(
         title: const Text('Neues Event'),
       ),
       body: ListView(
         padding: const EdgeInsets.all(8),
         children: [
-          TextField(
+          PlatformTextField(
             controller: titleFieldController,
-            decoration: const InputDecoration(
-              hintText: 'Name*',
-            ),
+            hintText: 'Name*',
           ),
           const SizedBox(height: 8),
-          ElevatedButton(
+          PlatformElevatedButton(
             child: Text("Datum wählen: $date"),
             onPressed: () async {
               DateTime currentDate = DateTime.now();
@@ -61,18 +60,16 @@ class _NewPrivateEventPageState extends State<NewPrivateEventPage> {
               });
             },
           ),
-          TextField(
+          PlatformTextField(
             controller: groupchatFieldController,
-            decoration: const InputDecoration(
-              hintText: 'Chat*',
-            ),
+            hintText: 'Chat*',
           ),
           const SizedBox(height: 8),
           BlocListener<PrivateEventBloc, PrivateEventState>(
             listener: (context, state) {
               AutoRouter.of(context).pop();
             },
-            child: ElevatedButton(
+            child: PlatformElevatedButton(
               onPressed: () {
                 BlocProvider.of<PrivateEventBloc>(context).add(
                   PrivateEventCreateEvent(

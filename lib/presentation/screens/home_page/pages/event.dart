@@ -16,6 +16,9 @@ class _EventState extends State<Event> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Social Media App'),
+      ),
       body: BlocBuilder<PrivateEventBloc, PrivateEventState>(
         bloc: BlocProvider.of(context)..add(PrivateEventsRequestEvent()),
         builder: (context, state) {
