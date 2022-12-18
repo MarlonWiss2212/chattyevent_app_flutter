@@ -13,13 +13,19 @@ class InfoTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<PrivateEventBloc, PrivateEventState>(
       builder: (context, state) {
-        PrivateEventEntity foundPrivateEvent = PrivateEventEntity(id: "");
+        PrivateEventEntity? foundPrivateEvent;
         if (state is PrivateEventStateLoaded) {
           for (final privateEvent in state.privateEvents) {
             if (privateEvent.id == privateEventId) {
               foundPrivateEvent = privateEvent;
             }
           }
+        }
+
+        if (foundPrivateEvent == null) {
+          return const Expanded(
+            child: Center(child: Text("Privates Event nicht gefunden")),
+          );
         }
 
         return PrivateEventInfoPage(privateEvent: foundPrivateEvent);

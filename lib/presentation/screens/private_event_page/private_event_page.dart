@@ -39,7 +39,7 @@ class PrivateEventPage extends StatelessWidget {
 
     return BlocBuilder<PrivateEventBloc, PrivateEventState>(
       builder: (context, state) {
-        PrivateEventEntity foundPrivateEvent = PrivateEventEntity(id: "");
+        PrivateEventEntity? foundPrivateEvent;
         if (state is PrivateEventStateLoaded) {
           for (final privateEvent in state.privateEvents) {
             if (privateEvent.id == privateEventId) {
@@ -59,7 +59,9 @@ class PrivateEventPage extends StatelessWidget {
               appBar: PlatformAppBar(
                 leading: const AutoLeadingButton(),
                 title: Text(
-                  foundPrivateEvent.title ?? "Kein Titel",
+                  foundPrivateEvent != null
+                      ? foundPrivateEvent.title ?? "Kein Titel"
+                      : "Kein Titel",
                 ),
                 material: (context, platform) => MaterialAppBarData(
                   bottom: TabBar(

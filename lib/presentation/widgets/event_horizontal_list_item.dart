@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event_entity.dart';
 
@@ -24,6 +23,8 @@ class EventGridListItem extends StatelessWidget {
       onLongPress: onLongPress == null ? null : () => onLongPress!(),
       onTap: onPress == null ? null : () => onPress!(),
       child: Ink(
+        width: 250,
+        height: 250,
         child: Card(
           elevation: 0,
           child: Container(
@@ -39,11 +40,7 @@ class EventGridListItem extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  privateEvent.eventDate != null
-                      ? DateFormat.yMd()
-                          .add_jm()
-                          .format(privateEvent.eventDate!)
-                      : "Kein Datum",
+                  DateFormat.yMd().add_jm().format(privateEvent.eventDate),
                   style: const TextStyle(fontSize: 10),
                 ),
               ],

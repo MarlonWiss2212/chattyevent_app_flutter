@@ -53,16 +53,15 @@ class _FilterChipListPrivateEventsState
                   List<PrivateEventEntity> filteredEvents = [];
                   for (final privateEventToFilter
                       in widget.privateEventsToFilter) {
-                    if (privateEventToFilter.eventDate != null &&
-                        DateTime.now()
-                            .isBefore(privateEventToFilter.eventDate!)) {
+                    if (DateTime.now()
+                        .isBefore(privateEventToFilter.eventDate)) {
                       filteredEvents.add(privateEventToFilter);
                     }
                   }
 
                   // greatest date last
                   filteredEvents
-                      .sort((a, b) => a.eventDate!.compareTo(b.eventDate!));
+                      .sort((a, b) => a.eventDate.compareTo(b.eventDate));
                   widget.listChanged(filteredEvents);
                 } else {
                   // greatest date last
@@ -97,16 +96,15 @@ class _FilterChipListPrivateEventsState
                   List<PrivateEventEntity> filteredEvents = [];
                   for (final privateEventToFilter
                       in widget.privateEventsToFilter) {
-                    if (privateEventToFilter.eventDate != null &&
-                        DateTime.now()
-                            .isAfter(privateEventToFilter.eventDate!)) {
+                    if (DateTime.now()
+                        .isAfter(privateEventToFilter.eventDate)) {
                       filteredEvents.add(privateEventToFilter);
                     }
                   }
 
                   // greatest date first
                   filteredEvents
-                      .sort((a, b) => b.eventDate!.compareTo(a.eventDate!));
+                      .sort((a, b) => b.eventDate.compareTo(a.eventDate));
                   widget.listChanged(filteredEvents);
                 } else {
                   widget.listChanged(widget.privateEventsToFilter);

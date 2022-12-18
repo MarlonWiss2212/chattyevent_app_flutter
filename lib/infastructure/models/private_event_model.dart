@@ -7,7 +7,7 @@ class PrivateEventModel extends PrivateEventEntity {
     String? coverImageLink,
     List<String>? usersThatWillBeThere,
     List<String>? usersThatWillNotBeThere,
-    DateTime? eventDate,
+    required DateTime eventDate,
     String? connectedGroupchat,
     String? createdBy,
     DateTime? createdAt,
@@ -26,10 +26,6 @@ class PrivateEventModel extends PrivateEventEntity {
   factory PrivateEventModel.fromJson(Map<String, dynamic> json) {
     final createdAt = json["createdAt"] != null
         ? DateTime.parse(json["createdAt"]).toLocal()
-        : null;
-
-    final eventDate = json["eventDate"] != null
-        ? DateTime.parse(json["eventDate"]).toLocal()
         : null;
 
     List<String> usersThatWillBeThere = [];
@@ -52,7 +48,7 @@ class PrivateEventModel extends PrivateEventEntity {
       coverImageLink: json['coverImageLink'],
       usersThatWillBeThere: usersThatWillBeThere,
       usersThatWillNotBeThere: usersThatWillNotBeThere,
-      eventDate: eventDate,
+      eventDate: DateTime.parse(json["eventDate"]).toLocal(),
       connectedGroupchat: json["connectedGroupchat"],
       createdBy: json["createdBy"],
       createdAt: createdAt,

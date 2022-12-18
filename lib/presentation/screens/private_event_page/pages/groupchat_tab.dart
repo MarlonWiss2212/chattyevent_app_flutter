@@ -23,13 +23,19 @@ class GroupchatTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<PrivateEventBloc, PrivateEventState>(
       builder: (context, state) {
-        PrivateEventEntity foundPrivateEvent = PrivateEventEntity(id: "");
+        PrivateEventEntity? foundPrivateEvent;
         if (state is PrivateEventStateLoaded) {
           for (final privateEvent in state.privateEvents) {
             if (privateEvent.id == privateEventId) {
               foundPrivateEvent = privateEvent;
             }
           }
+        }
+
+        if (foundPrivateEvent == null) {
+          return const Expanded(
+            child: Center(child: Text("Privates Event nicht gefunden")),
+          );
         }
 
         if (foundPrivateEvent.connectedGroupchat == null) {
@@ -47,7 +53,7 @@ class GroupchatTab extends StatelessWidget {
             );
 
             for (final groupchat in state.chats) {
-              if (groupchat.id == foundPrivateEvent.connectedGroupchat) {
+              if (groupchat.id == foundPrivateEvent!.connectedGroupchat) {
                 foundGroupchat = groupchat;
                 break;
               }
