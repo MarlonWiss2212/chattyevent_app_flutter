@@ -7,8 +7,6 @@ class UserProfileDataPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-
     return SingleChildScrollView(
       padding: const EdgeInsets.all(8),
       child: Container(

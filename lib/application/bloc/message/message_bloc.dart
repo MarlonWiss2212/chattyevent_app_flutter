@@ -43,9 +43,15 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
             final state = this.state as MessageStateLoaded;
             emit(MessageStateLoaded(
               messages: List.from(state.messages)..add(message),
+              createdMessageId: message.id,
             ));
           } else {
-            emit(MessageStateLoaded(messages: [message]));
+            emit(
+              MessageStateLoaded(
+                messages: [message],
+                createdMessageId: message.id,
+              ),
+            );
           }
         },
       );

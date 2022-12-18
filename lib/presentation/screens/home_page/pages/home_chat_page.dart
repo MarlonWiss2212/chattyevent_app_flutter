@@ -1,22 +1,23 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/chat_bloc.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 import 'package:social_media_app_flutter/presentation/widgets/chat_list.dart';
 
-class Chat extends StatefulWidget {
-  const Chat({super.key});
+class HomeChatPage extends StatefulWidget {
+  const HomeChatPage({super.key});
 
   @override
-  State<Chat> createState() => _ChatState();
+  State<HomeChatPage> createState() => _HomeChatPageState();
 }
 
-class _ChatState extends State<Chat> {
+class _HomeChatPageState extends State<HomeChatPage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
+    return PlatformScaffold(
+      appBar: PlatformAppBar(
         title: const Text('Social Media App'),
       ),
       body: BlocBuilder<ChatBloc, ChatState>(
@@ -43,12 +44,14 @@ class _ChatState extends State<Chat> {
           }
         },
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => AutoRouter.of(context).push(
-          const NewGroupchatPageRoute(),
+      material: (context, platform) => MaterialScaffoldData(
+        floatingActionButton: FloatingActionButton.extended(
+          onPressed: () => AutoRouter.of(context).push(
+            const NewGroupchatWrapperPageRoute(),
+          ),
+          icon: const Icon(Icons.chat_bubble),
+          label: const Text('Neuer Chat'),
         ),
-        icon: const Icon(Icons.chat_bubble),
-        label: const Text('Neuer Chat'),
       ),
     );
   }

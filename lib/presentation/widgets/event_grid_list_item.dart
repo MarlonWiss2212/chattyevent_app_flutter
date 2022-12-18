@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:intl/intl.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event_entity.dart';
 
 class EventGridListItem extends StatelessWidget {
@@ -27,15 +28,23 @@ class EventGridListItem extends StatelessWidget {
           elevation: 0,
           child: Container(
             padding: const EdgeInsets.all(8),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
                   privateEvent.title ?? "Kein Titel",
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                   ),
+                ),
+                Text(
+                  privateEvent.eventDate != null
+                      ? DateFormat.yMd()
+                          .add_jm()
+                          .format(privateEvent.eventDate!)
+                      : "Kein Datum",
+                  style: const TextStyle(fontSize: 10),
                 ),
               ],
             ),

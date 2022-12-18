@@ -33,6 +33,10 @@ class _MessageInputState extends State<MessageInput> {
                 borderRadius: BorderRadius.circular(8),
               ),
               child: PlatformTextField(
+                material: (context, platform) => MaterialTextFieldData(
+                  decoration:
+                      const InputDecoration.collapsed(hintText: "Nachricht"),
+                ),
                 controller: messageInputController,
                 hintText: 'Nachricht',
               ),

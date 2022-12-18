@@ -15,5 +15,11 @@ class PrivateEventStateError extends PrivateEventState {
 class PrivateEventStateLoaded extends PrivateEventState {
   final List<PrivateEventEntity> privateEvents;
   final String? errorMessage;
-  PrivateEventStateLoaded({required this.privateEvents, this.errorMessage});
+  final String? createdPrivateEventId;
+
+  PrivateEventStateLoaded({
+    required this.privateEvents,
+    this.errorMessage,
+    this.createdPrivateEventId,
+  });
 }

@@ -19,7 +19,8 @@ class _NewGroupchatPageState extends State<NewGroupchatPage> {
   Widget build(BuildContext context) {
     return PlatformScaffold(
       appBar: PlatformAppBar(
-        title: Text('Neuer Gruppenchat'),
+        leading: const AutoLeadingButton(),
+        title: const Text('Neuer Gruppenchat'),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0),

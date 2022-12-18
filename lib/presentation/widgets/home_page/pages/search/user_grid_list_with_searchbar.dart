@@ -7,15 +7,25 @@ import 'package:social_media_app_flutter/domain/filter/get_users_filter.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 import 'package:social_media_app_flutter/presentation/widgets/user_grid_list.dart';
 
-class UserGridListWithSearchbar extends StatelessWidget {
+class UserGridListWithSearchbar extends StatefulWidget {
   const UserGridListWithSearchbar({super.key});
+
+  @override
+  State<UserGridListWithSearchbar> createState() =>
+      _UserGridListWithSearchbarState();
+}
+
+class _UserGridListWithSearchbarState extends State<UserGridListWithSearchbar> {
+  final searchFieldController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
           child: PlatformTextField(
+            controller: searchFieldController,
             onChanged: (text) {
               BlocProvider.of<UserSearchBloc>(context).add(
                 UserSearchGetUsersEvent(
@@ -28,10 +38,6 @@ class UserGridListWithSearchbar extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         BlocBuilder<UserSearchBloc, UserSearchState>(
-          bloc: BlocProvider.of<UserSearchBloc>(context)
-            ..add(
-              UserSearchGetUsersEvent(),
-            ),
           builder: (context, state) {
             if (state is UserSearchStateLoaded) {
               return Expanded(

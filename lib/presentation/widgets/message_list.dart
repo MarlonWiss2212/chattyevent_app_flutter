@@ -9,7 +9,7 @@ import 'package:social_media_app_flutter/domain/entities/message/message_entity.
 import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
 import 'package:social_media_app_flutter/presentation/widgets/message_container.dart';
 
-class MessageList extends StatefulWidget {
+class MessageList extends StatelessWidget {
   final String groupchatTo;
   final List<MessageEntity> messages;
 
@@ -20,94 +20,80 @@ class MessageList extends StatefulWidget {
   });
 
   @override
-  State<MessageList> createState() => _MessageListState();
-}
-
-class _MessageListState extends State<MessageList> {
-  @override
-  void initState() {
-    BlocProvider.of<UserBloc>(context).add(GetUsersEvent());
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AuthBloc, AuthState>(
+    String token = "";
+
+    final authState = BlocProvider.of<AuthBloc>(context).state;
+
+    if (authState is AuthStateLoaded) {
+      token = Jwt.parseJwt(authState.token)["sub"];
+    }
+
+    return BlocBuilder<UserBloc, UserState>(
       builder: (context, state) {
-        if (state is AuthStateLoaded) {
-          Map<String, dynamic> tokenPayload = Jwt.parseJwt(state.token);
+        return GroupedListView<MessageEntity, String>(
+          padding: const EdgeInsets.only(top: 8),
+          itemBuilder: (context, messageEntity) {
+            UserEntity? foundUser;
+            if (state is UserStateLoaded) {
+              for (final user in state.users) {
+                if (user.id == messageEntity.createdBy) {
+                  foundUser = user;
+                }
+              }
+            }
 
-          return BlocBuilder<UserBloc, UserState>(
-            builder: (context, state) {
-              return GroupedListView<MessageEntity, String>(
-                padding: const EdgeInsets.only(top: 8),
-                itemBuilder: (context, messageEntity) {
-                  UserEntity? foundUser;
-                  if (state is UserStateLoaded) {
-                    for (final user in state.users) {
-                      if (user.id == messageEntity.createdBy) {
-                        foundUser = user;
-                      }
-                    }
-                  }
-
-                  return MessageContainer(
-                    title: foundUser == null
-                        ? messageEntity.createdBy ?? "Keine Id gefunden"
-                        : foundUser.username ??
-                            messageEntity.createdBy ??
-                            "Keine Id gefunden",
-                    date: messageEntity.createdAt != null
-                        ? DateFormat.Hm().format(messageEntity.createdAt!)
-                        : "Fehler",
-                    content: messageEntity.message ?? "Kein Inhalt",
-                    alignStart: messageEntity.createdBy != tokenPayload["sub"],
-                  );
-                },
-                elements: widget.messages,
-                useStickyGroupSeparators: true,
-                reverse: true,
-                order: GroupedListOrder.DESC,
-                floatingHeader: true,
-                groupBy: (messageEntity) {
-                  if (messageEntity.createdAt == null) {
-                    return "Fehler";
-                  }
-                  return DateTime(
-                    messageEntity.createdAt!.year,
-                    messageEntity.createdAt!.month,
-                    messageEntity.createdAt!.day,
-                  ).toString();
-                },
-                groupHeaderBuilder: (messageEntity) {
-                  return SizedBox(
-                    height: 40,
-                    child: Center(
-                      child: Card(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8),
-                          child: Text(
-                            messageEntity.createdAt == null
-                                ? "Kein Datum gefunden"
-                                : DateFormat.yMMMd()
-                                    .format(messageEntity.createdAt!),
-                          ),
-                        ),
-                      ),
+            return MessageContainer(
+              title: foundUser == null
+                  ? messageEntity.createdBy ?? "Keine Id gefunden"
+                  : foundUser.username ??
+                      messageEntity.createdBy ??
+                      "Keine Id gefunden",
+              date: messageEntity.createdAt != null
+                  ? DateFormat.jm().format(messageEntity.createdAt!)
+                  : "Fehler",
+              content: messageEntity.message ?? "Kein Inhalt",
+              alignStart: messageEntity.createdBy != token,
+            );
+          },
+          elements: messages,
+          useStickyGroupSeparators: true,
+          reverse: true,
+          order: GroupedListOrder.DESC,
+          floatingHeader: true,
+          groupBy: (messageEntity) {
+            if (messageEntity.createdAt == null) {
+              return "Fehler";
+            }
+            return DateTime(
+              messageEntity.createdAt!.year,
+              messageEntity.createdAt!.month,
+              messageEntity.createdAt!.day,
+            ).toString();
+          },
+          groupHeaderBuilder: (messageEntity) {
+            return SizedBox(
+              height: 40,
+              child: Center(
+                child: Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: Text(
+                      messageEntity.createdAt == null
+                          ? "Kein Datum gefunden"
+                          : DateFormat.yMMMd().format(messageEntity.createdAt!),
                     ),
-                  );
-                },
-                groupSeparatorBuilder: (value) {
-                  return const SizedBox(
-                    height: 8,
-                  );
-                },
-              );
-            },
-          );
-        } else {
-          return Container();
-        }
+                  ),
+                ),
+              ),
+            );
+          },
+          groupSeparatorBuilder: (value) {
+            return const SizedBox(
+              height: 8,
+            );
+          },
+        );
       },
     );
   }

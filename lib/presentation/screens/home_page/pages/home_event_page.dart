@@ -1,34 +1,37 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/private_event_bloc.dart';
+import 'package:social_media_app_flutter/domain/entities/private_event_entity.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 import 'package:social_media_app_flutter/presentation/widgets/event_grid_list.dart';
+import 'package:social_media_app_flutter/presentation/widgets/home_page/pages/home_event_page/event_grid_list_with_filters.dart';
+import 'package:social_media_app_flutter/presentation/widgets/home_page/pages/home_event_page/filter_chip_list_private_events.dart';
 
-class Event extends StatefulWidget {
-  const Event({super.key});
+class HomeEventPage extends StatelessWidget {
+  const HomeEventPage({super.key});
 
-  @override
-  State<Event> createState() => _EventState();
-}
-
-class _EventState extends State<Event> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
+    return PlatformScaffold(
+      appBar: PlatformAppBar(
         title: const Text('Social Media App'),
       ),
       body: BlocBuilder<PrivateEventBloc, PrivateEventState>(
         bloc: BlocProvider.of(context)..add(PrivateEventsRequestEvent()),
         builder: (context, state) {
           if (state is PrivateEventStateLoaded) {
-            return EventGridList(privateEvents: state.privateEvents);
+            // greatest date first and least date last
+            state.privateEvents.sort(
+              (a, b) => b.eventDate!.compareTo(a.eventDate!),
+            );
+            return EventGridListWithFilters(privateEvents: state.privateEvents);
           } else if (state is PrivateEventStateLoading) {
-            return const Center(child: CircularProgressIndicator());
+            return Center(child: PlatformCircularProgressIndicator());
           } else {
             return Center(
-              child: TextButton(
+              child: PlatformTextButton(
                 child: Text(
                   state is PrivateEventStateError
                       ? state.message
@@ -42,12 +45,14 @@ class _EventState extends State<Event> {
           }
         },
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => AutoRouter.of(context).push(
-          const NewPrivateEventPageRoute(),
+      material: (context, platform) => MaterialScaffoldData(
+        floatingActionButton: FloatingActionButton.extended(
+          onPressed: () => AutoRouter.of(context).push(
+            const NewPrivateEventPageRoute(),
+          ),
+          icon: const Icon(Icons.event),
+          label: const Text('Neues Event'),
         ),
-        icon: const Icon(Icons.event),
-        label: const Text('Neues Event'),
       ),
     );
   }

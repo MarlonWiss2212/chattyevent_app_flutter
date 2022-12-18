@@ -1,9 +1,11 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:jwt_decode/jwt_decode.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/chat_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/user_search/user_search_bloc.dart';
@@ -16,12 +18,16 @@ import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'injection.dart' as di;
+import 'one_signal.dart' as one_signal;
 import 'presentation/router/router.gr.dart' as r;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: '.env');
   await di.init();
+
+  await one_signal.init();
+
   runApp(const BlocInitializer());
 }
 
@@ -71,6 +77,8 @@ class App extends StatelessWidget {
         _appRouter.authGuard.state = state;
         if (state is AuthStateLoaded) {
           _appRouter.replace(const HomePageRoute());
+          await one_signal.setExternalUserId(Jwt.parseJwt(state.token)["sub"]);
+          await one_signal.promptUserForPushNotificationPermission();
         }
       },
       child: DynamicColorBuilder(

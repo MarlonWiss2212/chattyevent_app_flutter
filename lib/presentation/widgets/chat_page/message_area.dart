@@ -14,12 +14,6 @@ class MessageArea extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: BlocBuilder<MessageBloc, MessageState>(
-        bloc: BlocProvider.of<MessageBloc>(context)
-          ..add(
-            MessageRequestEvent(
-              getMessagesFilter: GetMessagesFilter(),
-            ),
-          ),
         builder: (context, state) {
           if (state is MessageStateLoaded) {
             List<MessageEntity> filteredMessages = [];

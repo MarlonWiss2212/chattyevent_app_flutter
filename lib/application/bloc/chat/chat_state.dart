@@ -15,5 +15,11 @@ class ChatStateError extends ChatState {
 class ChatStateLoaded extends ChatState {
   final List<GroupchatEntity> chats;
   final String? errorMessage;
-  ChatStateLoaded({required this.chats, this.errorMessage});
+  final String? createdEventId;
+
+  ChatStateLoaded({
+    required this.chats,
+    this.errorMessage,
+    this.createdEventId,
+  });
 }

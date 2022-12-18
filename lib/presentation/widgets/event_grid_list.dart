@@ -20,7 +20,7 @@ class EventGridList extends StatelessWidget {
           onPress: () {
             AutoRouter.of(context).push(
               PrivateEventPageRoute(
-                privateEvent: privateEvents[index],
+                privateEventId: privateEvents[index].id,
               ),
             );
           },

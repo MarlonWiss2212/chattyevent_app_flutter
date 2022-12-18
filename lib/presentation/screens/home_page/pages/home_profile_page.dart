@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/chat_bloc.dart';
@@ -13,39 +14,42 @@ import 'package:social_media_app_flutter/domain/filter/get_one_user_filter.dart'
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 import 'package:social_media_app_flutter/presentation/widgets/profile/user_profile_data_page.dart';
 
-class Profile extends StatefulWidget {
-  const Profile({super.key});
+class HomeProfilePage extends StatefulWidget {
+  const HomeProfilePage({super.key});
 
   @override
-  State<Profile> createState() => _ProfileState();
+  State<HomeProfilePage> createState() => _HomeProfilePageState();
 }
 
-class _ProfileState extends State<Profile> {
+class _HomeProfilePageState extends State<HomeProfilePage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
+    return PlatformScaffold(
+      appBar: PlatformAppBar(
         title: const Text('Social Media App'),
-        actions: [
-          IconButton(
-            onPressed: () {
-              BlocProvider.of<AuthBloc>(context).add(AuthLogoutEvent());
+        material: (context, platform) => MaterialAppBarData(
+          actions: [
+            IconButton(
+              onPressed: () {
+                BlocProvider.of<AuthBloc>(context).add(AuthLogoutEvent());
 
-              BlocProvider.of<ChatBloc>(context).add(ChatInitialEvent());
-              BlocProvider.of<MessageBloc>(context).add(MessageInitialEvent());
-              BlocProvider.of<PrivateEventBloc>(context).add(
-                PrivateEventInitialEvent(),
-              );
-              BlocProvider.of<UserBloc>(context).add(UserInitialEvent());
-              BlocProvider.of<UserSearchBloc>(context).add(
-                UserSearchInitialEvent(),
-              );
+                BlocProvider.of<ChatBloc>(context).add(ChatInitialEvent());
+                BlocProvider.of<MessageBloc>(context)
+                    .add(MessageInitialEvent());
+                BlocProvider.of<PrivateEventBloc>(context).add(
+                  PrivateEventInitialEvent(),
+                );
+                BlocProvider.of<UserBloc>(context).add(UserInitialEvent());
+                BlocProvider.of<UserSearchBloc>(context).add(
+                  UserSearchInitialEvent(),
+                );
 
-              AutoRouter.of(context).replace(const LoginPageRoute());
-            },
-            icon: const Icon(Icons.logout),
-          ),
-        ],
+                AutoRouter.of(context).replace(const LoginPageRoute());
+              },
+              icon: const Icon(Icons.logout),
+            ),
+          ],
+        ),
       ),
       body: BlocBuilder<AuthBloc, AuthState>(
         builder: (context, state) {
@@ -72,7 +76,7 @@ class _ProfileState extends State<Profile> {
 
                   if (foundUser == null) {
                     return Center(
-                      child: TextButton(
+                      child: PlatformTextButton(
                         child: const Text("Keinen User gefunden"),
                         onPressed: () => BlocProvider.of<UserBloc>(context).add(
                           GetOneUserEvent(
@@ -87,10 +91,10 @@ class _ProfileState extends State<Profile> {
 
                   return UserProfileDataPage(user: foundUser);
                 } else if (state is UserStateLoading) {
-                  return const Center(child: CircularProgressIndicator());
+                  return Center(child: PlatformCircularProgressIndicator());
                 } else {
                   return Center(
-                    child: TextButton(
+                    child: PlatformTextButton(
                       child: Text(
                         state is UserStateError ? state.message : "User laden",
                       ),

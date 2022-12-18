@@ -2,8 +2,8 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'package:social_media_app_flutter/application/bloc/auth/auth_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/chat_bloc.dart';
+import 'package:social_media_app_flutter/application/bloc/user_search/user_search_bloc.dart';
 import 'package:social_media_app_flutter/domain/dto/groupchat/create_groupchat_dto.dart';
 import 'package:social_media_app_flutter/domain/dto/groupchat/create_user_groupchat_dto.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
@@ -62,6 +62,8 @@ class _NewGroupchatPageSelectUsersPageState
 
   @override
   Widget build(BuildContext context) {
+    BlocProvider.of<UserSearchBloc>(context).add(UserSearchGetUsersEvent());
+
     return PlatformScaffold(
       appBar: PlatformAppBar(
         title: Text('Neuer Gruppenchat: ${widget.title}'),
@@ -88,14 +90,24 @@ class _NewGroupchatPageSelectUsersPageState
             const SizedBox(height: 8),
             // button to save groupchat
             BlocListener<ChatBloc, ChatState>(
-              listener: (context, state) {
-                if (state is ChatStateLoaded) {
+              listenWhen: (previous, current) {
+                if (current is ChatStateLoaded &&
+                    current.createdEventId != null) {
+                  return true;
+                }
+                return false;
+              },
+              listener: (context, state) async {
+                if (state is ChatStateLoaded && state.createdEventId != null) {
                   for (final chat in state.chats) {
-                    if (chat.title == widget.title) {
-                      AutoRouter.of(context).popUntilRoot();
-                      AutoRouter.of(context).push(
-                        ChatPageRoute(groupchat: chat),
-                      );
+                    // is not equal enough
+                    if (chat.id == state.createdEventId) {
+                      AutoRouter.of(context).root.replace(
+                            ChatPageWrapperRoute(
+                              groupchatId: chat.id,
+                              loadChat: false,
+                            ),
+                          );
                     }
                   }
                 }

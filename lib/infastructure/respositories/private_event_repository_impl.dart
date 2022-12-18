@@ -2,6 +2,7 @@ import 'package:social_media_app_flutter/domain/dto/create_private_event_dto.dar
 import 'package:social_media_app_flutter/domain/failures/failures.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event_entity.dart';
 import 'package:dartz/dartz.dart';
+import 'package:social_media_app_flutter/domain/filter/get_one_private_event_filter.dart';
 import 'package:social_media_app_flutter/domain/repositories/private_event_repository.dart';
 import 'package:social_media_app_flutter/infastructure/datasources/graphql.dart';
 import 'package:social_media_app_flutter/infastructure/models/private_event_model.dart';
@@ -19,7 +20,13 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
           createPrivateEvent(createPrivateEventInput: \$input) {
             _id
             title
+            coverImageLink
+            usersThatWillBeThere
+            usersThatWillNotBeThere
+            eventDate
             connectedGroupchat
+            createdBy
+            createdAt
           }
         }
       """, variables: {'input': createPrivateEventDto.toMap()});
@@ -28,16 +35,48 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
         return Left(GeneralFailure());
       }
 
-      return Right(response.data!['createPrivateEvent']);
+      return Right(
+        PrivateEventModel.fromJson(response.data!['createPrivateEvent']),
+      );
     } catch (e) {
       return Left(ServerFailure());
     }
   }
 
   @override
-  Future<Either<Failure, PrivateEventEntity>> getPrivateEventViaApi() {
-    // TODO: implement getPrivateEventViaApi
-    throw UnimplementedError();
+  Future<Either<Failure, PrivateEventEntity>> getPrivateEventViaApi({
+    required GetOnePrivateEventFilter getOnePrivateEventFilter,
+  }) async {
+    try {
+      final response = await graphQlDatasource.query(
+        """
+        query FindPrivateEvent(\$input: FindOnePrivateEventInput!) {
+          findPrivateEvent(filter: \$input) {
+            _id
+            title
+            coverImageLink
+            usersThatWillBeThere
+            usersThatWillNotBeThere
+            eventDate
+            connectedGroupchat
+            createdBy
+            createdAt
+          }
+        }
+      """,
+        variables: {"input": getOnePrivateEventFilter.toMap()},
+      );
+
+      if (response.hasException) {
+        return Left(GeneralFailure());
+      }
+      return Right(
+        PrivateEventModel.fromJson(response.data!["findPrivateEvent"]),
+      );
+    } catch (e) {
+      print(e);
+      return Left(ServerFailure());
+    }
   }
 
   @override
@@ -50,6 +89,7 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
             _id
             title
             connectedGroupchat
+            eventDate
           }
         }
       """);

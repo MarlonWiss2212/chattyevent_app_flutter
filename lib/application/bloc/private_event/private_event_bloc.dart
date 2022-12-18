@@ -4,6 +4,7 @@ import 'package:meta/meta.dart';
 import 'package:social_media_app_flutter/domain/dto/create_private_event_dto.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event_entity.dart';
 import 'package:social_media_app_flutter/domain/failures/failures.dart';
+import 'package:social_media_app_flutter/domain/filter/get_one_private_event_filter.dart';
 import 'package:social_media_app_flutter/domain/usecases/private_event_usecases.dart';
 
 part 'private_event_event.dart';
@@ -42,9 +43,75 @@ class PrivateEventBloc extends Bloc<PrivateEventEvent, PrivateEventState> {
             final state = this.state as PrivateEventStateLoaded;
             emit(PrivateEventStateLoaded(
               privateEvents: List.from(state.privateEvents)..add(privateEvent),
+              createdPrivateEventId: privateEvent.id,
             ));
           } else {
-            emit(PrivateEventStateLoaded(privateEvents: [privateEvent]));
+            emit(
+              PrivateEventStateLoaded(
+                privateEvents: [privateEvent],
+                createdPrivateEventId: privateEvent.id,
+              ),
+            );
+          }
+        },
+      );
+    });
+
+    on<GetOnePrivateEventEvent>((event, emit) async {
+      final Either<Failure, PrivateEventEntity> privateEventOrFailure =
+          await privateEventUseCases.getPrivateEventViaApi(
+        getOnePrivateEventFilter: event.getOnePrivateEventEvent,
+      );
+
+      privateEventOrFailure.fold(
+        (error) {
+          if (state is PrivateEventStateLoaded) {
+            final state = this.state as PrivateEventStateLoaded;
+            emit(
+              PrivateEventStateLoaded(
+                privateEvents: state.privateEvents,
+                errorMessage: mapFailureToMessage(error),
+              ),
+            );
+          } else {
+            emit(
+              PrivateEventStateError(
+                message: mapFailureToMessage(error),
+              ),
+            );
+          }
+        },
+        (privateEvent) {
+          if (state is PrivateEventStateLoaded) {
+            final state = this.state as PrivateEventStateLoaded;
+
+            int foundIndex = -1;
+            state.privateEvents.asMap().forEach((index, chatToFind) {
+              if (chatToFind.id == privateEvent.id) {
+                foundIndex = index;
+              }
+            });
+
+            if (foundIndex != -1) {
+              List<PrivateEventEntity> newPrivateEvent = state.privateEvents;
+              newPrivateEvent[foundIndex] = privateEvent;
+              emit(
+                PrivateEventStateLoaded(privateEvents: newPrivateEvent),
+              );
+            } else {
+              emit(
+                PrivateEventStateLoaded(
+                  privateEvents: List.from(state.privateEvents)
+                    ..add(privateEvent),
+                ),
+              );
+            }
+          } else {
+            emit(
+              PrivateEventStateLoaded(
+                privateEvents: [privateEvent],
+              ),
+            );
           }
         },
       );
