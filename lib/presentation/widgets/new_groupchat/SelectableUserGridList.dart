@@ -22,18 +22,15 @@ class SelectableUserGridList extends StatelessWidget {
     return Expanded(
       child: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
-            child: PlatformTextField(
-              onChanged: (text) {
-                BlocProvider.of<UserSearchBloc>(context).add(
-                  UserSearchGetUsersEvent(
-                    getUsersFilterParam: GetUsersFilter(search: text),
-                  ),
-                );
-              },
-              hintText: "User Suche: ",
-            ),
+          PlatformTextField(
+            onChanged: (text) {
+              BlocProvider.of<UserSearchBloc>(context).add(
+                UserSearchGetUsersEvent(
+                  getUsersFilterParam: GetUsersFilter(search: text),
+                ),
+              );
+            },
+            hintText: "User Suche: ",
           ),
           const SizedBox(height: 8),
           BlocBuilder<UserSearchBloc, UserSearchState>(

@@ -12,11 +12,11 @@ class UserGridListWithSearchbar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
-          child: PlatformTextField(
+    return Padding(
+      padding: const EdgeInsets.all(8),
+      child: Column(
+        children: [
+          PlatformTextField(
             onChanged: (text) {
               BlocProvider.of<UserSearchBloc>(context).add(
                 UserSearchGetUsersEvent(
@@ -26,42 +26,43 @@ class UserGridListWithSearchbar extends StatelessWidget {
             },
             hintText: "User Suche: ",
           ),
-        ),
-        const SizedBox(height: 8),
-        BlocBuilder<UserSearchBloc, UserSearchState>(
-          builder: (context, state) {
-            if (state is UserSearchStateLoaded) {
-              return Expanded(
-                child: UserGridList(
-                  users: state.users,
-                  onPress: (user) {
-                    AutoRouter.of(context).push(
-                      ProfilePageRoute(userId: user.id),
-                    );
-                  },
-                ),
-              );
-            } else if (state is UserSearchStateLoading) {
-              return Expanded(
-                child: Center(child: PlatformCircularProgressIndicator()),
-              );
-            } else {
-              return Center(
-                child: PlatformTextButton(
-                  child: Text(
-                    state is UserSearchStateError
-                        ? state.message
-                        : "User laden",
+          const SizedBox(height: 8),
+          BlocBuilder<UserSearchBloc, UserSearchState>(
+            builder: (context, state) {
+              if (state is UserSearchStateLoaded) {
+                return Expanded(
+                  child: UserGridList(
+                    users: state.users,
+                    onPress: (user) {
+                      AutoRouter.of(context).push(
+                        ProfilePageRoute(userId: user.id),
+                      );
+                    },
                   ),
-                  onPressed: () => BlocProvider.of<UserSearchBloc>(context).add(
-                    UserSearchGetUsersEvent(),
+                );
+              } else if (state is UserSearchStateLoading) {
+                return Expanded(
+                  child: Center(child: PlatformCircularProgressIndicator()),
+                );
+              } else {
+                return Center(
+                  child: PlatformTextButton(
+                    child: Text(
+                      state is UserSearchStateError
+                          ? state.message
+                          : "User laden",
+                    ),
+                    onPressed: () =>
+                        BlocProvider.of<UserSearchBloc>(context).add(
+                      UserSearchGetUsersEvent(),
+                    ),
                   ),
-                ),
-              );
-            }
-          },
-        ),
-      ],
+                );
+              }
+            },
+          ),
+        ],
+      ),
     );
   }
 }
