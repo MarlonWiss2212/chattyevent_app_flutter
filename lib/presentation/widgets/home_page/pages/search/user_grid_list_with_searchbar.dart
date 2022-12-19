@@ -44,7 +44,9 @@ class _UserGridListWithSearchbarState extends State<UserGridListWithSearchbar> {
                 child: UserGridList(
                   users: state.users,
                   onPress: (user) {
-                    AutoRouter.of(context).push(ProfilePageRoute(user: user));
+                    AutoRouter.of(context).push(
+                      ProfilePageRoute(userId: user.id),
+                    );
                   },
                 ),
               );

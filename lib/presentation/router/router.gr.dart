@@ -14,7 +14,6 @@
 import 'package:auto_route/auto_route.dart' as _i20;
 import 'package:flutter/material.dart' as _i21;
 
-import '../../domain/entities/user_entity.dart' as _i23;
 import '../screens/chat_page/chat_info_page.dart' as _i15;
 import '../screens/chat_page/chat_page.dart' as _i14;
 import '../screens/chat_page/chat_page_wrapper.dart' as _i5;
@@ -59,12 +58,16 @@ class AppRouter extends _i20.RootStackRouter {
       );
     },
     ProfilePageRoute.name: (routeData) {
-      final args = routeData.argsAs<ProfilePageRouteArgs>();
+      final pathParams = routeData.inheritedPathParams;
+      final args = routeData.argsAs<ProfilePageRouteArgs>(
+          orElse: () =>
+              ProfilePageRouteArgs(userId: pathParams.getString('id')));
       return _i20.MaterialPageX<dynamic>(
         routeData: routeData,
         child: _i3.ProfilePage(
           key: args.key,
-          user: args.user,
+          userId: args.userId,
+          loadUser: args.loadUser,
         ),
       );
     },
@@ -223,7 +226,7 @@ class AppRouter extends _i20.RootStackRouter {
         ),
         _i20.RouteConfig(
           ProfilePageRoute.name,
-          path: '/profile-page',
+          path: '/profile-page/:id',
           guards: [authGuard],
         ),
         _i20.RouteConfig(
@@ -403,14 +406,17 @@ class RegisterPageRoute extends _i20.PageRouteInfo<void> {
 class ProfilePageRoute extends _i20.PageRouteInfo<ProfilePageRouteArgs> {
   ProfilePageRoute({
     _i21.Key? key,
-    required _i23.UserEntity user,
+    required String userId,
+    bool loadUser = true,
   }) : super(
           ProfilePageRoute.name,
-          path: '/profile-page',
+          path: '/profile-page/:id',
           args: ProfilePageRouteArgs(
             key: key,
-            user: user,
+            userId: userId,
+            loadUser: loadUser,
           ),
+          rawPathParams: {'id': userId},
         );
 
   static const String name = 'ProfilePageRoute';
@@ -419,16 +425,19 @@ class ProfilePageRoute extends _i20.PageRouteInfo<ProfilePageRouteArgs> {
 class ProfilePageRouteArgs {
   const ProfilePageRouteArgs({
     this.key,
-    required this.user,
+    required this.userId,
+    this.loadUser = true,
   });
 
   final _i21.Key? key;
 
-  final _i23.UserEntity user;
+  final String userId;
+
+  final bool loadUser;
 
   @override
   String toString() {
-    return 'ProfilePageRouteArgs{key: $key, user: $user}';
+    return 'ProfilePageRouteArgs{key: $key, userId: $userId, loadUser: $loadUser}';
   }
 }
 

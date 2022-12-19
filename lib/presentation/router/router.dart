@@ -26,7 +26,12 @@ import 'package:social_media_app_flutter/presentation/screens/register_page.dart
     AutoRoute(page: RegisterPage, initial: false),
 
     //profile page
-    AutoRoute(page: ProfilePage, initial: false, guards: [AuthGuard]),
+    AutoRoute(
+      page: ProfilePage,
+      initial: false,
+      guards: [AuthGuard],
+      path: '/profile-page/:id',
+    ),
 
     // home page
     AutoRoute(
