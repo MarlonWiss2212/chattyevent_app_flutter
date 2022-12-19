@@ -53,6 +53,7 @@ dependencies:
   intl: ^0.18.0
   flutter_platform_widgets: ^2.0.0
   onesignal_flutter: ^3.5.0
+  permission_handler: ^10.2.0
 
 dev_dependencies:
   flutter_test:

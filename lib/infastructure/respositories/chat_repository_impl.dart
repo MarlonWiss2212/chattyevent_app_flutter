@@ -4,7 +4,7 @@ import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_ent
 import 'package:dartz/dartz.dart';
 import 'package:social_media_app_flutter/domain/filter/get_one_groupchat_filter.dart';
 import 'package:social_media_app_flutter/domain/repositories/chat_repository.dart';
-import 'package:social_media_app_flutter/infastructure/datasources/graphql.dart';
+import 'package:social_media_app_flutter/infastructure/datasources/remote/graphql.dart';
 import 'package:social_media_app_flutter/infastructure/models/groupchat/groupchat_model.dart';
 
 class ChatRepositoryImpl implements ChatRepository {

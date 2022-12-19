@@ -4,7 +4,7 @@ import 'package:social_media_app_flutter/domain/entities/private_event_entity.da
 import 'package:dartz/dartz.dart';
 import 'package:social_media_app_flutter/domain/filter/get_one_private_event_filter.dart';
 import 'package:social_media_app_flutter/domain/repositories/private_event_repository.dart';
-import 'package:social_media_app_flutter/infastructure/datasources/graphql.dart';
+import 'package:social_media_app_flutter/infastructure/datasources/remote/graphql.dart';
 import 'package:social_media_app_flutter/infastructure/models/private_event_model.dart';
 
 class PrivateEventRepositoryImpl implements PrivateEventRepository {

@@ -4,7 +4,7 @@ import 'package:social_media_app_flutter/domain/entities/message/message_entity.
 import 'package:dartz/dartz.dart';
 import 'package:social_media_app_flutter/domain/filter/get_messages_filter.dart';
 import 'package:social_media_app_flutter/domain/repositories/message_repository.dart';
-import 'package:social_media_app_flutter/infastructure/datasources/graphql.dart';
+import 'package:social_media_app_flutter/infastructure/datasources/remote/graphql.dart';
 import 'package:social_media_app_flutter/infastructure/models/message/message_model.dart';
 
 class MessageRepositoryImpl implements MessageRepository {

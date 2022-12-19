@@ -21,6 +21,7 @@ class UserGridListItem extends StatelessWidget {
       onTap: onPress == null ? null : () => onPress!(),
       child: Ink(
         child: Card(
+          color: Theme.of(context).colorScheme.secondaryContainer,
           elevation: 0,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -29,8 +30,7 @@ class UserGridListItem extends StatelessWidget {
               children: [
                 const SizedBox(),
                 CircleAvatar(
-                  backgroundColor:
-                      Theme.of(context).colorScheme.secondaryContainer,
+                  backgroundColor: Theme.of(context).colorScheme.secondary,
                 ),
                 Text(
                   user.username ?? "Kein Name",

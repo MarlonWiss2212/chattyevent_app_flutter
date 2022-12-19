@@ -17,7 +17,9 @@ class PrivateEventInfoPage extends StatelessWidget {
           SizedBox(
             width: size.width,
             height: 300,
-            child: const Card(),
+            child: Card(
+              color: Theme.of(context).colorScheme.secondaryContainer,
+            ),
           ),
           // name
           Container(
@@ -41,11 +43,7 @@ class PrivateEventInfoPage extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              Text(
-                privateEvent.eventDate != null
-                    ? DateFormat.yMd().add_jm().format(privateEvent.eventDate!)
-                    : "Kein Datum",
-              )
+              Text(DateFormat.yMd().add_jm().format(privateEvent.eventDate))
             ],
           )
         ],

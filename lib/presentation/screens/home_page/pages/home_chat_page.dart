@@ -6,14 +6,9 @@ import 'package:social_media_app_flutter/application/bloc/chat/chat_bloc.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 import 'package:social_media_app_flutter/presentation/widgets/chat_list.dart';
 
-class HomeChatPage extends StatefulWidget {
+class HomeChatPage extends StatelessWidget {
   const HomeChatPage({super.key});
 
-  @override
-  State<HomeChatPage> createState() => _HomeChatPageState();
-}
-
-class _HomeChatPageState extends State<HomeChatPage> {
   @override
   Widget build(BuildContext context) {
     return PlatformScaffold(

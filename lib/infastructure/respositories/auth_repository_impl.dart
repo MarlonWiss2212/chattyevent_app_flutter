@@ -2,11 +2,11 @@ import 'package:social_media_app_flutter/domain/dto/create_user_dto.dart';
 import 'package:social_media_app_flutter/domain/failures/failures.dart';
 import 'package:dartz/dartz.dart';
 import 'package:social_media_app_flutter/domain/repositories/auth_repository.dart';
-import 'package:social_media_app_flutter/infastructure/datasources/graphql.dart';
-import 'package:social_media_app_flutter/infastructure/datasources/sharedPrefrences.dart';
+import 'package:social_media_app_flutter/infastructure/datasources/remote/graphql.dart';
+import 'package:social_media_app_flutter/infastructure/datasources/local/sharedPreferences.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
-  final SharedPrefrencesDatasource sharedPrefrencesDatasource;
+  final SharedPreferencesDatasource sharedPrefrencesDatasource;
   final GraphQlDatasource graphQlDatasource;
 
   AuthRepositoryImpl({
@@ -80,7 +80,7 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<void> logout() {
-    return sharedPrefrencesDatasource.deleteFromStorage("access_token");
+  Future<void> logout() async {
+    return await sharedPrefrencesDatasource.deleteFromStorage("access_token");
   }
 }

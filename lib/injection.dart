@@ -10,18 +10,22 @@ import 'package:social_media_app_flutter/application/bloc/user/user_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/user_search/user_search_bloc.dart';
 import 'package:social_media_app_flutter/domain/repositories/auth_repository.dart';
 import 'package:social_media_app_flutter/domain/repositories/chat_repository.dart';
+import 'package:social_media_app_flutter/domain/repositories/device/notification_repository.dart';
 import 'package:social_media_app_flutter/domain/repositories/message_repository.dart';
 import 'package:social_media_app_flutter/domain/repositories/private_event_repository.dart';
 import 'package:social_media_app_flutter/domain/repositories/user_repository.dart';
 import 'package:social_media_app_flutter/domain/usecases/auth_usecases.dart';
 import 'package:social_media_app_flutter/domain/usecases/chat_usecases.dart';
 import 'package:social_media_app_flutter/domain/usecases/message_usecases.dart';
+import 'package:social_media_app_flutter/domain/usecases/notification_usecases.dart';
 import 'package:social_media_app_flutter/domain/usecases/private_event_usecases.dart';
 import 'package:social_media_app_flutter/domain/usecases/user_usecases.dart';
-import 'package:social_media_app_flutter/infastructure/datasources/graphql.dart';
-import 'package:social_media_app_flutter/infastructure/datasources/sharedPrefrences.dart';
+import 'package:social_media_app_flutter/infastructure/datasources/device/notification.dart';
+import 'package:social_media_app_flutter/infastructure/datasources/remote/graphql.dart';
+import 'package:social_media_app_flutter/infastructure/datasources/local/sharedPreferences.dart';
 import 'package:social_media_app_flutter/infastructure/respositories/auth_repository_impl.dart';
 import 'package:social_media_app_flutter/infastructure/respositories/chat_repository_impl.dart';
+import 'package:social_media_app_flutter/infastructure/respositories/device/notification_repository_impl.dart';
 import 'package:social_media_app_flutter/infastructure/respositories/message_repository_impl.dart';
 import 'package:social_media_app_flutter/infastructure/respositories/private_event_repository_impl.dart';
 import 'package:social_media_app_flutter/infastructure/respositories/user_repository_impl.dart';
@@ -88,6 +92,11 @@ Future<void> init({Link? link}) async {
       messageRepository: serviceLocator(),
     ),
   );
+  serviceLocator.registerLazySingleton(
+    () => NotificationUseCases(
+      notificationRepository: serviceLocator(),
+    ),
+  );
 
   // repositories
   serviceLocator.registerLazySingleton<AuthRepository>(
@@ -116,13 +125,24 @@ Future<void> init({Link? link}) async {
       graphQlDatasource: serviceLocator(),
     ),
   );
+  serviceLocator.registerLazySingleton<NotificationRepository>(
+    () => NotificationRepositoryImpl(
+      notificationDatasource: serviceLocator(),
+    ),
+  );
 
   // datasources
   serviceLocator.registerLazySingleton<GraphQlDatasource>(
     () => GraphQlDatasourceImpl(client: serviceLocator()),
   );
-  serviceLocator.registerLazySingleton<SharedPrefrencesDatasource>(
-    () => SharedPrefrencesDatasourceImpl(sharedPreferences: serviceLocator()),
+  serviceLocator.registerLazySingleton<SharedPreferencesDatasource>(
+    () => SharedPreferencesDatasourceImpl(sharedPreferences: serviceLocator()),
+  );
+  serviceLocator.registerLazySingleton<SharedPreferencesDatasource>(
+    () => SharedPreferencesDatasourceImpl(sharedPreferences: serviceLocator()),
+  );
+  serviceLocator.registerLazySingleton<NotificationDatasource>(
+    () => NotificationDatasourceImpl(),
   );
 
   //extern

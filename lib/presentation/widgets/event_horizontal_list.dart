@@ -12,22 +12,35 @@ class EventHorizontalList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.separated(
-      scrollDirection: Axis.horizontal,
-      itemBuilder: (context, index) {
-        return EventGridListItem(
-          privateEvent: privateEvents[index],
-          onPress: () {
-            AutoRouter.of(context).push(
-              PrivateEventPageRoute(
-                privateEventId: privateEvents[index].id,
-              ),
-            );
-          },
-        );
-      },
-      itemCount: privateEvents.length,
-      separatorBuilder: (context, index) => const SizedBox(width: 8),
+    return SizedBox(
+      height: 250,
+      child: PageView.builder(
+        padEnds: false,
+        controller: PageController(
+          viewportFraction: min(
+            (300 / MediaQuery.of(context).size.width).toDouble(),
+            1,
+          ),
+        ),
+        scrollDirection: Axis.horizontal,
+        physics: const PageScrollPhysics(),
+        itemBuilder: (context, index) {
+          return EventGridListItem(
+            height: 250,
+            width: 250, // will be ignored because of page view
+            privateEvent: privateEvents[index],
+            onPress: () {
+              AutoRouter.of(context).push(
+                PrivateEventPageRoute(
+                  privateEventId: privateEvents[index].id,
+                ),
+              );
+            },
+          );
+        },
+        itemCount: privateEvents.length,
+        //separatorBuilder: (context, index) => const SizedBox(width: 8),
+      ),
     );
   }
 }

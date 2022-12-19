@@ -46,20 +46,14 @@ class EventsDetailPage extends StatelessWidget {
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
             ),
             const SizedBox(height: 8),
-            SizedBox(
-              height: 250,
-              child: EventHorizontalList(privateEvents: futurePrivateEvents),
-            ),
+            EventHorizontalList(privateEvents: futurePrivateEvents),
             const SizedBox(height: 20),
             const Text(
               "Letzte Events",
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
             ),
             const SizedBox(height: 8),
-            SizedBox(
-              height: 250,
-              child: EventHorizontalList(privateEvents: pastPrivateEvents),
-            ),
+            EventHorizontalList(privateEvents: pastPrivateEvents),
           ],
         ),
       ),

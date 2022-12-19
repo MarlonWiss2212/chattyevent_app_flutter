@@ -2,15 +2,15 @@ import 'package:dartz/dartz.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:social_media_app_flutter/domain/failures/failures.dart';
 
-abstract class SharedPrefrencesDatasource {
+abstract class SharedPreferencesDatasource {
   Future<Either<Failure, String>> getFromStorage(String name);
   Future<void> saveToStorage(String name, String value);
   Future<void> deleteFromStorage(String name);
 }
 
-class SharedPrefrencesDatasourceImpl implements SharedPrefrencesDatasource {
+class SharedPreferencesDatasourceImpl implements SharedPreferencesDatasource {
   final SharedPreferences sharedPreferences;
-  SharedPrefrencesDatasourceImpl({required this.sharedPreferences});
+  SharedPreferencesDatasourceImpl({required this.sharedPreferences});
 
   @override
   Future<Either<Failure, String>> getFromStorage(String name) {

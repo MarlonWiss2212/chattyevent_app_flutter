@@ -34,8 +34,9 @@ class _HomeProfilePageState extends State<HomeProfilePage> {
                 BlocProvider.of<AuthBloc>(context).add(AuthLogoutEvent());
 
                 BlocProvider.of<ChatBloc>(context).add(ChatInitialEvent());
-                BlocProvider.of<MessageBloc>(context)
-                    .add(MessageInitialEvent());
+                BlocProvider.of<MessageBloc>(context).add(
+                  MessageInitialEvent(),
+                );
                 BlocProvider.of<PrivateEventBloc>(context).add(
                   PrivateEventInitialEvent(),
                 );
@@ -43,8 +44,6 @@ class _HomeProfilePageState extends State<HomeProfilePage> {
                 BlocProvider.of<UserSearchBloc>(context).add(
                   UserSearchInitialEvent(),
                 );
-
-                AutoRouter.of(context).replace(const LoginPageRoute());
               },
               icon: const Icon(Icons.logout),
             ),

@@ -6,14 +6,16 @@ class EventGridListItem extends StatelessWidget {
   final PrivateEventEntity privateEvent;
   final Function? onLongPress;
   final Function? onPress;
-  final Color? backgroundColor;
+  final double height;
+  final double width;
 
   const EventGridListItem({
     super.key,
     required this.privateEvent,
     this.onLongPress,
     this.onPress,
-    this.backgroundColor,
+    required this.height,
+    required this.width,
   });
 
   @override
@@ -23,28 +25,38 @@ class EventGridListItem extends StatelessWidget {
       onLongPress: onLongPress == null ? null : () => onLongPress!(),
       onTap: onPress == null ? null : () => onPress!(),
       child: Ink(
-        width: 250,
-        height: 250,
+        width: width,
+        height: height,
         child: Card(
+          color: Theme.of(context).colorScheme.secondaryContainer,
           elevation: 0,
-          child: Container(
-            padding: const EdgeInsets.all(8),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Text(
-                  privateEvent.title ?? "Kein Titel",
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
+          child: Column(
+            children: [
+              const Expanded(
+                child: Center(
+                  child: Text("Bild"),
                 ),
-                Text(
-                  DateFormat.yMd().add_jm().format(privateEvent.eventDate),
-                  style: const TextStyle(fontSize: 10),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text(
+                      privateEvent.title ?? "Kein Titel",
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      DateFormat.yMd().add_jm().format(privateEvent.eventDate),
+                      style: const TextStyle(fontSize: 10),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
