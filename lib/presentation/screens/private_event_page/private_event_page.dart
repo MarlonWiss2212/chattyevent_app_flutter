@@ -2,11 +2,13 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:social_media_app_flutter/application/bloc/chat/chat_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/message/message_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/private_event_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_bloc.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event_entity.dart';
 import 'package:social_media_app_flutter/domain/filter/get_messages_filter.dart';
+import 'package:social_media_app_flutter/domain/filter/get_one_groupchat_filter.dart';
 import 'package:social_media_app_flutter/domain/filter/get_one_private_event_filter.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 
@@ -37,6 +39,7 @@ class PrivateEventPage extends StatelessWidget {
       ),
     );
 
+    var groupchatLoaded = false;
     return BlocBuilder<PrivateEventBloc, PrivateEventState>(
       builder: (context, state) {
         PrivateEventEntity? foundPrivateEvent;
@@ -47,6 +50,18 @@ class PrivateEventPage extends StatelessWidget {
               break;
             }
           }
+        }
+
+        if (foundPrivateEvent != null &&
+            foundPrivateEvent.connectedGroupchat != null &&
+            groupchatLoaded == false) {
+          BlocProvider.of<ChatBloc>(context).add(
+            GetOneChatEvent(
+              getOneGroupchatFilter: GetOneGroupchatFilter(
+                  id: foundPrivateEvent.connectedGroupchat!),
+            ),
+          );
+          groupchatLoaded = true;
         }
 
         return AutoTabsRouter.tabBar(

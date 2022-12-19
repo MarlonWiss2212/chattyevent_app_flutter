@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:social_media_app_flutter/application/bloc/chat/chat_bloc.dart';
+import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
+import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event_entity.dart';
+import 'package:social_media_app_flutter/presentation/widgets/divider.dart';
+import 'package:social_media_app_flutter/presentation/widgets/privat_event_info/user_list_private_event.dart';
 
 class PrivateEventInfoPage extends StatelessWidget {
   final PrivateEventEntity privateEvent;
@@ -21,18 +27,55 @@ class PrivateEventInfoPage extends StatelessWidget {
               color: Theme.of(context).colorScheme.secondaryContainer,
             ),
           ),
+          const SizedBox(height: 20),
           // name
-          Container(
-            margin: const EdgeInsets.only(top: 20, bottom: 20),
-            child: Text(
-              privateEvent.title ?? "Kein Titel",
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
+          Text(
+            privateEvent.title ?? "Kein Titel",
+            style: Theme.of(context).textTheme.titleLarge,
+            overflow: TextOverflow.ellipsis,
+          ),
+          const CustomDivider(),
+          if (privateEvent.usersThatWillBeThere == null) ...{
+            const Text(
+              "Fehler beim darstellen der User die da sein werden",
+              softWrap: true,
               overflow: TextOverflow.ellipsis,
             ),
-          ),
+          },
+          if (privateEvent.connectedGroupchat == null) ...{
+            const Text(
+              "Fehler beim darstellen der User die eingeladen sind",
+              softWrap: true,
+              overflow: TextOverflow.ellipsis,
+            ),
+          },
+          if (privateEvent.usersThatWillNotBeThere == null) ...{
+            const Text(
+              "Fehler beim darstellen der User die nicht da sein werden",
+              softWrap: true,
+              overflow: TextOverflow.ellipsis,
+            ),
+          },
+          BlocBuilder<ChatBloc, ChatState>(builder: (context, state) {
+            List<GroupchatUserEntity> invitedUsers = [];
+            if (state is ChatStateLoaded &&
+                privateEvent.connectedGroupchat != null) {
+              for (final chat in state.chats) {
+                if (chat.id == privateEvent.connectedGroupchat) {
+                  invitedUsers = chat.users;
+                }
+              }
+            }
+
+            return UserListPrivateEvent(
+              privateEventUserIdsThatWillBeThere:
+                  privateEvent.usersThatWillBeThere ?? [],
+              privateEventUserIdsThatWillNotBeThere:
+                  privateEvent.usersThatWillNotBeThere ?? [],
+              invitedUsers: invitedUsers,
+            );
+          }),
+          const CustomDivider(),
           // event date
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

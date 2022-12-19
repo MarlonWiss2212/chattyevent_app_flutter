@@ -3,6 +3,7 @@ import 'package:social_media_app_flutter/domain/dto/create_user_dto.dart';
 import 'package:social_media_app_flutter/domain/failures/failures.dart';
 import 'package:social_media_app_flutter/domain/repositories/auth_repository.dart';
 import 'package:social_media_app_flutter/gql.dart';
+import './../../injection.dart' as di;
 
 class AuthUseCases {
   final AuthRepository authRepository;
@@ -49,6 +50,10 @@ class AuthUseCases {
   }
 
   Future<void> logout() async {
-    return await authRepository.logout();
+    // to reset auth token
+    //await di.serviceLocator.reset();
+    //await di.init();
+
+    await authRepository.logout();
   }
 }

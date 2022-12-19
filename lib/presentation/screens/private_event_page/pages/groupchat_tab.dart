@@ -44,49 +44,21 @@ class GroupchatTab extends StatelessWidget {
           );
         }
 
-        return BlocBuilder<ChatBloc, ChatState>(builder: (context, state) {
-          if (state is ChatStateLoaded) {
-            GroupchatEntity foundGroupchat = GroupchatEntity(
-              id: "",
-              users: [],
-              leftUsers: [],
-            );
-
-            for (final groupchat in state.chats) {
-              if (groupchat.id == foundPrivateEvent!.connectedGroupchat) {
-                foundGroupchat = groupchat;
-                break;
-              }
-            }
-
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: Column(
-                children: [
-                  MessageArea(groupchatTo: foundGroupchat.id),
-                  const SizedBox(height: 8),
-                  MessageInput(groupchatTo: foundGroupchat.id),
-                  const SizedBox(height: 8),
-                ],
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: Column(
+            children: [
+              MessageArea(
+                groupchatTo: foundPrivateEvent.connectedGroupchat!,
               ),
-            );
-          } else if (state is ChatStateLoading) {
-            return Center(
-              child: PlatformCircularProgressIndicator(),
-            );
-          } else {
-            return Center(
-              child: PlatformTextButton(
-                child: Text(
-                  state is ChatStateError ? state.message : "Daten laden",
-                ),
-                onPressed: () => BlocProvider.of<ChatBloc>(context).add(
-                  ChatRequestEvent(),
-                ),
+              const SizedBox(height: 8),
+              MessageInput(
+                groupchatTo: foundPrivateEvent.connectedGroupchat!,
               ),
-            );
-          }
-        });
+              const SizedBox(height: 8),
+            ],
+          ),
+        );
       },
     );
   }
