@@ -58,7 +58,7 @@ class Details extends StatelessWidget {
             "Frühere Midglieder: ${groupchat.leftUsers.length}",
             style: Theme.of(context).textTheme.titleMedium,
           ),
-          const SizedBox(height: 8),
+          if (groupchat.leftUsers.isNotEmpty) ...{const SizedBox(height: 8)},
           UserLeftListGroupchat(groupchatLeftUsers: groupchat.leftUsers),
           const CustomDivider(),
           // leave Chat Button

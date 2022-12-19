@@ -68,70 +68,67 @@ class _NewGroupchatPageSelectUsersPageState
       appBar: PlatformAppBar(
         title: Text('Neuer Gruppenchat: ${widget.title}'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            if (groupchatUsersWithUsername.isNotEmpty) ...[
-              SelectedUsersChipList(
-                groupchatUsersWithUsername: groupchatUsersWithUsername,
-                onDeleted: (userId) {
-                  _removeUserFromCreateGroupchatUsers(userId);
-                },
-              )
-            ],
-            const SizedBox(height: 8),
-            SelectableUserGridList(
-              onAdded: (newUser) {
-                _addUserFromCreateGroupchatUsers(newUser);
-              },
+      body: Column(
+        children: [
+          if (groupchatUsersWithUsername.isNotEmpty) ...[
+            SelectedUsersChipList(
               groupchatUsersWithUsername: groupchatUsersWithUsername,
+              onDeleted: (userId) {
+                _removeUserFromCreateGroupchatUsers(userId);
+              },
             ),
             const SizedBox(height: 8),
-            // button to save groupchat
-            BlocListener<ChatBloc, ChatState>(
-              listenWhen: (previous, current) {
-                if (current is ChatStateLoaded &&
-                    current.createdEventId != null) {
-                  return true;
-                }
-                return false;
-              },
-              listener: (context, state) async {
-                if (state is ChatStateLoaded && state.createdEventId != null) {
-                  for (final chat in state.chats) {
-                    // is not equal enough
-                    if (chat.id == state.createdEventId) {
-                      AutoRouter.of(context).root.replace(
-                            ChatPageWrapperRoute(
-                              groupchatId: chat.id,
-                              loadChat: false,
-                            ),
-                          );
-                    }
+          ],
+          SelectableUserGridList(
+            onAdded: (newUser) {
+              _addUserFromCreateGroupchatUsers(newUser);
+            },
+            groupchatUsersWithUsername: groupchatUsersWithUsername,
+          ),
+          const SizedBox(height: 8),
+          // button to save groupchat
+          BlocListener<ChatBloc, ChatState>(
+            listenWhen: (previous, current) {
+              if (current is ChatStateLoaded &&
+                  current.createdEventId != null) {
+                return true;
+              }
+              return false;
+            },
+            listener: (context, state) async {
+              if (state is ChatStateLoaded && state.createdEventId != null) {
+                for (final chat in state.chats) {
+                  // is not equal enough
+                  if (chat.id == state.createdEventId) {
+                    AutoRouter.of(context).root.replace(
+                          ChatPageWrapperRoute(
+                            groupchatId: chat.id,
+                            loadChat: false,
+                          ),
+                        );
                   }
                 }
-              },
-              child: SizedBox(
-                width: double.infinity,
-                child: PlatformElevatedButton(
-                  onPressed: () {
-                    BlocProvider.of<ChatBloc>(context).add(
-                      ChatCreateEvent(
-                        createGroupchatDto: CreateGroupchatDto(
-                          title: widget.title,
-                          description: widget.description,
-                          users: groupchatUsersWithUsername,
-                        ),
+              }
+            },
+            child: SizedBox(
+              width: double.infinity,
+              child: PlatformElevatedButton(
+                onPressed: () {
+                  BlocProvider.of<ChatBloc>(context).add(
+                    ChatCreateEvent(
+                      createGroupchatDto: CreateGroupchatDto(
+                        title: widget.title,
+                        description: widget.description,
+                        users: groupchatUsersWithUsername,
                       ),
-                    );
-                  },
-                  child: const Text("Speichern"),
-                ),
+                    ),
+                  );
+                },
+                child: const Text("Speichern"),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
