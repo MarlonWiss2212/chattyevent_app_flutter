@@ -32,10 +32,14 @@ class UserGridListItem extends StatelessWidget {
                 CircleAvatar(
                   backgroundColor: Theme.of(context).colorScheme.secondary,
                 ),
-                Text(
-                  user.username ?? "Kein Name",
-                  overflow: TextOverflow.ellipsis,
-                  softWrap: true,
+                Hero(
+                  tag: "${user.id} username",
+                  child: Text(
+                    user.username ?? "Kein Name",
+                    style: Theme.of(context).textTheme.labelMedium,
+                    overflow: TextOverflow.ellipsis,
+                    softWrap: true,
+                  ),
                 )
               ],
             ),

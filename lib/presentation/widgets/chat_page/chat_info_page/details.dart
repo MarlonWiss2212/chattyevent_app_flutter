@@ -21,10 +21,13 @@ class Details extends StatelessWidget {
           ),
           const SizedBox(height: 20),
           // name
-          Text(
-            groupchat.title ?? "Kein Titel",
-            style: Theme.of(context).textTheme.titleLarge,
-            overflow: TextOverflow.ellipsis,
+          Hero(
+            tag: "${groupchat.id} title",
+            child: Text(
+              groupchat.title ?? "Kein Titel",
+              style: Theme.of(context).textTheme.titleLarge,
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
           const SizedBox(height: 12),
           // description

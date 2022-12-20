@@ -21,7 +21,13 @@ class ChatList extends StatelessWidget {
               Radius.circular(5),
             ),
           ),
-          title: Text(chats[index].title ?? "Kein Titel"),
+          title: Hero(
+            tag: "${chats[index].id} title",
+            child: Text(
+              chats[index].title ?? "Kein Titel",
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+          ),
           subtitle: const Text(
             "Letzte Nachricht",
             softWrap: true,

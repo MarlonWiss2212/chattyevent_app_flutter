@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
 
-class UserProfileDataPage extends StatelessWidget {
+class UserProfileDataPageOwnUser extends StatelessWidget {
   final UserEntity user;
-  const UserProfileDataPage({super.key, required this.user});
+  const UserProfileDataPageOwnUser({super.key, required this.user});
 
   @override
   Widget build(BuildContext context) {
@@ -20,13 +20,10 @@ class UserProfileDataPage extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             // name
-            Hero(
-              tag: "${user.id} username",
-              child: Text(
-                user.username ?? "Kein Benutzername",
-                style: Theme.of(context).textTheme.titleLarge,
-                overflow: TextOverflow.ellipsis,
-              ),
+            Text(
+              user.username ?? "Kein Benutzername",
+              style: Theme.of(context).textTheme.titleLarge,
+              overflow: TextOverflow.ellipsis,
             ),
           ],
         ),

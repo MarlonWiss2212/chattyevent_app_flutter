@@ -43,10 +43,11 @@ class EventGridListItem extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Text(
-                      privateEvent.title ?? "Kein Titel",
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
+                    Hero(
+                      tag: "${privateEvent.id} title",
+                      child: Text(
+                        privateEvent.title ?? "Kein Titel",
+                        style: Theme.of(context).textTheme.labelMedium,
                       ),
                     ),
                     Text(

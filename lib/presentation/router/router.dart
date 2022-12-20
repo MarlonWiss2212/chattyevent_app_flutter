@@ -76,9 +76,9 @@ import 'package:social_media_app_flutter/presentation/screens/register_page.dart
       guards: [AuthGuard],
       path: '/private-event/:id',
       children: [
-        AutoRoute(page: GroupchatTab, initial: true, path: 'chat'),
-        AutoRoute(page: InfoTab, path: 'info'),
-        RedirectRoute(path: '*', redirectTo: 'chat')
+        AutoRoute(page: InfoTab, initial: true, path: 'info'),
+        AutoRoute(page: GroupchatTab, path: 'chat'),
+        RedirectRoute(path: '*', redirectTo: 'info')
       ],
     ),
 

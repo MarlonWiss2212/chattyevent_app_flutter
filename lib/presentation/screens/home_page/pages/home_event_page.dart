@@ -3,11 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/private_event_bloc.dart';
-import 'package:social_media_app_flutter/domain/entities/private_event_entity.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
-import 'package:social_media_app_flutter/presentation/widgets/event_horizontal_list.dart';
 import 'package:social_media_app_flutter/presentation/widgets/home_page/pages/home_event_page/events_detail_page.dart';
-import 'package:social_media_app_flutter/presentation/widgets/home_page/pages/home_event_page/filter_chip_list_private_events.dart';
 
 class HomeEventPage extends StatelessWidget {
   const HomeEventPage({super.key});

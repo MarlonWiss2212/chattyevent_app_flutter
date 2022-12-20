@@ -1,11 +1,10 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_bloc.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_left_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
-import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
+import 'package:social_media_app_flutter/presentation/widgets/user_list_tile.dart';
 
 class UserLeftListGroupchat extends StatelessWidget {
   final List<GroupchatLeftUserEntity> groupchatLeftUsers;
@@ -27,37 +26,14 @@ class UserLeftListGroupchat extends StatelessWidget {
             }
           }
           widgetsToReturn.add(
-            ListTile(
-              leading: CircleAvatar(
-                backgroundColor:
-                    Theme.of(context).colorScheme.secondaryContainer,
-              ),
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(5),
-                ),
-              ),
-              title: Text(
-                foundUser != null
-                    ? foundUser.username ?? "Kein Username"
-                    : "Kein Username",
-              ),
-              subtitle: Text(
-                groupchatLeftUser.leftAt != null
-                    ? DateFormat.yMd()
-                        .add_jm()
-                        .format(groupchatLeftUser.leftAt!)
-                    : "Kein Datum",
-                softWrap: true,
-                overflow: TextOverflow.ellipsis,
-              ),
-              onTap: () {
-                AutoRouter.of(context).root.push(
-                      ProfilePageRoute(
-                        userId: groupchatLeftUser.userId,
-                      ),
-                    );
-              },
+            UserListTile(
+              subtitle: groupchatLeftUser.leftAt != null
+                  ? DateFormat.yMd().add_jm().format(groupchatLeftUser.leftAt!)
+                  : "Kein Datum",
+              username: foundUser != null && foundUser.username != null
+                  ? foundUser.username!
+                  : "Kein Username",
+              userId: groupchatLeftUser.userId,
             ),
           );
         }

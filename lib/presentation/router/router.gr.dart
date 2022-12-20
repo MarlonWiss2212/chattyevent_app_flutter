@@ -28,8 +28,8 @@ import '../screens/new_event_page.dart' as _i8;
 import '../screens/new_groupchat/new_groupchat_page.dart' as _i18;
 import '../screens/new_groupchat/new_groupchat_select_users_page.dart' as _i19;
 import '../screens/new_groupchat/new_groupchat_wrapper_page.dart' as _i7;
-import '../screens/private_event_page/pages/groupchat_tab.dart' as _i16;
-import '../screens/private_event_page/pages/info_tab.dart' as _i17;
+import '../screens/private_event_page/pages/groupchat_tab.dart' as _i17;
+import '../screens/private_event_page/pages/info_tab.dart' as _i16;
 import '../screens/private_event_page/private_event_page.dart' as _i6;
 import '../screens/profile_page.dart' as _i3;
 import '../screens/register_page.dart' as _i2;
@@ -171,27 +171,27 @@ class AppRouter extends _i20.RootStackRouter {
         ),
       );
     },
-    GroupchatTabRoute.name: (routeData) {
-      final pathParams = routeData.inheritedPathParams;
-      final args = routeData.argsAs<GroupchatTabRouteArgs>(
-          orElse: () => const GroupchatTabRouteArgs());
-      return _i20.MaterialPageX<dynamic>(
-        routeData: routeData,
-        child: _i16.GroupchatTab(
-          key: args.key,
-          privateEventId: pathParams.getString('id'),
-        ),
-      );
-    },
     InfoTabRoute.name: (routeData) {
       final pathParams = routeData.inheritedPathParams;
       final args = routeData.argsAs<InfoTabRouteArgs>(
           orElse: () => const InfoTabRouteArgs());
       return _i20.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: _i17.InfoTab(
+        child: _i16.InfoTab(
           privateEventId: pathParams.getString('id'),
           key: args.key,
+        ),
+      );
+    },
+    GroupchatTabRoute.name: (routeData) {
+      final pathParams = routeData.inheritedPathParams;
+      final args = routeData.argsAs<GroupchatTabRouteArgs>(
+          orElse: () => const GroupchatTabRouteArgs());
+      return _i20.MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: _i17.GroupchatTab(
+          key: args.key,
+          privateEventId: pathParams.getString('id'),
         ),
       );
     },
@@ -315,13 +315,8 @@ class AppRouter extends _i20.RootStackRouter {
               '#redirect',
               path: '',
               parent: PrivateEventPageRoute.name,
-              redirectTo: 'chat',
+              redirectTo: 'info',
               fullMatch: true,
-            ),
-            _i20.RouteConfig(
-              GroupchatTabRoute.name,
-              path: 'chat',
-              parent: PrivateEventPageRoute.name,
             ),
             _i20.RouteConfig(
               InfoTabRoute.name,
@@ -329,10 +324,15 @@ class AppRouter extends _i20.RootStackRouter {
               parent: PrivateEventPageRoute.name,
             ),
             _i20.RouteConfig(
+              GroupchatTabRoute.name,
+              path: 'chat',
+              parent: PrivateEventPageRoute.name,
+            ),
+            _i20.RouteConfig(
               '*#redirect',
               path: '*',
               parent: PrivateEventPageRoute.name,
-              redirectTo: 'chat',
+              redirectTo: 'info',
               fullMatch: true,
             ),
           ],
@@ -674,31 +674,7 @@ class ChatInfoPageRouteArgs {
 }
 
 /// generated route for
-/// [_i16.GroupchatTab]
-class GroupchatTabRoute extends _i20.PageRouteInfo<GroupchatTabRouteArgs> {
-  GroupchatTabRoute({_i21.Key? key})
-      : super(
-          GroupchatTabRoute.name,
-          path: 'chat',
-          args: GroupchatTabRouteArgs(key: key),
-        );
-
-  static const String name = 'GroupchatTabRoute';
-}
-
-class GroupchatTabRouteArgs {
-  const GroupchatTabRouteArgs({this.key});
-
-  final _i21.Key? key;
-
-  @override
-  String toString() {
-    return 'GroupchatTabRouteArgs{key: $key}';
-  }
-}
-
-/// generated route for
-/// [_i17.InfoTab]
+/// [_i16.InfoTab]
 class InfoTabRoute extends _i20.PageRouteInfo<InfoTabRouteArgs> {
   InfoTabRoute({_i21.Key? key})
       : super(
@@ -718,6 +694,30 @@ class InfoTabRouteArgs {
   @override
   String toString() {
     return 'InfoTabRouteArgs{key: $key}';
+  }
+}
+
+/// generated route for
+/// [_i17.GroupchatTab]
+class GroupchatTabRoute extends _i20.PageRouteInfo<GroupchatTabRouteArgs> {
+  GroupchatTabRoute({_i21.Key? key})
+      : super(
+          GroupchatTabRoute.name,
+          path: 'chat',
+          args: GroupchatTabRouteArgs(key: key),
+        );
+
+  static const String name = 'GroupchatTabRoute';
+}
+
+class GroupchatTabRouteArgs {
+  const GroupchatTabRouteArgs({this.key});
+
+  final _i21.Key? key;
+
+  @override
+  String toString() {
+    return 'GroupchatTabRouteArgs{key: $key}';
   }
 }
 

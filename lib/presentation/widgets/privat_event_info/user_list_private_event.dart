@@ -5,6 +5,7 @@ import 'package:social_media_app_flutter/application/bloc/user/user_bloc.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
+import 'package:social_media_app_flutter/presentation/widgets/user_list_tile.dart';
 
 class UserListPrivateEvent extends StatelessWidget {
   final List<String> privateEventUserIdsThatWillBeThere;
@@ -37,36 +38,12 @@ class UserListPrivateEvent extends StatelessWidget {
             }
           }
           widgetsToReturn.add(
-            ListTile(
-              leading: CircleAvatar(
-                backgroundColor:
-                    Theme.of(context).colorScheme.secondaryContainer,
-              ),
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(5),
-                ),
-              ),
-              title: Text(
-                foundUser != null
-                    ? foundUser.username ?? "Kein Username"
-                    : "Kein Username",
-              ),
-              subtitle: Text(
-                "Angenommen",
-                softWrap: true,
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-                overflow: TextOverflow.ellipsis,
-              ),
-              onTap: () {
-                AutoRouter.of(context).root.push(
-                      ProfilePageRoute(
-                        userId: privateEventUserIdThatWillBeThere,
-                      ),
-                    );
-              },
+            UserListTile(
+              subtitle: "Angenommen",
+              username: foundUser != null && foundUser.username != null
+                  ? foundUser.username!
+                  : "Kein Username",
+              userId: privateEventUserIdThatWillBeThere,
             ),
           );
         }
@@ -84,36 +61,12 @@ class UserListPrivateEvent extends StatelessWidget {
             }
           }
           widgetsToReturn.add(
-            ListTile(
-              leading: CircleAvatar(
-                backgroundColor:
-                    Theme.of(context).colorScheme.secondaryContainer,
-              ),
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(5),
-                ),
-              ),
-              title: Text(
-                foundUser != null
-                    ? foundUser.username ?? "Kein Username"
-                    : "Kein Username",
-              ),
-              subtitle: const Text(
-                "Abgelehnt",
-                softWrap: true,
-                style: TextStyle(
-                  color: Colors.red,
-                ),
-                overflow: TextOverflow.ellipsis,
-              ),
-              onTap: () {
-                AutoRouter.of(context).root.push(
-                      ProfilePageRoute(
-                        userId: privateEventUserIdThatWillNotBeThere,
-                      ),
-                    );
-              },
+            UserListTile(
+              subtitle: "Abgelehnt",
+              username: foundUser != null && foundUser.username != null
+                  ? foundUser.username!
+                  : "Kein Username",
+              userId: privateEventUserIdThatWillNotBeThere,
             ),
           );
         }
@@ -131,33 +84,12 @@ class UserListPrivateEvent extends StatelessWidget {
           }
 
           widgetsToReturn.add(
-            ListTile(
-              leading: CircleAvatar(
-                backgroundColor:
-                    Theme.of(context).colorScheme.secondaryContainer,
-              ),
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(5),
-                ),
-              ),
-              title: Text(
-                foundUser != null
-                    ? foundUser.username ?? "Kein Username"
-                    : "Kein Username",
-              ),
-              subtitle: const Text(
-                "Eingeladen",
-                softWrap: true,
-                overflow: TextOverflow.ellipsis,
-              ),
-              onTap: () {
-                AutoRouter.of(context).root.push(
-                      ProfilePageRoute(
-                        userId: invitedUser.userId,
-                      ),
-                    );
-              },
+            UserListTile(
+              subtitle: "Eingeladen",
+              username: foundUser != null && foundUser.username != null
+                  ? foundUser.username!
+                  : "Kein Username",
+              userId: invitedUser.userId,
             ),
           );
         }

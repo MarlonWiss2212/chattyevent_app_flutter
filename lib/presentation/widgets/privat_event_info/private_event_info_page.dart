@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/chat_bloc.dart';
-import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event_entity.dart';
 import 'package:social_media_app_flutter/presentation/widgets/divider.dart';
@@ -29,10 +28,13 @@ class PrivateEventInfoPage extends StatelessWidget {
           ),
           const SizedBox(height: 20),
           // name
-          Text(
-            privateEvent.title ?? "Kein Titel",
-            style: Theme.of(context).textTheme.titleLarge,
-            overflow: TextOverflow.ellipsis,
+          Hero(
+            tag: "${privateEvent.id} title",
+            child: Text(
+              privateEvent.title ?? "Kein Titel",
+              style: Theme.of(context).textTheme.titleLarge,
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
           const CustomDivider(),
           if (privateEvent.usersThatWillBeThere == null) ...{
@@ -62,7 +64,34 @@ class PrivateEventInfoPage extends StatelessWidget {
                 privateEvent.connectedGroupchat != null) {
               for (final chat in state.chats) {
                 if (chat.id == privateEvent.connectedGroupchat) {
-                  invitedUsers = chat.users;
+                  for (final chatUser in chat.users) {
+                    bool pushUser = true;
+
+                    // to check if user already accapted invitation
+                    if (privateEvent.usersThatWillBeThere != null) {
+                      for (final userThatWillBeThere
+                          in privateEvent.usersThatWillBeThere!) {
+                        if (userThatWillBeThere == chatUser.userId) {
+                          pushUser = false;
+                        }
+                      }
+                    }
+
+                    // to check if user already declined invitation
+                    if (privateEvent.usersThatWillNotBeThere != null) {
+                      for (final userThatWillNotBeThere
+                          in privateEvent.usersThatWillNotBeThere!) {
+                        if (userThatWillNotBeThere == chatUser.userId) {
+                          pushUser = false;
+                        }
+                      }
+                    }
+
+                    if (pushUser) {
+                      invitedUsers.add(chatUser);
+                    }
+                  }
+                  break;
                 }
               }
             }

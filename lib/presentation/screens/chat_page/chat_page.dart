@@ -43,38 +43,54 @@ class _ChatPageState extends State<ChatPage> {
           }
         }
 
-        return PlatformScaffold(
-          appBar: PlatformAppBar(
-            leading: const AutoLeadingButton(),
-            title: Text(
-              foundGroupchat != null
-                  ? foundGroupchat.title ?? "Kein Titel"
-                  : "Kein Titel",
-            ),
-            trailingActions: [
-              if (foundGroupchat != null) ...{
+        if (foundGroupchat == null) {
+          return PlatformScaffold(
+            appBar: PlatformAppBar(
+              leading: const AutoLeadingButton(),
+              title: Hero(
+                tag: "${widget.groupchatId} title",
+                child: const Text("Kein Titel"),
+              ),
+              trailingActions: [
                 PlatformIconButton(
                   icon: const Icon(Icons.info),
                   onPressed: () => AutoRouter.of(context).push(
                     ChatInfoPageRoute(),
                   ),
                 )
-              },
+              ],
+            ),
+            body: const Center(child: Text("Chat nicht gefunden")),
+          );
+        }
+
+        return PlatformScaffold(
+          appBar: PlatformAppBar(
+            leading: const AutoLeadingButton(),
+            title: Hero(
+              tag: "${widget.groupchatId} title",
+              child: Text(foundGroupchat.title ?? "Kein Titel"),
+            ),
+            trailingActions: [
+              PlatformIconButton(
+                icon: const Icon(Icons.info),
+                onPressed: () => AutoRouter.of(context).push(
+                  ChatInfoPageRoute(),
+                ),
+              )
             ],
           ),
-          body: foundGroupchat != null
-              ? Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Column(
-                    children: [
-                      MessageArea(groupchatTo: widget.groupchatId),
-                      const SizedBox(height: 8),
-                      MessageInput(groupchatTo: widget.groupchatId),
-                      const SizedBox(height: 8)
-                    ],
-                  ),
-                )
-              : const Center(child: Text("Chat nicht gefunden")),
+          body: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Column(
+              children: [
+                MessageArea(groupchatTo: widget.groupchatId),
+                const SizedBox(height: 8),
+                MessageInput(groupchatTo: widget.groupchatId),
+                const SizedBox(height: 8)
+              ],
+            ),
+          ),
         );
       },
     );

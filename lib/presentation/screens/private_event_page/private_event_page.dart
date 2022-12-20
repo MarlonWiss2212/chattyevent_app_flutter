@@ -66,8 +66,8 @@ class PrivateEventPage extends StatelessWidget {
 
         return AutoTabsRouter.tabBar(
           routes: [
-            GroupchatTabRoute(),
             InfoTabRoute(),
+            GroupchatTabRoute(),
           ],
           builder: (context, child, tabController) {
             return PlatformScaffold(
@@ -82,8 +82,8 @@ class PrivateEventPage extends StatelessWidget {
                   bottom: TabBar(
                     controller: tabController,
                     tabs: const [
-                      Tab(icon: Icon(Icons.chat_bubble)),
                       Tab(icon: Icon(Icons.event)),
+                      Tab(icon: Icon(Icons.chat_bubble)),
                     ],
                   ),
                 ),

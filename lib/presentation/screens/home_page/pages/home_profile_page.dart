@@ -1,4 +1,3 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
@@ -11,8 +10,7 @@ import 'package:social_media_app_flutter/application/bloc/user/user_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/user_search/user_search_bloc.dart';
 import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
 import 'package:social_media_app_flutter/domain/filter/get_one_user_filter.dart';
-import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
-import 'package:social_media_app_flutter/presentation/widgets/profile/user_profile_data_page.dart';
+import 'package:social_media_app_flutter/presentation/widgets/profile/user_profile_data_page_own_user.dart';
 
 class HomeProfilePage extends StatefulWidget {
   const HomeProfilePage({super.key});
@@ -88,7 +86,7 @@ class _HomeProfilePageState extends State<HomeProfilePage> {
                     );
                   }
 
-                  return UserProfileDataPage(user: foundUser);
+                  return UserProfileDataPageOwnUser(user: foundUser);
                 } else if (state is UserStateLoading) {
                   return Center(child: PlatformCircularProgressIndicator());
                 } else {

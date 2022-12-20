@@ -105,10 +105,12 @@ class App extends StatelessWidget {
             routerDelegate: appRouter.delegate(),
             material: (context, platform) => MaterialAppRouterData(
               theme: ThemeData(
+                scaffoldBackgroundColor: Colors.white,
                 useMaterial3: true,
                 colorScheme: lightColorScheme,
               ),
               darkTheme: ThemeData(
+                scaffoldBackgroundColor: Colors.black,
                 useMaterial3: true,
                 colorScheme: darkColorScheme,
               ),
