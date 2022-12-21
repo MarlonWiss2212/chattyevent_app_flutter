@@ -5,7 +5,7 @@ import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 class UserListTile extends StatelessWidget {
   final String userId;
   final String username;
-  final String subtitle;
+  final Widget? subtitle;
   final Function? longPress;
   // image
   const UserListTile({
@@ -34,11 +34,7 @@ class UserListTile extends StatelessWidget {
           style: Theme.of(context).textTheme.titleMedium,
         ),
       ),
-      subtitle: Text(
-        subtitle,
-        softWrap: true,
-        overflow: TextOverflow.ellipsis,
-      ),
+      subtitle: subtitle,
       onTap: () {
         AutoRouter.of(context).root.push(
               ProfilePageRoute(

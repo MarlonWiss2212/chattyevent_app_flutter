@@ -44,7 +44,10 @@ class HomeEventPage extends StatelessWidget {
             const NewPrivateEventPageRoute(),
           ),
           icon: const Icon(Icons.event),
-          label: const Text('Neues Event'),
+          label: Text(
+            'Neues Event',
+            style: Theme.of(context).textTheme.labelLarge,
+          ),
         ),
       ),
     );

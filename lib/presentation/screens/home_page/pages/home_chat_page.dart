@@ -45,7 +45,10 @@ class HomeChatPage extends StatelessWidget {
             const NewGroupchatWrapperPageRoute(),
           ),
           icon: const Icon(Icons.chat_bubble),
-          label: const Text('Neuer Chat'),
+          label: Text(
+            'Neuer Chat',
+            style: Theme.of(context).textTheme.labelLarge,
+          ),
         ),
       ),
     );

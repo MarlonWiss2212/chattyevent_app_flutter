@@ -1,14 +1,8 @@
 import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'package:social_media_app_flutter/application/bloc/chat/chat_bloc.dart';
-import 'package:social_media_app_flutter/application/bloc/message/message_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/private_event_bloc.dart';
-import 'package:social_media_app_flutter/application/bloc/user/user_bloc.dart';
-import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event_entity.dart';
-import 'package:social_media_app_flutter/domain/filter/get_messages_filter.dart';
 import 'package:social_media_app_flutter/presentation/widgets/chat_page/message_area.dart';
 import 'package:social_media_app_flutter/presentation/widgets/chat_page/message_input.dart';
 

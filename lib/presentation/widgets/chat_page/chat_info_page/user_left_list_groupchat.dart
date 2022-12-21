@@ -28,8 +28,16 @@ class UserLeftListGroupchat extends StatelessWidget {
           widgetsToReturn.add(
             UserListTile(
               subtitle: groupchatLeftUser.leftAt != null
-                  ? DateFormat.yMd().add_jm().format(groupchatLeftUser.leftAt!)
-                  : "Kein Datum",
+                  ? Text(
+                      DateFormat.yMd()
+                          .add_jm()
+                          .format(groupchatLeftUser.leftAt!),
+                      overflow: TextOverflow.ellipsis,
+                    )
+                  : const Text(
+                      "Kein Datum",
+                      overflow: TextOverflow.ellipsis,
+                    ),
               username: foundUser != null && foundUser.username != null
                   ? foundUser.username!
                   : "Kein Username",

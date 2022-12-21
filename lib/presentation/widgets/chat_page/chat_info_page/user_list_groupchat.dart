@@ -1,10 +1,8 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_bloc.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
-import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 import 'package:social_media_app_flutter/presentation/widgets/user_list_tile.dart';
 
 class UserListGroupchat extends StatelessWidget {
@@ -29,8 +27,19 @@ class UserListGroupchat extends StatelessWidget {
           widgetsToReturn.add(
             UserListTile(
               subtitle: groupchatUser.admin != null && groupchatUser.admin!
-                  ? "Admin"
-                  : "Nicht Admin",
+                  ? Text(
+                      "Admin",
+                      softWrap: true,
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                    )
+                  : const Text(
+                      "Nicht Admin",
+                      softWrap: true,
+                      overflow: TextOverflow.ellipsis,
+                    ),
               username: foundUser != null && foundUser.username != null
                   ? foundUser.username!
                   : "Kein Username",

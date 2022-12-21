@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
+import 'package:social_media_app_flutter/presentation/widgets/chat_page/chat_info_page/private_event_list_groupchat.dart';
 import 'package:social_media_app_flutter/presentation/widgets/divider.dart';
 import 'package:social_media_app_flutter/presentation/widgets/chat_page/chat_info_page/user_left_list_groupchat.dart';
 import 'package:social_media_app_flutter/presentation/widgets/chat_page/chat_info_page/user_list_groupchat.dart';
@@ -39,6 +40,9 @@ class Details extends StatelessWidget {
                 : groupchat.description!,
             style: Theme.of(context).textTheme.titleMedium,
           ),
+          const CustomDivider(),
+          // private Events
+          PrivateEventListGroupchat(groupchatId: groupchat.id),
           const CustomDivider(),
           // users
           if (groupchat.users.isNotEmpty) ...[
