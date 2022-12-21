@@ -12,14 +12,9 @@ import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
 import 'package:social_media_app_flutter/domain/filter/get_one_user_filter.dart';
 import 'package:social_media_app_flutter/presentation/widgets/profile/user_profile_data_page_own_user.dart';
 
-class HomeProfilePage extends StatefulWidget {
+class HomeProfilePage extends StatelessWidget {
   const HomeProfilePage({super.key});
 
-  @override
-  State<HomeProfilePage> createState() => _HomeProfilePageState();
-}
-
-class _HomeProfilePageState extends State<HomeProfilePage> {
   @override
   Widget build(BuildContext context) {
     return PlatformScaffold(

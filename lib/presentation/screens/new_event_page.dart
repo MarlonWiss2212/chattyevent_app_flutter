@@ -5,7 +5,10 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/private_event_bloc.dart';
 import 'package:social_media_app_flutter/domain/dto/create_private_event_dto.dart';
+import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
+import 'package:social_media_app_flutter/presentation/widgets/dialog/ok_button.dart';
+import 'package:social_media_app_flutter/presentation/widgets/new_private_event/select_groupchat_horizontal_list_new_private_event.dart';
 
 class NewPrivateEventPage extends StatefulWidget {
   const NewPrivateEventPage({super.key});
@@ -18,6 +21,7 @@ class _NewPrivateEventPageState extends State<NewPrivateEventPage> {
   DateTime date = DateTime.now();
   final titleFieldController = TextEditingController();
   final groupchatFieldController = TextEditingController();
+  GroupchatEntity? selectedGroupchat;
 
   @override
   Widget build(BuildContext context) {
@@ -61,9 +65,23 @@ class _NewPrivateEventPageState extends State<NewPrivateEventPage> {
               });
             },
           ),
-          PlatformTextField(
-            controller: groupchatFieldController,
-            hintText: 'Chat*',
+          const SizedBox(height: 8),
+          Text(
+            "Wähle einen Gruppenchat aus: ${selectedGroupchat != null ? selectedGroupchat!.title : ''}",
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
+          SizedBox(
+            height: 70,
+            width: double.infinity,
+            child: SelectGroupchatHorizontalListNewPrivateEvent(
+              newGroupchatSelected: (groupchat) {
+                setState(
+                  () {
+                    selectedGroupchat = groupchat;
+                  },
+                );
+              },
+            ),
           ),
           const SizedBox(height: 8),
           BlocListener<PrivateEventBloc, PrivateEventState>(
@@ -90,13 +108,28 @@ class _NewPrivateEventPageState extends State<NewPrivateEventPage> {
               }
             },
             child: PlatformElevatedButton(
-              onPressed: () {
+              onPressed: () async {
+                if (selectedGroupchat == null) {
+                  return await showDialog(
+                    context: context,
+                    builder: (context) {
+                      return PlatformAlertDialog(
+                        title: const Text("Kein Gruppenchat"),
+                        content: const Text(
+                          "Ein Event muss einem Chat yugewiesen werden bitte wähle erst einen Chat aus",
+                        ),
+                        actions: const [OKButton()],
+                      );
+                    },
+                  );
+                }
+
                 BlocProvider.of<PrivateEventBloc>(context).add(
                   PrivateEventCreateEvent(
                     createPrivateEventDto: CreatePrivateEventDto(
                       title: titleFieldController.text,
                       eventDate: date,
-                      connectedGroupchat: groupchatFieldController.text,
+                      connectedGroupchat: selectedGroupchat!.id,
                     ),
                   ),
                 );

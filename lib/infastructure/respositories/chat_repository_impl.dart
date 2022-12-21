@@ -101,6 +101,7 @@ class ChatRepositoryImpl implements ChatRepository {
             title
             users {
               userId
+              admin
             }
           }
         }
