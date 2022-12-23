@@ -4,8 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'package:jwt_decode/jwt_decode.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/chat_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/user_search/user_search_bloc.dart';
@@ -13,7 +11,6 @@ import 'package:social_media_app_flutter/application/bloc/user/user_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/message/message_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/private_event_bloc.dart';
 import 'package:social_media_app_flutter/colors.dart';
-import 'package:social_media_app_flutter/domain/usecases/notification_usecases.dart';
 import 'package:social_media_app_flutter/presentation/router/auth_guard.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -68,8 +65,6 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final NotificationUseCases notificationUseCases = di.serviceLocator();
-
     final AppRouter appRouter = r.AppRouter(
       authGuard: AuthGuard(state: BlocProvider.of<AuthBloc>(context).state),
     );
@@ -80,11 +75,6 @@ class App extends StatelessWidget {
         appRouter.authGuard.state = state;
         if (state is AuthStateLoaded) {
           appRouter.replace(const HomePageRoute());
-
-          await notificationUseCases.requestNotificationPermission();
-          await one_signal.setExternalUserId(Jwt.parseJwt(state.token)["sub"]);
-        } else if (state is AuthInitial) {
-          appRouter.replace(const LoginPageRoute());
         }
       },
       child: DynamicColorBuilder(

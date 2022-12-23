@@ -19,11 +19,20 @@ class SelectGroupchatListItemNewPrivateEvent extends StatelessWidget {
         onTap();
       },
       child: SizedBox(
-        height: 70,
-        width: 70,
+        height: 100,
+        width: 100,
         child: Card(
           color: Theme.of(context).colorScheme.secondaryContainer,
-          child: Center(child: Text(groupchat.title ?? "Kein Titel")),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(groupchat.title ?? "Kein Titel"),
+              ),
+            ],
+          ),
         ),
       ),
     );

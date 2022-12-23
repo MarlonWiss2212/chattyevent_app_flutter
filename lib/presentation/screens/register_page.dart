@@ -83,9 +83,6 @@ class _RegisterPageState extends State<RegisterPage> {
             ),
             const SizedBox(height: 8),
             BlocListener<AuthBloc, AuthState>(
-              listenWhen: (previous, current) {
-                return current is AuthStateError;
-              },
               listener: (context, state) async {
                 if (state is AuthStateError) {
                   return await showDialog(

@@ -29,115 +29,135 @@ class _NewPrivateEventPageState extends State<NewPrivateEventPage> {
       appBar: PlatformAppBar(
         title: const Text('Neues Event'),
       ),
-      body: ListView(
-        padding: const EdgeInsets.all(8),
-        children: [
-          PlatformTextField(
-            controller: titleFieldController,
-            hintText: 'Name*',
-          ),
-          const SizedBox(height: 8),
-          PlatformElevatedButton(
-            child: Text("Datum wählen: $date"),
-            onPressed: () async {
-              DateTime currentDate = DateTime.now();
-              DateTime? newDate = await showDatePicker(
-                context: context,
-                initialDate: date,
-                firstDate: currentDate,
-                lastDate: DateTime(currentDate.year + 10),
-              );
-              TimeOfDay currentTime = TimeOfDay.now();
-              TimeOfDay? newTime = await showTimePicker(
-                context: context,
-                initialTime: currentTime,
-              );
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    PlatformTextField(
+                      controller: titleFieldController,
+                      hintText: 'Name*',
+                    ),
+                    const SizedBox(height: 8),
+                    SizedBox(
+                      width: double.infinity,
+                      child: PlatformElevatedButton(
+                        child: Text("Datum wählen: $date"),
+                        onPressed: () async {
+                          DateTime currentDate = DateTime.now();
+                          DateTime? newDate = await showDatePicker(
+                            context: context,
+                            initialDate: date,
+                            firstDate: currentDate,
+                            lastDate: DateTime(currentDate.year + 10),
+                          );
+                          TimeOfDay currentTime = TimeOfDay.now();
+                          TimeOfDay? newTime = await showTimePicker(
+                            context: context,
+                            initialTime: currentTime,
+                          );
 
-              if (newDate == null || newTime == null) return;
-              setState(() {
-                date = DateTime(
-                  newDate.year,
-                  newDate.month,
-                  newDate.day,
-                  newTime.hour,
-                  newTime.minute,
-                );
-              });
-            },
-          ),
-          const SizedBox(height: 8),
-          Text(
-            "Wähle einen Gruppenchat aus: ${selectedGroupchat != null ? selectedGroupchat!.title : ''}",
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
-          SizedBox(
-            height: 70,
-            width: double.infinity,
-            child: SelectGroupchatHorizontalListNewPrivateEvent(
-              newGroupchatSelected: (groupchat) {
-                setState(
-                  () {
-                    selectedGroupchat = groupchat;
-                  },
-                );
-              },
-            ),
-          ),
-          const SizedBox(height: 8),
-          BlocListener<PrivateEventBloc, PrivateEventState>(
-            listenWhen: (previous, current) {
-              if (current is PrivateEventStateLoaded &&
-                  current.createdPrivateEventId != null) {
-                return true;
-              }
-              return false;
-            },
-            listener: (context, state) {
-              if (state is PrivateEventStateLoaded &&
-                  state.createdPrivateEventId != null) {
-                for (final privateEvent in state.privateEvents) {
-                  if (privateEvent.id == state.createdPrivateEventId) {
-                    AutoRouter.of(context).replace(
-                      PrivateEventPageRoute(
-                        privateEventId: privateEvent.id,
-                        loadPrivateEvent: false,
+                          if (newDate == null || newTime == null) return;
+                          setState(() {
+                            date = DateTime(
+                              newDate.year,
+                              newDate.month,
+                              newDate.day,
+                              newTime.hour,
+                              newTime.minute,
+                            );
+                          });
+                        },
                       ),
-                    );
+                    ),
+                    const SizedBox(height: 8),
+                    Row(
+                      children: [
+                        Text(
+                          "Wähle einen Gruppenchat aus: ${selectedGroupchat != null ? selectedGroupchat!.title : ''}",
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 100,
+                      width: double.infinity,
+                      child: SelectGroupchatHorizontalListNewPrivateEvent(
+                        newGroupchatSelected: (groupchat) {
+                          setState(
+                            () {
+                              selectedGroupchat = groupchat;
+                            },
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 8),
+            BlocListener<PrivateEventBloc, PrivateEventState>(
+              listenWhen: (previous, current) {
+                if (current is PrivateEventStateLoaded &&
+                    current.createdPrivateEventId != null) {
+                  return true;
+                }
+                return false;
+              },
+              listener: (context, state) {
+                if (state is PrivateEventStateLoaded &&
+                    state.createdPrivateEventId != null) {
+                  for (final privateEvent in state.privateEvents) {
+                    if (privateEvent.id == state.createdPrivateEventId) {
+                      AutoRouter.of(context).replace(
+                        PrivateEventPageRoute(
+                          privateEventId: privateEvent.id,
+                          loadPrivateEvent: false,
+                        ),
+                      );
+                    }
                   }
                 }
-              }
-            },
-            child: PlatformElevatedButton(
-              onPressed: () async {
-                if (selectedGroupchat == null) {
-                  return await showDialog(
-                    context: context,
-                    builder: (context) {
-                      return PlatformAlertDialog(
-                        title: const Text("Kein Gruppenchat"),
-                        content: const Text(
-                          "Ein Event muss einem Chat yugewiesen werden bitte wähle erst einen Chat aus",
-                        ),
-                        actions: const [OKButton()],
-                      );
-                    },
-                  );
-                }
-
-                BlocProvider.of<PrivateEventBloc>(context).add(
-                  PrivateEventCreateEvent(
-                    createPrivateEventDto: CreatePrivateEventDto(
-                      title: titleFieldController.text,
-                      eventDate: date,
-                      connectedGroupchat: selectedGroupchat!.id,
-                    ),
-                  ),
-                );
               },
-              child: const Text("Speichern"),
+              child: SizedBox(
+                width: double.infinity,
+                child: PlatformElevatedButton(
+                  onPressed: () async {
+                    if (selectedGroupchat == null) {
+                      return await showDialog(
+                        context: context,
+                        builder: (context) {
+                          return PlatformAlertDialog(
+                            title: const Text("Kein Gruppenchat"),
+                            content: const Text(
+                              "Ein Event muss einem Chat yugewiesen werden bitte wähle erst einen Chat aus",
+                            ),
+                            actions: const [OKButton()],
+                          );
+                        },
+                      );
+                    }
+
+                    BlocProvider.of<PrivateEventBloc>(context).add(
+                      PrivateEventCreateEvent(
+                        createPrivateEventDto: CreatePrivateEventDto(
+                          title: titleFieldController.text,
+                          eventDate: date,
+                          connectedGroupchat: selectedGroupchat!.id,
+                        ),
+                      ),
+                    );
+                  },
+                  child: const Text("Speichern"),
+                ),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -38,6 +38,7 @@ import 'package:social_media_app_flutter/presentation/screens/register_page.dart
       page: HomePage,
       initial: true,
       guards: [AuthGuard],
+      path: '/',
       children: [
         AutoRoute(
           page: HomeChatPage,
@@ -111,7 +112,7 @@ import 'package:social_media_app_flutter/presentation/screens/register_page.dart
       path: '/new-private-event',
     ),
 
-    RedirectRoute(path: '*', redirectTo: '')
+    RedirectRoute(path: '*', redirectTo: '/chats')
   ],
 )
 class $AppRouter {}

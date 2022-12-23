@@ -371,7 +371,7 @@ class AppRouter extends _i20.RootStackRouter {
         _i20.RouteConfig(
           '*#redirect',
           path: '*',
-          redirectTo: '',
+          redirectTo: '/chats',
           fullMatch: true,
         ),
       ];

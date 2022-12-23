@@ -38,6 +38,7 @@ Future<void> init({Link? link}) async {
   serviceLocator.registerFactory(
     () => AuthBloc(
       authUseCases: serviceLocator(),
+      notificationUseCases: serviceLocator(),
     ),
   );
   serviceLocator.registerFactory(
