@@ -74,7 +74,6 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
         PrivateEventModel.fromJson(response.data!["findPrivateEvent"]),
       );
     } catch (e) {
-      print(e);
       return Left(ServerFailure());
     }
   }

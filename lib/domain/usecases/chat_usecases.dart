@@ -25,4 +25,24 @@ class ChatUseCases {
       {required CreateGroupchatDto createGroupchatDto}) async {
     return await chatRepository.createGroupchatViaApi(createGroupchatDto);
   }
+
+  Future<Either<Failure, GroupchatEntity>> addUserToGroupchatViaApi({
+    required String groupchatId,
+    required String userIdToAdd,
+  }) async {
+    return await chatRepository.addUserToGroupchatViaApi(
+      groupchatId: groupchatId,
+      userIdToAdd: userIdToAdd,
+    );
+  }
+
+  Future<Either<Failure, GroupchatEntity>> deleteUserFromGroupchatViaApi({
+    required String groupchatId,
+    required String userIdToDelete,
+  }) async {
+    return await chatRepository.deleteUserFromGroupchatViaApi(
+      groupchatId: groupchatId,
+      userIdToDelete: userIdToDelete,
+    );
+  }
 }

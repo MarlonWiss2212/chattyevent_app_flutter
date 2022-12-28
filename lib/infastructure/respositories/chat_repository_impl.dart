@@ -128,6 +128,83 @@ class ChatRepositoryImpl implements ChatRepository {
   }
 
   @override
+  Future<Either<Failure, GroupchatEntity>> addUserToGroupchatViaApi({
+    required String groupchatId,
+    required String userIdToAdd,
+  }) async {
+    try {
+      final response = await graphQlDatasource.mutation(
+        """
+        mutation AddUserToChat(\$userIdToAdd: String!, \$groupchatId: String!) {
+          addUserToChat(userIdToAdd: \$userIdToAdd, groupchatId: \$groupchatId) {
+            _id
+            users {
+              admin
+              userId
+              joinedAt
+            }
+            leftUsers {
+              userId
+              leftAt
+            }
+          }
+        }
+        """,
+        variables: {"userIdToAdd": userIdToAdd, "groupchatId": groupchatId},
+      );
+
+      if (response.hasException) {
+        return Left(GeneralFailure());
+      }
+
+      return Right(GroupchatModel.fromJson(response.data!["addUserToChat"]));
+    } catch (e) {
+      return Left(ServerFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, GroupchatEntity>> deleteUserFromGroupchatViaApi({
+    required String groupchatId,
+    required String userIdToDelete,
+  }) async {
+    try {
+      final response = await graphQlDatasource.mutation(
+        """
+        mutation AddUserToChat(\$userIdToDelete: String!, \$groupchatId: String!) {
+          deleteUserFromChat(userIdToDelete: \$userIdToDelete, groupchatId: \$groupchatId) {
+            _id
+            users {
+              admin
+              userId
+              joinedAt
+            }
+            leftUsers {
+              userId
+              leftAt
+            }
+          }
+        }
+        """,
+        variables: {
+          "userIdToDelete": userIdToDelete,
+          "groupchatId": groupchatId
+        },
+      );
+
+      if (response.hasException) {
+        return Left(GeneralFailure());
+      }
+
+      return Right(
+        GroupchatModel.fromJson(response.data!["deleteUserFromChat"]),
+      );
+    } catch (e) {
+      return Left(ServerFailure());
+    }
+  }
+
+  @override
   Future<Either<Failure, void>> deleteGroupchatViaApi() async {
     // TODO: implement deleteGroupchatViaApi
     throw UnimplementedError();

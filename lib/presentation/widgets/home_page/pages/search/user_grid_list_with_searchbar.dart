@@ -45,16 +45,18 @@ class UserGridListWithSearchbar extends StatelessWidget {
                   child: Center(child: PlatformCircularProgressIndicator()),
                 );
               } else {
-                return Center(
-                  child: PlatformTextButton(
-                    child: Text(
-                      state is UserSearchStateError
-                          ? state.message
-                          : "User laden",
-                    ),
-                    onPressed: () =>
-                        BlocProvider.of<UserSearchBloc>(context).add(
-                      UserSearchGetUsersEvent(),
+                return Expanded(
+                  child: Center(
+                    child: PlatformTextButton(
+                      child: Text(
+                        state is UserSearchStateError
+                            ? state.message
+                            : "User laden",
+                      ),
+                      onPressed: () =>
+                          BlocProvider.of<UserSearchBloc>(context).add(
+                        UserSearchGetUsersEvent(),
+                      ),
                     ),
                   ),
                 );

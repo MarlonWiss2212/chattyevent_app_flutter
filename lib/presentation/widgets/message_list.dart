@@ -21,12 +21,12 @@ class MessageList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String token = "";
+    String currentUserId = "";
 
     final authState = BlocProvider.of<AuthBloc>(context).state;
 
     if (authState is AuthStateLoaded) {
-      token = Jwt.parseJwt(authState.token)["sub"];
+      currentUserId = Jwt.parseJwt(authState.token)["sub"];
     }
 
     return BlocBuilder<UserBloc, UserState>(
@@ -53,7 +53,7 @@ class MessageList extends StatelessWidget {
                   ? DateFormat.jm().format(messageEntity.createdAt!)
                   : "Fehler",
               content: messageEntity.message ?? "Kein Inhalt",
-              alignStart: messageEntity.createdBy != token,
+              alignStart: messageEntity.createdBy != currentUserId,
             );
           },
           elements: messages,

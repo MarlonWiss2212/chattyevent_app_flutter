@@ -1,5 +1,10 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jwt_decode/jwt_decode.dart';
+import 'package:social_media_app_flutter/application/bloc/auth/auth_bloc.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
+import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 import 'package:social_media_app_flutter/presentation/widgets/chat_page/chat_info_page/private_event_list_groupchat.dart';
 import 'package:social_media_app_flutter/presentation/widgets/divider.dart';
 import 'package:social_media_app_flutter/presentation/widgets/chat_page/chat_info_page/user_left_list_groupchat.dart';
@@ -11,6 +16,23 @@ class Details extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String currentUserId = "";
+
+    final authState = BlocProvider.of<AuthBloc>(context).state;
+
+    if (authState is AuthStateLoaded) {
+      currentUserId = Jwt.parseJwt(authState.token)["sub"];
+    }
+
+    bool currentUserIsAdmin = false;
+    for (final groupchatUser in groupchat.users) {
+      if (groupchatUser.userId == currentUserId &&
+          groupchatUser.admin != null &&
+          groupchatUser.admin == true) {
+        currentUserIsAdmin = true;
+      }
+    }
+
     return SingleChildScrollView(
       padding: const EdgeInsets.all(8),
       child: Column(
@@ -51,7 +73,34 @@ class Details extends StatelessWidget {
               style: Theme.of(context).textTheme.titleMedium,
             ),
             const SizedBox(height: 8),
-            UserListGroupchat(groupchatUsers: groupchat.users),
+            if (currentUserIsAdmin) ...{
+              // add user
+              ListTile(
+                leading: const Icon(
+                  Icons.person_add,
+                  color: Colors.green,
+                ),
+                title: const Text(
+                  "User zum Chat hinzufügen",
+                  style: TextStyle(color: Colors.green),
+                ),
+                onTap: () {
+                  AutoRouter.of(context).push(
+                    ChatAddUserPageRoute(),
+                  );
+                },
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(5),
+                  ),
+                ),
+              )
+            },
+            UserListGroupchat(
+              groupchatUsers: groupchat.users,
+              groupchatId: groupchat.id,
+              currentUserId: currentUserId,
+            ),
           ] else ...[
             Text(
               "Fehler beim darstellen der Gruppenchat Benutzer",

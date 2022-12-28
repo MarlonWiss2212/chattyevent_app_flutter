@@ -41,13 +41,13 @@ class SelectableUserGridList extends StatelessWidget {
                 // checks if user is already selected if not it should be visible
                 for (final user in state.users) {
                   int foundIndex = -1;
-                  groupchatUsersWithUsername
-                      .asMap()
-                      .forEach((index, createGroupchatUser) {
-                    if (createGroupchatUser.userId == user.id) {
-                      foundIndex = index;
-                    }
-                  });
+                  groupchatUsersWithUsername.asMap().forEach(
+                    (index, createGroupchatUser) {
+                      if (createGroupchatUser.userId == user.id) {
+                        foundIndex = index;
+                      }
+                    },
+                  );
 
                   if (foundIndex == -1) {
                     filteredUsers.add(user);

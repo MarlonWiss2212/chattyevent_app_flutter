@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:social_media_app_flutter/application/bloc/chat/chat_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_bloc.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
@@ -7,7 +8,15 @@ import 'package:social_media_app_flutter/presentation/widgets/user_list_tile.dar
 
 class UserListGroupchat extends StatelessWidget {
   final List<GroupchatUserEntity> groupchatUsers;
-  const UserListGroupchat({super.key, required this.groupchatUsers});
+  final String groupchatId;
+  final String currentUserId;
+
+  const UserListGroupchat({
+    super.key,
+    required this.groupchatUsers,
+    required this.groupchatId,
+    required this.currentUserId,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +53,28 @@ class UserListGroupchat extends StatelessWidget {
                   ? foundUser.username!
                   : "Kein Username",
               userId: groupchatUser.userId,
+              longPress: (userId) {
+                if (currentUserId == userId) {
+                  return;
+                }
+
+                showMenu(
+                  position:
+                      const RelativeRect.fromLTRB(0, double.infinity, 0, 0),
+                  context: context,
+                  items: [
+                    PopupMenuItem(
+                      child: const Text("Kicken"),
+                      onTap: () => BlocProvider.of<ChatBloc>(context).add(
+                        DeleteUserFromChatEvent(
+                          groupchatId: groupchatId,
+                          userIdToDelete: userId,
+                        ),
+                      ),
+                    )
+                  ],
+                );
+              },
             ),
           );
         }

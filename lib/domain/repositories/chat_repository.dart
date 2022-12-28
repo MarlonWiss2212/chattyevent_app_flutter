@@ -13,5 +13,13 @@ abstract class ChatRepository {
   });
   Future<Either<Failure, List<GroupchatEntity>>> getGroupchatsViaApi();
   Future<Either<Failure, GroupchatEntity>> updateGroupchatViaApi();
+  Future<Either<Failure, GroupchatEntity>> addUserToGroupchatViaApi({
+    required String groupchatId,
+    required String userIdToAdd,
+  });
+  Future<Either<Failure, GroupchatEntity>> deleteUserFromGroupchatViaApi({
+    required String groupchatId,
+    required String userIdToDelete,
+  });
   Future<Either<Failure, void>> deleteGroupchatViaApi();
 }

@@ -8,7 +8,7 @@ import 'package:social_media_app_flutter/domain/dto/groupchat/create_groupchat_d
 import 'package:social_media_app_flutter/domain/dto/groupchat/create_user_groupchat_dto.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 import 'package:social_media_app_flutter/presentation/widgets/new_groupchat/SelectableUserGridList.dart';
-import 'package:social_media_app_flutter/presentation/widgets/new_groupchat/SelectedUsersChipList.dart';
+import 'package:social_media_app_flutter/presentation/widgets/new_groupchat/SelectedUsersList.dart';
 
 class NewGroupchatPageSelectUsersPage extends StatefulWidget {
   final String title;
@@ -73,7 +73,7 @@ class _NewGroupchatPageSelectUsersPageState
         child: Column(
           children: [
             if (groupchatUsersWithUsername.isNotEmpty) ...[
-              SelectedUsersChipList(
+              SelectedUsersList(
                 groupchatUsersWithUsername: groupchatUsersWithUsername,
                 onDeleted: (userId) {
                   _removeUserFromCreateGroupchatUsers(userId);
@@ -117,7 +117,7 @@ class _NewGroupchatPageSelectUsersPageState
                 child: PlatformElevatedButton(
                   onPressed: () {
                     BlocProvider.of<ChatBloc>(context).add(
-                      ChatCreateEvent(
+                      CreateChatEvent(
                         createGroupchatDto: CreateGroupchatDto(
                           title: widget.title,
                           description: widget.description,

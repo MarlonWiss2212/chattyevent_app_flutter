@@ -5,7 +5,7 @@ abstract class ChatEvent {}
 
 class ChatInitialEvent extends ChatEvent {}
 
-class ChatRequestEvent extends ChatEvent {}
+class GetChatsEvent extends ChatEvent {}
 
 class GetOneChatEvent extends ChatEvent {
   final GetOneGroupchatFilter getOneGroupchatFilter;
@@ -13,7 +13,22 @@ class GetOneChatEvent extends ChatEvent {
   GetOneChatEvent({required this.getOneGroupchatFilter});
 }
 
-class ChatCreateEvent extends ChatEvent {
+class CreateChatEvent extends ChatEvent {
   final CreateGroupchatDto createGroupchatDto;
-  ChatCreateEvent({required this.createGroupchatDto});
+  CreateChatEvent({required this.createGroupchatDto});
+}
+
+class AddUserToChatEvent extends ChatEvent {
+  final String groupchatId;
+  final String userIdToAdd;
+  AddUserToChatEvent({required this.groupchatId, required this.userIdToAdd});
+}
+
+class DeleteUserFromChatEvent extends ChatEvent {
+  final String groupchatId;
+  final String userIdToDelete;
+  DeleteUserFromChatEvent({
+    required this.groupchatId,
+    required this.userIdToDelete,
+  });
 }

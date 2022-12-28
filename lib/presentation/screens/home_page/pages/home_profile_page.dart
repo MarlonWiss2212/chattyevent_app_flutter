@@ -17,93 +17,90 @@ class HomeProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String currentUserId = "";
+
+    final authState = BlocProvider.of<AuthBloc>(context).state;
+
+    if (authState is AuthStateLoaded) {
+      currentUserId = Jwt.parseJwt(authState.token)["sub"];
+    }
+
     return PlatformScaffold(
       appBar: PlatformAppBar(
         title: const Text('Social Media App'),
-        material: (context, platform) => MaterialAppBarData(
-          actions: [
-            IconButton(
-              onPressed: () {
-                BlocProvider.of<AuthBloc>(context).add(AuthLogoutEvent());
+        trailingActions: [
+          IconButton(
+            onPressed: () {
+              BlocProvider.of<AuthBloc>(context).add(AuthLogoutEvent());
 
-                BlocProvider.of<ChatBloc>(context).add(ChatInitialEvent());
-                BlocProvider.of<MessageBloc>(context).add(
-                  MessageInitialEvent(),
-                );
-                BlocProvider.of<PrivateEventBloc>(context).add(
-                  PrivateEventInitialEvent(),
-                );
-                BlocProvider.of<UserBloc>(context).add(UserInitialEvent());
-                BlocProvider.of<UserSearchBloc>(context).add(
-                  UserSearchInitialEvent(),
-                );
-              },
-              icon: const Icon(Icons.logout),
-            ),
-          ],
-        ),
+              BlocProvider.of<ChatBloc>(context).add(ChatInitialEvent());
+              BlocProvider.of<MessageBloc>(context).add(
+                MessageInitialEvent(),
+              );
+              BlocProvider.of<PrivateEventBloc>(context).add(
+                PrivateEventInitialEvent(),
+              );
+              BlocProvider.of<UserBloc>(context).add(UserInitialEvent());
+              BlocProvider.of<UserSearchBloc>(context).add(
+                UserSearchInitialEvent(),
+              );
+            },
+            icon: const Icon(Icons.logout),
+          ),
+        ],
       ),
-      body: BlocBuilder<AuthBloc, AuthState>(
+      body: BlocBuilder<UserBloc, UserState>(
+        bloc: BlocProvider.of<UserBloc>(context)
+          ..add(
+            GetOneUserEvent(
+              getOneUserFilter: GetOneUserFilter(
+                id: currentUserId,
+              ),
+            ),
+          ),
         builder: (context, state) {
-          if (state is AuthStateLoaded) {
-            Map<String, dynamic> tokenPayload = Jwt.parseJwt(state.token);
+          if (state is UserStateLoaded) {
+            UserEntity? foundUser;
+            for (final user in state.users) {
+              if (user.id == currentUserId) {
+                foundUser = user;
+              }
+            }
 
-            return BlocBuilder<UserBloc, UserState>(
-              bloc: BlocProvider.of<UserBloc>(context)
-                ..add(
-                  GetOneUserEvent(
-                    getOneUserFilter: GetOneUserFilter(
-                      id: tokenPayload["sub"],
+            if (foundUser == null) {
+              return Center(
+                child: PlatformTextButton(
+                  child: const Text("Keinen User gefunden"),
+                  onPressed: () => BlocProvider.of<UserBloc>(context).add(
+                    GetOneUserEvent(
+                      getOneUserFilter: GetOneUserFilter(
+                        id: currentUserId,
+                      ),
                     ),
                   ),
                 ),
-              builder: (context, state) {
-                if (state is UserStateLoaded) {
-                  UserEntity? foundUser;
-                  for (final user in state.users) {
-                    if (user.id == tokenPayload["sub"]) {
-                      foundUser = user;
-                    }
-                  }
+              );
+            }
 
-                  if (foundUser == null) {
-                    return Center(
-                      child: PlatformTextButton(
-                        child: const Text("Keinen User gefunden"),
-                        onPressed: () => BlocProvider.of<UserBloc>(context).add(
-                          GetOneUserEvent(
-                            getOneUserFilter: GetOneUserFilter(
-                              id: tokenPayload["sub"],
-                            ),
-                          ),
-                        ),
-                      ),
-                    );
-                  }
-
-                  return UserProfileDataPageOwnUser(user: foundUser);
-                } else if (state is UserStateLoading) {
-                  return Center(child: PlatformCircularProgressIndicator());
-                } else {
-                  return Center(
-                    child: PlatformTextButton(
-                      child: Text(
-                        state is UserStateError ? state.message : "User laden",
-                      ),
-                      onPressed: () => BlocProvider.of<UserBloc>(context).add(
-                        GetOneUserEvent(
-                          getOneUserFilter: GetOneUserFilter(
-                            id: tokenPayload["sub"],
-                          ),
-                        ),
-                      ),
+            return UserProfileDataPageOwnUser(user: foundUser);
+          } else if (state is UserStateLoading) {
+            return Center(child: PlatformCircularProgressIndicator());
+          } else {
+            return Center(
+              child: PlatformTextButton(
+                child: Text(
+                  state is UserStateError ? state.message : "User laden",
+                ),
+                onPressed: () => BlocProvider.of<UserBloc>(context).add(
+                  GetOneUserEvent(
+                    getOneUserFilter: GetOneUserFilter(
+                      id: currentUserId,
                     ),
-                  );
-                }
-              },
+                  ),
+                ),
+              ),
             );
           }
-          return Container();
         },
       ),
     );

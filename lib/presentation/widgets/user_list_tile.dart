@@ -6,13 +6,15 @@ class UserListTile extends StatelessWidget {
   final String userId;
   final String username;
   final Widget? subtitle;
-  final Function? longPress;
+  final Widget? trailing;
+  final Function(String userId)? longPress;
   // image
   const UserListTile({
     super.key,
-    required this.subtitle,
+    this.subtitle,
     required this.username,
     required this.userId,
+    this.trailing,
     this.longPress,
   });
 
@@ -42,7 +44,8 @@ class UserListTile extends StatelessWidget {
               ),
             );
       },
-      onLongPress: longPress != null ? () => longPress!() : null,
+      onLongPress: longPress != null ? () => longPress!(userId) : null,
+      trailing: trailing,
     );
   }
 }

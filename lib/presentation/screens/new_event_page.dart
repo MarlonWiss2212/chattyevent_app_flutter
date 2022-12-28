@@ -82,18 +82,14 @@ class _NewPrivateEventPageState extends State<NewPrivateEventPage> {
                         ),
                       ],
                     ),
-                    SizedBox(
-                      height: 100,
-                      width: double.infinity,
-                      child: SelectGroupchatHorizontalListNewPrivateEvent(
-                        newGroupchatSelected: (groupchat) {
-                          setState(
-                            () {
-                              selectedGroupchat = groupchat;
-                            },
-                          );
-                        },
-                      ),
+                    SelectGroupchatHorizontalListNewPrivateEvent(
+                      newGroupchatSelected: (groupchat) {
+                        setState(
+                          () {
+                            selectedGroupchat = groupchat;
+                          },
+                        );
+                      },
                     ),
                   ],
                 ),

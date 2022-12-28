@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:social_media_app_flutter/domain/dto/groupchat/create_user_groupchat_dto.dart';
+import 'package:social_media_app_flutter/presentation/widgets/image_with_label_button.dart';
 
-class SelectedUsersChipList extends StatelessWidget {
+class SelectedUsersList extends StatelessWidget {
   final void Function(String userId) onDeleted;
   final List<CreateUserGroupchatWithUsername> groupchatUsersWithUsername;
 
-  const SelectedUsersChipList({
+  const SelectedUsersList({
     super.key,
     required this.onDeleted,
     required this.groupchatUsersWithUsername,
@@ -15,17 +16,22 @@ class SelectedUsersChipList extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      height: 60,
+      height: 100,
       child: Row(
         children: [
           Expanded(
             child: ListView.separated(
               scrollDirection: Axis.horizontal,
               itemBuilder: (context, index) {
-                return Chip(
-                  label: Text(groupchatUsersWithUsername[index].username),
-                  onDeleted: () =>
-                      onDeleted(groupchatUsersWithUsername[index].userId),
+                return SizedBox(
+                  width: 100,
+                  height: 100,
+                  child: ImageWithLabelButton(
+                    label: groupchatUsersWithUsername[index].username,
+                    onTap: () => onDeleted(
+                      groupchatUsersWithUsername[index].userId,
+                    ),
+                  ),
                 );
               },
               separatorBuilder: (context, index) {

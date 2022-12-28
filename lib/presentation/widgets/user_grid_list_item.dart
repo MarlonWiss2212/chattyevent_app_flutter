@@ -5,10 +5,12 @@ class UserGridListItem extends StatelessWidget {
   final UserEntity user;
   final Function? onLongPress;
   final Function? onPress;
+  final Widget? button;
 
   const UserGridListItem({
     super.key,
     required this.user,
+    this.button,
     this.onLongPress,
     this.onPress,
   });
@@ -40,7 +42,8 @@ class UserGridListItem extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     softWrap: true,
                   ),
-                )
+                ),
+                if (button != null) ...{button!},
               ],
             ),
           ),

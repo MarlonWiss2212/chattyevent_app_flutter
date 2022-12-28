@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:social_media_app_flutter/presentation/router/auth_guard.dart';
 import 'package:social_media_app_flutter/presentation/screens/chat_page/chat_info_page.dart';
+import 'package:social_media_app_flutter/presentation/screens/chat_page/chat_add_user_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/chat_page/chat_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/chat_page/chat_page_wrapper.dart';
 import 'package:social_media_app_flutter/presentation/screens/home_page/home_page.dart';
@@ -67,6 +68,11 @@ import 'package:social_media_app_flutter/presentation/screens/register_page.dart
           initial: true,
         ),
         AutoRoute(page: ChatInfoPage, guards: [AuthGuard], path: 'info'),
+        AutoRoute(
+          page: ChatAddUserPage,
+          guards: [AuthGuard],
+          path: 'add-user',
+        ),
         RedirectRoute(path: '*', redirectTo: '')
       ],
     ),

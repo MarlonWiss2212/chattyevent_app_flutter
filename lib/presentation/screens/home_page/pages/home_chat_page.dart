@@ -18,7 +18,7 @@ class HomeChatPage extends StatelessWidget {
       body: BlocBuilder<ChatBloc, ChatState>(
         bloc: BlocProvider.of<ChatBloc>(context)
           ..add(
-            ChatRequestEvent(),
+            GetChatsEvent(),
           ),
         builder: (context, state) {
           if (state is ChatStateLoaded) {
@@ -32,7 +32,7 @@ class HomeChatPage extends StatelessWidget {
                   state is ChatStateError ? state.message : "Daten Laden",
                 ),
                 onPressed: () => BlocProvider.of<ChatBloc>(context).add(
-                  ChatRequestEvent(),
+                  GetChatsEvent(),
                 ),
               ),
             );

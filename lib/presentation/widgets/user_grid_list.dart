@@ -8,9 +8,12 @@ class UserGridList extends StatelessWidget {
   final List<UserEntity> users;
   final Function(UserEntity user)? onLongPress;
   final Function(UserEntity user)? onPress;
+  final Widget Function(UserEntity user)? button;
+
   const UserGridList({
     super.key,
     required this.users,
+    this.button,
     this.onLongPress,
     this.onPress,
   });
@@ -21,16 +24,10 @@ class UserGridList extends StatelessWidget {
       itemBuilder: (context, index) {
         return UserGridListItem(
           user: users[index],
-          onLongPress: onLongPress == null
-              ? null
-              : () {
-                  onLongPress!(users[index]);
-                },
-          onPress: onPress == null
-              ? null
-              : () {
-                  onPress!(users[index]);
-                },
+          button: button != null ? button!(users[index]) : null,
+          onLongPress:
+              onLongPress == null ? null : () => onLongPress!(users[index]),
+          onPress: onPress == null ? null : () => onPress!(users[index]),
         );
       },
       itemCount: users.length,
