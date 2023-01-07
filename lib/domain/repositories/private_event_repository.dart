@@ -12,5 +12,13 @@ abstract class PrivateEventRepository {
   });
   Future<Either<Failure, List<PrivateEventEntity>>> getPrivateEventsViaApi();
   Future<Either<Failure, PrivateEventEntity>> updatePrivateEventViaApi();
+  Future<Either<Failure, PrivateEventEntity>>
+      updateMeInPrivateEventWillBeThere({
+    required String privateEventId,
+  });
+  Future<Either<Failure, PrivateEventEntity>>
+      updateMeInPrivateEventWillNotBeThere({
+    required String privateEventId,
+  });
   Future<Either<Failure, void>> deletePrivateEventViaApi();
 }

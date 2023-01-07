@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_bloc.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
+import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 import 'package:social_media_app_flutter/presentation/widgets/chat_page/chat_info_page/private_event_list_groupchat.dart';
 import 'package:social_media_app_flutter/presentation/widgets/divider.dart';
@@ -17,19 +18,16 @@ class Details extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String currentUserId = "";
-
     final authState = BlocProvider.of<AuthBloc>(context).state;
-
     if (authState is AuthStateLoaded) {
       currentUserId = Jwt.parseJwt(authState.token)["sub"];
     }
-
-    bool currentUserIsAdmin = false;
+    GroupchatUserEntity? currentGroupchatUser;
     for (final groupchatUser in groupchat.users) {
       if (groupchatUser.userId == currentUserId &&
           groupchatUser.admin != null &&
           groupchatUser.admin == true) {
-        currentUserIsAdmin = true;
+        currentGroupchatUser = groupchatUser;
       }
     }
 
@@ -73,7 +71,9 @@ class Details extends StatelessWidget {
               style: Theme.of(context).textTheme.titleMedium,
             ),
             const SizedBox(height: 8),
-            if (currentUserIsAdmin) ...{
+            if (currentGroupchatUser != null &&
+                currentGroupchatUser.admin != null &&
+                currentGroupchatUser.admin == true) ...{
               // add user
               ListTile(
                 leading: const Icon(
@@ -99,7 +99,7 @@ class Details extends StatelessWidget {
             UserListGroupchat(
               groupchatUsers: groupchat.users,
               groupchatId: groupchat.id,
-              currentUserId: currentUserId,
+              currentGrouppchatUser: currentGroupchatUser,
             ),
           ] else ...[
             Text(

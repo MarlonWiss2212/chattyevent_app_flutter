@@ -57,8 +57,10 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
       );
     });
 
-    on<MessageRequestEvent>((event, emit) async {
-      emit(MessageStateLoading());
+    on<GetMessagesEvent>((event, emit) async {
+      if (state is MessageInitial) {
+        emit(MessageStateLoading());
+      }
 
       final Either<Failure, List<MessageEntity>> messagesOrFailure =
           await messageUseCases.getMessagesViaApi(
@@ -66,12 +68,45 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
       );
 
       messagesOrFailure.fold(
-        (error) => emit(
-          MessageStateError(message: mapFailureToMessage(error)),
-        ),
-        (messages) => emit(
-          MessageStateLoaded(messages: messages),
-        ),
+        (error) {
+          if (state is MessageStateLoaded) {
+            final state = this.state as MessageStateLoaded;
+            emit(MessageStateLoaded(
+              messages: state.messages,
+              errorMessage: mapFailureToMessage(error),
+            ));
+          } else {
+            emit(MessageStateError(message: mapFailureToMessage(error)));
+          }
+        },
+        (messages) {
+          if (state is MessageStateLoaded) {
+            final state = this.state as MessageStateLoaded;
+
+            List<MessageEntity> messagesToEmit = messages;
+
+            for (final stateMessage in state.messages) {
+              bool savedTheMessage = false;
+
+              innerLoop:
+              for (final messageToEmit in messagesToEmit) {
+                if (messageToEmit.id == stateMessage.id) {
+                  savedTheMessage = true;
+                  break innerLoop;
+                }
+              }
+
+              if (!savedTheMessage) {
+                messagesToEmit.add(stateMessage);
+              }
+            }
+            emit(MessageStateLoaded(messages: messagesToEmit));
+          } else {
+            emit(
+              MessageStateLoaded(messages: messages),
+            );
+          }
+        },
       );
     });
   }

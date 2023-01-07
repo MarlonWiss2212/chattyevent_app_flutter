@@ -16,7 +16,7 @@ class HomeEventPage extends StatelessWidget {
         title: const Text('Social Media App'),
       ),
       body: BlocBuilder<PrivateEventBloc, PrivateEventState>(
-        bloc: BlocProvider.of(context)..add(PrivateEventsRequestEvent()),
+        bloc: BlocProvider.of(context)..add(GetPrivateEventsEvent()),
         builder: (context, state) {
           if (state is PrivateEventStateLoaded) {
             return EventsDetailPage(privateEvents: state.privateEvents);
@@ -31,7 +31,7 @@ class HomeEventPage extends StatelessWidget {
                       : "Daten laden",
                 ),
                 onPressed: () => BlocProvider.of<PrivateEventBloc>(context).add(
-                  PrivateEventsRequestEvent(),
+                  GetPrivateEventsEvent(),
                 ),
               ),
             );

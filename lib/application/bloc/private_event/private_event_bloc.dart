@@ -93,10 +93,10 @@ class PrivateEventBloc extends Bloc<PrivateEventEvent, PrivateEventState> {
             });
 
             if (foundIndex != -1) {
-              List<PrivateEventEntity> newPrivateEvent = state.privateEvents;
-              newPrivateEvent[foundIndex] = privateEvent;
+              List<PrivateEventEntity> newPrivateEvents = state.privateEvents;
+              newPrivateEvents[foundIndex] = privateEvent;
               emit(
-                PrivateEventStateLoaded(privateEvents: newPrivateEvent),
+                PrivateEventStateLoaded(privateEvents: newPrivateEvents),
               );
             } else {
               emit(
@@ -117,7 +117,7 @@ class PrivateEventBloc extends Bloc<PrivateEventEvent, PrivateEventState> {
       );
     });
 
-    on<PrivateEventsRequestEvent>((event, emit) async {
+    on<GetPrivateEventsEvent>((event, emit) async {
       emit(PrivateEventStateLoading());
 
       final Either<Failure, List<PrivateEventEntity>> privateEventOrFailure =
@@ -130,6 +130,150 @@ class PrivateEventBloc extends Bloc<PrivateEventEvent, PrivateEventState> {
         (privateEvents) => emit(
           PrivateEventStateLoaded(privateEvents: privateEvents),
         ),
+      );
+    });
+
+    on<UpdateMeInPrivateEventWillBeThereEvent>((event, emit) async {
+      final Either<Failure, PrivateEventEntity> privateEventOrFailure =
+          await privateEventUseCases.updateMeInPrivateEventWillBeThere(
+        privateEventId: event.privateEventId,
+      );
+
+      privateEventOrFailure.fold(
+        (error) {
+          if (state is PrivateEventStateLoaded) {
+            final state = this.state as PrivateEventStateLoaded;
+            emit(
+              PrivateEventStateLoaded(
+                privateEvents: state.privateEvents,
+                errorMessage: mapFailureToMessage(error),
+              ),
+            );
+          } else {
+            emit(
+              PrivateEventStateError(
+                message: mapFailureToMessage(error),
+              ),
+            );
+          }
+        },
+        (privateEvent) {
+          if (state is PrivateEventStateLoaded) {
+            final state = this.state as PrivateEventStateLoaded;
+
+            int foundIndex = -1;
+            state.privateEvents.asMap().forEach((index, chatToFind) {
+              if (chatToFind.id == privateEvent.id) {
+                foundIndex = index;
+              }
+            });
+
+            if (foundIndex != -1) {
+              List<PrivateEventEntity> newPrivateEvents = state.privateEvents;
+              newPrivateEvents[foundIndex] = PrivateEventEntity(
+                id: privateEvent.id,
+                title: newPrivateEvents[foundIndex].title,
+                coverImageLink: newPrivateEvents[foundIndex].coverImageLink,
+                connectedGroupchat:
+                    newPrivateEvents[foundIndex].connectedGroupchat,
+                eventDate: newPrivateEvents[foundIndex].eventDate,
+                usersThatWillBeThere: privateEvent.usersThatWillBeThere,
+                usersThatWillNotBeThere: privateEvent.usersThatWillNotBeThere,
+                createdBy: newPrivateEvents[foundIndex].createdBy,
+                createdAt: newPrivateEvents[foundIndex].createdAt,
+              );
+
+              emit(
+                PrivateEventStateLoaded(privateEvents: newPrivateEvents),
+              );
+            } else {
+              emit(
+                PrivateEventStateLoaded(
+                  privateEvents: List.from(state.privateEvents)
+                    ..add(privateEvent),
+                ),
+              );
+            }
+          } else {
+            emit(
+              PrivateEventStateLoaded(
+                privateEvents: [privateEvent],
+              ),
+            );
+          }
+        },
+      );
+    });
+
+    on<UpdateMeInPrivateEventWillNotBeThereEvent>((event, emit) async {
+      final Either<Failure, PrivateEventEntity> privateEventOrFailure =
+          await privateEventUseCases.updateMeInPrivateEventWillNotBeThere(
+        privateEventId: event.privateEventId,
+      );
+
+      privateEventOrFailure.fold(
+        (error) {
+          if (state is PrivateEventStateLoaded) {
+            final state = this.state as PrivateEventStateLoaded;
+            emit(
+              PrivateEventStateLoaded(
+                privateEvents: state.privateEvents,
+                errorMessage: mapFailureToMessage(error),
+              ),
+            );
+          } else {
+            emit(
+              PrivateEventStateError(
+                message: mapFailureToMessage(error),
+              ),
+            );
+          }
+        },
+        (privateEvent) {
+          if (state is PrivateEventStateLoaded) {
+            final state = this.state as PrivateEventStateLoaded;
+
+            int foundIndex = -1;
+            state.privateEvents.asMap().forEach((index, chatToFind) {
+              if (chatToFind.id == privateEvent.id) {
+                foundIndex = index;
+              }
+            });
+
+            if (foundIndex != -1) {
+              List<PrivateEventEntity> newPrivateEvents = state.privateEvents;
+              newPrivateEvents[foundIndex] = PrivateEventEntity(
+                id: privateEvent.id,
+                title: newPrivateEvents[foundIndex].title,
+                coverImageLink: newPrivateEvents[foundIndex].coverImageLink,
+                connectedGroupchat:
+                    newPrivateEvents[foundIndex].connectedGroupchat,
+                eventDate: newPrivateEvents[foundIndex].eventDate,
+                usersThatWillBeThere: privateEvent.usersThatWillBeThere,
+                usersThatWillNotBeThere: privateEvent.usersThatWillNotBeThere,
+                createdBy: newPrivateEvents[foundIndex].createdBy,
+                createdAt: newPrivateEvents[foundIndex].createdAt,
+              );
+
+              emit(
+                PrivateEventStateLoaded(privateEvents: newPrivateEvents),
+              );
+            } else {
+              emit(
+                PrivateEventStateLoaded(
+                  privateEvents: List.from(state.privateEvents)
+                    ..add(privateEvent),
+                ),
+              );
+            }
+          } else {
+            emit(
+              PrivateEventStateLoaded(
+                privateEvents: [privateEvent],
+              ),
+            );
+          }
+        },
       );
     });
   }

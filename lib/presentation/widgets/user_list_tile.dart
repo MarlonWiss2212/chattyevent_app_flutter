@@ -9,6 +9,7 @@ class UserListTile extends StatelessWidget {
   final Widget? trailing;
   final Function(String userId)? longPress;
   // image
+
   const UserListTile({
     super.key,
     this.subtitle,
@@ -38,11 +39,7 @@ class UserListTile extends StatelessWidget {
       ),
       subtitle: subtitle,
       onTap: () {
-        AutoRouter.of(context).root.push(
-              ProfilePageRoute(
-                userId: userId,
-              ),
-            );
+        AutoRouter.of(context).root.push(ProfilePageRoute(userId: userId));
       },
       onLongPress: longPress != null ? () => longPress!(userId) : null,
       trailing: trailing,

@@ -9,13 +9,13 @@ import 'package:social_media_app_flutter/presentation/widgets/user_list_tile.dar
 class UserListGroupchat extends StatelessWidget {
   final List<GroupchatUserEntity> groupchatUsers;
   final String groupchatId;
-  final String currentUserId;
+  final GroupchatUserEntity? currentGrouppchatUser;
 
   const UserListGroupchat({
     super.key,
     required this.groupchatUsers,
     required this.groupchatId,
-    required this.currentUserId,
+    required this.currentGrouppchatUser,
   });
 
   @override
@@ -53,28 +53,32 @@ class UserListGroupchat extends StatelessWidget {
                   ? foundUser.username!
                   : "Kein Username",
               userId: groupchatUser.userId,
-              longPress: (userId) {
-                if (currentUserId == userId) {
-                  return;
-                }
+              longPress: currentGrouppchatUser != null &&
+                      currentGrouppchatUser!.admin != null &&
+                      currentGrouppchatUser!.admin == true
+                  ? (userId) {
+                      if (currentGrouppchatUser!.userId == userId) {
+                        return;
+                      }
 
-                showMenu(
-                  position:
-                      const RelativeRect.fromLTRB(0, double.infinity, 0, 0),
-                  context: context,
-                  items: [
-                    PopupMenuItem(
-                      child: const Text("Kicken"),
-                      onTap: () => BlocProvider.of<ChatBloc>(context).add(
-                        DeleteUserFromChatEvent(
-                          groupchatId: groupchatId,
-                          userIdToDelete: userId,
-                        ),
-                      ),
-                    )
-                  ],
-                );
-              },
+                      showMenu(
+                        position: const RelativeRect.fromLTRB(
+                            0, double.infinity, 0, 0),
+                        context: context,
+                        items: [
+                          PopupMenuItem(
+                            child: const Text("Kicken"),
+                            onTap: () => BlocProvider.of<ChatBloc>(context).add(
+                              DeleteUserFromChatEvent(
+                                groupchatId: groupchatId,
+                                userIdToDelete: userId,
+                              ),
+                            ),
+                          )
+                        ],
+                      );
+                    }
+                  : null,
             ),
           );
         }

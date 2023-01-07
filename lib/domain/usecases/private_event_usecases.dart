@@ -24,6 +24,24 @@ class PrivateEventUseCases {
     );
   }
 
+  Future<Either<Failure, PrivateEventEntity>>
+      updateMeInPrivateEventWillBeThere({
+    required String privateEventId,
+  }) async {
+    return await privateEventRepository.updateMeInPrivateEventWillBeThere(
+      privateEventId: privateEventId,
+    );
+  }
+
+  Future<Either<Failure, PrivateEventEntity>>
+      updateMeInPrivateEventWillNotBeThere({
+    required String privateEventId,
+  }) async {
+    return await privateEventRepository.updateMeInPrivateEventWillNotBeThere(
+      privateEventId: privateEventId,
+    );
+  }
+
   Future<Either<Failure, List<PrivateEventEntity>>>
       getPrivateEventsViaApi() async {
     return await privateEventRepository.getPrivateEventsViaApi();

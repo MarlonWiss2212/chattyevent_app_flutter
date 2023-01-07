@@ -28,19 +28,27 @@ class UserGridListItem extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const SizedBox(),
-                CircleAvatar(
-                  backgroundColor: Theme.of(context).colorScheme.secondary,
-                ),
-                Hero(
-                  tag: "${user.id} username",
-                  child: Text(
-                    user.username ?? "Kein Name",
-                    style: Theme.of(context).textTheme.labelMedium,
-                    overflow: TextOverflow.ellipsis,
-                    softWrap: true,
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      // for space between
+                      const SizedBox(),
+                      CircleAvatar(
+                        backgroundColor:
+                            Theme.of(context).colorScheme.secondary,
+                      ),
+                      Hero(
+                        tag: "${user.id} username",
+                        child: Text(
+                          user.username ?? "Kein Name",
+                          style: Theme.of(context).textTheme.labelMedium,
+                          overflow: TextOverflow.ellipsis,
+                          softWrap: true,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 if (button != null) ...{button!},

@@ -3,9 +3,9 @@ part of 'message_bloc.dart';
 @immutable
 abstract class MessageEvent {}
 
-class MessageRequestEvent extends MessageEvent {
+class GetMessagesEvent extends MessageEvent {
   final GetMessagesFilter getMessagesFilter;
-  MessageRequestEvent({required this.getMessagesFilter});
+  GetMessagesEvent({required this.getMessagesFilter});
 }
 
 class MessageInitialEvent extends MessageEvent {}

@@ -118,4 +118,71 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
     // TODO: implement deletePrivateEventViaApi
     throw UnimplementedError();
   }
+
+  @override
+  Future<Either<Failure, PrivateEventEntity>>
+      updateMeInPrivateEventWillBeThere({
+    required String privateEventId,
+  }) async {
+    try {
+      final response = await graphQlDatasource.mutation(
+        """
+          mutation UpdateMeInPrivateEventWillBeThere(\$privateEventId: String!) {
+            updateMeInPrivateEventWillBeThere(privateEventId: \$privateEventId) {
+              _id
+              eventDate
+              usersThatWillBeThere
+              usersThatWillNotBeThere
+            }
+          }
+        """,
+        variables: {"privateEventId": privateEventId},
+      );
+
+      if (response.hasException) {
+        return Left(GeneralFailure());
+      }
+      return Right(
+        PrivateEventModel.fromJson(
+          response.data!["updateMeInPrivateEventWillBeThere"],
+        ),
+      );
+    } catch (e) {
+      return Left(ServerFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, PrivateEventEntity>>
+      updateMeInPrivateEventWillNotBeThere({
+    required String privateEventId,
+  }) async {
+    try {
+      final response = await graphQlDatasource.mutation(
+        """
+          mutation UpdateMeInPrivateEventWillNotBeThere(\$privateEventId: String!) {
+            updateMeInPrivateEventWillNotBeThere(privateEventId: \$privateEventId) {
+              _id
+              eventDate
+              usersThatWillBeThere
+              usersThatWillNotBeThere
+            }
+          }
+        """,
+        variables: {"privateEventId": privateEventId},
+      );
+
+      if (response.hasException) {
+        return Left(GeneralFailure());
+      }
+      return Right(
+        PrivateEventModel.fromJson(
+          response.data!["updateMeInPrivateEventWillNotBeThere"],
+        ),
+      );
+    } catch (e) {
+      print(e);
+      return Left(ServerFailure());
+    }
+  }
 }

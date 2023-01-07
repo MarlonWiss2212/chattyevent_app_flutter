@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_bloc.dart';
+import 'package:social_media_app_flutter/application/bloc/private_event/private_event_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_bloc.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
 import 'package:social_media_app_flutter/presentation/widgets/user_list_tile.dart';
 
 class ListOfAllUsersForPrivateEvent extends StatelessWidget {
+  final String privateEventId;
   final List<String> privateEventUserIdsThatWillBeThere;
   final List<String> privateEventUserIdsThatWillNotBeThere;
   final List<GroupchatUserEntity> invitedUsers;
@@ -16,6 +18,7 @@ class ListOfAllUsersForPrivateEvent extends StatelessWidget {
     super.key,
     required this.privateEventUserIdsThatWillBeThere,
     required this.privateEventUserIdsThatWillNotBeThere,
+    required this.privateEventId,
     required this.invitedUsers,
   });
 
@@ -62,8 +65,12 @@ class ListOfAllUsersForPrivateEvent extends StatelessWidget {
                         color: Colors.red,
                       ),
                       onPressed: () {
-                        print(2);
-                      }, // user should leave private event
+                        BlocProvider.of<PrivateEventBloc>(context).add(
+                          UpdateMeInPrivateEventWillNotBeThereEvent(
+                            privateEventId: privateEventId,
+                          ),
+                        );
+                      },
                     )
                   : null,
             ),
@@ -99,8 +106,12 @@ class ListOfAllUsersForPrivateEvent extends StatelessWidget {
                         color: Colors.green,
                       ),
                       onPressed: () {
-                        print(1);
-                      }, // user should join private event
+                        BlocProvider.of<PrivateEventBloc>(context).add(
+                          UpdateMeInPrivateEventWillBeThereEvent(
+                            privateEventId: privateEventId,
+                          ),
+                        );
+                      },
                     )
                   : null,
             ),
@@ -136,8 +147,11 @@ class ListOfAllUsersForPrivateEvent extends StatelessWidget {
                         color: Colors.green,
                       ),
                       onPressed: () {
-                        print(1);
-                      }, // user should join private event
+                        BlocProvider.of<PrivateEventBloc>(context).add(
+                          UpdateMeInPrivateEventWillBeThereEvent(
+                              privateEventId: privateEventId),
+                        );
+                      },
                     ) //,
                   //IconButton(
                   //icon: const Icon(

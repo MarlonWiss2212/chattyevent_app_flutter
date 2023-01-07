@@ -5,9 +5,9 @@ import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_use
 import 'package:social_media_app_flutter/domain/entities/private_event_entity.dart';
 import 'package:social_media_app_flutter/presentation/widgets/privat_event_page/info_tab/list_of_all_users_for_private_event.dart';
 
-class UserListPrivateEvent extends StatelessWidget {
+class UserAreaPrivateEvent extends StatelessWidget {
   final PrivateEventEntity privateEvent;
-  const UserListPrivateEvent({super.key, required this.privateEvent});
+  const UserAreaPrivateEvent({super.key, required this.privateEvent});
 
   @override
   Widget build(BuildContext context) {
@@ -73,12 +73,29 @@ class UserListPrivateEvent extends StatelessWidget {
               }
             }
 
-            return ListOfAllUsersForPrivateEvent(
-              privateEventUserIdsThatWillBeThere:
-                  privateEvent.usersThatWillBeThere ?? [],
-              privateEventUserIdsThatWillNotBeThere:
-                  privateEvent.usersThatWillNotBeThere ?? [],
-              invitedUsers: invitedUsers,
+            return Column(
+              children: [
+                if (privateEvent.usersThatWillBeThere != null) ...[
+                  Text(
+                    "Mitglieder die da sein werden: ${privateEvent.usersThatWillBeThere!.length.toString()}",
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  if (privateEvent.usersThatWillBeThere!.isNotEmpty ||
+                      invitedUsers.isNotEmpty ||
+                      privateEvent.usersThatWillNotBeThere != null &&
+                          privateEvent.usersThatWillNotBeThere!.isNotEmpty) ...{
+                    const SizedBox(height: 8)
+                  }
+                ],
+                ListOfAllUsersForPrivateEvent(
+                  privateEventId: privateEvent.id,
+                  privateEventUserIdsThatWillBeThere:
+                      privateEvent.usersThatWillBeThere ?? [],
+                  privateEventUserIdsThatWillNotBeThere:
+                      privateEvent.usersThatWillNotBeThere ?? [],
+                  invitedUsers: invitedUsers,
+                )
+              ],
             );
           },
         ),

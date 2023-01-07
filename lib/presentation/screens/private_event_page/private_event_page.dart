@@ -33,11 +33,6 @@ class PrivateEventPage extends StatelessWidget {
 
     // load data here so that it does not get double loaded when the bloc state changes
     BlocProvider.of<UserBloc>(context).add(GetUsersEvent());
-    BlocProvider.of<MessageBloc>(context).add(
-      MessageRequestEvent(
-        getMessagesFilter: GetMessagesFilter(),
-      ),
-    );
 
     var groupchatLoaded = false;
     return BlocBuilder<PrivateEventBloc, PrivateEventState>(
@@ -58,7 +53,15 @@ class PrivateEventPage extends StatelessWidget {
           BlocProvider.of<ChatBloc>(context).add(
             GetOneChatEvent(
               getOneGroupchatFilter: GetOneGroupchatFilter(
-                  id: foundPrivateEvent.connectedGroupchat!),
+                id: foundPrivateEvent.connectedGroupchat!,
+              ),
+            ),
+          );
+          BlocProvider.of<MessageBloc>(context).add(
+            GetMessagesEvent(
+              getMessagesFilter: GetMessagesFilter(
+                groupchatTo: foundPrivateEvent.connectedGroupchat!,
+              ),
             ),
           );
           groupchatLoaded = true;
@@ -74,8 +77,8 @@ class PrivateEventPage extends StatelessWidget {
               appBar: PlatformAppBar(
                 leading: const AutoLeadingButton(),
                 title: Text(
-                  foundPrivateEvent != null
-                      ? foundPrivateEvent.title ?? "Kein Titel"
+                  foundPrivateEvent != null && foundPrivateEvent.title != null
+                      ? foundPrivateEvent.title!
                       : "Kein Titel",
                 ),
                 material: (context, platform) => MaterialAppBarData(

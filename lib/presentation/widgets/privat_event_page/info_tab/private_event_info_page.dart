@@ -1,16 +1,9 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:social_media_app_flutter/application/bloc/chat/chat_bloc.dart';
-import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
-import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event_entity.dart';
-import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 import 'package:social_media_app_flutter/presentation/widgets/divider.dart';
 import 'package:social_media_app_flutter/presentation/widgets/privat_event_page/info_tab/connected_groupchat_tile_private_event.dart';
-import 'package:social_media_app_flutter/presentation/widgets/privat_event_page/info_tab/list_of_all_users_for_private_event.dart';
-import 'package:social_media_app_flutter/presentation/widgets/privat_event_page/info_tab/user_list_private_event.dart';
+import 'package:social_media_app_flutter/presentation/widgets/privat_event_page/info_tab/user_area_private_event.dart';
 
 class PrivateEventInfoPage extends StatelessWidget {
   final PrivateEventEntity privateEvent;
@@ -44,10 +37,17 @@ class PrivateEventInfoPage extends StatelessWidget {
             ),
             const CustomDivider(),
             // connectedGroupchat
+            Text(
+              "Verbundener Gruppenchat: ",
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+            if (privateEvent.connectedGroupchat != null) ...{
+              const SizedBox(height: 8)
+            },
             ConnectedGroupchatTilePrivateEvent(privateEvent: privateEvent),
             const CustomDivider(),
-            // list of users for the privat event
-            UserListPrivateEvent(privateEvent: privateEvent),
+            // title of users that will be there and list of users for the privat event
+            UserAreaPrivateEvent(privateEvent: privateEvent),
             const CustomDivider(),
             // event date
             Row(

@@ -14,7 +14,7 @@ class ChatInfoPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // should get the private events for this chat in future for more effeciancy
-    BlocProvider.of<PrivateEventBloc>(context).add(PrivateEventsRequestEvent());
+    BlocProvider.of<PrivateEventBloc>(context).add(GetPrivateEventsEvent());
 
     return BlocBuilder<ChatBloc, ChatState>(builder: (context, state) {
       GroupchatEntity? foundGroupchat;

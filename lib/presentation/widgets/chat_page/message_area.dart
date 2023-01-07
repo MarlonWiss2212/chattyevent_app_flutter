@@ -38,8 +38,10 @@ class MessageArea extends StatelessWidget {
                   state is MessageStateError ? state.message : "Daten laden",
                 ),
                 onPressed: () => BlocProvider.of<MessageBloc>(context).add(
-                  MessageRequestEvent(
-                    getMessagesFilter: GetMessagesFilter(),
+                  GetMessagesEvent(
+                    getMessagesFilter: GetMessagesFilter(
+                      groupchatTo: groupchatTo,
+                    ),
                   ),
                 ),
               ),

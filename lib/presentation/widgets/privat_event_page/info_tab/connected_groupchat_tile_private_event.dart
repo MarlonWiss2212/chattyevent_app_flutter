@@ -8,8 +8,10 @@ import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 
 class ConnectedGroupchatTilePrivateEvent extends StatelessWidget {
   final PrivateEventEntity privateEvent;
-  const ConnectedGroupchatTilePrivateEvent(
-      {super.key, required this.privateEvent});
+  const ConnectedGroupchatTilePrivateEvent({
+    super.key,
+    required this.privateEvent,
+  });
 
   @override
   Widget build(BuildContext context) {
