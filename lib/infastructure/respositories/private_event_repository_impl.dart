@@ -185,4 +185,38 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
       return Left(ServerFailure());
     }
   }
+
+  @override
+  Future<Either<Failure, PrivateEventEntity>>
+      updateMeInPrivateEventNoInformationOnWillBeThere({
+    required String privateEventId,
+  }) async {
+    try {
+      final response = await graphQlDatasource.mutation(
+        """
+          mutation UpdateMeInPrivateEventNoInformationOnWillBeThere(\$privateEventId: String!) {
+            updateMeInPrivateEventNoInformationOnWillBeThere(privateEventId: \$privateEventId) {
+              _id
+              eventDate
+              usersThatWillBeThere
+              usersThatWillNotBeThere
+            }
+          }
+        """,
+        variables: {"privateEventId": privateEventId},
+      );
+
+      if (response.hasException) {
+        return Left(GeneralFailure());
+      }
+      return Right(
+        PrivateEventModel.fromJson(
+          response.data!["updateMeInPrivateEventNoInformationOnWillBeThere"],
+        ),
+      );
+    } catch (e) {
+      print(e);
+      return Left(ServerFailure());
+    }
+  }
 }

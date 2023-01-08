@@ -31,10 +31,7 @@ class PrivateEventPage extends StatelessWidget {
       );
     }
 
-    // load data here so that it does not get double loaded when the bloc state changes
-    BlocProvider.of<UserBloc>(context).add(GetUsersEvent());
-
-    var groupchatLoaded = false;
+    var dataLoaded = false;
     return BlocBuilder<PrivateEventBloc, PrivateEventState>(
       builder: (context, state) {
         PrivateEventEntity? foundPrivateEvent;
@@ -49,7 +46,7 @@ class PrivateEventPage extends StatelessWidget {
 
         if (foundPrivateEvent != null &&
             foundPrivateEvent.connectedGroupchat != null &&
-            groupchatLoaded == false) {
+            dataLoaded == false) {
           BlocProvider.of<ChatBloc>(context).add(
             GetOneChatEvent(
               getOneGroupchatFilter: GetOneGroupchatFilter(
@@ -64,7 +61,8 @@ class PrivateEventPage extends StatelessWidget {
               ),
             ),
           );
-          groupchatLoaded = true;
+          BlocProvider.of<UserBloc>(context).add(GetUsersEvent());
+          dataLoaded = true;
         }
 
         return AutoTabsRouter.tabBar(

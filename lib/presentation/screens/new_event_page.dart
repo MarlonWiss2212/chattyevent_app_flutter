@@ -30,13 +30,14 @@ class _NewPrivateEventPageState extends State<NewPrivateEventPage> {
         title: const Text('Neues Event'),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
         child: Column(
           children: [
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
                   children: [
+                    const SizedBox(height: 8.0),
                     PlatformTextField(
                       controller: titleFieldController,
                       hintText: 'Name*',
@@ -54,10 +55,12 @@ class _NewPrivateEventPageState extends State<NewPrivateEventPage> {
                             firstDate: currentDate,
                             lastDate: DateTime(currentDate.year + 10),
                           );
-                          TimeOfDay currentTime = TimeOfDay.now();
                           TimeOfDay? newTime = await showTimePicker(
                             context: context,
-                            initialTime: currentTime,
+                            initialTime: TimeOfDay(
+                              hour: date.hour,
+                              minute: date.minute,
+                            ),
                           );
 
                           if (newDate == null || newTime == null) return;
@@ -152,6 +155,7 @@ class _NewPrivateEventPageState extends State<NewPrivateEventPage> {
                 ),
               ),
             ),
+            const SizedBox(height: 8.0),
           ],
         ),
       ),

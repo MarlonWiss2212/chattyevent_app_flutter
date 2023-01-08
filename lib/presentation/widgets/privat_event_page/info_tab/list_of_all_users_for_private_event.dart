@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_bloc.dart';
-import 'package:social_media_app_flutter/application/bloc/private_event/private_event_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_bloc.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
+import 'package:social_media_app_flutter/presentation/widgets/privat_event_page/info_tab/icon_buttons_my_user_list_tile/accept_invite_icon_button.dart';
+import 'package:social_media_app_flutter/presentation/widgets/privat_event_page/info_tab/icon_buttons_my_user_list_tile/decline_invite_icon_button.dart';
+import 'package:social_media_app_flutter/presentation/widgets/privat_event_page/info_tab/icon_buttons_my_user_list_tile/neutral_invite_icon_button.dart';
 import 'package:social_media_app_flutter/presentation/widgets/user_list_tile.dart';
 
 class ListOfAllUsersForPrivateEvent extends StatelessWidget {
@@ -59,18 +61,12 @@ class ListOfAllUsersForPrivateEvent extends StatelessWidget {
                   : "Kein Username",
               userId: privateEventUserIdThatWillBeThere,
               trailing: privateEventUserIdThatWillBeThere == currentUserId
-                  ? IconButton(
-                      icon: const Icon(
-                        Icons.close,
-                        color: Colors.red,
-                      ),
-                      onPressed: () {
-                        BlocProvider.of<PrivateEventBloc>(context).add(
-                          UpdateMeInPrivateEventWillNotBeThereEvent(
-                            privateEventId: privateEventId,
-                          ),
-                        );
-                      },
+                  ? Wrap(
+                      spacing: 8,
+                      children: [
+                        DeclineInviteIconButton(privateEventId: privateEventId),
+                        NeutralInviteIconButton(privateEventId: privateEventId)
+                      ],
                     )
                   : null,
             ),
@@ -100,18 +96,12 @@ class ListOfAllUsersForPrivateEvent extends StatelessWidget {
                   : "Kein Username",
               userId: privateEventUserIdThatWillNotBeThere,
               trailing: privateEventUserIdThatWillNotBeThere == currentUserId
-                  ? IconButton(
-                      icon: const Icon(
-                        Icons.done,
-                        color: Colors.green,
-                      ),
-                      onPressed: () {
-                        BlocProvider.of<PrivateEventBloc>(context).add(
-                          UpdateMeInPrivateEventWillBeThereEvent(
-                            privateEventId: privateEventId,
-                          ),
-                        );
-                      },
+                  ? Wrap(
+                      spacing: 8,
+                      children: [
+                        AcceptInviteIconButton(privateEventId: privateEventId),
+                        NeutralInviteIconButton(privateEventId: privateEventId)
+                      ],
                     )
                   : null,
             ),
@@ -138,32 +128,13 @@ class ListOfAllUsersForPrivateEvent extends StatelessWidget {
                   : "Kein Username",
               userId: invitedUser.userId,
               trailing: invitedUser.userId == currentUserId
-                  ? //Row(
-                  //mainAxisSize: MainAxisSize.min,
-                  //children: [
-                  IconButton(
-                      icon: const Icon(
-                        Icons.done,
-                        color: Colors.green,
-                      ),
-                      onPressed: () {
-                        BlocProvider.of<PrivateEventBloc>(context).add(
-                          UpdateMeInPrivateEventWillBeThereEvent(
-                              privateEventId: privateEventId),
-                        );
-                      },
-                    ) //,
-                  //IconButton(
-                  //icon: const Icon(
-                  //     Icons.close,
-                  //       color: Colors.red,
-                  //     ),
-                  //    onPressed: () {
-                  //      print(2);
-                  //     }, // user should leave private event
-                  ///    ),
-                  //  ],
-                  // )
+                  ? Wrap(
+                      spacing: 8,
+                      children: [
+                        AcceptInviteIconButton(privateEventId: privateEventId),
+                        DeclineInviteIconButton(privateEventId: privateEventId)
+                      ],
+                    )
                   : null,
             ),
           );

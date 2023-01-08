@@ -42,6 +42,16 @@ class PrivateEventUseCases {
     );
   }
 
+  Future<Either<Failure, PrivateEventEntity>>
+      updateMeInPrivateEventNoInformationOnWillBeThere({
+    required String privateEventId,
+  }) async {
+    return await privateEventRepository
+        .updateMeInPrivateEventNoInformationOnWillBeThere(
+      privateEventId: privateEventId,
+    );
+  }
+
   Future<Either<Failure, List<PrivateEventEntity>>>
       getPrivateEventsViaApi() async {
     return await privateEventRepository.getPrivateEventsViaApi();

@@ -24,6 +24,7 @@ class _ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) {
     // load data here so that it does not get double loaded when the bloc state changes
     BlocProvider.of<UserBloc>(context).add(GetUsersEvent());
+
     BlocProvider.of<MessageBloc>(context).add(
       GetMessagesEvent(
         getMessagesFilter: GetMessagesFilter(groupchatTo: widget.groupchatId),

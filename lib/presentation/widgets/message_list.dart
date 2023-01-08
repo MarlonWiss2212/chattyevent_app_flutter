@@ -44,11 +44,9 @@ class MessageList extends StatelessWidget {
             }
 
             return MessageContainer(
-              title: foundUser == null
-                  ? messageEntity.createdBy ?? "Keine Id gefunden"
-                  : foundUser.username ??
-                      messageEntity.createdBy ??
-                      "Keine Id gefunden",
+              title: foundUser != null && foundUser.username != null
+                  ? foundUser.username!
+                  : messageEntity.createdBy ?? "",
               date: messageEntity.createdAt != null
                   ? DateFormat.jm().format(messageEntity.createdAt!)
                   : "Fehler",

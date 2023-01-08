@@ -20,5 +20,9 @@ abstract class PrivateEventRepository {
       updateMeInPrivateEventWillNotBeThere({
     required String privateEventId,
   });
+  Future<Either<Failure, PrivateEventEntity>>
+      updateMeInPrivateEventNoInformationOnWillBeThere({
+    required String privateEventId,
+  });
   Future<Either<Failure, void>> deletePrivateEventViaApi();
 }

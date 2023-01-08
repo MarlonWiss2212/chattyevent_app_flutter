@@ -26,3 +26,11 @@ class UpdateMeInPrivateEventWillNotBeThereEvent extends PrivateEventEvent {
   final String privateEventId;
   UpdateMeInPrivateEventWillNotBeThereEvent({required this.privateEventId});
 }
+
+class UpdateMeInPrivateEventNoInformationOnWillBeThereEvent
+    extends PrivateEventEvent {
+  final String privateEventId;
+  UpdateMeInPrivateEventNoInformationOnWillBeThereEvent({
+    required this.privateEventId,
+  });
+}
