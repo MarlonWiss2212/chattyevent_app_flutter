@@ -15,7 +15,8 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
   Future<Either<Failure, PrivateEventEntity>> createPrivateEventViaApi(
       CreatePrivateEventDto createPrivateEventDto) async {
     try {
-      final response = await graphQlDatasource.mutation("""
+      final response = await graphQlDatasource.mutation(
+        """
         mutation CreatePrivatEvent(\$input: CreatePrivateEventInput!) {
           createPrivateEvent(createPrivateEventInput: \$input) {
             _id
@@ -29,9 +30,12 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
             createdAt
           }
         }
-      """, variables: {'input': createPrivateEventDto.toMap()});
+      """,
+        variables: {'input': await createPrivateEventDto.toMap()},
+      );
 
       if (response.hasException) {
+        print(response.exception);
         return Left(GeneralFailure());
       }
 
@@ -89,6 +93,7 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
             title
             connectedGroupchat
             eventDate
+            coverImageLink
           }
         }
       """);
@@ -130,7 +135,6 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
           mutation UpdateMeInPrivateEventWillBeThere(\$privateEventId: String!) {
             updateMeInPrivateEventWillBeThere(privateEventId: \$privateEventId) {
               _id
-              eventDate
               usersThatWillBeThere
               usersThatWillNotBeThere
             }
@@ -163,7 +167,6 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
           mutation UpdateMeInPrivateEventWillNotBeThere(\$privateEventId: String!) {
             updateMeInPrivateEventWillNotBeThere(privateEventId: \$privateEventId) {
               _id
-              eventDate
               usersThatWillBeThere
               usersThatWillNotBeThere
             }
@@ -197,7 +200,6 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
           mutation UpdateMeInPrivateEventNoInformationOnWillBeThere(\$privateEventId: String!) {
             updateMeInPrivateEventNoInformationOnWillBeThere(privateEventId: \$privateEventId) {
               _id
-              eventDate
               usersThatWillBeThere
               usersThatWillNotBeThere
             }

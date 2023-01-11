@@ -18,13 +18,26 @@ class PrivateEventInfoPage extends StatelessWidget {
         child: Column(
           children: [
             // Profile Image
-            SizedBox(
-              width: size.width,
-              height: 300,
-              child: Card(
-                color: Theme.of(context).colorScheme.secondaryContainer,
+            if (privateEvent.coverImageLink != null) ...{
+              Container(
+                decoration: const BoxDecoration(shape: BoxShape.circle),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(8.0),
+                  child: Image.network(
+                    privateEvent.coverImageLink!,
+                    fit: BoxFit.fitWidth,
+                  ),
+                ),
+              )
+            } else ...{
+              SizedBox(
+                width: size.width,
+                height: 300,
+                child: Card(
+                  color: Theme.of(context).colorScheme.secondaryContainer,
+                ),
               ),
-            ),
+            },
             const SizedBox(height: 20),
             // name
             Hero(
@@ -59,7 +72,13 @@ class PrivateEventInfoPage extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                Text(DateFormat.yMd().add_jm().format(privateEvent.eventDate))
+                Text(
+                  privateEvent.eventDate != null
+                      ? DateFormat.yMd()
+                          .add_jm()
+                          .format(privateEvent.eventDate!)
+                      : "Kein Datum",
+                )
               ],
             )
           ],

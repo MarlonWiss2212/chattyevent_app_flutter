@@ -10,21 +10,25 @@ import 'package:social_media_app_flutter/application/bloc/user/user_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/user_search/user_search_bloc.dart';
 import 'package:social_media_app_flutter/domain/repositories/auth_repository.dart';
 import 'package:social_media_app_flutter/domain/repositories/chat_repository.dart';
+import 'package:social_media_app_flutter/domain/repositories/device/image_picker_repository.dart';
 import 'package:social_media_app_flutter/domain/repositories/device/notification_repository.dart';
 import 'package:social_media_app_flutter/domain/repositories/message_repository.dart';
 import 'package:social_media_app_flutter/domain/repositories/private_event_repository.dart';
 import 'package:social_media_app_flutter/domain/repositories/user_repository.dart';
 import 'package:social_media_app_flutter/domain/usecases/auth_usecases.dart';
 import 'package:social_media_app_flutter/domain/usecases/chat_usecases.dart';
+import 'package:social_media_app_flutter/domain/usecases/image_picker_usecases.dart';
 import 'package:social_media_app_flutter/domain/usecases/message_usecases.dart';
 import 'package:social_media_app_flutter/domain/usecases/notification_usecases.dart';
 import 'package:social_media_app_flutter/domain/usecases/private_event_usecases.dart';
 import 'package:social_media_app_flutter/domain/usecases/user_usecases.dart';
+import 'package:social_media_app_flutter/infastructure/datasources/device/image_picker.dart';
 import 'package:social_media_app_flutter/infastructure/datasources/device/notification.dart';
 import 'package:social_media_app_flutter/infastructure/datasources/remote/graphql.dart';
 import 'package:social_media_app_flutter/infastructure/datasources/local/sharedPreferences.dart';
 import 'package:social_media_app_flutter/infastructure/respositories/auth_repository_impl.dart';
 import 'package:social_media_app_flutter/infastructure/respositories/chat_repository_impl.dart';
+import 'package:social_media_app_flutter/infastructure/respositories/device/image_picker_repository_impl.dart';
 import 'package:social_media_app_flutter/infastructure/respositories/device/notification_repository_impl.dart';
 import 'package:social_media_app_flutter/infastructure/respositories/message_repository_impl.dart';
 import 'package:social_media_app_flutter/infastructure/respositories/private_event_repository_impl.dart';
@@ -32,7 +36,7 @@ import 'package:social_media_app_flutter/infastructure/respositories/user_reposi
 
 final serviceLocator = GetIt.I;
 
-Future<void> init({Link? link}) async {
+Future<void> init({String? token}) async {
   serviceLocator.allowReassignment = true;
   // Blocs
   serviceLocator.registerFactory(
@@ -98,6 +102,11 @@ Future<void> init({Link? link}) async {
       notificationRepository: serviceLocator(),
     ),
   );
+  serviceLocator.registerLazySingleton(
+    () => ImagePickerUseCases(
+      imagePickerRepository: serviceLocator(),
+    ),
+  );
 
   // repositories
   serviceLocator.registerLazySingleton<AuthRepository>(
@@ -131,6 +140,11 @@ Future<void> init({Link? link}) async {
       notificationDatasource: serviceLocator(),
     ),
   );
+  serviceLocator.registerLazySingleton<ImagePickerRepository>(
+    () => ImagePickerRepositoryImpl(
+      imagePickerDatasource: serviceLocator(),
+    ),
+  );
 
   // datasources
   serviceLocator.registerLazySingleton<GraphQlDatasource>(
@@ -145,19 +159,31 @@ Future<void> init({Link? link}) async {
   serviceLocator.registerLazySingleton<NotificationDatasource>(
     () => NotificationDatasourceImpl(),
   );
+  serviceLocator.registerLazySingleton<ImagePickerDatasource>(
+    () => ImagePickerDatasourceImpl(),
+  );
 
   //extern
   final sharedPrefs = await SharedPreferences.getInstance();
   serviceLocator.registerLazySingleton(() => sharedPrefs);
 
-  serviceLocator.registerLazySingleton<GraphQLClient>(
-    () => GraphQLClient(
-      link: link ?? HttpLink(dotenv.get("API_BASE_URL")),
-      cache: GraphQLCache(),
-      defaultPolicies: DefaultPolicies(
-        query: Policies(fetch: FetchPolicy.noCache),
-        mutate: Policies(fetch: FetchPolicy.noCache),
-      ),
+  Link link = HttpLink(
+    dotenv.get("API_BASE_URL"),
+    defaultHeaders: {
+      "Apollo-Require-Preflight": "true",
+      "Authorization": "Bearer $token"
+    },
+  );
+
+  final gqlClient = GraphQLClient(
+    link: link,
+    cache: GraphQLCache(),
+    defaultPolicies: DefaultPolicies(
+      query: Policies(fetch: FetchPolicy.noCache),
+      mutate: Policies(fetch: FetchPolicy.noCache),
     ),
+  );
+  serviceLocator.registerLazySingleton<GraphQLClient>(
+    () => gqlClient,
   );
 }

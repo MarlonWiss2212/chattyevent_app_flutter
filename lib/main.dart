@@ -69,8 +69,8 @@ class App extends StatelessWidget {
       authGuard: AuthGuard(state: BlocProvider.of<AuthBloc>(context).state),
     );
 
+    BlocProvider.of<AuthBloc>(context).add(AuthGetTokenEvent());
     return BlocListener<AuthBloc, AuthState>(
-      bloc: BlocProvider.of<AuthBloc>(context)..add(AuthGetTokenEvent()),
       listener: (context, state) async {
         appRouter.authGuard.state = state;
         if (state is AuthStateLoaded) {

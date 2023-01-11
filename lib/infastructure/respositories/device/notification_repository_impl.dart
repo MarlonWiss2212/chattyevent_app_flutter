@@ -1,4 +1,4 @@
-import 'package:permission_handler_platform_interface/permission_handler_platform_interface.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:social_media_app_flutter/domain/repositories/device/notification_repository.dart';
 import 'package:social_media_app_flutter/infastructure/datasources/device/notification.dart';
 

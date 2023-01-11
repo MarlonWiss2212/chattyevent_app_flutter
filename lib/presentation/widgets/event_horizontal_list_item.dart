@@ -20,6 +20,8 @@ class EventGridListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+
     return InkWell(
       borderRadius: const BorderRadius.all(Radius.circular(8.0)),
       onLongPress: onLongPress == null ? null : () => onLongPress!(),
@@ -32,10 +34,26 @@ class EventGridListItem extends StatelessWidget {
           elevation: 0,
           child: Column(
             children: [
-              const Expanded(
-                child: Center(
-                  child: Text("Bild"),
-                ),
+              Expanded(
+                child: privateEvent.coverImageLink != null
+                    ? Container(
+                        decoration: const BoxDecoration(shape: BoxShape.circle),
+                        alignment: Alignment.topCenter,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(8.0),
+                          child: Image.network(
+                            privateEvent.coverImageLink!,
+                            fit: BoxFit.fitWidth,
+                          ),
+                        ),
+                      )
+                    : Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color:
+                              Theme.of(context).colorScheme.tertiaryContainer,
+                        ),
+                      ),
               ),
               Padding(
                 padding: const EdgeInsets.all(8),
@@ -47,12 +65,16 @@ class EventGridListItem extends StatelessWidget {
                       tag: "${privateEvent.id} title",
                       child: Text(
                         privateEvent.title ?? "Kein Titel",
-                        style: Theme.of(context).textTheme.labelMedium,
+                        style: Theme.of(context).textTheme.labelLarge,
                       ),
                     ),
                     Text(
-                      DateFormat.yMd().add_jm().format(privateEvent.eventDate),
-                      style: const TextStyle(fontSize: 10),
+                      privateEvent.eventDate != null
+                          ? DateFormat.yMd()
+                              .add_jm()
+                              .format(privateEvent.eventDate!)
+                          : "Kein Datum",
+                      style: Theme.of(context).textTheme.labelSmall,
                     ),
                   ],
                 ),

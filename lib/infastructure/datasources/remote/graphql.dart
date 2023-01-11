@@ -29,7 +29,10 @@ class GraphQlDatasourceImpl implements GraphQlDatasource {
   Future<QueryResult<Object?>> mutation(String options,
       {Map<String, dynamic> variables = const {}}) {
     return client.mutate(
-      MutationOptions(document: gql(options), variables: variables),
+      MutationOptions(
+        document: gql(options),
+        variables: variables,
+      ),
     );
   }
 
@@ -37,7 +40,10 @@ class GraphQlDatasourceImpl implements GraphQlDatasource {
   Stream<QueryResult<Object?>> subscription(String options,
       {Map<String, dynamic> variables = const {}}) {
     return client.subscribe(
-      SubscriptionOptions(document: gql(options), variables: variables),
+      SubscriptionOptions(
+        document: gql(options),
+        variables: variables,
+      ),
     );
   }
 }

@@ -8,12 +8,12 @@ abstract class NotificationDatasource {
 class NotificationDatasourceImpl implements NotificationDatasource {
   // doesnt work for whatever reason
   @override
-  Future<PermissionStatus> getNotificationPermissionStatus() async {
+  Future<PermissionStatus> requestNotificationPermission() async {
     return await Permission.notification.request();
   }
 
   @override
-  Future<PermissionStatus> requestNotificationPermission() async {
+  Future<PermissionStatus> getNotificationPermissionStatus() async {
     return await Permission.notification.status;
   }
 }

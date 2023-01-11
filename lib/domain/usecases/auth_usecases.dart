@@ -13,14 +13,16 @@ class AuthUseCases {
     final Either<Failure, String> tokenOrFailure =
         await authRepository.login(email, password);
 
-    await tokenOrFailure.fold(
+    String token = "";
+    tokenOrFailure.fold(
       (error) => null,
-      (token) async {
-        await authRepository.saveAuthTokenInStorage(token);
-        await resetDiWithNewGraphQlLink(token);
+      (resToken) {
+        token = resToken;
       },
     );
 
+    await authRepository.saveAuthTokenInStorage(token);
+    await resetDiWithNewGraphQlLink(token);
     return tokenOrFailure;
   }
 
@@ -28,13 +30,16 @@ class AuthUseCases {
     final Either<Failure, String> tokenOrFailure =
         await authRepository.register(createUserDto);
 
-    await tokenOrFailure.fold(
+    String token = "";
+    tokenOrFailure.fold(
       (error) => null,
-      (token) async {
-        await authRepository.saveAuthTokenInStorage(token);
-        await resetDiWithNewGraphQlLink(token);
+      (resToken) {
+        token = resToken;
       },
     );
+
+    await authRepository.saveAuthTokenInStorage(token);
+    await resetDiWithNewGraphQlLink(token);
     return tokenOrFailure;
   }
 
@@ -42,17 +47,21 @@ class AuthUseCases {
     final Either<Failure, String> tokenOrFailure =
         await authRepository.getAuthTokenFromStorage();
 
+    String token = "";
     tokenOrFailure.fold(
       (error) => null,
-      (token) async => await resetDiWithNewGraphQlLink(token),
+      (resToken) {
+        token = resToken;
+      },
     );
+    await resetDiWithNewGraphQlLink(token);
     return tokenOrFailure;
   }
 
   Future<void> logout() async {
     // to reset auth token
-    //await di.serviceLocator.reset();
-    //await di.init();
+    await di.serviceLocator.reset();
+    await di.init();
 
     await authRepository.logout();
   }

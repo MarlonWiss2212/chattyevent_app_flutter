@@ -10,29 +10,26 @@ class EventsDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     List<PrivateEventEntity> futurePrivateEvents = [];
     List<PrivateEventEntity> pastPrivateEvents = [];
+    List<PrivateEventEntity> otherPrivateEvents = [];
 
-    void setFuturePrivateEvents() {
+    void sortPrivateEvents() {
       for (final privateEventToFilter in privateEvents) {
-        if (DateTime.now().isBefore(privateEventToFilter.eventDate)) {
+        if (privateEventToFilter.eventDate != null &&
+            DateTime.now().isBefore(privateEventToFilter.eventDate!)) {
           futurePrivateEvents.add(privateEventToFilter);
+        } else if (privateEventToFilter.eventDate != null &&
+            DateTime.now().isAfter(privateEventToFilter.eventDate!)) {
+          pastPrivateEvents.add(privateEventToFilter);
+        } else {
+          otherPrivateEvents.add(privateEventToFilter);
         }
       }
       // sort so that the first element has the closest date to the current date
-      futurePrivateEvents.sort((a, b) => a.eventDate.compareTo(b.eventDate));
+      futurePrivateEvents.sort((a, b) => a.eventDate!.compareTo(b.eventDate!));
+      pastPrivateEvents.sort((a, b) => b.eventDate!.compareTo(a.eventDate!));
     }
 
-    void setPastPrivateEvents() {
-      for (final privateEventToFilter in privateEvents) {
-        if (DateTime.now().isAfter(privateEventToFilter.eventDate)) {
-          pastPrivateEvents.add(privateEventToFilter);
-        }
-      }
-      // sort so that the first element has the newest date
-      pastPrivateEvents.sort((a, b) => b.eventDate.compareTo(a.eventDate));
-    }
-
-    setFuturePrivateEvents();
-    setPastPrivateEvents();
+    sortPrivateEvents();
 
     return SingleChildScrollView(
       child: Padding(
@@ -54,6 +51,15 @@ class EventsDetailPage extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             EventHorizontalList(privateEvents: pastPrivateEvents),
+            if (otherPrivateEvents.isNotEmpty) ...[
+              const SizedBox(height: 20),
+              const Text(
+                "Events ohne Datum",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+              ),
+              const SizedBox(height: 8),
+              EventHorizontalList(privateEvents: otherPrivateEvents),
+            ]
           ],
         ),
       ),

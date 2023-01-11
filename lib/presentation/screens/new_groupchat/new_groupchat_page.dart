@@ -48,7 +48,7 @@ class _NewGroupchatPageState extends State<NewGroupchatPage> {
               child: PlatformElevatedButton(
                 onPressed: () async {
                   if (titleFieldController.text.isEmpty) {
-                    return await showDialog(
+                    return await showPlatformDialog(
                       context: context,
                       builder: (context) {
                         return PlatformAlertDialog(

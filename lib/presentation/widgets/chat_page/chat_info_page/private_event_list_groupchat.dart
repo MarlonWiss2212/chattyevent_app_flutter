@@ -37,7 +37,11 @@ class PrivateEventListGroupchat extends StatelessWidget {
                     ),
                   ),
                   subtitle: Text(
-                    DateFormat.yMd().add_jm().format(privateEvent.eventDate),
+                    privateEvent.eventDate != null
+                        ? DateFormat.yMd()
+                            .add_jm()
+                            .format(privateEvent.eventDate!)
+                        : "Kein Datum",
                     softWrap: true,
                     overflow: TextOverflow.ellipsis,
                   ),

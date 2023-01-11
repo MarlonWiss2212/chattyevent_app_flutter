@@ -65,36 +65,37 @@ class PrivateEventPage extends StatelessWidget {
           dataLoaded = true;
         }
 
-        return AutoTabsRouter.tabBar(
-          routes: [
-            InfoTabRoute(),
-            GroupchatTabRoute(),
-          ],
-          builder: (context, child, tabController) {
-            return PlatformScaffold(
-              appBar: PlatformAppBar(
-                leading: const AutoLeadingButton(),
-                title: Text(
-                  foundPrivateEvent != null && foundPrivateEvent.title != null
-                      ? foundPrivateEvent.title!
-                      : "Kein Titel",
-                ),
-                material: (context, platform) => MaterialAppBarData(
-                  bottom: TabBar(
-                    controller: tabController,
-                    tabs: const [
-                      Tab(icon: Icon(Icons.event)),
-                      Tab(icon: Icon(Icons.chat_bubble)),
-                    ],
-                  ),
-                ),
-                cupertino: (context, platform) => CupertinoNavigationBarData(),
-              ),
-              body: child,
-            );
-          },
+        //return AutoTabsRouter.tabBar(
+        //  routes: [
+        //    InfoTabRoute(),
+        //    GroupchatTabRoute(),
+        //  ],
+        //  builder: (context, child, tabController) {
+        return PlatformScaffold(
+          appBar: PlatformAppBar(
+            leading: const AutoLeadingButton(),
+            title: Text(
+              foundPrivateEvent != null && foundPrivateEvent.title != null
+                  ? foundPrivateEvent.title!
+                  : "Kein Titel",
+            ),
+          ),
+          //    material: (context, platform) => MaterialAppBarData(
+          //      bottom: TabBar(
+          //        controller: tabController,
+          //        tabs: const [
+          //          Tab(icon: Icon(Icons.event)),
+          //          Tab(icon: Icon(Icons.chat_bubble)),
+          //        ],
+          //      ),
+          //    ),
+          //    cupertino: (context, platform) => CupertinoNavigationBarData(),
+          //  ),
+          body: const AutoRouter(),
         );
       },
     );
+    // },
+    //);
   }
 }

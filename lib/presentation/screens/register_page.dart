@@ -85,7 +85,7 @@ class _RegisterPageState extends State<RegisterPage> {
             BlocListener<AuthBloc, AuthState>(
               listener: (context, state) async {
                 if (state is AuthStateError) {
-                  return await showDialog(
+                  return await showPlatformDialog(
                     context: context,
                     builder: (context) {
                       return PlatformAlertDialog(
