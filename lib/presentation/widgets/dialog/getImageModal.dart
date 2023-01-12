@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:social_media_app_flutter/domain/usecases/image_picker_usecases.dart';
-import 'package:social_media_app_flutter/presentation/widgets/dialog/ok_button.dart';
+import 'package:social_media_app_flutter/presentation/widgets/dialog/buttons/ok_button.dart';
 import 'package:social_media_app_flutter/presentation/widgets/divider.dart';
-import './../../injection.dart' as di;
+import './../../../injection.dart' as di;
 
 class GetImageModal extends StatelessWidget {
   final void Function(XFile newImage) imageChanged;

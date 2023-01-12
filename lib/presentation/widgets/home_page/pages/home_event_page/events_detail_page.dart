@@ -37,20 +37,24 @@ class EventsDetailPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 20),
-            const Text(
-              "Nächste Events",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-            ),
-            const SizedBox(height: 8),
-            EventHorizontalList(privateEvents: futurePrivateEvents),
-            const SizedBox(height: 20),
-            const Text(
-              "Letzte Events",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-            ),
-            const SizedBox(height: 8),
-            EventHorizontalList(privateEvents: pastPrivateEvents),
+            if (futurePrivateEvents.isNotEmpty) ...[
+              const SizedBox(height: 20),
+              const Text(
+                "Nächste Events",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+              ),
+              const SizedBox(height: 8),
+              EventHorizontalList(privateEvents: futurePrivateEvents),
+            ],
+            if (pastPrivateEvents.isNotEmpty) ...[
+              const SizedBox(height: 20),
+              const Text(
+                "Letzte Events",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+              ),
+              const SizedBox(height: 8),
+              EventHorizontalList(privateEvents: pastPrivateEvents),
+            ],
             if (otherPrivateEvents.isNotEmpty) ...[
               const SizedBox(height: 20),
               const Text(
@@ -59,7 +63,8 @@ class EventsDetailPage extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               EventHorizontalList(privateEvents: otherPrivateEvents),
-            ]
+            ],
+            const SizedBox(height: 8),
           ],
         ),
       ),

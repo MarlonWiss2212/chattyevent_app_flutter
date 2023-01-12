@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,9 +6,10 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/private_event_bloc.dart';
 import 'package:social_media_app_flutter/domain/dto/create_private_event_dto.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
-import 'package:social_media_app_flutter/presentation/modals/getImageModal.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
-import 'package:social_media_app_flutter/presentation/widgets/dialog/ok_button.dart';
+import 'package:social_media_app_flutter/presentation/widgets/dialog/buttons/ok_button.dart';
+import 'package:social_media_app_flutter/presentation/widgets/dialog/getImageModal.dart';
+import 'package:social_media_app_flutter/presentation/widgets/new_private_event/cover_image.dart';
 import 'package:social_media_app_flutter/presentation/widgets/new_private_event/select_groupchat_horizontal_list_new_private_event.dart';
 
 class NewPrivateEventPage extends StatefulWidget {
@@ -42,54 +42,16 @@ class _NewPrivateEventPageState extends State<NewPrivateEventPage> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    const SizedBox(height: 8.0),
-                    Center(
-                      child: InkWell(
-                        borderRadius: const BorderRadius.all(
-                          Radius.circular(8.0),
-                        ),
-                        onTap: () async {
-                          await showGeneralDialog(
-                            context: context,
-                            pageBuilder: (
-                              context,
-                              animation,
-                              secondaryAnimation,
-                            ) {
-                              return GetImageModal(
-                                imageChanged: (newImage) {
-                                  setState(() {
-                                    image = File(newImage.path);
-                                  });
-                                  Navigator.of(context).pop();
-                                },
-                              );
-                            },
-                          );
-                        },
-                        child: image != null
-                            ? Container(
-                                decoration: const BoxDecoration(
-                                  shape: BoxShape.circle,
-                                ),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(8.0),
-                                  child: Image.file(
-                                    image!,
-                                    fit: BoxFit.fitWidth,
-                                  ),
-                                ),
-                              )
-                            : Card(
-                                child: SizedBox(
-                                  height: 200,
-                                  width: size.width,
-                                  child: const Icon(Icons.add),
-                                ),
-                              ),
-                      ),
+                    const SizedBox(height: 8),
+                    CoverImage(
+                      imageChanged: (newImage) {
+                        setState(() {
+                          image = newImage;
+                        });
+                      },
+                      image: image,
                     ),
-                    const SizedBox(height: 8.0),
+                    const SizedBox(height: 8),
                     PlatformTextField(
                       controller: titleFieldController,
                       hintText: 'Name*',

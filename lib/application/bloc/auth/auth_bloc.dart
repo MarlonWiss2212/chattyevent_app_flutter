@@ -53,9 +53,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           ),
         ),
         (token) async {
+          emit(AuthStateLoaded(token: token));
           await notificationUseCases.requestNotificationPermission();
           await one_signal.setExternalUserId(Jwt.parseJwt(token)["sub"]);
-          emit(AuthStateLoaded(token: token));
         },
       );
     });

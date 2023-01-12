@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
-import 'package:social_media_app_flutter/presentation/widgets/dialog/ok_button.dart';
+import 'package:social_media_app_flutter/presentation/widgets/dialog/buttons/ok_button.dart';
+import 'package:social_media_app_flutter/presentation/widgets/profile_image.dart';
 
 class NewGroupchatPage extends StatefulWidget {
   const NewGroupchatPage({super.key});
@@ -12,6 +15,7 @@ class NewGroupchatPage extends StatefulWidget {
 }
 
 class _NewGroupchatPageState extends State<NewGroupchatPage> {
+  File? image;
   final titleFieldController = TextEditingController();
   final descriptionFieldController = TextEditingController();
 
@@ -27,19 +31,30 @@ class _NewGroupchatPageState extends State<NewGroupchatPage> {
         child: Column(
           children: [
             Expanded(
-              child: ListView(
-                children: [
-                  const SizedBox(height: 8.0),
-                  PlatformTextField(
-                    controller: titleFieldController,
-                    hintText: 'Name*',
-                  ),
-                  const SizedBox(height: 8),
-                  PlatformTextField(
-                    controller: descriptionFieldController,
-                    hintText: 'Beschreibung',
-                  ),
-                ],
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    const SizedBox(height: 20),
+                    ProfileImage(
+                      imageChanged: (newImage) {
+                        setState(() {
+                          image = newImage;
+                        });
+                      },
+                      image: image,
+                    ),
+                    const SizedBox(height: 20),
+                    PlatformTextField(
+                      controller: titleFieldController,
+                      hintText: 'Name*',
+                    ),
+                    const SizedBox(height: 8),
+                    PlatformTextField(
+                      controller: descriptionFieldController,
+                      hintText: 'Beschreibung',
+                    ),
+                  ],
+                ),
               ),
             ),
             const SizedBox(height: 8.0),

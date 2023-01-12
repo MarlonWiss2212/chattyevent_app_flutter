@@ -41,9 +41,12 @@ class EventGridListItem extends StatelessWidget {
                         alignment: Alignment.topCenter,
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(8.0),
-                          child: Image.network(
-                            privateEvent.coverImageLink!,
-                            fit: BoxFit.fitWidth,
+                          child: Hero(
+                            tag: "${privateEvent.id} coverImage",
+                            child: Image.network(
+                              privateEvent.coverImageLink!,
+                              fit: BoxFit.fitWidth,
+                            ),
                           ),
                         ),
                       )
