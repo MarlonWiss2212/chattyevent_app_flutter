@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 
 class HomePage extends StatelessWidget {
@@ -17,30 +18,40 @@ class HomePage extends StatelessWidget {
       builder: (context, child, animation) {
         final TabsRouter tabsRouter = AutoTabsRouter.of(context);
 
-        return Scaffold(
+        return PlatformScaffold(
           body: child,
-          bottomNavigationBar: NavigationBar(
-            selectedIndex: tabsRouter.activeIndex,
-            onDestinationSelected: (value) => tabsRouter.setActiveIndex(value),
-            destinations: const [
-              NavigationDestination(
+          bottomNavBar: PlatformNavBar(
+            currentIndex: tabsRouter.activeIndex,
+            itemChanged: (value) => tabsRouter.setActiveIndex(value),
+            backgroundColor: Theme.of(context).colorScheme.background,
+            material: (_, __) => MaterialNavBarData(
+              type: BottomNavigationBarType.fixed,
+              selectedItemColor: Theme.of(context).colorScheme.onBackground,
+              unselectedItemColor: Theme.of(context).colorScheme.onBackground,
+              showSelectedLabels: false,
+              showUnselectedLabels: false,
+              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+            ),
+            cupertino: (context, platform) => CupertinoTabBarData(),
+            items: const [
+              BottomNavigationBarItem(
                 icon: Icon(Icons.chat_bubble_outline),
-                selectedIcon: Icon(Icons.chat_bubble),
+                activeIcon: Icon(Icons.chat_bubble),
                 label: 'Chat',
               ),
-              NavigationDestination(
+              BottomNavigationBarItem(
                 icon: Icon(Icons.event_outlined),
-                selectedIcon: Icon(Icons.event),
+                activeIcon: Icon(Icons.event),
                 label: 'Event',
               ),
-              NavigationDestination(
+              BottomNavigationBarItem(
                 icon: Icon(Icons.search_outlined),
-                selectedIcon: Icon(Icons.search),
+                activeIcon: Icon(Icons.search),
                 label: 'Entdecken',
               ),
-              NavigationDestination(
+              BottomNavigationBarItem(
                 icon: Icon(Icons.person_outline),
-                selectedIcon: Icon(Icons.person),
+                activeIcon: Icon(Icons.person),
                 label: 'Profil',
               )
             ],

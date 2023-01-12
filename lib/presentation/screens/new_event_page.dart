@@ -9,7 +9,7 @@ import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_ent
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 import 'package:social_media_app_flutter/presentation/widgets/dialog/buttons/ok_button.dart';
 import 'package:social_media_app_flutter/presentation/widgets/dialog/getImageModal.dart';
-import 'package:social_media_app_flutter/presentation/widgets/new_private_event/cover_image.dart';
+import 'package:social_media_app_flutter/presentation/widgets/new_private_event/select_cover_image.dart';
 import 'package:social_media_app_flutter/presentation/widgets/new_private_event/select_groupchat_horizontal_list_new_private_event.dart';
 
 class NewPrivateEventPage extends StatefulWidget {
@@ -43,7 +43,7 @@ class _NewPrivateEventPageState extends State<NewPrivateEventPage> {
                 child: Column(
                   children: [
                     const SizedBox(height: 8),
-                    CoverImage(
+                    SelectCoverImage(
                       imageChanged: (newImage) {
                         setState(() {
                           image = newImage;

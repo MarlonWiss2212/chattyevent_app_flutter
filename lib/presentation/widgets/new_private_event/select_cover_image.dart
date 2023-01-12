@@ -1,12 +1,11 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:social_media_app_flutter/presentation/widgets/dialog/getImageModal.dart';
 
-class CoverImage extends StatelessWidget {
+class SelectCoverImage extends StatelessWidget {
   final void Function(File newImage) imageChanged;
   final File? image;
-  const CoverImage({
+  const SelectCoverImage({
     super.key,
     required this.imageChanged,
     this.image,

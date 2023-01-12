@@ -9,37 +9,41 @@ import 'package:social_media_app_flutter/presentation/widgets/event_horizontal_l
 class EventHorizontalList extends StatelessWidget {
   final List<PrivateEventEntity> privateEvents;
   const EventHorizontalList({super.key, required this.privateEvents});
-
   @override
   Widget build(BuildContext context) {
+    final pageController = PageController(
+      viewportFraction: min(
+        (330 / MediaQuery.of(context).size.width).toDouble(),
+        1,
+      ),
+    );
+
     return SizedBox(
       height: 250,
       child: PageView.builder(
         padEnds: false,
-        controller: PageController(
-          viewportFraction: min(
-            (300 / MediaQuery.of(context).size.width).toDouble(),
-            1,
-          ),
-        ),
+        controller: pageController,
         scrollDirection: Axis.horizontal,
         physics: const PageScrollPhysics(),
         itemBuilder: (context, index) {
-          return EventGridListItem(
-            height: 250,
-            width: 250, // will be ignored because of page view
-            privateEvent: privateEvents[index],
-            onPress: () {
-              AutoRouter.of(context).push(
-                PrivateEventPageRoute(
-                  privateEventId: privateEvents[index].id,
-                ),
-              );
-            },
+          return FractionallySizedBox(
+            widthFactor: .95,
+            alignment: Alignment.centerLeft,
+            child: EventGridListItem(
+              height: 250,
+              width: 250, // will be ignored because of page view
+              privateEvent: privateEvents[index],
+              onPress: () {
+                AutoRouter.of(context).push(
+                  PrivateEventPageRoute(
+                    privateEventId: privateEvents[index].id,
+                  ),
+                );
+              },
+            ),
           );
         },
         itemCount: privateEvents.length,
-        //separatorBuilder: (context, index) => const SizedBox(width: 8),
       ),
     );
   }

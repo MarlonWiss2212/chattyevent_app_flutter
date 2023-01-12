@@ -7,7 +7,7 @@ import 'package:social_media_app_flutter/application/bloc/auth/auth_bloc.dart';
 import 'package:social_media_app_flutter/domain/dto/create_user_dto.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 import 'package:social_media_app_flutter/presentation/widgets/dialog/buttons/ok_button.dart';
-import 'package:social_media_app_flutter/presentation/widgets/profile_image.dart';
+import 'package:social_media_app_flutter/presentation/widgets/circle_image.dart/select_circle_image.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -40,7 +40,7 @@ class _RegisterPageState extends State<RegisterPage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const SizedBox(height: 20),
-              ProfileImage(
+              SelectCircleImage(
                 imageChanged: (newImage) {
                   setState(() {
                     image = newImage;

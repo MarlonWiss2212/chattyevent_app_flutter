@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
+import 'package:social_media_app_flutter/presentation/widgets/circle_image.dart/cirlce_image.dart';
 
 class UserProfileDataPageOwnUser extends StatelessWidget {
   final UserEntity user;
@@ -12,12 +13,9 @@ class UserProfileDataPageOwnUser extends StatelessWidget {
       child: Center(
         child: Column(
           children: [
-            const SizedBox(height: 40),
+            const SizedBox(height: 20),
             // Profile Image
-
-            CircleAvatar(
-              backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-            ),
+            const CircleImage(),
             const SizedBox(height: 20),
             // name
             Text(

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_bloc.dart';
+import 'package:social_media_app_flutter/application/bloc/chat/chat_bloc.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
@@ -127,7 +128,14 @@ class Details extends StatelessWidget {
               "Gruppenchat verlassen",
               style: TextStyle(color: Colors.red),
             ),
-            onTap: () {},
+            onTap: () {
+              BlocProvider.of<ChatBloc>(context).add(
+                DeleteUserFromChatEvent(
+                  groupchatId: groupchat.id,
+                  userIdToDelete: currentUserId,
+                ),
+              );
+            },
             shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(
                 Radius.circular(5),

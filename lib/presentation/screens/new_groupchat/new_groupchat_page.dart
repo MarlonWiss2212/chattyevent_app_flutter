@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 import 'package:social_media_app_flutter/presentation/widgets/dialog/buttons/ok_button.dart';
-import 'package:social_media_app_flutter/presentation/widgets/profile_image.dart';
+import 'package:social_media_app_flutter/presentation/widgets/circle_image.dart/select_circle_image.dart';
 
 class NewGroupchatPage extends StatefulWidget {
   const NewGroupchatPage({super.key});
@@ -35,7 +35,7 @@ class _NewGroupchatPageState extends State<NewGroupchatPage> {
                 child: Column(
                   children: [
                     const SizedBox(height: 20),
-                    ProfileImage(
+                    SelectCircleImage(
                       imageChanged: (newImage) {
                         setState(() {
                           image = newImage;

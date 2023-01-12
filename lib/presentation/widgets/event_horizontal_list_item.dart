@@ -29,23 +29,24 @@ class EventGridListItem extends StatelessWidget {
       child: Ink(
         width: width,
         height: height,
-        child: Card(
-          color: Theme.of(context).colorScheme.secondaryContainer,
-          elevation: 0,
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+            color: Theme.of(context).colorScheme.secondaryContainer,
+          ),
           child: Column(
             children: [
               Expanded(
                 child: privateEvent.coverImageLink != null
                     ? Container(
                         decoration: const BoxDecoration(shape: BoxShape.circle),
-                        alignment: Alignment.topCenter,
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(8.0),
                           child: Hero(
                             tag: "${privateEvent.id} coverImage",
                             child: Image.network(
                               privateEvent.coverImageLink!,
-                              fit: BoxFit.fitWidth,
+                              fit: BoxFit.cover,
                             ),
                           ),
                         ),

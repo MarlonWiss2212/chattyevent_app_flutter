@@ -18,57 +18,65 @@ class GetImageModal extends StatelessWidget {
     return Dialog(
       child: Container(
         padding: const EdgeInsets.all(8),
-        height: 400,
+        height: 200,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Expanded(
-              child: InkWell(
-                borderRadius: BorderRadius.circular(12),
-                onTap: () async {
-                  final photoStatus =
-                      await imagePickerUseCases.requestCameraPermission();
-                  final xfile = await imagePickerUseCases.getImageFromCamera();
-                  if (xfile != null) {
-                    imageChanged(xfile);
-                  }
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(
-                      color: Theme.of(context).colorScheme.onBackground,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(12),
+                      onTap: () async {
+                        final photoStatus =
+                            await imagePickerUseCases.requestCameraPermission();
+                        final xfile =
+                            await imagePickerUseCases.getImageFromCamera();
+                        if (xfile != null) {
+                          imageChanged(xfile);
+                        }
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(
+                            color: Theme.of(context).colorScheme.onBackground,
+                          ),
+                        ),
+                        child: const Center(
+                          child: Icon(Icons.camera),
+                        ),
+                      ),
                     ),
                   ),
-                  child: const Center(
-                    child: Icon(Icons.camera),
-                  ),
-                ),
-              ),
-            ),
-            const CustomDivider(),
-            Expanded(
-              child: InkWell(
-                borderRadius: BorderRadius.circular(12),
-                onTap: () async {
-                  final photoStatus =
-                      await imagePickerUseCases.requestPhotosPermission();
-                  final xfile = await imagePickerUseCases.getImageFromGallery();
-                  if (xfile != null) {
-                    imageChanged(xfile);
-                  }
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(
-                      color: Theme.of(context).colorScheme.onBackground,
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(12),
+                      onTap: () async {
+                        final photoStatus =
+                            await imagePickerUseCases.requestPhotosPermission();
+                        final xfile =
+                            await imagePickerUseCases.getImageFromGallery();
+                        if (xfile != null) {
+                          imageChanged(xfile);
+                        }
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(
+                            color: Theme.of(context).colorScheme.onBackground,
+                          ),
+                        ),
+                        child: const Center(
+                          child: Icon(Icons.photo_album),
+                        ),
+                      ),
                     ),
                   ),
-                  child: const Center(
-                    child: Icon(Icons.photo_album),
-                  ),
-                ),
+                ],
               ),
             ),
             const SizedBox(height: 8),
