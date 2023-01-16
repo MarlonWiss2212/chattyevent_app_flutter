@@ -32,33 +32,31 @@ class EventGridListItem extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
-            color: Theme.of(context).colorScheme.secondaryContainer,
+            color: Theme.of(context).colorScheme.primaryContainer,
           ),
-          child: Column(
+          child: Stack(
+            fit: StackFit.expand,
             children: [
-              Expanded(
-                child: privateEvent.coverImageLink != null
-                    ? Container(
-                        decoration: const BoxDecoration(shape: BoxShape.circle),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(8.0),
-                          child: Hero(
-                            tag: "${privateEvent.id} coverImage",
-                            child: Image.network(
-                              privateEvent.coverImageLink!,
-                              fit: BoxFit.cover,
-                            ),
+              privateEvent.coverImageLink != null
+                  ? Container(
+                      decoration: const BoxDecoration(shape: BoxShape.circle),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(8.0),
+                        child: Hero(
+                          tag: "${privateEvent.id} coverImage",
+                          child: Image.network(
+                            privateEvent.coverImageLink!,
+                            fit: BoxFit.cover,
                           ),
                         ),
-                      )
-                    : Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          color:
-                              Theme.of(context).colorScheme.tertiaryContainer,
-                        ),
                       ),
-              ),
+                    )
+                  : Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        color: Theme.of(context).colorScheme.tertiaryContainer,
+                      ),
+                    ),
               Padding(
                 padding: const EdgeInsets.all(8),
                 child: Row(
@@ -69,7 +67,7 @@ class EventGridListItem extends StatelessWidget {
                       tag: "${privateEvent.id} title",
                       child: Text(
                         privateEvent.title ?? "Kein Titel",
-                        style: Theme.of(context).textTheme.labelLarge,
+                        style: Theme.of(context).textTheme.titleLarge,
                       ),
                     ),
                     Text(

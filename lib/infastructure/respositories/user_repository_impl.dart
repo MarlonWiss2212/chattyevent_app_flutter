@@ -21,7 +21,10 @@ class UserRepositoryImpl implements UserRepository {
         query FindUser(\$input: FindOneUserInput!) {
           findUser(filter: \$input) {
             _id
+            firstname
+            lastname
             username
+            profileImageLink
             email
           }
         }
@@ -50,6 +53,7 @@ class UserRepositoryImpl implements UserRepository {
           findUsers(filter: \$input) {
             _id
             username
+            profileImageLink
           }
         }
         """,

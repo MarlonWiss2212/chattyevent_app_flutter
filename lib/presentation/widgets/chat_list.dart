@@ -14,7 +14,12 @@ class ChatList extends StatelessWidget {
       itemBuilder: (context, index) {
         return ListTile(
           leading: CircleAvatar(
-            backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+            backgroundImage: chats[index].profileImageLink != null
+                ? NetworkImage(chats[index].profileImageLink!)
+                : null,
+            backgroundColor: chats[index].profileImageLink == null
+                ? Theme.of(context).colorScheme.secondaryContainer
+                : null,
           ),
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(

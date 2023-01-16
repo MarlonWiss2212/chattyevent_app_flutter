@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:social_media_app_flutter/application/bloc/chat/chat_bloc.dart';
+import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event_entity.dart';
 import 'package:social_media_app_flutter/presentation/widgets/privat_event_page/info_tab/list_of_all_users_for_private_event.dart';
@@ -34,7 +34,7 @@ class UserAreaPrivateEvent extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
           ),
         },
-        BlocBuilder<ChatBloc, ChatState>(
+        BlocBuilder<ChatCubit, ChatState>(
           builder: (context, state) {
             List<GroupchatUserEntity> invitedUsers = [];
             if (state is ChatStateLoaded &&

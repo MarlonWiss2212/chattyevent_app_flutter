@@ -19,12 +19,15 @@ class CreateUserGroupchatDto {
 }
 
 /// use this for lists to get the username
-class CreateUserGroupchatWithUsername extends CreateUserGroupchatDto {
+class CreateUserGroupchatWithUsernameAndImageLink
+    extends CreateUserGroupchatDto {
   String username;
+  String? imageLink;
 
-  CreateUserGroupchatWithUsername({
+  CreateUserGroupchatWithUsernameAndImageLink({
     required String userId,
     required this.username,
+    this.imageLink,
     bool? admin,
   }) : super(userId: userId, admin: admin);
 }

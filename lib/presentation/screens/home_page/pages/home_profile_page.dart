@@ -1,11 +1,10 @@
-import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:jwt_decode/jwt_decode.dart';
-import 'package:social_media_app_flutter/application/bloc/auth/auth_bloc.dart';
-import 'package:social_media_app_flutter/application/bloc/chat/chat_bloc.dart';
+import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/message/message_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/private_event_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_bloc.dart';
@@ -22,11 +21,19 @@ class HomeProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     String currentUserId = "";
 
-    final authState = BlocProvider.of<AuthBloc>(context).state;
+    final authState = BlocProvider.of<AuthCubit>(context).state;
 
     if (authState is AuthStateLoaded) {
       currentUserId = Jwt.parseJwt(authState.token)["sub"];
     }
+
+    BlocProvider.of<UserBloc>(context).add(
+      GetOneUserEvent(
+        getOneUserFilter: GetOneUserFilter(
+          id: currentUserId,
+        ),
+      ),
+    );
 
     return PlatformScaffold(
       appBar: PlatformAppBar(
@@ -34,9 +41,9 @@ class HomeProfilePage extends StatelessWidget {
         trailingActions: [
           IconButton(
             onPressed: () {
-              BlocProvider.of<AuthBloc>(context).add(AuthLogoutEvent());
+              BlocProvider.of<AuthCubit>(context).logout();
 
-              BlocProvider.of<ChatBloc>(context).add(ChatInitialEvent());
+              BlocProvider.of<ChatCubit>(context).reset();
               BlocProvider.of<MessageBloc>(context).add(
                 MessageInitialEvent(),
               );
@@ -56,14 +63,6 @@ class HomeProfilePage extends StatelessWidget {
         ],
       ),
       body: BlocBuilder<UserBloc, UserState>(
-        bloc: BlocProvider.of<UserBloc>(context)
-          ..add(
-            GetOneUserEvent(
-              getOneUserFilter: GetOneUserFilter(
-                id: currentUserId,
-              ),
-            ),
-          ),
         builder: (context, state) {
           if (state is UserStateLoaded) {
             UserEntity? foundUser;

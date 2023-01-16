@@ -2,8 +2,9 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:social_media_app_flutter/application/bloc/auth/auth_bloc.dart';
-import 'package:social_media_app_flutter/application/bloc/chat/chat_bloc.dart';
+import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/chat/add_chat_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/message/message_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/private_event_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_bloc.dart';
@@ -40,7 +41,7 @@ Future<void> init({String? token}) async {
   serviceLocator.allowReassignment = true;
   // Blocs
   serviceLocator.registerFactory(
-    () => AuthBloc(
+    () => AuthCubit(
       authUseCases: serviceLocator(),
       notificationUseCases: serviceLocator(),
     ),
@@ -56,11 +57,6 @@ Future<void> init({String? token}) async {
     ),
   );
   serviceLocator.registerFactory(
-    () => ChatBloc(
-      chatUseCases: serviceLocator(),
-    ),
-  );
-  serviceLocator.registerFactory(
     () => PrivateEventBloc(
       privateEventUseCases: serviceLocator(),
     ),
@@ -68,6 +64,17 @@ Future<void> init({String? token}) async {
   serviceLocator.registerFactory(
     () => MessageBloc(
       messageUseCases: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton(
+    () => ChatCubit(
+      chatUseCases: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerFactory(
+    () => AddChatCubit(
+      chatUseCases: serviceLocator(),
+      chatCubit: serviceLocator(),
     ),
   );
 
@@ -181,6 +188,7 @@ Future<void> init({String? token}) async {
     defaultPolicies: DefaultPolicies(
       query: Policies(fetch: FetchPolicy.noCache),
       mutate: Policies(fetch: FetchPolicy.noCache),
+      subscribe: Policies(fetch: FetchPolicy.noCache),
     ),
   );
   serviceLocator.registerLazySingleton<GraphQLClient>(

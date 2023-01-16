@@ -1,3 +1,5 @@
+import 'package:http/http.dart';
+import 'package:http_parser/http_parser.dart';
 import 'package:social_media_app_flutter/domain/dto/create_private_event_dto.dart';
 import 'package:social_media_app_flutter/domain/failures/failures.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event_entity.dart';
@@ -15,10 +17,18 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
   Future<Either<Failure, PrivateEventEntity>> createPrivateEventViaApi(
       CreatePrivateEventDto createPrivateEventDto) async {
     try {
+      final byteData = createPrivateEventDto.coverImage.readAsBytesSync();
+      final multipartFile = MultipartFile.fromBytes(
+        'photo',
+        byteData,
+        filename: '${createPrivateEventDto.title}.jpg',
+        contentType: MediaType("image", "jpg"),
+      );
+
       final response = await graphQlDatasource.mutation(
         """
-        mutation CreatePrivatEvent(\$input: CreatePrivateEventInput!) {
-          createPrivateEvent(createPrivateEventInput: \$input) {
+        mutation CreatePrivatEvent(\$input: CreatePrivateEventInput!, \$coverImage: Upload!) {
+          createPrivateEvent(createPrivateEventInput: \$input, coverImage: \$coverImage) {
             _id
             title
             coverImageLink
@@ -31,7 +41,10 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
           }
         }
       """,
-        variables: {'input': await createPrivateEventDto.toMap()},
+        variables: {
+          "input": createPrivateEventDto.toMap(),
+          "coverImage": multipartFile,
+        },
       );
 
       if (response.hasException) {
@@ -43,6 +56,8 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
         PrivateEventModel.fromJson(response.data!['createPrivateEvent']),
       );
     } catch (e) {
+      print(e);
+
       return Left(ServerFailure());
     }
   }
@@ -68,7 +83,9 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
           }
         }
       """,
-        variables: {"input": getOnePrivateEventFilter.toMap()},
+        variables: {
+          "input": getOnePrivateEventFilter.toMap(),
+        },
       );
 
       if (response.hasException) {
@@ -217,7 +234,6 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
         ),
       );
     } catch (e) {
-      print(e);
       return Left(ServerFailure());
     }
   }

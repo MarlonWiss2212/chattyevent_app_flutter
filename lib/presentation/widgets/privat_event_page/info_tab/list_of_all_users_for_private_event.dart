@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jwt_decode/jwt_decode.dart';
-import 'package:social_media_app_flutter/application/bloc/auth/auth_bloc.dart';
+import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_bloc.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
@@ -28,7 +28,7 @@ class ListOfAllUsersForPrivateEvent extends StatelessWidget {
   Widget build(BuildContext context) {
     String currentUserId = "";
 
-    final authState = BlocProvider.of<AuthBloc>(context).state;
+    final authState = BlocProvider.of<AuthCubit>(context).state;
 
     if (authState is AuthStateLoaded) {
       currentUserId = Jwt.parseJwt(authState.token)["sub"];
@@ -52,6 +52,7 @@ class ListOfAllUsersForPrivateEvent extends StatelessWidget {
           }
           widgetsToReturn.add(
             UserListTile(
+              profileImageLink: foundUser?.profileImageLink,
               subtitle: const Text(
                 "Angenommen",
                 style: TextStyle(color: Colors.green),
@@ -87,6 +88,7 @@ class ListOfAllUsersForPrivateEvent extends StatelessWidget {
           }
           widgetsToReturn.add(
             UserListTile(
+              profileImageLink: foundUser?.profileImageLink,
               subtitle: const Text(
                 "Abgelehnt",
                 style: TextStyle(color: Colors.red),
@@ -122,6 +124,7 @@ class ListOfAllUsersForPrivateEvent extends StatelessWidget {
 
           widgetsToReturn.add(
             UserListTile(
+              profileImageLink: foundUser?.profileImageLink,
               subtitle: const Text("Eingeladen"),
               username: foundUser != null && foundUser.username != null
                   ? foundUser.username!

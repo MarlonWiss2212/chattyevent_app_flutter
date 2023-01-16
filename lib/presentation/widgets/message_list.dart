@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:intl/intl.dart';
 import 'package:jwt_decode/jwt_decode.dart';
-import 'package:social_media_app_flutter/application/bloc/auth/auth_bloc.dart';
+import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_bloc.dart';
 import 'package:social_media_app_flutter/domain/entities/message/message_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
@@ -23,7 +23,7 @@ class MessageList extends StatelessWidget {
   Widget build(BuildContext context) {
     String currentUserId = "";
 
-    final authState = BlocProvider.of<AuthBloc>(context).state;
+    final authState = BlocProvider.of<AuthCubit>(context).state;
 
     if (authState is AuthStateLoaded) {
       currentUserId = Jwt.parseJwt(authState.token)["sub"];

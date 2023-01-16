@@ -28,8 +28,10 @@ class SelectCoverImage extends StatelessWidget {
             secondaryAnimation,
           ) {
             return GetImageModal(
+              ratioX: 4,
+              ratioY: 3,
               imageChanged: (newImage) {
-                imageChanged(File(newImage.path));
+                imageChanged(newImage);
                 Navigator.of(context).pop();
               },
             );
@@ -51,8 +53,8 @@ class SelectCoverImage extends StatelessWidget {
             )
           : Card(
               child: SizedBox(
-                height: 200,
                 width: size.width,
+                height: (size.width / 4 * 3) - 16,
                 child: const Icon(Icons.add),
               ),
             ),

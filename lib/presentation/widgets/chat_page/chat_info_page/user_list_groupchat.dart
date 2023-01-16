@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:social_media_app_flutter/application/bloc/chat/chat_bloc.dart';
+import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_bloc.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
@@ -35,6 +35,7 @@ class UserListGroupchat extends StatelessWidget {
           }
           widgetsToReturn.add(
             UserListTile(
+              profileImageLink: foundUser?.profileImageLink,
               subtitle: groupchatUser.admin != null && groupchatUser.admin!
                   ? Text(
                       "Admin",
@@ -68,13 +69,21 @@ class UserListGroupchat extends StatelessWidget {
                         items: [
                           PopupMenuItem(
                             child: const Text("Kicken"),
-                            onTap: () => BlocProvider.of<ChatBloc>(context).add(
-                              DeleteUserFromChatEvent(
-                                groupchatId: groupchatId,
-                                userIdToDelete: userId,
-                              ),
+                            onTap: () => BlocProvider.of<ChatCubit>(context)
+                                .deleteUserFromChatEvent(
+                              groupchatId: groupchatId,
+                              userIdToDelete: userId,
                             ),
-                          )
+                          ),
+                          if (groupchatUser.admin != null) ...{
+                            groupchatUser.admin == false
+                                ? const PopupMenuItem(
+                                    child: Text("Zum Admin Machen"),
+                                  )
+                                : const PopupMenuItem(
+                                    child: Text("Zum User Degradieren"),
+                                  )
+                          }
                         ],
                       );
                     }

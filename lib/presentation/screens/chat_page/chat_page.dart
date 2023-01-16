@@ -2,7 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'package:social_media_app_flutter/application/bloc/chat/chat_bloc.dart';
+import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/message/message_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_bloc.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
@@ -31,7 +31,7 @@ class _ChatPageState extends State<ChatPage> {
       ),
     );
 
-    return BlocBuilder<ChatBloc, ChatState>(
+    return BlocBuilder<ChatCubit, ChatState>(
       builder: (context, state) {
         GroupchatEntity? foundGroupchat;
 
@@ -61,16 +61,31 @@ class _ChatPageState extends State<ChatPage> {
                 )
               ],
             ),
-            body: const Center(child: Text("Chat nicht gefunden")),
+            body: const Center(
+              child: Text("Chat nicht gefunden"),
+            ),
           );
         }
 
         return PlatformScaffold(
           appBar: PlatformAppBar(
             leading: const AutoLeadingButton(),
-            title: Hero(
-              tag: "${widget.groupchatId} title",
-              child: Text(foundGroupchat.title ?? "Kein Titel"),
+            title: Row(
+              children: [
+                CircleAvatar(
+                  backgroundImage: foundGroupchat.profileImageLink != null
+                      ? NetworkImage(foundGroupchat.profileImageLink!)
+                      : null,
+                  backgroundColor: foundGroupchat.profileImageLink == null
+                      ? Theme.of(context).colorScheme.secondaryContainer
+                      : null,
+                ),
+                const SizedBox(width: 8),
+                Hero(
+                  tag: "${widget.groupchatId} title",
+                  child: Text(foundGroupchat.title ?? "Kein Titel"),
+                ),
+              ],
             ),
             trailingActions: [
               PlatformIconButton(

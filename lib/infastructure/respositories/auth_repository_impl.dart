@@ -1,3 +1,5 @@
+import 'package:http/http.dart';
+import 'package:http_parser/http_parser.dart';
 import 'package:social_media_app_flutter/domain/dto/create_user_dto.dart';
 import 'package:social_media_app_flutter/domain/failures/failures.dart';
 import 'package:dartz/dartz.dart';
@@ -59,15 +61,29 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<Either<Failure, String>> register(CreateUserDto createUserDto) async {
     try {
+      Map<String, dynamic> variables = {
+        "input": createUserDto.toMap(),
+      };
+      if (createUserDto.profileImage != null) {
+        final byteData = createUserDto.profileImage!.readAsBytesSync();
+        final multipartFile = MultipartFile.fromBytes(
+          'photo',
+          byteData,
+          filename:
+              '${createUserDto.firstname}${createUserDto.lastname}${createUserDto.username}.jpg',
+          contentType: MediaType("image", "jpg"),
+        );
+        variables.addAll({'profileImage': multipartFile});
+      }
       final response = await graphQlDatasource.mutation(
         """
-          mutation signup(\$input: CreateUserInput!) {
-            signup(createUserInput: \$input) {
+          mutation signup(\$input: CreateUserInput!, \$profileImage: Upload) {
+            signup(createUserInput: \$input, profileImage: \$profileImage) {
               access_token
             }
           }
         """,
-        variables: {'input': createUserDto.toMap()},
+        variables: variables,
       );
 
       if (response.hasException) {

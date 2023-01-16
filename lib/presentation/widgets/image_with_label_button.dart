@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 
 class ImageWithLabelButton extends StatelessWidget {
   final void Function()? onTap;
+  final String? imageLink;
   final String label;
 
   const ImageWithLabelButton({
     super.key,
     this.onTap,
+    this.imageLink,
     required this.label,
   });
 
@@ -21,7 +23,11 @@ class ImageWithLabelButton extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             CircleAvatar(
-              backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+              backgroundImage:
+                  imageLink != null ? NetworkImage(imageLink!) : null,
+              backgroundColor: imageLink == null
+                  ? Theme.of(context).colorScheme.primaryContainer
+                  : null,
             ),
             const SizedBox(height: 8),
             Text(

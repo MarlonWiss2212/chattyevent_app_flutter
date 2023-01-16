@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:graphql/client.dart';
 import 'package:social_media_app_flutter/domain/dto/create_message_dto.dart';
 import 'package:social_media_app_flutter/domain/entities/message/message_entity.dart';
 import 'package:social_media_app_flutter/domain/failures/failures.dart';
@@ -22,5 +23,9 @@ class MessageUseCases {
     return await messageRepository.getMessagesViaApi(
       getMessagesFilter: getMessagesFilter,
     );
+  }
+
+  Stream<QueryResult<Object?>> getMessagesRealtimeViaApi() {
+    return messageRepository.getMessagesRealtimeViaApi();
   }
 }

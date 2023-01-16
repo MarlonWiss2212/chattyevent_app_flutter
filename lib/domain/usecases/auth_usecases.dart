@@ -13,16 +13,13 @@ class AuthUseCases {
     final Either<Failure, String> tokenOrFailure =
         await authRepository.login(email, password);
 
-    String token = "";
-    tokenOrFailure.fold(
+    await tokenOrFailure.fold(
       (error) => null,
-      (resToken) {
-        token = resToken;
+      (token) async {
+        await authRepository.saveAuthTokenInStorage(token);
+        await resetDiWithNewGraphQlLink(token);
       },
     );
-
-    await authRepository.saveAuthTokenInStorage(token);
-    await resetDiWithNewGraphQlLink(token);
     return tokenOrFailure;
   }
 
@@ -30,16 +27,13 @@ class AuthUseCases {
     final Either<Failure, String> tokenOrFailure =
         await authRepository.register(createUserDto);
 
-    String token = "";
-    tokenOrFailure.fold(
+    await tokenOrFailure.fold(
       (error) => null,
-      (resToken) {
-        token = resToken;
+      (token) async {
+        await authRepository.saveAuthTokenInStorage(token);
+        await resetDiWithNewGraphQlLink(token);
       },
     );
-
-    await authRepository.saveAuthTokenInStorage(token);
-    await resetDiWithNewGraphQlLink(token);
     return tokenOrFailure;
   }
 
@@ -47,14 +41,12 @@ class AuthUseCases {
     final Either<Failure, String> tokenOrFailure =
         await authRepository.getAuthTokenFromStorage();
 
-    String token = "";
-    tokenOrFailure.fold(
+    await tokenOrFailure.fold(
       (error) => null,
-      (resToken) {
-        token = resToken;
+      (token) async {
+        await resetDiWithNewGraphQlLink(token);
       },
     );
-    await resetDiWithNewGraphQlLink(token);
     return tokenOrFailure;
   }
 

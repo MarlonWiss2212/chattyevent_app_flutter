@@ -2,12 +2,13 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jwt_decode/jwt_decode.dart';
-import 'package:social_media_app_flutter/application/bloc/auth/auth_bloc.dart';
-import 'package:social_media_app_flutter/application/bloc/chat/chat_bloc.dart';
+import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 import 'package:social_media_app_flutter/presentation/widgets/chat_page/chat_info_page/private_event_list_groupchat.dart';
+import 'package:social_media_app_flutter/presentation/widgets/circle_image/cirlce_image.dart';
 import 'package:social_media_app_flutter/presentation/widgets/divider.dart';
 import 'package:social_media_app_flutter/presentation/widgets/chat_page/chat_info_page/user_left_list_groupchat.dart';
 import 'package:social_media_app_flutter/presentation/widgets/chat_page/chat_info_page/user_list_groupchat.dart';
@@ -19,7 +20,7 @@ class Details extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String currentUserId = "";
-    final authState = BlocProvider.of<AuthBloc>(context).state;
+    final authState = BlocProvider.of<AuthCubit>(context).state;
     if (authState is AuthStateLoaded) {
       currentUserId = Jwt.parseJwt(authState.token)["sub"];
     }
@@ -38,8 +39,8 @@ class Details extends StatelessWidget {
         children: [
           const SizedBox(height: 40),
           // Groupchat Image
-          CircleAvatar(
-            backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+          CircleImage(
+            imageLink: groupchat.profileImageLink,
           ),
           const SizedBox(height: 20),
           // name
@@ -129,11 +130,9 @@ class Details extends StatelessWidget {
               style: TextStyle(color: Colors.red),
             ),
             onTap: () {
-              BlocProvider.of<ChatBloc>(context).add(
-                DeleteUserFromChatEvent(
-                  groupchatId: groupchat.id,
-                  userIdToDelete: currentUserId,
-                ),
+              BlocProvider.of<ChatCubit>(context).deleteUserFromChatEvent(
+                groupchatId: groupchat.id,
+                userIdToDelete: currentUserId,
               );
             },
             shape: const RoundedRectangleBorder(

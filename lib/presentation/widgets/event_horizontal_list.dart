@@ -11,15 +11,18 @@ class EventHorizontalList extends StatelessWidget {
   const EventHorizontalList({super.key, required this.privateEvents});
   @override
   Widget build(BuildContext context) {
-    final pageController = PageController(
-      viewportFraction: min(
-        (330 / MediaQuery.of(context).size.width).toDouble(),
-        1,
-      ),
+    double viewportFraction = min(
+      (300 / MediaQuery.of(context).size.width).toDouble(),
+      1,
     );
+    final pageController = PageController(viewportFraction: viewportFraction);
+    // to make the box in the 4 by 3 ratio just like the image is
+    // -16 is the padding
+    final width = (MediaQuery.of(context).size.width * viewportFraction) - 16;
+    final height = width / 4 * 3;
 
     return SizedBox(
-      height: 250,
+      height: height,
       child: PageView.builder(
         padEnds: false,
         controller: pageController,
@@ -30,8 +33,8 @@ class EventHorizontalList extends StatelessWidget {
             widthFactor: .95,
             alignment: Alignment.centerLeft,
             child: EventGridListItem(
-              height: 250,
-              width: 250, // will be ignored because of page view
+              height: height,
+              width: width, // will be ignored because of page view
               privateEvent: privateEvents[index],
               onPress: () {
                 AutoRouter.of(context).push(

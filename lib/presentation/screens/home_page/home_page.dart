@@ -40,9 +40,9 @@ class HomePage extends StatelessWidget {
                 label: 'Chat',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.event_outlined),
-                activeIcon: Icon(Icons.event),
-                label: 'Event',
+                icon: Icon(Icons.celebration_outlined),
+                activeIcon: Icon(Icons.celebration),
+                label: 'Party',
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.search_outlined),

@@ -1,3 +1,5 @@
+import 'package:http/http.dart';
+import 'package:http_parser/http_parser.dart';
 import 'package:social_media_app_flutter/domain/dto/groupchat/create_groupchat_dto.dart';
 import 'package:social_media_app_flutter/domain/failures/failures.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
@@ -15,10 +17,24 @@ class ChatRepositoryImpl implements ChatRepository {
   Future<Either<Failure, GroupchatEntity>> createGroupchatViaApi(
       CreateGroupchatDto createGroupchatDto) async {
     try {
+      Map<String, dynamic> variables = {
+        "input": createGroupchatDto.toMap(),
+      };
+      if (createGroupchatDto.profileImage != null) {
+        final byteData = createGroupchatDto.profileImage!.readAsBytesSync();
+        final multipartFile = MultipartFile.fromBytes(
+          'photo',
+          byteData,
+          filename: '${createGroupchatDto.title}.jpg',
+          contentType: MediaType("image", "jpg"),
+        );
+        variables.addAll({'profileImage': multipartFile});
+      }
+
       final response = await graphQlDatasource.mutation(
         """
-        mutation CreateGroupchat(\$input: CreateGroupchatInput!) {
-          createGroupchat(createGroupchatInput: \$input) {
+        mutation CreateGroupchat(\$input: CreateGroupchatInput!, \$profileImage: Upload) {
+          createGroupchat(createGroupchatInput: \$input, profileImage: \$profileImage) {
             _id
             title
             description
@@ -37,10 +53,11 @@ class ChatRepositoryImpl implements ChatRepository {
           }
         }
       """,
-        variables: {"input": createGroupchatDto.toMap()},
+        variables: variables,
       );
 
       if (response.hasException) {
+        print(response.exception);
         return Left(GeneralFailure());
       }
       return Right(GroupchatModel.fromJson(response.data!["createGroupchat"]));
@@ -98,6 +115,7 @@ class ChatRepositoryImpl implements ChatRepository {
         query FindGroupchats {
           findGroupchats {
             _id
+            profileImageLink
             title
             users {
               userId

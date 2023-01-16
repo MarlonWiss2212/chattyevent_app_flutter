@@ -2,7 +2,7 @@ import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'package:social_media_app_flutter/application/bloc/chat/chat_bloc.dart';
+import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/private_event_bloc.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:social_media_app_flutter/presentation/widgets/chat_page/chat_info_page/details.dart';
@@ -16,7 +16,7 @@ class ChatInfoPage extends StatelessWidget {
     // should get the private events for this chat in future for more effeciancy
     BlocProvider.of<PrivateEventBloc>(context).add(GetPrivateEventsEvent());
 
-    return BlocBuilder<ChatBloc, ChatState>(builder: (context, state) {
+    return BlocBuilder<ChatCubit, ChatState>(builder: (context, state) {
       GroupchatEntity? foundGroupchat;
       if (state is ChatStateLoaded) {
         for (final chat in state.chats) {
@@ -41,7 +41,14 @@ class ChatInfoPage extends StatelessWidget {
 
       return PlatformScaffold(
         appBar: PlatformAppBar(
-          title: const Text("Info Page"),
+          title: Hero(
+            tag: "$groupchatId title",
+            child: Text(
+              foundGroupchat != null && foundGroupchat.title != null
+                  ? foundGroupchat.title!
+                  : "Kein Titel",
+            ),
+          ),
         ),
         body: body,
       );

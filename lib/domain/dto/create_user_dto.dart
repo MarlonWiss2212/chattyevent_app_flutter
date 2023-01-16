@@ -1,4 +1,10 @@
+import 'dart:io';
+
+import 'package:http/http.dart';
+import 'package:http_parser/http_parser.dart';
+
 class CreateUserDto {
+  File? profileImage;
   String firstname;
   String lastname;
   String username;
@@ -7,6 +13,7 @@ class CreateUserDto {
   DateTime birthdate;
 
   CreateUserDto({
+    this.profileImage,
     required this.firstname,
     required this.lastname,
     required this.username,
@@ -16,7 +23,7 @@ class CreateUserDto {
   });
 
   Map<dynamic, dynamic> toMap() {
-    return {
+    Map<dynamic, dynamic> variables = {
       'firstname': firstname,
       'lastname': lastname,
       'username': username,
@@ -24,5 +31,6 @@ class CreateUserDto {
       'password': password,
       'birthdate': birthdate.toIso8601String(),
     };
+    return variables;
   }
 }

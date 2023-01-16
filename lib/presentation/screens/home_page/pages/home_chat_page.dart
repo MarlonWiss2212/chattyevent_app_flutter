@@ -2,7 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'package:social_media_app_flutter/application/bloc/chat/chat_bloc.dart';
+import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 import 'package:social_media_app_flutter/presentation/widgets/chat_list.dart';
 
@@ -11,15 +11,13 @@ class HomeChatPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    BlocProvider.of<ChatCubit>(context).getChats();
+
     return PlatformScaffold(
       appBar: PlatformAppBar(
         title: const Text('Social Media App'),
       ),
-      body: BlocBuilder<ChatBloc, ChatState>(
-        bloc: BlocProvider.of<ChatBloc>(context)
-          ..add(
-            GetChatsEvent(),
-          ),
+      body: BlocBuilder<ChatCubit, ChatState>(
         builder: (context, state) {
           if (state is ChatStateLoaded) {
             return ChatList(chats: state.chats);
@@ -31,9 +29,7 @@ class HomeChatPage extends StatelessWidget {
                 child: Text(
                   state is ChatStateError ? state.message : "Daten Laden",
                 ),
-                onPressed: () => BlocProvider.of<ChatBloc>(context).add(
-                  GetChatsEvent(),
-                ),
+                onPressed: () => BlocProvider.of<ChatCubit>(context).getChats(),
               ),
             );
           }

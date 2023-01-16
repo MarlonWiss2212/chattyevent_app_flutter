@@ -21,8 +21,12 @@ class PrivateEventListGroupchat extends StatelessWidget {
               widgetsToReturn.add(
                 ListTile(
                   leading: CircleAvatar(
-                    backgroundColor:
-                        Theme.of(context).colorScheme.secondaryContainer,
+                    backgroundImage: privateEvent.coverImageLink != null
+                        ? NetworkImage(privateEvent.coverImageLink!)
+                        : null,
+                    backgroundColor: privateEvent.coverImageLink == null
+                        ? Theme.of(context).colorScheme.secondaryContainer
+                        : null,
                   ),
                   shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(

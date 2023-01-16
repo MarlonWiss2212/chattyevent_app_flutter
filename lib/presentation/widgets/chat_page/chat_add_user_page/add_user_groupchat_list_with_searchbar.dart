@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'package:social_media_app_flutter/application/bloc/chat/chat_bloc.dart';
+import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user_search/user_search_bloc.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
@@ -57,12 +57,11 @@ class AddUserGroupchatListWithSearchbar extends StatelessWidget {
                   child: UserGridList(
                     users: filteredUsers,
                     button: (user) => PlatformTextButton(
+                      color: Theme.of(context).colorScheme.primaryContainer,
                       onPressed: () {
-                        BlocProvider.of<ChatBloc>(context).add(
-                          AddUserToChatEvent(
-                            groupchatId: groupchatId,
-                            userIdToAdd: user.id,
-                          ),
+                        BlocProvider.of<ChatCubit>(context).addUserToChat(
+                          groupchatId: groupchatId,
+                          userIdToAdd: user.id,
                         );
                       },
                       child: Text(

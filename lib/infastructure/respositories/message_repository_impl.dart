@@ -1,3 +1,4 @@
+import 'package:graphql/client.dart';
 import 'package:social_media_app_flutter/domain/dto/create_message_dto.dart';
 import 'package:social_media_app_flutter/domain/failures/failures.dart';
 import 'package:social_media_app_flutter/domain/entities/message/message_entity.dart';
@@ -80,5 +81,22 @@ class MessageRepositoryImpl implements MessageRepository {
     } catch (e) {
       return Left(ServerFailure());
     }
+  }
+
+  @override
+  Stream<QueryResult<Object?>> getMessagesRealtimeViaApi() {
+    return graphQlDatasource.subscription(
+      """
+        subscription {
+          messageAdded {
+            _id
+            message
+            groupchatTo
+            createdBy
+            createdAt
+          }
+        }
+      """,
+    );
   }
 }

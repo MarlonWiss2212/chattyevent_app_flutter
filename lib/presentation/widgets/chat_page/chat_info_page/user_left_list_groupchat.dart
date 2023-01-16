@@ -27,6 +27,7 @@ class UserLeftListGroupchat extends StatelessWidget {
           }
           widgetsToReturn.add(
             UserListTile(
+              profileImageLink: foundUser?.profileImageLink,
               subtitle: groupchatLeftUser.leftAt != null
                   ? Text(
                       DateFormat.yMd()

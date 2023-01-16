@@ -22,39 +22,53 @@ class UserGridListItem extends StatelessWidget {
       onLongPress: onLongPress == null ? null : () => onLongPress!(),
       onTap: onPress == null ? null : () => onPress!(),
       child: Ink(
-        child: Card(
-          color: Theme.of(context).colorScheme.secondaryContainer,
-          elevation: 0,
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              children: [
-                Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      // for space between
-                      const SizedBox(),
-                      CircleAvatar(
-                        backgroundColor:
-                            Theme.of(context).colorScheme.secondary,
-                      ),
-                      Hero(
-                        tag: "${user.id} username",
-                        child: Text(
-                          user.username ?? "Kein Name",
-                          style: Theme.of(context).textTheme.labelMedium,
-                          overflow: TextOverflow.ellipsis,
-                          softWrap: true,
+        child: Stack(
+          children: [
+            user.profileImageLink != null
+                ? Container(
+                    decoration: const BoxDecoration(shape: BoxShape.circle),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8.0),
+                      child: Hero(
+                        tag: "${user.id} profileImage",
+                        child: Image.network(
+                          user.profileImageLink!,
+                          fit: BoxFit.cover,
                         ),
                       ),
-                    ],
+                    ),
+                  )
+                : Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: Theme.of(context).colorScheme.primaryContainer,
+                    ),
                   ),
-                ),
-                if (button != null) ...{button!},
-              ],
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Hero(
+                    tag: "${user.id} username",
+                    child: Text(
+                      user.username ?? "Kein Name",
+                      style: Theme.of(context).textTheme.labelMedium,
+                      overflow: TextOverflow.ellipsis,
+                      softWrap: true,
+                    ),
+                  ),
+                  if (button != null) ...[
+                    const SizedBox(height: 8),
+                    Center(
+                      child: button!,
+                    ),
+                  ]
+                ],
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );

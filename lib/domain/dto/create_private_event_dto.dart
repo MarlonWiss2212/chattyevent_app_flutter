@@ -15,19 +15,11 @@ class CreatePrivateEventDto {
     required this.eventDate,
   });
 
-  Future<Map<dynamic, dynamic>> toMap() async {
-    final multipartFile = await MultipartFile.fromPath(
-      'photo',
-      coverImage.path,
-      filename: '$title.jpg',
-      contentType: MediaType("image", "jpg"),
-    );
-
+  Map<dynamic, dynamic> toMap() {
     return {
-      'title': title,
-      'coverImage': multipartFile,
-      'connectedGroupchat': connectedGroupchat,
-      'eventDate': eventDate.toIso8601String(),
+      "title": title,
+      "connectedGroupchat": connectedGroupchat,
+      "eventDate": eventDate.toIso8601String(),
     };
   }
 }

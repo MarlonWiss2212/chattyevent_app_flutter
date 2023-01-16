@@ -4,7 +4,8 @@ import 'package:social_media_app_flutter/presentation/widgets/image_with_label_b
 
 class SelectedUsersList extends StatelessWidget {
   final void Function(String userId) onDeleted;
-  final List<CreateUserGroupchatWithUsername> groupchatUsersWithUsername;
+  final List<CreateUserGroupchatWithUsernameAndImageLink>
+      groupchatUsersWithUsername;
 
   const SelectedUsersList({
     super.key,
@@ -28,6 +29,7 @@ class SelectedUsersList extends StatelessWidget {
                   height: 100,
                   child: ImageWithLabelButton(
                     label: groupchatUsersWithUsername[index].username,
+                    imageLink: groupchatUsersWithUsername[index].imageLink,
                     onTap: () => onDeleted(
                       groupchatUsersWithUsername[index].userId,
                     ),

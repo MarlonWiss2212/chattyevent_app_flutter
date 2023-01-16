@@ -8,8 +8,11 @@ import 'package:social_media_app_flutter/domain/filter/get_users_filter.dart';
 import 'package:social_media_app_flutter/presentation/widgets/user_grid_list.dart';
 
 class SelectableUserGridList extends StatelessWidget {
-  final void Function(CreateUserGroupchatWithUsername newUser) onAdded;
-  final List<CreateUserGroupchatWithUsername> groupchatUsersWithUsername;
+  final void Function(
+    CreateUserGroupchatWithUsernameAndImageLink newUser,
+  ) onAdded;
+  final List<CreateUserGroupchatWithUsernameAndImageLink>
+      groupchatUsersWithUsername;
 
   const SelectableUserGridList({
     super.key,
@@ -59,9 +62,10 @@ class SelectableUserGridList extends StatelessWidget {
                     users: filteredUsers,
                     onPress: (user) {
                       onAdded(
-                        CreateUserGroupchatWithUsername(
+                        CreateUserGroupchatWithUsernameAndImageLink(
                           userId: user.id,
                           username: user.username ?? "Kein Username",
+                          imageLink: user.profileImageLink,
                         ),
                       );
                     },

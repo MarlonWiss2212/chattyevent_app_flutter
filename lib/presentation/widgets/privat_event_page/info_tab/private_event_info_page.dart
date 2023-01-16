@@ -35,7 +35,7 @@ class PrivateEventInfoPage extends StatelessWidget {
             } else ...{
               SizedBox(
                 width: size.width,
-                height: 300,
+                height: (size.width / 4 * 3) - 16,
                 child: Card(
                   color: Theme.of(context).colorScheme.secondaryContainer,
                 ),

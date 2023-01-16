@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:social_media_app_flutter/application/bloc/chat/chat_bloc.dart';
+import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
 import 'package:social_media_app_flutter/domain/filter/get_one_groupchat_filter.dart';
 
 class ChatPageWrapper extends StatelessWidget {
@@ -17,10 +17,8 @@ class ChatPageWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (loadChat) {
-      BlocProvider.of<ChatBloc>(context).add(
-        GetOneChatEvent(
-          getOneGroupchatFilter: GetOneGroupchatFilter(id: groupchatId),
-        ),
+      BlocProvider.of<ChatCubit>(context).getOneChat(
+        getOneGroupchatFilter: GetOneGroupchatFilter(id: groupchatId),
       );
     }
 

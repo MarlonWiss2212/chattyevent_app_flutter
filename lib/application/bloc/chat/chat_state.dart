@@ -1,4 +1,4 @@
-part of 'chat_bloc.dart';
+part of 'chat_cubit.dart';
 
 @immutable
 abstract class ChatState {}
@@ -15,11 +15,9 @@ class ChatStateError extends ChatState {
 class ChatStateLoaded extends ChatState {
   final List<GroupchatEntity> chats;
   final String? errorMessage;
-  final String? createdEventId;
 
   ChatStateLoaded({
     required this.chats,
     this.errorMessage,
-    this.createdEventId,
   });
 }

@@ -1,13 +1,21 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:social_media_app_flutter/domain/usecases/image_picker_usecases.dart';
 import 'package:social_media_app_flutter/presentation/widgets/dialog/buttons/ok_button.dart';
-import 'package:social_media_app_flutter/presentation/widgets/divider.dart';
 import './../../../injection.dart' as di;
 
 class GetImageModal extends StatelessWidget {
-  final void Function(XFile newImage) imageChanged;
-  const GetImageModal({super.key, required this.imageChanged});
+  final void Function(File newImage) imageChanged;
+  final double ratioX;
+  final double ratioY;
+  const GetImageModal({
+    super.key,
+    required this.imageChanged,
+    required this.ratioX,
+    required this.ratioY,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +42,16 @@ class GetImageModal extends StatelessWidget {
                         final xfile =
                             await imagePickerUseCases.getImageFromCamera();
                         if (xfile != null) {
-                          imageChanged(xfile);
+                          final croppedImage = await ImageCropper().cropImage(
+                            sourcePath: xfile.path,
+                            aspectRatio: CropAspectRatio(
+                              ratioX: ratioX,
+                              ratioY: ratioY,
+                            ),
+                          );
+                          if (croppedImage != null) {
+                            imageChanged(File(croppedImage.path));
+                          }
                         }
                       },
                       child: Container(
@@ -60,7 +77,16 @@ class GetImageModal extends StatelessWidget {
                         final xfile =
                             await imagePickerUseCases.getImageFromGallery();
                         if (xfile != null) {
-                          imageChanged(xfile);
+                          final croppedImage = await ImageCropper().cropImage(
+                            sourcePath: xfile.path,
+                            aspectRatio: CropAspectRatio(
+                              ratioX: ratioX,
+                              ratioY: ratioY,
+                            ),
+                          );
+                          if (croppedImage != null) {
+                            imageChanged(File(croppedImage.path));
+                          }
                         }
                       },
                       child: Container(

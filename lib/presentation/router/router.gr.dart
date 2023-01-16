@@ -11,6 +11,8 @@
 // ignore_for_file: type=lint
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'dart:io' as _i23;
+
 import 'package:auto_route/auto_route.dart' as _i20;
 import 'package:flutter/material.dart' as _i21;
 
@@ -208,6 +210,7 @@ class AppRouter extends _i20.RootStackRouter {
         child: _i19.NewGroupchatPageSelectUsersPage(
           key: args.key,
           title: args.title,
+          profileImage: args.profileImage,
           description: args.description,
         ),
       );
@@ -742,6 +745,7 @@ class NewGroupchatPageSelectUsersPageRoute
   NewGroupchatPageSelectUsersPageRoute({
     _i21.Key? key,
     required String title,
+    _i23.File? profileImage,
     String? description,
   }) : super(
           NewGroupchatPageSelectUsersPageRoute.name,
@@ -749,6 +753,7 @@ class NewGroupchatPageSelectUsersPageRoute
           args: NewGroupchatPageSelectUsersPageRouteArgs(
             key: key,
             title: title,
+            profileImage: profileImage,
             description: description,
           ),
         );
@@ -760,6 +765,7 @@ class NewGroupchatPageSelectUsersPageRouteArgs {
   const NewGroupchatPageSelectUsersPageRouteArgs({
     this.key,
     required this.title,
+    this.profileImage,
     this.description,
   });
 
@@ -767,10 +773,12 @@ class NewGroupchatPageSelectUsersPageRouteArgs {
 
   final String title;
 
+  final _i23.File? profileImage;
+
   final String? description;
 
   @override
   String toString() {
-    return 'NewGroupchatPageSelectUsersPageRouteArgs{key: $key, title: $title, description: $description}';
+    return 'NewGroupchatPageSelectUsersPageRouteArgs{key: $key, title: $title, profileImage: $profileImage, description: $description}';
   }
 }
