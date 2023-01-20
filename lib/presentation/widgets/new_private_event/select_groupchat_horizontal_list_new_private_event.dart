@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'package:jwt_decode/jwt_decode.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
@@ -16,13 +15,8 @@ class SelectGroupchatHorizontalListNewPrivateEvent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String currentUserId = "";
-
-    final authState = BlocProvider.of<AuthCubit>(context).state;
-
-    if (authState is AuthStateLoaded) {
-      currentUserId = Jwt.parseJwt(authState.token)["sub"];
-    }
+    final authState =
+        BlocProvider.of<AuthCubit>(context).state as AuthStateLoaded;
 
     return BlocBuilder<ChatCubit, ChatState>(
       builder: (context, state) {
@@ -31,16 +25,18 @@ class SelectGroupchatHorizontalListNewPrivateEvent extends StatelessWidget {
 
           for (final chat in state.chats) {
             bool currentUserIsAdmin = false;
-            for (final chatUser in chat.users) {
-              if (chatUser.userId == currentUserId) {
-                chatUser.admin != null && chatUser.admin!
-                    ? currentUserIsAdmin = true
-                    : null;
-                break;
+            if (chat.users != null) {
+              for (final chatUser in chat.users!) {
+                if (chatUser.userId == authState.userAndToken.user.id) {
+                  chatUser.admin != null && chatUser.admin!
+                      ? currentUserIsAdmin = true
+                      : null;
+                  break;
+                }
               }
-            }
-            if (currentUserIsAdmin) {
-              filteredChats.add(chat);
+              if (currentUserIsAdmin) {
+                filteredChats.add(chat);
+              }
             }
           }
 

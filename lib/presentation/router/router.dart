@@ -10,6 +10,7 @@ import 'package:social_media_app_flutter/presentation/screens/home_page/pages/ho
 import 'package:social_media_app_flutter/presentation/screens/home_page/pages/home_map_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/home_page/pages/home_profile_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/home_page/pages/home_search_page.dart';
+import 'package:social_media_app_flutter/presentation/screens/loading_current_user_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/login_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/new_event_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/new_groupchat/new_groupchat_page.dart';
@@ -24,6 +25,11 @@ import 'package:social_media_app_flutter/presentation/screens/register_page.dart
   routes: <AutoRoute>[
     AutoRoute(page: LoginPage, initial: false),
     AutoRoute(page: RegisterPage, initial: false),
+
+    AutoRoute(
+      page: LoadingCurrentUserPage,
+      initial: false,
+    ),
 
     //profile page
     AutoRoute(
@@ -115,7 +121,6 @@ import 'package:social_media_app_flutter/presentation/screens/register_page.dart
       guards: [AuthGuard],
       path: '/new-private-event',
     ),
-
     RedirectRoute(path: '*', redirectTo: '/chats')
   ],
 )

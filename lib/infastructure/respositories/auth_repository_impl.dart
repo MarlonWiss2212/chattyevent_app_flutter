@@ -1,11 +1,13 @@
 import 'package:http/http.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:social_media_app_flutter/domain/dto/create_user_dto.dart';
+import 'package:social_media_app_flutter/domain/entities/user_and_token_entity.dart.dart';
 import 'package:social_media_app_flutter/domain/failures/failures.dart';
 import 'package:dartz/dartz.dart';
 import 'package:social_media_app_flutter/domain/repositories/auth_repository.dart';
 import 'package:social_media_app_flutter/infastructure/datasources/remote/graphql.dart';
 import 'package:social_media_app_flutter/infastructure/datasources/local/sharedPreferences.dart';
+import 'package:social_media_app_flutter/infastructure/models/user_and_token_model.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   final SharedPreferencesDatasource sharedPrefrencesDatasource;
@@ -31,13 +33,22 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<Failure, String>> login(String email, String password) async {
+  Future<Either<Failure, UserAndTokenEntity>> login(
+      String email, String password) async {
     try {
       final response = await graphQlDatasource.mutation(
         """
           mutation Login(\$input: LoginUserInput!) {
             login(loginUserInput: \$input) {
               access_token
+              user {
+                _id
+                firstname
+                lastname
+                username
+                profileImageLink
+                email
+              }
             }
           }
         """,
@@ -52,14 +63,15 @@ class AuthRepositoryImpl implements AuthRepository {
       if (response.hasException) {
         return Left(GeneralFailure());
       }
-      return Right(response.data!["login"]["access_token"]);
+      return Right(UserAndTokenModel.fromJson(response.data!["login"]));
     } catch (e) {
       return Left(ServerFailure());
     }
   }
 
   @override
-  Future<Either<Failure, String>> register(CreateUserDto createUserDto) async {
+  Future<Either<Failure, UserAndTokenEntity>> register(
+      CreateUserDto createUserDto) async {
     try {
       Map<String, dynamic> variables = {
         "input": createUserDto.toMap(),
@@ -80,6 +92,14 @@ class AuthRepositoryImpl implements AuthRepository {
           mutation signup(\$input: CreateUserInput!, \$profileImage: Upload) {
             signup(createUserInput: \$input, profileImage: \$profileImage) {
               access_token
+              user {
+                _id
+                firstname
+                lastname
+                username
+                profileImageLink
+                email
+              }
             }
           }
         """,
@@ -89,7 +109,7 @@ class AuthRepositoryImpl implements AuthRepository {
       if (response.hasException) {
         return Left(GeneralFailure());
       }
-      return Right(response.data!["signup"]["access_token"]);
+      return Right(UserAndTokenModel.fromJson(response.data!["signup"]));
     } catch (e) {
       return Left(ServerFailure());
     }

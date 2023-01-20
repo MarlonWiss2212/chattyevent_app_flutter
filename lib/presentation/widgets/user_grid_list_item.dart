@@ -26,7 +26,9 @@ class UserGridListItem extends StatelessWidget {
           children: [
             user.profileImageLink != null
                 ? Container(
-                    decoration: const BoxDecoration(shape: BoxShape.circle),
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                    ),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(8.0),
                       child: Hero(

@@ -7,10 +7,13 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/add_chat_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/user_search/user_search_bloc.dart';
-import 'package:social_media_app_flutter/application/bloc/user/user_bloc.dart';
-import 'package:social_media_app_flutter/application/bloc/message/message_bloc.dart';
-import 'package:social_media_app_flutter/application/bloc/private_event/private_event_bloc.dart';
+import 'package:social_media_app_flutter/application/bloc/chat/edit_chat_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/user_search/user_search_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/message/message_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/private_event/private_event_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/private_event/add_private_event_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/private_event/edit_private_event_cubit.dart';
 import 'package:social_media_app_flutter/colors.dart';
 import 'package:social_media_app_flutter/presentation/router/auth_guard.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
@@ -24,7 +27,6 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: '.env');
   await di.init();
-
   await one_signal.init();
 
   runApp(const BlocInitializer());
@@ -41,13 +43,13 @@ class BlocInitializer extends StatelessWidget {
           create: (context) => di.serviceLocator<AuthCubit>(),
         ),
         BlocProvider(
-          create: (context) => di.serviceLocator<MessageBloc>(),
+          create: (context) => di.serviceLocator<MessageCubit>(),
         ),
         BlocProvider(
-          create: (context) => di.serviceLocator<UserSearchBloc>(),
+          create: (context) => di.serviceLocator<UserSearchCubit>(),
         ),
         BlocProvider(
-          create: (context) => di.serviceLocator<UserBloc>(),
+          create: (context) => di.serviceLocator<UserCubit>(),
         ),
         BlocProvider(
           create: (context) => di.serviceLocator<ChatCubit>(),
@@ -56,7 +58,16 @@ class BlocInitializer extends StatelessWidget {
           create: (context) => di.serviceLocator<AddChatCubit>(),
         ),
         BlocProvider(
-          create: (context) => di.serviceLocator<PrivateEventBloc>(),
+          create: (context) => di.serviceLocator<EditChatCubit>(),
+        ),
+        BlocProvider(
+          create: (context) => di.serviceLocator<PrivateEventCubit>(),
+        ),
+        BlocProvider(
+          create: (context) => di.serviceLocator<AddPrivateEventCubit>(),
+        ),
+        BlocProvider(
+          create: (context) => di.serviceLocator<EditPrivateEventCubit>(),
         ),
       ],
       child: const App(),
@@ -78,8 +89,11 @@ class App extends StatelessWidget {
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) async {
         appRouter.authGuard.state = state;
+
         if (state is AuthStateLoaded) {
           appRouter.replace(const HomePageRoute());
+        } else if (state is AuthStateLoadingCurrentUser) {
+          // appRouter.replace(const LoadingCurrentUserPageRoute());
         }
       },
       child: DynamicColorBuilder(

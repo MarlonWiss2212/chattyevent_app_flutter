@@ -26,7 +26,7 @@ class _LoginPageState extends State<LoginPage> {
       body: Column(
         children: [
           BlocBuilder<AuthCubit, AuthState>(builder: (context, state) {
-            if (state is AuthStateLoading) {
+            if (state is AuthStateLoadingToken) {
               return const LinearProgressIndicator();
             }
             return Container();
@@ -58,7 +58,7 @@ class _LoginPageState extends State<LoginPage> {
                             context: context,
                             builder: (context) {
                               return PlatformAlertDialog(
-                                title: Text(state.title ?? "Kein Titel"),
+                                title: Text(state.title),
                                 content: Text(state.message),
                                 actions: const [OKButton()],
                               );

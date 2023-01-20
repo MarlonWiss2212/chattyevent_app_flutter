@@ -3,11 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/message/message_bloc.dart';
-import 'package:social_media_app_flutter/application/bloc/private_event/private_event_bloc.dart';
-import 'package:social_media_app_flutter/application/bloc/user/user_bloc.dart';
+import 'package:social_media_app_flutter/application/bloc/private_event/edit_private_event_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/private_event/private_event_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event_entity.dart';
-import 'package:social_media_app_flutter/domain/filter/get_messages_filter.dart';
 import 'package:social_media_app_flutter/domain/filter/get_one_groupchat_filter.dart';
 import 'package:social_media_app_flutter/domain/filter/get_one_private_event_filter.dart';
 
@@ -23,15 +22,13 @@ class PrivateEventPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (loadPrivateEvent) {
-      BlocProvider.of<PrivateEventBloc>(context).add(
-        GetOnePrivateEventEvent(
-          getOnePrivateEventEvent: GetOnePrivateEventFilter(id: privateEventId),
-        ),
+      BlocProvider.of<PrivateEventCubit>(context).getOnePrivateEvent(
+        getOnePrivateEventFilter: GetOnePrivateEventFilter(id: privateEventId),
       );
     }
 
     var dataLoaded = false;
-    return BlocBuilder<PrivateEventBloc, PrivateEventState>(
+    return BlocBuilder<PrivateEventCubit, PrivateEventState>(
       builder: (context, state) {
         PrivateEventEntity? foundPrivateEvent;
         if (state is PrivateEventStateLoaded) {
@@ -51,23 +48,10 @@ class PrivateEventPage extends StatelessWidget {
               id: foundPrivateEvent.connectedGroupchat!,
             ),
           );
-          BlocProvider.of<MessageBloc>(context).add(
-            GetMessagesEvent(
-              getMessagesFilter: GetMessagesFilter(
-                groupchatTo: foundPrivateEvent.connectedGroupchat!,
-              ),
-            ),
-          );
-          BlocProvider.of<UserBloc>(context).add(GetUsersEvent());
+          BlocProvider.of<UserCubit>(context).getUsers();
           dataLoaded = true;
         }
 
-        //return AutoTabsRouter.tabBar(
-        //  routes: [
-        //    InfoTabRoute(),
-        //    GroupchatTabRoute(),
-        //  ],
-        //  builder: (context, child, tabController) {
         return PlatformScaffold(
           appBar: PlatformAppBar(
             leading: const AutoLeadingButton(),
@@ -77,22 +61,20 @@ class PrivateEventPage extends StatelessWidget {
                   : "Kein Titel",
             ),
           ),
-          //    material: (context, platform) => MaterialAppBarData(
-          //      bottom: TabBar(
-          //        controller: tabController,
-          //        tabs: const [
-          //          Tab(icon: Icon(Icons.event)),
-          //          Tab(icon: Icon(Icons.chat_bubble)),
-          //        ],
-          //      ),
-          //    ),
-          //    cupertino: (context, platform) => CupertinoNavigationBarData(),
-          //  ),
-          body: const AutoRouter(),
+          body: Column(
+            children: [
+              BlocBuilder<EditPrivateEventCubit, EditPrivateEventState>(
+                  builder: (context, state) {
+                if (state is EditPrivateEventLoading) {
+                  return const LinearProgressIndicator();
+                }
+                return Container();
+              }),
+              const Expanded(child: AutoRouter()),
+            ],
+          ),
         );
       },
     );
-    // },
-    //);
   }
 }

@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/add_chat_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/user_search/user_search_bloc.dart';
+import 'package:social_media_app_flutter/application/bloc/user_search/user_search_cubit.dart';
 import 'package:social_media_app_flutter/domain/dto/groupchat/create_groupchat_dto.dart';
 import 'package:social_media_app_flutter/domain/dto/groupchat/create_user_groupchat_dto.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
@@ -68,7 +68,7 @@ class _NewGroupchatPageSelectUsersPageState
 
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<UserSearchBloc>(context).add(UserSearchGetUsersEvent());
+    BlocProvider.of<UserSearchCubit>(context).getUsers();
 
     return PlatformScaffold(
       appBar: PlatformAppBar(

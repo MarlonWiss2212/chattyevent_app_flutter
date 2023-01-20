@@ -9,8 +9,8 @@ class GroupchatModel extends GroupchatEntity {
     required String id,
     String? title,
     String? profileImageLink,
-    required List<GroupchatUserEntity> users,
-    required List<GroupchatLeftUserEntity> leftUsers,
+    List<GroupchatUserEntity>? users,
+    List<GroupchatLeftUserEntity>? leftUsers,
     String? description,
     String? createdBy,
     DateTime? createdAt,
@@ -26,15 +26,17 @@ class GroupchatModel extends GroupchatEntity {
         );
 
   factory GroupchatModel.fromJson(Map<String, dynamic> json) {
-    List<GroupchatUserEntity> users = [];
+    List<GroupchatUserEntity>? users;
     if (json["users"] != null) {
+      users = [];
       for (final user in json["users"]) {
         users.add(GroupchatUserModel.fromJson(user));
       }
     }
 
-    List<GroupchatLeftUserEntity> leftUsers = [];
+    List<GroupchatLeftUserEntity>? leftUsers;
     if (json["leftUsers"] != null) {
+      leftUsers = [];
       for (final user in json["leftUsers"]) {
         leftUsers.add(GroupchatLeftUserModel.fromJson(user));
       }

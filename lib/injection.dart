@@ -5,10 +5,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/add_chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/message/message_bloc.dart';
-import 'package:social_media_app_flutter/application/bloc/private_event/private_event_bloc.dart';
-import 'package:social_media_app_flutter/application/bloc/user/user_bloc.dart';
-import 'package:social_media_app_flutter/application/bloc/user_search/user_search_bloc.dart';
+import 'package:social_media_app_flutter/application/bloc/chat/edit_chat_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/message/message_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/private_event/add_private_event_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/private_event/edit_private_event_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/private_event/private_event_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/user_search/user_search_cubit.dart';
 import 'package:social_media_app_flutter/domain/repositories/auth_repository.dart';
 import 'package:social_media_app_flutter/domain/repositories/chat_repository.dart';
 import 'package:social_media_app_flutter/domain/repositories/device/image_picker_repository.dart';
@@ -37,44 +40,71 @@ import 'package:social_media_app_flutter/infastructure/respositories/user_reposi
 
 final serviceLocator = GetIt.I;
 
-Future<void> init({String? token}) async {
-  serviceLocator.allowReassignment = true;
+Future<void> init({
+  String? token,
+}) async {
   // Blocs
-  serviceLocator.registerFactory(
+  serviceLocator.registerLazySingleton(
     () => AuthCubit(
+      userCubit: serviceLocator(),
       authUseCases: serviceLocator(),
+      userUseCases: serviceLocator(),
       notificationUseCases: serviceLocator(),
     ),
   );
-  serviceLocator.registerFactory(
-    () => UserSearchBloc(
+  serviceLocator.registerLazySingleton(
+    () => UserSearchCubit(
       userUseCases: serviceLocator(),
     ),
   );
-  serviceLocator.registerFactory(
-    () => UserBloc(
+  serviceLocator.registerLazySingleton(
+    () => UserCubit(
       userUseCases: serviceLocator(),
     ),
   );
-  serviceLocator.registerFactory(
-    () => PrivateEventBloc(
-      privateEventUseCases: serviceLocator(),
-    ),
-  );
-  serviceLocator.registerFactory(
-    () => MessageBloc(
-      messageUseCases: serviceLocator(),
-    ),
-  );
+
+  // chat cubits
   serviceLocator.registerLazySingleton(
     () => ChatCubit(
       chatUseCases: serviceLocator(),
     ),
   );
-  serviceLocator.registerFactory(
+  serviceLocator.registerLazySingleton(
     () => AddChatCubit(
       chatUseCases: serviceLocator(),
       chatCubit: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton(
+    () => EditChatCubit(
+      chatUseCases: serviceLocator(),
+      chatCubit: serviceLocator(),
+    ),
+  );
+
+  //message cubits
+  serviceLocator.registerLazySingleton(
+    () => MessageCubit(
+      messageUseCases: serviceLocator(),
+    ),
+  );
+
+  //private events cubits
+  serviceLocator.registerLazySingleton(
+    () => PrivateEventCubit(
+      privateEventUseCases: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton(
+    () => AddPrivateEventCubit(
+      privateEventUseCases: serviceLocator(),
+      privateEventCubit: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton(
+    () => EditPrivateEventCubit(
+      privateEventUseCases: serviceLocator(),
+      privateEventCubit: serviceLocator(),
     ),
   );
 
@@ -160,9 +190,6 @@ Future<void> init({String? token}) async {
   serviceLocator.registerLazySingleton<SharedPreferencesDatasource>(
     () => SharedPreferencesDatasourceImpl(sharedPreferences: serviceLocator()),
   );
-  serviceLocator.registerLazySingleton<SharedPreferencesDatasource>(
-    () => SharedPreferencesDatasourceImpl(sharedPreferences: serviceLocator()),
-  );
   serviceLocator.registerLazySingleton<NotificationDatasource>(
     () => NotificationDatasourceImpl(),
   );
@@ -174,24 +201,23 @@ Future<void> init({String? token}) async {
   final sharedPrefs = await SharedPreferences.getInstance();
   serviceLocator.registerLazySingleton(() => sharedPrefs);
 
-  Link link = HttpLink(
-    dotenv.get("API_BASE_URL"),
-    defaultHeaders: {
-      "Apollo-Require-Preflight": "true",
-      "Authorization": "Bearer $token"
-    },
-  );
+  serviceLocator.registerLazySingleton(() {
+    Link link = HttpLink(
+      dotenv.get("API_BASE_URL"),
+      defaultHeaders: {
+        "Apollo-Require-Preflight": "true",
+        "Authorization": "Bearer $token"
+      },
+    );
 
-  final gqlClient = GraphQLClient(
-    link: link,
-    cache: GraphQLCache(),
-    defaultPolicies: DefaultPolicies(
-      query: Policies(fetch: FetchPolicy.noCache),
-      mutate: Policies(fetch: FetchPolicy.noCache),
-      subscribe: Policies(fetch: FetchPolicy.noCache),
-    ),
-  );
-  serviceLocator.registerLazySingleton<GraphQLClient>(
-    () => gqlClient,
-  );
+    return GraphQLClient(
+      link: link,
+      cache: GraphQLCache(),
+      defaultPolicies: DefaultPolicies(
+        query: Policies(fetch: FetchPolicy.noCache),
+        mutate: Policies(fetch: FetchPolicy.noCache),
+        subscribe: Policies(fetch: FetchPolicy.noCache),
+      ),
+    );
+  });
 }

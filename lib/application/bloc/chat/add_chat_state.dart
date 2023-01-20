@@ -8,8 +8,8 @@ class AddChatInitial extends AddChatState {}
 class AddChatLoading extends AddChatState {}
 
 class AddChatError extends AddChatState {
-  String title;
-  String message;
+  final String title;
+  final String message;
 
   AddChatError({required this.message, required this.title});
 }

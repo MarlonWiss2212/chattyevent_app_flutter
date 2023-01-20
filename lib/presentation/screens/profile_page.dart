@@ -2,7 +2,7 @@ import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'package:social_media_app_flutter/application/bloc/user/user_bloc.dart';
+import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
 import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
 import 'package:social_media_app_flutter/domain/filter/get_one_user_filter.dart';
 import 'package:social_media_app_flutter/presentation/widgets/profile/user_profile_data_page.dart';
@@ -19,12 +19,12 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (loadUser) {
-      BlocProvider.of<UserBloc>(context).add(GetOneUserEvent(
+      BlocProvider.of<UserCubit>(context).getOneUser(
         getOneUserFilter: GetOneUserFilter(id: userId),
-      ));
+      );
     }
 
-    return BlocBuilder<UserBloc, UserState>(
+    return BlocBuilder<UserCubit, UserState>(
       builder: (context, state) {
         UserEntity? foundUser;
         if (state is UserStateLoaded) {
@@ -42,10 +42,8 @@ class ProfilePage extends StatelessWidget {
             return Center(
               child: PlatformTextButton(
                 child: const Text("Keinen User gefunden"),
-                onPressed: () => BlocProvider.of<UserBloc>(context).add(
-                  GetOneUserEvent(
-                    getOneUserFilter: GetOneUserFilter(id: userId),
-                  ),
+                onPressed: () => BlocProvider.of<UserCubit>(context).getOneUser(
+                  getOneUserFilter: GetOneUserFilter(id: userId),
                 ),
               ),
             );
@@ -60,9 +58,9 @@ class ProfilePage extends StatelessWidget {
               child: Text(
                 state is UserStateError ? state.message : "User Laden",
               ),
-              onPressed: () => BlocProvider.of<UserBloc>(context).add(
-                GetOneUserEvent(
-                  getOneUserFilter: GetOneUserFilter(id: userId),
+              onPressed: () => BlocProvider.of<UserCubit>(context).getOneUser(
+                getOneUserFilter: GetOneUserFilter(
+                  id: userId,
                 ),
               ),
             ),

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/chat/edit_chat_cubit.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
@@ -19,17 +19,16 @@ class Details extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String currentUserId = "";
-    final authState = BlocProvider.of<AuthCubit>(context).state;
-    if (authState is AuthStateLoaded) {
-      currentUserId = Jwt.parseJwt(authState.token)["sub"];
-    }
+    final authState =
+        BlocProvider.of<AuthCubit>(context).state as AuthStateLoaded;
     GroupchatUserEntity? currentGroupchatUser;
-    for (final groupchatUser in groupchat.users) {
-      if (groupchatUser.userId == currentUserId &&
-          groupchatUser.admin != null &&
-          groupchatUser.admin == true) {
-        currentGroupchatUser = groupchatUser;
+    if (groupchat.users != null) {
+      for (final groupchatUser in groupchat.users!) {
+        if (groupchatUser.userId == authState.userAndToken.user.id &&
+            groupchatUser.admin != null &&
+            groupchatUser.admin == true) {
+          currentGroupchatUser = groupchatUser;
+        }
       }
     }
 
@@ -67,12 +66,12 @@ class Details extends StatelessWidget {
           PrivateEventListGroupchat(groupchatId: groupchat.id),
           const CustomDivider(),
           // users
-          if (groupchat.users.isNotEmpty) ...[
+          if (groupchat.users != null) ...[
             Text(
-              "Midglieder: ${groupchat.users.length}",
+              "Midglieder: ${groupchat.users!.length}",
               style: Theme.of(context).textTheme.titleMedium,
             ),
-            const SizedBox(height: 8),
+            if (groupchat.users!.isNotEmpty) ...{const SizedBox(height: 8)},
             if (currentGroupchatUser != null &&
                 currentGroupchatUser.admin != null &&
                 currentGroupchatUser.admin == true) ...{
@@ -99,26 +98,34 @@ class Details extends StatelessWidget {
               )
             },
             UserListGroupchat(
-              groupchatUsers: groupchat.users,
+              groupchatUsers: groupchat.users!,
               groupchatId: groupchat.id,
               currentGrouppchatUser: currentGroupchatUser,
             ),
           ] else ...[
             Text(
-              "Fehler beim darstellen der Gruppenchat Benutzer",
+              "Konnte die Gruppenchat Benutzer nicht Laden",
               overflow: TextOverflow.ellipsis,
               style: Theme.of(context).textTheme.titleMedium,
-            )
+            ),
           ],
           const CustomDivider(),
           // left users
-          Text(
-            "Frühere Midglieder: ${groupchat.leftUsers.length}",
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
-          if (groupchat.leftUsers.isNotEmpty) ...{const SizedBox(height: 8)},
-          UserLeftListGroupchat(groupchatLeftUsers: groupchat.leftUsers),
+          if (groupchat.leftUsers != null) ...[
+            Text(
+              "Frühere Midglieder: ${groupchat.leftUsers!.length}",
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+            if (groupchat.leftUsers!.isNotEmpty) ...{const SizedBox(height: 8)},
+            UserLeftListGroupchat(groupchatLeftUsers: groupchat.leftUsers!),
+          ] else ...[
+            Text(
+              "Konnte die Früheren Mitglieder nicht Laden",
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+          ],
           const CustomDivider(),
+
           // leave Chat Button
           ListTile(
             leading: const Icon(
@@ -130,9 +137,9 @@ class Details extends StatelessWidget {
               style: TextStyle(color: Colors.red),
             ),
             onTap: () {
-              BlocProvider.of<ChatCubit>(context).deleteUserFromChatEvent(
+              BlocProvider.of<EditChatCubit>(context).deleteUserFromChatEvent(
                 groupchatId: groupchat.id,
-                userIdToDelete: currentUserId,
+                userIdToDelete: authState.userAndToken.user.id,
               );
             },
             shape: const RoundedRectangleBorder(

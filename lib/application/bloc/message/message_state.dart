@@ -1,4 +1,4 @@
-part of 'message_bloc.dart';
+part of 'message_cubit.dart';
 
 @immutable
 abstract class MessageState {}

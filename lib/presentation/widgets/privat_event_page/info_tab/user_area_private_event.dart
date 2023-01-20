@@ -40,8 +40,9 @@ class UserAreaPrivateEvent extends StatelessWidget {
             if (state is ChatStateLoaded &&
                 privateEvent.connectedGroupchat != null) {
               for (final chat in state.chats) {
-                if (chat.id == privateEvent.connectedGroupchat) {
-                  for (final chatUser in chat.users) {
+                if (chat.id == privateEvent.connectedGroupchat &&
+                    chat.users != null) {
+                  for (final chatUser in chat.users!) {
                     bool pushUser = true;
 
                     // to check if user already accapted invitation

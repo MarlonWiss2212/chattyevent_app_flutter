@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/message/message_bloc.dart';
-import 'package:social_media_app_flutter/application/bloc/user/user_bloc.dart';
+import 'package:social_media_app_flutter/application/bloc/message/message_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:social_media_app_flutter/domain/filter/get_messages_filter.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
@@ -23,12 +23,10 @@ class _ChatPageState extends State<ChatPage> {
   @override
   Widget build(BuildContext context) {
     // load data here so that it does not get double loaded when the bloc state changes
-    BlocProvider.of<UserBloc>(context).add(GetUsersEvent());
+    BlocProvider.of<UserCubit>(context).getUsers();
 
-    BlocProvider.of<MessageBloc>(context).add(
-      GetMessagesEvent(
-        getMessagesFilter: GetMessagesFilter(groupchatTo: widget.groupchatId),
-      ),
+    BlocProvider.of<MessageCubit>(context).getMessages(
+      getMessagesFilter: GetMessagesFilter(groupchatTo: widget.groupchatId),
     );
 
     return BlocBuilder<ChatCubit, ChatState>(

@@ -2,7 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'package:social_media_app_flutter/application/bloc/user_search/user_search_bloc.dart';
+import 'package:social_media_app_flutter/application/bloc/user_search/user_search_cubit.dart';
 import 'package:social_media_app_flutter/domain/filter/get_users_filter.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 import 'package:social_media_app_flutter/presentation/widgets/user_grid_list.dart';
@@ -18,16 +18,14 @@ class UserGridListWithSearchbar extends StatelessWidget {
         children: [
           PlatformTextField(
             onChanged: (text) {
-              BlocProvider.of<UserSearchBloc>(context).add(
-                UserSearchGetUsersEvent(
-                  getUsersFilterParam: GetUsersFilter(search: text),
-                ),
+              BlocProvider.of<UserSearchCubit>(context).getUsers(
+                getUsersFilter: GetUsersFilter(search: text),
               );
             },
             hintText: "User Suche: ",
           ),
           const SizedBox(height: 8),
-          BlocBuilder<UserSearchBloc, UserSearchState>(
+          BlocBuilder<UserSearchCubit, UserSearchState>(
             builder: (context, state) {
               if (state is UserSearchStateLoaded) {
                 return Expanded(
@@ -54,9 +52,7 @@ class UserGridListWithSearchbar extends StatelessWidget {
                             : "User laden",
                       ),
                       onPressed: () =>
-                          BlocProvider.of<UserSearchBloc>(context).add(
-                        UserSearchGetUsersEvent(),
-                      ),
+                          BlocProvider.of<UserSearchCubit>(context).getUsers(),
                     ),
                   ),
                 );

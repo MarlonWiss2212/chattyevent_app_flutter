@@ -19,9 +19,7 @@ class GetImageModal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final imagePickerUseCases = ImagePickerUseCases(
-      imagePickerRepository: di.serviceLocator(),
-    );
+    final ImagePickerUseCases imagePickerUseCases = di.serviceLocator();
 
     return Dialog(
       child: Container(

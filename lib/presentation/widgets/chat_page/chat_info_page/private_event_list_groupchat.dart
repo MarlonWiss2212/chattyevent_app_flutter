@@ -2,7 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:social_media_app_flutter/application/bloc/private_event/private_event_bloc.dart';
+import 'package:social_media_app_flutter/application/bloc/private_event/private_event_cubit.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 
 class PrivateEventListGroupchat extends StatelessWidget {
@@ -11,7 +11,7 @@ class PrivateEventListGroupchat extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<PrivateEventBloc, PrivateEventState>(
+    return BlocBuilder<PrivateEventCubit, PrivateEventState>(
       builder: (context, state) {
         List<Widget> widgetsToReturn = [];
         if (state is PrivateEventStateLoaded) {

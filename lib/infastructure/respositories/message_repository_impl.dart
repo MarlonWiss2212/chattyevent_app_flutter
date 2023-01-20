@@ -84,9 +84,10 @@ class MessageRepositoryImpl implements MessageRepository {
   }
 
   @override
-  Stream<QueryResult<Object?>> getMessagesRealtimeViaApi() {
-    return graphQlDatasource.subscription(
-      """
+  Either<Failure, Stream<QueryResult<Object?>>> getMessagesRealtimeViaApi() {
+    try {
+      final subscription = graphQlDatasource.subscription(
+        """
         subscription {
           messageAdded {
             _id
@@ -97,6 +98,11 @@ class MessageRepositoryImpl implements MessageRepository {
           }
         }
       """,
-    );
+      );
+
+      return Right(subscription);
+    } catch (e) {
+      return Left(ServerFailure());
+    }
   }
 }

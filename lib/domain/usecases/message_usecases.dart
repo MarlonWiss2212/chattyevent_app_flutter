@@ -25,7 +25,7 @@ class MessageUseCases {
     );
   }
 
-  Stream<QueryResult<Object?>> getMessagesRealtimeViaApi() {
+  Either<Failure, Stream<QueryResult<Object?>>> getMessagesRealtimeViaApi() {
     return messageRepository.getMessagesRealtimeViaApi();
   }
 }

@@ -1,4 +1,4 @@
-part of 'user_bloc.dart';
+part of 'user_cubit.dart';
 
 @immutable
 abstract class UserState {}
@@ -8,8 +8,9 @@ class UserInitial extends UserState {}
 class UserStateLoading extends UserState {}
 
 class UserStateError extends UserState {
+  final String title;
   final String message;
-  UserStateError({required this.message});
+  UserStateError({required this.title, required this.message});
 }
 
 class UserStateLoaded extends UserState {

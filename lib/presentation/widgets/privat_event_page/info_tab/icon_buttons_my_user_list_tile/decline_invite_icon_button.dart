@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:social_media_app_flutter/application/bloc/private_event/private_event_bloc.dart';
+import 'package:social_media_app_flutter/application/bloc/private_event/edit_private_event_cubit.dart';
 
 class DeclineInviteIconButton extends StatelessWidget {
   final String privateEventId;
@@ -14,10 +14,9 @@ class DeclineInviteIconButton extends StatelessWidget {
         color: Colors.red,
       ),
       onPressed: () {
-        BlocProvider.of<PrivateEventBloc>(context).add(
-          UpdateMeInPrivateEventWillNotBeThereEvent(
-            privateEventId: privateEventId,
-          ),
+        BlocProvider.of<EditPrivateEventCubit>(context)
+            .updateMeInPrivateEventWillNotBeThere(
+          privateEventId: privateEventId,
         );
       },
     );

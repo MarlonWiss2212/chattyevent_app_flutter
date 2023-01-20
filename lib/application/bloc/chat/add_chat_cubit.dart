@@ -17,6 +17,10 @@ class AddChatCubit extends Cubit<AddChatState> {
     required this.chatUseCases,
   }) : super(AddChatInitial());
 
+  void reset() {
+    emit(AddChatInitial());
+  }
+
   Future createChat({required CreateGroupchatDto createGroupchatDto}) async {
     emit(AddChatLoading());
 

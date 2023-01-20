@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'package:social_media_app_flutter/application/bloc/user_search/user_search_bloc.dart';
+import 'package:social_media_app_flutter/application/bloc/user_search/user_search_cubit.dart';
 import 'package:social_media_app_flutter/presentation/widgets/home_page/pages/home_search_page/user_grid_list_with_searchbar.dart';
 
 class HomeSearchPage extends StatelessWidget {
@@ -9,9 +9,7 @@ class HomeSearchPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<UserSearchBloc>(context).add(
-      UserSearchGetUsersEvent(),
-    );
+    BlocProvider.of<UserSearchCubit>(context).getUsers();
 
     return PlatformScaffold(
       appBar: PlatformAppBar(

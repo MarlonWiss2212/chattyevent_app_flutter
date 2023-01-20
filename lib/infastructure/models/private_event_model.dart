@@ -32,15 +32,17 @@ class PrivateEventModel extends PrivateEventEntity {
         ? DateTime.parse(json["eventDate"]).toLocal()
         : null;
 
-    List<String> usersThatWillBeThere = [];
+    List<String>? usersThatWillBeThere;
     if (json["usersThatWillBeThere"] != null) {
+      usersThatWillBeThere = [];
       for (final user in json["usersThatWillBeThere"]) {
         usersThatWillBeThere.add(user.toString());
       }
     }
 
-    List<String> usersThatWillNotBeThere = [];
+    List<String>? usersThatWillNotBeThere;
     if (json["usersThatWillNotBeThere"] != null) {
+      usersThatWillNotBeThere = [];
       for (final user in json["usersThatWillNotBeThere"]) {
         usersThatWillNotBeThere.add(user.toString());
       }

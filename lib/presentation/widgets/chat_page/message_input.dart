@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'package:social_media_app_flutter/application/bloc/message/message_bloc.dart';
+import 'package:social_media_app_flutter/application/bloc/message/message_cubit.dart';
 import 'package:social_media_app_flutter/domain/dto/create_message_dto.dart';
 
 class MessageInput extends StatefulWidget {
@@ -62,12 +62,10 @@ class _MessageInputState extends State<MessageInput> {
                   ),
                 )),
             onPressed: () {
-              BlocProvider.of<MessageBloc>(context).add(
-                MessageCreateEvent(
-                  createMessageDto: CreateMessageDto(
-                    groupchatTo: widget.groupchatTo,
-                    message: messageInputController.text,
-                  ),
+              BlocProvider.of<MessageCubit>(context).createMessage(
+                createMessageDto: CreateMessageDto(
+                  groupchatTo: widget.groupchatTo,
+                  message: messageInputController.text,
                 ),
               );
             },

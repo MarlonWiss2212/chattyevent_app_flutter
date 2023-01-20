@@ -30,6 +30,46 @@ class ChatCubit extends Cubit<ChatState> {
     }
   }
 
+  void editChat({required GroupchatEntity groupchat}) {
+    if (state is ChatStateLoaded) {
+      final state = this.state as ChatStateLoaded;
+
+      int foundIndex = -1;
+      state.chats.asMap().forEach((index, chatToFind) {
+        if (chatToFind.id == groupchat.id) {
+          foundIndex = index;
+        }
+      });
+
+      if (foundIndex != -1) {
+        List<GroupchatEntity> newGroupchats = state.chats;
+        newGroupchats[foundIndex] = GroupchatEntity(
+          id: groupchat.id,
+          title: groupchat.title ?? newGroupchats[foundIndex].title,
+          description:
+              groupchat.description ?? newGroupchats[foundIndex].description,
+          users: groupchat.users ?? newGroupchats[foundIndex].users,
+          leftUsers: groupchat.leftUsers ?? newGroupchats[foundIndex].leftUsers,
+          createdBy: groupchat.createdBy ?? newGroupchats[foundIndex].createdBy,
+          createdAt: groupchat.createdAt ?? newGroupchats[foundIndex].createdAt,
+        );
+        emit(
+          ChatStateLoaded(chats: newGroupchats),
+        );
+      } else {
+        emit(
+          ChatStateLoaded(chats: List.from(state.chats)..add(groupchat)),
+        );
+      }
+    } else {
+      emit(
+        ChatStateLoaded(
+          chats: [groupchat],
+        ),
+      );
+    }
+  }
+
   Future getChats() async {
     emit(ChatStateLoading());
 
@@ -86,138 +126,6 @@ class ChatCubit extends Cubit<ChatState> {
           if (foundIndex != -1) {
             List<GroupchatEntity> newGroupchats = state.chats;
             newGroupchats[foundIndex] = groupchat;
-            emit(
-              ChatStateLoaded(chats: newGroupchats),
-            );
-          } else {
-            emit(
-              ChatStateLoaded(chats: List.from(state.chats)..add(groupchat)),
-            );
-          }
-        } else {
-          emit(
-            ChatStateLoaded(
-              chats: [groupchat],
-            ),
-          );
-        }
-      },
-    );
-  }
-
-  Future addUserToChat({
-    required String groupchatId,
-    required String userIdToAdd,
-  }) async {
-    final Either<Failure, GroupchatEntity> groupchatOrFailure =
-        await chatUseCases.addUserToGroupchatViaApi(
-      groupchatId: groupchatId,
-      userIdToAdd: userIdToAdd,
-    );
-
-    // this has only the users and left users in it
-    groupchatOrFailure.fold(
-      (error) {
-        if (state is ChatStateLoaded) {
-          final state = this.state as ChatStateLoaded;
-          emit(
-            ChatStateLoaded(
-              chats: state.chats,
-              errorMessage: mapFailureToMessage(error),
-            ),
-          );
-        } else {
-          emit(ChatStateError(message: mapFailureToMessage(error)));
-        }
-      },
-      (groupchat) {
-        if (state is ChatStateLoaded) {
-          final state = this.state as ChatStateLoaded;
-
-          int foundIndex = -1;
-          state.chats.asMap().forEach((index, chatToFind) {
-            if (chatToFind.id == groupchat.id) {
-              foundIndex = index;
-            }
-          });
-
-          if (foundIndex != -1) {
-            List<GroupchatEntity> newGroupchats = state.chats;
-            newGroupchats[foundIndex] = GroupchatEntity(
-              id: groupchat.id,
-              title: newGroupchats[foundIndex].title,
-              description: newGroupchats[foundIndex].description,
-              users: groupchat.users,
-              leftUsers: groupchat.leftUsers,
-              createdBy: newGroupchats[foundIndex].createdBy,
-              createdAt: newGroupchats[foundIndex].createdAt,
-            );
-            emit(
-              ChatStateLoaded(chats: newGroupchats),
-            );
-          } else {
-            emit(
-              ChatStateLoaded(chats: List.from(state.chats)..add(groupchat)),
-            );
-          }
-        } else {
-          emit(
-            ChatStateLoaded(
-              chats: [groupchat],
-            ),
-          );
-        }
-      },
-    );
-  }
-
-  Future deleteUserFromChatEvent({
-    required String groupchatId,
-    required String userIdToDelete,
-  }) async {
-    final Either<Failure, GroupchatEntity> groupchatOrFailure =
-        await chatUseCases.deleteUserFromGroupchatViaApi(
-      groupchatId: groupchatId,
-      userIdToDelete: userIdToDelete,
-    );
-
-    // this has only the users and left users in it
-    groupchatOrFailure.fold(
-      (error) {
-        if (state is ChatStateLoaded) {
-          final state = this.state as ChatStateLoaded;
-          emit(
-            ChatStateLoaded(
-              chats: state.chats,
-              errorMessage: mapFailureToMessage(error),
-            ),
-          );
-        } else {
-          emit(ChatStateError(message: mapFailureToMessage(error)));
-        }
-      },
-      (groupchat) {
-        if (state is ChatStateLoaded) {
-          final state = this.state as ChatStateLoaded;
-
-          int foundIndex = -1;
-          state.chats.asMap().forEach((index, chatToFind) {
-            if (chatToFind.id == groupchat.id) {
-              foundIndex = index;
-            }
-          });
-
-          if (foundIndex != -1) {
-            List<GroupchatEntity> newGroupchats = state.chats;
-            newGroupchats[foundIndex] = GroupchatEntity(
-              id: groupchat.id,
-              title: newGroupchats[foundIndex].title,
-              description: newGroupchats[foundIndex].description,
-              users: groupchat.users,
-              leftUsers: groupchat.leftUsers,
-              createdBy: newGroupchats[foundIndex].createdBy,
-              createdAt: newGroupchats[foundIndex].createdAt,
-            );
             emit(
               ChatStateLoaded(chats: newGroupchats),
             );

@@ -15,7 +15,10 @@ class UserProfileDataPageOwnUser extends StatelessWidget {
           children: [
             const SizedBox(height: 20),
             // Profile Image
-            CircleImage(imageLink: user.profileImageLink),
+            CircleImage(
+              imageLink: user.profileImageLink,
+              heroTag: "${user.id} profileImage",
+            ),
             const SizedBox(height: 20),
             // name
             Text(

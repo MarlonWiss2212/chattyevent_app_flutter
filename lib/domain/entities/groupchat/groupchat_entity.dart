@@ -5,8 +5,8 @@ class GroupchatEntity {
   final String id;
   final String? title;
   final String? profileImageLink;
-  final List<GroupchatUserEntity> users;
-  final List<GroupchatLeftUserEntity> leftUsers;
+  final List<GroupchatUserEntity>? users;
+  final List<GroupchatLeftUserEntity>? leftUsers;
   final String? description;
   final String? createdBy;
   final DateTime? createdAt;
@@ -16,8 +16,8 @@ class GroupchatEntity {
     this.title,
     this.description,
     this.profileImageLink,
-    required this.users,
-    required this.leftUsers,
+    this.users,
+    this.leftUsers,
     this.createdBy,
     this.createdAt,
   });

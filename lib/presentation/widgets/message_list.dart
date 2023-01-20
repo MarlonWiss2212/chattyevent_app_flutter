@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:intl/intl.dart';
-import 'package:jwt_decode/jwt_decode.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/user/user_bloc.dart';
+import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
 import 'package:social_media_app_flutter/domain/entities/message/message_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
 import 'package:social_media_app_flutter/presentation/widgets/message_container.dart';
@@ -21,15 +20,10 @@ class MessageList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String currentUserId = "";
+    final authState =
+        BlocProvider.of<AuthCubit>(context).state as AuthStateLoaded;
 
-    final authState = BlocProvider.of<AuthCubit>(context).state;
-
-    if (authState is AuthStateLoaded) {
-      currentUserId = Jwt.parseJwt(authState.token)["sub"];
-    }
-
-    return BlocBuilder<UserBloc, UserState>(
+    return BlocBuilder<UserCubit, UserState>(
       builder: (context, state) {
         return GroupedListView<MessageEntity, String>(
           padding: const EdgeInsets.only(top: 8),
@@ -51,7 +45,8 @@ class MessageList extends StatelessWidget {
                   ? DateFormat.jm().format(messageEntity.createdAt!)
                   : "Fehler",
               content: messageEntity.message ?? "Kein Inhalt",
-              alignStart: messageEntity.createdBy != currentUserId,
+              alignStart:
+                  messageEntity.createdBy != authState.userAndToken.user.id,
             );
           },
           elements: messages,

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/user/user_bloc.dart';
+import 'package:social_media_app_flutter/application/bloc/chat/edit_chat_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
 import 'package:social_media_app_flutter/presentation/widgets/user_list_tile.dart';
@@ -20,7 +21,7 @@ class UserListGroupchat extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<UserBloc, UserState>(
+    return BlocBuilder<UserCubit, UserState>(
       builder: (context, state) {
         List<Widget> widgetsToReturn = [];
         for (final groupchatUser in groupchatUsers) {
@@ -69,7 +70,7 @@ class UserListGroupchat extends StatelessWidget {
                         items: [
                           PopupMenuItem(
                             child: const Text("Kicken"),
-                            onTap: () => BlocProvider.of<ChatCubit>(context)
+                            onTap: () => BlocProvider.of<EditChatCubit>(context)
                                 .deleteUserFromChatEvent(
                               groupchatId: groupchatId,
                               userIdToDelete: userId,

@@ -2,7 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'package:social_media_app_flutter/application/bloc/private_event/private_event_bloc.dart';
+import 'package:social_media_app_flutter/application/bloc/private_event/private_event_cubit.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 import 'package:social_media_app_flutter/presentation/widgets/home_page/pages/home_event_page/events_detail_page.dart';
 
@@ -11,12 +11,13 @@ class HomeEventPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    BlocProvider.of<PrivateEventCubit>(context).getPrivateEvents();
+
     return PlatformScaffold(
       appBar: PlatformAppBar(
         title: const Text('Social Media App'),
       ),
-      body: BlocBuilder<PrivateEventBloc, PrivateEventState>(
-        bloc: BlocProvider.of(context)..add(GetPrivateEventsEvent()),
+      body: BlocBuilder<PrivateEventCubit, PrivateEventState>(
         builder: (context, state) {
           if (state is PrivateEventStateLoaded) {
             return EventsDetailPage(privateEvents: state.privateEvents);
@@ -30,9 +31,8 @@ class HomeEventPage extends StatelessWidget {
                       ? state.message
                       : "Daten laden",
                 ),
-                onPressed: () => BlocProvider.of<PrivateEventBloc>(context).add(
-                  GetPrivateEventsEvent(),
-                ),
+                onPressed: () => BlocProvider.of<PrivateEventCubit>(context)
+                    .getPrivateEvents(),
               ),
             );
           }

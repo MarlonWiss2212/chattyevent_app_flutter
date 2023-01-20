@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jwt_decode/jwt_decode.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/user/user_bloc.dart';
+import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
 import 'package:social_media_app_flutter/presentation/widgets/privat_event_page/info_tab/icon_buttons_my_user_list_tile/accept_invite_icon_button.dart';
@@ -26,15 +25,10 @@ class ListOfAllUsersForPrivateEvent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String currentUserId = "";
+    final authState =
+        BlocProvider.of<AuthCubit>(context).state as AuthStateLoaded;
 
-    final authState = BlocProvider.of<AuthCubit>(context).state;
-
-    if (authState is AuthStateLoaded) {
-      currentUserId = Jwt.parseJwt(authState.token)["sub"];
-    }
-
-    return BlocBuilder<UserBloc, UserState>(
+    return BlocBuilder<UserCubit, UserState>(
       builder: (context, state) {
         List<Widget> widgetsToReturn = [];
 
@@ -61,7 +55,8 @@ class ListOfAllUsersForPrivateEvent extends StatelessWidget {
                   ? foundUser.username!
                   : "Kein Username",
               userId: privateEventUserIdThatWillBeThere,
-              trailing: privateEventUserIdThatWillBeThere == currentUserId
+              trailing: privateEventUserIdThatWillBeThere ==
+                      authState.userAndToken.user.id
                   ? Wrap(
                       spacing: 8,
                       children: [
@@ -97,7 +92,8 @@ class ListOfAllUsersForPrivateEvent extends StatelessWidget {
                   ? foundUser.username!
                   : "Kein Username",
               userId: privateEventUserIdThatWillNotBeThere,
-              trailing: privateEventUserIdThatWillNotBeThere == currentUserId
+              trailing: privateEventUserIdThatWillNotBeThere ==
+                      authState.userAndToken.user.id
                   ? Wrap(
                       spacing: 8,
                       children: [
@@ -130,7 +126,7 @@ class ListOfAllUsersForPrivateEvent extends StatelessWidget {
                   ? foundUser.username!
                   : "Kein Username",
               userId: invitedUser.userId,
-              trailing: invitedUser.userId == currentUserId
+              trailing: invitedUser.userId == authState.userAndToken.user.id
                   ? Wrap(
                       spacing: 8,
                       children: [

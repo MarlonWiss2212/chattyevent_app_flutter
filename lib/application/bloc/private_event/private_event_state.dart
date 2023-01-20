@@ -1,4 +1,4 @@
-part of 'private_event_bloc.dart';
+part of 'private_event_cubit.dart';
 
 @immutable
 abstract class PrivateEventState {}
@@ -15,11 +15,9 @@ class PrivateEventStateError extends PrivateEventState {
 class PrivateEventStateLoaded extends PrivateEventState {
   final List<PrivateEventEntity> privateEvents;
   final String? errorMessage;
-  final String? createdPrivateEventId;
 
   PrivateEventStateLoaded({
     required this.privateEvents,
     this.errorMessage,
-    this.createdPrivateEventId,
   });
 }

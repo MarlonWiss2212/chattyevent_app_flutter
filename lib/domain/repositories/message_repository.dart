@@ -13,5 +13,5 @@ abstract class MessageRepository {
   Future<Either<Failure, List<MessageEntity>>> getMessagesViaApi({
     required GetMessagesFilter getMessagesFilter,
   });
-  Stream<QueryResult<Object?>> getMessagesRealtimeViaApi();
+  Either<Failure, Stream<QueryResult<Object?>>> getMessagesRealtimeViaApi();
 }
