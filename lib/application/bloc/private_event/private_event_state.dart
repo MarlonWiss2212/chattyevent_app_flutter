@@ -8,16 +8,15 @@ class PrivateEventInitial extends PrivateEventState {}
 class PrivateEventStateLoading extends PrivateEventState {}
 
 class PrivateEventStateError extends PrivateEventState {
+  final String title;
   final String message;
-  PrivateEventStateError({required this.message});
+  PrivateEventStateError({required this.title, required this.message});
 }
 
 class PrivateEventStateLoaded extends PrivateEventState {
   final List<PrivateEventEntity> privateEvents;
-  final String? errorMessage;
 
   PrivateEventStateLoaded({
     required this.privateEvents,
-    this.errorMessage,
   });
 }

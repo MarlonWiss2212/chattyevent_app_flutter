@@ -11,7 +11,7 @@ class HomeChatPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<ChatCubit>(context).getChats();
+    BlocProvider.of<ChatCubit>(context).getChatsViaApi();
 
     return PlatformScaffold(
       appBar: PlatformAppBar(
@@ -29,7 +29,8 @@ class HomeChatPage extends StatelessWidget {
                 child: Text(
                   state is ChatStateError ? state.message : "Daten Laden",
                 ),
-                onPressed: () => BlocProvider.of<ChatCubit>(context).getChats(),
+                onPressed: () =>
+                    BlocProvider.of<ChatCubit>(context).getChatsViaApi(),
               ),
             );
           }

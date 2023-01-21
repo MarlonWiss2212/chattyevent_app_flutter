@@ -5,13 +5,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/add_chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/chat/edit_chat_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/home_page/home_map_page/home_map_page_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/image/image_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/location/location_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/message/message_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/add_private_event_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/private_event/edit_private_event_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/private_event_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/user/profile_page_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user_search/user_search_cubit.dart';
 import 'package:social_media_app_flutter/domain/repositories/auth_repository.dart';
@@ -52,10 +53,17 @@ Future<void> init({
   // Blocs
   serviceLocator.registerLazySingleton(
     () => AuthCubit(
-      userCubit: serviceLocator(),
       authUseCases: serviceLocator(),
       userUseCases: serviceLocator(),
       notificationUseCases: serviceLocator(),
+      profilePageCubit: serviceLocator(),
+      userCubit: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton(
+    () => ProfilePageCubit(
+      userCubit: serviceLocator(),
+      userUseCases: serviceLocator(),
     ),
   );
   serviceLocator.registerLazySingleton(
@@ -82,7 +90,7 @@ Future<void> init({
     ),
   );
   serviceLocator.registerLazySingleton(
-    () => EditChatCubit(
+    () => CurrentChatCubit(
       chatUseCases: serviceLocator(),
       chatCubit: serviceLocator(),
     ),
@@ -108,7 +116,7 @@ Future<void> init({
     ),
   );
   serviceLocator.registerLazySingleton(
-    () => EditPrivateEventCubit(
+    () => CurrentPrivateEventCubit(
       privateEventUseCases: serviceLocator(),
       privateEventCubit: serviceLocator(),
     ),
@@ -116,7 +124,7 @@ Future<void> init({
 
   //device cubits
   serviceLocator.registerLazySingleton(
-    () => LocationCubit(
+    () => HomeMapPageCubit(
       locationUseCases: serviceLocator(),
     ),
   );

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:social_media_app_flutter/application/bloc/private_event/edit_private_event_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
 
 class NeutralInviteIconButton extends StatelessWidget {
   final String privateEventId;
@@ -14,7 +14,7 @@ class NeutralInviteIconButton extends StatelessWidget {
         color: Colors.grey,
       ),
       onPressed: () {
-        BlocProvider.of<EditPrivateEventCubit>(context)
+        BlocProvider.of<CurrentPrivateEventCubit>(context)
             .updateMeInPrivateEventNoInformationOnWillBeThere(
           privateEventId: privateEventId,
         );

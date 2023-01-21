@@ -10,7 +10,8 @@ abstract class PrivateEventRepository {
   Future<Either<Failure, PrivateEventEntity>> getPrivateEventViaApi({
     required GetOnePrivateEventFilter getOnePrivateEventFilter,
   });
-  Future<Either<Failure, List<PrivateEventEntity>>> getPrivateEventsViaApi();
+  Future<Either<Failure, List<PrivateEventEntity>>>
+      getPrivateEventsViaApiViaApi();
   Future<Either<Failure, PrivateEventEntity>> updatePrivateEventViaApi();
   Future<Either<Failure, PrivateEventEntity>>
       updateMeInPrivateEventWillBeThere({

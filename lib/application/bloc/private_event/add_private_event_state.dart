@@ -11,10 +11,15 @@ class AddPrivateEventError extends AddPrivateEventState {
   final String title;
   final String message;
 
-  AddPrivateEventError({required this.message, required this.title});
+  AddPrivateEventError({
+    required this.message,
+    required this.title,
+  });
 }
 
 class AddPrivateEventLoaded extends AddPrivateEventState {
   final PrivateEventEntity addedPrivateEvent;
-  AddPrivateEventLoaded({required this.addedPrivateEvent});
+  AddPrivateEventLoaded({
+    required this.addedPrivateEvent,
+  });
 }

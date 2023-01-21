@@ -18,7 +18,7 @@ class UserGridListWithSearchbar extends StatelessWidget {
         children: [
           PlatformTextField(
             onChanged: (text) {
-              BlocProvider.of<UserSearchCubit>(context).getUsers(
+              BlocProvider.of<UserSearchCubit>(context).getUsersViaApi(
                 getUsersFilter: GetUsersFilter(search: text),
               );
             },
@@ -51,8 +51,8 @@ class UserGridListWithSearchbar extends StatelessWidget {
                             ? state.message
                             : "User laden",
                       ),
-                      onPressed: () =>
-                          BlocProvider.of<UserSearchCubit>(context).getUsers(),
+                      onPressed: () => BlocProvider.of<UserSearchCubit>(context)
+                          .getUsersViaApi(),
                     ),
                   ),
                 );

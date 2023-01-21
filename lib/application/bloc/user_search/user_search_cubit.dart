@@ -15,7 +15,7 @@ class UserSearchCubit extends Cubit<UserSearchState> {
     emit(UserSearchInitial());
   }
 
-  Future getUsers({
+  Future getUsersViaApi({
     GetUsersFilter? getUsersFilter,
   }) async {
     emit(UserSearchStateLoading());

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jwt_decode/jwt_decode.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
@@ -25,8 +26,8 @@ class PrivateEventInfoTabUserList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authState = BlocProvider.of<AuthCubit>(context).state as AuthLoaded;
-
+    final currentUserId = Jwt.parseJwt(
+        (BlocProvider.of<AuthCubit>(context).state as AuthLoaded).token)["sub"];
     return BlocBuilder<UserCubit, UserState>(
       builder: (context, state) {
         List<Widget> widgetsToReturn = [];
@@ -54,8 +55,7 @@ class PrivateEventInfoTabUserList extends StatelessWidget {
                   ? foundUser.username!
                   : "Kein Username",
               userId: privateEventUserIdThatWillBeThere,
-              trailing: privateEventUserIdThatWillBeThere ==
-                      authState.userAndToken.user.id
+              trailing: privateEventUserIdThatWillBeThere == currentUserId
                   ? Wrap(
                       spacing: 8,
                       children: [
@@ -91,8 +91,7 @@ class PrivateEventInfoTabUserList extends StatelessWidget {
                   ? foundUser.username!
                   : "Kein Username",
               userId: privateEventUserIdThatWillNotBeThere,
-              trailing: privateEventUserIdThatWillNotBeThere ==
-                      authState.userAndToken.user.id
+              trailing: privateEventUserIdThatWillNotBeThere == currentUserId
                   ? Wrap(
                       spacing: 8,
                       children: [
@@ -125,7 +124,7 @@ class PrivateEventInfoTabUserList extends StatelessWidget {
                   ? foundUser.username!
                   : "Kein Username",
               userId: invitedUser.userId,
-              trailing: invitedUser.userId == authState.userAndToken.user.id
+              trailing: invitedUser.userId == currentUserId
                   ? Wrap(
                       spacing: 8,
                       children: [

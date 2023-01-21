@@ -4,19 +4,22 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:jwt_decode/jwt_decode.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/add_chat_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/chat/edit_chat_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user_search/user_search_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/user/profile_page_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/message/message_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/add_private_event_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/private_event/edit_private_event_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/location/location_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/home_page/home_map_page/home_map_page_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/image/image_cubit.dart';
 import 'package:social_media_app_flutter/colors.dart';
+import 'package:social_media_app_flutter/domain/filter/get_one_user_filter.dart';
 import 'package:social_media_app_flutter/presentation/router/auth_guard.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -45,6 +48,9 @@ class BlocInitializer extends StatelessWidget {
           create: (context) => di.serviceLocator<AuthCubit>(),
         ),
         BlocProvider(
+          create: (context) => di.serviceLocator<ProfilePageCubit>(),
+        ),
+        BlocProvider(
           create: (context) => di.serviceLocator<MessageCubit>(),
         ),
         BlocProvider(
@@ -60,7 +66,7 @@ class BlocInitializer extends StatelessWidget {
           create: (context) => di.serviceLocator<AddChatCubit>(),
         ),
         BlocProvider(
-          create: (context) => di.serviceLocator<EditChatCubit>(),
+          create: (context) => di.serviceLocator<CurrentChatCubit>(),
         ),
         BlocProvider(
           create: (context) => di.serviceLocator<PrivateEventCubit>(),
@@ -69,10 +75,10 @@ class BlocInitializer extends StatelessWidget {
           create: (context) => di.serviceLocator<AddPrivateEventCubit>(),
         ),
         BlocProvider(
-          create: (context) => di.serviceLocator<EditPrivateEventCubit>(),
+          create: (context) => di.serviceLocator<CurrentPrivateEventCubit>(),
         ),
         BlocProvider(
-          create: (context) => di.serviceLocator<LocationCubit>(),
+          create: (context) => di.serviceLocator<HomeMapPageCubit>(),
         ),
         BlocProvider(
           create: (context) => di.serviceLocator<ImageCubit>(),
@@ -96,17 +102,12 @@ class App extends StatelessWidget {
       listener: (context, state) {
         appRouter.authGuard.state = state;
         if (state is AuthLoaded) {
-          appRouter.popUntilRoot();
+          BlocProvider.of<ProfilePageCubit>(context).getOneUserViaApi(
+            getOneUserFilter: GetOneUserFilter(
+              id: Jwt.parseJwt(state.token)["sub"],
+            ),
+          );
           appRouter.replace(const HomePageRoute());
-        } else if (state is AuthLoadingUserData) {
-          appRouter.popUntilRoot();
-          appRouter.replace(const LoadingCurrentUserPageRoute());
-        } else if (state is AuthErrorUserData) {
-          appRouter.popUntilRoot();
-          appRouter.replace(const FailureLoadingCurrentUserPageRoute());
-        } else if (state is AuthInitial) {
-          appRouter.popUntilRoot();
-          appRouter.replace(const LoginPageRoute());
         }
       },
       child: DynamicColorBuilder(

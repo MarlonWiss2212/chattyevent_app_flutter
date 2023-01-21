@@ -9,7 +9,7 @@ class HomeSearchPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<UserSearchCubit>(context).getUsers();
+    BlocProvider.of<UserSearchCubit>(context).getUsersViaApi();
 
     return PlatformScaffold(
       appBar: PlatformAppBar(

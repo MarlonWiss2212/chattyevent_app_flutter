@@ -11,7 +11,7 @@ class HomeEventPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<PrivateEventCubit>(context).getPrivateEvents();
+    BlocProvider.of<PrivateEventCubit>(context).getPrivateEventsViaApi();
 
     return PlatformScaffold(
       appBar: PlatformAppBar(
@@ -32,7 +32,7 @@ class HomeEventPage extends StatelessWidget {
                       : "Daten laden",
                 ),
                 onPressed: () => BlocProvider.of<PrivateEventCubit>(context)
-                    .getPrivateEvents(),
+                    .getPrivateEventsViaApi(),
               ),
             );
           }

@@ -1,8 +1,9 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jwt_decode/jwt_decode.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/chat/edit_chat_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
@@ -18,11 +19,12 @@ class ChatInfoPageDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authState = BlocProvider.of<AuthCubit>(context).state as AuthLoaded;
+    final currentUserId = Jwt.parseJwt(
+        (BlocProvider.of<AuthCubit>(context).state as AuthLoaded).token)["sub"];
     GroupchatUserEntity? currentGroupchatUser;
     if (groupchat.users != null) {
       for (final groupchatUser in groupchat.users!) {
-        if (groupchatUser.userId == authState.userAndToken.user.id &&
+        if (groupchatUser.userId == currentUserId &&
             groupchatUser.admin != null &&
             groupchatUser.admin == true) {
           currentGroupchatUser = groupchatUser;
@@ -124,9 +126,10 @@ class ChatInfoPageDetails extends StatelessWidget {
               style: TextStyle(color: Colors.red),
             ),
             onTap: () {
-              BlocProvider.of<EditChatCubit>(context).deleteUserFromChatEvent(
+              BlocProvider.of<CurrentChatCubit>(context)
+                  .deleteUserFromChatEvent(
                 groupchatId: groupchat.id,
-                userIdToDelete: authState.userAndToken.user.id,
+                userIdToDelete: currentUserId,
               );
             },
             shape: const RoundedRectangleBorder(

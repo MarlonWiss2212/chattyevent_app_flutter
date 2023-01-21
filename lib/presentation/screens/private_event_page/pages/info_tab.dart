@@ -13,14 +13,10 @@ class InfoTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<PrivateEventCubit, PrivateEventState>(
       builder: (context, state) {
-        PrivateEventEntity? foundPrivateEvent;
-        if (state is PrivateEventStateLoaded) {
-          for (final privateEvent in state.privateEvents) {
-            if (privateEvent.id == privateEventId) {
-              foundPrivateEvent = privateEvent;
-            }
-          }
-        }
+        PrivateEventEntity? foundPrivateEvent =
+            BlocProvider.of<PrivateEventCubit>(context).getPrivateEventById(
+          privateEventId: privateEventId,
+        );
 
         if (foundPrivateEvent == null) {
           return Expanded(

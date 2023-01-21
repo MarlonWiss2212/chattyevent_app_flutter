@@ -2,13 +2,14 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/private_event/edit_private_event_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event_entity.dart';
 import 'package:social_media_app_flutter/domain/filter/get_one_groupchat_filter.dart';
 import 'package:social_media_app_flutter/domain/filter/get_one_private_event_filter.dart';
+import 'package:social_media_app_flutter/presentation/widgets/dialog/buttons/ok_button.dart';
 
 class PrivateEventPage extends StatelessWidget {
   final String privateEventId;
@@ -22,7 +23,7 @@ class PrivateEventPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (loadPrivateEvent) {
-      BlocProvider.of<PrivateEventCubit>(context).getOnePrivateEvent(
+      BlocProvider.of<CurrentPrivateEventCubit>(context).getOnePrivateEvent(
         getOnePrivateEventFilter: GetOnePrivateEventFilter(id: privateEventId),
       );
     }
@@ -30,25 +31,20 @@ class PrivateEventPage extends StatelessWidget {
     var dataLoaded = false;
     return BlocBuilder<PrivateEventCubit, PrivateEventState>(
       builder: (context, state) {
-        PrivateEventEntity? foundPrivateEvent;
-        if (state is PrivateEventStateLoaded) {
-          for (final privateEvent in state.privateEvents) {
-            if (privateEvent.id == privateEventId) {
-              foundPrivateEvent = privateEvent;
-              break;
-            }
-          }
-        }
+        PrivateEventEntity? foundPrivateEvent =
+            BlocProvider.of<PrivateEventCubit>(context).getPrivateEventById(
+          privateEventId: privateEventId,
+        );
 
         if (foundPrivateEvent != null &&
             foundPrivateEvent.connectedGroupchat != null &&
             dataLoaded == false) {
-          BlocProvider.of<ChatCubit>(context).getOneChat(
+          BlocProvider.of<CurrentChatCubit>(context).getOneChatViaApi(
             getOneGroupchatFilter: GetOneGroupchatFilter(
               id: foundPrivateEvent.connectedGroupchat!,
             ),
           );
-          BlocProvider.of<UserCubit>(context).getUsers();
+          BlocProvider.of<UserCubit>(context).getUsersViaApi();
           dataLoaded = true;
         }
 
@@ -64,17 +60,41 @@ class PrivateEventPage extends StatelessWidget {
               ),
             ),
           ),
-          body: Column(
-            children: [
-              BlocBuilder<EditPrivateEventCubit, EditPrivateEventState>(
-                  builder: (context, state) {
-                if (state is EditPrivateEventLoading) {
-                  return const LinearProgressIndicator();
-                }
-                return Container();
-              }),
-              const Expanded(child: AutoRouter()),
-            ],
+          body:
+              BlocConsumer<CurrentPrivateEventCubit, CurrentPrivateEventState>(
+            listener: (context, state) async {
+              if (state is CurrentPrivateEventError) {
+                return await showPlatformDialog(
+                  context: context,
+                  builder: (context) {
+                    return PlatformAlertDialog(
+                      title: Text(state.title),
+                      content: Text(state.message),
+                      actions: const [OKButton()],
+                    );
+                  },
+                );
+              }
+            },
+            builder: (context, state) {
+              if (state is CurrentPrivateEventLoading) {
+                return Center(child: PlatformCircularProgressIndicator());
+              }
+              return Column(
+                children: [
+                  BlocBuilder<CurrentPrivateEventCubit,
+                      CurrentPrivateEventState>(
+                    builder: (context, state) {
+                      if (state is CurrentPrivateEventEditing) {
+                        return const LinearProgressIndicator();
+                      }
+                      return Container();
+                    },
+                  ),
+                  const Expanded(child: AutoRouter()),
+                ],
+              );
+            },
           ),
         );
       },

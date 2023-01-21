@@ -3,15 +3,16 @@ import 'package:meta/meta.dart';
 import 'package:social_media_app_flutter/domain/failures/location_failures.dart';
 import 'package:social_media_app_flutter/domain/usecases/location_usecases.dart';
 
-part 'location_state.dart';
+part 'home_map_page_state.dart';
 
-class LocationCubit extends Cubit<LocationState> {
+class HomeMapPageCubit extends Cubit<HomeMapPageState> {
   final LocationUseCases locationUseCases;
 
-  LocationCubit({required this.locationUseCases}) : super(LocationInitial());
+  HomeMapPageCubit({required this.locationUseCases})
+      : super(HomeMapPageInitial());
 
   Future getLocationFromDevice() async {
-    emit(LocationLoading());
+    emit(HomeMapPageLoading());
 
     final locationErrorOrLocation =
         await locationUseCases.getCurrentLocationWithPermissions();
@@ -19,10 +20,12 @@ class LocationCubit extends Cubit<LocationState> {
     locationErrorOrLocation.fold(
       (failure) {
         final error = mapLocationFailureToErrorWithTitleAndMessage(failure);
-        emit(LocationError(message: error.message, title: error.title));
+        emit(HomeMapPageError(message: error.message, title: error.title));
       },
       (location) {
-        emit(LocationLoaded(lat: location.latitude, lng: location.longitude));
+        emit(
+          HomeMapPageLoaded(lat: location.latitude, lng: location.longitude),
+        );
       },
     );
   }

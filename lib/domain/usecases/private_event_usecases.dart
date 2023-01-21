@@ -53,7 +53,7 @@ class PrivateEventUseCases {
   }
 
   Future<Either<Failure, List<PrivateEventEntity>>>
-      getPrivateEventsViaApi() async {
-    return await privateEventRepository.getPrivateEventsViaApi();
+      getPrivateEventsViaApiViaApi() async {
+    return await privateEventRepository.getPrivateEventsViaApiViaApi();
   }
 }

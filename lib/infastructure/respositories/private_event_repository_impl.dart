@@ -101,7 +101,7 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
 
   @override
   Future<Either<Failure, List<PrivateEventEntity>>>
-      getPrivateEventsViaApi() async {
+      getPrivateEventsViaApiViaApi() async {
     try {
       final response = await graphQlDatasource.query("""
         query FindPrivateEvents {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'package:social_media_app_flutter/application/bloc/chat/edit_chat_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user_search/user_search_cubit.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
@@ -25,7 +25,7 @@ class AddUserGroupchatListWithSearchbar extends StatelessWidget {
         children: [
           PlatformTextField(
             onChanged: (text) {
-              BlocProvider.of<UserSearchCubit>(context).getUsers(
+              BlocProvider.of<UserSearchCubit>(context).getUsersViaApi(
                 getUsersFilter: GetUsersFilter(search: text),
               );
             },
@@ -57,7 +57,8 @@ class AddUserGroupchatListWithSearchbar extends StatelessWidget {
                     button: (user) => PlatformTextButton(
                       color: Theme.of(context).colorScheme.primaryContainer,
                       onPressed: () {
-                        BlocProvider.of<EditChatCubit>(context).addUserToChat(
+                        BlocProvider.of<CurrentChatCubit>(context)
+                            .addUserToChat(
                           groupchatId: groupchatId,
                           userIdToAdd: user.id,
                         );
@@ -84,8 +85,8 @@ class AddUserGroupchatListWithSearchbar extends StatelessWidget {
                             ? state.message
                             : "User laden",
                       ),
-                      onPressed: () =>
-                          BlocProvider.of<UserSearchCubit>(context).getUsers(),
+                      onPressed: () => BlocProvider.of<UserSearchCubit>(context)
+                          .getUsersViaApi(),
                     ),
                   ),
                 );

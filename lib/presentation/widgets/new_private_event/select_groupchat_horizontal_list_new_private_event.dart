@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:jwt_decode/jwt_decode.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
@@ -15,8 +16,8 @@ class SelectGroupchatHorizontalListNewPrivateEvent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authState = BlocProvider.of<AuthCubit>(context).state as AuthLoaded;
-
+    final currentUserId = Jwt.parseJwt(
+        (BlocProvider.of<AuthCubit>(context).state as AuthLoaded).token)["sub"];
     return BlocBuilder<ChatCubit, ChatState>(
       builder: (context, state) {
         if (state is ChatStateLoaded) {
@@ -26,7 +27,7 @@ class SelectGroupchatHorizontalListNewPrivateEvent extends StatelessWidget {
             bool currentUserIsAdmin = false;
             if (chat.users != null) {
               for (final chatUser in chat.users!) {
-                if (chatUser.userId == authState.userAndToken.user.id) {
+                if (chatUser.userId == currentUserId) {
                   chatUser.admin != null && chatUser.admin!
                       ? currentUserIsAdmin = true
                       : null;
@@ -73,7 +74,8 @@ class SelectGroupchatHorizontalListNewPrivateEvent extends StatelessWidget {
                 child: Text(
                   state is ChatStateError ? state.message : "Chats Laden",
                 ),
-                onPressed: () => BlocProvider.of<ChatCubit>(context).getChats(),
+                onPressed: () =>
+                    BlocProvider.of<ChatCubit>(context).getChatsViaApi(),
               ),
             ),
           );

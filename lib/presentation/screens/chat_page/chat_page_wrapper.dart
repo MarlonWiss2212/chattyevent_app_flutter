@@ -1,8 +1,10 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart';
 import 'package:social_media_app_flutter/domain/filter/get_one_groupchat_filter.dart';
+import 'package:social_media_app_flutter/presentation/widgets/dialog/buttons/ok_button.dart';
 
 class ChatPageWrapper extends StatelessWidget {
   final String groupchatId;
@@ -17,11 +19,27 @@ class ChatPageWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (loadChat) {
-      BlocProvider.of<ChatCubit>(context).getOneChat(
+      BlocProvider.of<CurrentChatCubit>(context).getOneChatViaApi(
         getOneGroupchatFilter: GetOneGroupchatFilter(id: groupchatId),
       );
     }
 
-    return const AutoRouter();
+    return BlocListener<CurrentChatCubit, CurrentChatState>(
+      listener: (context, state) async {
+        if (state is CurrentChatError) {
+          return await showPlatformDialog(
+            context: context,
+            builder: (context) {
+              return PlatformAlertDialog(
+                title: Text(state.title),
+                content: Text(state.message),
+                actions: const [OKButton()],
+              );
+            },
+          );
+        }
+      },
+      child: const AutoRouter(),
+    );
   }
 }

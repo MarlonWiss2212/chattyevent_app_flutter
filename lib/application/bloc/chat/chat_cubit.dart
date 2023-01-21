@@ -30,7 +30,7 @@ class ChatCubit extends Cubit<ChatState> {
     }
   }
 
-  void editChat({required GroupchatEntity groupchat}) {
+  void editChatIfExistOrAdd({required GroupchatEntity groupchat}) {
     if (state is ChatStateLoaded) {
       final state = this.state as ChatStateLoaded;
 
@@ -70,7 +70,19 @@ class ChatCubit extends Cubit<ChatState> {
     }
   }
 
-  Future getChats() async {
+  GroupchatEntity? getGroupchatById({required String groupchatId}) {
+    if (state is ChatStateLoaded) {
+      final state = this.state as ChatStateLoaded;
+      for (final chat in state.chats) {
+        if (chat.id == groupchatId) {
+          return chat;
+        }
+      }
+    }
+    return null;
+  }
+
+  Future getChatsViaApi() async {
     emit(ChatStateLoading());
 
     final Either<Failure, List<GroupchatEntity>> groupchatsOrFailure =
@@ -78,70 +90,14 @@ class ChatCubit extends Cubit<ChatState> {
 
     groupchatsOrFailure.fold(
       (error) => emit(
-        ChatStateError(message: mapFailureToMessage(error)),
+        ChatStateError(
+          title: "Fehler",
+          message: mapFailureToMessage(error),
+        ),
       ),
       (groupchats) => emit(
         ChatStateLoaded(chats: groupchats),
       ),
-    );
-  }
-
-  Future getOneChat({
-    required GetOneGroupchatFilter getOneGroupchatFilter,
-  }) async {
-    final Either<Failure, GroupchatEntity> groupchatOrFailure =
-        await chatUseCases.getGroupchatViaApi(
-      getOneGroupchatFilter: getOneGroupchatFilter,
-    );
-
-    groupchatOrFailure.fold(
-      (error) {
-        if (state is ChatStateLoaded) {
-          final state = this.state as ChatStateLoaded;
-          emit(
-            ChatStateLoaded(
-              chats: state.chats,
-              errorMessage: mapFailureToMessage(error),
-            ),
-          );
-        } else {
-          emit(
-            ChatStateError(
-              message: mapFailureToMessage(error),
-            ),
-          );
-        }
-      },
-      (groupchat) {
-        if (state is ChatStateLoaded) {
-          final state = this.state as ChatStateLoaded;
-
-          int foundIndex = -1;
-          state.chats.asMap().forEach((index, chatToFind) {
-            if (chatToFind.id == groupchat.id) {
-              foundIndex = index;
-            }
-          });
-
-          if (foundIndex != -1) {
-            List<GroupchatEntity> newGroupchats = state.chats;
-            newGroupchats[foundIndex] = groupchat;
-            emit(
-              ChatStateLoaded(chats: newGroupchats),
-            );
-          } else {
-            emit(
-              ChatStateLoaded(chats: List.from(state.chats)..add(groupchat)),
-            );
-          }
-        } else {
-          emit(
-            ChatStateLoaded(
-              chats: [groupchat],
-            ),
-          );
-        }
-      },
     );
   }
 }

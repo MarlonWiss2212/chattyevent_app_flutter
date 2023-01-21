@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/message/message_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
@@ -23,7 +24,7 @@ class _ChatPageState extends State<ChatPage> {
   @override
   Widget build(BuildContext context) {
     // load data here so that it does not get double loaded when the bloc state changes
-    BlocProvider.of<UserCubit>(context).getUsers();
+    BlocProvider.of<UserCubit>(context).getUsersViaApi();
 
     BlocProvider.of<MessageCubit>(context).getMessages(
       getMessagesFilter: GetMessagesFilter(groupchatTo: widget.groupchatId),
@@ -31,16 +32,10 @@ class _ChatPageState extends State<ChatPage> {
 
     return BlocBuilder<ChatCubit, ChatState>(
       builder: (context, state) {
-        GroupchatEntity? foundGroupchat;
-
-        if (state is ChatStateLoaded) {
-          for (final chat in state.chats) {
-            if (chat.id == widget.groupchatId) {
-              foundGroupchat = chat;
-              break;
-            }
-          }
-        }
+        GroupchatEntity? foundGroupchat =
+            BlocProvider.of<ChatCubit>(context).getGroupchatById(
+          groupchatId: widget.groupchatId,
+        );
 
         Widget body;
 
@@ -101,7 +96,14 @@ class _ChatPageState extends State<ChatPage> {
               )
             ],
           ),
-          body: body,
+          body: BlocBuilder<CurrentChatCubit, CurrentChatState>(
+            builder: (context, state) {
+              if (state is CurrentChatLoading) {
+                return Center(child: PlatformCircularProgressIndicator());
+              }
+              return body;
+            },
+          ),
         );
       },
     );

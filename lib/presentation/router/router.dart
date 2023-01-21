@@ -4,16 +4,14 @@ import 'package:social_media_app_flutter/presentation/screens/chat_page/chat_inf
 import 'package:social_media_app_flutter/presentation/screens/chat_page/chat_add_user_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/chat_page/chat_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/chat_page/chat_page_wrapper.dart';
-import 'package:social_media_app_flutter/presentation/screens/failure_loading_current_user_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/home_page/home_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/home_page/pages/home_chat_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/home_page/pages/home_event_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/home_page/pages/home_map_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/home_page/pages/home_profile_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/home_page/pages/home_search_page.dart';
-import 'package:social_media_app_flutter/presentation/screens/loading_current_user_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/login_page.dart';
-import 'package:social_media_app_flutter/presentation/screens/new_event_page.dart';
+import 'package:social_media_app_flutter/presentation/screens/new_private_event/new_private_event_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/new_groupchat/new_groupchat_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/new_groupchat/new_groupchat_select_users_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/new_groupchat/new_groupchat_wrapper_page.dart';
@@ -26,14 +24,6 @@ import 'package:social_media_app_flutter/presentation/screens/register_page.dart
   routes: <AutoRoute>[
     AutoRoute(page: LoginPage, initial: false),
     AutoRoute(page: RegisterPage, initial: false),
-    AutoRoute(
-      page: LoadingCurrentUserPage,
-      initial: false,
-    ),
-    AutoRoute(
-      page: FailureLoadingCurrentUserPage,
-      initial: false,
-    ),
 
     //profile page
     AutoRoute(

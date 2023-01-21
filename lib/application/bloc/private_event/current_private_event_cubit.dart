@@ -4,27 +4,54 @@ import 'package:meta/meta.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/private_event_cubit.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event_entity.dart';
 import 'package:social_media_app_flutter/domain/failures/failures.dart';
+import 'package:social_media_app_flutter/domain/filter/get_one_private_event_filter.dart';
 import 'package:social_media_app_flutter/domain/usecases/private_event_usecases.dart';
 
-part 'edit_private_event_state.dart';
+part 'current_private_event_state.dart';
 
-class EditPrivateEventCubit extends Cubit<EditPrivateEventState> {
+class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
   final PrivateEventCubit privateEventCubit;
   final PrivateEventUseCases privateEventUseCases;
 
-  EditPrivateEventCubit({
+  CurrentPrivateEventCubit({
     required this.privateEventCubit,
     required this.privateEventUseCases,
-  }) : super(EditPrivateEventInitial());
+  }) : super(CurrentPrivateEventInitial());
 
   void reset() {
-    emit(EditPrivateEventInitial());
+    emit(CurrentPrivateEventInitial());
+  }
+
+  Future getOnePrivateEvent({
+    required GetOnePrivateEventFilter getOnePrivateEventFilter,
+  }) async {
+    emit(CurrentPrivateEventLoading());
+
+    final Either<Failure, PrivateEventEntity> privateEventOrFailure =
+        await privateEventUseCases.getPrivateEventViaApi(
+      getOnePrivateEventFilter: getOnePrivateEventFilter,
+    );
+
+    privateEventOrFailure.fold(
+      (error) {
+        emit(CurrentPrivateEventError(
+          message: mapFailureToMessage(error),
+          title: "Fehler Geradiges Event",
+        ));
+      },
+      (privateEvent) {
+        privateEventCubit.editPrivateEventIfExistOrAdd(
+          privateEvent: privateEvent,
+        );
+        emit(CurrentPrivateEventLoaded());
+      },
+    );
   }
 
   Future updateMeInPrivateEventWillBeThere({
     required String privateEventId,
   }) async {
-    emit(EditPrivateEventLoading());
+    emit(CurrentPrivateEventEditing());
     final Either<Failure, PrivateEventEntity> privateEventOrFailure =
         await privateEventUseCases.updateMeInPrivateEventWillBeThere(
       privateEventId: privateEventId,
@@ -32,14 +59,16 @@ class EditPrivateEventCubit extends Cubit<EditPrivateEventState> {
 
     privateEventOrFailure.fold(
       (error) {
-        EditPrivateEventError(
+        CurrentPrivateEventError(
           title: "Fehler",
           message: mapFailureToMessage(error),
         );
       },
       (privateEvent) {
-        privateEventCubit.editPrivateEvent(privateEvent: privateEvent);
-        emit(EditPrivateEventLoaded(editedPrivateEvent: privateEvent));
+        privateEventCubit.editPrivateEventIfExistOrAdd(
+          privateEvent: privateEvent,
+        );
+        emit(CurrentPrivateEventLoaded());
       },
     );
   }
@@ -47,7 +76,7 @@ class EditPrivateEventCubit extends Cubit<EditPrivateEventState> {
   Future updateMeInPrivateEventWillNotBeThere({
     required String privateEventId,
   }) async {
-    emit(EditPrivateEventLoading());
+    emit(CurrentPrivateEventEditing());
     final Either<Failure, PrivateEventEntity> privateEventOrFailure =
         await privateEventUseCases.updateMeInPrivateEventWillNotBeThere(
       privateEventId: privateEventId,
@@ -55,14 +84,16 @@ class EditPrivateEventCubit extends Cubit<EditPrivateEventState> {
 
     privateEventOrFailure.fold(
       (error) {
-        EditPrivateEventError(
+        CurrentPrivateEventError(
           title: "Fehler",
           message: mapFailureToMessage(error),
         );
       },
       (privateEvent) {
-        privateEventCubit.editPrivateEvent(privateEvent: privateEvent);
-        emit(EditPrivateEventLoaded(editedPrivateEvent: privateEvent));
+        privateEventCubit.editPrivateEventIfExistOrAdd(
+          privateEvent: privateEvent,
+        );
+        emit(CurrentPrivateEventLoaded());
       },
     );
   }
@@ -70,7 +101,7 @@ class EditPrivateEventCubit extends Cubit<EditPrivateEventState> {
   Future updateMeInPrivateEventNoInformationOnWillBeThere({
     required String privateEventId,
   }) async {
-    emit(EditPrivateEventLoading());
+    emit(CurrentPrivateEventEditing());
     final Either<Failure, PrivateEventEntity> privateEventOrFailure =
         await privateEventUseCases
             .updateMeInPrivateEventNoInformationOnWillBeThere(
@@ -79,14 +110,16 @@ class EditPrivateEventCubit extends Cubit<EditPrivateEventState> {
 
     privateEventOrFailure.fold(
       (error) {
-        EditPrivateEventError(
+        CurrentPrivateEventError(
           title: "Fehler",
           message: mapFailureToMessage(error),
         );
       },
       (privateEvent) {
-        privateEventCubit.editPrivateEvent(privateEvent: privateEvent);
-        emit(EditPrivateEventLoaded(editedPrivateEvent: privateEvent));
+        privateEventCubit.editPrivateEventIfExistOrAdd(
+          privateEvent: privateEvent,
+        );
+        emit(CurrentPrivateEventLoaded());
       },
     );
   }

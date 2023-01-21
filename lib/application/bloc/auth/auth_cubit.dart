@@ -5,32 +5,33 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:meta/meta.dart';
+import 'package:social_media_app_flutter/application/bloc/user/profile_page_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
 import 'package:social_media_app_flutter/domain/dto/create_user_dto.dart';
 import 'package:social_media_app_flutter/domain/entities/user_and_token_entity.dart.dart';
-import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
 import 'package:social_media_app_flutter/domain/failures/failures.dart';
 import 'package:social_media_app_flutter/domain/filter/get_one_user_filter.dart';
 import 'package:social_media_app_flutter/domain/usecases/auth_usecases.dart';
 import 'package:social_media_app_flutter/domain/usecases/notification_usecases.dart';
 import 'package:social_media_app_flutter/domain/usecases/user_usecases.dart';
-import 'package:social_media_app_flutter/injection.dart';
 import './../../../one_signal.dart' as one_signal;
 
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
-  AuthUseCases authUseCases;
-  UserUseCases userUseCases;
-  NotificationUseCases notificationUseCases;
-  UserCubit userCubit;
+  final AuthUseCases authUseCases;
+  final UserUseCases userUseCases;
+  final NotificationUseCases notificationUseCases;
+  final UserCubit userCubit;
+  final ProfilePageCubit profilePageCubit;
 
-  AuthCubit({
-    required this.authUseCases,
-    required this.userUseCases,
-    required this.userCubit,
-    required this.notificationUseCases,
-  }) : super(AuthInitial());
+  AuthCubit(
+      {required this.authUseCases,
+      required this.userUseCases,
+      required this.notificationUseCases,
+      required this.userCubit,
+      required this.profilePageCubit})
+      : super(AuthInitial());
 
   Future login({required String email, required String password}) async {
     emit(AuthLoading());
@@ -49,8 +50,12 @@ class AuthCubit extends Cubit<AuthState> {
         ),
       ),
       (userAndToken) async {
-        emit(AuthLoaded(userAndToken: userAndToken));
-        userCubit.checkIfUserExistOrAddIt(user: userAndToken.user);
+        emit(AuthLoaded(
+          token: userAndToken.accessToken,
+        ));
+
+        userCubit.editUserIfExistOrAdd(user: userAndToken.user);
+
         await one_signal.setExternalUserId(
           Jwt.parseJwt(userAndToken.accessToken)["sub"],
         );
@@ -73,8 +78,12 @@ class AuthCubit extends Cubit<AuthState> {
         ),
       ),
       (userAndToken) async {
-        emit(AuthLoaded(userAndToken: userAndToken));
-        userCubit.checkIfUserExistOrAddIt(user: userAndToken.user);
+        emit(AuthLoaded(
+          token: userAndToken.accessToken,
+        ));
+
+        userCubit.editUserIfExistOrAdd(user: userAndToken.user);
+
         await notificationUseCases.requestNotificationPermission();
         await one_signal.setExternalUserId(
           Jwt.parseJwt(userAndToken.accessToken)["sub"],
@@ -84,7 +93,7 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future getTokenAndLoadUser() async {
-    emit(AuthLoadingUserData());
+    emit(AuthLoading());
 
     final Either<Failure, String> authTokenOrFailure =
         await authUseCases.getAuthTokenFromStorage();
@@ -97,37 +106,13 @@ class AuthCubit extends Cubit<AuthState> {
         ));
       },
       (token) async {
-        // make this new
-        userUseCases = serviceLocator();
-        authUseCases = serviceLocator();
-        notificationUseCases = serviceLocator();
-        userCubit = serviceLocator();
-
-        final Either<Failure, UserEntity> userOrFailure =
-            await userUseCases.getUserViaApi(
+        emit(AuthLoaded(
+          token: token,
+        ));
+        profilePageCubit.getOneUserViaApi(
           getOneUserFilter: GetOneUserFilter(
             id: Jwt.parseJwt(token)["sub"],
           ),
-        );
-        userOrFailure.fold(
-          (error) {
-            emit(AuthErrorUserData(
-              token: token,
-              title: "User nicht gefunden",
-              message: mapFailureToMessage(error),
-            ));
-          },
-          (user) {
-            userCubit.checkIfUserExistOrAddIt(user: user);
-            emit(
-              AuthLoaded(
-                userAndToken: UserAndTokenEntity(
-                  accessToken: token,
-                  user: user,
-                ),
-              ),
-            );
-          },
         );
       },
     );

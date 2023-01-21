@@ -3,7 +3,6 @@ import 'package:dartz/dartz.dart';
 import 'package:meta/meta.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event_entity.dart';
 import 'package:social_media_app_flutter/domain/failures/failures.dart';
-import 'package:social_media_app_flutter/domain/filter/get_one_private_event_filter.dart';
 import 'package:social_media_app_flutter/domain/usecases/private_event_usecases.dart';
 
 part 'private_event_state.dart';
@@ -31,7 +30,9 @@ class PrivateEventCubit extends Cubit<PrivateEventState> {
     }
   }
 
-  void editPrivateEvent({required PrivateEventEntity privateEvent}) {
+  void editPrivateEventIfExistOrAdd({
+    required PrivateEventEntity privateEvent,
+  }) {
     if (state is PrivateEventStateLoaded) {
       final state = this.state as PrivateEventStateLoaded;
 
@@ -82,81 +83,34 @@ class PrivateEventCubit extends Cubit<PrivateEventState> {
     }
   }
 
-  Future getPrivateEvents() async {
+  PrivateEventEntity? getPrivateEventById({required String privateEventId}) {
+    if (state is PrivateEventStateLoaded) {
+      final state = this.state as PrivateEventStateLoaded;
+      for (final chat in state.privateEvents) {
+        if (chat.id == privateEventId) {
+          return chat;
+        }
+      }
+    }
+    return null;
+  }
+
+  Future getPrivateEventsViaApi() async {
     emit(PrivateEventStateLoading());
 
     final Either<Failure, List<PrivateEventEntity>> privateEventOrFailure =
-        await privateEventUseCases.getPrivateEventsViaApi();
+        await privateEventUseCases.getPrivateEventsViaApiViaApi();
 
     privateEventOrFailure.fold(
       (error) => emit(
-        PrivateEventStateError(message: mapFailureToMessage(error)),
+        PrivateEventStateError(
+          title: "Fehler",
+          message: mapFailureToMessage(error),
+        ),
       ),
       (privateEvents) => emit(
         PrivateEventStateLoaded(privateEvents: privateEvents),
       ),
-    );
-  }
-
-  Future getOnePrivateEvent({
-    required GetOnePrivateEventFilter getOnePrivateEventFilter,
-  }) async {
-    final Either<Failure, PrivateEventEntity> privateEventOrFailure =
-        await privateEventUseCases.getPrivateEventViaApi(
-      getOnePrivateEventFilter: getOnePrivateEventFilter,
-    );
-
-    privateEventOrFailure.fold(
-      (error) {
-        if (state is PrivateEventStateLoaded) {
-          final state = this.state as PrivateEventStateLoaded;
-          emit(
-            PrivateEventStateLoaded(
-              privateEvents: state.privateEvents,
-              errorMessage: mapFailureToMessage(error),
-            ),
-          );
-        } else {
-          emit(
-            PrivateEventStateError(
-              message: mapFailureToMessage(error),
-            ),
-          );
-        }
-      },
-      (privateEvent) {
-        if (state is PrivateEventStateLoaded) {
-          final state = this.state as PrivateEventStateLoaded;
-
-          int foundIndex = -1;
-          state.privateEvents.asMap().forEach((index, chatToFind) {
-            if (chatToFind.id == privateEvent.id) {
-              foundIndex = index;
-            }
-          });
-
-          if (foundIndex != -1) {
-            List<PrivateEventEntity> newPrivateEvents = state.privateEvents;
-            newPrivateEvents[foundIndex] = privateEvent;
-            emit(
-              PrivateEventStateLoaded(privateEvents: newPrivateEvents),
-            );
-          } else {
-            emit(
-              PrivateEventStateLoaded(
-                privateEvents: List.from(state.privateEvents)
-                  ..add(privateEvent),
-              ),
-            );
-          }
-        } else {
-          emit(
-            PrivateEventStateLoaded(
-              privateEvents: [privateEvent],
-            ),
-          );
-        }
-      },
     );
   }
 }
