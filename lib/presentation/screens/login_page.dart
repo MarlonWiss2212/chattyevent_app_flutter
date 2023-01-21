@@ -53,7 +53,7 @@ class _LoginPageState extends State<LoginPage> {
                     const SizedBox(height: 8),
                     BlocListener<AuthCubit, AuthState>(
                       listener: (context, state) async {
-                        if (state is AuthError) {
+                        if (state is AuthError && state.tokenError == false) {
                           return await showPlatformDialog(
                             context: context,
                             builder: (context) {

@@ -45,6 +45,7 @@ class AuthCubit extends Cubit<AuthState> {
     authOrFailure.fold(
       (error) => emit(
         AuthError(
+          tokenError: false,
           title: "Login Fehler",
           message: mapFailureToMessage(error),
         ),
@@ -73,6 +74,7 @@ class AuthCubit extends Cubit<AuthState> {
     authOrFailure.fold(
       (error) => emit(
         AuthError(
+          tokenError: false,
           title: "Registrier Fehler",
           message: mapFailureToMessage(error),
         ),
@@ -101,6 +103,7 @@ class AuthCubit extends Cubit<AuthState> {
     await authTokenOrFailure.fold(
       (error) async {
         emit(AuthError(
+          tokenError: true,
           title: "Kein Access Token",
           message: mapFailureToMessage(error),
         ));
