@@ -1,5 +1,9 @@
-import 'package:image_picker/image_picker.dart';
+import 'dart:io';
+
+import 'package:dartz/dartz.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:social_media_app_flutter/domain/failures/image_picker_failures.dart';
 import 'package:social_media_app_flutter/domain/repositories/device/image_picker_repository.dart';
 
 class ImagePickerUseCases {
@@ -22,11 +26,73 @@ class ImagePickerUseCases {
     return await imagePickerRepository.getPhotosPermissionStatus();
   }
 
-  Future<XFile?> getImageFromGallery() async {
-    return await imagePickerRepository.getImageFromGallery();
+  Future<Either<ImagePickerFailure, File>> getImageFromCameraWithPermissions({
+    CropAspectRatio? cropAspectRatio,
+  }) async {
+    final permissionStatus = await getCameraPermissionStatus();
+
+    if (permissionStatus.isDenied || permissionStatus.isLimited) {
+      await requestCameraPermission();
+    }
+
+    if (permissionStatus.isPermanentlyDenied || permissionStatus.isRestricted) {
+      return Left(NoCameraPermissionFailure());
+    }
+
+    final image = await imagePickerRepository.getImageFromCamera();
+
+    if (image == null) {
+      return Left(NoPhotoTakenFailure());
+    }
+
+    if (cropAspectRatio != null) {
+      final croppedImage = await ImageCropper().cropImage(
+        sourcePath: image.path,
+        aspectRatio: cropAspectRatio,
+      );
+
+      if (croppedImage != null) {
+        return Right(File(croppedImage.path));
+      }
+
+      return Left(PhotoNotCroppedFailure());
+    }
+
+    return Right(File(image.path));
   }
 
-  Future<XFile?> getImageFromCamera() async {
-    return await imagePickerRepository.getImageFromCamera();
+  Future<Either<ImagePickerFailure, File>> getImageFromPhotosWithPermissions({
+    CropAspectRatio? cropAspectRatio,
+  }) async {
+    final permissionStatus = await getPhotosPermissionStatus();
+
+    if (permissionStatus.isDenied || permissionStatus.isLimited) {
+      await requestPhotosPermission();
+    }
+
+    if (permissionStatus.isPermanentlyDenied || permissionStatus.isRestricted) {
+      return Left(NoPhotosPermissionFailure());
+    }
+
+    final image = await imagePickerRepository.getImageFromGallery();
+
+    if (image == null) {
+      return Left(NoPhotoSelectedFailure());
+    }
+
+    if (cropAspectRatio != null) {
+      final croppedImage = await ImageCropper().cropImage(
+        sourcePath: image.path,
+        aspectRatio: cropAspectRatio,
+      );
+
+      if (croppedImage != null) {
+        return Right(File(croppedImage.path));
+      }
+
+      return Left(PhotoNotCroppedFailure());
+    }
+
+    return Right(File(image.path));
   }
 }

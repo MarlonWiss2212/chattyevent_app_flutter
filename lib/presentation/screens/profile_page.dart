@@ -41,7 +41,7 @@ class ProfilePage extends StatelessWidget {
           if (foundUser == null) {
             return Center(
               child: PlatformTextButton(
-                child: const Text("Keinen User gefunden"),
+                child: Text("Keinen User mit der Id: $userId"),
                 onPressed: () => BlocProvider.of<UserCubit>(context).getOneUser(
                   getOneUserFilter: GetOneUserFilter(id: userId),
                 ),

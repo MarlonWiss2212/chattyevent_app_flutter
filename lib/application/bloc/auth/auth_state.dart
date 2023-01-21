@@ -5,17 +5,28 @@ abstract class AuthState {}
 
 class AuthInitial extends AuthState {}
 
-class AuthStateLoadingToken extends AuthState {}
+class AuthLoading extends AuthState {}
 
-class AuthStateLoadingCurrentUser extends AuthState {}
+class AuthLoadingUserData extends AuthState {}
 
-class AuthStateError extends AuthState {
+class AuthError extends AuthState {
   final String title;
   final String message;
-  AuthStateError({required this.message, required this.title});
+  AuthError({required this.message, required this.title});
 }
 
-class AuthStateLoaded extends AuthState {
+class AuthErrorUserData extends AuthState {
+  final String token;
+  final String title;
+  final String message;
+  AuthErrorUserData({
+    required this.message,
+    required this.title,
+    required this.token,
+  });
+}
+
+class AuthLoaded extends AuthState {
   final UserAndTokenEntity userAndToken;
-  AuthStateLoaded({required this.userAndToken});
+  AuthLoaded({required this.userAndToken});
 }

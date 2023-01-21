@@ -31,7 +31,7 @@ class ConnectedGroupchatTilePrivateEvent extends StatelessWidget {
           backgroundImage:
               foundGroupchat != null && foundGroupchat.profileImageLink != null
                   ? NetworkImage(
-                      privateEvent.coverImageLink!,
+                      foundGroupchat.profileImageLink!,
                     )
                   : null,
           backgroundColor:

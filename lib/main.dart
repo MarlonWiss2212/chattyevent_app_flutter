@@ -14,6 +14,8 @@ import 'package:social_media_app_flutter/application/bloc/message/message_cubit.
 import 'package:social_media_app_flutter/application/bloc/private_event/private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/add_private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/edit_private_event_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/location/location_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/image/image_cubit.dart';
 import 'package:social_media_app_flutter/colors.dart';
 import 'package:social_media_app_flutter/presentation/router/auth_guard.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
@@ -69,6 +71,12 @@ class BlocInitializer extends StatelessWidget {
         BlocProvider(
           create: (context) => di.serviceLocator<EditPrivateEventCubit>(),
         ),
+        BlocProvider(
+          create: (context) => di.serviceLocator<LocationCubit>(),
+        ),
+        BlocProvider(
+          create: (context) => di.serviceLocator<ImageCubit>(),
+        ),
       ],
       child: const App(),
     );
@@ -84,20 +92,27 @@ class App extends StatelessWidget {
       authGuard: AuthGuard(state: BlocProvider.of<AuthCubit>(context).state),
     );
 
-    BlocProvider.of<AuthCubit>(context).getToken();
-
     return BlocListener<AuthCubit, AuthState>(
-      listener: (context, state) async {
+      listener: (context, state) {
         appRouter.authGuard.state = state;
-
-        if (state is AuthStateLoaded) {
+        if (state is AuthLoaded) {
+          appRouter.popUntilRoot();
           appRouter.replace(const HomePageRoute());
-        } else if (state is AuthStateLoadingCurrentUser) {
-          // appRouter.replace(const LoadingCurrentUserPageRoute());
+        } else if (state is AuthLoadingUserData) {
+          appRouter.popUntilRoot();
+          appRouter.replace(const LoadingCurrentUserPageRoute());
+        } else if (state is AuthErrorUserData) {
+          appRouter.popUntilRoot();
+          appRouter.replace(const FailureLoadingCurrentUserPageRoute());
+        } else if (state is AuthInitial) {
+          appRouter.popUntilRoot();
+          appRouter.replace(const LoginPageRoute());
         }
       },
       child: DynamicColorBuilder(
         builder: (lightDynamic, darkDynamic) {
+          BlocProvider.of<AuthCubit>(context).getTokenAndLoadUser();
+
           ColorScheme lightColorScheme;
           ColorScheme darkColorScheme;
 

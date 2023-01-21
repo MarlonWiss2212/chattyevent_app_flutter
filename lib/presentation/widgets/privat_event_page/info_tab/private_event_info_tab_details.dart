@@ -5,9 +5,9 @@ import 'package:social_media_app_flutter/presentation/widgets/divider.dart';
 import 'package:social_media_app_flutter/presentation/widgets/privat_event_page/info_tab/connected_groupchat_tile_private_event.dart';
 import 'package:social_media_app_flutter/presentation/widgets/privat_event_page/info_tab/user_area_private_event.dart';
 
-class PrivateEventInfoPage extends StatelessWidget {
+class PrivateEventInfoTabDetails extends StatelessWidget {
   final PrivateEventEntity privateEvent;
-  const PrivateEventInfoPage({super.key, required this.privateEvent});
+  const PrivateEventInfoTabDetails({super.key, required this.privateEvent});
 
   @override
   Widget build(BuildContext context) {
@@ -42,16 +42,6 @@ class PrivateEventInfoPage extends StatelessWidget {
               ),
             },
             const SizedBox(height: 20),
-            // name
-            Hero(
-              tag: "${privateEvent.id} title",
-              child: Text(
-                privateEvent.title ?? "Kein Titel",
-                style: Theme.of(context).textTheme.titleLarge,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-            const CustomDivider(),
             // connectedGroupchat
             Text(
               "Verbundener Gruppenchat: ",

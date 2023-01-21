@@ -55,10 +55,13 @@ class PrivateEventPage extends StatelessWidget {
         return PlatformScaffold(
           appBar: PlatformAppBar(
             leading: const AutoLeadingButton(),
-            title: Text(
-              foundPrivateEvent != null && foundPrivateEvent.title != null
-                  ? foundPrivateEvent.title!
-                  : "Kein Titel",
+            title: Hero(
+              tag: "$privateEventId title",
+              child: Text(
+                foundPrivateEvent != null && foundPrivateEvent.title != null
+                    ? foundPrivateEvent.title!
+                    : "Kein Titel",
+              ),
             ),
           ),
           body: Column(

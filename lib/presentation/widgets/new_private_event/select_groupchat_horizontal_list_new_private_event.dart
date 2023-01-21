@@ -15,8 +15,7 @@ class SelectGroupchatHorizontalListNewPrivateEvent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authState =
-        BlocProvider.of<AuthCubit>(context).state as AuthStateLoaded;
+    final authState = BlocProvider.of<AuthCubit>(context).state as AuthLoaded;
 
     return BlocBuilder<ChatCubit, ChatState>(
       builder: (context, state) {

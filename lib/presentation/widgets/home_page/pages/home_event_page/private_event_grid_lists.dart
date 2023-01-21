@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event_entity.dart';
 import 'package:social_media_app_flutter/presentation/widgets/event_horizontal_list.dart';
 
-class EventsDetailPage extends StatelessWidget {
+class PrivateEventGridLists extends StatelessWidget {
   final List<PrivateEventEntity> privateEvents;
-  const EventsDetailPage({super.key, required this.privateEvents});
+  const PrivateEventGridLists({super.key, required this.privateEvents});
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +33,7 @@ class EventsDetailPage extends StatelessWidget {
 
     return SingleChildScrollView(
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -64,7 +64,7 @@ class EventsDetailPage extends StatelessWidget {
               const SizedBox(height: 8),
               EventHorizontalList(privateEvents: otherPrivateEvents),
             ],
-            const SizedBox(height: 8),
+            const SizedBox(height: 20),
           ],
         ),
       ),

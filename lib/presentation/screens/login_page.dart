@@ -26,7 +26,7 @@ class _LoginPageState extends State<LoginPage> {
       body: Column(
         children: [
           BlocBuilder<AuthCubit, AuthState>(builder: (context, state) {
-            if (state is AuthStateLoadingToken) {
+            if (state is AuthLoading) {
               return const LinearProgressIndicator();
             }
             return Container();
@@ -53,7 +53,7 @@ class _LoginPageState extends State<LoginPage> {
                     const SizedBox(height: 8),
                     BlocListener<AuthCubit, AuthState>(
                       listener: (context, state) async {
-                        if (state is AuthStateError) {
+                        if (state is AuthError) {
                           return await showPlatformDialog(
                             context: context,
                             builder: (context) {

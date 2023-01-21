@@ -30,25 +30,24 @@ class NewGroupchatPageSelectUsersPage extends StatefulWidget {
 
 class _NewGroupchatPageSelectUsersPageState
     extends State<NewGroupchatPageSelectUsersPage> {
-  List<CreateUserGroupchatWithUsernameAndImageLink> groupchatUsersWithUsername =
-      [];
+  List<CreateUserGroupchatWithUsernameAndImageLink> groupchatUsers = [];
 
   void _addUserFromCreateGroupchatUsers(
     CreateUserGroupchatWithUsernameAndImageLink userToCreate,
   ) {
-    int foundIndex = _findUserInGroupchatUsersWithUsername(userToCreate.userId);
+    int foundIndex = _findUserInGroupchatUsers(userToCreate.userId);
 
     if (foundIndex == -1) {
       setState(() {
-        groupchatUsersWithUsername.add(userToCreate);
+        groupchatUsers.add(userToCreate);
       });
     }
   }
 
-  int _findUserInGroupchatUsersWithUsername(String userId) {
+  int _findUserInGroupchatUsers(String userId) {
     int userIsSavedIndex = -1;
 
-    groupchatUsersWithUsername.asMap().forEach((index, createGroupchatUser) {
+    groupchatUsers.asMap().forEach((index, createGroupchatUser) {
       if (createGroupchatUser.userId == userId) {
         userIsSavedIndex = index;
       }
@@ -57,11 +56,11 @@ class _NewGroupchatPageSelectUsersPageState
   }
 
   void _removeUserFromCreateGroupchatUsers(String userId) {
-    int userIsSavedIndex = _findUserInGroupchatUsersWithUsername(userId);
+    int userIsSavedIndex = _findUserInGroupchatUsers(userId);
 
     if (userIsSavedIndex != -1) {
       setState(() {
-        groupchatUsersWithUsername.removeAt(userIsSavedIndex);
+        groupchatUsers.removeAt(userIsSavedIndex);
       });
     }
   }
@@ -87,9 +86,9 @@ class _NewGroupchatPageSelectUsersPageState
               padding: const EdgeInsets.all(8),
               child: Column(
                 children: [
-                  if (groupchatUsersWithUsername.isNotEmpty) ...[
+                  if (groupchatUsers.isNotEmpty) ...[
                     SelectedUsersList(
-                      groupchatUsersWithUsername: groupchatUsersWithUsername,
+                      groupchatUsers: groupchatUsers,
                       onDeleted: (userId) {
                         _removeUserFromCreateGroupchatUsers(userId);
                       },
@@ -100,7 +99,7 @@ class _NewGroupchatPageSelectUsersPageState
                     onAdded: (newUser) {
                       _addUserFromCreateGroupchatUsers(newUser);
                     },
-                    groupchatUsersWithUsername: groupchatUsersWithUsername,
+                    groupchatUsersWithUsername: groupchatUsers,
                   ),
                   const SizedBox(height: 8),
                   // button to save groupchat
@@ -123,7 +122,7 @@ class _NewGroupchatPageSelectUsersPageState
                             createGroupchatDto: CreateGroupchatDto(
                               title: widget.title,
                               description: widget.description,
-                              users: groupchatUsersWithUsername,
+                              users: groupchatUsers,
                               profileImage: widget.profileImage,
                             ),
                           );

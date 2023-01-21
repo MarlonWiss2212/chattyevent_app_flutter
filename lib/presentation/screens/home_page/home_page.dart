@@ -11,12 +11,12 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authState =
-        BlocProvider.of<AuthCubit>(context).state as AuthStateLoaded;
+    final authState = BlocProvider.of<AuthCubit>(context).state as AuthLoaded;
     return AutoTabsRouter(
       routes: const [
         HomeChatPageRoute(),
         HomeEventPageRoute(),
+        HomeMapPageRoute(),
         HomeSearchPageRoute(),
         HomeProfilePageRoute(),
       ],
@@ -48,6 +48,11 @@ class HomePage extends StatelessWidget {
                 icon: Icon(Icons.celebration_outlined),
                 activeIcon: Icon(Icons.celebration),
                 label: 'Party',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.map_outlined),
+                activeIcon: Icon(Icons.map),
+                label: 'Map',
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.search_outlined),

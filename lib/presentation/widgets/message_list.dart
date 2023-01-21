@@ -20,8 +20,7 @@ class MessageList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authState =
-        BlocProvider.of<AuthCubit>(context).state as AuthStateLoaded;
+    final authState = BlocProvider.of<AuthCubit>(context).state as AuthLoaded;
 
     return BlocBuilder<UserCubit, UserState>(
       builder: (context, state) {

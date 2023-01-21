@@ -4,6 +4,7 @@ import 'package:social_media_app_flutter/presentation/screens/chat_page/chat_inf
 import 'package:social_media_app_flutter/presentation/screens/chat_page/chat_add_user_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/chat_page/chat_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/chat_page/chat_page_wrapper.dart';
+import 'package:social_media_app_flutter/presentation/screens/failure_loading_current_user_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/home_page/home_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/home_page/pages/home_chat_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/home_page/pages/home_event_page.dart';
@@ -25,9 +26,12 @@ import 'package:social_media_app_flutter/presentation/screens/register_page.dart
   routes: <AutoRoute>[
     AutoRoute(page: LoginPage, initial: false),
     AutoRoute(page: RegisterPage, initial: false),
-
     AutoRoute(
       page: LoadingCurrentUserPage,
+      initial: false,
+    ),
+    AutoRoute(
+      page: FailureLoadingCurrentUserPage,
       initial: false,
     ),
 

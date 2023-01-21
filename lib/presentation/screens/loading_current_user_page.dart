@@ -10,24 +10,19 @@ class LoadingCurrentUserPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AuthCubit, AuthState>(
-      listener: (context, state) {
-        if (state is AuthStateLoadingCurrentUser) {
-        } else if (state is AuthStateLoaded) {
-          AutoRouter.of(context).replace(const HomePageRoute());
-        } else {
-          AutoRouter.of(context).replace(const LoginPageRoute());
-        }
-      },
-      child: PlatformScaffold(
-        appBar: PlatformAppBar(
-          title: const Text("Lade Benutzer"),
-        ),
-        body: Expanded(
-          child: Center(
+    return PlatformScaffold(
+      appBar: PlatformAppBar(
+        title: const Text("Lade Benutzer"),
+      ),
+      body: BlocBuilder<AuthCubit, AuthState>(
+        builder: (context, state) {
+          if (state is AuthError) {
+            AutoRouter.of(context).replace(const LoginPageRoute());
+          }
+          return Center(
             child: PlatformCircularProgressIndicator(),
-          ),
-        ),
+          );
+        },
       ),
     );
   }

@@ -3,27 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/chat/add_chat_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/chat/edit_chat_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/message/message_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/private_event/add_private_event_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/private_event/edit_private_event_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/private_event/private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/user_search/user_search_cubit.dart';
 import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
 import 'package:social_media_app_flutter/domain/filter/get_one_user_filter.dart';
-import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
-import 'package:social_media_app_flutter/presentation/widgets/profile/user_profile_data_page_own_user.dart';
+import 'package:social_media_app_flutter/presentation/widgets/profile/user_profile_data_page.dart';
 
 class HomeProfilePage extends StatelessWidget {
   const HomeProfilePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final authState =
-        BlocProvider.of<AuthCubit>(context).state as AuthStateLoaded;
+    final authState = BlocProvider.of<AuthCubit>(context).state as AuthLoaded;
 
     BlocProvider.of<UserCubit>(context).getOneUser(
       getOneUserFilter: GetOneUserFilter(
@@ -34,7 +24,7 @@ class HomeProfilePage extends StatelessWidget {
     return PlatformScaffold(
       appBar: PlatformAppBar(
         title: const Text('Social Media App'),
-        trailingActions: [
+        /*  trailingActions: [
           IconButton(
             onPressed: () {
               BlocProvider.of<AuthCubit>(context).logout();
@@ -54,7 +44,7 @@ class HomeProfilePage extends StatelessWidget {
             },
             icon: const Icon(Icons.logout),
           ),
-        ],
+        ],*/
       ),
       body: BlocBuilder<UserCubit, UserState>(
         builder: (context, state) {
@@ -80,7 +70,7 @@ class HomeProfilePage extends StatelessWidget {
               );
             }
 
-            return UserProfileDataPageOwnUser(user: foundUser);
+            return UserProfileDataPage(user: foundUser);
           } else if (state is UserStateLoading) {
             return Center(child: PlatformCircularProgressIndicator());
           } else {

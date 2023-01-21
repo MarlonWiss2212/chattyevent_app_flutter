@@ -33,7 +33,7 @@ class AuthCubit extends Cubit<AuthState> {
   }) : super(AuthInitial());
 
   Future login({required String email, required String password}) async {
-    emit(AuthStateLoadingToken());
+    emit(AuthLoading());
 
     final Either<Failure, UserAndTokenEntity> authOrFailure =
         await authUseCases.login(
@@ -43,13 +43,13 @@ class AuthCubit extends Cubit<AuthState> {
 
     authOrFailure.fold(
       (error) => emit(
-        AuthStateError(
+        AuthError(
           title: "Login Fehler",
           message: mapFailureToMessage(error),
         ),
       ),
       (userAndToken) async {
-        emit(AuthStateLoaded(userAndToken: userAndToken));
+        emit(AuthLoaded(userAndToken: userAndToken));
         userCubit.checkIfUserExistOrAddIt(user: userAndToken.user);
         await one_signal.setExternalUserId(
           Jwt.parseJwt(userAndToken.accessToken)["sub"],
@@ -60,20 +60,20 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future register({required CreateUserDto createUserDto}) async {
-    emit(AuthStateLoadingToken());
+    emit(AuthLoading());
 
     final Either<Failure, UserAndTokenEntity> authOrFailure =
         await authUseCases.register(createUserDto);
 
     authOrFailure.fold(
       (error) => emit(
-        AuthStateError(
+        AuthError(
           title: "Registrier Fehler",
           message: mapFailureToMessage(error),
         ),
       ),
       (userAndToken) async {
-        emit(AuthStateLoaded(userAndToken: userAndToken));
+        emit(AuthLoaded(userAndToken: userAndToken));
         userCubit.checkIfUserExistOrAddIt(user: userAndToken.user);
         await notificationUseCases.requestNotificationPermission();
         await one_signal.setExternalUserId(
@@ -83,21 +83,20 @@ class AuthCubit extends Cubit<AuthState> {
     );
   }
 
-  Future getToken() async {
-    emit(AuthStateLoadingToken());
+  Future getTokenAndLoadUser() async {
+    emit(AuthLoadingUserData());
 
     final Either<Failure, String> authTokenOrFailure =
         await authUseCases.getAuthTokenFromStorage();
 
     await authTokenOrFailure.fold(
-      (error) {
-        emit(AuthStateError(
+      (error) async {
+        emit(AuthError(
           title: "Kein Access Token",
           message: mapFailureToMessage(error),
         ));
       },
       (token) async {
-        emit(AuthStateLoadingCurrentUser());
         // make this new
         userUseCases = serviceLocator();
         authUseCases = serviceLocator();
@@ -112,7 +111,8 @@ class AuthCubit extends Cubit<AuthState> {
         );
         userOrFailure.fold(
           (error) {
-            emit(AuthStateError(
+            emit(AuthErrorUserData(
+              token: token,
               title: "User nicht gefunden",
               message: mapFailureToMessage(error),
             ));
@@ -120,7 +120,7 @@ class AuthCubit extends Cubit<AuthState> {
           (user) {
             userCubit.checkIfUserExistOrAddIt(user: user);
             emit(
-              AuthStateLoaded(
+              AuthLoaded(
                 userAndToken: UserAndTokenEntity(
                   accessToken: token,
                   user: user,

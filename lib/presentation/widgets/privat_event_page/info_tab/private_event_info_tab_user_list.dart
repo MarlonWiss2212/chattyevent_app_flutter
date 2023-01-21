@@ -9,13 +9,13 @@ import 'package:social_media_app_flutter/presentation/widgets/privat_event_page/
 import 'package:social_media_app_flutter/presentation/widgets/privat_event_page/info_tab/icon_buttons_my_user_list_tile/neutral_invite_icon_button.dart';
 import 'package:social_media_app_flutter/presentation/widgets/user_list_tile.dart';
 
-class ListOfAllUsersForPrivateEvent extends StatelessWidget {
+class PrivateEventInfoTabUserList extends StatelessWidget {
   final String privateEventId;
   final List<String> privateEventUserIdsThatWillBeThere;
   final List<String> privateEventUserIdsThatWillNotBeThere;
   final List<GroupchatUserEntity> invitedUsers;
 
-  const ListOfAllUsersForPrivateEvent({
+  const PrivateEventInfoTabUserList({
     super.key,
     required this.privateEventUserIdsThatWillBeThere,
     required this.privateEventUserIdsThatWillNotBeThere,
@@ -25,8 +25,7 @@ class ListOfAllUsersForPrivateEvent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authState =
-        BlocProvider.of<AuthCubit>(context).state as AuthStateLoaded;
+    final authState = BlocProvider.of<AuthCubit>(context).state as AuthLoaded;
 
     return BlocBuilder<UserCubit, UserState>(
       builder: (context, state) {

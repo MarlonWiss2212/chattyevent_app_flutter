@@ -9,7 +9,7 @@ class MiniProfileImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AuthCubit, AuthState>(builder: (context, state) {
-      state = state as AuthStateLoaded;
+      state = state as AuthLoaded;
 
       return CircleImage(
         height: 24,

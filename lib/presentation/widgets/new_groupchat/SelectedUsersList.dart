@@ -4,13 +4,12 @@ import 'package:social_media_app_flutter/presentation/widgets/image_with_label_b
 
 class SelectedUsersList extends StatelessWidget {
   final void Function(String userId) onDeleted;
-  final List<CreateUserGroupchatWithUsernameAndImageLink>
-      groupchatUsersWithUsername;
+  final List<CreateUserGroupchatWithUsernameAndImageLink> groupchatUsers;
 
   const SelectedUsersList({
     super.key,
     required this.onDeleted,
-    required this.groupchatUsersWithUsername,
+    required this.groupchatUsers,
   });
 
   @override
@@ -28,10 +27,10 @@ class SelectedUsersList extends StatelessWidget {
                   width: 100,
                   height: 100,
                   child: ImageWithLabelButton(
-                    label: groupchatUsersWithUsername[index].username,
-                    imageLink: groupchatUsersWithUsername[index].imageLink,
+                    label: groupchatUsers[index].username,
+                    imageLink: groupchatUsers[index].imageLink,
                     onTap: () => onDeleted(
-                      groupchatUsersWithUsername[index].userId,
+                      groupchatUsers[index].userId,
                     ),
                   ),
                 );
@@ -39,11 +38,11 @@ class SelectedUsersList extends StatelessWidget {
               separatorBuilder: (context, index) {
                 return const SizedBox(width: 8);
               },
-              itemCount: groupchatUsersWithUsername.length,
+              itemCount: groupchatUsers.length,
             ),
           ),
           const SizedBox(width: 8),
-          Text(groupchatUsersWithUsername.length.toString())
+          Text(groupchatUsers.length.toString())
         ],
       ),
     );

@@ -42,25 +42,26 @@ class _ChatPageState extends State<ChatPage> {
           }
         }
 
+        Widget body;
+
         if (foundGroupchat == null) {
-          return PlatformScaffold(
-            appBar: PlatformAppBar(
-              leading: const AutoLeadingButton(),
-              title: Hero(
-                tag: "${widget.groupchatId} title",
-                child: const Text("Kein Titel"),
+          body = Expanded(
+            child: Center(
+              child: Text(
+                "Fehler beim Laden des Chats mit der Id ${widget.groupchatId}",
               ),
-              trailingActions: [
-                PlatformIconButton(
-                  icon: const Icon(Icons.info),
-                  onPressed: () => AutoRouter.of(context).push(
-                    ChatInfoPageRoute(),
-                  ),
-                )
-              ],
             ),
-            body: const Center(
-              child: Text("Chat nicht gefunden"),
+          );
+        } else {
+          body = Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Column(
+              children: [
+                MessageArea(groupchatTo: widget.groupchatId),
+                const SizedBox(height: 8),
+                MessageInput(groupchatTo: widget.groupchatId),
+                const SizedBox(height: 8)
+              ],
             ),
           );
         }
@@ -71,17 +72,23 @@ class _ChatPageState extends State<ChatPage> {
             title: Row(
               children: [
                 CircleAvatar(
-                  backgroundImage: foundGroupchat.profileImageLink != null
+                  backgroundImage: foundGroupchat != null &&
+                          foundGroupchat.profileImageLink != null
                       ? NetworkImage(foundGroupchat.profileImageLink!)
                       : null,
-                  backgroundColor: foundGroupchat.profileImageLink == null
+                  backgroundColor: foundGroupchat == null ||
+                          foundGroupchat.profileImageLink == null
                       ? Theme.of(context).colorScheme.secondaryContainer
                       : null,
                 ),
                 const SizedBox(width: 8),
                 Hero(
                   tag: "${widget.groupchatId} title",
-                  child: Text(foundGroupchat.title ?? "Kein Titel"),
+                  child: Text(
+                    foundGroupchat != null && foundGroupchat.title != null
+                        ? foundGroupchat.title!
+                        : "Kein Titel",
+                  ),
                 ),
               ],
             ),
@@ -94,17 +101,7 @@ class _ChatPageState extends State<ChatPage> {
               )
             ],
           ),
-          body: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Column(
-              children: [
-                MessageArea(groupchatTo: widget.groupchatId),
-                const SizedBox(height: 8),
-                MessageInput(groupchatTo: widget.groupchatId),
-                const SizedBox(height: 8)
-              ],
-            ),
-          ),
+          body: body,
         );
       },
     );

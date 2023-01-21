@@ -6,6 +6,8 @@ import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/add_chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/edit_chat_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/image/image_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/location/location_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/message/message_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/add_private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/edit_private_event_cubit.dart';
@@ -15,6 +17,7 @@ import 'package:social_media_app_flutter/application/bloc/user_search/user_searc
 import 'package:social_media_app_flutter/domain/repositories/auth_repository.dart';
 import 'package:social_media_app_flutter/domain/repositories/chat_repository.dart';
 import 'package:social_media_app_flutter/domain/repositories/device/image_picker_repository.dart';
+import 'package:social_media_app_flutter/domain/repositories/device/location_repository.dart';
 import 'package:social_media_app_flutter/domain/repositories/device/notification_repository.dart';
 import 'package:social_media_app_flutter/domain/repositories/message_repository.dart';
 import 'package:social_media_app_flutter/domain/repositories/private_event_repository.dart';
@@ -22,17 +25,20 @@ import 'package:social_media_app_flutter/domain/repositories/user_repository.dar
 import 'package:social_media_app_flutter/domain/usecases/auth_usecases.dart';
 import 'package:social_media_app_flutter/domain/usecases/chat_usecases.dart';
 import 'package:social_media_app_flutter/domain/usecases/image_picker_usecases.dart';
+import 'package:social_media_app_flutter/domain/usecases/location_usecases.dart';
 import 'package:social_media_app_flutter/domain/usecases/message_usecases.dart';
 import 'package:social_media_app_flutter/domain/usecases/notification_usecases.dart';
 import 'package:social_media_app_flutter/domain/usecases/private_event_usecases.dart';
 import 'package:social_media_app_flutter/domain/usecases/user_usecases.dart';
 import 'package:social_media_app_flutter/infastructure/datasources/device/image_picker.dart';
+import 'package:social_media_app_flutter/infastructure/datasources/device/location.dart';
 import 'package:social_media_app_flutter/infastructure/datasources/device/notification.dart';
 import 'package:social_media_app_flutter/infastructure/datasources/remote/graphql.dart';
 import 'package:social_media_app_flutter/infastructure/datasources/local/sharedPreferences.dart';
 import 'package:social_media_app_flutter/infastructure/respositories/auth_repository_impl.dart';
 import 'package:social_media_app_flutter/infastructure/respositories/chat_repository_impl.dart';
 import 'package:social_media_app_flutter/infastructure/respositories/device/image_picker_repository_impl.dart';
+import 'package:social_media_app_flutter/infastructure/respositories/device/location_repository_impl.dart';
 import 'package:social_media_app_flutter/infastructure/respositories/device/notification_repository_impl.dart';
 import 'package:social_media_app_flutter/infastructure/respositories/message_repository_impl.dart';
 import 'package:social_media_app_flutter/infastructure/respositories/private_event_repository_impl.dart';
@@ -108,6 +114,18 @@ Future<void> init({
     ),
   );
 
+  //device cubits
+  serviceLocator.registerLazySingleton(
+    () => LocationCubit(
+      locationUseCases: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton(
+    () => ImageCubit(
+      imagePickerUseCases: serviceLocator(),
+    ),
+  );
+
   // usecases
   serviceLocator.registerLazySingleton(
     () => AuthUseCases(
@@ -142,6 +160,11 @@ Future<void> init({
   serviceLocator.registerLazySingleton(
     () => ImagePickerUseCases(
       imagePickerRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton(
+    () => LocationUseCases(
+      locationRepository: serviceLocator(),
     ),
   );
 
@@ -182,6 +205,11 @@ Future<void> init({
       imagePickerDatasource: serviceLocator(),
     ),
   );
+  serviceLocator.registerLazySingleton<LocationRepository>(
+    () => LocationRepositoryImpl(
+      locationDatasource: serviceLocator(),
+    ),
+  );
 
   // datasources
   serviceLocator.registerLazySingleton<GraphQlDatasource>(
@@ -195,6 +223,9 @@ Future<void> init({
   );
   serviceLocator.registerLazySingleton<ImagePickerDatasource>(
     () => ImagePickerDatasourceImpl(),
+  );
+  serviceLocator.registerLazySingleton<LocationDatasource>(
+    () => LocationDatasourceImpl(),
   );
 
   //extern

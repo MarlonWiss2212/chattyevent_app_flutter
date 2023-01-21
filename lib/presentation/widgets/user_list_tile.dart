@@ -9,7 +9,6 @@ class UserListTile extends StatelessWidget {
   final Widget? subtitle;
   final Widget? trailing;
   final Function(String userId)? longPress;
-  // image
 
   const UserListTile({
     super.key,

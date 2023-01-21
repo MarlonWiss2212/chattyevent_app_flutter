@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/private_event_cubit.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
-import 'package:social_media_app_flutter/presentation/widgets/home_page/pages/home_event_page/events_detail_page.dart';
+import 'package:social_media_app_flutter/presentation/widgets/home_page/pages/home_event_page/private_event_grid_lists.dart';
 
 class HomeEventPage extends StatelessWidget {
   const HomeEventPage({super.key});
@@ -20,7 +20,7 @@ class HomeEventPage extends StatelessWidget {
       body: BlocBuilder<PrivateEventCubit, PrivateEventState>(
         builder: (context, state) {
           if (state is PrivateEventStateLoaded) {
-            return EventsDetailPage(privateEvents: state.privateEvents);
+            return PrivateEventGridLists(privateEvents: state.privateEvents);
           } else if (state is PrivateEventStateLoading) {
             return Center(child: PlatformCircularProgressIndicator());
           } else {

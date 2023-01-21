@@ -1,7 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jwt_decode/jwt_decode.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/edit_chat_cubit.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
@@ -13,14 +12,13 @@ import 'package:social_media_app_flutter/presentation/widgets/divider.dart';
 import 'package:social_media_app_flutter/presentation/widgets/chat_page/chat_info_page/user_left_list_groupchat.dart';
 import 'package:social_media_app_flutter/presentation/widgets/chat_page/chat_info_page/user_list_groupchat.dart';
 
-class Details extends StatelessWidget {
+class ChatInfoPageDetails extends StatelessWidget {
   final GroupchatEntity groupchat;
-  const Details({super.key, required this.groupchat});
+  const ChatInfoPageDetails({super.key, required this.groupchat});
 
   @override
   Widget build(BuildContext context) {
-    final authState =
-        BlocProvider.of<AuthCubit>(context).state as AuthStateLoaded;
+    final authState = BlocProvider.of<AuthCubit>(context).state as AuthLoaded;
     GroupchatUserEntity? currentGroupchatUser;
     if (groupchat.users != null) {
       for (final groupchatUser in groupchat.users!) {
@@ -36,22 +34,12 @@ class Details extends StatelessWidget {
       padding: const EdgeInsets.all(8),
       child: Column(
         children: [
-          const SizedBox(height: 40),
+          const SizedBox(height: 20),
           // Groupchat Image
           CircleImage(
             imageLink: groupchat.profileImageLink,
           ),
           const SizedBox(height: 20),
-          // name
-          Hero(
-            tag: "${groupchat.id} title",
-            child: Text(
-              groupchat.title ?? "Kein Titel",
-              style: Theme.of(context).textTheme.titleLarge,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-          const SizedBox(height: 12),
           // description
           Text(
             groupchat.description == null ||
@@ -125,7 +113,6 @@ class Details extends StatelessWidget {
             ),
           ],
           const CustomDivider(),
-
           // leave Chat Button
           ListTile(
             leading: const Icon(
