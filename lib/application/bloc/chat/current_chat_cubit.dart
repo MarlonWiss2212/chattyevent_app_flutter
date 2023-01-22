@@ -82,7 +82,6 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
       userIdToDelete: userIdToDelete,
     );
 
-    // this has only the users and left users in it
     groupchatOrFailure.fold(
       (error) {
         emit(CurrentChatError(

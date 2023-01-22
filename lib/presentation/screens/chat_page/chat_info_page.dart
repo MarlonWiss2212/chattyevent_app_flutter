@@ -17,26 +17,12 @@ class ChatInfoPage extends StatelessWidget {
     // should get the private events for this chat in future for more effeciancy
     BlocProvider.of<PrivateEventCubit>(context).getPrivateEventsViaApi();
 
-    return BlocBuilder<ChatCubit, ChatState>(
+    return BlocBuilder<CurrentChatCubit, CurrentChatState>(
       builder: (context, state) {
         GroupchatEntity? foundGroupchat =
             BlocProvider.of<ChatCubit>(context).getGroupchatById(
           groupchatId: groupchatId,
         );
-
-        Widget body;
-
-        if (foundGroupchat == null) {
-          body = Expanded(
-            child: Center(
-              child:
-                  Text("Fehler beim Laden des Chats mit der Id $groupchatId"),
-            ),
-          );
-        } else {
-          body = ChatInfoPageDetails(groupchat: foundGroupchat);
-        }
-
         return PlatformScaffold(
           appBar: PlatformAppBar(
             title: Hero(
@@ -48,14 +34,25 @@ class ChatInfoPage extends StatelessWidget {
               ),
             ),
           ),
-          body: BlocBuilder<CurrentChatCubit, CurrentChatState>(
-            builder: (context, state) {
-              if (state is CurrentChatLoading) {
-                return Center(child: PlatformCircularProgressIndicator());
-              }
-              return body;
-            },
-          ),
+          body: state is CurrentChatLoading
+              ? Center(child: PlatformCircularProgressIndicator())
+              : foundGroupchat != null && state is CurrentChatLoaded
+                  ? Column(
+                      children: [
+                        if (state is CurrentChatEditing) ...{
+                          const LinearProgressIndicator()
+                        },
+                        Expanded(
+                          child: ChatInfoPageDetails(groupchat: foundGroupchat),
+                        ),
+                      ],
+                    )
+                  : const Center(
+                      child: Text(
+                        "Fehler beim Laden des Chats mit der Id ",
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
         );
       },
     );

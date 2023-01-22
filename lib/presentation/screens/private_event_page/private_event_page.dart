@@ -29,7 +29,22 @@ class PrivateEventPage extends StatelessWidget {
     }
 
     var dataLoaded = false;
-    return BlocBuilder<PrivateEventCubit, PrivateEventState>(
+
+    return BlocConsumer<CurrentPrivateEventCubit, CurrentPrivateEventState>(
+      listener: (context, state) async {
+        if (state is CurrentPrivateEventError) {
+          return await showPlatformDialog(
+            context: context,
+            builder: (context) {
+              return PlatformAlertDialog(
+                title: Text(state.title),
+                content: Text(state.message),
+                actions: const [OKButton()],
+              );
+            },
+          );
+        }
+      },
       builder: (context, state) {
         PrivateEventEntity? foundPrivateEvent =
             BlocProvider.of<PrivateEventCubit>(context).getPrivateEventById(
@@ -60,42 +75,16 @@ class PrivateEventPage extends StatelessWidget {
               ),
             ),
           ),
-          body:
-              BlocConsumer<CurrentPrivateEventCubit, CurrentPrivateEventState>(
-            listener: (context, state) async {
-              if (state is CurrentPrivateEventError) {
-                return await showPlatformDialog(
-                  context: context,
-                  builder: (context) {
-                    return PlatformAlertDialog(
-                      title: Text(state.title),
-                      content: Text(state.message),
-                      actions: const [OKButton()],
-                    );
-                  },
-                );
-              }
-            },
-            builder: (context, state) {
-              if (state is CurrentPrivateEventLoading) {
-                return Center(child: PlatformCircularProgressIndicator());
-              }
-              return Column(
-                children: [
-                  BlocBuilder<CurrentPrivateEventCubit,
-                      CurrentPrivateEventState>(
-                    builder: (context, state) {
-                      if (state is CurrentPrivateEventEditing) {
-                        return const LinearProgressIndicator();
-                      }
-                      return Container();
+          body: state is CurrentPrivateEventLoading
+              ? Center(child: PlatformCircularProgressIndicator())
+              : Column(
+                  children: [
+                    if (state is CurrentPrivateEventEditing) ...{
+                      const LinearProgressIndicator()
                     },
-                  ),
-                  const Expanded(child: AutoRouter()),
-                ],
-              );
-            },
-          ),
+                    const Expanded(child: AutoRouter()),
+                  ],
+                ),
         );
       },
     );

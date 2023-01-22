@@ -25,13 +25,13 @@ class AuthCubit extends Cubit<AuthState> {
   final UserCubit userCubit;
   final ProfilePageCubit profilePageCubit;
 
-  AuthCubit(
-      {required this.authUseCases,
-      required this.userUseCases,
-      required this.notificationUseCases,
-      required this.userCubit,
-      required this.profilePageCubit})
-      : super(AuthInitial());
+  AuthCubit({
+    required this.authUseCases,
+    required this.userUseCases,
+    required this.notificationUseCases,
+    required this.userCubit,
+    required this.profilePageCubit,
+  }) : super(AuthInitial());
 
   Future login({required String email, required String password}) async {
     emit(AuthLoading());
@@ -112,6 +112,7 @@ class AuthCubit extends Cubit<AuthState> {
         emit(AuthLoaded(
           token: token,
         ));
+
         profilePageCubit.getOneUserViaApi(
           getOneUserFilter: GetOneUserFilter(
             id: Jwt.parseJwt(token)["sub"],

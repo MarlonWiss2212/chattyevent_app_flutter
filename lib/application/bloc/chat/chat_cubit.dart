@@ -4,7 +4,6 @@ import 'package:meta/meta.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:social_media_app_flutter/domain/failures/failures.dart';
-import 'package:social_media_app_flutter/domain/filter/get_one_groupchat_filter.dart';
 import 'package:social_media_app_flutter/domain/usecases/chat_usecases.dart';
 
 part 'chat_state.dart';
@@ -49,6 +48,8 @@ class ChatCubit extends Cubit<ChatState> {
           description:
               groupchat.description ?? newGroupchats[foundIndex].description,
           users: groupchat.users ?? newGroupchats[foundIndex].users,
+          profileImageLink: groupchat.profileImageLink ??
+              newGroupchats[foundIndex].profileImageLink,
           leftUsers: groupchat.leftUsers ?? newGroupchats[foundIndex].leftUsers,
           createdBy: groupchat.createdBy ?? newGroupchats[foundIndex].createdBy,
           createdAt: groupchat.createdAt ?? newGroupchats[foundIndex].createdAt,

@@ -12,54 +12,25 @@ import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 import 'package:social_media_app_flutter/presentation/widgets/chat_page/message_area.dart';
 import 'package:social_media_app_flutter/presentation/widgets/chat_page/message_input.dart';
 
-class ChatPage extends StatefulWidget {
+class ChatPage extends StatelessWidget {
   const ChatPage({@PathParam('id') required this.groupchatId, super.key});
   final String groupchatId;
 
-  @override
-  State<ChatPage> createState() => _ChatPageState();
-}
-
-class _ChatPageState extends State<ChatPage> {
   @override
   Widget build(BuildContext context) {
     // load data here so that it does not get double loaded when the bloc state changes
     BlocProvider.of<UserCubit>(context).getUsersViaApi();
 
     BlocProvider.of<MessageCubit>(context).getMessages(
-      getMessagesFilter: GetMessagesFilter(groupchatTo: widget.groupchatId),
+      getMessagesFilter: GetMessagesFilter(groupchatTo: groupchatId),
     );
 
-    return BlocBuilder<ChatCubit, ChatState>(
+    return BlocBuilder<CurrentChatCubit, CurrentChatState>(
       builder: (context, state) {
         GroupchatEntity? foundGroupchat =
             BlocProvider.of<ChatCubit>(context).getGroupchatById(
-          groupchatId: widget.groupchatId,
+          groupchatId: groupchatId,
         );
-
-        Widget body;
-
-        if (foundGroupchat == null) {
-          body = Expanded(
-            child: Center(
-              child: Text(
-                "Fehler beim Laden des Chats mit der Id ${widget.groupchatId}",
-              ),
-            ),
-          );
-        } else {
-          body = Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Column(
-              children: [
-                MessageArea(groupchatTo: widget.groupchatId),
-                const SizedBox(height: 8),
-                MessageInput(groupchatTo: widget.groupchatId),
-                const SizedBox(height: 8)
-              ],
-            ),
-          );
-        }
 
         return PlatformScaffold(
           appBar: PlatformAppBar(
@@ -71,14 +42,14 @@ class _ChatPageState extends State<ChatPage> {
                           foundGroupchat.profileImageLink != null
                       ? NetworkImage(foundGroupchat.profileImageLink!)
                       : null,
-                  backgroundColor: foundGroupchat == null ||
-                          foundGroupchat.profileImageLink == null
-                      ? Theme.of(context).colorScheme.secondaryContainer
-                      : null,
+                  backgroundColor: foundGroupchat != null &&
+                          foundGroupchat.profileImageLink != null
+                      ? null
+                      : Theme.of(context).colorScheme.secondaryContainer,
                 ),
                 const SizedBox(width: 8),
                 Hero(
-                  tag: "${widget.groupchatId} title",
+                  tag: "$groupchatId title",
                   child: Text(
                     foundGroupchat != null && foundGroupchat.title != null
                         ? foundGroupchat.title!
@@ -96,14 +67,36 @@ class _ChatPageState extends State<ChatPage> {
               )
             ],
           ),
-          body: BlocBuilder<CurrentChatCubit, CurrentChatState>(
-            builder: (context, state) {
-              if (state is CurrentChatLoading) {
-                return Center(child: PlatformCircularProgressIndicator());
-              }
-              return body;
-            },
-          ),
+          body: state is CurrentChatLoading
+              ? Center(child: PlatformCircularProgressIndicator())
+              : foundGroupchat != null && state is CurrentChatLoaded
+                  ? Column(
+                      children: [
+                        if (state is CurrentChatEditing) ...{
+                          const LinearProgressIndicator()
+                        },
+                        Expanded(
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 8.0),
+                            child: Column(
+                              children: [
+                                MessageArea(groupchatTo: groupchatId),
+                                const SizedBox(height: 8),
+                                MessageInput(groupchatTo: groupchatId),
+                                const SizedBox(height: 8)
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
+                  : Center(
+                      child: Text(
+                        "Fehler beim Laden des Chats mit der Id $groupchatId",
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
         );
       },
     );

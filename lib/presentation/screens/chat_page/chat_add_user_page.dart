@@ -19,41 +19,39 @@ class ChatAddUserPage extends StatelessWidget {
   Widget build(BuildContext context) {
     BlocProvider.of<UserSearchCubit>(context).getUsersViaApi();
 
-    return BlocBuilder<ChatCubit, ChatState>(
+    return BlocBuilder<CurrentChatCubit, CurrentChatState>(
       builder: (context, state) {
         GroupchatEntity? foundGroupchat =
             BlocProvider.of<ChatCubit>(context).getGroupchatById(
           groupchatId: groupchatId,
         );
-        Widget body;
-
-        if (foundGroupchat == null) {
-          body = Expanded(
-            child: Center(
-              child: Text(
-                "Fehler beim Laden des Chats mit der Id $groupchatId",
-              ),
-            ),
-          );
-        } else {
-          body = AddUserGroupchatListWithSearchbar(
-            groupchatUsers: foundGroupchat.users ?? [],
-            groupchatId: groupchatId,
-          );
-        }
 
         return PlatformScaffold(
           appBar: PlatformAppBar(
             title: const Text("User zum Chat hinzufügen"),
           ),
-          body: BlocBuilder<CurrentChatCubit, CurrentChatState>(
-            builder: (context, state) {
-              if (state is CurrentChatLoading) {
-                return Center(child: PlatformCircularProgressIndicator());
-              }
-              return body;
-            },
-          ),
+          body: state is CurrentChatLoading
+              ? Center(child: PlatformCircularProgressIndicator())
+              : foundGroupchat != null && state is CurrentChatLoaded
+                  ? Column(
+                      children: [
+                        if (state is CurrentChatEditing) ...{
+                          const LinearProgressIndicator()
+                        },
+                        Expanded(
+                          child: AddUserGroupchatListWithSearchbar(
+                            groupchatUsers: foundGroupchat.users ?? [],
+                            groupchatId: groupchatId,
+                          ),
+                        ),
+                      ],
+                    )
+                  : Center(
+                      child: Text(
+                        "Fehler beim Laden des Chats mit der Id $groupchatId",
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
         );
       },
     );

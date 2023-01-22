@@ -31,11 +31,13 @@ class ImagePickerUseCases {
   }) async {
     final permissionStatus = await getCameraPermissionStatus();
 
-    if (permissionStatus.isDenied || permissionStatus.isLimited) {
+    if (permissionStatus.isDenied) {
       await requestCameraPermission();
     }
 
-    if (permissionStatus.isPermanentlyDenied || permissionStatus.isRestricted) {
+    if (permissionStatus.isPermanentlyDenied ||
+        permissionStatus.isRestricted ||
+        permissionStatus.isDenied) {
       return Left(NoCameraPermissionFailure());
     }
 

@@ -21,8 +21,9 @@ class ChatUseCases {
     );
   }
 
-  Future<Either<Failure, GroupchatEntity>> createGroupchatViaApi(
-      {required CreateGroupchatDto createGroupchatDto}) async {
+  Future<Either<Failure, GroupchatEntity>> createGroupchatViaApi({
+    required CreateGroupchatDto createGroupchatDto,
+  }) async {
     return await chatRepository.createGroupchatViaApi(createGroupchatDto);
   }
 
