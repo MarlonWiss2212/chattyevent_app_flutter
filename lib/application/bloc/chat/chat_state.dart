@@ -5,21 +5,18 @@ abstract class ChatState {}
 
 class ChatInitial extends ChatState {}
 
-class ChatStateLoading extends ChatState {}
+class ChatLoading extends ChatState {}
 
-class ChatStateError extends ChatState {
+class ChatError extends ChatState {
   final String title;
   final String message;
-  ChatStateError({
+  ChatError({
     required this.title,
     required this.message,
   });
 }
 
-class ChatStateLoaded extends ChatState {
+class ChatLoaded extends ChatState {
   final List<GroupchatEntity> chats;
-
-  ChatStateLoaded({
-    required this.chats,
-  });
+  ChatLoaded({required this.chats});
 }

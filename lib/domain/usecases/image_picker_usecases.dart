@@ -29,15 +29,13 @@ class ImagePickerUseCases {
   Future<Either<ImagePickerFailure, File>> getImageFromCameraWithPermissions({
     CropAspectRatio? cropAspectRatio,
   }) async {
-    final permissionStatus = await getCameraPermissionStatus();
+    PermissionStatus permissionStatus = await getCameraPermissionStatus();
 
     if (permissionStatus.isDenied) {
-      await requestCameraPermission();
+      permissionStatus = await requestCameraPermission();
     }
 
-    if (permissionStatus.isPermanentlyDenied ||
-        permissionStatus.isRestricted ||
-        permissionStatus.isDenied) {
+    if (permissionStatus.isPermanentlyDenied || permissionStatus.isDenied) {
       return Left(NoCameraPermissionFailure());
     }
 

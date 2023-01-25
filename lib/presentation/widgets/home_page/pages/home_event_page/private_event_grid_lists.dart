@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event_entity.dart';
-import 'package:social_media_app_flutter/presentation/widgets/event_horizontal_list.dart';
+import 'package:social_media_app_flutter/presentation/widgets/event_list/event_horizontal_list.dart';
 
 class PrivateEventGridLists extends StatelessWidget {
   final List<PrivateEventEntity> privateEvents;

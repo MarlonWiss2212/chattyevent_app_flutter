@@ -28,11 +28,6 @@ class PrivateEventListGroupchat extends StatelessWidget {
                         ? Theme.of(context).colorScheme.secondaryContainer
                         : null,
                   ),
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(5),
-                    ),
-                  ),
                   title: Hero(
                     tag: "${privateEvent.id} title",
                     child: Text(

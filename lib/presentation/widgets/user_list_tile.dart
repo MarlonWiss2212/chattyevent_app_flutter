@@ -30,11 +30,6 @@ class UserListTile extends StatelessWidget {
             ? Theme.of(context).colorScheme.secondaryContainer
             : null,
       ),
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(
-          Radius.circular(5),
-        ),
-      ),
       title: Hero(
         tag: "$userId username",
         child: Text(

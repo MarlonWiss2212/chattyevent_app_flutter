@@ -37,7 +37,7 @@ class UserAreaPrivateEvent extends StatelessWidget {
         BlocBuilder<ChatCubit, ChatState>(
           builder: (context, state) {
             List<GroupchatUserEntity> invitedUsers = [];
-            if (state is ChatStateLoaded &&
+            if (state is ChatLoaded &&
                 privateEvent.connectedGroupchat != null) {
               for (final chat in state.chats) {
                 if (chat.id == privateEvent.connectedGroupchat &&

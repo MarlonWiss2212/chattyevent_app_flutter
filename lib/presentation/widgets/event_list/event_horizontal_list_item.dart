@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event_entity.dart';
 
-class EventGridListItem extends StatelessWidget {
+class EventHorizontalListItem extends StatelessWidget {
   final PrivateEventEntity privateEvent;
   final Function? onLongPress;
   final Function? onPress;
   final double height;
   final double width;
 
-  const EventGridListItem({
+  const EventHorizontalListItem({
     super.key,
     required this.privateEvent,
     this.onLongPress,

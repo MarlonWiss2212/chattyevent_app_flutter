@@ -57,7 +57,6 @@ class ChatRepositoryImpl implements ChatRepository {
       );
 
       if (response.hasException) {
-        print(response.exception);
         return Left(GeneralFailure());
       }
       return Right(GroupchatModel.fromJson(response.data!["createGroupchat"]));
@@ -75,7 +74,7 @@ class ChatRepositoryImpl implements ChatRepository {
         """
         query FindGroupchat(\$input: FindOneGroupchatInput!) {
           findGroupchat(filter: \$input) {
-           _id
+            _id
             title
             description
             profileImageLink

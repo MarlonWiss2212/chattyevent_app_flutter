@@ -20,5 +20,8 @@ class AuthError extends AuthState {
 
 class AuthLoaded extends AuthState {
   final String token;
-  AuthLoaded({required this.token});
+
+  // only for login and register for efficiency
+  final UserEntity? userResponse;
+  AuthLoaded({required this.token, this.userResponse});
 }

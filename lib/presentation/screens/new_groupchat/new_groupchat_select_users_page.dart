@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/add_chat_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user_search/user_search_cubit.dart';
 import 'package:social_media_app_flutter/domain/dto/groupchat/create_groupchat_dto.dart';
 import 'package:social_media_app_flutter/domain/dto/groupchat/create_user_groupchat_dto.dart';
@@ -99,13 +100,17 @@ class _NewGroupchatPageSelectUsersPageState
                     onAdded: (newUser) {
                       _addUserFromCreateGroupchatUsers(newUser);
                     },
-                    groupchatUsersWithUsername: groupchatUsers,
+                    groupchatUsers: groupchatUsers,
                   ),
                   const SizedBox(height: 8),
                   // button to save groupchat
                   BlocListener<AddChatCubit, AddChatState>(
-                    listener: (context, state) async {
+                    listener: (context, state) {
                       if (state is AddChatLoaded) {
+                        BlocProvider.of<CurrentChatCubit>(context)
+                            .setCurrentChat(
+                          groupchat: state.addedChat,
+                        );
                         AutoRouter.of(context).root.replace(
                               ChatPageWrapperRoute(
                                 groupchatId: state.addedChat.id,

@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:meta/meta.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:social_media_app_flutter/domain/failures/failures.dart';
 import 'package:social_media_app_flutter/domain/usecases/chat_usecases.dart';
@@ -16,22 +15,19 @@ class ChatCubit extends Cubit<ChatState> {
     emit(ChatInitial());
   }
 
-  void addChat({required GroupchatEntity groupchat}) {
-    if (state is ChatStateLoaded) {
-      final state = this.state as ChatStateLoaded;
-      emit(
-        ChatStateLoaded(
-          chats: List.from(state.chats)..add(groupchat),
-        ),
-      );
+  void addChat({required GroupchatEntity groupchat}) async {
+    if (state is ChatLoaded) {
+      final state = this.state as ChatLoaded;
+      List<GroupchatEntity> newChats = List.from(state.chats)..add(groupchat);
+      emit(ChatLoaded(chats: newChats));
     } else {
-      emit(ChatStateLoaded(chats: [groupchat]));
+      emit(ChatLoaded(chats: [groupchat]));
     }
   }
 
-  void editChatIfExistOrAdd({required GroupchatEntity groupchat}) {
-    if (state is ChatStateLoaded) {
-      final state = this.state as ChatStateLoaded;
+  GroupchatEntity editChatIfExistOrAdd({required GroupchatEntity groupchat}) {
+    if (state is ChatLoaded) {
+      final state = this.state as ChatLoaded;
 
       int foundIndex = -1;
       state.chats.asMap().forEach((index, chatToFind) {
@@ -55,50 +51,42 @@ class ChatCubit extends Cubit<ChatState> {
           createdAt: groupchat.createdAt ?? newGroupchats[foundIndex].createdAt,
         );
         emit(
-          ChatStateLoaded(chats: newGroupchats),
+          ChatLoaded(chats: newGroupchats),
         );
+        return newGroupchats[foundIndex];
       } else {
         emit(
-          ChatStateLoaded(chats: List.from(state.chats)..add(groupchat)),
+          ChatLoaded(
+            chats: List.from(state.chats)..add(groupchat),
+          ),
         );
       }
     } else {
       emit(
-        ChatStateLoaded(
+        ChatLoaded(
           chats: [groupchat],
         ),
       );
     }
-  }
-
-  GroupchatEntity? getGroupchatById({required String groupchatId}) {
-    if (state is ChatStateLoaded) {
-      final state = this.state as ChatStateLoaded;
-      for (final chat in state.chats) {
-        if (chat.id == groupchatId) {
-          return chat;
-        }
-      }
-    }
-    return null;
+    return groupchat;
   }
 
   Future getChatsViaApi() async {
-    emit(ChatStateLoading());
+    emit(ChatLoading());
 
     final Either<Failure, List<GroupchatEntity>> groupchatsOrFailure =
         await chatUseCases.getGroupchatsViaApi();
 
     groupchatsOrFailure.fold(
       (error) => emit(
-        ChatStateError(
+        ChatError(
           title: "Fehler",
           message: mapFailureToMessage(error),
         ),
       ),
-      (groupchats) => emit(
-        ChatStateLoaded(chats: groupchats),
-      ),
+      (groupchats) {
+        emit(ChatLoaded(chats: groupchats));
+      },
     );
   }
 }

@@ -11,6 +11,10 @@ class HomeMapPageCubit extends Cubit<HomeMapPageState> {
   HomeMapPageCubit({required this.locationUseCases})
       : super(HomeMapPageInitial());
 
+  void reset() {
+    emit(HomeMapPageInitial());
+  }
+
   Future getLocationFromDevice() async {
     emit(HomeMapPageLoading());
 

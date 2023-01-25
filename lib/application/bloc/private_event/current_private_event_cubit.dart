@@ -40,18 +40,25 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
         ));
       },
       (privateEvent) {
-        privateEventCubit.editPrivateEventIfExistOrAdd(
+        final mergedPrivateEvent =
+            privateEventCubit.editPrivateEventIfExistOrAdd(
           privateEvent: privateEvent,
         );
-        emit(CurrentPrivateEventLoaded());
+        emit(CurrentPrivateEventLoaded(privateEvent: mergedPrivateEvent));
       },
     );
+  }
+
+  void setCurrentPrivateEvent({required PrivateEventEntity privateEvent}) {
+    emit(CurrentPrivateEventLoading());
+    emit(CurrentPrivateEventLoaded(privateEvent: privateEvent));
   }
 
   Future updateMeInPrivateEventWillBeThere({
     required String privateEventId,
   }) async {
-    emit(CurrentPrivateEventEditing());
+    final state = this.state as CurrentPrivateEventStateWithPrivateEvent;
+    emit(CurrentPrivateEventEditing(privateEvent: state.privateEvent));
     final Either<Failure, PrivateEventEntity> privateEventOrFailure =
         await privateEventUseCases.updateMeInPrivateEventWillBeThere(
       privateEventId: privateEventId,
@@ -65,10 +72,11 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
         );
       },
       (privateEvent) {
-        privateEventCubit.editPrivateEventIfExistOrAdd(
+        final mergedPrivateEvent =
+            privateEventCubit.editPrivateEventIfExistOrAdd(
           privateEvent: privateEvent,
         );
-        emit(CurrentPrivateEventLoaded());
+        emit(CurrentPrivateEventLoaded(privateEvent: mergedPrivateEvent));
       },
     );
   }
@@ -76,7 +84,9 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
   Future updateMeInPrivateEventWillNotBeThere({
     required String privateEventId,
   }) async {
-    emit(CurrentPrivateEventEditing());
+    final state = this.state as CurrentPrivateEventStateWithPrivateEvent;
+    emit(CurrentPrivateEventEditing(privateEvent: state.privateEvent));
+
     final Either<Failure, PrivateEventEntity> privateEventOrFailure =
         await privateEventUseCases.updateMeInPrivateEventWillNotBeThere(
       privateEventId: privateEventId,
@@ -90,10 +100,11 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
         );
       },
       (privateEvent) {
-        privateEventCubit.editPrivateEventIfExistOrAdd(
+        final mergedPrivateEvent =
+            privateEventCubit.editPrivateEventIfExistOrAdd(
           privateEvent: privateEvent,
         );
-        emit(CurrentPrivateEventLoaded());
+        emit(CurrentPrivateEventLoaded(privateEvent: mergedPrivateEvent));
       },
     );
   }
@@ -101,7 +112,9 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
   Future updateMeInPrivateEventNoInformationOnWillBeThere({
     required String privateEventId,
   }) async {
-    emit(CurrentPrivateEventEditing());
+    final state = this.state as CurrentPrivateEventStateWithPrivateEvent;
+    emit(CurrentPrivateEventEditing(privateEvent: state.privateEvent));
+
     final Either<Failure, PrivateEventEntity> privateEventOrFailure =
         await privateEventUseCases
             .updateMeInPrivateEventNoInformationOnWillBeThere(
@@ -116,10 +129,11 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
         );
       },
       (privateEvent) {
-        privateEventCubit.editPrivateEventIfExistOrAdd(
+        final mergedPrivateEvent =
+            privateEventCubit.editPrivateEventIfExistOrAdd(
           privateEvent: privateEvent,
         );
-        emit(CurrentPrivateEventLoaded());
+        emit(CurrentPrivateEventLoaded(privateEvent: mergedPrivateEvent));
       },
     );
   }

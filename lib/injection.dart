@@ -1,13 +1,15 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:graphql/client.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/add_chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/home_page/home_map_page/home_map_page_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/home_page/home_profile_page/home_profile_page_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/image/image_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/message/add_message_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/message/message_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/add_private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
@@ -45,162 +47,62 @@ import 'package:social_media_app_flutter/infastructure/respositories/message_rep
 import 'package:social_media_app_flutter/infastructure/respositories/private_event_repository_impl.dart';
 import 'package:social_media_app_flutter/infastructure/respositories/user_repository_impl.dart';
 
+GraphQLClient getGraphQlClient({String? token}) {
+  Link link = HttpLink(
+    dotenv.get("API_BASE_URL"),
+    defaultHeaders: {
+      "Apollo-Require-Preflight": "true",
+      "Authorization": "Bearer $token"
+    },
+  );
+
+  return GraphQLClient(
+    link: link,
+    cache: GraphQLCache(),
+    defaultPolicies: DefaultPolicies(
+      query: Policies(fetch: FetchPolicy.noCache),
+      mutate: Policies(fetch: FetchPolicy.noCache),
+      subscribe: Policies(fetch: FetchPolicy.noCache),
+    ),
+  );
+}
+
 final serviceLocator = GetIt.I;
 
-Future<void> init({
-  String? token,
-}) async {
-  // Blocs
-  serviceLocator.registerLazySingleton(
+Future<void> init() async {
+  serviceLocator.allowReassignment = true;
+
+  serviceLocator.registerLazySingleton<AuthCubit>(
     () => AuthCubit(
       authUseCases: serviceLocator(),
       userUseCases: serviceLocator(),
       notificationUseCases: serviceLocator(),
-      profilePageCubit: serviceLocator(),
-      userCubit: serviceLocator(),
     ),
   );
-  serviceLocator.registerLazySingleton(
-    () => ProfilePageCubit(
-      userCubit: serviceLocator(),
-      userUseCases: serviceLocator(),
-    ),
-  );
-  serviceLocator.registerLazySingleton(
-    () => UserSearchCubit(
-      userUseCases: serviceLocator(),
-    ),
-  );
-  serviceLocator.registerLazySingleton(
-    () => UserCubit(
-      userUseCases: serviceLocator(),
-    ),
-  );
-
-  // chat cubits
-  serviceLocator.registerLazySingleton(
-    () => ChatCubit(
-      chatUseCases: serviceLocator(),
-    ),
-  );
-  serviceLocator.registerLazySingleton(
-    () => AddChatCubit(
-      chatUseCases: serviceLocator(),
-      chatCubit: serviceLocator(),
-    ),
-  );
-  serviceLocator.registerLazySingleton(
-    () => CurrentChatCubit(
-      chatUseCases: serviceLocator(),
-      chatCubit: serviceLocator(),
-    ),
-  );
-
-  //message cubits
-  serviceLocator.registerLazySingleton(
-    () => MessageCubit(
-      messageUseCases: serviceLocator(),
-    ),
-  );
-
-  //private events cubits
-  serviceLocator.registerLazySingleton(
-    () => PrivateEventCubit(
-      privateEventUseCases: serviceLocator(),
-    ),
-  );
-  serviceLocator.registerLazySingleton(
-    () => AddPrivateEventCubit(
-      privateEventUseCases: serviceLocator(),
-      privateEventCubit: serviceLocator(),
-    ),
-  );
-  serviceLocator.registerLazySingleton(
-    () => CurrentPrivateEventCubit(
-      privateEventUseCases: serviceLocator(),
-      privateEventCubit: serviceLocator(),
-    ),
-  );
-
-  //device cubits
-  serviceLocator.registerLazySingleton(
-    () => HomeMapPageCubit(
-      locationUseCases: serviceLocator(),
-    ),
-  );
-  serviceLocator.registerLazySingleton(
-    () => ImageCubit(
-      imagePickerUseCases: serviceLocator(),
-    ),
-  );
-
-  // usecases
-  serviceLocator.registerLazySingleton(
+  serviceLocator.registerLazySingleton<AuthUseCases>(
     () => AuthUseCases(
       authRepository: serviceLocator(),
     ),
   );
-  serviceLocator.registerLazySingleton(
+  serviceLocator.registerLazySingleton<UserUseCases>(
     () => UserUseCases(
-      userProfileRepository: serviceLocator(),
+      userRepository: serviceLocator(),
     ),
   );
-  serviceLocator.registerLazySingleton(
-    () => ChatUseCases(
-      chatRepository: serviceLocator(),
-    ),
-  );
-  serviceLocator.registerLazySingleton(
-    () => PrivateEventUseCases(
-      privateEventRepository: serviceLocator(),
-    ),
-  );
-  serviceLocator.registerLazySingleton(
-    () => MessageUseCases(
-      messageRepository: serviceLocator(),
-    ),
-  );
-  serviceLocator.registerLazySingleton(
+  serviceLocator.registerLazySingleton<NotificationUseCases>(
     () => NotificationUseCases(
       notificationRepository: serviceLocator(),
     ),
   );
-  serviceLocator.registerLazySingleton(
-    () => ImagePickerUseCases(
-      imagePickerRepository: serviceLocator(),
-    ),
-  );
-  serviceLocator.registerLazySingleton(
-    () => LocationUseCases(
-      locationRepository: serviceLocator(),
-    ),
+
+  GraphQlDatasource graphQlDatasource = GraphQlDatasourceImpl(
+    client: getGraphQlClient(),
   );
 
-  // repositories
   serviceLocator.registerLazySingleton<AuthRepository>(
     () => AuthRepositoryImpl(
       sharedPrefrencesDatasource: serviceLocator(),
-      graphQlDatasource: serviceLocator(),
-    ),
-  );
-  serviceLocator.registerLazySingleton<UserRepository>(
-    () => UserRepositoryImpl(
-      graphQlDatasource: serviceLocator(),
-    ),
-  );
-  serviceLocator.registerLazySingleton<ChatRepository>(
-    () => ChatRepositoryImpl(
-      graphQlDatasource: serviceLocator(),
-    ),
-  );
-  serviceLocator.registerLazySingleton<PrivateEventRepository>(
-    () => PrivateEventRepositoryImpl(
-      graphQlDatasource: serviceLocator(),
-    ),
-  );
-  serviceLocator.registerLazySingleton<MessageRepository>(
-    () => MessageRepositoryImpl(
-      graphQlDatasource: serviceLocator(),
+      graphQlDatasource: graphQlDatasource,
     ),
   );
   serviceLocator.registerLazySingleton<NotificationRepository>(
@@ -208,55 +110,182 @@ Future<void> init({
       notificationDatasource: serviceLocator(),
     ),
   );
-  serviceLocator.registerLazySingleton<ImagePickerRepository>(
-    () => ImagePickerRepositoryImpl(
+  serviceLocator.registerLazySingleton<UserRepository>(
+    () => UserRepositoryImpl(
+      graphQlDatasource: graphQlDatasource,
+    ),
+  );
+  serviceLocator.registerLazySingleton<NotificationDatasource>(
+    () => NotificationDatasourceImpl(),
+  );
+
+  serviceLocator.registerFactory<SharedPreferencesDatasource>(
+    () => SharedPreferencesDatasourceImpl(sharedPreferences: serviceLocator()),
+  );
+  final sharedPrefs = await SharedPreferences.getInstance();
+  serviceLocator.registerFactory(() => sharedPrefs);
+
+  /*serviceLocator.registerFactoryParam<ProfilePageCubit, GraphQLClient, void>(
+    (param1, _) => ProfilePageCubit(
+      userCubit: serviceLocator(param1: param1),
+      userUseCases: serviceLocator(param1: param1),
+    ),
+  );
+  serviceLocator.registerFactoryParam<UserSearchCubit, GraphQLClient, void>(
+    (param1, _) => UserSearchCubit(
+      userUseCases: serviceLocator(param1: param1),
+    ),
+  );
+  serviceLocator.registerFactoryParam<UserCubit, GraphQLClient, void>(
+    (param1, _) => UserCubit(
+      userUseCases: serviceLocator(param1: param1),
+    ),
+  );
+
+  // chat cubits
+  serviceLocator.registerFactoryParam<ChatCubit, GraphQLClient, void>(
+    (param1, _) => ChatCubit(
+      chatUseCases: serviceLocator(param1: param1),
+    ),
+  );
+  serviceLocator.registerFactoryParam<AddChatCubit, GraphQLClient, void>(
+    (param1, _) => AddChatCubit(
+      chatUseCases: serviceLocator(param1: param1),
+      chatCubit: serviceLocator(param1: param1),
+    ),
+  );
+  serviceLocator.registerFactoryParam<CurrentChatCubit, GraphQLClient, void>(
+    (param1, _) => CurrentChatCubit(
+      chatUseCases: serviceLocator(param1: param1),
+      chatCubit: serviceLocator(param1: param1),
+    ),
+  );
+
+  //message cubits
+  serviceLocator.registerFactoryParam<MessageCubit, GraphQLClient, void>(
+    (param1, _) => MessageCubit(
+      messageUseCases: serviceLocator(param1: param1),
+    ),
+  );
+  serviceLocator.registerFactoryParam<AddMessageCubit, GraphQLClient, void>(
+    (param1, _) => AddMessageCubit(
+      messageCubit: serviceLocator(param1: param1),
+      messageUseCases: serviceLocator(param1: param1),
+    ),
+  );
+
+  //private events cubits
+  serviceLocator.registerFactoryParam<PrivateEventCubit, GraphQLClient, void>(
+    (param1, _) => PrivateEventCubit(
+      privateEventUseCases: serviceLocator(param1: param1),
+    ),
+  );
+  serviceLocator
+      .registerFactoryParam<AddPrivateEventCubit, GraphQLClient, void>(
+    (param1, _) => AddPrivateEventCubit(
+      privateEventUseCases: serviceLocator(param1: param1),
+      privateEventCubit: serviceLocator(param1: param1),
+    ),
+  );
+  serviceLocator
+      .registerFactoryParam<CurrentPrivateEventCubit, GraphQLClient, void>(
+    (param1, _) => CurrentPrivateEventCubit(
+      privateEventUseCases: serviceLocator(param1: param1),
+      privateEventCubit: serviceLocator(param1: param1),
+    ),
+  );
+
+  //device cubits
+  serviceLocator.registerFactoryParam<HomeMapPageCubit, GraphQLClient, void>(
+    (param1, _) => HomeMapPageCubit(
+      locationUseCases: serviceLocator(param1: param1),
+    ),
+  );
+  serviceLocator
+      .registerFactoryParam<HomeProfilePageCubit, GraphQLClient, void>(
+    (param1, _) => HomeProfilePageCubit(
+      userUseCases: serviceLocator(param1: param1),
+    ),
+  );
+  serviceLocator.registerFactoryParam<ImageCubit, GraphQLClient, void>(
+    (param1, _) => ImageCubit(
+      imagePickerUseCases: serviceLocator(param1: param1),
+    ),
+  );
+
+  // usecases
+  serviceLocator.registerFactoryParam<ChatUseCases, GraphQLClient, void>(
+    (param1, _) => ChatUseCases(
+      chatRepository: serviceLocator(param1: param1),
+    ),
+  );
+  serviceLocator
+      .registerFactoryParam<PrivateEventUseCases, GraphQLClient, void>(
+    (param1, _) => PrivateEventUseCases(
+      privateEventRepository: serviceLocator(param1: param1),
+    ),
+  );
+  serviceLocator.registerFactoryParam<MessageUseCases, GraphQLClient, void>(
+    (param1, _) => MessageUseCases(
+      messageRepository: serviceLocator(param1: param1),
+    ),
+  );
+  serviceLocator.registerFactoryParam(
+    (param1, _) => ImagePickerUseCases(
+      imagePickerRepository: serviceLocator(param1: param1),
+    ),
+  );
+  serviceLocator.registerFactoryParam(
+    (param1, _) => LocationUseCases(
+      locationRepository: serviceLocator(param1: param1),
+    ),
+  );
+
+  // repositories
+  serviceLocator.registerFactoryParam<UserRepository, GraphQLClient, void>(
+    (param1, _) => UserRepositoryImpl(
+      graphQlDatasource: serviceLocator(param1: param1),
+    ),
+  );
+  serviceLocator.registerFactoryParam<ChatRepository, GraphQLClient, void>(
+    (param1, _) => ChatRepositoryImpl(
+      graphQlDatasource: serviceLocator(param1: param1),
+    ),
+  );
+  serviceLocator
+      .registerFactoryParam<PrivateEventRepository, GraphQLClient, void>(
+    (param1, _) => PrivateEventRepositoryImpl(
+      graphQlDatasource: serviceLocator(param1: param1),
+    ),
+  );
+  serviceLocator.registerFactoryParam<MessageRepository, GraphQLClient, void>(
+    (param1, _) => MessageRepositoryImpl(
+      graphQlDatasource: serviceLocator(param1: param1),
+    ),
+  );
+  serviceLocator
+      .registerFactoryParam<ImagePickerRepository, GraphQLClient, void>(
+    (param1, _) => ImagePickerRepositoryImpl(
       imagePickerDatasource: serviceLocator(),
     ),
   );
-  serviceLocator.registerLazySingleton<LocationRepository>(
-    () => LocationRepositoryImpl(
+  serviceLocator.registerFactoryParam<LocationRepository, GraphQLClient, void>(
+    (param1, _) => LocationRepositoryImpl(
       locationDatasource: serviceLocator(),
     ),
   );
 
   // datasources
-  serviceLocator.registerLazySingleton<GraphQlDatasource>(
-    () => GraphQlDatasourceImpl(client: serviceLocator()),
+  serviceLocator.registerFactoryParam<GraphQlDatasource, GraphQLClient, void>(
+    (param1, _) => GraphQlDatasourceImpl(client: param1),
   );
-  serviceLocator.registerLazySingleton<SharedPreferencesDatasource>(
-    () => SharedPreferencesDatasourceImpl(sharedPreferences: serviceLocator()),
-  );
-  serviceLocator.registerLazySingleton<NotificationDatasource>(
-    () => NotificationDatasourceImpl(),
-  );
-  serviceLocator.registerLazySingleton<ImagePickerDatasource>(
+  serviceLocator.registerFactory<ImagePickerDatasource>(
     () => ImagePickerDatasourceImpl(),
   );
-  serviceLocator.registerLazySingleton<LocationDatasource>(
+  serviceLocator.registerFactory<LocationDatasource>(
     () => LocationDatasourceImpl(),
   );
 
   //extern
-  final sharedPrefs = await SharedPreferences.getInstance();
-  serviceLocator.registerLazySingleton(() => sharedPrefs);
-
-  serviceLocator.registerLazySingleton(() {
-    Link link = HttpLink(
-      dotenv.get("API_BASE_URL"),
-      defaultHeaders: {
-        "Apollo-Require-Preflight": "true",
-        "Authorization": "Bearer $token"
-      },
-    );
-
-    return GraphQLClient(
-      link: link,
-      cache: GraphQLCache(),
-      defaultPolicies: DefaultPolicies(
-        query: Policies(fetch: FetchPolicy.noCache),
-        mutate: Policies(fetch: FetchPolicy.noCache),
-        subscribe: Policies(fetch: FetchPolicy.noCache),
-      ),
-    );
-  });
+  */
 }

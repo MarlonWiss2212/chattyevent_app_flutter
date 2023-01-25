@@ -132,11 +132,6 @@ class ChatInfoPageDetails extends StatelessWidget {
                 userIdToDelete: currentUserId,
               );
             },
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(
-                Radius.circular(5),
-              ),
-            ),
           )
         ],
       ),

@@ -17,19 +17,7 @@ class UserCubit extends Cubit<UserState> {
     emit(UserInitial());
   }
 
-  UserEntity? getUserById({required String userId}) {
-    if (state is UserStateLoaded) {
-      final state = this.state as UserStateLoaded;
-      for (final user in state.users) {
-        if (user.id == userId) {
-          return user;
-        }
-      }
-    }
-    return null;
-  }
-
-  void editUserIfExistOrAdd({required UserEntity user}) {
+  UserEntity editUserIfExistOrAdd({required UserEntity user}) {
     if (state is UserStateLoaded) {
       final state = this.state as UserStateLoaded;
 
@@ -60,6 +48,7 @@ class UserCubit extends Cubit<UserState> {
         emit(
           UserStateLoaded(users: newUsers),
         );
+        return newUsers[foundIndex];
       } else {
         emit(
           UserStateLoaded(users: List.from(state.users)..add(user)),
@@ -72,6 +61,7 @@ class UserCubit extends Cubit<UserState> {
         ),
       );
     }
+    return user;
   }
 
   Future getUsersViaApi({

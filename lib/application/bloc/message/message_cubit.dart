@@ -33,43 +33,6 @@ class MessageCubit extends Cubit<MessageState> {
     }
   }
 
-  Future createMessage({required CreateMessageDto createMessageDto}) async {
-    final Either<Failure, MessageEntity> messageOrFailure =
-        await messageUseCases.createMessageViaApi(
-      createMessageDto: createMessageDto,
-    );
-
-    messageOrFailure.fold(
-      (error) {
-        if (state is MessageStateLoaded) {
-          final state = this.state as MessageStateLoaded;
-          emit(MessageStateLoaded(
-            messages: state.messages,
-            errorMessage: mapFailureToMessage(error),
-          ));
-        } else {
-          emit(MessageStateError(message: mapFailureToMessage(error)));
-        }
-      },
-      (message) {
-        if (state is MessageStateLoaded) {
-          final state = this.state as MessageStateLoaded;
-          emit(MessageStateLoaded(
-            messages: List.from(state.messages)..add(message),
-            createdMessageId: message.id,
-          ));
-        } else {
-          emit(
-            MessageStateLoaded(
-              messages: [message],
-              createdMessageId: message.id,
-            ),
-          );
-        }
-      },
-    );
-  }
-
   Future getMessages({required GetMessagesFilter getMessagesFilter}) async {
     if (state is MessageInitial) {
       emit(MessageStateLoading());
@@ -95,7 +58,6 @@ class MessageCubit extends Cubit<MessageState> {
       (messages) {
         if (state is MessageStateLoaded) {
           final state = this.state as MessageStateLoaded;
-
           List<MessageEntity> messagesToEmit = messages;
 
           for (final stateMessage in state.messages) {

@@ -69,7 +69,6 @@ class AppRouter extends _i20.RootStackRouter {
         child: _i3.ProfilePage(
           key: args.key,
           userId: args.userId,
-          loadUser: args.loadUser,
         ),
       );
     },

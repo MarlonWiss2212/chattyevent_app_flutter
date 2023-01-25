@@ -18,7 +18,7 @@ class ConnectedGroupchatTilePrivateEvent extends StatelessWidget {
     return BlocBuilder<ChatCubit, ChatState>(builder: (context, state) {
       GroupchatEntity? foundGroupchat;
 
-      if (state is ChatStateLoaded && privateEvent.connectedGroupchat != null) {
+      if (state is ChatLoaded && privateEvent.connectedGroupchat != null) {
         for (final chat in state.chats) {
           if (chat.id == privateEvent.connectedGroupchat) {
             foundGroupchat = chat;
@@ -38,11 +38,6 @@ class ConnectedGroupchatTilePrivateEvent extends StatelessWidget {
               foundGroupchat == null || foundGroupchat.profileImageLink == null
                   ? Theme.of(context).colorScheme.secondaryContainer
                   : null,
-        ),
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(5),
-          ),
         ),
         title: foundGroupchat != null && foundGroupchat.title != null
             ? Hero(

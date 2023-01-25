@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/add_private_event_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
 import 'package:social_media_app_flutter/domain/dto/create_private_event_dto.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
@@ -125,6 +126,10 @@ class _NewPrivateEventPageState extends State<NewPrivateEventPage> {
                   BlocListener<AddPrivateEventCubit, AddPrivateEventState>(
                     listener: (context, state) {
                       if (state is AddPrivateEventLoaded) {
+                        BlocProvider.of<CurrentPrivateEventCubit>(context)
+                            .setCurrentPrivateEvent(
+                          privateEvent: state.addedPrivateEvent,
+                        );
                         AutoRouter.of(context).replace(
                           PrivateEventPageRoute(
                             privateEventId: state.addedPrivateEvent.id,

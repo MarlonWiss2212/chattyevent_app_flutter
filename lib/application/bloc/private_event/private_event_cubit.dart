@@ -30,7 +30,7 @@ class PrivateEventCubit extends Cubit<PrivateEventState> {
     }
   }
 
-  void editPrivateEventIfExistOrAdd({
+  PrivateEventEntity editPrivateEventIfExistOrAdd({
     required PrivateEventEntity privateEvent,
   }) {
     if (state is PrivateEventStateLoaded) {
@@ -67,6 +67,7 @@ class PrivateEventCubit extends Cubit<PrivateEventState> {
         emit(
           PrivateEventStateLoaded(privateEvents: newPrivateEvents),
         );
+        return newPrivateEvents[foundIndex];
       } else {
         emit(
           PrivateEventStateLoaded(
@@ -81,18 +82,7 @@ class PrivateEventCubit extends Cubit<PrivateEventState> {
         ),
       );
     }
-  }
-
-  PrivateEventEntity? getPrivateEventById({required String privateEventId}) {
-    if (state is PrivateEventStateLoaded) {
-      final state = this.state as PrivateEventStateLoaded;
-      for (final chat in state.privateEvents) {
-        if (chat.id == privateEventId) {
-          return chat;
-        }
-      }
-    }
-    return null;
+    return privateEvent;
   }
 
   Future getPrivateEventsViaApi() async {

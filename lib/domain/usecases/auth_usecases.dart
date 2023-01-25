@@ -10,7 +10,9 @@ class AuthUseCases {
   AuthUseCases({required this.authRepository});
 
   Future<Either<Failure, UserAndTokenEntity>> login(
-      String email, String password) async {
+    String email,
+    String password,
+  ) async {
     final Either<Failure, UserAndTokenEntity> authOrFailure =
         await authRepository.login(email, password);
 
@@ -18,18 +20,14 @@ class AuthUseCases {
       (error) => null,
       (userAndToken) async {
         await authRepository.saveAuthTokenInStorage(userAndToken.accessToken);
-
-        await di.serviceLocator.reset();
-        await di.init(
-          token: userAndToken.accessToken,
-        );
       },
     );
     return authOrFailure;
   }
 
   Future<Either<Failure, UserAndTokenEntity>> register(
-      CreateUserDto createUserDto) async {
+    CreateUserDto createUserDto,
+  ) async {
     final Either<Failure, UserAndTokenEntity> authOrFailure =
         await authRepository.register(createUserDto);
 
@@ -37,10 +35,6 @@ class AuthUseCases {
       (error) => null,
       (userAndToken) async {
         await authRepository.saveAuthTokenInStorage(userAndToken.accessToken);
-        await di.serviceLocator.reset();
-        await di.init(
-          token: userAndToken.accessToken,
-        );
       },
     );
     return authOrFailure;
@@ -49,16 +43,6 @@ class AuthUseCases {
   Future<Either<Failure, String>> getAuthTokenFromStorage() async {
     final Either<Failure, String> authOrFailure =
         await authRepository.getAuthTokenFromStorage();
-
-    await authOrFailure.fold(
-      (error) => null,
-      (token) async {
-        await di.serviceLocator.reset();
-        await di.init(
-          token: token,
-        );
-      },
-    );
     return authOrFailure;
   }
 

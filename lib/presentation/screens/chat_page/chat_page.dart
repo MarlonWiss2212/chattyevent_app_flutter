@@ -27,23 +27,18 @@ class ChatPage extends StatelessWidget {
 
     return BlocBuilder<CurrentChatCubit, CurrentChatState>(
       builder: (context, state) {
-        GroupchatEntity? foundGroupchat =
-            BlocProvider.of<ChatCubit>(context).getGroupchatById(
-          groupchatId: groupchatId,
-        );
-
         return PlatformScaffold(
           appBar: PlatformAppBar(
             leading: const AutoLeadingButton(),
             title: Row(
               children: [
                 CircleAvatar(
-                  backgroundImage: foundGroupchat != null &&
-                          foundGroupchat.profileImageLink != null
-                      ? NetworkImage(foundGroupchat.profileImageLink!)
+                  backgroundImage: state is CurrentChatStateWithChat &&
+                          state.currentChat.profileImageLink != null
+                      ? NetworkImage(state.currentChat.profileImageLink!)
                       : null,
-                  backgroundColor: foundGroupchat != null &&
-                          foundGroupchat.profileImageLink != null
+                  backgroundColor: state is CurrentChatStateWithChat &&
+                          state.currentChat.profileImageLink != null
                       ? null
                       : Theme.of(context).colorScheme.secondaryContainer,
                 ),
@@ -51,9 +46,11 @@ class ChatPage extends StatelessWidget {
                 Hero(
                   tag: "$groupchatId title",
                   child: Text(
-                    foundGroupchat != null && foundGroupchat.title != null
-                        ? foundGroupchat.title!
+                    state is CurrentChatStateWithChat &&
+                            state.currentChat.title != null
+                        ? state.currentChat.title!
                         : "Kein Titel",
+                    style: Theme.of(context).textTheme.titleLarge,
                   ),
                 ),
               ],
@@ -69,7 +66,7 @@ class ChatPage extends StatelessWidget {
           ),
           body: state is CurrentChatLoading
               ? Center(child: PlatformCircularProgressIndicator())
-              : foundGroupchat != null && state is CurrentChatLoaded
+              : state is CurrentChatStateWithChat
                   ? Column(
                       children: [
                         if (state is CurrentChatEditing) ...{

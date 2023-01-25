@@ -10,7 +10,6 @@ class ChatList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      padding: const EdgeInsets.all(8),
       itemBuilder: (context, index) {
         return ListTile(
           leading: CircleAvatar(
@@ -20,11 +19,6 @@ class ChatList extends StatelessWidget {
             backgroundColor: chats[index].profileImageLink == null
                 ? Theme.of(context).colorScheme.secondaryContainer
                 : null,
-          ),
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(
-              Radius.circular(5),
-            ),
           ),
           title: Hero(
             tag: "${chats[index].id} title",

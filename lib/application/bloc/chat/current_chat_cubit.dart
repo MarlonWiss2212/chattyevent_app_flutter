@@ -26,6 +26,7 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
     required GetOneGroupchatFilter getOneGroupchatFilter,
   }) async {
     emit(CurrentChatLoading());
+
     final Either<Failure, GroupchatEntity> groupchatOrFailure =
         await chatUseCases.getGroupchatViaApi(
       getOneGroupchatFilter: getOneGroupchatFilter,
@@ -39,24 +40,29 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
         );
       },
       (groupchat) {
-        chatCubit.editChatIfExistOrAdd(groupchat: groupchat);
-        emit(CurrentChatLoaded());
+        final mergedChat = chatCubit.editChatIfExistOrAdd(groupchat: groupchat);
+        emit(CurrentChatLoaded(currentChat: mergedChat));
       },
     );
+  }
+
+  void setCurrentChat({required GroupchatEntity groupchat}) {
+    emit(CurrentChatLoading());
+    emit(CurrentChatLoaded(currentChat: groupchat));
   }
 
   Future addUserToChat({
     required String groupchatId,
     required String userIdToAdd,
   }) async {
-    emit(CurrentChatEditing());
+    final state = this.state as CurrentChatStateWithChat;
+    emit(CurrentChatEditing(currentChat: state.currentChat));
     final Either<Failure, GroupchatEntity> groupchatOrFailure =
         await chatUseCases.addUserToGroupchatViaApi(
       groupchatId: groupchatId,
       userIdToAdd: userIdToAdd,
     );
 
-    // this has only the users and left users in it
     groupchatOrFailure.fold(
       (error) {
         emit(CurrentChatError(
@@ -65,8 +71,8 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
         ));
       },
       (groupchat) {
-        chatCubit.editChatIfExistOrAdd(groupchat: groupchat);
-        emit(CurrentChatLoaded());
+        final mergedChat = chatCubit.editChatIfExistOrAdd(groupchat: groupchat);
+        emit(CurrentChatLoaded(currentChat: mergedChat));
       },
     );
   }
@@ -75,7 +81,9 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
     required String groupchatId,
     required String userIdToDelete,
   }) async {
-    emit(CurrentChatEditing());
+    final state = this.state as CurrentChatStateWithChat;
+    emit(CurrentChatEditing(currentChat: state.currentChat));
+
     final Either<Failure, GroupchatEntity> groupchatOrFailure =
         await chatUseCases.deleteUserFromGroupchatViaApi(
       groupchatId: groupchatId,
@@ -90,8 +98,8 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
         ));
       },
       (groupchat) {
-        chatCubit.editChatIfExistOrAdd(groupchat: groupchat);
-        emit(CurrentChatLoaded());
+        final margedChat = chatCubit.editChatIfExistOrAdd(groupchat: groupchat);
+        emit(CurrentChatLoaded(currentChat: margedChat));
       },
     );
   }

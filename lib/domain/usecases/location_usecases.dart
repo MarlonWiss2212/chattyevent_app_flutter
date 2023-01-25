@@ -22,17 +22,17 @@ class LocationUseCases {
 
   Future<Either<LocationFailure, Position>>
       getCurrentLocationWithPermissions() async {
-    final permissionStatus = await getLocationPermissionStatus();
+    PermissionStatus permissionStatus = await getLocationPermissionStatus();
 
     if (await locationServiceIsEnabled() == false) {
       return Left(ServiceLocationFailure());
     }
 
-    if (permissionStatus.isDenied || permissionStatus.isLimited) {
-      await requestLocationPermission();
+    if (permissionStatus.isDenied) {
+      permissionStatus = await requestLocationPermission();
     }
 
-    if (permissionStatus.isPermanentlyDenied || permissionStatus.isRestricted) {
+    if (permissionStatus.isPermanentlyDenied || permissionStatus.isDenied) {
       return Left(NoLocationPermissionFailure());
     }
 

@@ -4,7 +4,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event_entity.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
-import 'package:social_media_app_flutter/presentation/widgets/event_horizontal_list_item.dart';
+import 'package:social_media_app_flutter/presentation/widgets/event_list/event_horizontal_list_item.dart';
 
 class EventHorizontalList extends StatelessWidget {
   final List<PrivateEventEntity> privateEvents;
@@ -32,7 +32,7 @@ class EventHorizontalList extends StatelessWidget {
           return FractionallySizedBox(
             widthFactor: .95,
             alignment: Alignment.centerLeft,
-            child: EventGridListItem(
+            child: EventHorizontalListItem(
               height: height,
               width: width, // will be ignored because of page view
               privateEvent: privateEvents[index],

@@ -4,9 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/private_event/private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
-import 'package:social_media_app_flutter/domain/entities/private_event_entity.dart';
 import 'package:social_media_app_flutter/domain/filter/get_one_groupchat_filter.dart';
 import 'package:social_media_app_flutter/domain/filter/get_one_private_event_filter.dart';
 import 'package:social_media_app_flutter/presentation/widgets/dialog/buttons/ok_button.dart';
@@ -46,17 +44,12 @@ class PrivateEventPage extends StatelessWidget {
         }
       },
       builder: (context, state) {
-        PrivateEventEntity? foundPrivateEvent =
-            BlocProvider.of<PrivateEventCubit>(context).getPrivateEventById(
-          privateEventId: privateEventId,
-        );
-
-        if (foundPrivateEvent != null &&
-            foundPrivateEvent.connectedGroupchat != null &&
+        if (state is CurrentPrivateEventStateWithPrivateEvent &&
+            state.privateEvent.connectedGroupchat != null &&
             dataLoaded == false) {
           BlocProvider.of<CurrentChatCubit>(context).getOneChatViaApi(
             getOneGroupchatFilter: GetOneGroupchatFilter(
-              id: foundPrivateEvent.connectedGroupchat!,
+              id: state.privateEvent.connectedGroupchat!,
             ),
           );
           BlocProvider.of<UserCubit>(context).getUsersViaApi();
@@ -69,22 +62,31 @@ class PrivateEventPage extends StatelessWidget {
             title: Hero(
               tag: "$privateEventId title",
               child: Text(
-                foundPrivateEvent != null && foundPrivateEvent.title != null
-                    ? foundPrivateEvent.title!
+                state is CurrentPrivateEventStateWithPrivateEvent &&
+                        state.privateEvent.title != null
+                    ? state.privateEvent.title!
                     : "Kein Titel",
+                style: Theme.of(context).textTheme.titleLarge,
               ),
             ),
           ),
           body: state is CurrentPrivateEventLoading
               ? Center(child: PlatformCircularProgressIndicator())
-              : Column(
-                  children: [
-                    if (state is CurrentPrivateEventEditing) ...{
-                      const LinearProgressIndicator()
-                    },
-                    const Expanded(child: AutoRouter()),
-                  ],
-                ),
+              : state is CurrentPrivateEventStateWithPrivateEvent
+                  ? Column(
+                      children: [
+                        if (state is CurrentPrivateEventEditing) ...{
+                          const LinearProgressIndicator()
+                        },
+                        const Expanded(child: AutoRouter()),
+                      ],
+                    )
+                  : Center(
+                      child: Text(
+                        "Fehler beim Laden des Events mit der Id $privateEventId",
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
         );
       },
     );

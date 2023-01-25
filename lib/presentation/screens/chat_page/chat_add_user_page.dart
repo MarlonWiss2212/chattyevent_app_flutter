@@ -2,10 +2,8 @@ import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user_search/user_search_cubit.dart';
-import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:social_media_app_flutter/presentation/widgets/chat_page/chat_add_user_page/add_user_groupchat_list_with_searchbar.dart';
 
 class ChatAddUserPage extends StatelessWidget {
@@ -21,18 +19,13 @@ class ChatAddUserPage extends StatelessWidget {
 
     return BlocBuilder<CurrentChatCubit, CurrentChatState>(
       builder: (context, state) {
-        GroupchatEntity? foundGroupchat =
-            BlocProvider.of<ChatCubit>(context).getGroupchatById(
-          groupchatId: groupchatId,
-        );
-
         return PlatformScaffold(
           appBar: PlatformAppBar(
             title: const Text("User zum Chat hinzufügen"),
           ),
           body: state is CurrentChatLoading
               ? Center(child: PlatformCircularProgressIndicator())
-              : foundGroupchat != null && state is CurrentChatLoaded
+              : state is CurrentChatStateWithChat
                   ? Column(
                       children: [
                         if (state is CurrentChatEditing) ...{
@@ -40,7 +33,7 @@ class ChatAddUserPage extends StatelessWidget {
                         },
                         Expanded(
                           child: AddUserGroupchatListWithSearchbar(
-                            groupchatUsers: foundGroupchat.users ?? [],
+                            groupchatUsers: state.currentChat.users ?? [],
                             groupchatId: groupchatId,
                           ),
                         ),

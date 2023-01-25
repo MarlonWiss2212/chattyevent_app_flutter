@@ -19,15 +19,15 @@ class HomeChatPage extends StatelessWidget {
       ),
       body: BlocBuilder<ChatCubit, ChatState>(
         builder: (context, state) {
-          if (state is ChatStateLoaded) {
+          if (state is ChatLoaded) {
             return ChatList(chats: state.chats);
-          } else if (state is ChatStateLoading) {
+          } else if (state is ChatLoading) {
             return const Center(child: CircularProgressIndicator());
           } else {
             return Center(
               child: TextButton(
                 child: Text(
-                  state is ChatStateError ? state.message : "Daten Laden",
+                  state is ChatError ? state.message : "Daten Laden",
                 ),
                 onPressed: () =>
                     BlocProvider.of<ChatCubit>(context).getChatsViaApi(),

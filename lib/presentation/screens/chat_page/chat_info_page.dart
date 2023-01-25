@@ -19,37 +19,37 @@ class ChatInfoPage extends StatelessWidget {
 
     return BlocBuilder<CurrentChatCubit, CurrentChatState>(
       builder: (context, state) {
-        GroupchatEntity? foundGroupchat =
-            BlocProvider.of<ChatCubit>(context).getGroupchatById(
-          groupchatId: groupchatId,
-        );
         return PlatformScaffold(
           appBar: PlatformAppBar(
             title: Hero(
               tag: "$groupchatId title",
               child: Text(
-                foundGroupchat != null && foundGroupchat.title != null
-                    ? foundGroupchat.title!
+                state is CurrentChatStateWithChat &&
+                        state.currentChat.title != null
+                    ? state.currentChat.title!
                     : "Kein Titel",
+                style: Theme.of(context).textTheme.titleLarge,
               ),
             ),
           ),
           body: state is CurrentChatLoading
               ? Center(child: PlatformCircularProgressIndicator())
-              : foundGroupchat != null && state is CurrentChatLoaded
+              : state is CurrentChatStateWithChat
                   ? Column(
                       children: [
                         if (state is CurrentChatEditing) ...{
-                          const LinearProgressIndicator()
+                          const LinearProgressIndicator(),
                         },
                         Expanded(
-                          child: ChatInfoPageDetails(groupchat: foundGroupchat),
+                          child: ChatInfoPageDetails(
+                            groupchat: state.currentChat,
+                          ),
                         ),
                       ],
                     )
                   : const Center(
                       child: Text(
-                        "Fehler beim Laden des Chats mit der Id ",
+                        "Fehler beim Laden des Chats mit der Id",
                         textAlign: TextAlign.center,
                       ),
                     ),

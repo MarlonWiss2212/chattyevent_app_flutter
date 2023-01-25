@@ -18,31 +18,31 @@ class SelectGroupchatHorizontalListNewPrivateEvent extends StatelessWidget {
   Widget build(BuildContext context) {
     final currentUserId = Jwt.parseJwt(
         (BlocProvider.of<AuthCubit>(context).state as AuthLoaded).token)["sub"];
-    return BlocBuilder<ChatCubit, ChatState>(
-      builder: (context, state) {
-        if (state is ChatStateLoaded) {
-          List<GroupchatEntity> filteredChats = [];
+    return SizedBox(
+      height: 100,
+      child: BlocBuilder<ChatCubit, ChatState>(
+        builder: (context, state) {
+          if (state is ChatLoaded) {
+            List<GroupchatEntity> filteredChats = [];
 
-          for (final chat in state.chats) {
-            bool currentUserIsAdmin = false;
-            if (chat.users != null) {
-              for (final chatUser in chat.users!) {
-                if (chatUser.userId == currentUserId) {
-                  chatUser.admin != null && chatUser.admin!
-                      ? currentUserIsAdmin = true
-                      : null;
-                  break;
+            for (final chat in state.chats) {
+              bool currentUserIsAdmin = false;
+              if (chat.users != null) {
+                for (final chatUser in chat.users!) {
+                  if (chatUser.userId == currentUserId) {
+                    chatUser.admin != null && chatUser.admin!
+                        ? currentUserIsAdmin = true
+                        : null;
+                    break;
+                  }
+                }
+                if (currentUserIsAdmin) {
+                  filteredChats.add(chat);
                 }
               }
-              if (currentUserIsAdmin) {
-                filteredChats.add(chat);
-              }
             }
-          }
 
-          return SizedBox(
-            height: 100,
-            child: ListView.separated(
+            return ListView.separated(
               scrollDirection: Axis.horizontal,
               itemBuilder: (context, index) {
                 return SizedBox(
@@ -57,30 +57,24 @@ class SelectGroupchatHorizontalListNewPrivateEvent extends StatelessWidget {
               },
               itemCount: filteredChats.length,
               separatorBuilder: (context, index) => const SizedBox(width: 8),
-            ),
-          );
-        } else if (state is ChatStateLoading) {
-          return SizedBox(
-            height: 100,
-            child: Center(
+            );
+          } else if (state is ChatLoading) {
+            return Center(
               child: PlatformCircularProgressIndicator(),
-            ),
-          );
-        } else {
-          return SizedBox(
-            height: 100,
-            child: Center(
+            );
+          } else {
+            return Center(
               child: PlatformTextButton(
                 child: Text(
-                  state is ChatStateError ? state.message : "Chats Laden",
+                  state is ChatError ? state.message : "Chats Laden",
                 ),
                 onPressed: () =>
                     BlocProvider.of<ChatCubit>(context).getChatsViaApi(),
               ),
-            ),
-          );
-        }
-      },
+            );
+          }
+        },
+      ),
     );
   }
 }
