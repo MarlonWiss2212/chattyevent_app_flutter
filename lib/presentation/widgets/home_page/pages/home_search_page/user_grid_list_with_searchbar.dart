@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:social_media_app_flutter/application/bloc/user_search/user_search_cubit.dart';
@@ -16,13 +17,13 @@ class UserGridListWithSearchbar extends StatelessWidget {
       padding: const EdgeInsets.all(8),
       child: Column(
         children: [
-          PlatformTextField(
+          PlatformTextFormField(
             onChanged: (text) {
               BlocProvider.of<UserSearchCubit>(context).getUsersViaApi(
                 getUsersFilter: GetUsersFilter(search: text),
               );
             },
-            hintText: "User Suche: ",
+            hintText: "User Suche:",
           ),
           const SizedBox(height: 8),
           BlocBuilder<UserSearchCubit, UserSearchState>(

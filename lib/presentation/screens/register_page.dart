@@ -61,17 +61,17 @@ class _RegisterPageState extends State<RegisterPage> {
                       image: image,
                     ),
                     const SizedBox(height: 20),
-                    PlatformTextField(
+                    PlatformTextFormField(
                       controller: usernameFieldController,
                       hintText: 'Benutzername',
                     ),
                     const SizedBox(height: 8),
-                    PlatformTextField(
+                    PlatformTextFormField(
                       controller: firstnameFieldController,
                       hintText: 'Vorname',
                     ),
                     const SizedBox(height: 8),
-                    PlatformTextField(
+                    PlatformTextFormField(
                       controller: lastnameFieldController,
                       hintText: 'Nachname',
                     ),
@@ -97,12 +97,12 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                     ),
                     const SizedBox(height: 8),
-                    PlatformTextField(
+                    PlatformTextFormField(
                       controller: emailFieldController,
                       hintText: 'E-Mail',
                     ),
                     const SizedBox(height: 8),
-                    PlatformTextField(
+                    PlatformTextFormField(
                       controller: passwordFieldController,
                       obscureText: true,
                       hintText: 'Passwort',

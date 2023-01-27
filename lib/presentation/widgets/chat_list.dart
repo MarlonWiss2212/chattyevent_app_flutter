@@ -10,6 +10,7 @@ class ChatList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+      shrinkWrap: true,
       itemBuilder: (context, index) {
         return ListTile(
           leading: CircleAvatar(

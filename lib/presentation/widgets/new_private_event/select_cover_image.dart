@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:social_media_app_flutter/presentation/widgets/dialog/getImageModal.dart';
+import 'package:social_media_app_flutter/presentation/widgets/bottom_sheet/image_picker_list.dart';
 
 class SelectCoverImage extends StatelessWidget {
   final void Function(File newImage) imageChanged;
@@ -20,14 +20,12 @@ class SelectCoverImage extends StatelessWidget {
         Radius.circular(8.0),
       ),
       onTap: () async {
-        await showGeneralDialog(
+        await showModalBottomSheet(
           context: context,
-          pageBuilder: (
+          builder: (
             context,
-            animation,
-            secondaryAnimation,
           ) {
-            return GetImageModal(
+            return ImagePickerList(
               ratioX: 4,
               ratioY: 3,
               imageChanged: (newImage) {

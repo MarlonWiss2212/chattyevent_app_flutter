@@ -4,6 +4,7 @@ import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/add_chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/location/location_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user_search/user_search_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/profile_page_cubit.dart';
@@ -12,10 +13,8 @@ import 'package:social_media_app_flutter/application/bloc/message/add_message_cu
 import 'package:social_media_app_flutter/application/bloc/private_event/private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/add_private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/home_page/home_map_page/home_map_page_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/home_page/home_profile_page/home_profile_page_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/image/image_cubit.dart';
-import 'package:social_media_app_flutter/domain/repositories/device/location_repository.dart';
 import 'package:social_media_app_flutter/domain/usecases/chat_usecases.dart';
 import 'package:social_media_app_flutter/domain/usecases/image_picker_usecases.dart';
 import 'package:social_media_app_flutter/domain/usecases/location_usecases.dart';
@@ -120,7 +119,7 @@ class BlocInit extends StatelessWidget {
         );
         final userCubit = UserCubit(userUseCases: userUseCases);
         final userSearchCubit = UserSearchCubit(userUseCases: userUseCases);
-        final homeMapPageCubit = HomeMapPageCubit(
+        final locationCubit = LocationCubit(
           locationUseCases: locationUseCases,
         );
         final homeProfilePageCubit = HomeProfilePageCubit(
@@ -147,11 +146,14 @@ class BlocInit extends StatelessWidget {
             BlocProvider.value(value: addChatCubit),
             BlocProvider.value(value: currentChatCubit),
             BlocProvider.value(value: homeProfilePageCubit),
-            BlocProvider.value(value: homeMapPageCubit),
+            BlocProvider.value(value: locationCubit),
             BlocProvider.value(value: imageCubit),
             BlocProvider.value(value: profilePageCubit),
           ],
-          child: App(authState: state, appRouter: appRouter),
+          child: App(
+            authState: state,
+            appRouter: appRouter,
+          ),
         );
       },
     );

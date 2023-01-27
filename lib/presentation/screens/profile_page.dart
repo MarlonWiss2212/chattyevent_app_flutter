@@ -63,33 +63,6 @@ class ProfilePage extends StatelessWidget {
                   ? state.user.username ?? "Profilseite"
                   : "Profilseite",
             ),
-            trailingActions: /* trailing == true
-                ? [
-                    IconButton(
-                      onPressed: () {
-                        BlocProvider.of<ChatCubit>(context).reset();
-                        BlocProvider.of<AddChatCubit>(context).reset();
-                        BlocProvider.of<CurrentChatCubit>(context).reset();
-                        BlocProvider.of<MessageCubit>(context).reset();
-                        BlocProvider.of<PrivateEventCubit>(context).reset();
-                        BlocProvider.of<AddPrivateEventCubit>(context).reset();
-                        BlocProvider.of<CurrentPrivateEventCubit>(context)
-                            .reset();
-                        BlocProvider.of<UserCubit>(context).reset();
-                        BlocProvider.of<UserSearchCubit>(context).reset();
-                        BlocProvider.of<HomeMapPageCubit>(context).reset();
-                        BlocProvider.of<UserSearchCubit>(context).reset();
-
-                        BlocProvider.of<AuthCubit>(context).logout();
-
-                        AutoRouter.of(context).popUntilRoot();
-                        AutoRouter.of(context).replace(const LoginPageRoute());
-                      },
-                      icon: const Icon(Icons.logout),
-                    ),
-                  ]
-                : []*/
-                null,
           ),
           body: Column(
             children: [

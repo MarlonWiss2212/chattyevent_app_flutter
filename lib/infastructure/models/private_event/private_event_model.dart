@@ -1,4 +1,6 @@
-import 'package:social_media_app_flutter/domain/entities/private_event_entity.dart';
+import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
+import 'package:social_media_app_flutter/domain/entities/private_event/private_event_location_entity.dart';
+import 'package:social_media_app_flutter/infastructure/models/private_event/private_event_location_model.dart';
 
 class PrivateEventModel extends PrivateEventEntity {
   PrivateEventModel({
@@ -11,6 +13,7 @@ class PrivateEventModel extends PrivateEventEntity {
     String? connectedGroupchat,
     String? createdBy,
     DateTime? createdAt,
+    PrivateEventLocationEntity? eventLocation,
   }) : super(
           id: id,
           title: title,
@@ -21,6 +24,7 @@ class PrivateEventModel extends PrivateEventEntity {
           connectedGroupchat: connectedGroupchat,
           createdAt: createdAt,
           createdBy: createdBy,
+          eventLocation: eventLocation,
         );
 
   factory PrivateEventModel.fromJson(Map<String, dynamic> json) {
@@ -58,6 +62,9 @@ class PrivateEventModel extends PrivateEventEntity {
       connectedGroupchat: json["connectedGroupchat"],
       createdBy: json["createdBy"],
       createdAt: createdAt,
+      eventLocation: json["eventLocation"] != null
+          ? PrivateEventLocationModel.fromJson(json["eventLocation"])
+          : null,
     );
   }
 }

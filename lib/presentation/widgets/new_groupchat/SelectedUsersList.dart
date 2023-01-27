@@ -21,6 +21,7 @@ class SelectedUsersList extends StatelessWidget {
         children: [
           Expanded(
             child: ListView.separated(
+              shrinkWrap: true,
               scrollDirection: Axis.horizontal,
               itemBuilder: (context, index) {
                 return SizedBox(

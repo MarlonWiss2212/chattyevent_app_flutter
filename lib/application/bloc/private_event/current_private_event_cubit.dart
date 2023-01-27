@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:meta/meta.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/private_event_cubit.dart';
-import 'package:social_media_app_flutter/domain/entities/private_event_entity.dart';
+import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
 import 'package:social_media_app_flutter/domain/failures/failures.dart';
 import 'package:social_media_app_flutter/domain/filter/get_one_private_event_filter.dart';
 import 'package:social_media_app_flutter/domain/usecases/private_event_usecases.dart';
@@ -44,6 +44,7 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
             privateEventCubit.editPrivateEventIfExistOrAdd(
           privateEvent: privateEvent,
         );
+
         emit(CurrentPrivateEventLoaded(privateEvent: mergedPrivateEvent));
       },
     );

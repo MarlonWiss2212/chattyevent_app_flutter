@@ -11,14 +11,17 @@ import 'package:social_media_app_flutter/presentation/screens/home_page/pages/ho
 import 'package:social_media_app_flutter/presentation/screens/home_page/pages/home_profile_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/home_page/pages/home_search_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/login_page.dart';
+import 'package:social_media_app_flutter/presentation/screens/new_private_event/new_private_event_location_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/new_private_event/new_private_event_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/new_groupchat/new_groupchat_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/new_groupchat/new_groupchat_select_users_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/new_groupchat/new_groupchat_wrapper_page.dart';
+import 'package:social_media_app_flutter/presentation/screens/new_private_event/new_private_event_wrapper_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/private_event_page/pages/info_tab.dart';
 import 'package:social_media_app_flutter/presentation/screens/private_event_page/private_event_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/profile_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/register_page.dart';
+import 'package:social_media_app_flutter/presentation/screens/settings_page/settings_page.dart';
 
 @MaterialAutoRouter(
   routes: <AutoRoute>[
@@ -32,6 +35,8 @@ import 'package:social_media_app_flutter/presentation/screens/register_page.dart
       guards: [AuthGuard],
       path: '/profile-page/:id',
     ),
+
+    AutoRoute(page: SettingsPage, guards: [AuthGuard], path: "/settings"),
 
     // home page
     AutoRoute(
@@ -47,7 +52,7 @@ import 'package:social_media_app_flutter/presentation/screens/register_page.dart
           initial: true,
         ),
         AutoRoute(page: HomeEventPage, guards: [AuthGuard], path: 'events'),
-        AutoRoute(page: HomeMapPage, guards: [AuthGuard], path: 'map'),
+        AutoRoute(page: Location, guards: [AuthGuard], path: 'map'),
         AutoRoute(page: HomeSearchPage, guards: [AuthGuard], path: 'search'),
         AutoRoute(page: HomeProfilePage, guards: [AuthGuard], path: 'profile'),
         RedirectRoute(path: '*', redirectTo: 'chats')
@@ -111,9 +116,24 @@ import 'package:social_media_app_flutter/presentation/screens/register_page.dart
 
     // new private event
     AutoRoute(
-      page: NewPrivateEventPage,
+      page: NewPrivateEventWrapperPage,
       guards: [AuthGuard],
       path: '/new-private-event',
+      children: [
+        AutoRoute(
+          page: NewPrivateEventPage,
+          initial: true,
+          guards: [AuthGuard],
+          path: '',
+        ),
+        AutoRoute(
+          page: NewPrivateEventLocationPage,
+          initial: false,
+          guards: [AuthGuard],
+          path: 'location',
+        ),
+        RedirectRoute(path: '*', redirectTo: '')
+      ],
     ),
     RedirectRoute(path: '*', redirectTo: '/chats')
   ],

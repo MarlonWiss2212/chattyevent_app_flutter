@@ -31,6 +31,7 @@ class UserGridList extends StatelessWidget {
         );
       },
       itemCount: users.length,
+      shrinkWrap: true,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: max(
           (MediaQuery.of(context).size.width ~/ 150).toInt(),

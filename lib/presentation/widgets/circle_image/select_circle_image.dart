@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:social_media_app_flutter/presentation/widgets/bottom_sheet/image_picker_list.dart';
 import 'package:social_media_app_flutter/presentation/widgets/circle_image/cirlce_image.dart';
-import 'package:social_media_app_flutter/presentation/widgets/dialog/getImageModal.dart';
 
 class SelectCircleImage extends StatelessWidget {
   final void Function(File newImage) imageChanged;
@@ -14,18 +14,12 @@ class SelectCircleImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-
     return InkWell(
       onTap: () async {
-        await showGeneralDialog(
+        await showModalBottomSheet(
           context: context,
-          pageBuilder: (
-            context,
-            animation,
-            secondaryAnimation,
-          ) {
-            return GetImageModal(
+          builder: (context) {
+            return ImagePickerList(
               ratioX: 1,
               ratioY: 1,
               imageChanged: (newImage) {

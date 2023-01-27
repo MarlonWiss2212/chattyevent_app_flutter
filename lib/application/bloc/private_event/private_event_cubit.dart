@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:meta/meta.dart';
-import 'package:social_media_app_flutter/domain/entities/private_event_entity.dart';
+import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
 import 'package:social_media_app_flutter/domain/failures/failures.dart';
 import 'package:social_media_app_flutter/domain/usecases/private_event_usecases.dart';
 
@@ -54,6 +54,8 @@ class PrivateEventCubit extends Cubit<PrivateEventState> {
               newPrivateEvents[foundIndex].connectedGroupchat,
           eventDate:
               privateEvent.eventDate ?? newPrivateEvents[foundIndex].eventDate,
+          eventLocation: privateEvent.eventLocation ??
+              newPrivateEvents[foundIndex].eventLocation,
           usersThatWillBeThere: privateEvent.usersThatWillBeThere ??
               newPrivateEvents[foundIndex].usersThatWillBeThere,
           usersThatWillNotBeThere: privateEvent.usersThatWillNotBeThere ??

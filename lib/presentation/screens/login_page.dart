@@ -44,12 +44,12 @@ class _LoginPageState extends State<LoginPage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     const SizedBox(height: 8),
-                    PlatformTextField(
+                    PlatformTextFormField(
                       controller: emailFieldController,
                       hintText: 'E-Mail',
                     ),
                     const SizedBox(height: 8),
-                    PlatformTextField(
+                    PlatformTextFormField(
                       controller: passwordFieldController,
                       obscureText: true,
                       hintText: 'Passwort',

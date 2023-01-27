@@ -23,7 +23,7 @@ class AddUserGroupchatListWithSearchbar extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: Column(
         children: [
-          PlatformTextField(
+          PlatformTextFormField(
             onChanged: (text) {
               BlocProvider.of<UserSearchCubit>(context).getUsersViaApi(
                 getUsersFilter: GetUsersFilter(search: text),
@@ -54,7 +54,7 @@ class AddUserGroupchatListWithSearchbar extends StatelessWidget {
                 return Expanded(
                   child: UserGridList(
                     users: filteredUsers,
-                    button: (user) => PlatformTextButton(
+                    button: (user) => PlatformElevatedButton(
                       color: Theme.of(context).colorScheme.primaryContainer,
                       onPressed: () {
                         BlocProvider.of<CurrentChatCubit>(context)

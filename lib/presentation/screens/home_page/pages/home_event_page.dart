@@ -11,7 +11,10 @@ class HomeEventPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<PrivateEventCubit>(context).getPrivateEventsViaApi();
+    if (BlocProvider.of<PrivateEventCubit>(context).state
+        is! PrivateEventStateLoaded) {
+      BlocProvider.of<PrivateEventCubit>(context).getPrivateEventsViaApi();
+    }
 
     return PlatformScaffold(
       appBar: PlatformAppBar(
@@ -41,7 +44,7 @@ class HomeEventPage extends StatelessWidget {
       material: (context, platform) => MaterialScaffoldData(
         floatingActionButton: FloatingActionButton.extended(
           onPressed: () => AutoRouter.of(context).push(
-            const NewPrivateEventPageRoute(),
+            const NewPrivateEventWrapperPageRoute(),
           ),
           icon: const Icon(Icons.event),
           label: Text(

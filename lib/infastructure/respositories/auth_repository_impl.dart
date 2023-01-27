@@ -21,7 +21,8 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<Either<Failure, String>> getAuthTokenFromStorage() async {
     try {
-      return await sharedPrefrencesDatasource.getFromStorage("access_token");
+      return await sharedPrefrencesDatasource
+          .getStringFromStorage("access_token");
     } catch (e) {
       return Left(ServerFailure());
     }
@@ -29,7 +30,8 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<void> saveAuthTokenInStorage(String token) {
-    return sharedPrefrencesDatasource.saveToStorage("access_token", token);
+    return sharedPrefrencesDatasource.saveStringToStorage(
+        "access_token", token);
   }
 
   @override

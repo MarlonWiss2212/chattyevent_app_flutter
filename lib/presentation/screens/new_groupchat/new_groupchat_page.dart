@@ -44,12 +44,12 @@ class _NewGroupchatPageState extends State<NewGroupchatPage> {
                       image: image,
                     ),
                     const SizedBox(height: 20),
-                    PlatformTextField(
+                    PlatformTextFormField(
                       controller: titleFieldController,
                       hintText: 'Name*',
                     ),
                     const SizedBox(height: 8),
-                    PlatformTextField(
+                    PlatformTextFormField(
                       controller: descriptionFieldController,
                       hintText: 'Beschreibung',
                     ),

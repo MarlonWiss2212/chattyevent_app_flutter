@@ -3,23 +3,29 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:social_media_app_flutter/application/bloc/home_page/home_map_page/home_map_page_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/location/location_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/private_event/private_event_cubit.dart';
 import 'package:social_media_app_flutter/presentation/widgets/dialog/buttons/ok_button.dart';
+import 'package:social_media_app_flutter/presentation/widgets/home_page/pages/home_map_page/private_event_map_marker.dart';
 
-class HomeMapPage extends StatelessWidget {
-  const HomeMapPage({super.key});
+class Location extends StatelessWidget {
+  const Location({super.key});
 
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<HomeMapPageCubit>(context).getLocationFromDevice();
+    if (BlocProvider.of<PrivateEventCubit>(context).state
+        is! PrivateEventStateLoaded) {
+      BlocProvider.of<PrivateEventCubit>(context).getPrivateEventsViaApi();
+    }
+    BlocProvider.of<LocationCubit>(context).getLocationFromDevice();
 
     return PlatformScaffold(
       appBar: PlatformAppBar(
         title: const Text('Social Media App'),
       ),
-      body: BlocConsumer<HomeMapPageCubit, HomeMapPageState>(
+      body: BlocConsumer<LocationCubit, LocationState>(
         listener: (context, state) async {
-          if (state is HomeMapPageError) {
+          if (state is LocationError) {
             return await showPlatformDialog(
               context: context,
               builder: (context) {
@@ -33,19 +39,15 @@ class HomeMapPage extends StatelessWidget {
           }
         },
         builder: (context, state) {
-          MapOptions mapOptions;
-          if (state is HomeMapPageLoading) {
+          MapOptions mapOptions = MapOptions(
+            rotationThreshold: 400,
+            center: state is LocationLoaded
+                ? LatLng(state.lat, state.lng)
+                : LatLng(47, 10),
+            zoom: state is LocationLoaded ? 14 : 3,
+          );
+          if (state is LocationLoading) {
             return Center(child: PlatformCircularProgressIndicator());
-          } else if (state is HomeMapPageLoaded) {
-            mapOptions = MapOptions(
-              center: LatLng(state.lat, state.lng),
-              zoom: 17,
-            );
-          } else {
-            mapOptions = MapOptions(
-              center: LatLng(47, 10),
-              zoom: 3,
-            );
           }
           return Center(
             child: Stack(children: [
@@ -56,6 +58,35 @@ class HomeMapPage extends StatelessWidget {
                     urlTemplate:
                         'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
                   ),
+                  BlocBuilder<PrivateEventCubit, PrivateEventState>(
+                    builder: (context, state) {
+                      List<Marker> markers = [];
+                      if (state is PrivateEventStateLoaded) {
+                        for (final event in state.privateEvents) {
+                          if (event.eventLocation != null) {
+                            markers.add(
+                              Marker(
+                                point: LatLng(
+                                  event.eventLocation!.latitude,
+                                  event.eventLocation!.longitude,
+                                ),
+                                width: 100,
+                                height: 50,
+                                builder: (context) {
+                                  return PrivateEventMapMarker(
+                                    privateEvent: event,
+                                  );
+                                },
+                              ),
+                            );
+                          }
+                        }
+                      }
+                      return MarkerLayer(
+                        markers: markers,
+                      );
+                    },
+                  )
                 ],
               ),
               Align(
@@ -65,9 +96,8 @@ class HomeMapPage extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.all(8),
                     child: PlatformElevatedButton(
-                      onPressed: () =>
-                          BlocProvider.of<HomeMapPageCubit>(context)
-                              .getLocationFromDevice(),
+                      onPressed: () => BlocProvider.of<LocationCubit>(context)
+                          .getLocationFromDevice(),
                       child: const Text("Geradigen Standort setzen"),
                     ),
                   ),

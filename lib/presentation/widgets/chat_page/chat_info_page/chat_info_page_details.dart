@@ -33,7 +33,6 @@ class ChatInfoPageDetails extends StatelessWidget {
     }
 
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(8),
       child: Column(
         children: [
           const SizedBox(height: 20),
@@ -80,11 +79,6 @@ class ChatInfoPageDetails extends StatelessWidget {
                     ChatAddUserPageRoute(),
                   );
                 },
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(5),
-                  ),
-                ),
               )
             },
             UserListGroupchat(
@@ -107,7 +101,11 @@ class ChatInfoPageDetails extends StatelessWidget {
               style: Theme.of(context).textTheme.titleMedium,
             ),
             if (groupchat.leftUsers!.isNotEmpty) ...{const SizedBox(height: 8)},
-            UserLeftListGroupchat(groupchatLeftUsers: groupchat.leftUsers!),
+            UserLeftListGroupchat(
+              groupchatLeftUsers: groupchat.leftUsers!,
+              currentGrouppchatUser: currentGroupchatUser,
+              groupchatId: groupchat.id,
+            ),
           ] else ...[
             Text(
               "Konnte die Früheren Mitglieder nicht Laden",

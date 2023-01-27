@@ -43,6 +43,7 @@ class SelectGroupchatHorizontalListNewPrivateEvent extends StatelessWidget {
             }
 
             return ListView.separated(
+              shrinkWrap: true,
               scrollDirection: Axis.horizontal,
               itemBuilder: (context, index) {
                 return SizedBox(

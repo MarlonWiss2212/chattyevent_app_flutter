@@ -1,13 +1,13 @@
 import 'package:http/http.dart';
 import 'package:http_parser/http_parser.dart';
-import 'package:social_media_app_flutter/domain/dto/create_private_event_dto.dart';
+import 'package:social_media_app_flutter/domain/dto/private_event/create_private_event_dto.dart';
 import 'package:social_media_app_flutter/domain/failures/failures.dart';
-import 'package:social_media_app_flutter/domain/entities/private_event_entity.dart';
+import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
 import 'package:dartz/dartz.dart';
 import 'package:social_media_app_flutter/domain/filter/get_one_private_event_filter.dart';
 import 'package:social_media_app_flutter/domain/repositories/private_event_repository.dart';
 import 'package:social_media_app_flutter/infastructure/datasources/remote/graphql.dart';
-import 'package:social_media_app_flutter/infastructure/models/private_event_model.dart';
+import 'package:social_media_app_flutter/infastructure/models/private_event/private_event_model.dart';
 
 class PrivateEventRepositoryImpl implements PrivateEventRepository {
   final GraphQlDatasource graphQlDatasource;
@@ -36,6 +36,10 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
             usersThatWillNotBeThere
             eventDate
             connectedGroupchat
+            eventLocation {
+              latitude
+              longitude
+            }
             createdBy
             createdAt
           }
@@ -73,6 +77,10 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
             coverImageLink
             usersThatWillBeThere
             usersThatWillNotBeThere
+            eventLocation {
+              latitude
+              longitude
+            }
             eventDate
             connectedGroupchat
             createdBy
@@ -107,6 +115,10 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
             title
             connectedGroupchat
             eventDate
+            eventLocation {
+              latitude
+              longitude
+            }
             coverImageLink
           }
         }

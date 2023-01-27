@@ -24,7 +24,7 @@ class SelectableUserGridList extends StatelessWidget {
     return Expanded(
       child: Column(
         children: [
-          PlatformTextField(
+          PlatformTextFormField(
             onChanged: (text) {
               BlocProvider.of<UserSearchCubit>(context).getUsersViaApi(
                 getUsersFilter: GetUsersFilter(search: text),

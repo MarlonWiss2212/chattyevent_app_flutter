@@ -56,12 +56,9 @@ class UserListGroupchat extends StatelessWidget {
               userId: groupchatUser.userId,
               longPress: currentGrouppchatUser != null &&
                       currentGrouppchatUser!.admin != null &&
-                      currentGrouppchatUser!.admin == true
+                      currentGrouppchatUser!.admin == true &&
+                      currentGrouppchatUser!.userId != groupchatUser.userId
                   ? (userId) {
-                      if (currentGrouppchatUser!.userId == userId) {
-                        return;
-                      }
-
                       showMenu(
                         position: const RelativeRect.fromLTRB(
                             0, double.infinity, 0, 0),
@@ -76,7 +73,7 @@ class UserListGroupchat extends StatelessWidget {
                               userIdToDelete: userId,
                             ),
                           ),
-                          if (groupchatUser.admin != null) ...{
+                          /*    if (groupchatUser.admin != null) ...{
                             groupchatUser.admin == false
                                 ? const PopupMenuItem(
                                     child: Text("Zum Admin Machen"),
@@ -84,7 +81,7 @@ class UserListGroupchat extends StatelessWidget {
                                 : const PopupMenuItem(
                                     child: Text("Zum User Degradieren"),
                                   )
-                          }
+                          }*/
                         ],
                       );
                     }

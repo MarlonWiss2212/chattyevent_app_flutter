@@ -1,3 +1,5 @@
+import 'package:social_media_app_flutter/domain/entities/private_event/private_event_location_entity.dart';
+
 class PrivateEventEntity {
   final String id;
   final String? title;
@@ -8,6 +10,7 @@ class PrivateEventEntity {
   final String? connectedGroupchat;
   final String? createdBy;
   final DateTime? createdAt;
+  final PrivateEventLocationEntity? eventLocation;
 
   PrivateEventEntity({
     required this.id,
@@ -19,5 +22,6 @@ class PrivateEventEntity {
     this.connectedGroupchat,
     this.createdBy,
     this.createdAt,
+    this.eventLocation,
   });
 }

@@ -51,14 +51,11 @@ class HomeProfilePage extends StatelessWidget {
             ),
             trailingActions: [
               IconButton(
-                onPressed: () {
-                  BlocProvider.of<AuthCubit>(context).logout();
-
-                  AutoRouter.of(context).popUntilRoot();
-                  AutoRouter.of(context).replace(const LoginPageRoute());
-                },
-                icon: const Icon(Icons.logout),
-              ),
+                onPressed: () => AutoRouter.of(context).push(
+                  const SettingsPageRoute(),
+                ),
+                icon: Icon(PlatformIcons(context).settings),
+              )
             ],
           ),
           body: Column(
