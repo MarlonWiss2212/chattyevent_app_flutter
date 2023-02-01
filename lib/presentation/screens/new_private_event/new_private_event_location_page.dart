@@ -79,8 +79,13 @@ class _NewPrivateEventLocationPageState
                   center: state is LocationLoaded
                       ? LatLng(state.lat, state.lng)
                       : LatLng(47, 10),
-                  rotationThreshold: 400,
                   zoom: state is LocationLoaded ? 14 : 3,
+                  interactiveFlags: InteractiveFlag.doubleTapZoom |
+                      InteractiveFlag.doubleTapZoom |
+                      InteractiveFlag.drag |
+                      InteractiveFlag.flingAnimation |
+                      InteractiveFlag.pinchMove |
+                      InteractiveFlag.pinchZoom,
                   onTap: (tapPosition, point) {
                     setState(() {
                       eventLocation = CreatePrivateEventLocationDto(

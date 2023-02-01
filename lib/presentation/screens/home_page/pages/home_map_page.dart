@@ -40,7 +40,12 @@ class Location extends StatelessWidget {
         },
         builder: (context, state) {
           MapOptions mapOptions = MapOptions(
-            rotationThreshold: 400,
+            interactiveFlags: InteractiveFlag.doubleTapZoom |
+                InteractiveFlag.doubleTapZoom |
+                InteractiveFlag.drag |
+                InteractiveFlag.flingAnimation |
+                InteractiveFlag.pinchMove |
+                InteractiveFlag.pinchZoom,
             center: state is LocationLoaded
                 ? LatLng(state.lat, state.lng)
                 : LatLng(47, 10),

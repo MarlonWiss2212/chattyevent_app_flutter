@@ -78,8 +78,7 @@ class PrivateEventInfoTabDetails extends StatelessWidget {
                   borderRadius: BorderRadius.circular(8.0),
                   child: FlutterMap(
                     options: MapOptions(
-                      absorbPanEventsOnScrollables: false,
-                      rotationThreshold: 400,
+                      interactiveFlags: InteractiveFlag.none,
                       center: LatLng(
                         privateEvent.eventLocation!.latitude,
                         privateEvent.eventLocation!.longitude,
