@@ -109,6 +109,8 @@ class BlocInit extends StatelessWidget {
           privateEventCubit: privateEventCubit,
         );
         final currentPrivateEventCubit = CurrentPrivateEventCubit(
+          chatCubit: chatCubit,
+          chatUseCases: chatUseCases,
           privateEventUseCases: privateEventUseCases,
           privateEventCubit: privateEventCubit,
         );
@@ -141,10 +143,10 @@ class BlocInit extends StatelessWidget {
             BlocProvider.value(value: userSearchCubit),
             BlocProvider.value(value: privateEventCubit),
             BlocProvider.value(value: addPrivateEventCubit),
-            BlocProvider.value(value: currentPrivateEventCubit),
+            //    BlocProvider.value(value: currentPrivateEventCubit),
             BlocProvider.value(value: chatCubit),
             BlocProvider.value(value: addChatCubit),
-            BlocProvider.value(value: currentChatCubit),
+            //       BlocProvider.value(value: currentChatCubit),
             BlocProvider.value(value: homeProfilePageCubit),
             BlocProvider.value(value: locationCubit),
             BlocProvider.value(value: imageCubit),

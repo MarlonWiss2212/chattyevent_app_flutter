@@ -116,14 +116,10 @@ class _NewPrivateEventPageState extends State<NewPrivateEventPage> {
             BlocListener<AddPrivateEventCubit, AddPrivateEventState>(
               listener: (context, state) {
                 if (state is AddPrivateEventLoaded) {
-                  BlocProvider.of<CurrentPrivateEventCubit>(context)
-                      .setCurrentPrivateEvent(
-                    privateEvent: state.addedPrivateEvent,
-                  );
                   AutoRouter.of(context).replace(
                     PrivateEventPageRoute(
                       privateEventId: state.addedPrivateEvent.id,
-                      loadPrivateEvent: false,
+                      privateEventToSet: state.addedPrivateEvent,
                     ),
                   );
                 }

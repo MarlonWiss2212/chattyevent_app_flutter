@@ -2,44 +2,73 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart';
+import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:social_media_app_flutter/domain/filter/get_one_groupchat_filter.dart';
+import 'package:social_media_app_flutter/domain/repositories/chat_repository.dart';
+import 'package:social_media_app_flutter/domain/usecases/chat_usecases.dart';
+import 'package:social_media_app_flutter/infastructure/datasources/remote/graphql.dart';
+import 'package:social_media_app_flutter/infastructure/respositories/chat_repository_impl.dart';
+import 'package:social_media_app_flutter/injection.dart';
 import 'package:social_media_app_flutter/presentation/widgets/dialog/buttons/ok_button.dart';
 
 class ChatPageWrapper extends StatelessWidget {
   final String groupchatId;
-  final bool loadChat;
+  final GroupchatEntity? chatToSet;
 
   const ChatPageWrapper({
     super.key,
     @PathParam('id') required this.groupchatId,
-    this.loadChat = true,
+    this.chatToSet,
   });
 
   @override
   Widget build(BuildContext context) {
-    if (loadChat) {
-      BlocProvider.of<CurrentChatCubit>(context).getOneChatViaApi(
-        getOneGroupchatFilter: GetOneGroupchatFilter(id: groupchatId),
-      );
-    }
+    final client = getGraphQlClient(
+      token: BlocProvider.of<AuthCubit>(context).state is AuthLoaded
+          ? (BlocProvider.of<AuthCubit>(context).state as AuthLoaded).token
+          : null,
+    );
 
-    return BlocListener<CurrentChatCubit, CurrentChatState>(
-      listener: (context, state) async {
-        if (state is CurrentChatError) {
-          return await showPlatformDialog(
-            context: context,
-            builder: (context) {
-              return PlatformAlertDialog(
-                title: Text(state.title),
-                content: Text(state.message),
-                actions: const [OKButton()],
-              );
-            },
-          );
-        }
-      },
-      child: const AutoRouter(),
+    return BlocProvider(
+      create: (context) => CurrentChatCubit(
+        chatCubit: BlocProvider.of<ChatCubit>(context),
+        chatUseCases: ChatUseCases(
+          chatRepository: ChatRepositoryImpl(
+            graphQlDatasource: GraphQlDatasourceImpl(client: client),
+          ),
+        ),
+      ),
+      child: BlocListener<CurrentChatCubit, CurrentChatState>(
+        listener: (context, state) async {
+          if (state is CurrentChatError) {
+            return await showPlatformDialog(
+              context: context,
+              builder: (context) {
+                return PlatformAlertDialog(
+                  title: Text(state.title),
+                  content: Text(state.message),
+                  actions: const [OKButton()],
+                );
+              },
+            );
+          }
+        },
+        child: Builder(builder: (context) {
+          if (chatToSet == null) {
+            BlocProvider.of<CurrentChatCubit>(context).getOneChatViaApi(
+              getOneGroupchatFilter: GetOneGroupchatFilter(id: groupchatId),
+            );
+          } else {
+            BlocProvider.of<CurrentChatCubit>(context).setCurrentChat(
+              groupchat: chatToSet!,
+            );
+          }
+          return const AutoRouter();
+        }),
+      ),
     );
   }
 }

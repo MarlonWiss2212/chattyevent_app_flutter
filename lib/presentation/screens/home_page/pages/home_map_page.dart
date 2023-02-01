@@ -70,8 +70,8 @@ class Location extends StatelessWidget {
                                   event.eventLocation!.latitude,
                                   event.eventLocation!.longitude,
                                 ),
-                                width: 100,
                                 height: 50,
+                                width: 100,
                                 builder: (context) {
                                   return PrivateEventMapMarker(
                                     privateEvent: event,

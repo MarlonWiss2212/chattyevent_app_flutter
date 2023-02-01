@@ -9,6 +9,17 @@ abstract class CurrentPrivateEventStateWithPrivateEvent
   CurrentPrivateEventStateWithPrivateEvent({required this.privateEvent});
 }
 
+abstract class CurrentPrivateEventWithPrivateEventAndGroupchat
+    extends CurrentPrivateEventStateWithPrivateEvent {
+  final GroupchatEntity groupchat;
+  CurrentPrivateEventWithPrivateEventAndGroupchat({
+    required super.privateEvent,
+    required this.groupchat,
+  });
+}
+
+//
+
 class CurrentPrivateEventInitial extends CurrentPrivateEventState {}
 
 class CurrentPrivateEventLoading extends CurrentPrivateEventState {}
@@ -28,4 +39,33 @@ class CurrentPrivateEventError extends CurrentPrivateEventState {
 class CurrentPrivateEventLoaded
     extends CurrentPrivateEventStateWithPrivateEvent {
   CurrentPrivateEventLoaded({required super.privateEvent});
+}
+
+//
+
+class CurrentPrivateEventLoadingGroupchat
+    extends CurrentPrivateEventStateWithPrivateEvent {
+  CurrentPrivateEventLoadingGroupchat({
+    required super.privateEvent,
+  });
+}
+
+class CurrentPrivateEventLoadedGroupchat
+    extends CurrentPrivateEventWithPrivateEventAndGroupchat {
+  CurrentPrivateEventLoadedGroupchat({
+    required super.privateEvent,
+    required super.groupchat,
+  });
+}
+
+class CurrentPrivateEventErrorGroupchat
+    extends CurrentPrivateEventStateWithPrivateEvent {
+  final String title;
+  final String message;
+
+  CurrentPrivateEventErrorGroupchat({
+    required this.message,
+    required this.title,
+    required super.privateEvent,
+  });
 }

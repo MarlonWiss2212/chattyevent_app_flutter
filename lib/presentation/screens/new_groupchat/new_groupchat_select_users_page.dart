@@ -107,14 +107,10 @@ class _NewGroupchatPageSelectUsersPageState
                   BlocListener<AddChatCubit, AddChatState>(
                     listener: (context, state) {
                       if (state is AddChatLoaded) {
-                        BlocProvider.of<CurrentChatCubit>(context)
-                            .setCurrentChat(
-                          groupchat: state.addedChat,
-                        );
                         AutoRouter.of(context).root.replace(
                               ChatPageWrapperRoute(
                                 groupchatId: state.addedChat.id,
-                                loadChat: false,
+                                chatToSet: state.addedChat,
                               ),
                             );
                       }

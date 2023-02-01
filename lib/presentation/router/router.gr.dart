@@ -11,12 +11,13 @@
 // ignore_for_file: type=lint
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:io' as _i28;
+import 'dart:io' as _i30;
 
 import 'package:auto_route/auto_route.dart' as _i25;
 import 'package:flutter/material.dart' as _i26;
 
-import '../../domain/entities/groupchat/groupchat_entity.dart' as _i29;
+import '../../domain/entities/groupchat/groupchat_entity.dart' as _i28;
+import '../../domain/entities/private_event/private_event_entity.dart' as _i29;
 import '../screens/chat_page/chat_add_user_page.dart' as _i19;
 import '../screens/chat_page/chat_info_page.dart' as _i18;
 import '../screens/chat_page/chat_page.dart' as _i17;
@@ -102,7 +103,7 @@ class AppRouter extends _i25.RootStackRouter {
         child: _i6.ChatPageWrapper(
           key: args.key,
           groupchatId: args.groupchatId,
-          loadChat: args.loadChat,
+          chatToSet: args.chatToSet,
         ),
       );
     },
@@ -115,7 +116,7 @@ class AppRouter extends _i25.RootStackRouter {
         routeData: routeData,
         child: _i7.PrivateEventPage(
           privateEventId: args.privateEventId,
-          loadPrivateEvent: args.loadPrivateEvent,
+          privateEventToSet: args.privateEventToSet,
           key: args.key,
         ),
       );
@@ -564,7 +565,7 @@ class ChatPageWrapperRoute
   ChatPageWrapperRoute({
     _i26.Key? key,
     required String groupchatId,
-    bool loadChat = true,
+    _i28.GroupchatEntity? chatToSet,
     List<_i25.PageRouteInfo>? children,
   }) : super(
           ChatPageWrapperRoute.name,
@@ -572,7 +573,7 @@ class ChatPageWrapperRoute
           args: ChatPageWrapperRouteArgs(
             key: key,
             groupchatId: groupchatId,
-            loadChat: loadChat,
+            chatToSet: chatToSet,
           ),
           rawPathParams: {'id': groupchatId},
           initialChildren: children,
@@ -585,18 +586,18 @@ class ChatPageWrapperRouteArgs {
   const ChatPageWrapperRouteArgs({
     this.key,
     required this.groupchatId,
-    this.loadChat = true,
+    this.chatToSet,
   });
 
   final _i26.Key? key;
 
   final String groupchatId;
 
-  final bool loadChat;
+  final _i28.GroupchatEntity? chatToSet;
 
   @override
   String toString() {
-    return 'ChatPageWrapperRouteArgs{key: $key, groupchatId: $groupchatId, loadChat: $loadChat}';
+    return 'ChatPageWrapperRouteArgs{key: $key, groupchatId: $groupchatId, chatToSet: $chatToSet}';
   }
 }
 
@@ -606,7 +607,7 @@ class PrivateEventPageRoute
     extends _i25.PageRouteInfo<PrivateEventPageRouteArgs> {
   PrivateEventPageRoute({
     required String privateEventId,
-    bool loadPrivateEvent = true,
+    _i29.PrivateEventEntity? privateEventToSet,
     _i26.Key? key,
     List<_i25.PageRouteInfo>? children,
   }) : super(
@@ -614,7 +615,7 @@ class PrivateEventPageRoute
           path: '/private-event/:id',
           args: PrivateEventPageRouteArgs(
             privateEventId: privateEventId,
-            loadPrivateEvent: loadPrivateEvent,
+            privateEventToSet: privateEventToSet,
             key: key,
           ),
           rawPathParams: {'id': privateEventId},
@@ -627,19 +628,19 @@ class PrivateEventPageRoute
 class PrivateEventPageRouteArgs {
   const PrivateEventPageRouteArgs({
     required this.privateEventId,
-    this.loadPrivateEvent = true,
+    this.privateEventToSet,
     this.key,
   });
 
   final String privateEventId;
 
-  final bool loadPrivateEvent;
+  final _i29.PrivateEventEntity? privateEventToSet;
 
   final _i26.Key? key;
 
   @override
   String toString() {
-    return 'PrivateEventPageRouteArgs{privateEventId: $privateEventId, loadPrivateEvent: $loadPrivateEvent, key: $key}';
+    return 'PrivateEventPageRouteArgs{privateEventId: $privateEventId, privateEventToSet: $privateEventToSet, key: $key}';
   }
 }
 
@@ -869,7 +870,7 @@ class NewGroupchatPageSelectUsersPageRoute
   NewGroupchatPageSelectUsersPageRoute({
     _i26.Key? key,
     required String title,
-    _i28.File? profileImage,
+    _i30.File? profileImage,
     String? description,
   }) : super(
           NewGroupchatPageSelectUsersPageRoute.name,
@@ -897,7 +898,7 @@ class NewGroupchatPageSelectUsersPageRouteArgs {
 
   final String title;
 
-  final _i28.File? profileImage;
+  final _i30.File? profileImage;
 
   final String? description;
 
@@ -926,8 +927,8 @@ class NewPrivateEventLocationPageRoute
   NewPrivateEventLocationPageRoute({
     _i26.Key? key,
     required DateTime date,
-    required _i28.File image,
-    required _i29.GroupchatEntity selectedGroupchat,
+    required _i30.File image,
+    required _i28.GroupchatEntity selectedGroupchat,
     required String title,
   }) : super(
           NewPrivateEventLocationPageRoute.name,
@@ -957,9 +958,9 @@ class NewPrivateEventLocationPageRouteArgs {
 
   final DateTime date;
 
-  final _i28.File image;
+  final _i30.File image;
 
-  final _i29.GroupchatEntity selectedGroupchat;
+  final _i28.GroupchatEntity selectedGroupchat;
 
   final String title;
 

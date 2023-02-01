@@ -35,19 +35,20 @@ class CircleImage extends StatelessWidget {
               shape: BoxShape.circle,
             ),
             child: ClipRRect(
-                borderRadius: BorderRadius.circular(width / 2),
-                child: Hero(
-                  tag: heroTag ?? "",
-                  child: image != null
-                      ? Image.file(
-                          image!,
-                          fit: BoxFit.cover,
-                        )
-                      : Image.network(
-                          imageLink!,
-                          fit: BoxFit.cover,
-                        ),
-                )),
+              borderRadius: BorderRadius.circular(width / 2),
+              child: Hero(
+                tag: heroTag ?? "",
+                child: image != null
+                    ? Image.file(
+                        image!,
+                        fit: BoxFit.cover,
+                      )
+                    : Image.network(
+                        imageLink!,
+                        fit: BoxFit.cover,
+                      ),
+              ),
+            ),
           )
         : Container(
             height: height,

@@ -35,8 +35,9 @@ class _MessageInputState extends State<MessageInput> {
               ),
               child: PlatformTextField(
                 material: (context, platform) => MaterialTextFieldData(
-                  decoration:
-                      const InputDecoration.collapsed(hintText: "Nachricht"),
+                  decoration: const InputDecoration.collapsed(
+                    hintText: "Nachricht",
+                  ),
                 ),
                 controller: messageInputController,
                 hintText: 'Nachricht',

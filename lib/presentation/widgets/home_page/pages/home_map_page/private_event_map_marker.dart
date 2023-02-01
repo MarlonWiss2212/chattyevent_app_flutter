@@ -2,7 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
-import 'package:social_media_app_flutter/presentation/widgets/circle_image/cirlce_image.dart';
 
 class PrivateEventMapMarker extends StatelessWidget {
   final PrivateEventEntity privateEvent;
@@ -21,25 +20,39 @@ class PrivateEventMapMarker extends StatelessWidget {
           onTap: () => AutoRouter.of(context).push(
             PrivateEventPageRoute(privateEventId: privateEvent.id),
           ),
-          child: Padding(
-            padding: const EdgeInsets.all(5),
-            child: Center(
-              child: Row(
-                children: [
-                  CircleImage(
-                    height: 40,
-                    width: 40,
-                    imageLink: privateEvent.coverImageLink,
+          child: Row(
+            children: [
+              if (privateEvent.coverImageLink != null) ...{
+                Container(
+                  height: 66.66667,
+                  width: 50,
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
                   ),
-                  const SizedBox(width: 8),
-                  Text(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: Hero(
+                      tag: "${privateEvent.id} coverImage",
+                      child: Image.network(
+                        privateEvent.coverImageLink!,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                ),
+              },
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Center(
+                  child: Text(
                     privateEvent.title ?? "Kein Titel",
                     style: Theme.of(context).textTheme.labelMedium,
+                    softWrap: true,
                     overflow: TextOverflow.ellipsis,
-                  )
-                ],
-              ),
-            ),
+                  ),
+                ),
+              )
+            ],
           ),
         ),
       ),
