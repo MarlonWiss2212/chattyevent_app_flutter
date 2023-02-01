@@ -14,9 +14,10 @@ class UserGridListWithSearchbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8),
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: Column(
         children: [
+          const SizedBox(height: 8),
           PlatformTextFormField(
             onChanged: (text) {
               BlocProvider.of<UserSearchCubit>(context).getUsersViaApi(

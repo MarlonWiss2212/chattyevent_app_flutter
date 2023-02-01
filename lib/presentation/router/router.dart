@@ -21,7 +21,9 @@ import 'package:social_media_app_flutter/presentation/screens/private_event_page
 import 'package:social_media_app_flutter/presentation/screens/private_event_page/private_event_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/profile_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/register_page.dart';
-import 'package:social_media_app_flutter/presentation/screens/settings_page/settings_page.dart';
+import 'package:social_media_app_flutter/presentation/screens/settings_page/pages/theme_mode_page.dart';
+import 'package:social_media_app_flutter/presentation/screens/settings_page/pages/settings_page.dart';
+import 'package:social_media_app_flutter/presentation/screens/settings_page/settings_page_wrapper.dart';
 
 @MaterialAutoRouter(
   routes: <AutoRoute>[
@@ -36,7 +38,17 @@ import 'package:social_media_app_flutter/presentation/screens/settings_page/sett
       path: '/profile-page/:id',
     ),
 
-    AutoRoute(page: SettingsPage, guards: [AuthGuard], path: "/settings"),
+    // settings page
+    AutoRoute(
+      page: SettingsWrapperPage,
+      guards: [AuthGuard],
+      path: "/settings",
+      children: [
+        AutoRoute(page: SettingsPage, guards: [AuthGuard], path: ''),
+        AutoRoute(page: ThemeModePage, guards: [AuthGuard], path: 'theme-mode'),
+        RedirectRoute(path: '*', redirectTo: '')
+      ],
+    ),
 
     // home page
     AutoRoute(

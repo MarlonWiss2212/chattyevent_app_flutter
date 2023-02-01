@@ -52,7 +52,7 @@ class HomeProfilePage extends StatelessWidget {
             trailingActions: [
               IconButton(
                 onPressed: () => AutoRouter.of(context).push(
-                  const SettingsPageRoute(),
+                  const SettingsWrapperPageRoute(),
                 ),
                 icon: Icon(PlatformIcons(context).settings),
               )
