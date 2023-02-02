@@ -12,7 +12,7 @@ import 'package:social_media_app_flutter/application/bloc/message/message_cubit.
 import 'package:social_media_app_flutter/application/bloc/message/add_message_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/add_private_event_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event/current_private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/home_page/home_profile_page/home_profile_page_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/image/image_cubit.dart';
 import 'package:social_media_app_flutter/domain/usecases/chat_usecases.dart';
@@ -97,20 +97,10 @@ class BlocInit extends StatelessWidget {
           chatCubit: chatCubit,
           chatUseCases: chatUseCases,
         );
-        final currentChatCubit = CurrentChatCubit(
-          chatCubit: chatCubit,
-          chatUseCases: chatUseCases,
-        );
         final privateEventCubit = PrivateEventCubit(
           privateEventUseCases: privateEventUseCases,
         );
         final addPrivateEventCubit = AddPrivateEventCubit(
-          privateEventUseCases: privateEventUseCases,
-          privateEventCubit: privateEventCubit,
-        );
-        final currentPrivateEventCubit = CurrentPrivateEventCubit(
-          chatCubit: chatCubit,
-          chatUseCases: chatUseCases,
           privateEventUseCases: privateEventUseCases,
           privateEventCubit: privateEventCubit,
         );
@@ -143,10 +133,8 @@ class BlocInit extends StatelessWidget {
             BlocProvider.value(value: userSearchCubit),
             BlocProvider.value(value: privateEventCubit),
             BlocProvider.value(value: addPrivateEventCubit),
-            //    BlocProvider.value(value: currentPrivateEventCubit),
             BlocProvider.value(value: chatCubit),
             BlocProvider.value(value: addChatCubit),
-            //       BlocProvider.value(value: currentChatCubit),
             BlocProvider.value(value: homeProfilePageCubit),
             BlocProvider.value(value: locationCubit),
             BlocProvider.value(value: imageCubit),

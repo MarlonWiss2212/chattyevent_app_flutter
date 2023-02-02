@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:skeletons/skeletons.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 import 'package:social_media_app_flutter/presentation/widgets/chat_list.dart';
@@ -22,7 +23,19 @@ class HomeChatPage extends StatelessWidget {
           if (state is ChatLoaded) {
             return ChatList(chats: state.chats);
           } else if (state is ChatLoading) {
-            return const Center(child: CircularProgressIndicator());
+            return SkeletonListView(
+              itemBuilder: (p0, p1) {
+                return SkeletonListTile(
+                  hasSubtitle: true,
+                  titleStyle: const SkeletonLineStyle(width: 100, height: 22),
+                  subtitleStyle: const SkeletonLineStyle(
+                      width: double.infinity, height: 16),
+                  leadingStyle: const SkeletonAvatarStyle(
+                    shape: BoxShape.circle,
+                  ),
+                );
+              },
+            );
           } else {
             return Center(
               child: TextButton(

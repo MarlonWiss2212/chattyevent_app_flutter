@@ -4,11 +4,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event/current_private_event_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event/current_private_event_groupchat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
-import 'package:social_media_app_flutter/domain/filter/get_one_groupchat_filter.dart';
 import 'package:social_media_app_flutter/domain/filter/get_one_private_event_filter.dart';
 import 'package:social_media_app_flutter/domain/usecases/chat_usecases.dart';
 import 'package:social_media_app_flutter/domain/usecases/private_event_usecases.dart';
@@ -36,21 +36,30 @@ class PrivateEventPage extends StatelessWidget {
     );
     GraphQlDatasource graphQlDatasource = GraphQlDatasourceImpl(client: client);
 
-    return BlocProvider(
-      create: (context) => CurrentPrivateEventCubit(
-        chatCubit: BlocProvider.of<ChatCubit>(context),
-        privateEventCubit: BlocProvider.of<PrivateEventCubit>(context),
-        chatUseCases: ChatUseCases(
-          chatRepository: ChatRepositoryImpl(
-            graphQlDatasource: graphQlDatasource,
-          ),
-        ),
-        privateEventUseCases: PrivateEventUseCases(
-          privateEventRepository: PrivateEventRepositoryImpl(
-            graphQlDatasource: graphQlDatasource,
-          ),
+    CurrentPrivateEventCubit currentPrivateEventCubit =
+        CurrentPrivateEventCubit(
+      privateEventCubit: BlocProvider.of<PrivateEventCubit>(context),
+      privateEventUseCases: PrivateEventUseCases(
+        privateEventRepository: PrivateEventRepositoryImpl(
+          graphQlDatasource: graphQlDatasource,
         ),
       ),
+    );
+
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider.value(value: currentPrivateEventCubit),
+        BlocProvider.value(
+          value: CurrentPrivateEventGroupchatCubit(
+            chatCubit: BlocProvider.of<ChatCubit>(context),
+            currentPrivateEventCubit: currentPrivateEventCubit,
+            chatUseCases: ChatUseCases(
+              chatRepository:
+                  ChatRepositoryImpl(graphQlDatasource: graphQlDatasource),
+            ),
+          ),
+        ),
+      ],
       child: Builder(builder: (context) {
         if (privateEventToSet == null) {
           BlocProvider.of<CurrentPrivateEventCubit>(context).getOnePrivateEvent(
@@ -66,77 +75,87 @@ class PrivateEventPage extends StatelessWidget {
 
         bool dataLoaded = false;
 
-        return BlocConsumer<CurrentPrivateEventCubit, CurrentPrivateEventState>(
-          listener: (context, state) async {
-            if (state is CurrentPrivateEventError) {
-              return await showPlatformDialog(
-                context: context,
-                builder: (context) {
-                  return PlatformAlertDialog(
-                    title: Text(state.title),
-                    content: Text(state.message),
-                    actions: const [OKButton()],
+        return MultiBlocListener(
+          listeners: [
+            BlocListener<CurrentPrivateEventCubit, CurrentPrivateEventState>(
+                listener: (context, state) async {
+              if (state is CurrentPrivateEventError) {
+                return await showPlatformDialog(
+                  context: context,
+                  builder: (context) {
+                    return PlatformAlertDialog(
+                      title: Text(state.title),
+                      content: Text(state.message),
+                      actions: const [OKButton()],
+                    );
+                  },
+                );
+              }
+            }),
+            BlocListener<CurrentPrivateEventGroupchatCubit,
+                CurrentPrivateEventGroupchatState>(
+              listener: (context, state) async {
+                if (state is CurrentPrivateEventGroupchatError) {
+                  return await showPlatformDialog(
+                    context: context,
+                    builder: (context) {
+                      return PlatformAlertDialog(
+                        title: Text(state.title),
+                        content: Text(state.message),
+                        actions: const [OKButton()],
+                      );
+                    },
                   );
-                },
-              );
-            }
+                }
+              },
+            ),
+          ],
+          child:
+              BlocBuilder<CurrentPrivateEventCubit, CurrentPrivateEventState>(
+            builder: (context, state) {
+              if (state is CurrentPrivateEventStateWithPrivateEvent &&
+                  state.privateEvent.connectedGroupchat != null &&
+                  dataLoaded == false) {
+                BlocProvider.of<CurrentPrivateEventGroupchatCubit>(context)
+                    .setCurrentGroupchatViaApi();
+                BlocProvider.of<UserCubit>(context).getUsersViaApi();
+                dataLoaded = true;
+              }
 
-            if (state is CurrentPrivateEventErrorGroupchat) {
-              return await showPlatformDialog(
-                context: context,
-                builder: (context) {
-                  return PlatformAlertDialog(
-                    title: Text(state.title),
-                    content: Text(state.message),
-                    actions: const [OKButton()],
-                  );
-                },
-              );
-            }
-          },
-          builder: (context, state) {
-            if (state is CurrentPrivateEventStateWithPrivateEvent &&
-                state.privateEvent.connectedGroupchat != null &&
-                dataLoaded == false) {
-              BlocProvider.of<CurrentPrivateEventCubit>(context)
-                  .getGroupchatViaApi();
-              BlocProvider.of<UserCubit>(context).getUsersViaApi();
-              dataLoaded = true;
-            }
-
-            return PlatformScaffold(
-              appBar: PlatformAppBar(
-                leading: const AutoLeadingButton(),
-                title: Hero(
-                  tag: "$privateEventId title",
-                  child: Text(
-                    state is CurrentPrivateEventStateWithPrivateEvent &&
-                            state.privateEvent.title != null
-                        ? state.privateEvent.title!
-                        : "Kein Titel",
-                    style: Theme.of(context).textTheme.titleLarge,
+              return PlatformScaffold(
+                appBar: PlatformAppBar(
+                  leading: const AutoLeadingButton(),
+                  title: Hero(
+                    tag: "$privateEventId title",
+                    child: Text(
+                      state is CurrentPrivateEventStateWithPrivateEvent &&
+                              state.privateEvent.title != null
+                          ? state.privateEvent.title!
+                          : "Kein Titel",
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
                   ),
                 ),
-              ),
-              body: state is CurrentPrivateEventLoading
-                  ? Center(child: PlatformCircularProgressIndicator())
-                  : state is CurrentPrivateEventStateWithPrivateEvent
-                      ? Column(
-                          children: [
-                            if (state is CurrentPrivateEventEditing) ...{
-                              const LinearProgressIndicator()
-                            },
-                            const Expanded(child: AutoRouter()),
-                          ],
-                        )
-                      : const Center(
-                          child: Text(
-                            "Fehler beim Laden des Events mit der Id ",
-                            textAlign: TextAlign.center,
+                body: state is CurrentPrivateEventLoading
+                    ? Center(child: PlatformCircularProgressIndicator())
+                    : state is CurrentPrivateEventStateWithPrivateEvent
+                        ? Column(
+                            children: [
+                              if (state is CurrentPrivateEventEditing) ...{
+                                const LinearProgressIndicator()
+                              },
+                              const Expanded(child: AutoRouter()),
+                            ],
+                          )
+                        : const Center(
+                            child: Text(
+                              "Fehler beim Laden des Events mit der Id ",
+                              textAlign: TextAlign.center,
+                            ),
                           ),
-                        ),
-            );
-          },
+              );
+            },
+          ),
         );
       }),
     );
