@@ -18,6 +18,7 @@ import 'package:social_media_app_flutter/presentation/screens/new_groupchat/new_
 import 'package:social_media_app_flutter/presentation/screens/new_groupchat/new_groupchat_wrapper_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/new_private_event/new_private_event_wrapper_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/private_event_page/pages/info_tab.dart';
+import 'package:social_media_app_flutter/presentation/screens/private_event_page/pages/shopping_list_tab.dart';
 import 'package:social_media_app_flutter/presentation/screens/private_event_page/private_event_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/profile_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/register_page.dart';
@@ -99,7 +100,17 @@ import 'package:social_media_app_flutter/presentation/screens/settings_page/sett
       guards: [AuthGuard],
       path: '/private-event/:id',
       children: [
-        AutoRoute(page: InfoTab, initial: true, path: 'info'),
+        AutoRoute(
+          page: InfoTab,
+          initial: true,
+          path: 'info',
+          guards: [AuthGuard],
+        ),
+        AutoRoute(
+          page: ShoppingListTab,
+          path: 'shopping-list',
+          guards: [AuthGuard],
+        ),
         RedirectRoute(path: '*', redirectTo: 'info')
       ],
     ),

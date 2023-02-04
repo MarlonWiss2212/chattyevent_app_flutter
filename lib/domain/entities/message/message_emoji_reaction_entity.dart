@@ -2,6 +2,7 @@ class MessageEmojiReactionEntity {
   final String id;
   final String? emoji;
   final DateTime? createdAt;
+  final DateTime? updatedAt;
   final String? createdBy;
 
   MessageEmojiReactionEntity({
@@ -9,5 +10,6 @@ class MessageEmojiReactionEntity {
     this.emoji,
     this.createdBy,
     this.createdAt,
+    this.updatedAt,
   });
 }

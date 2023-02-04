@@ -1,4 +1,4 @@
-import 'package:social_media_app_flutter/domain/entities/user_and_token_entity.dart.dart';
+import 'package:social_media_app_flutter/domain/entities/user_and_token_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
 import 'package:social_media_app_flutter/infastructure/models/user_model.dart';
 

@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:meta/meta.dart';
 import 'package:social_media_app_flutter/domain/dto/create_user_dto.dart';
-import 'package:social_media_app_flutter/domain/entities/user_and_token_entity.dart.dart';
+import 'package:social_media_app_flutter/domain/entities/user_and_token_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
 import 'package:social_media_app_flutter/domain/failures/failures.dart';
 import 'package:social_media_app_flutter/domain/usecases/auth_usecases.dart';

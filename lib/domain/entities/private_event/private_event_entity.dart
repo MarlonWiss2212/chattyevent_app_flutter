@@ -10,6 +10,7 @@ class PrivateEventEntity {
   final String? connectedGroupchat;
   final String? createdBy;
   final DateTime? createdAt;
+  final DateTime? updatedAt;
   final PrivateEventLocationEntity? eventLocation;
 
   PrivateEventEntity({
@@ -23,5 +24,6 @@ class PrivateEventEntity {
     this.createdBy,
     this.createdAt,
     this.eventLocation,
+    this.updatedAt,
   });
 }

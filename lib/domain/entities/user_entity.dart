@@ -9,6 +9,7 @@ class UserEntity {
   final String? birthdate;
   final String? lastTimeOnline;
   final DateTime? createdAt;
+  final DateTime? updatedAt;
 
   UserEntity({
     required this.id,
@@ -21,5 +22,6 @@ class UserEntity {
     this.birthdate,
     this.lastTimeOnline,
     this.createdAt,
+    this.updatedAt,
   });
 }

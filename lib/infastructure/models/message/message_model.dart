@@ -12,6 +12,7 @@ class MessageModel extends MessageEntity {
     required List<MessageEmojiReactionEntity> emojiReactions,
     String? createdBy,
     DateTime? createdAt,
+    DateTime? updatedAt,
   }) : super(
           id: id,
           message: message,
@@ -20,6 +21,7 @@ class MessageModel extends MessageEntity {
           messageToReactTo: messageToReactTo,
           emojiReactions: emojiReactions,
           createdAt: createdAt,
+          updatedAt: updatedAt,
           createdBy: createdBy,
         );
 
@@ -38,6 +40,10 @@ class MessageModel extends MessageEntity {
         ? DateTime.parse(json["createdAt"]).toLocal()
         : null;
 
+    final updatedAt = json["updatedAt"] != null
+        ? DateTime.parse(json["updatedAt"]).toLocal()
+        : null;
+
     return MessageModel(
       id: json['_id'],
       message: json['message'],
@@ -47,6 +53,7 @@ class MessageModel extends MessageEntity {
       emojiReactions: messageEmojiReactions,
       createdBy: json["createdBy"],
       createdAt: createdAt,
+      updatedAt: updatedAt,
     );
   }
 }

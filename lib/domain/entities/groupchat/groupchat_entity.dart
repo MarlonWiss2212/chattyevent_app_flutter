@@ -10,6 +10,7 @@ class GroupchatEntity {
   final String? description;
   final String? createdBy;
   final DateTime? createdAt;
+  final DateTime? updatedAt;
 
   GroupchatEntity({
     required this.id,
@@ -20,5 +21,6 @@ class GroupchatEntity {
     this.leftUsers,
     this.createdBy,
     this.createdAt,
+    this.updatedAt,
   });
 }

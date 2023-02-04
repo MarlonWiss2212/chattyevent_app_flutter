@@ -14,6 +14,7 @@ class GroupchatModel extends GroupchatEntity {
     String? description,
     String? createdBy,
     DateTime? createdAt,
+    DateTime? updatedAt,
   }) : super(
           id: id,
           title: title,
@@ -23,6 +24,7 @@ class GroupchatModel extends GroupchatEntity {
           description: description,
           createdAt: createdAt,
           createdBy: createdBy,
+          updatedAt: updatedAt,
         );
 
   factory GroupchatModel.fromJson(Map<String, dynamic> json) {
@@ -46,6 +48,10 @@ class GroupchatModel extends GroupchatEntity {
         ? DateTime.parse(json["createdAt"]).toLocal()
         : null;
 
+    final updatedAt = json["updatedAt"] != null
+        ? DateTime.parse(json["updatedAt"]).toLocal()
+        : null;
+
     return GroupchatModel(
       id: json['_id'],
       title: json['title'],
@@ -55,6 +61,7 @@ class GroupchatModel extends GroupchatEntity {
       description: json["description"],
       createdBy: json["createdBy"],
       createdAt: createdAt,
+      updatedAt: updatedAt,
     );
   }
 }
