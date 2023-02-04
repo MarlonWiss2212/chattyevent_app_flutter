@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:skeletons/skeletons.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event/shopping_list/current_private_event_shopping_list_cubit.dart';
-import 'package:social_media_app_flutter/domain/filter/get_shopping_list_item_filter.dart';
+import 'package:social_media_app_flutter/domain/filter/get_shopping_list_items_filter.dart';
 
 class ShoppingListTab extends StatelessWidget {
   final String privateEventId;

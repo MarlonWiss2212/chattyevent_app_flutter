@@ -1,4 +1,4 @@
-import 'package:social_media_app_flutter/domain/filter/get_shopping_list_item_filter.dart';
+import 'package:social_media_app_flutter/domain/filter/get_shopping_list_items_filter.dart';
 import 'package:social_media_app_flutter/domain/failures/failures.dart';
 import 'package:social_media_app_flutter/domain/entities/shopping_list_item_entity.dart';
 import 'package:social_media_app_flutter/domain/dto/create_shopping_list_item_dto.dart';
@@ -81,18 +81,14 @@ class ShoppingListItemRepositoryImpl implements ShoppingListItemRepository {
       );
 
       if (response.hasException) {
-        print(response.exception);
         return Left(GeneralFailure());
       }
-
       final List<ShoppingListItemEntity> shoppingListItems = [];
       for (var shoppingListItem in response.data!["findShoppingListItems"]) {
         shoppingListItems.add(ShoppingListItemModel.fromJson(shoppingListItem));
       }
       return Right(shoppingListItems);
     } catch (e) {
-      print(e);
-
       return Left(ServerFailure());
     }
   }
