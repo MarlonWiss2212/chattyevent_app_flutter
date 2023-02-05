@@ -49,6 +49,8 @@ class ConnectedGroupchatTilePrivateEvent extends StatelessWidget {
           onTap: () {
             AutoRouter.of(context).root.push(
                   ChatPageWrapperRoute(
+                    chatToSet: state.groupchat,
+                    loadChatFromApiToo: true,
                     groupchatId: state.groupchat.id,
                   ),
                 );

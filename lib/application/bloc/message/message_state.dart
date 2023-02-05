@@ -1,23 +1,37 @@
 part of 'message_cubit.dart';
 
 @immutable
-abstract class MessageState {}
+abstract class MessageState {
+  final List<MessageEntity> messages;
 
-class MessageInitial extends MessageState {}
-
-class MessageStateLoading extends MessageState {}
-
-class MessageStateError extends MessageState {
-  final String message;
-  MessageStateError({required this.message});
+  const MessageState({
+    required this.messages,
+  });
 }
 
-class MessageStateLoaded extends MessageState {
-  final List<MessageEntity> messages;
-  final String? errorMessage;
+class MessageInitial extends MessageState {
+  MessageInitial() : super(messages: []);
+}
 
-  MessageStateLoaded({
-    required this.messages,
-    this.errorMessage,
+class MessageLoading extends MessageState {
+  final String loadingForGroupchatId;
+  const MessageLoading({
+    required super.messages,
+    required this.loadingForGroupchatId,
   });
+}
+
+class MessageError extends MessageState {
+  final String title;
+  final String message;
+
+  const MessageError({
+    required this.message,
+    required this.title,
+    required super.messages,
+  });
+}
+
+class MessageLoaded extends MessageState {
+  const MessageLoaded({required super.messages});
 }

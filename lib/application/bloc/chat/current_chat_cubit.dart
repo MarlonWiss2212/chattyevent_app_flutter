@@ -13,19 +13,20 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
   final ChatCubit chatCubit;
   final ChatUseCases chatUseCases;
 
-  CurrentChatCubit({
+  CurrentChatCubit(
+    super.initialState, {
     required this.chatCubit,
     required this.chatUseCases,
-  }) : super(CurrentChatInitial());
+  });
 
   void reset() {
-    emit(CurrentChatInitial());
+    emit(CurrentChatInitial(currentChat: GroupchatEntity(id: "")));
   }
 
-  Future getOneChatViaApi({
+  Future getCurrentChatViaApi({
     required GetOneGroupchatFilter getOneGroupchatFilter,
   }) async {
-    emit(CurrentChatLoading());
+    emit(CurrentChatLoading(currentChat: state.currentChat));
 
     final Either<Failure, GroupchatEntity> groupchatOrFailure =
         await chatUseCases.getGroupchatViaApi(
@@ -35,6 +36,7 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
     groupchatOrFailure.fold(
       (error) {
         CurrentChatError(
+          currentChat: state.currentChat,
           title: "Fehler",
           message: mapFailureToMessage(error),
         );
@@ -47,7 +49,7 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
   }
 
   void setCurrentChat({required GroupchatEntity groupchat}) {
-    emit(CurrentChatLoading());
+    emit(CurrentChatLoading(currentChat: state.currentChat));
     emit(CurrentChatLoaded(currentChat: groupchat));
   }
 
@@ -55,8 +57,8 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
     required String groupchatId,
     required String userIdToAdd,
   }) async {
-    final state = this.state as CurrentChatStateWithChat;
-    emit(CurrentChatEditing(currentChat: state.currentChat));
+    emit(CurrentChatLoading(currentChat: state.currentChat));
+
     final Either<Failure, GroupchatEntity> groupchatOrFailure =
         await chatUseCases.addUserToGroupchatViaApi(
       groupchatId: groupchatId,
@@ -66,6 +68,7 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
     groupchatOrFailure.fold(
       (error) {
         emit(CurrentChatError(
+          currentChat: state.currentChat,
           message: "Fehler",
           title: mapFailureToMessage(error),
         ));
@@ -81,8 +84,7 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
     required String groupchatId,
     required String userIdToDelete,
   }) async {
-    final state = this.state as CurrentChatStateWithChat;
-    emit(CurrentChatEditing(currentChat: state.currentChat));
+    emit(CurrentChatLoading(currentChat: state.currentChat));
 
     final Either<Failure, GroupchatEntity> groupchatOrFailure =
         await chatUseCases.deleteUserFromGroupchatViaApi(
@@ -93,6 +95,7 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
     groupchatOrFailure.fold(
       (error) {
         emit(CurrentChatError(
+          currentChat: state.currentChat,
           message: mapFailureToMessage(error),
           title: "Fehler",
         ));

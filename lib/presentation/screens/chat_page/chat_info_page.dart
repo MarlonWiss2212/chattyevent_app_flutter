@@ -2,10 +2,8 @@ import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/private_event_cubit.dart';
-import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:social_media_app_flutter/presentation/widgets/chat_page/chat_info_page/chat_info_page_details.dart';
 
 class ChatInfoPage extends StatelessWidget {
@@ -24,20 +22,19 @@ class ChatInfoPage extends StatelessWidget {
             title: Hero(
               tag: "$groupchatId title",
               child: Text(
-                state is CurrentChatStateWithChat &&
-                        state.currentChat.title != null
+                state.currentChat.title != null
                     ? state.currentChat.title!
                     : "Kein Titel",
                 style: Theme.of(context).textTheme.titleLarge,
               ),
             ),
           ),
-          body: state is CurrentChatLoading
+          body: state is CurrentChatLoading && state.currentChat.id == ""
               ? Center(child: PlatformCircularProgressIndicator())
-              : state is CurrentChatStateWithChat
+              : state.currentChat.id != ""
                   ? Column(
                       children: [
-                        if (state is CurrentChatEditing) ...{
+                        if (state is CurrentChatLoading) ...{
                           const LinearProgressIndicator(),
                         },
                         Expanded(

@@ -1,31 +1,30 @@
 part of 'current_chat_cubit.dart';
 
 @immutable
-abstract class CurrentChatState {}
-
-abstract class CurrentChatStateWithChat extends CurrentChatState {
+abstract class CurrentChatState {
   final GroupchatEntity currentChat;
-  CurrentChatStateWithChat({required this.currentChat});
+  const CurrentChatState({required this.currentChat});
 }
 
-class CurrentChatInitial extends CurrentChatState {}
+class CurrentChatInitial extends CurrentChatState {
+  const CurrentChatInitial({required super.currentChat});
+}
 
-class CurrentChatLoading extends CurrentChatState {}
-
-class CurrentChatEditing extends CurrentChatStateWithChat {
-  CurrentChatEditing({required super.currentChat});
+class CurrentChatLoading extends CurrentChatState {
+  const CurrentChatLoading({required super.currentChat});
 }
 
 class CurrentChatError extends CurrentChatState {
   final String title;
   final String message;
 
-  CurrentChatError({
+  const CurrentChatError({
+    required super.currentChat,
     required this.message,
     required this.title,
   });
 }
 
-class CurrentChatLoaded extends CurrentChatStateWithChat {
-  CurrentChatLoaded({required super.currentChat});
+class CurrentChatLoaded extends CurrentChatState {
+  const CurrentChatLoaded({required super.currentChat});
 }

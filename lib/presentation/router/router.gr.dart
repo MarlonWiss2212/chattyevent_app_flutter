@@ -105,6 +105,7 @@ class AppRouter extends _i26.RootStackRouter {
           key: args.key,
           groupchatId: args.groupchatId,
           chatToSet: args.chatToSet,
+          loadChatFromApiToo: args.loadChatFromApiToo,
         ),
       );
     },
@@ -586,6 +587,7 @@ class ChatPageWrapperRoute
     _i27.Key? key,
     required String groupchatId,
     _i29.GroupchatEntity? chatToSet,
+    bool loadChatFromApiToo = true,
     List<_i26.PageRouteInfo>? children,
   }) : super(
           ChatPageWrapperRoute.name,
@@ -594,6 +596,7 @@ class ChatPageWrapperRoute
             key: key,
             groupchatId: groupchatId,
             chatToSet: chatToSet,
+            loadChatFromApiToo: loadChatFromApiToo,
           ),
           rawPathParams: {'id': groupchatId},
           initialChildren: children,
@@ -607,6 +610,7 @@ class ChatPageWrapperRouteArgs {
     this.key,
     required this.groupchatId,
     this.chatToSet,
+    this.loadChatFromApiToo = true,
   });
 
   final _i27.Key? key;
@@ -615,9 +619,11 @@ class ChatPageWrapperRouteArgs {
 
   final _i29.GroupchatEntity? chatToSet;
 
+  final bool loadChatFromApiToo;
+
   @override
   String toString() {
-    return 'ChatPageWrapperRouteArgs{key: $key, groupchatId: $groupchatId, chatToSet: $chatToSet}';
+    return 'ChatPageWrapperRouteArgs{key: $key, groupchatId: $groupchatId, chatToSet: $chatToSet, loadChatFromApiToo: $loadChatFromApiToo}';
   }
 }
 

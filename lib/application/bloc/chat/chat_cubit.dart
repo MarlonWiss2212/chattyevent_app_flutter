@@ -15,56 +15,40 @@ class ChatCubit extends Cubit<ChatState> {
     emit(ChatInitial());
   }
 
-  void addChat({required GroupchatEntity groupchat}) async {
-    if (state is ChatLoaded) {
-      final state = this.state as ChatLoaded;
-      List<GroupchatEntity> newChats = List.from(state.chats)..add(groupchat);
-      emit(ChatLoaded(chats: newChats));
-    } else {
-      emit(ChatLoaded(chats: [groupchat]));
-    }
+  void addChat({required GroupchatEntity groupchat}) {
+    emit(ChatLoaded(chats: List.from(state.chats)..add(groupchat)));
   }
 
   GroupchatEntity editChatIfExistOrAdd({required GroupchatEntity groupchat}) {
-    if (state is ChatLoaded) {
-      final state = this.state as ChatLoaded;
-
-      int foundIndex = -1;
-      state.chats.asMap().forEach((index, chatToFind) {
-        if (chatToFind.id == groupchat.id) {
-          foundIndex = index;
-        }
-      });
-
-      if (foundIndex != -1) {
-        List<GroupchatEntity> newGroupchats = state.chats;
-        newGroupchats[foundIndex] = GroupchatEntity(
-          id: groupchat.id,
-          title: groupchat.title ?? newGroupchats[foundIndex].title,
-          description:
-              groupchat.description ?? newGroupchats[foundIndex].description,
-          users: groupchat.users ?? newGroupchats[foundIndex].users,
-          profileImageLink: groupchat.profileImageLink ??
-              newGroupchats[foundIndex].profileImageLink,
-          leftUsers: groupchat.leftUsers ?? newGroupchats[foundIndex].leftUsers,
-          createdBy: groupchat.createdBy ?? newGroupchats[foundIndex].createdBy,
-          createdAt: groupchat.createdAt ?? newGroupchats[foundIndex].createdAt,
-        );
-        emit(
-          ChatLoaded(chats: newGroupchats),
-        );
-        return newGroupchats[foundIndex];
-      } else {
-        emit(
-          ChatLoaded(
-            chats: List.from(state.chats)..add(groupchat),
-          ),
-        );
+    int foundIndex = -1;
+    state.chats.asMap().forEach((index, chatToFind) {
+      if (chatToFind.id == groupchat.id) {
+        foundIndex = index;
       }
+    });
+
+    if (foundIndex != -1) {
+      List<GroupchatEntity> newGroupchats = state.chats;
+      newGroupchats[foundIndex] = GroupchatEntity(
+        id: groupchat.id,
+        title: groupchat.title ?? newGroupchats[foundIndex].title,
+        description:
+            groupchat.description ?? newGroupchats[foundIndex].description,
+        users: groupchat.users ?? newGroupchats[foundIndex].users,
+        profileImageLink: groupchat.profileImageLink ??
+            newGroupchats[foundIndex].profileImageLink,
+        leftUsers: groupchat.leftUsers ?? newGroupchats[foundIndex].leftUsers,
+        createdBy: groupchat.createdBy ?? newGroupchats[foundIndex].createdBy,
+        createdAt: groupchat.createdAt ?? newGroupchats[foundIndex].createdAt,
+      );
+      emit(
+        ChatLoaded(chats: newGroupchats),
+      );
+      return newGroupchats[foundIndex];
     } else {
       emit(
         ChatLoaded(
-          chats: [groupchat],
+          chats: List.from(state.chats)..add(groupchat),
         ),
       );
     }
@@ -72,7 +56,7 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   Future getChatsViaApi() async {
-    emit(ChatLoading());
+    emit(ChatLoading(chats: state.chats));
 
     final Either<Failure, List<GroupchatEntity>> groupchatsOrFailure =
         await chatUseCases.getGroupchatsViaApi();
@@ -80,12 +64,30 @@ class ChatCubit extends Cubit<ChatState> {
     groupchatsOrFailure.fold(
       (error) => emit(
         ChatError(
+          chats: state.chats,
           title: "Fehler",
           message: mapFailureToMessage(error),
         ),
       ),
       (groupchats) {
-        emit(ChatLoaded(chats: groupchats));
+        List<GroupchatEntity> chatsToEmit = groupchats;
+
+        for (final stateChat in state.chats) {
+          bool savedTheChat = false;
+
+          innerLoop:
+          for (final chatToEmit in chatsToEmit) {
+            if (chatToEmit.id == stateChat.id) {
+              savedTheChat = true;
+              break innerLoop;
+            }
+          }
+
+          if (!savedTheChat) {
+            chatsToEmit.add(stateChat);
+          }
+        }
+        emit(ChatLoaded(chats: chatsToEmit));
       },
     );
   }

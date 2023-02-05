@@ -33,12 +33,10 @@ class ChatPage extends StatelessWidget {
             title: Row(
               children: [
                 CircleAvatar(
-                  backgroundImage: state is CurrentChatStateWithChat &&
-                          state.currentChat.profileImageLink != null
+                  backgroundImage: state.currentChat.profileImageLink != null
                       ? NetworkImage(state.currentChat.profileImageLink!)
                       : null,
-                  backgroundColor: state is CurrentChatStateWithChat &&
-                          state.currentChat.profileImageLink != null
+                  backgroundColor: state.currentChat.profileImageLink != null
                       ? null
                       : Theme.of(context).colorScheme.secondaryContainer,
                 ),
@@ -46,8 +44,7 @@ class ChatPage extends StatelessWidget {
                 Hero(
                   tag: "$groupchatId title",
                   child: Text(
-                    state is CurrentChatStateWithChat &&
-                            state.currentChat.title != null
+                    state.currentChat.title != null
                         ? state.currentChat.title!
                         : "Kein Titel",
                     style: Theme.of(context).textTheme.titleLarge,
@@ -64,12 +61,12 @@ class ChatPage extends StatelessWidget {
               )
             ],
           ),
-          body: state is CurrentChatLoading
+          body: state is CurrentChatLoading && state.currentChat.id == ""
               ? Center(child: PlatformCircularProgressIndicator())
-              : state is CurrentChatStateWithChat
+              : state.currentChat.id != ""
                   ? Column(
                       children: [
-                        if (state is CurrentChatEditing) ...{
+                        if (state is CurrentChatLoading) ...{
                           const LinearProgressIndicator()
                         },
                         Expanded(

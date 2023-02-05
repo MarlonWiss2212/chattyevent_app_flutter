@@ -110,6 +110,7 @@ class _NewGroupchatPageSelectUsersPageState
                         AutoRouter.of(context).root.replace(
                               ChatPageWrapperRoute(
                                 groupchatId: state.addedChat.id,
+                                loadChatFromApiToo: false,
                                 chatToSet: state.addedChat,
                               ),
                             );

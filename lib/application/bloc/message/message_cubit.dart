@@ -21,22 +21,27 @@ class MessageCubit extends Cubit<MessageState> {
   }
 
   void addMessage({required MessageEntity message}) {
-    if (state is MessageStateLoaded) {
-      final state = this.state as MessageStateLoaded;
+    if (state is MessageLoaded) {
+      final state = this.state as MessageLoaded;
       emit(
-        MessageStateLoaded(
+        MessageLoaded(
           messages: List.from(state.messages)..add(message),
         ),
       );
     } else {
-      emit(MessageStateLoaded(messages: [message]));
+      emit(
+        MessageLoaded(
+          messages: [message],
+        ),
+      );
     }
   }
 
   Future getMessages({required GetMessagesFilter getMessagesFilter}) async {
-    if (state is MessageInitial) {
-      emit(MessageStateLoading());
-    }
+    emit(MessageLoading(
+      messages: state.messages,
+      loadingForGroupchatId: getMessagesFilter.groupchatTo ?? "",
+    ));
 
     final Either<Failure, List<MessageEntity>> messagesOrFailure =
         await messageUseCases.getMessagesViaApi(
@@ -45,42 +50,33 @@ class MessageCubit extends Cubit<MessageState> {
 
     messagesOrFailure.fold(
       (error) {
-        if (state is MessageStateLoaded) {
-          final state = this.state as MessageStateLoaded;
-          emit(MessageStateLoaded(
-            messages: state.messages,
-            errorMessage: mapFailureToMessage(error),
-          ));
-        } else {
-          emit(MessageStateError(message: mapFailureToMessage(error)));
-        }
+        MessageError(
+          title: "Message Fehler",
+          message: mapFailureToMessage(error),
+          messages: state.messages,
+        );
       },
       (messages) {
-        if (state is MessageStateLoaded) {
-          final state = this.state as MessageStateLoaded;
-          List<MessageEntity> messagesToEmit = messages;
+        List<MessageEntity> messagesToEmit = messages;
 
-          for (final stateMessage in state.messages) {
-            bool savedTheMessage = false;
+        for (final stateMessage in state.messages) {
+          bool savedTheMessage = false;
 
-            innerLoop:
-            for (final messageToEmit in messagesToEmit) {
-              if (messageToEmit.id == stateMessage.id) {
-                savedTheMessage = true;
-                break innerLoop;
-              }
-            }
-
-            if (!savedTheMessage) {
-              messagesToEmit.add(stateMessage);
+          innerLoop:
+          for (final messageToEmit in messagesToEmit) {
+            if (messageToEmit.id == stateMessage.id) {
+              savedTheMessage = true;
+              break innerLoop;
             }
           }
-          emit(MessageStateLoaded(messages: messagesToEmit));
-        } else {
-          emit(
-            MessageStateLoaded(messages: messages),
-          );
+
+          if (!savedTheMessage) {
+            messagesToEmit.add(stateMessage);
+          }
         }
+        emit(MessageLoaded(
+          messages: messagesToEmit,
+        ));
       },
     );
   }

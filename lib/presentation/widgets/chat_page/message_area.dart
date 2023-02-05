@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:skeletons/skeletons.dart';
 import 'package:social_media_app_flutter/application/bloc/message/message_cubit.dart';
 import 'package:social_media_app_flutter/domain/entities/message/message_entity.dart';
-import 'package:social_media_app_flutter/domain/filter/get_messages_filter.dart';
 import 'package:social_media_app_flutter/presentation/widgets/message_list.dart';
 
 class MessageArea extends StatelessWidget {
@@ -15,37 +14,50 @@ class MessageArea extends StatelessWidget {
     return Expanded(
       child: BlocBuilder<MessageCubit, MessageState>(
         builder: (context, state) {
-          if (state is MessageStateLoaded) {
-            List<MessageEntity> filteredMessages = [];
+          bool loadingDataForCurrentEvent = state is MessageLoading &&
+              state.loadingForGroupchatId == groupchatTo;
 
-            for (final message in state.messages) {
-              if (message.groupchatTo != null &&
-                  message.groupchatTo == groupchatTo) {
-                filteredMessages.add(message);
-              }
+          const emptyReturn = Center(child: Text("Keine Nachrichten"));
+
+          if (state.messages.isEmpty && !loadingDataForCurrentEvent) {
+            return emptyReturn;
+          }
+
+          List<MessageEntity> filteredMessages = [];
+
+          for (final message in state.messages) {
+            if (message.groupchatTo == groupchatTo) {
+              filteredMessages.add(message);
             }
+          }
 
-            return MessageList(
-              groupchatTo: groupchatTo,
-              messages: filteredMessages,
-            );
-          } else if (state is MessageStateLoading) {
-            return Center(child: PlatformCircularProgressIndicator());
-          } else {
-            return Center(
-              child: PlatformTextButton(
-                child: Text(
-                  state is MessageStateError ? state.message : "Daten laden",
-                ),
-                onPressed: () =>
-                    BlocProvider.of<MessageCubit>(context).getMessages(
-                  getMessagesFilter: GetMessagesFilter(
-                    groupchatTo: groupchatTo,
+          if (filteredMessages.isEmpty && loadingDataForCurrentEvent) {
+            return SkeletonListView(
+              itemBuilder: (p0, p1) {
+                return SkeletonListTile(
+                  hasSubtitle: true,
+                  hasLeading: false,
+                  titleStyle: const SkeletonLineStyle(
+                    width: double.infinity,
+                    height: 22,
                   ),
-                ),
-              ),
+                  subtitleStyle: const SkeletonLineStyle(
+                    width: double.infinity,
+                    height: 16,
+                  ),
+                );
+              },
             );
           }
+
+          if (filteredMessages.isEmpty) {
+            return emptyReturn;
+          }
+
+          return MessageList(
+            groupchatTo: groupchatTo,
+            messages: filteredMessages,
+          );
         },
       ),
     );

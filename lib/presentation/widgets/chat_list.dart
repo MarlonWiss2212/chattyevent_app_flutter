@@ -36,6 +36,8 @@ class ChatList extends StatelessWidget {
           onTap: () {
             AutoRouter.of(context).push(
               ChatPageWrapperRoute(
+                chatToSet: chats[index],
+                loadChatFromApiToo: true,
                 groupchatId: chats[index].id,
               ),
             );

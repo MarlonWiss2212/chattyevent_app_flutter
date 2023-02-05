@@ -7,7 +7,6 @@ import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:social_media_app_flutter/domain/filter/get_one_groupchat_filter.dart';
-import 'package:social_media_app_flutter/domain/repositories/chat_repository.dart';
 import 'package:social_media_app_flutter/domain/usecases/chat_usecases.dart';
 import 'package:social_media_app_flutter/infastructure/datasources/remote/graphql.dart';
 import 'package:social_media_app_flutter/infastructure/respositories/chat_repository_impl.dart';
@@ -17,11 +16,13 @@ import 'package:social_media_app_flutter/presentation/widgets/dialog/buttons/ok_
 class ChatPageWrapper extends StatelessWidget {
   final String groupchatId;
   final GroupchatEntity? chatToSet;
+  final bool loadChatFromApiToo;
 
   const ChatPageWrapper({
     super.key,
     @PathParam('id') required this.groupchatId,
     this.chatToSet,
+    this.loadChatFromApiToo = true,
   });
 
   @override
@@ -34,6 +35,9 @@ class ChatPageWrapper extends StatelessWidget {
 
     return BlocProvider(
       create: (context) => CurrentChatCubit(
+        CurrentChatInitial(
+          currentChat: chatToSet ?? GroupchatEntity(id: ""),
+        ),
         chatCubit: BlocProvider.of<ChatCubit>(context),
         chatUseCases: ChatUseCases(
           chatRepository: ChatRepositoryImpl(
@@ -57,15 +61,18 @@ class ChatPageWrapper extends StatelessWidget {
           }
         },
         child: Builder(builder: (context) {
-          if (chatToSet == null) {
-            BlocProvider.of<CurrentChatCubit>(context).getOneChatViaApi(
-              getOneGroupchatFilter: GetOneGroupchatFilter(id: groupchatId),
-            );
-          } else {
+          if (chatToSet != null) {
             BlocProvider.of<CurrentChatCubit>(context).setCurrentChat(
               groupchat: chatToSet!,
             );
           }
+
+          if (chatToSet == null || loadChatFromApiToo) {
+            BlocProvider.of<CurrentChatCubit>(context).getCurrentChatViaApi(
+              getOneGroupchatFilter: GetOneGroupchatFilter(id: groupchatId),
+            );
+          }
+
           return const AutoRouter();
         }),
       ),
