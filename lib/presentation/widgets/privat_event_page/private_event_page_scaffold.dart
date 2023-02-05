@@ -4,11 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event/current_private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event/current_private_event_groupchat_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event/shopping_list/current_private_event_shopping_list_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/shopping_list/shopping_list_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
-import 'package:social_media_app_flutter/presentation/screens/private_event_page/pages/info_tab.dart';
-import 'package:social_media_app_flutter/presentation/screens/private_event_page/pages/shopping_list_tab.dart';
 
 class PrivateEventPageScaffold extends StatelessWidget {
   final String privateEventId;
@@ -27,7 +25,9 @@ class PrivateEventPageScaffold extends StatelessWidget {
             state.privateEvent.connectedGroupchat != null &&
             dataLoaded == false) {
           BlocProvider.of<CurrentPrivateEventGroupchatCubit>(context)
-              .setCurrentGroupchatViaApi();
+              .setCurrentGroupchatViaApi(
+            groupchatId: state.privateEvent.connectedGroupchat!,
+          );
           BlocProvider.of<UserCubit>(context).getUsersViaApi();
           dataLoaded = true;
         }
@@ -72,16 +72,6 @@ class PrivateEventPageScaffold extends StatelessWidget {
                             if (state is CurrentPrivateEventEditing) ...{
                               const LinearProgressIndicator()
                             },
-                            BlocBuilder<CurrentPrivateEventShoppingListCubit,
-                                CurrentPrivateEventShoppingListState>(
-                              builder: (context, state) {
-                                if (state
-                                    is CurrentPrivateEventShoppingListEditing) {
-                                  return const LinearProgressIndicator();
-                                }
-                                return Container();
-                              },
-                            ),
                             Expanded(child: child),
                           ],
                         )

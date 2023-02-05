@@ -6,8 +6,8 @@ import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event/current_private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event/current_private_event_groupchat_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event/shopping_list/current_private_event_shopping_list_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/private_event_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/shopping_list/shopping_list_cubit.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
 import 'package:social_media_app_flutter/domain/filter/get_one_private_event_filter.dart';
 import 'package:social_media_app_flutter/domain/usecases/chat_usecases.dart';
@@ -55,22 +55,12 @@ class PrivateEventPage extends StatelessWidget {
         BlocProvider.value(
           value: CurrentPrivateEventGroupchatCubit(
             chatCubit: BlocProvider.of<ChatCubit>(context),
-            currentPrivateEventCubit: currentPrivateEventCubit,
             chatUseCases: ChatUseCases(
               chatRepository:
                   ChatRepositoryImpl(graphQlDatasource: graphQlDatasource),
             ),
           ),
         ),
-        BlocProvider.value(
-          value: CurrentPrivateEventShoppingListCubit(
-            shoppingListItemUseCases: ShoppingListItemUseCases(
-              shoppingListItemRepository: ShoppingListItemRepositoryImpl(
-                graphQlDatasource: graphQlDatasource,
-              ),
-            ),
-          ),
-        )
       ],
       child: Builder(
         builder: (context) {
@@ -121,10 +111,9 @@ class PrivateEventPage extends StatelessWidget {
                   }
                 },
               ),
-              BlocListener<CurrentPrivateEventShoppingListCubit,
-                  CurrentPrivateEventShoppingListState>(
+              BlocListener<ShoppingListCubit, ShoppingListState>(
                 listener: (context, state) async {
-                  if (state is CurrentPrivateEventShoppingListError) {
+                  if (state is ShoppingListError) {
                     return await showPlatformDialog(
                       context: context,
                       builder: (context) {

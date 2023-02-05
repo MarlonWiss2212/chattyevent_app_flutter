@@ -13,46 +13,20 @@ part 'current_private_event_groupchat_state.dart';
 class CurrentPrivateEventGroupchatCubit
     extends Cubit<CurrentPrivateEventGroupchatState> {
   final ChatCubit chatCubit;
-  final CurrentPrivateEventCubit currentPrivateEventCubit;
   final ChatUseCases chatUseCases;
 
   CurrentPrivateEventGroupchatCubit({
     required this.chatCubit,
-    required this.currentPrivateEventCubit,
     required this.chatUseCases,
   }) : super(CurrentPrivateEventGroupchatInitial());
 
-  Future setCurrentGroupchatViaApi() async {
+  Future setCurrentGroupchatViaApi({required String groupchatId}) async {
     emit(CurrentPrivateEventGroupchatLoading());
-
-    if (currentPrivateEventCubit.state
-        is! CurrentPrivateEventStateWithPrivateEvent) {
-      return emit(
-        CurrentPrivateEventGroupchatError(
-          message:
-              "Du kannst den zugehörigen Gruppenchat erst nach dem Event laden",
-          title: "Event Fehler",
-        ),
-      );
-    }
-
-    final privateEventState = currentPrivateEventCubit.state
-        as CurrentPrivateEventStateWithPrivateEvent;
-
-    if (privateEventState.privateEvent.connectedGroupchat == null) {
-      return emit(
-        CurrentPrivateEventGroupchatError(
-          message:
-              "Konnte den zugehörigen Gruppenchat in den Event Details nicht Finden",
-          title: "Gruppenchat Fehler",
-        ),
-      );
-    }
 
     final Either<Failure, GroupchatEntity> groupchatOrFailure =
         await chatUseCases.getGroupchatViaApi(
       getOneGroupchatFilter: GetOneGroupchatFilter(
-        id: privateEventState.privateEvent.connectedGroupchat!,
+        id: groupchatId,
       ),
     );
 

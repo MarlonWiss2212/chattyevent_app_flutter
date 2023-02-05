@@ -5,6 +5,8 @@ import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/add_chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/location/location_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/shopping_list/add_shopping_list_item_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/shopping_list/shopping_list_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user_search/user_search_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/profile_page_cubit.dart';
@@ -20,6 +22,7 @@ import 'package:social_media_app_flutter/domain/usecases/image_picker_usecases.d
 import 'package:social_media_app_flutter/domain/usecases/location_usecases.dart';
 import 'package:social_media_app_flutter/domain/usecases/message_usecases.dart';
 import 'package:social_media_app_flutter/domain/usecases/private_event_usecases.dart';
+import 'package:social_media_app_flutter/domain/usecases/shopping_list_item_usecases.dart';
 import 'package:social_media_app_flutter/domain/usecases/user_usecases.dart';
 import 'package:social_media_app_flutter/infastructure/datasources/device/image_picker.dart';
 import 'package:social_media_app_flutter/infastructure/datasources/device/location.dart';
@@ -29,6 +32,7 @@ import 'package:social_media_app_flutter/infastructure/respositories/device/imag
 import 'package:social_media_app_flutter/infastructure/respositories/device/location_repository_impl.dart';
 import 'package:social_media_app_flutter/infastructure/respositories/message_repository_impl.dart';
 import 'package:social_media_app_flutter/infastructure/respositories/private_event_repository_impl.dart';
+import 'package:social_media_app_flutter/infastructure/respositories/shopping_list_item_repository_impl.dart';
 import 'package:social_media_app_flutter/infastructure/respositories/user_repository_impl.dart';
 import 'package:social_media_app_flutter/injection.dart';
 import 'package:social_media_app_flutter/main.dart';
@@ -76,6 +80,9 @@ class BlocInit extends StatelessWidget {
         final imagePickerRepository = ImagePickerRepositoryImpl(
           imagePickerDatasource: imagePickerDatasource,
         );
+        final shoppingListItemRepository = ShoppingListItemRepositoryImpl(
+          graphQlDatasource: graphQlDatasource,
+        );
 
         final chatUseCases = ChatUseCases(chatRepository: chatRepository);
         final privateEventUseCases = PrivateEventUseCases(
@@ -90,6 +97,9 @@ class BlocInit extends StatelessWidget {
         );
         final imagePickerUseCases = ImagePickerUseCases(
           imagePickerRepository: imagePickerRepository,
+        );
+        final shoppingListItemUseCases = ShoppingListItemUseCases(
+          shoppingListItemRepository: shoppingListItemRepository,
         );
 
         final chatCubit = ChatCubit(chatUseCases: chatUseCases);
@@ -124,6 +134,12 @@ class BlocInit extends StatelessWidget {
           userUseCases: userUseCases,
           userCubit: userCubit,
         );
+        final shoppingListCubit = ShoppingListCubit(
+            shoppingListItemUseCases: shoppingListItemUseCases);
+        final addShoppingListItemCubit = AddShoppingListItemCubit(
+          shoppingListCubit: shoppingListCubit,
+          shoppingListItemUseCases: shoppingListItemUseCases,
+        );
 
         return MultiBlocProvider(
           providers: [
@@ -139,6 +155,8 @@ class BlocInit extends StatelessWidget {
             BlocProvider.value(value: locationCubit),
             BlocProvider.value(value: imageCubit),
             BlocProvider.value(value: profilePageCubit),
+            BlocProvider.value(value: shoppingListCubit),
+            BlocProvider.value(value: addShoppingListItemCubit),
           ],
           child: App(
             authState: state,
