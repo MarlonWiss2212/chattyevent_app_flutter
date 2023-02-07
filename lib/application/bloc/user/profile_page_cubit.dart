@@ -12,15 +12,16 @@ part 'profile_page_state.dart';
 class ProfilePageCubit extends Cubit<ProfilePageState> {
   final UserUseCases userUseCases;
   final UserCubit userCubit;
-  ProfilePageCubit({
+  ProfilePageCubit(
+    super.initialState, {
     required this.userUseCases,
     required this.userCubit,
-  }) : super(ProfilePageInitial());
+  });
 
   Future getOneUserViaApi({
     required GetOneUserFilter getOneUserFilter,
   }) async {
-    emit(ProfilePageLoading());
+    emit(ProfilePageLoading(user: state.user));
     final Either<Failure, UserEntity> userOrFailure =
         await userUseCases.getUserViaApi(
       getOneUserFilter: getOneUserFilter,
@@ -29,6 +30,7 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
     userOrFailure.fold(
       (error) {
         emit(ProfilePageError(
+          user: state.user,
           title: "Fehler",
           message: mapFailureToMessage(error),
         ));
@@ -43,7 +45,7 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
   void setCurrentUserFromAnotherResponse({
     required UserEntity user,
   }) {
-    emit(ProfilePageLoading());
+    emit(ProfilePageLoading(user: state.user));
 
     final mergedUser = userCubit.editUserIfExistOrAdd(user: user);
     emit(ProfilePageLoaded(user: mergedUser));

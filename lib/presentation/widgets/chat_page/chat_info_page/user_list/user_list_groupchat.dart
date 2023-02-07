@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:skeletons/skeletons.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
@@ -23,19 +24,16 @@ class UserListGroupchat extends StatelessWidget {
     return BlocBuilder<UserCubit, UserState>(
       builder: (context, state) {
         List<Widget> widgetsToReturn = [];
+
         for (final groupchatUser in groupchatUsers) {
-          UserEntity? foundUser;
-          if (state is UserStateLoaded) {
-            for (final user in state.users) {
-              if (user.id == groupchatUser.userId) {
-                foundUser = user;
-                break;
-              }
-            }
-          }
+          UserEntity foundUser = state.users.firstWhere(
+            (element) => element.id == groupchatUser.userId,
+            orElse: () => UserEntity(id: ""),
+          );
+
           widgetsToReturn.add(
             UserListTile(
-              profileImageLink: foundUser?.profileImageLink,
+              profileImageLink: foundUser.profileImageLink,
               subtitle: groupchatUser.admin != null && groupchatUser.admin!
                   ? Text(
                       "Admin",
@@ -50,7 +48,7 @@ class UserListGroupchat extends StatelessWidget {
                       softWrap: true,
                       overflow: TextOverflow.ellipsis,
                     ),
-              username: foundUser != null && foundUser.username != null
+              username: foundUser.username != null
                   ? foundUser.username!
                   : "Kein Username",
               userId: groupchatUser.userId,

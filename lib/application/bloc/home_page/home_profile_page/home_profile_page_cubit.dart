@@ -10,18 +10,15 @@ part 'home_profile_page_state.dart';
 
 class HomeProfilePageCubit extends Cubit<HomeProfilePageState> {
   final UserUseCases userUseCases;
-  HomeProfilePageCubit({required this.userUseCases})
-      : super(HomeProfilePageInitial());
+  HomeProfilePageCubit(
+    super.initialState, {
+    required this.userUseCases,
+  });
 
   Future getOneUserViaApi({
     required GetOneUserFilter getOneUserFilter,
   }) async {
-    if (state is HomeProfilePageWithUser) {
-      final state = this.state as HomeProfilePageWithUser;
-      emit(HomeProfilePageEditing(user: state.user));
-    } else {
-      emit(HomeProfilePageLoading());
-    }
+    emit(HomeProfilePageLoading(user: state.user));
 
     final Either<Failure, UserEntity> userOrFailure =
         await userUseCases.getUserViaApi(
@@ -31,6 +28,7 @@ class HomeProfilePageCubit extends Cubit<HomeProfilePageState> {
     userOrFailure.fold(
       (error) {
         emit(HomeProfilePageError(
+          user: state.user,
           title: "Fehler",
           message: mapFailureToMessage(error),
         ));
@@ -39,17 +37,5 @@ class HomeProfilePageCubit extends Cubit<HomeProfilePageState> {
         emit(HomeProfilePageLoaded(user: user));
       },
     );
-  }
-
-  void setCurrentUserFromAnotherResponse({
-    required UserEntity user,
-  }) {
-    if (state is HomeProfilePageWithUser) {
-      final state = this.state as HomeProfilePageWithUser;
-      emit(HomeProfilePageEditing(user: state.user));
-    } else {
-      emit(HomeProfilePageLoading());
-    }
-    emit(HomeProfilePageLoaded(user: user));
   }
 }

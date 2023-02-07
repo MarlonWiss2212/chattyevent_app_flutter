@@ -96,11 +96,6 @@ class _AppState extends State<App> {
             id: Jwt.parseJwt(authState.token)["sub"],
           ),
         );
-      } else {
-        BlocProvider.of<HomeProfilePageCubit>(context)
-            .setCurrentUserFromAnotherResponse(
-          user: authState.userResponse!,
-        );
       }
     }
     return DynamicColorBuilder(

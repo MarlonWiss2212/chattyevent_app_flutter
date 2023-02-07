@@ -13,9 +13,7 @@ class MiniProfileImage extends StatelessWidget {
         return CircleImage(
           height: 24,
           width: 24,
-          imageLink: state is HomeProfilePageWithUser
-              ? state.user.profileImageLink
-              : null,
+          imageLink: state.user.profileImageLink,
         );
       },
     );

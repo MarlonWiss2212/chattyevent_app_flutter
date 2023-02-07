@@ -58,6 +58,7 @@ class ConnectedGroupchatTilePrivateEvent extends StatelessWidget {
         );
       } else if (state is CurrentPrivateEventGroupchatLoading) {
         return SkeletonListTile(
+          padding: const EdgeInsets.symmetric(horizontal: 8),
           hasSubtitle: true,
           titleStyle: const SkeletonLineStyle(width: 100, height: 22),
           subtitleStyle:
@@ -72,7 +73,7 @@ class ConnectedGroupchatTilePrivateEvent extends StatelessWidget {
             child: Text(
               state is CurrentPrivateEventGroupchatError
                   ? state.message
-                  : "Daten Laden",
+                  : "Verbunden Chat laden",
             ),
             onPressed: () =>
                 BlocProvider.of<CurrentPrivateEventGroupchatCubit>(context)

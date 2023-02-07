@@ -30,6 +30,7 @@ class MessageList extends StatelessWidget {
           padding: const EdgeInsets.only(top: 8),
           itemBuilder: (context, messageEntity) {
             UserEntity? foundUser;
+            //TODO: handle this more efficient
             if (state is UserStateLoaded) {
               for (final user in state.users) {
                 if (user.id == messageEntity.createdBy) {

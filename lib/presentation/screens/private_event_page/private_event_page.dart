@@ -24,9 +24,12 @@ import 'package:social_media_app_flutter/presentation/widgets/privat_event_page/
 class PrivateEventPage extends StatelessWidget {
   final String privateEventId;
   final PrivateEventEntity? privateEventToSet;
+  final bool loadPrivateEventFromApiToo;
+
   const PrivateEventPage({
     @PathParam('id') required this.privateEventId,
     this.privateEventToSet,
+    this.loadPrivateEventFromApiToo = true,
     super.key,
   });
 
@@ -41,6 +44,9 @@ class PrivateEventPage extends StatelessWidget {
 
     CurrentPrivateEventCubit currentPrivateEventCubit =
         CurrentPrivateEventCubit(
+      CurrentPrivateEventInitial(
+        privateEvent: privateEventToSet ?? PrivateEventEntity(id: ""),
+      ),
       privateEventCubit: BlocProvider.of<PrivateEventCubit>(context),
       privateEventUseCases: PrivateEventUseCases(
         privateEventRepository: PrivateEventRepositoryImpl(
@@ -54,6 +60,7 @@ class PrivateEventPage extends StatelessWidget {
         BlocProvider.value(value: currentPrivateEventCubit),
         BlocProvider.value(
           value: CurrentPrivateEventGroupchatCubit(
+            //TODO: save the groupchat directly
             chatCubit: BlocProvider.of<ChatCubit>(context),
             chatUseCases: ChatUseCases(
               chatRepository:
@@ -64,16 +71,12 @@ class PrivateEventPage extends StatelessWidget {
       ],
       child: Builder(
         builder: (context) {
-          if (privateEventToSet == null) {
+          if (privateEventToSet == null || loadPrivateEventFromApiToo) {
             BlocProvider.of<CurrentPrivateEventCubit>(context)
                 .getOnePrivateEvent(
-              getOnePrivateEventFilter:
-                  GetOnePrivateEventFilter(id: privateEventId),
-            );
-          } else {
-            BlocProvider.of<CurrentPrivateEventCubit>(context)
-                .setCurrentPrivateEvent(
-              privateEvent: privateEventToSet!,
+              getOnePrivateEventFilter: GetOnePrivateEventFilter(
+                id: privateEventId,
+              ),
             );
           }
 

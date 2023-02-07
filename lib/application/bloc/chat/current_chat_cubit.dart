@@ -101,8 +101,8 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
         ));
       },
       (groupchat) {
-        final margedChat = chatCubit.editChatIfExistOrAdd(groupchat: groupchat);
-        emit(CurrentChatLoaded(currentChat: margedChat));
+        final mergedChat = chatCubit.editChatIfExistOrAdd(groupchat: groupchat);
+        emit(CurrentChatLoaded(currentChat: mergedChat));
       },
     );
   }

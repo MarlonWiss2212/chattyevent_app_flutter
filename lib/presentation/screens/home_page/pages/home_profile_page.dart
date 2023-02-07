@@ -17,57 +17,12 @@ class HomeProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final currentUserId = Jwt.parseJwt(
         (BlocProvider.of<AuthCubit>(context).state as AuthLoaded).token)["sub"];
-    return BlocConsumer(
+
+    return BlocConsumer<HomeProfilePageCubit, HomeProfilePageState>(
       bloc: BlocProvider.of<HomeProfilePageCubit>(context)
         ..getOneUserViaApi(
           getOneUserFilter: GetOneUserFilter(id: currentUserId),
         ),
-      builder: (context, state) {
-        Widget body;
-        if (state is HomeProfilePageLoading) {
-          body = Center(child: PlatformCircularProgressIndicator());
-        } else {
-          if (state is HomeProfilePageWithUser) {
-            body = UserProfileDataPage(user: state.user);
-          } else {
-            body = Center(
-              child: PlatformTextButton(
-                child: Text("Keinen User mit der Id: $currentUserId"),
-                onPressed: () => BlocProvider.of<HomeProfilePageCubit>(context)
-                    .getOneUserViaApi(
-                  getOneUserFilter: GetOneUserFilter(id: currentUserId),
-                ),
-              ),
-            );
-          }
-        }
-
-        return PlatformScaffold(
-          appBar: PlatformAppBar(
-            title: Text(
-              state is HomeProfilePageWithUser
-                  ? state.user.username ?? "Profilseite"
-                  : "Profilseite",
-            ),
-            trailingActions: [
-              IconButton(
-                onPressed: () => AutoRouter.of(context).push(
-                  const SettingsWrapperPageRoute(),
-                ),
-                icon: Icon(PlatformIcons(context).settings),
-              )
-            ],
-          ),
-          body: Column(
-            children: [
-              if (state is HomeProfilePageEditing) ...{
-                const LinearProgressIndicator()
-              },
-              Expanded(child: body),
-            ],
-          ),
-        );
-      },
       listener: (context, state) async {
         if (state is HomeProfilePageError) {
           return await showPlatformDialog(
@@ -81,6 +36,53 @@ class HomeProfilePage extends StatelessWidget {
             },
           );
         }
+      },
+      builder: (context, state) {
+        Widget body;
+
+        if (state.user.id != "") {
+          body = UserProfileDataPage(user: state.user);
+        } else if (state is HomeProfilePageLoading && state.user.id == "") {
+          body = Center(child: PlatformCircularProgressIndicator());
+        } else {
+          body = Center(
+            child: PlatformTextButton(
+              child: Text("Keinen User mit der Id: $currentUserId"),
+              onPressed: () => BlocProvider.of<HomeProfilePageCubit>(context)
+                  .getOneUserViaApi(
+                getOneUserFilter: GetOneUserFilter(id: currentUserId),
+              ),
+            ),
+          );
+        }
+
+        return PlatformScaffold(
+          appBar: PlatformAppBar(
+            title: Hero(
+              tag: "${state.user.id} username",
+              child: Text(
+                state.user.username ?? "Profilseite",
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+            ),
+            trailingActions: [
+              IconButton(
+                onPressed: () => AutoRouter.of(context).push(
+                  const SettingsWrapperPageRoute(),
+                ),
+                icon: Icon(PlatformIcons(context).settings),
+              )
+            ],
+          ),
+          body: Column(
+            children: [
+              if (state is HomeProfilePageLoading && state.user.id != "") ...{
+                const LinearProgressIndicator()
+              },
+              Expanded(child: body),
+            ],
+          ),
+        );
       },
     );
   }

@@ -7,7 +7,7 @@ import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubi
 import 'package:social_media_app_flutter/application/bloc/location/location_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/shopping_list/add_shopping_list_item_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/shopping_list/shopping_list_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/user_search/user_search_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/user/user_search_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/profile_page_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/message/message_cubit.dart';
@@ -17,6 +17,7 @@ import 'package:social_media_app_flutter/application/bloc/private_event/add_priv
 import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event/current_private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/home_page/home_profile_page/home_profile_page_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/image/image_cubit.dart';
+import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
 import 'package:social_media_app_flutter/domain/usecases/chat_usecases.dart';
 import 'package:social_media_app_flutter/domain/usecases/image_picker_usecases.dart';
 import 'package:social_media_app_flutter/domain/usecases/location_usecases.dart';
@@ -125,15 +126,19 @@ class BlocInit extends StatelessWidget {
           locationUseCases: locationUseCases,
         );
         final homeProfilePageCubit = HomeProfilePageCubit(
+          HomeProfilePageInitial(
+            user: BlocProvider.of<AuthCubit>(context).state is AuthLoaded
+                ? (BlocProvider.of<AuthCubit>(context).state as AuthLoaded)
+                        .userResponse ??
+                    UserEntity(id: "")
+                : UserEntity(id: ""),
+          ),
           userUseCases: userUseCases,
         );
         final imageCubit = ImageCubit(
           imagePickerUseCases: imagePickerUseCases,
         );
-        final profilePageCubit = ProfilePageCubit(
-          userUseCases: userUseCases,
-          userCubit: userCubit,
-        );
+
         final shoppingListCubit = ShoppingListCubit(
             shoppingListItemUseCases: shoppingListItemUseCases);
         final addShoppingListItemCubit = AddShoppingListItemCubit(
@@ -154,7 +159,6 @@ class BlocInit extends StatelessWidget {
             BlocProvider.value(value: homeProfilePageCubit),
             BlocProvider.value(value: locationCubit),
             BlocProvider.value(value: imageCubit),
-            BlocProvider.value(value: profilePageCubit),
             BlocProvider.value(value: shoppingListCubit),
             BlocProvider.value(value: addShoppingListItemCubit),
           ],

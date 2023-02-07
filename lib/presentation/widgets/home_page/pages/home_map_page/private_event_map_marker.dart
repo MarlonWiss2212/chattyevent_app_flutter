@@ -18,7 +18,11 @@ class PrivateEventMapMarker extends StatelessWidget {
         ),
         child: InkWell(
           onTap: () => AutoRouter.of(context).push(
-            PrivateEventPageRoute(privateEventId: privateEvent.id),
+            PrivateEventPageRoute(
+              privateEventId: privateEvent.id,
+              privateEventToSet: privateEvent,
+              loadPrivateEventFromApiToo: true,
+            ),
           ),
           child: Row(
             children: [
@@ -44,11 +48,14 @@ class PrivateEventMapMarker extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Center(
-                  child: Text(
-                    privateEvent.title ?? "Kein Titel",
-                    style: Theme.of(context).textTheme.labelMedium,
-                    softWrap: true,
-                    overflow: TextOverflow.ellipsis,
+                  child: Hero(
+                    tag: "${privateEvent.id} title",
+                    child: Text(
+                      privateEvent.title ?? "Kein Titel",
+                      style: Theme.of(context).textTheme.labelMedium,
+                      softWrap: true,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
                 ),
               )

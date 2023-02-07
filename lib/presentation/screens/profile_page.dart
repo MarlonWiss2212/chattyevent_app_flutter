@@ -2,78 +2,117 @@ import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'package:social_media_app_flutter/application/bloc/home_page/home_profile_page/home_profile_page_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/profile_page_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
+import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
 import 'package:social_media_app_flutter/domain/filter/get_one_user_filter.dart';
+import 'package:social_media_app_flutter/domain/usecases/user_usecases.dart';
+import 'package:social_media_app_flutter/infastructure/datasources/remote/graphql.dart';
+import 'package:social_media_app_flutter/infastructure/respositories/user_repository_impl.dart';
+import 'package:social_media_app_flutter/injection.dart';
 import 'package:social_media_app_flutter/presentation/widgets/dialog/buttons/ok_button.dart';
 import 'package:social_media_app_flutter/presentation/widgets/profile/user_profile_data_page.dart';
 
 class ProfilePage extends StatelessWidget {
   final String userId;
+  final UserEntity? userToSet;
+  final bool loadUserFromApiToo;
+
   const ProfilePage({
     super.key,
+    this.loadUserFromApiToo = true,
+    this.userToSet,
     @PathParam('id') required this.userId,
   });
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<ProfilePageCubit, ProfilePageState>(
-      bloc: BlocProvider.of<ProfilePageCubit>(context)
-        ..getOneUserViaApi(
-          getOneUserFilter: GetOneUserFilter(id: userId),
+    final client = getGraphQlClient(
+      token: BlocProvider.of<AuthCubit>(context).state is AuthLoaded
+          ? (BlocProvider.of<AuthCubit>(context).state as AuthLoaded).token
+          : null,
+    );
+
+    return BlocProvider(
+      create: (context) => ProfilePageCubit(
+        ProfilePageInitial(
+          user: userToSet ?? UserEntity(id: ""),
         ),
-      listener: (context, state) async {
-        if (state is ProfilePageError) {
-          return await showPlatformDialog(
-            context: context,
-            builder: (context) {
-              return PlatformAlertDialog(
-                title: Text(state.title),
-                content: Text(state.message),
-                actions: const [OKButton()],
-              );
-            },
+        userUseCases: UserUseCases(
+          userRepository: UserRepositoryImpl(
+            graphQlDatasource: GraphQlDatasourceImpl(client: client),
+          ),
+        ),
+        userCubit: BlocProvider.of<UserCubit>(context),
+      ),
+      child: Builder(builder: (context) {
+        if (userToSet == null || loadUserFromApiToo) {
+          BlocProvider.of<ProfilePageCubit>(context).getOneUserViaApi(
+            getOneUserFilter: GetOneUserFilter(id: userId),
           );
         }
-      },
-      builder: (context, state) {
-        Widget body;
-        if (state is ProfilePageLoading) {
-          body = Center(child: PlatformCircularProgressIndicator());
-        } else {
-          if (state is ProfilePageStateWithUser) {
-            body = UserProfileDataPage(user: state.user);
-          } else {
-            body = Center(
-              child: PlatformTextButton(
-                child: Text("Keinen User mit der Id: $userId"),
-                onPressed: () =>
-                    BlocProvider.of<ProfilePageCubit>(context).getOneUserViaApi(
-                  getOneUserFilter: GetOneUserFilter(id: userId),
+
+        return BlocConsumer<ProfilePageCubit, ProfilePageState>(
+          bloc: BlocProvider.of<ProfilePageCubit>(context)
+            ..getOneUserViaApi(
+              getOneUserFilter: GetOneUserFilter(id: userId),
+            ),
+          listener: (context, state) async {
+            if (state is ProfilePageError) {
+              return await showPlatformDialog(
+                context: context,
+                builder: (context) {
+                  return PlatformAlertDialog(
+                    title: Text(state.title),
+                    content: Text(state.message),
+                    actions: const [OKButton()],
+                  );
+                },
+              );
+            }
+          },
+          builder: (context, state) {
+            Widget body;
+
+            if (state.user.id != "") {
+              body = UserProfileDataPage(user: state.user);
+            } else if (state is ProfilePageLoading && state.user.id == "") {
+              body = Center(child: PlatformCircularProgressIndicator());
+            } else {
+              body = Center(
+                child: PlatformTextButton(
+                  child: Text("Keinen User mit der Id: $userId"),
+                  onPressed: () => BlocProvider.of<ProfilePageCubit>(context)
+                      .getOneUserViaApi(
+                    getOneUserFilter: GetOneUserFilter(id: userId),
+                  ),
+                ),
+              );
+            }
+
+            return PlatformScaffold(
+              appBar: PlatformAppBar(
+                title: Hero(
+                  tag: "${state.user.id} username",
+                  child: Text(
+                    state.user.username ?? "Profilseite",
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
                 ),
               ),
+              body: Column(
+                children: [
+                  if (state is ProfilePageLoading && state.user.id != "") ...{
+                    const LinearProgressIndicator()
+                  },
+                  Expanded(child: body),
+                ],
+              ),
             );
-          }
-        }
-
-        return PlatformScaffold(
-          appBar: PlatformAppBar(
-            title: Text(
-              state is ProfilePageStateWithUser
-                  ? state.user.username ?? "Profilseite"
-                  : "Profilseite",
-            ),
-          ),
-          body: Column(
-            children: [
-              if (state is ProfilePageEditing) ...{
-                const LinearProgressIndicator()
-              },
-              Expanded(child: body),
-            ],
-          ),
+          },
         );
-      },
+      }),
     );
   }
 }

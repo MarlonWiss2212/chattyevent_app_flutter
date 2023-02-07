@@ -14,7 +14,7 @@ class Location extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (BlocProvider.of<PrivateEventCubit>(context).state
-        is! PrivateEventStateLoaded) {
+        is! PrivateEventLoaded) {
       BlocProvider.of<PrivateEventCubit>(context).getPrivateEventsViaApi();
     }
     BlocProvider.of<LocationCubit>(context).getLocationFromDevice();
@@ -66,7 +66,7 @@ class Location extends StatelessWidget {
                   BlocBuilder<PrivateEventCubit, PrivateEventState>(
                     builder: (context, state) {
                       List<Marker> markers = [];
-                      if (state is PrivateEventStateLoaded) {
+                      if (state is PrivateEventLoaded) {
                         for (final event in state.privateEvents) {
                           if (event.eventLocation != null) {
                             markers.add(

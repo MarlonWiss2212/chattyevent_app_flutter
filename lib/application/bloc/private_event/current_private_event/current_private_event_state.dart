@@ -1,33 +1,32 @@
 part of 'current_private_event_cubit.dart';
 
 @immutable
-abstract class CurrentPrivateEventState {}
-
-abstract class CurrentPrivateEventStateWithPrivateEvent
-    extends CurrentPrivateEventState {
+abstract class CurrentPrivateEventState {
   final PrivateEventEntity privateEvent;
-  CurrentPrivateEventStateWithPrivateEvent({required this.privateEvent});
+  const CurrentPrivateEventState({required this.privateEvent});
 }
 
-class CurrentPrivateEventInitial extends CurrentPrivateEventState {}
+class CurrentPrivateEventInitial extends CurrentPrivateEventState {
+  const CurrentPrivateEventInitial({required super.privateEvent});
+}
 
-class CurrentPrivateEventLoading extends CurrentPrivateEventState {}
-
-class CurrentPrivateEventEditing
-    extends CurrentPrivateEventStateWithPrivateEvent {
-  CurrentPrivateEventEditing({required super.privateEvent});
+class CurrentPrivateEventLoading extends CurrentPrivateEventState {
+  const CurrentPrivateEventLoading({required super.privateEvent});
 }
 
 class CurrentPrivateEventError extends CurrentPrivateEventState {
   final String title;
   final String message;
 
-  CurrentPrivateEventError({required this.message, required this.title});
+  const CurrentPrivateEventError({
+    required super.privateEvent,
+    required this.message,
+    required this.title,
+  });
 }
 
-class CurrentPrivateEventLoaded
-    extends CurrentPrivateEventStateWithPrivateEvent {
-  CurrentPrivateEventLoaded({
+class CurrentPrivateEventLoaded extends CurrentPrivateEventState {
+  const CurrentPrivateEventLoaded({
     required super.privateEvent,
   });
 }

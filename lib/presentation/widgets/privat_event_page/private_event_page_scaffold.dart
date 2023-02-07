@@ -21,8 +21,7 @@ class PrivateEventPageScaffold extends StatelessWidget {
 
     return BlocBuilder<CurrentPrivateEventCubit, CurrentPrivateEventState>(
       builder: (context, state) {
-        if (state is CurrentPrivateEventStateWithPrivateEvent &&
-            state.privateEvent.connectedGroupchat != null &&
+        if (state.privateEvent.connectedGroupchat != null &&
             dataLoaded == false) {
           BlocProvider.of<CurrentPrivateEventGroupchatCubit>(context)
               .setCurrentGroupchatViaApi(
@@ -44,10 +43,7 @@ class PrivateEventPageScaffold extends StatelessWidget {
                 title: Hero(
                   tag: "$privateEventId title",
                   child: Text(
-                    state is CurrentPrivateEventStateWithPrivateEvent &&
-                            state.privateEvent.title != null
-                        ? state.privateEvent.title!
-                        : "Kein Titel",
+                    state.privateEvent.title ?? "Kein Titel",
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
                 ),
@@ -64,23 +60,15 @@ class PrivateEventPageScaffold extends StatelessWidget {
                   ),
                 ),
               ),
-              body: state is CurrentPrivateEventLoading
-                  ? Center(child: PlatformCircularProgressIndicator())
-                  : state is CurrentPrivateEventStateWithPrivateEvent
-                      ? Column(
-                          children: [
-                            if (state is CurrentPrivateEventEditing) ...{
-                              const LinearProgressIndicator()
-                            },
-                            Expanded(child: child),
-                          ],
-                        )
-                      : Center(
-                          child: Text(
-                            "Fehler beim Laden des Events mit der Id $privateEventId",
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
+              body: Column(
+                children: [
+                  if (state is CurrentPrivateEventLoading &&
+                      state.privateEvent.id != "") ...{
+                    const LinearProgressIndicator()
+                  },
+                  Expanded(child: child),
+                ],
+              ),
             );
           },
         );

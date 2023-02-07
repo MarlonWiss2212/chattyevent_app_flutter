@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'package:social_media_app_flutter/application/bloc/user_search/user_search_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/user/user_search_cubit.dart';
 import 'package:social_media_app_flutter/domain/filter/get_users_filter.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 import 'package:social_media_app_flutter/presentation/widgets/user_grid_list.dart';
@@ -34,8 +35,17 @@ class UserGridListWithSearchbar extends StatelessWidget {
                   child: UserGridList(
                     users: state.users,
                     onPress: (user) {
+                      // to check if the user is already saved because the user comes from user_search cubit and not user cubit
+                      BlocProvider.of<UserCubit>(context).editUserIfExistOrAdd(
+                        user: user,
+                      );
+
                       AutoRouter.of(context).push(
-                        ProfilePageRoute(userId: user.id),
+                        ProfilePageRoute(
+                          userId: user.id,
+                          userToSet: user,
+                          loadUserFromApiToo: true,
+                        ),
                       );
                     },
                   ),

@@ -36,13 +36,11 @@ class ShoppingListTab extends StatelessWidget {
             return emptyReturn;
           }
 
-          List<ShoppingListItemEntity> filteredItems = [];
-
-          for (final item in state.shoppingList) {
-            if (item.privateEvent == privateEventId) {
-              filteredItems.add(item);
-            }
-          }
+          List<ShoppingListItemEntity> filteredItems = state.shoppingList
+              .where(
+                (element) => element.privateEvent == privateEventId,
+              )
+              .toList();
 
           if (filteredItems.isEmpty && loadingDataForCurrentEvent) {
             return SkeletonListView(

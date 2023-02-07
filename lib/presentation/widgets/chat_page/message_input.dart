@@ -30,7 +30,6 @@ class _MessageInputState extends State<MessageInput> {
                 horizontal: 8,
               ),
               decoration: BoxDecoration(
-                color: Theme.of(context).cardColor,
                 borderRadius: BorderRadius.circular(8),
               ),
               child: PlatformTextField(

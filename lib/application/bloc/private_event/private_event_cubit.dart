@@ -18,91 +18,95 @@ class PrivateEventCubit extends Cubit<PrivateEventState> {
   }
 
   void addPrivateEvent({required PrivateEventEntity privateEvent}) async {
-    if (state is PrivateEventStateLoaded) {
-      final state = this.state as PrivateEventStateLoaded;
-      emit(
-        PrivateEventStateLoaded(
-          privateEvents: List.from(state.privateEvents)..add(privateEvent),
-        ),
-      );
-    } else {
-      emit(PrivateEventStateLoaded(privateEvents: [privateEvent]));
-    }
+    emit(
+      PrivateEventLoaded(
+        privateEvents: List.from(state.privateEvents)..add(privateEvent),
+      ),
+    );
   }
 
   PrivateEventEntity editPrivateEventIfExistOrAdd({
     required PrivateEventEntity privateEvent,
   }) {
-    if (state is PrivateEventStateLoaded) {
-      final state = this.state as PrivateEventStateLoaded;
-
-      int foundIndex = -1;
-      state.privateEvents.asMap().forEach((index, chatToFind) {
-        if (chatToFind.id == privateEvent.id) {
-          foundIndex = index;
-        }
-      });
-
-      if (foundIndex != -1) {
-        List<PrivateEventEntity> newPrivateEvents = state.privateEvents;
-        newPrivateEvents[foundIndex] = PrivateEventEntity(
-          id: privateEvent.id,
-          title: privateEvent.title ?? newPrivateEvents[foundIndex].title,
-          coverImageLink: privateEvent.coverImageLink ??
-              newPrivateEvents[foundIndex].coverImageLink,
-          connectedGroupchat: privateEvent.connectedGroupchat ??
-              newPrivateEvents[foundIndex].connectedGroupchat,
-          eventDate:
-              privateEvent.eventDate ?? newPrivateEvents[foundIndex].eventDate,
-          eventLocation: privateEvent.eventLocation ??
-              newPrivateEvents[foundIndex].eventLocation,
-          usersThatWillBeThere: privateEvent.usersThatWillBeThere ??
-              newPrivateEvents[foundIndex].usersThatWillBeThere,
-          usersThatWillNotBeThere: privateEvent.usersThatWillNotBeThere ??
-              newPrivateEvents[foundIndex].usersThatWillNotBeThere,
-          createdBy:
-              privateEvent.createdBy ?? newPrivateEvents[foundIndex].createdBy,
-          createdAt:
-              privateEvent.createdAt ?? newPrivateEvents[foundIndex].createdAt,
-        );
-
-        emit(
-          PrivateEventStateLoaded(privateEvents: newPrivateEvents),
-        );
-        return newPrivateEvents[foundIndex];
-      } else {
-        emit(
-          PrivateEventStateLoaded(
-            privateEvents: List.from(state.privateEvents)..add(privateEvent),
-          ),
-        );
+    int foundIndex = -1;
+    state.privateEvents.asMap().forEach((index, chatToFind) {
+      if (chatToFind.id == privateEvent.id) {
+        foundIndex = index;
       }
+    });
+
+    if (foundIndex != -1) {
+      List<PrivateEventEntity> newPrivateEvents = state.privateEvents;
+      newPrivateEvents[foundIndex] = PrivateEventEntity(
+        id: privateEvent.id,
+        title: privateEvent.title ?? newPrivateEvents[foundIndex].title,
+        coverImageLink: privateEvent.coverImageLink ??
+            newPrivateEvents[foundIndex].coverImageLink,
+        connectedGroupchat: privateEvent.connectedGroupchat ??
+            newPrivateEvents[foundIndex].connectedGroupchat,
+        eventDate:
+            privateEvent.eventDate ?? newPrivateEvents[foundIndex].eventDate,
+        eventLocation: privateEvent.eventLocation ??
+            newPrivateEvents[foundIndex].eventLocation,
+        usersThatWillBeThere: privateEvent.usersThatWillBeThere ??
+            newPrivateEvents[foundIndex].usersThatWillBeThere,
+        usersThatWillNotBeThere: privateEvent.usersThatWillNotBeThere ??
+            newPrivateEvents[foundIndex].usersThatWillNotBeThere,
+        createdBy:
+            privateEvent.createdBy ?? newPrivateEvents[foundIndex].createdBy,
+        createdAt:
+            privateEvent.createdAt ?? newPrivateEvents[foundIndex].createdAt,
+      );
+
+      emit(
+        PrivateEventLoaded(privateEvents: newPrivateEvents),
+      );
+      return newPrivateEvents[foundIndex];
     } else {
       emit(
-        PrivateEventStateLoaded(
-          privateEvents: [privateEvent],
+        PrivateEventLoaded(
+          privateEvents: List.from(state.privateEvents)..add(privateEvent),
         ),
       );
     }
+
     return privateEvent;
   }
 
   Future getPrivateEventsViaApi() async {
-    emit(PrivateEventStateLoading());
+    emit(PrivateEventLoading(privateEvents: state.privateEvents));
 
     final Either<Failure, List<PrivateEventEntity>> privateEventOrFailure =
         await privateEventUseCases.getPrivateEventsViaApiViaApi();
 
     privateEventOrFailure.fold(
       (error) => emit(
-        PrivateEventStateError(
+        PrivateEventError(
+          privateEvents: state.privateEvents,
           title: "Fehler",
           message: mapFailureToMessage(error),
         ),
       ),
-      (privateEvents) => emit(
-        PrivateEventStateLoaded(privateEvents: privateEvents),
-      ),
+      (privateEvents) {
+        List<PrivateEventEntity> privateEventsToEmit = privateEvents;
+
+        for (final statePrivateEvent in state.privateEvents) {
+          bool savedTheUser = false;
+
+          innerLoop:
+          for (final privateEventToEmit in privateEventsToEmit) {
+            if (privateEventToEmit.id == statePrivateEvent.id) {
+              savedTheUser = true;
+              break innerLoop;
+            }
+          }
+
+          if (!savedTheUser) {
+            privateEventsToEmit.add(statePrivateEvent);
+          }
+        }
+        emit(PrivateEventLoaded(privateEvents: privateEvents));
+      },
     );
   }
 }

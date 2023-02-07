@@ -16,18 +16,19 @@ class UserProfileDataPage extends StatelessWidget {
             const SizedBox(height: 20),
             // Profile Image
             CircleImage(
-                imageLink: user.profileImageLink,
-                heroTag: "${user.id} profileImage"),
+              imageLink: user.profileImageLink,
+              heroTag: "${user.id} profileImage",
+            ),
             const SizedBox(height: 20),
             // name
-            Hero(
-              tag: "${user.id} username",
-              child: Text(
-                user.username ?? "Kein Benutzername",
-                style: Theme.of(context).textTheme.titleLarge,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
+            //       Hero(
+            //       tag: "${user.id} username",
+            //       child: Text(
+            //         user.username ?? "Kein Benutzername",
+            //         style: Theme.of(context).textTheme.titleLarge,
+            //         overflow: TextOverflow.ellipsis,
+            //       ),
+            //       ),
           ],
         ),
       ),

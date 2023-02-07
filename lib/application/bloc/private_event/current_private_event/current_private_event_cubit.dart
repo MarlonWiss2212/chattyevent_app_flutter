@@ -17,20 +17,16 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
   final PrivateEventCubit privateEventCubit;
   final PrivateEventUseCases privateEventUseCases;
 
-  CurrentPrivateEventCubit({
+  CurrentPrivateEventCubit(
+    super.initialState, {
     required this.privateEventCubit,
     required this.privateEventUseCases,
-  }) : super(CurrentPrivateEventInitial());
-
-  void reset() {
-    emit(CurrentPrivateEventInitial());
-  }
+  });
 
   Future getOnePrivateEvent({
     required GetOnePrivateEventFilter getOnePrivateEventFilter,
-    bool loadGroupchat = false,
   }) async {
-    emit(CurrentPrivateEventLoading());
+    emit(CurrentPrivateEventLoading(privateEvent: state.privateEvent));
 
     final Either<Failure, PrivateEventEntity> privateEventOrFailure =
         await privateEventUseCases.getPrivateEventViaApi(
@@ -40,6 +36,7 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
     privateEventOrFailure.fold(
       (error) {
         emit(CurrentPrivateEventError(
+          privateEvent: state.privateEvent,
           message: mapFailureToMessage(error),
           title: "Fehler Geradiges Event",
         ));
@@ -56,15 +53,15 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
   }
 
   void setCurrentPrivateEvent({required PrivateEventEntity privateEvent}) {
-    emit(CurrentPrivateEventLoading());
+    emit(CurrentPrivateEventLoading(privateEvent: state.privateEvent));
     emit(CurrentPrivateEventLoaded(privateEvent: privateEvent));
   }
 
   Future updateMeInPrivateEventWillBeThere({
     required String privateEventId,
   }) async {
-    final state = this.state as CurrentPrivateEventStateWithPrivateEvent;
-    emit(CurrentPrivateEventEditing(privateEvent: state.privateEvent));
+    emit(CurrentPrivateEventLoading(privateEvent: state.privateEvent));
+
     final Either<Failure, PrivateEventEntity> privateEventOrFailure =
         await privateEventUseCases.updateMeInPrivateEventWillBeThere(
       privateEventId: privateEventId,
@@ -73,6 +70,7 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
     privateEventOrFailure.fold(
       (error) {
         CurrentPrivateEventError(
+          privateEvent: state.privateEvent,
           title: "Fehler",
           message: mapFailureToMessage(error),
         );
@@ -90,8 +88,7 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
   Future updateMeInPrivateEventWillNotBeThere({
     required String privateEventId,
   }) async {
-    final state = this.state as CurrentPrivateEventStateWithPrivateEvent;
-    emit(CurrentPrivateEventEditing(privateEvent: state.privateEvent));
+    emit(CurrentPrivateEventLoading(privateEvent: state.privateEvent));
 
     final Either<Failure, PrivateEventEntity> privateEventOrFailure =
         await privateEventUseCases.updateMeInPrivateEventWillNotBeThere(
@@ -101,6 +98,7 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
     privateEventOrFailure.fold(
       (error) {
         CurrentPrivateEventError(
+          privateEvent: state.privateEvent,
           title: "Fehler",
           message: mapFailureToMessage(error),
         );
@@ -118,8 +116,7 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
   Future updateMeInPrivateEventNoInformationOnWillBeThere({
     required String privateEventId,
   }) async {
-    final state = this.state as CurrentPrivateEventStateWithPrivateEvent;
-    emit(CurrentPrivateEventEditing(privateEvent: state.privateEvent));
+    emit(CurrentPrivateEventLoading(privateEvent: state.privateEvent));
 
     final Either<Failure, PrivateEventEntity> privateEventOrFailure =
         await privateEventUseCases
@@ -130,6 +127,7 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
     privateEventOrFailure.fold(
       (error) {
         CurrentPrivateEventError(
+          privateEvent: state.privateEvent,
           title: "Fehler",
           message: mapFailureToMessage(error),
         );

@@ -25,18 +25,14 @@ class UserLeftListGroupchat extends StatelessWidget {
       builder: (context, state) {
         List<Widget> widgetsToReturn = [];
         for (final groupchatLeftUser in groupchatLeftUsers) {
-          UserEntity? foundUser;
-          if (state is UserStateLoaded) {
-            for (final user in state.users) {
-              if (user.id == groupchatLeftUser.userId) {
-                foundUser = user;
-                break;
-              }
-            }
-          }
+          UserEntity foundUser = state.users.firstWhere(
+            (element) => element.id == groupchatLeftUser.userId,
+            orElse: () => UserEntity(id: ""),
+          );
+
           widgetsToReturn.add(
             UserListTile(
-              profileImageLink: foundUser?.profileImageLink,
+              profileImageLink: foundUser.profileImageLink,
               subtitle: groupchatLeftUser.leftAt != null
                   ? Text(
                       DateFormat.yMd()
@@ -48,7 +44,7 @@ class UserLeftListGroupchat extends StatelessWidget {
                       "Kein Datum",
                       overflow: TextOverflow.ellipsis,
                     ),
-              username: foundUser != null && foundUser.username != null
+              username: foundUser.username != null
                   ? foundUser.username!
                   : "Kein Username",
               userId: groupchatLeftUser.userId,

@@ -1,20 +1,30 @@
 part of 'user_cubit.dart';
 
 @immutable
-abstract class UserState {}
+abstract class UserState {
+  final List<UserEntity> users;
 
-class UserInitial extends UserState {}
+  const UserState({required this.users});
+}
 
-class UserStateLoading extends UserState {}
+class UserInitial extends UserState {
+  UserInitial() : super(users: []);
+}
+
+class UserStateLoading extends UserState {
+  const UserStateLoading({required super.users});
+}
 
 class UserStateError extends UserState {
   final String title;
   final String message;
-  UserStateError({required this.title, required this.message});
+  const UserStateError({
+    required super.users,
+    required this.title,
+    required this.message,
+  });
 }
 
 class UserStateLoaded extends UserState {
-  final List<UserEntity> users;
-
-  UserStateLoaded({required this.users});
+  const UserStateLoaded({required super.users});
 }

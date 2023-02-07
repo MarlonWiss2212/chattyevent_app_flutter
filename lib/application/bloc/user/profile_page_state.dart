@@ -1,27 +1,29 @@
 part of 'profile_page_cubit.dart';
 
 @immutable
-abstract class ProfilePageState {}
-
-abstract class ProfilePageStateWithUser extends ProfilePageState {
+abstract class ProfilePageState {
   final UserEntity user;
-  ProfilePageStateWithUser({required this.user});
+  const ProfilePageState({required this.user});
 }
 
-class ProfilePageInitial extends ProfilePageState {}
+class ProfilePageInitial extends ProfilePageState {
+  const ProfilePageInitial({required super.user});
+}
 
-class ProfilePageLoading extends ProfilePageState {}
-
-class ProfilePageEditing extends ProfilePageStateWithUser {
-  ProfilePageEditing({required super.user});
+class ProfilePageLoading extends ProfilePageState {
+  const ProfilePageLoading({required super.user});
 }
 
 class ProfilePageError extends ProfilePageState {
   final String title;
   final String message;
-  ProfilePageError({required this.title, required this.message});
+  const ProfilePageError({
+    required this.title,
+    required this.message,
+    required super.user,
+  });
 }
 
-class ProfilePageLoaded extends ProfilePageStateWithUser {
-  ProfilePageLoaded({required super.user});
+class ProfilePageLoaded extends ProfilePageState {
+  const ProfilePageLoaded({required super.user});
 }

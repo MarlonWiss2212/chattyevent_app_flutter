@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 
 class UserListTile extends StatelessWidget {
@@ -39,7 +40,17 @@ class UserListTile extends StatelessWidget {
       ),
       subtitle: subtitle,
       onTap: () {
-        AutoRouter.of(context).root.push(ProfilePageRoute(userId: userId));
+        AutoRouter.of(context).root.push(
+              ProfilePageRoute(
+                userId: userId,
+                loadUserFromApiToo: true,
+                userToSet: UserEntity(
+                  id: userId,
+                  username: username,
+                  profileImageLink: profileImageLink,
+                ),
+              ),
+            );
       },
       onLongPress: longPress != null ? () => longPress!(userId) : null,
       trailing: trailing,

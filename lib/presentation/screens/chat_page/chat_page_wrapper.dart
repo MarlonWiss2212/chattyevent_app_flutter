@@ -61,12 +61,6 @@ class ChatPageWrapper extends StatelessWidget {
           }
         },
         child: Builder(builder: (context) {
-          if (chatToSet != null) {
-            BlocProvider.of<CurrentChatCubit>(context).setCurrentChat(
-              groupchat: chatToSet!,
-            );
-          }
-
           if (chatToSet == null || loadChatFromApiToo) {
             BlocProvider.of<CurrentChatCubit>(context).getCurrentChatViaApi(
               getOneGroupchatFilter: GetOneGroupchatFilter(id: groupchatId),

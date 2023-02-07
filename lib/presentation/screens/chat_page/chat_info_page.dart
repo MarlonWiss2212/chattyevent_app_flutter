@@ -38,9 +38,7 @@ class ChatInfoPage extends StatelessWidget {
                           const LinearProgressIndicator(),
                         },
                         Expanded(
-                          child: ChatInfoPageDetails(
-                            groupchat: state.currentChat,
-                          ),
+                          child: ChatInfoPageDetails(chatState: state),
                         ),
                       ],
                     )

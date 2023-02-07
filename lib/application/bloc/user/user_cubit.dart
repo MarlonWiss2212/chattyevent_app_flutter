@@ -18,47 +18,34 @@ class UserCubit extends Cubit<UserState> {
   }
 
   UserEntity editUserIfExistOrAdd({required UserEntity user}) {
-    if (state is UserStateLoaded) {
-      final state = this.state as UserStateLoaded;
-
-      int foundIndex = -1;
-      state.users.asMap().forEach((index, chatToFind) {
-        if (chatToFind.id == user.id) {
-          foundIndex = index;
-        }
-      });
-
-      if (foundIndex != -1) {
-        List<UserEntity> newUsers = state.users;
-        newUsers[foundIndex] = UserEntity(
-          id: user.id,
-          username: user.username ?? newUsers[foundIndex].username,
-          email: user.email ?? newUsers[foundIndex].email,
-          emailVerified:
-              user.emailVerified ?? newUsers[foundIndex].emailVerified,
-          profileImageLink:
-              user.profileImageLink ?? newUsers[foundIndex].profileImageLink,
-          firstname: user.firstname ?? newUsers[foundIndex].firstname,
-          lastname: user.lastname ?? newUsers[foundIndex].lastname,
-          birthdate: user.birthdate ?? newUsers[foundIndex].birthdate,
-          lastTimeOnline:
-              user.lastTimeOnline ?? newUsers[foundIndex].lastTimeOnline,
-          createdAt: user.createdAt ?? newUsers[foundIndex].createdAt,
-        );
-        emit(
-          UserStateLoaded(users: newUsers),
-        );
-        return newUsers[foundIndex];
-      } else {
-        emit(
-          UserStateLoaded(users: List.from(state.users)..add(user)),
-        );
+    int foundIndex = -1;
+    state.users.asMap().forEach((index, chatToFind) {
+      if (chatToFind.id == user.id) {
+        foundIndex = index;
       }
+    });
+
+    if (foundIndex != -1) {
+      List<UserEntity> newUsers = state.users;
+      newUsers[foundIndex] = UserEntity(
+        id: user.id,
+        username: user.username ?? newUsers[foundIndex].username,
+        email: user.email ?? newUsers[foundIndex].email,
+        emailVerified: user.emailVerified ?? newUsers[foundIndex].emailVerified,
+        profileImageLink:
+            user.profileImageLink ?? newUsers[foundIndex].profileImageLink,
+        firstname: user.firstname ?? newUsers[foundIndex].firstname,
+        lastname: user.lastname ?? newUsers[foundIndex].lastname,
+        birthdate: user.birthdate ?? newUsers[foundIndex].birthdate,
+        lastTimeOnline:
+            user.lastTimeOnline ?? newUsers[foundIndex].lastTimeOnline,
+        createdAt: user.createdAt ?? newUsers[foundIndex].createdAt,
+      );
+      emit(UserStateLoaded(users: newUsers));
+      return newUsers[foundIndex];
     } else {
       emit(
-        UserStateLoaded(
-          users: [user],
-        ),
+        UserStateLoaded(users: List.from(state.users)..add(user)),
       );
     }
     return user;
@@ -67,7 +54,7 @@ class UserCubit extends Cubit<UserState> {
   Future getUsersViaApi({
     GetUsersFilter? getUsersFilter,
   }) async {
-    emit(UserStateLoading());
+    emit(UserStateLoading(users: state.users));
 
     final Either<Failure, List<UserEntity>> userSearchOrFailure =
         await userUseCases.getUsersViaApi(
@@ -77,13 +64,31 @@ class UserCubit extends Cubit<UserState> {
     userSearchOrFailure.fold(
       (error) => emit(
         UserStateError(
+          users: state.users,
           title: "Fehler",
           message: mapFailureToMessage(error),
         ),
       ),
-      (users) => emit(
-        UserStateLoaded(users: users),
-      ),
+      (users) {
+        List<UserEntity> usersToEmit = users;
+
+        for (final stateUser in state.users) {
+          bool savedTheUser = false;
+
+          innerLoop:
+          for (final userToEmit in usersToEmit) {
+            if (userToEmit.id == stateUser.id) {
+              savedTheUser = true;
+              break innerLoop;
+            }
+          }
+
+          if (!savedTheUser) {
+            usersToEmit.add(stateUser);
+          }
+        }
+        emit(UserStateLoaded(users: users));
+      },
     );
   }
 }
