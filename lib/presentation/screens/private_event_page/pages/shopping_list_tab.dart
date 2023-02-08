@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:skeletons/skeletons.dart';
-import 'package:social_media_app_flutter/application/bloc/shopping_list/shopping_list_cubit.dart';
-import 'package:social_media_app_flutter/domain/entities/shopping_list_item_entity.dart';
+import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
 import 'package:social_media_app_flutter/domain/filter/get_shopping_list_items_filter.dart';
 import 'package:social_media_app_flutter/presentation/widgets/bottom_sheet/add_shopping_list_item.dart';
 
@@ -17,32 +16,29 @@ class ShoppingListTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<ShoppingListCubit>(context).getShoppingListViaApi(
-      getShoppingListItemsFilter:
-          GetShoppingListItemsFilter(privateEvent: privateEventId),
+    BlocProvider.of<CurrentPrivateEventCubit>(context).getShoppingListViaApi(
+      getShoppingListItemsFilter: GetShoppingListItemsFilter(
+        privateEvent: privateEventId,
+      ),
     );
 
     return PlatformScaffold(
-      body: BlocBuilder<ShoppingListCubit, ShoppingListState>(
+      body: BlocBuilder<CurrentPrivateEventCubit, CurrentPrivateEventState>(
         builder: (context, state) {
-          bool loadingDataForCurrentEvent = state is ShoppingListLoading &&
-              state.loadingForPrivateEventId == privateEventId;
+          final loadingShoppingListData =
+              CurrentPrivateEventState is CurrentPrivateEventLoading &&
+                  (CurrentPrivateEventState as CurrentPrivateEventLoading)
+                      .loadingShoppingList;
 
           const emptyReturn = Center(
             child: Text("Keine Items die gekauft werden müssen"),
           );
 
-          if (state.shoppingList.isEmpty && !loadingDataForCurrentEvent) {
+          if (state.shoppingList.isEmpty && !loadingShoppingListData) {
             return emptyReturn;
           }
 
-          List<ShoppingListItemEntity> filteredItems = state.shoppingList
-              .where(
-                (element) => element.privateEvent == privateEventId,
-              )
-              .toList();
-
-          if (filteredItems.isEmpty && loadingDataForCurrentEvent) {
+          if (state.shoppingList.isEmpty && loadingShoppingListData) {
             return SkeletonListView(
               itemBuilder: (p0, p1) {
                 return SkeletonListTile(
@@ -61,7 +57,7 @@ class ShoppingListTab extends StatelessWidget {
             );
           }
 
-          if (filteredItems.isEmpty) {
+          if (state.shoppingList.isEmpty) {
             return emptyReturn;
           }
 
@@ -70,13 +66,13 @@ class ShoppingListTab extends StatelessWidget {
             itemBuilder: (context, index) {
               return ListTile(
                 title: Text(
-                  filteredItems[index].itemName ?? "Kein Name",
+                  state.shoppingList[index].itemName ?? "Kein Name",
                   style: Theme.of(context).textTheme.titleMedium,
                   softWrap: true,
                   overflow: TextOverflow.ellipsis,
                 ),
                 trailing: Text(
-                  "${filteredItems[index].amount} ${filteredItems[index].unit}",
+                  "${state.shoppingList[index].amount} ${state.shoppingList[index].unit}",
                   style: Theme.of(context).textTheme.titleMedium,
                   softWrap: true,
                   overflow: TextOverflow.ellipsis,
@@ -84,7 +80,7 @@ class ShoppingListTab extends StatelessWidget {
                 onTap: () {},
               );
             },
-            itemCount: filteredItems.length,
+            itemCount: state.shoppingList.length,
           );
         },
       ),
@@ -94,7 +90,9 @@ class ShoppingListTab extends StatelessWidget {
             return await showModalBottomSheet(
               context: context,
               builder: (context) {
-                return const AddShoppingListItem();
+                return AddShoppingListItem(
+                  privateEventId: privateEventId,
+                );
               },
             );
           },

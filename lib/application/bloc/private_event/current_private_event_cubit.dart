@@ -1,0 +1,381 @@
+import 'dart:collection';
+
+import 'package:bloc/bloc.dart';
+import 'package:dartz/dartz.dart';
+import 'package:http/http.dart';
+import 'package:meta/meta.dart';
+import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/private_event/private_event_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/shopping_list/shopping_list_cubit.dart';
+import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
+import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
+import 'package:social_media_app_flutter/domain/entities/shopping_list_item_entity.dart';
+import 'package:social_media_app_flutter/domain/failures/failures.dart';
+import 'package:social_media_app_flutter/domain/filter/get_one_groupchat_filter.dart';
+import 'package:social_media_app_flutter/domain/filter/get_one_private_event_filter.dart';
+import 'package:social_media_app_flutter/domain/filter/get_shopping_list_items_filter.dart';
+import 'package:social_media_app_flutter/domain/usecases/chat_usecases.dart';
+import 'package:social_media_app_flutter/domain/usecases/private_event_usecases.dart';
+import 'package:social_media_app_flutter/domain/usecases/shopping_list_item_usecases.dart';
+
+part 'current_private_event_state.dart';
+
+class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
+  final PrivateEventCubit privateEventCubit;
+  final ChatCubit chatCubit;
+  final ShoppingListCubit shoppingListCubit;
+
+  final PrivateEventUseCases privateEventUseCases;
+  final ChatUseCases chatUseCases;
+  final ShoppingListItemUseCases shoppingListItemUseCases;
+
+  CurrentPrivateEventCubit(
+    super.initialState, {
+    required this.shoppingListCubit,
+    required this.privateEventCubit,
+    required this.chatCubit,
+    required this.chatUseCases,
+    required this.shoppingListItemUseCases,
+    required this.privateEventUseCases,
+  });
+
+  Future getPrivateEventAndGroupchatFromApi({
+    required GetOnePrivateEventFilter getOnePrivateEventFilter,
+    required GetOneGroupchatFilter? getOneGroupchatFilter,
+  }) async {
+    emit(CurrentPrivateEventLoading(
+      groupchat: state.groupchat,
+      shoppingList: state.shoppingList,
+      privateEvent: state.privateEvent,
+      loadingPrivateEvent: true,
+      loadingGroupchat: true,
+      loadingShoppingList: false,
+    ));
+    //TODO should run at the same time instead afterwards
+    final Either<Failure, PrivateEventEntity> privateEventOrFailure =
+        await privateEventUseCases.getPrivateEventViaApi(
+      getOnePrivateEventFilter: getOnePrivateEventFilter,
+    );
+    Either<Failure, GroupchatEntity>? groupchatOrFailure =
+        getOneGroupchatFilter != null
+            ? await chatUseCases.getGroupchatViaApi(
+                getOneGroupchatFilter: getOneGroupchatFilter,
+              )
+            : null;
+
+    await privateEventOrFailure.fold((errorPrivateEvent) {
+      if (groupchatOrFailure == null) {
+        emit(CurrentPrivateEventError(
+          privateEvent: state.privateEvent,
+          message: mapFailureToMessage(errorPrivateEvent),
+          title: "Fehler Privates Event und Gruppenchat",
+          groupchat: state.groupchat,
+          shoppingList: state.shoppingList,
+        ));
+      } else {
+        groupchatOrFailure!.fold((errorGroupchat) {
+          emit(CurrentPrivateEventError(
+            privateEvent: state.privateEvent,
+            message:
+                "${mapFailureToMessage(errorPrivateEvent)} | ${mapFailureToMessage(errorGroupchat)}",
+            title: "Fehler Privates Event und Gruppenchat",
+            groupchat: state.groupchat,
+            shoppingList: state.shoppingList,
+          ));
+        }, (groupchat) {
+          emit(CurrentPrivateEventError(
+            privateEvent: state.privateEvent,
+            message: mapFailureToMessage(errorPrivateEvent),
+            title: "Fehler Privates Event",
+            groupchat: groupchat,
+            shoppingList: state.shoppingList,
+          ));
+        });
+      }
+    }, (privateEvent) async {
+      groupchatOrFailure ??= await chatUseCases.getGroupchatViaApi(
+        getOneGroupchatFilter:
+            GetOneGroupchatFilter(id: privateEvent.connectedGroupchat!),
+      );
+
+      groupchatOrFailure!.fold((errorGroupchat) {
+        emit(CurrentPrivateEventError(
+          privateEvent: privateEvent,
+          message: mapFailureToMessage(errorGroupchat),
+          title: "Fehler Gruppenchat",
+          groupchat: state.groupchat,
+          shoppingList: state.shoppingList,
+        ));
+      }, (groupchat) {
+        emit(CurrentPrivateEventLoaded(
+          privateEvent: privateEvent,
+          groupchat: groupchat,
+          shoppingList: state.shoppingList,
+        ));
+      });
+    });
+  }
+
+  Future getShoppingListViaApi({
+    required GetShoppingListItemsFilter getShoppingListItemsFilter,
+  }) async {
+    emit(CurrentPrivateEventLoading(
+      groupchat: state.groupchat,
+      privateEvent: state.privateEvent,
+      shoppingList: state.shoppingList,
+      loadingGroupchat: false,
+      loadingPrivateEvent: false,
+      loadingShoppingList: true,
+    ));
+
+    final Either<Failure, List<ShoppingListItemEntity>>
+        shoppingListItemsOrFailure =
+        await shoppingListItemUseCases.getShoppingListItemsViaApi(
+      getShoppingListItemsFilter: getShoppingListItemsFilter,
+    );
+
+    shoppingListItemsOrFailure.fold(
+      (error) => emit(CurrentPrivateEventError(
+        groupchat: state.groupchat,
+        shoppingList: state.shoppingList,
+        privateEvent: state.privateEvent,
+        message: mapFailureToMessage(error),
+        title: "Fehler Shopping List",
+      )),
+      (shoppingListItems) {
+        emit(CurrentPrivateEventLoaded(
+          groupchat: state.groupchat,
+          shoppingList: shoppingListItems,
+          privateEvent: state.privateEvent,
+        ));
+        shoppingListCubit.editOrAddMultipleShoppingListItems(
+          shoppingListItems: shoppingListItems,
+        );
+      },
+    );
+  }
+
+  void addItem({required ShoppingListItemEntity shoppingListItem}) {
+    emit(CurrentPrivateEventLoaded(
+      privateEvent: state.privateEvent,
+      groupchat: state.groupchat,
+      shoppingList: List.from(state.shoppingList)..add(shoppingListItem),
+    ));
+  }
+
+  Future getOnePrivateEvent({
+    required GetOnePrivateEventFilter getOnePrivateEventFilter,
+  }) async {
+    emit(CurrentPrivateEventLoading(
+      groupchat: state.groupchat,
+      shoppingList: state.shoppingList,
+      privateEvent: state.privateEvent,
+      loadingPrivateEvent: true,
+      loadingGroupchat: false,
+      loadingShoppingList: false,
+    ));
+
+    final Either<Failure, PrivateEventEntity> privateEventOrFailure =
+        await privateEventUseCases.getPrivateEventViaApi(
+      getOnePrivateEventFilter: getOnePrivateEventFilter,
+    );
+
+    privateEventOrFailure.fold(
+      (error) {
+        emit(CurrentPrivateEventError(
+          groupchat: state.groupchat,
+          shoppingList: state.shoppingList,
+          privateEvent: state.privateEvent,
+          message: mapFailureToMessage(error),
+          title: "Fehler Geradiges Event",
+        ));
+      },
+      (privateEvent) {
+        final mergedPrivateEvent =
+            privateEventCubit.editPrivateEventIfExistOrAdd(
+          privateEvent: privateEvent,
+        );
+        emit(CurrentPrivateEventLoaded(
+          privateEvent: mergedPrivateEvent,
+          groupchat: state.groupchat,
+          shoppingList: state.shoppingList,
+        ));
+      },
+    );
+  }
+
+  Future getCurrentChatViaApi({
+    required GetOneGroupchatFilter getOneGroupchatFilter,
+  }) async {
+    emit(CurrentPrivateEventLoading(
+      groupchat: state.groupchat,
+      shoppingList: state.shoppingList,
+      privateEvent: state.privateEvent,
+      loadingPrivateEvent: false,
+      loadingGroupchat: true,
+      loadingShoppingList: false,
+    ));
+    final Either<Failure, GroupchatEntity> groupchatOrFailure =
+        await chatUseCases.getGroupchatViaApi(
+      getOneGroupchatFilter: getOneGroupchatFilter,
+    );
+
+    groupchatOrFailure.fold(
+      (error) {
+        emit(CurrentPrivateEventError(
+          groupchat: state.groupchat,
+          shoppingList: state.shoppingList,
+          privateEvent: state.privateEvent,
+          title: "Fehler",
+          message: mapFailureToMessage(error),
+        ));
+      },
+      (groupchat) {
+        final mergedChat = chatCubit.editChatIfExistOrAdd(groupchat: groupchat);
+        emit(CurrentPrivateEventLoaded(
+          groupchat: mergedChat,
+          shoppingList: state.shoppingList,
+          privateEvent: state.privateEvent,
+        ));
+      },
+    );
+  }
+
+  void setCurrentPrivateEventData({
+    required PrivateEventEntity privateEvent,
+    required GroupchatEntity groupchat,
+    required List<ShoppingListItemEntity> shoppingList,
+  }) {
+    emit(
+      CurrentPrivateEventLoaded(
+        privateEvent: privateEvent,
+        groupchat: groupchat,
+        shoppingList: shoppingList,
+      ),
+    );
+  }
+
+  Future updateMeInPrivateEventWillBeThere({
+    required String privateEventId,
+  }) async {
+    emit(CurrentPrivateEventLoading(
+      privateEvent: state.privateEvent,
+      groupchat: state.groupchat,
+      shoppingList: state.shoppingList,
+      loadingPrivateEvent: true,
+      loadingGroupchat: false,
+      loadingShoppingList: false,
+    ));
+
+    final Either<Failure, PrivateEventEntity> privateEventOrFailure =
+        await privateEventUseCases.updateMeInPrivateEventWillBeThere(
+      privateEventId: privateEventId,
+    );
+
+    privateEventOrFailure.fold(
+      (error) {
+        emit(CurrentPrivateEventError(
+          groupchat: state.groupchat,
+          shoppingList: state.shoppingList,
+          privateEvent: state.privateEvent,
+          title: "Fehler",
+          message: mapFailureToMessage(error),
+        ));
+      },
+      (privateEvent) {
+        final mergedPrivateEvent =
+            privateEventCubit.editPrivateEventIfExistOrAdd(
+          privateEvent: privateEvent,
+        );
+        emit(CurrentPrivateEventLoaded(
+          privateEvent: mergedPrivateEvent,
+          shoppingList: state.shoppingList,
+          groupchat: state.groupchat,
+        ));
+      },
+    );
+  }
+
+  Future updateMeInPrivateEventWillNotBeThere({
+    required String privateEventId,
+  }) async {
+    emit(CurrentPrivateEventLoading(
+      privateEvent: state.privateEvent,
+      groupchat: state.groupchat,
+      shoppingList: state.shoppingList,
+      loadingPrivateEvent: true,
+      loadingGroupchat: false,
+      loadingShoppingList: false,
+    ));
+
+    final Either<Failure, PrivateEventEntity> privateEventOrFailure =
+        await privateEventUseCases.updateMeInPrivateEventWillNotBeThere(
+      privateEventId: privateEventId,
+    );
+
+    privateEventOrFailure.fold(
+      (error) {
+        emit(CurrentPrivateEventError(
+          groupchat: state.groupchat,
+          shoppingList: state.shoppingList,
+          privateEvent: state.privateEvent,
+          title: "Fehler",
+          message: mapFailureToMessage(error),
+        ));
+      },
+      (privateEvent) {
+        final mergedPrivateEvent =
+            privateEventCubit.editPrivateEventIfExistOrAdd(
+          privateEvent: privateEvent,
+        );
+        emit(CurrentPrivateEventLoaded(
+          privateEvent: mergedPrivateEvent,
+          shoppingList: state.shoppingList,
+          groupchat: state.groupchat,
+        ));
+      },
+    );
+  }
+
+  Future updateMeInPrivateEventNoInformationOnWillBeThere({
+    required String privateEventId,
+  }) async {
+    emit(CurrentPrivateEventLoading(
+      privateEvent: state.privateEvent,
+      groupchat: state.groupchat,
+      shoppingList: state.shoppingList,
+      loadingPrivateEvent: true,
+      loadingGroupchat: false,
+      loadingShoppingList: false,
+    ));
+
+    final Either<Failure, PrivateEventEntity> privateEventOrFailure =
+        await privateEventUseCases
+            .updateMeInPrivateEventNoInformationOnWillBeThere(
+      privateEventId: privateEventId,
+    );
+
+    privateEventOrFailure.fold(
+      (error) {
+        emit(CurrentPrivateEventError(
+          groupchat: state.groupchat,
+          shoppingList: state.shoppingList,
+          privateEvent: state.privateEvent,
+          title: "Fehler",
+          message: mapFailureToMessage(error),
+        ));
+      },
+      (privateEvent) {
+        final mergedPrivateEvent =
+            privateEventCubit.editPrivateEventIfExistOrAdd(
+          privateEvent: privateEvent,
+        );
+        emit(CurrentPrivateEventLoaded(
+          privateEvent: mergedPrivateEvent,
+          shoppingList: state.shoppingList,
+          groupchat: state.groupchat,
+        ));
+      },
+    );
+  }
+}

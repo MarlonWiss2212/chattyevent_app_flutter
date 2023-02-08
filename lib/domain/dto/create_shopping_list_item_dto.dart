@@ -2,7 +2,7 @@ class CreateShoppingListItemDto {
   String itemName;
   String? unit;
   double amount;
-  double boughtAmount;
+  double? boughtAmount;
   String userToBuyItem;
   String privateEvent;
 
@@ -10,7 +10,7 @@ class CreateShoppingListItemDto {
     required this.itemName,
     this.unit,
     required this.amount,
-    required this.boughtAmount,
+    this.boughtAmount,
     required this.userToBuyItem,
     required this.privateEvent,
   });

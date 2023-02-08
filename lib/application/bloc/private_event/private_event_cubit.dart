@@ -28,12 +28,7 @@ class PrivateEventCubit extends Cubit<PrivateEventState> {
   PrivateEventEntity editPrivateEventIfExistOrAdd({
     required PrivateEventEntity privateEvent,
   }) {
-    int foundIndex = -1;
-    state.privateEvents.asMap().forEach((index, chatToFind) {
-      if (chatToFind.id == privateEvent.id) {
-        foundIndex = index;
-      }
-    });
+    int foundIndex = state.privateEvents.indexOf(privateEvent);
 
     if (foundIndex != -1) {
       List<PrivateEventEntity> newPrivateEvents = state.privateEvents;

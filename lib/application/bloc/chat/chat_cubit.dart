@@ -11,10 +11,6 @@ class ChatCubit extends Cubit<ChatState> {
   final ChatUseCases chatUseCases;
   ChatCubit({required this.chatUseCases}) : super(ChatInitial());
 
-  void reset() {
-    emit(ChatInitial());
-  }
-
   void addChat({required GroupchatEntity groupchat}) {
     emit(ChatLoaded(chats: List.from(state.chats)..add(groupchat)));
   }

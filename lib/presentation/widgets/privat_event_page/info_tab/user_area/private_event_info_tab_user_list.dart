@@ -3,8 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:skeletons/skeletons.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event/current_private_event_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event/current_private_event_groupchat_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
@@ -15,13 +14,11 @@ import 'package:social_media_app_flutter/presentation/widgets/user_list_tile.dar
 
 class PrivateEventInfoTabUserList extends StatelessWidget {
   final CurrentPrivateEventState privateEventState;
-  final CurrentPrivateEventGroupchatState currentPrivateEventGroupchatState;
   final List<GroupchatUserEntity>? invitedUsers;
 
   const PrivateEventInfoTabUserList({
     super.key,
     required this.privateEventState,
-    required this.currentPrivateEventGroupchatState,
     this.invitedUsers,
   });
 
@@ -36,7 +33,9 @@ class PrivateEventInfoTabUserList extends StatelessWidget {
         // users that will be there
         // message for when the user is null and state is not loading is in userareainfotab widget
         if (privateEventState.privateEvent.usersThatWillBeThere == null &&
-            privateEventState is CurrentPrivateEventLoading) {
+            privateEventState is CurrentPrivateEventLoading &&
+            (privateEventState as CurrentPrivateEventLoading)
+                .loadingPrivateEvent) {
           widgetsToReturn.add(
             SkeletonListTile(
               padding: const EdgeInsets.all(8),
@@ -90,7 +89,9 @@ class PrivateEventInfoTabUserList extends StatelessWidget {
         // users that will not be there
         // message for when the user is null and state is not loading is in userareainfotab widget
         if (privateEventState.privateEvent.usersThatWillNotBeThere == null &&
-            privateEventState is CurrentPrivateEventLoading) {
+            privateEventState is CurrentPrivateEventLoading &&
+            (privateEventState as CurrentPrivateEventLoading)
+                .loadingPrivateEvent) {
           widgetsToReturn.add(
             SkeletonListTile(
               padding: const EdgeInsets.all(8),
@@ -143,8 +144,9 @@ class PrivateEventInfoTabUserList extends StatelessWidget {
 
         // invited users
         // message for when the user is null and state is not loading is in userareainfotab widget
-        if (currentPrivateEventGroupchatState
-                is CurrentPrivateEventGroupchatLoading &&
+        if (privateEventState is CurrentPrivateEventLoading &&
+            (privateEventState as CurrentPrivateEventLoading)
+                .loadingGroupchat &&
             invitedUsers == null) {
           widgetsToReturn.add(
             SkeletonListTile(

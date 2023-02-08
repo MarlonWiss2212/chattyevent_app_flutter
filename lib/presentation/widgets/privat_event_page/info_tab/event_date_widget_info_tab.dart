@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:skeletons/skeletons.dart';
-import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event/current_private_event_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
 
 class EventDateWidgetInfoTab extends StatelessWidget {
   final CurrentPrivateEventState privateEventState;
@@ -13,7 +13,8 @@ class EventDateWidgetInfoTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (privateEventState.privateEvent.eventDate == null &&
-        privateEventState is CurrentPrivateEventLoading) {
+        privateEventState is CurrentPrivateEventLoading &&
+        (privateEventState as CurrentPrivateEventLoading).loadingPrivateEvent) {
       return const Padding(
         padding: EdgeInsets.symmetric(horizontal: 8.0),
         child: SkeletonLine(),

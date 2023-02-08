@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:skeletons/skeletons.dart';
-import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event/current_private_event_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
 
 class ProfileImageWidgetInfoTab extends StatelessWidget {
   final CurrentPrivateEventState privateEventState;
@@ -26,7 +26,8 @@ class ProfileImageWidgetInfoTab extends StatelessWidget {
         ),
       );
     } else if (privateEventState.privateEvent.coverImageLink == null &&
-        privateEventState is CurrentPrivateEventLoading) {
+        privateEventState is CurrentPrivateEventLoading &&
+        (privateEventState as CurrentPrivateEventLoading).loadingPrivateEvent) {
       return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8),
         child: SkeletonAvatar(

@@ -2,9 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event/current_private_event_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event/current_private_event_groupchat_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/shopping_list/shopping_list_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 
@@ -17,20 +15,10 @@ class PrivateEventPageScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool dataLoaded = false;
+    BlocProvider.of<UserCubit>(context).getUsersViaApi();
 
     return BlocBuilder<CurrentPrivateEventCubit, CurrentPrivateEventState>(
       builder: (context, state) {
-        if (state.privateEvent.connectedGroupchat != null &&
-            dataLoaded == false) {
-          BlocProvider.of<CurrentPrivateEventGroupchatCubit>(context)
-              .setCurrentGroupchatViaApi(
-            groupchatId: state.privateEvent.connectedGroupchat!,
-          );
-          BlocProvider.of<UserCubit>(context).getUsersViaApi();
-          dataLoaded = true;
-        }
-
         return AutoTabsRouter.tabBar(
           routes: [
             InfoTabRoute(),

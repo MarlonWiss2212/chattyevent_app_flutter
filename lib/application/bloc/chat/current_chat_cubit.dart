@@ -19,10 +19,6 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
     required this.chatUseCases,
   });
 
-  void reset() {
-    emit(CurrentChatInitial(currentChat: GroupchatEntity(id: "")));
-  }
-
   Future getCurrentChatViaApi({
     required GetOneGroupchatFilter getOneGroupchatFilter,
   }) async {
@@ -35,11 +31,11 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
 
     groupchatOrFailure.fold(
       (error) {
-        CurrentChatError(
+        emit(CurrentChatError(
           currentChat: state.currentChat,
           title: "Fehler",
           message: mapFailureToMessage(error),
-        );
+        ));
       },
       (groupchat) {
         final mergedChat = chatCubit.editChatIfExistOrAdd(groupchat: groupchat);

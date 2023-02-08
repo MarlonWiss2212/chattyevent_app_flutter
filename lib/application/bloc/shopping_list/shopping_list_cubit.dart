@@ -16,20 +16,9 @@ class ShoppingListCubit extends Cubit<ShoppingListState> {
   }) : super(ShoppingListInitial());
 
   void addItem({required ShoppingListItemEntity shoppingListItem}) {
-    if (state is ShoppingListLoaded) {
-      final state = this.state as ShoppingListLoaded;
-      emit(
-        ShoppingListLoaded(
-          shoppingList: List.from(state.shoppingList)..add(shoppingListItem),
-        ),
-      );
-    } else {
-      emit(
-        ShoppingListLoaded(
-          shoppingList: [shoppingListItem],
-        ),
-      );
-    }
+    ShoppingListLoaded(
+      shoppingList: List.from(state.shoppingList)..add(shoppingListItem),
+    );
   }
 
   Future getShoppingListViaApi({
@@ -57,31 +46,38 @@ class ShoppingListCubit extends Cubit<ShoppingListState> {
         ),
       ),
       (shoppingListItems) {
-        List<ShoppingListItemEntity> shoppingListItemsToEmit =
-            shoppingListItems;
-
-        for (final item in state.shoppingList) {
-          bool savedTheItem = false;
-
-          innerLoop:
-          for (final shoppingListItemToEmit in shoppingListItemsToEmit) {
-            if (shoppingListItemToEmit.id == item.id) {
-              savedTheItem = true;
-              break innerLoop;
-            }
-          }
-
-          if (!savedTheItem) {
-            shoppingListItemsToEmit.add(item);
-          }
-        }
-
-        emit(
-          ShoppingListLoaded(
-            shoppingList: shoppingListItemsToEmit,
-          ),
+        editOrAddMultipleShoppingListItems(
+          shoppingListItems: shoppingListItems,
         );
       },
+    );
+  }
+
+  void editOrAddMultipleShoppingListItems({
+    required List<ShoppingListItemEntity> shoppingListItems,
+  }) {
+    List<ShoppingListItemEntity> shoppingListItemsToEmit = shoppingListItems;
+
+    for (final item in state.shoppingList) {
+      bool savedTheItem = false;
+
+      innerLoop:
+      for (final shoppingListItemToEmit in shoppingListItemsToEmit) {
+        if (shoppingListItemToEmit.id == item.id) {
+          savedTheItem = true;
+          break innerLoop;
+        }
+      }
+
+      if (!savedTheItem) {
+        shoppingListItemsToEmit.add(item);
+      }
+    }
+
+    emit(
+      ShoppingListLoaded(
+        shoppingList: shoppingListItemsToEmit,
+      ),
     );
   }
 }

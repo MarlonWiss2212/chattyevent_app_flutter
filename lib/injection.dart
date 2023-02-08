@@ -11,7 +11,6 @@ import 'package:social_media_app_flutter/application/bloc/image/image_cubit.dart
 import 'package:social_media_app_flutter/application/bloc/message/add_message_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/message/message_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/add_private_event_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event/current_private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/profile_page_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';

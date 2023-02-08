@@ -4,12 +4,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event/current_private_event_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event/current_private_event_groupchat_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/shopping_list/shopping_list_cubit.dart';
+import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
+import 'package:social_media_app_flutter/domain/entities/shopping_list_item_entity.dart';
+import 'package:social_media_app_flutter/domain/filter/get_one_groupchat_filter.dart';
 import 'package:social_media_app_flutter/domain/filter/get_one_private_event_filter.dart';
+import 'package:social_media_app_flutter/domain/repositories/shopping_list_item_repository.dart';
 import 'package:social_media_app_flutter/domain/usecases/chat_usecases.dart';
 import 'package:social_media_app_flutter/domain/usecases/private_event_usecases.dart';
 import 'package:social_media_app_flutter/domain/usecases/shopping_list_item_usecases.dart';
@@ -42,10 +45,38 @@ class PrivateEventPage extends StatelessWidget {
     );
     GraphQlDatasource graphQlDatasource = GraphQlDatasourceImpl(client: client);
 
+    GroupchatEntity groupchatToSet =
+        BlocProvider.of<ChatCubit>(context).state.chats.firstWhere(
+              (element) => element.id == privateEventToSet?.connectedGroupchat,
+              orElse: () => GroupchatEntity(id: ""),
+            );
+    List<ShoppingListItemEntity> shoppingListItemsToSet =
+        BlocProvider.of<ShoppingListCubit>(context)
+            .state
+            .shoppingList
+            .where(
+              (element) => element.privateEvent == privateEventId,
+            )
+            .toList();
+
     CurrentPrivateEventCubit currentPrivateEventCubit =
         CurrentPrivateEventCubit(
       CurrentPrivateEventInitial(
         privateEvent: privateEventToSet ?? PrivateEventEntity(id: ""),
+        groupchat: groupchatToSet,
+        shoppingList: shoppingListItemsToSet,
+      ),
+      shoppingListCubit: BlocProvider.of<ShoppingListCubit>(context),
+      chatCubit: BlocProvider.of<ChatCubit>(context),
+      chatUseCases: ChatUseCases(
+        chatRepository: ChatRepositoryImpl(
+          graphQlDatasource: graphQlDatasource,
+        ),
+      ),
+      shoppingListItemUseCases: ShoppingListItemUseCases(
+        shoppingListItemRepository: ShoppingListItemRepositoryImpl(
+          graphQlDatasource: graphQlDatasource,
+        ),
       ),
       privateEventCubit: BlocProvider.of<PrivateEventCubit>(context),
       privateEventUseCases: PrivateEventUseCases(
@@ -58,79 +89,49 @@ class PrivateEventPage extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider.value(value: currentPrivateEventCubit),
-        BlocProvider.value(
-          value: CurrentPrivateEventGroupchatCubit(
-            //TODO: save the groupchat directly
-            chatCubit: BlocProvider.of<ChatCubit>(context),
-            chatUseCases: ChatUseCases(
-              chatRepository:
-                  ChatRepositoryImpl(graphQlDatasource: graphQlDatasource),
-            ),
-          ),
-        ),
       ],
       child: Builder(
         builder: (context) {
-          if (privateEventToSet == null || loadPrivateEventFromApiToo) {
+          if (privateEventToSet == null &&
+              privateEventToSet!.connectedGroupchat == null &&
+              !loadPrivateEventFromApiToo) {
             BlocProvider.of<CurrentPrivateEventCubit>(context)
-                .getOnePrivateEvent(
+                .getCurrentChatViaApi(
+              getOneGroupchatFilter: GetOneGroupchatFilter(
+                id: privateEventToSet!.connectedGroupchat!,
+              ),
+            );
+          } else {
+            BlocProvider.of<CurrentPrivateEventCubit>(context)
+                .getPrivateEventAndGroupchatFromApi(
               getOnePrivateEventFilter: GetOnePrivateEventFilter(
                 id: privateEventId,
               ),
+              getOneGroupchatFilter: privateEventToSet != null &&
+                      privateEventToSet!.connectedGroupchat != null
+                  ? GetOneGroupchatFilter(
+                      id: privateEventToSet!.connectedGroupchat!,
+                    )
+                  : null,
             );
           }
 
-          return MultiBlocListener(
-            listeners: [
-              BlocListener<CurrentPrivateEventCubit, CurrentPrivateEventState>(
-                  listener: (context, state) async {
-                if (state is CurrentPrivateEventError) {
-                  return await showPlatformDialog(
-                    context: context,
-                    builder: (context) {
-                      return PlatformAlertDialog(
-                        title: Text(state.title),
-                        content: Text(state.message),
-                        actions: const [OKButton()],
-                      );
-                    },
-                  );
-                }
-              }),
-              BlocListener<CurrentPrivateEventGroupchatCubit,
-                  CurrentPrivateEventGroupchatState>(
-                listener: (context, state) async {
-                  if (state is CurrentPrivateEventGroupchatError) {
-                    return await showPlatformDialog(
-                      context: context,
-                      builder: (context) {
-                        return PlatformAlertDialog(
-                          title: Text(state.title),
-                          content: Text(state.message),
-                          actions: const [OKButton()],
-                        );
-                      },
+          return BlocListener<CurrentPrivateEventCubit,
+              CurrentPrivateEventState>(
+            listener: (context, state) async {
+              if (state is CurrentPrivateEventError) {
+                return await showPlatformDialog(
+                  context: context,
+                  builder: (context) {
+                    return PlatformAlertDialog(
+                      title: Text(state.title),
+                      content: Text(state.message),
+                      actions: const [OKButton()],
                     );
-                  }
-                },
-              ),
-              BlocListener<ShoppingListCubit, ShoppingListState>(
-                listener: (context, state) async {
-                  if (state is ShoppingListError) {
-                    return await showPlatformDialog(
-                      context: context,
-                      builder: (context) {
-                        return PlatformAlertDialog(
-                          title: Text(state.title),
-                          content: Text(state.message),
-                          actions: const [OKButton()],
-                        );
-                      },
-                    );
-                  }
-                },
-              ),
-            ],
+                  },
+                );
+              }
+            },
             child: PrivateEventPageScaffold(
               privateEventId: privateEventId,
             ),
