@@ -33,9 +33,7 @@ class PrivateEventInfoTabUserList extends StatelessWidget {
         // users that will be there
         // message for when the user is null and state is not loading is in userareainfotab widget
         if (privateEventState.privateEvent.usersThatWillBeThere == null &&
-            privateEventState is CurrentPrivateEventLoading &&
-            (privateEventState as CurrentPrivateEventLoading)
-                .loadingPrivateEvent) {
+            privateEventState.loadingPrivateEvent) {
           widgetsToReturn.add(
             SkeletonListTile(
               padding: const EdgeInsets.all(8),
@@ -89,9 +87,7 @@ class PrivateEventInfoTabUserList extends StatelessWidget {
         // users that will not be there
         // message for when the user is null and state is not loading is in userareainfotab widget
         if (privateEventState.privateEvent.usersThatWillNotBeThere == null &&
-            privateEventState is CurrentPrivateEventLoading &&
-            (privateEventState as CurrentPrivateEventLoading)
-                .loadingPrivateEvent) {
+            privateEventState.loadingPrivateEvent) {
           widgetsToReturn.add(
             SkeletonListTile(
               padding: const EdgeInsets.all(8),
@@ -144,10 +140,7 @@ class PrivateEventInfoTabUserList extends StatelessWidget {
 
         // invited users
         // message for when the user is null and state is not loading is in userareainfotab widget
-        if (privateEventState is CurrentPrivateEventLoading &&
-            (privateEventState as CurrentPrivateEventLoading)
-                .loadingGroupchat &&
-            invitedUsers == null) {
+        if (privateEventState.loadingGroupchat && invitedUsers == null) {
           widgetsToReturn.add(
             SkeletonListTile(
               padding: const EdgeInsets.all(8),

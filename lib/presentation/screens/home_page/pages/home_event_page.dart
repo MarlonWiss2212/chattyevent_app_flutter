@@ -23,6 +23,7 @@ class HomeEventPage extends StatelessWidget {
         title: const Text('Social Media App'),
       ),
       body: RefreshIndicator(
+        triggerMode: RefreshIndicatorTriggerMode.anywhere,
         onRefresh:
             BlocProvider.of<PrivateEventCubit>(context).getPrivateEventsViaApi,
         child: BlocConsumer<PrivateEventCubit, PrivateEventState>(

@@ -50,8 +50,10 @@ class PrivateEventPageScaffold extends StatelessWidget {
               ),
               body: Column(
                 children: [
-                  if (state is CurrentPrivateEventLoading &&
-                      state.privateEvent.id != "") ...{
+                  if (state.loadingGroupchat ||
+                      state.loadingPrivateEvent ||
+                      state.loadingShoppingList &&
+                          state.privateEvent.id != "") ...{
                     const LinearProgressIndicator()
                   },
                   Expanded(child: child),

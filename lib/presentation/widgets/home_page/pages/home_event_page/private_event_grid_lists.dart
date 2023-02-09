@@ -69,6 +69,5 @@ class PrivateEventGridLists extends StatelessWidget {
         ),
       ),
     );
-    ;
   }
 }

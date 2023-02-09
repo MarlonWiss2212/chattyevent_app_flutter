@@ -21,6 +21,7 @@ class HomeChatPage extends StatelessWidget {
       ),
       body: RefreshIndicator(
         onRefresh: BlocProvider.of<ChatCubit>(context).getChatsViaApi,
+        triggerMode: RefreshIndicatorTriggerMode.anywhere,
         child: BlocConsumer<ChatCubit, ChatState>(
           listener: (context, state) async {
             if (state is ChatError) {

@@ -12,12 +12,8 @@ class ConnectedGroupchatWidgetInfoTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final showGroupchatTile = privateEventState is CurrentPrivateEventLoading &&
-            (privateEventState as CurrentPrivateEventLoading)
-                .loadingGroupchat ||
-        privateEventState.groupchat.id != "";
-
-    if (showGroupchatTile) {
+    if (privateEventState.loadingGroupchat ||
+        privateEventState.groupchat.id != "") {
       return Column(
         children: [
           Text(

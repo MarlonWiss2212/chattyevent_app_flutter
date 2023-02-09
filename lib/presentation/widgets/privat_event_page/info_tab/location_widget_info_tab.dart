@@ -77,8 +77,7 @@ class LocationWidgetInfoTab extends StatelessWidget {
         ],
       );
     } else if (privateEventState.privateEvent.eventLocation == null &&
-        privateEventState is CurrentPrivateEventLoading &&
-        (privateEventState as CurrentPrivateEventLoading).loadingPrivateEvent) {
+        privateEventState.loadingPrivateEvent) {
       return Column(
         children: [
           Padding(

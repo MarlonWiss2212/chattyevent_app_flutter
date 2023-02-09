@@ -26,8 +26,7 @@ class ProfileImageWidgetInfoTab extends StatelessWidget {
         ),
       );
     } else if (privateEventState.privateEvent.coverImageLink == null &&
-        privateEventState is CurrentPrivateEventLoading &&
-        (privateEventState as CurrentPrivateEventLoading).loadingPrivateEvent) {
+        privateEventState.loadingPrivateEvent) {
       return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8),
         child: SkeletonAvatar(

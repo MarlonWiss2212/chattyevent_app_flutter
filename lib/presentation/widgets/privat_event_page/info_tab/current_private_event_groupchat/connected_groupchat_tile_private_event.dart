@@ -56,8 +56,7 @@ class ConnectedGroupchatTilePrivateEvent extends StatelessWidget {
         },
       );
     } else if (privateEventState.groupchat.id == "" &&
-        privateEventState is CurrentPrivateEventLoading &&
-        (privateEventState as CurrentPrivateEventLoading).loadingGroupchat) {
+        privateEventState.loadingGroupchat) {
       return SkeletonListTile(
         padding: const EdgeInsets.symmetric(horizontal: 8),
         hasSubtitle: true,

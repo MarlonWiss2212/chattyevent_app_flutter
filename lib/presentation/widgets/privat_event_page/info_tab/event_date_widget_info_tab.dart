@@ -13,8 +13,7 @@ class EventDateWidgetInfoTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (privateEventState.privateEvent.eventDate == null &&
-        privateEventState is CurrentPrivateEventLoading &&
-        (privateEventState as CurrentPrivateEventLoading).loadingPrivateEvent) {
+        privateEventState.loadingPrivateEvent) {
       return const Padding(
         padding: EdgeInsets.symmetric(horizontal: 8.0),
         child: SkeletonLine(),

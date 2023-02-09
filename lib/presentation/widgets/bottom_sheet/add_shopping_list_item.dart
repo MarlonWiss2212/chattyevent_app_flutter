@@ -10,9 +10,18 @@ import 'package:social_media_app_flutter/application/bloc/shopping_list/shopping
 import 'package:social_media_app_flutter/domain/dto/create_shopping_list_item_dto.dart';
 import 'package:social_media_app_flutter/presentation/widgets/dialog/buttons/ok_button.dart';
 
-class AddShoppingListItem extends StatelessWidget {
+class AddShoppingListItem extends StatefulWidget {
   final String privateEventId;
   const AddShoppingListItem({super.key, required this.privateEventId});
+
+  @override
+  State<AddShoppingListItem> createState() => _AddShoppingListItemState();
+}
+
+class _AddShoppingListItemState extends State<AddShoppingListItem> {
+  TextEditingController amountController = TextEditingController();
+  TextEditingController unitController = TextEditingController();
+  TextEditingController itemNameController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -40,29 +49,36 @@ class AddShoppingListItem extends StatelessWidget {
               Expanded(
                 child: SingleChildScrollView(
                   child: Column(
-                    children: const [
+                    children: [
                       SizedBox(
                         width: double.infinity,
                         child: PlatformTextFormField(
+                          controller: itemNameController,
                           hintText: "Item name",
                         ),
                       ),
-                      // Row(
-                      //    children: const [
-                      //        SizedBox(
-                      //        width: double.infinity,
-                      //                       child: PlatformTextFormField(
-                      //                       hintText: "Menge",
-                      //                   ),
-                      //               ),
-                      //             SizedBox(
-                      //             width: 100,
-                      //           child: PlatformTextFormField(
-                      //           hintText: "Einheit",
-                      //       ),
-                      //   ),
-                      //],
-                      //),
+                      const SizedBox(height: 8.0),
+                      SizedBox(
+                        width: double.infinity,
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: PlatformTextFormField(
+                                controller: amountController,
+                                hintText: "Menge",
+                              ),
+                            ),
+                            const SizedBox(width: 8.0),
+                            SizedBox(
+                              width: 100,
+                              child: PlatformTextFormField(
+                                controller: unitController,
+                                hintText: "Einheit",
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -83,7 +99,23 @@ class AddShoppingListItem extends StatelessWidget {
                 child: SizedBox(
                   width: double.infinity,
                   child: PlatformElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
+                      final amountAsDouble =
+                          double.tryParse(amountController.text);
+
+                      if (amountAsDouble == null) {
+                        return await showPlatformDialog(
+                          context: context,
+                          builder: (context) {
+                            return PlatformAlertDialog(
+                              title: const Text("Amount Fehler"),
+                              content: const Text("Amount muss eine Zahl sein"),
+                              actions: const [OKButton()],
+                            );
+                          },
+                        );
+                      }
+
                       BlocProvider.of<AddShoppingListItemCubit>(context)
                           .createShoppingListItem(
                         createShoppingListItemDto: CreateShoppingListItemDto(
@@ -91,10 +123,10 @@ class AddShoppingListItem extends StatelessWidget {
                               (BlocProvider.of<AuthCubit>(context).state
                                       as AuthLoaded)
                                   .token)["sub"],
-                          amount: 1.0,
-                          itemName: "weed",
-                          unit: "g",
-                          privateEvent: privateEventId,
+                          amount: amountAsDouble,
+                          itemName: itemNameController.text,
+                          unit: unitController.text,
+                          privateEvent: widget.privateEventId,
                         ),
                       );
                     },

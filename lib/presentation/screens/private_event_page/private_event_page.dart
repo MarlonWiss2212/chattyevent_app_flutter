@@ -61,10 +61,13 @@ class PrivateEventPage extends StatelessWidget {
 
     CurrentPrivateEventCubit currentPrivateEventCubit =
         CurrentPrivateEventCubit(
-      CurrentPrivateEventInitial(
+      CurrentPrivateEventNormal(
         privateEvent: privateEventToSet ?? PrivateEventEntity(id: ""),
         groupchat: groupchatToSet,
         shoppingList: shoppingListItemsToSet,
+        loadingGroupchat: false,
+        loadingPrivateEvent: false,
+        loadingShoppingList: false,
       ),
       shoppingListCubit: BlocProvider.of<ShoppingListCubit>(context),
       chatCubit: BlocProvider.of<ChatCubit>(context),

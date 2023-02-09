@@ -48,10 +48,7 @@ class UserAreaWidgetInfoTab extends StatelessWidget {
     return Column(
       children: [
         // show this text if the private event users ares not there and when its not loading
-        if (privateEventState is CurrentPrivateEventLoading &&
-            (privateEventState as CurrentPrivateEventLoading)
-                    .loadingPrivateEvent ==
-                false) ...[
+        if (privateEventState.loadingPrivateEvent == false) ...[
           if (privateEventState.privateEvent.usersThatWillBeThere == null) ...{
             const Text(
               "Fehler beim darstellen der User die da sein werden",
@@ -69,10 +66,7 @@ class UserAreaWidgetInfoTab extends StatelessWidget {
           },
         ],
         // show this text if the groupchat is not there and when its not loading
-        if (privateEventState is CurrentPrivateEventLoading &&
-            (privateEventState as CurrentPrivateEventLoading)
-                    .loadingGroupchat ==
-                false &&
+        if (privateEventState.loadingGroupchat == false &&
             privateEventState.groupchat.id == "") ...{
           const Text(
             "Fehler beim darstellen der User die eingeladen sind",

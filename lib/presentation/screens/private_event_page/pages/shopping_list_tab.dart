@@ -23,66 +23,66 @@ class ShoppingListTab extends StatelessWidget {
     );
 
     return PlatformScaffold(
-      body: BlocBuilder<CurrentPrivateEventCubit, CurrentPrivateEventState>(
-        builder: (context, state) {
-          final loadingShoppingListData =
-              CurrentPrivateEventState is CurrentPrivateEventLoading &&
-                  (CurrentPrivateEventState as CurrentPrivateEventLoading)
-                      .loadingShoppingList;
+      body: RefreshIndicator(
+        onRefresh: () => BlocProvider.of<CurrentPrivateEventCubit>(context)
+            .getShoppingListViaApi(
+          getShoppingListItemsFilter: GetShoppingListItemsFilter(
+            privateEvent: privateEventId,
+          ),
+        ),
+        child: BlocBuilder<CurrentPrivateEventCubit, CurrentPrivateEventState>(
+          builder: (context, state) {
+            const emptyReturn = Center(
+              child: Text("Keine Items die gekauft werden müssen"),
+            );
 
-          const emptyReturn = Center(
-            child: Text("Keine Items die gekauft werden müssen"),
-          );
+            if (state.shoppingList.isEmpty && !state.loadingShoppingList) {
+              return emptyReturn;
+            } else if (state.shoppingList.isEmpty &&
+                state.loadingShoppingList) {
+              return SkeletonListView(
+                itemBuilder: (p0, p1) {
+                  return SkeletonListTile(
+                    hasSubtitle: true,
+                    hasLeading: false,
+                    titleStyle: const SkeletonLineStyle(
+                      width: double.infinity,
+                      height: 22,
+                    ),
+                    subtitleStyle: const SkeletonLineStyle(
+                      width: double.infinity,
+                      height: 16,
+                    ),
+                  );
+                },
+              );
+            } else if (state.shoppingList.isEmpty) {
+              return emptyReturn;
+            }
 
-          if (state.shoppingList.isEmpty && !loadingShoppingListData) {
-            return emptyReturn;
-          }
-
-          if (state.shoppingList.isEmpty && loadingShoppingListData) {
-            return SkeletonListView(
-              itemBuilder: (p0, p1) {
-                return SkeletonListTile(
-                  hasSubtitle: true,
-                  hasLeading: false,
-                  titleStyle: const SkeletonLineStyle(
-                    width: double.infinity,
-                    height: 22,
+            return ListView.builder(
+              shrinkWrap: true,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text(
+                    state.shoppingList[index].itemName ?? "Kein Name",
+                    style: Theme.of(context).textTheme.titleMedium,
+                    softWrap: true,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                  subtitleStyle: const SkeletonLineStyle(
-                    width: double.infinity,
-                    height: 16,
+                  trailing: Text(
+                    "${state.shoppingList[index].amount} ${state.shoppingList[index].unit}",
+                    style: Theme.of(context).textTheme.titleMedium,
+                    softWrap: true,
+                    overflow: TextOverflow.ellipsis,
                   ),
+                  onTap: () {},
                 );
               },
+              itemCount: state.shoppingList.length,
             );
-          }
-
-          if (state.shoppingList.isEmpty) {
-            return emptyReturn;
-          }
-
-          return ListView.builder(
-            shrinkWrap: true,
-            itemBuilder: (context, index) {
-              return ListTile(
-                title: Text(
-                  state.shoppingList[index].itemName ?? "Kein Name",
-                  style: Theme.of(context).textTheme.titleMedium,
-                  softWrap: true,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                trailing: Text(
-                  "${state.shoppingList[index].amount} ${state.shoppingList[index].unit}",
-                  style: Theme.of(context).textTheme.titleMedium,
-                  softWrap: true,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                onTap: () {},
-              );
-            },
-            itemCount: state.shoppingList.length,
-          );
-        },
+          },
+        ),
       ),
       material: (context, platform) => MaterialScaffoldData(
         floatingActionButton: FloatingActionButton.extended(

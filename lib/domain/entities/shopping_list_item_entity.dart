@@ -8,6 +8,7 @@ class ShoppingListItemEntity {
   double? boughtAmount;
   String? userToBuyItem;
   String? privateEvent;
+  String? createdBy;
 
   ShoppingListItemEntity({
     required this.id,
@@ -17,6 +18,7 @@ class ShoppingListItemEntity {
     this.itemName,
     this.privateEvent,
     this.unit,
+    this.createdBy,
     this.updatedAt,
     this.userToBuyItem,
   });
