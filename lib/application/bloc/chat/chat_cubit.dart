@@ -13,11 +13,7 @@ class ChatCubit extends Cubit<ChatState> {
   final ChatUseCases chatUseCases;
   ChatCubit({required this.chatUseCases}) : super(ChatInitial());
 
-  void addChat({required GroupchatEntity groupchat}) {
-    emit(ChatLoaded(chats: List.from(state.chats)..add(groupchat)));
-  }
-
-  GroupchatEntity editChatIfExistOrAdd({required GroupchatEntity groupchat}) {
+  GroupchatEntity mergeOrAdd({required GroupchatEntity groupchat}) {
     int foundIndex = state.chats.indexWhere(
       (element) => element.id == groupchat.id,
     );
@@ -42,6 +38,26 @@ class ChatCubit extends Cubit<ChatState> {
     return groupchat;
   }
 
+  List<GroupchatEntity> mergeOrAddMultiple({
+    required List<GroupchatEntity> groupchats,
+  }) {
+    List<GroupchatEntity> mergedChats = [];
+    for (final chat in groupchats) {
+      // state will be changed in mergeOrAdd
+      final mergedChat = mergeOrAdd(groupchat: chat);
+      mergedChats.add(mergedChat);
+    }
+    return mergedChats;
+  }
+
+  void delete({required String groupchatId}) {
+    List<GroupchatEntity> newChats = state.chats;
+    newChats.removeWhere(
+      (element) => element.id == groupchatId,
+    );
+    emit(ChatLoaded(chats: newChats));
+  }
+
   Future getChatsViaApi() async {
     emit(ChatLoading(chats: state.chats));
 
@@ -57,24 +73,7 @@ class ChatCubit extends Cubit<ChatState> {
         ),
       ),
       (groupchats) {
-        List<GroupchatEntity> chatsToEmit = groupchats;
-
-        for (final stateChat in state.chats) {
-          bool savedTheChat = false;
-
-          innerLoop:
-          for (final chatToEmit in chatsToEmit) {
-            if (chatToEmit.id == stateChat.id) {
-              savedTheChat = true;
-              break innerLoop;
-            }
-          }
-
-          if (!savedTheChat) {
-            chatsToEmit.add(stateChat);
-          }
-        }
-        emit(ChatLoaded(chats: chatsToEmit));
+        mergeOrAddMultiple(groupchats: groupchats);
       },
     );
   }

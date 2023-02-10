@@ -38,9 +38,13 @@ class AddShoppingListItemCubit extends Cubit<AddShoppingListItemState> {
         );
       },
       (shoppingListItem) {
-        shoppingListCubit.addItem(
+        shoppingListCubit.mergeOrAdd(
           shoppingListItem: shoppingListItem,
         );
+        // also add it to current private event
+        emit(AddShoppingListItemLoaded(
+          addedShoppingListItem: shoppingListItem,
+        ));
       },
     );
   }

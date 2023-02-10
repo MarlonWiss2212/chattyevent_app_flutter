@@ -3,15 +3,18 @@ part of 'current_chat_cubit.dart';
 @immutable
 abstract class CurrentChatState {
   final GroupchatEntity currentChat;
-  const CurrentChatState({required this.currentChat});
+  final bool loadingChat;
+  const CurrentChatState({
+    required this.currentChat,
+    required this.loadingChat,
+  });
 }
 
-class CurrentChatInitial extends CurrentChatState {
-  const CurrentChatInitial({required super.currentChat});
-}
-
-class CurrentChatLoading extends CurrentChatState {
-  const CurrentChatLoading({required super.currentChat});
+class CurrentChatNormal extends CurrentChatState {
+  const CurrentChatNormal({
+    required super.currentChat,
+    required super.loadingChat,
+  });
 }
 
 class CurrentChatError extends CurrentChatState {
@@ -22,9 +25,6 @@ class CurrentChatError extends CurrentChatState {
     required super.currentChat,
     required this.message,
     required this.title,
+    required super.loadingChat,
   });
-}
-
-class CurrentChatLoaded extends CurrentChatState {
-  const CurrentChatLoaded({required super.currentChat});
 }

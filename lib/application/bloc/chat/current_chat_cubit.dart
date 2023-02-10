@@ -22,7 +22,7 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
   Future getCurrentChatViaApi({
     required GetOneGroupchatFilter getOneGroupchatFilter,
   }) async {
-    emit(CurrentChatLoading(currentChat: state.currentChat));
+    emit(CurrentChatNormal(currentChat: state.currentChat, loadingChat: true));
 
     final Either<Failure, GroupchatEntity> groupchatOrFailure =
         await chatUseCases.getGroupchatViaApi(
@@ -35,25 +35,28 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
           currentChat: state.currentChat,
           title: "Fehler",
           message: mapFailureToMessage(error),
+          loadingChat: false,
         ));
       },
       (groupchat) {
-        final mergedChat = chatCubit.editChatIfExistOrAdd(groupchat: groupchat);
-        emit(CurrentChatLoaded(currentChat: mergedChat));
+        final mergedChat = chatCubit.mergeOrAdd(groupchat: groupchat);
+        emit(CurrentChatNormal(currentChat: mergedChat, loadingChat: false));
       },
     );
   }
 
   void setCurrentChat({required GroupchatEntity groupchat}) {
-    emit(CurrentChatLoading(currentChat: state.currentChat));
-    emit(CurrentChatLoaded(currentChat: groupchat));
+    emit(CurrentChatNormal(
+      currentChat: groupchat,
+      loadingChat: state.loadingChat,
+    ));
   }
 
   Future addUserToChat({
     required String groupchatId,
     required String userIdToAdd,
   }) async {
-    emit(CurrentChatLoading(currentChat: state.currentChat));
+    emit(CurrentChatNormal(currentChat: state.currentChat, loadingChat: true));
 
     final Either<Failure, GroupchatEntity> groupchatOrFailure =
         await chatUseCases.addUserToGroupchatViaApi(
@@ -64,14 +67,15 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
     groupchatOrFailure.fold(
       (error) {
         emit(CurrentChatError(
+          loadingChat: false,
           currentChat: state.currentChat,
           message: "Fehler",
           title: mapFailureToMessage(error),
         ));
       },
       (groupchat) {
-        final mergedChat = chatCubit.editChatIfExistOrAdd(groupchat: groupchat);
-        emit(CurrentChatLoaded(currentChat: mergedChat));
+        final mergedChat = chatCubit.mergeOrAdd(groupchat: groupchat);
+        emit(CurrentChatNormal(currentChat: mergedChat, loadingChat: false));
       },
     );
   }
@@ -80,7 +84,7 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
     required String groupchatId,
     required String userIdToDelete,
   }) async {
-    emit(CurrentChatLoading(currentChat: state.currentChat));
+    emit(CurrentChatNormal(currentChat: state.currentChat, loadingChat: true));
 
     final Either<Failure, GroupchatEntity> groupchatOrFailure =
         await chatUseCases.deleteUserFromGroupchatViaApi(
@@ -91,14 +95,15 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
     groupchatOrFailure.fold(
       (error) {
         emit(CurrentChatError(
+          loadingChat: false,
           currentChat: state.currentChat,
           message: mapFailureToMessage(error),
           title: "Fehler",
         ));
       },
       (groupchat) {
-        final mergedChat = chatCubit.editChatIfExistOrAdd(groupchat: groupchat);
-        emit(CurrentChatLoaded(currentChat: mergedChat));
+        final mergedChat = chatCubit.mergeOrAdd(groupchat: groupchat);
+        emit(CurrentChatNormal(currentChat: mergedChat, loadingChat: false));
       },
     );
   }

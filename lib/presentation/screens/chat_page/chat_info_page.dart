@@ -29,12 +29,12 @@ class ChatInfoPage extends StatelessWidget {
               ),
             ),
           ),
-          body: state is CurrentChatLoading && state.currentChat.id == ""
+          body: state.loadingChat && state.currentChat.id == ""
               ? Center(child: PlatformCircularProgressIndicator())
               : state.currentChat.id != ""
                   ? Column(
                       children: [
-                        if (state is CurrentChatLoading) ...{
+                        if (state.loadingChat) ...{
                           const LinearProgressIndicator(),
                         },
                         Expanded(

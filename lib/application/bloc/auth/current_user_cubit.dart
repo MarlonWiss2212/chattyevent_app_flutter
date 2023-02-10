@@ -6,11 +6,11 @@ import 'package:social_media_app_flutter/domain/failures/failures.dart';
 import 'package:social_media_app_flutter/domain/filter/get_one_user_filter.dart';
 import 'package:social_media_app_flutter/domain/usecases/user_usecases.dart';
 
-part 'home_profile_page_state.dart';
+part 'current_user_state.dart';
 
-class HomeProfilePageCubit extends Cubit<HomeProfilePageState> {
+class CurrentUserCubit extends Cubit<CurrentUserState> {
   final UserUseCases userUseCases;
-  HomeProfilePageCubit(
+  CurrentUserCubit(
     super.initialState, {
     required this.userUseCases,
   });
@@ -18,7 +18,7 @@ class HomeProfilePageCubit extends Cubit<HomeProfilePageState> {
   Future getOneUserViaApi({
     required GetOneUserFilter getOneUserFilter,
   }) async {
-    emit(HomeProfilePageLoading(user: state.user));
+    emit(CurrentUserNormal(user: state.user, loadingUser: true));
 
     final Either<Failure, UserEntity> userOrFailure =
         await userUseCases.getUserViaApi(
@@ -27,14 +27,15 @@ class HomeProfilePageCubit extends Cubit<HomeProfilePageState> {
 
     userOrFailure.fold(
       (error) {
-        emit(HomeProfilePageError(
+        emit(CurrentUserError(
           user: state.user,
           title: "Fehler",
           message: mapFailureToMessage(error),
+          loadingUser: false,
         ));
       },
       (user) {
-        emit(HomeProfilePageLoaded(user: user));
+        emit(CurrentUserNormal(user: user, loadingUser: false));
       },
     );
   }

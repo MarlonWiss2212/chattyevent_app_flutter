@@ -6,7 +6,6 @@ import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/add_chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/home_page/home_profile_page/home_profile_page_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/image/image_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/message/add_message_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/message/message_cubit.dart';

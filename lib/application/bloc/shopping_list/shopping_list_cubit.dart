@@ -15,10 +15,53 @@ class ShoppingListCubit extends Cubit<ShoppingListState> {
     required this.shoppingListItemUseCases,
   }) : super(ShoppingListInitial());
 
-  void addItem({required ShoppingListItemEntity shoppingListItem}) {
-    ShoppingListLoaded(
-      shoppingList: List.from(state.shoppingList)..add(shoppingListItem),
+  ShoppingListItemEntity mergeOrAdd({
+    required ShoppingListItemEntity shoppingListItem,
+  }) {
+    int foundIndex = state.shoppingList.indexWhere(
+      (element) => element.id == shoppingListItem.id,
     );
+
+    if (foundIndex != -1) {
+      List<ShoppingListItemEntity> newShoppingList = state.shoppingList;
+      newShoppingList[foundIndex] = ShoppingListItemEntity.merge(
+        newEntity: shoppingListItem,
+        oldEntity: state.shoppingList[foundIndex],
+      );
+      emit(
+        ShoppingListLoaded(shoppingList: newShoppingList),
+      );
+      return newShoppingList[foundIndex];
+    } else {
+      emit(
+        ShoppingListLoaded(
+          shoppingList: List.from(state.shoppingList)..add(shoppingListItem),
+        ),
+      );
+    }
+    return shoppingListItem;
+  }
+
+  List<ShoppingListItemEntity> mergeOrAddMultiple({
+    required List<ShoppingListItemEntity> shoppingListItems,
+  }) {
+    List<ShoppingListItemEntity> mergedShoppingList = [];
+    for (final shoppingListItem in shoppingListItems) {
+      // state will be changed in mergeOrAdd
+      final mergedShoppingListItem = mergeOrAdd(
+        shoppingListItem: shoppingListItem,
+      );
+      mergedShoppingList.add(mergedShoppingListItem);
+    }
+    return mergedShoppingList;
+  }
+
+  void delete({required String shoppingListItemId}) {
+    List<ShoppingListItemEntity> newShoppingList = state.shoppingList;
+    newShoppingList.removeWhere(
+      (element) => element.id == shoppingListItemId,
+    );
+    emit(ShoppingListLoaded(shoppingList: newShoppingList));
   }
 
   Future getShoppingListViaApi({
@@ -46,38 +89,10 @@ class ShoppingListCubit extends Cubit<ShoppingListState> {
         ),
       ),
       (shoppingListItems) {
-        editOrAddMultipleShoppingListItems(
+        mergeOrAddMultiple(
           shoppingListItems: shoppingListItems,
         );
       },
-    );
-  }
-
-  void editOrAddMultipleShoppingListItems({
-    required List<ShoppingListItemEntity> shoppingListItems,
-  }) {
-    List<ShoppingListItemEntity> shoppingListItemsToEmit = shoppingListItems;
-
-    for (final item in state.shoppingList) {
-      bool savedTheItem = false;
-
-      innerLoop:
-      for (final shoppingListItemToEmit in shoppingListItemsToEmit) {
-        if (shoppingListItemToEmit.id == item.id) {
-          savedTheItem = true;
-          break innerLoop;
-        }
-      }
-
-      if (!savedTheItem) {
-        shoppingListItemsToEmit.add(item);
-      }
-    }
-
-    emit(
-      ShoppingListLoaded(
-        shoppingList: shoppingListItemsToEmit,
-      ),
     );
   }
 }

@@ -13,48 +13,17 @@ class PrivateEventCubit extends Cubit<PrivateEventState> {
     required this.privateEventUseCases,
   }) : super(PrivateEventInitial());
 
-  void reset() {
-    emit(PrivateEventInitial());
-  }
-
-  void addPrivateEvent({required PrivateEventEntity privateEvent}) async {
-    emit(
-      PrivateEventLoaded(
-        privateEvents: List.from(state.privateEvents)..add(privateEvent),
-      ),
-    );
-  }
-
-  PrivateEventEntity editPrivateEventIfExistOrAdd({
-    required PrivateEventEntity privateEvent,
-  }) {
+  PrivateEventEntity mergeOrAdd({required PrivateEventEntity privateEvent}) {
     int foundIndex = state.privateEvents.indexWhere(
       (element) => element.id == privateEvent.id,
     );
 
     if (foundIndex != -1) {
       List<PrivateEventEntity> newPrivateEvents = state.privateEvents;
-      newPrivateEvents[foundIndex] = PrivateEventEntity(
-        id: privateEvent.id,
-        title: privateEvent.title ?? newPrivateEvents[foundIndex].title,
-        coverImageLink: privateEvent.coverImageLink ??
-            newPrivateEvents[foundIndex].coverImageLink,
-        connectedGroupchat: privateEvent.connectedGroupchat ??
-            newPrivateEvents[foundIndex].connectedGroupchat,
-        eventDate:
-            privateEvent.eventDate ?? newPrivateEvents[foundIndex].eventDate,
-        eventLocation: privateEvent.eventLocation ??
-            newPrivateEvents[foundIndex].eventLocation,
-        usersThatWillBeThere: privateEvent.usersThatWillBeThere ??
-            newPrivateEvents[foundIndex].usersThatWillBeThere,
-        usersThatWillNotBeThere: privateEvent.usersThatWillNotBeThere ??
-            newPrivateEvents[foundIndex].usersThatWillNotBeThere,
-        createdBy:
-            privateEvent.createdBy ?? newPrivateEvents[foundIndex].createdBy,
-        createdAt:
-            privateEvent.createdAt ?? newPrivateEvents[foundIndex].createdAt,
+      newPrivateEvents[foundIndex] = PrivateEventEntity.merge(
+        newEntity: privateEvent,
+        oldEntity: state.privateEvents[foundIndex],
       );
-
       emit(
         PrivateEventLoaded(privateEvents: newPrivateEvents),
       );
@@ -66,8 +35,27 @@ class PrivateEventCubit extends Cubit<PrivateEventState> {
         ),
       );
     }
-
     return privateEvent;
+  }
+
+  List<PrivateEventEntity> mergeOrAddMultiple({
+    required List<PrivateEventEntity> privateEvents,
+  }) {
+    List<PrivateEventEntity> mergedPrivateEvents = [];
+    for (final privateEvent in privateEvents) {
+      // state will be changed in mergeOrAdd
+      final mergedPrivateEvent = mergeOrAdd(privateEvent: privateEvent);
+      mergedPrivateEvents.add(mergedPrivateEvent);
+    }
+    return mergedPrivateEvents;
+  }
+
+  void delete({required String privateEventId}) {
+    List<PrivateEventEntity> newPrivateEvents = state.privateEvents;
+    newPrivateEvents.removeWhere(
+      (element) => element.id == privateEventId,
+    );
+    emit(PrivateEventLoaded(privateEvents: newPrivateEvents));
   }
 
   Future getPrivateEventsViaApi() async {
@@ -85,24 +73,7 @@ class PrivateEventCubit extends Cubit<PrivateEventState> {
         ),
       ),
       (privateEvents) {
-        List<PrivateEventEntity> privateEventsToEmit = privateEvents;
-
-        for (final statePrivateEvent in state.privateEvents) {
-          bool savedTheUser = false;
-
-          innerLoop:
-          for (final privateEventToEmit in privateEventsToEmit) {
-            if (privateEventToEmit.id == statePrivateEvent.id) {
-              savedTheUser = true;
-              break innerLoop;
-            }
-          }
-
-          if (!savedTheUser) {
-            privateEventsToEmit.add(statePrivateEvent);
-          }
-        }
-        emit(PrivateEventLoaded(privateEvents: privateEvents));
+        mergeOrAddMultiple(privateEvents: privateEvents);
       },
     );
   }

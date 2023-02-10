@@ -1,20 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/auth/current_user_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/add_chat_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/location/location_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/shopping_list/add_shopping_list_item_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/shopping_list/shopping_list_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_search_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/user/profile_page_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/message/message_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/message/add_message_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/add_private_event_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/home_page/home_profile_page/home_profile_page_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/image/image_cubit.dart';
 import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
 import 'package:social_media_app_flutter/domain/usecases/chat_usecases.dart';
@@ -124,8 +122,9 @@ class BlocInit extends StatelessWidget {
         final locationCubit = LocationCubit(
           locationUseCases: locationUseCases,
         );
-        final homeProfilePageCubit = HomeProfilePageCubit(
-          HomeProfilePageInitial(
+        final homeProfilePageCubit = CurrentUserCubit(
+          CurrentUserNormal(
+            loadingUser: false,
             user: BlocProvider.of<AuthCubit>(context).state is AuthLoaded
                 ? (BlocProvider.of<AuthCubit>(context).state as AuthLoaded)
                         .userResponse ??

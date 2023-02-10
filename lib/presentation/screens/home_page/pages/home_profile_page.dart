@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/home_page/home_profile_page/home_profile_page_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/auth/current_user_cubit.dart';
 import 'package:social_media_app_flutter/domain/filter/get_one_user_filter.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 import 'package:social_media_app_flutter/presentation/widgets/dialog/buttons/ok_button.dart';
@@ -18,13 +18,13 @@ class HomeProfilePage extends StatelessWidget {
     final currentUserId = Jwt.parseJwt(
         (BlocProvider.of<AuthCubit>(context).state as AuthLoaded).token)["sub"];
 
-    return BlocConsumer<HomeProfilePageCubit, HomeProfilePageState>(
-      bloc: BlocProvider.of<HomeProfilePageCubit>(context)
+    return BlocConsumer<CurrentUserCubit, CurrentUserState>(
+      bloc: BlocProvider.of<CurrentUserCubit>(context)
         ..getOneUserViaApi(
           getOneUserFilter: GetOneUserFilter(id: currentUserId),
         ),
       listener: (context, state) async {
-        if (state is HomeProfilePageError) {
+        if (state is CurrentUserError) {
           return await showPlatformDialog(
             context: context,
             builder: (context) {
@@ -42,14 +42,14 @@ class HomeProfilePage extends StatelessWidget {
 
         if (state.user.id != "") {
           body = UserProfileDataPage(user: state.user);
-        } else if (state is HomeProfilePageLoading && state.user.id == "") {
+        } else if (state.loadingUser && state.user.id == "") {
           body = Center(child: PlatformCircularProgressIndicator());
         } else {
           body = Center(
             child: PlatformTextButton(
               child: Text("Keinen User mit der Id: $currentUserId"),
-              onPressed: () => BlocProvider.of<HomeProfilePageCubit>(context)
-                  .getOneUserViaApi(
+              onPressed: () =>
+                  BlocProvider.of<CurrentUserCubit>(context).getOneUserViaApi(
                 getOneUserFilter: GetOneUserFilter(id: currentUserId),
               ),
             ),
@@ -76,7 +76,7 @@ class HomeProfilePage extends StatelessWidget {
           ),
           body: Column(
             children: [
-              if (state is HomeProfilePageLoading && state.user.id != "") ...{
+              if (state.loadingUser && state.user.id != "") ...{
                 const LinearProgressIndicator()
               },
               Expanded(child: body),

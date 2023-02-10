@@ -35,11 +35,9 @@ class UserGridListWithSearchbar extends StatelessWidget {
                   child: UserGridList(
                     users: state.users,
                     onPress: (user) {
-                      // to check if the user is already saved because the user comes from user_search cubit and not user cubit
-                      BlocProvider.of<UserCubit>(context).editUserIfExistOrAdd(
+                      BlocProvider.of<UserCubit>(context).mergeOrAdd(
                         user: user,
                       );
-
                       AutoRouter.of(context).push(
                         ProfilePageRoute(
                           userId: user.id,

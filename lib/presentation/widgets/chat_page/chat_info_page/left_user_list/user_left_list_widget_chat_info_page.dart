@@ -31,7 +31,7 @@ class UserLeftListWidgetChatInfoPage extends StatelessWidget {
             groupchatId: chatState.currentChat.id,
           ),
         ] else if (chatState.currentChat.leftUsers == null &&
-            chatState is CurrentChatLoading) ...[
+            chatState.loadingChat) ...[
           SkeletonListTile(
             hasSubtitle: true,
             hasLeading: false,
