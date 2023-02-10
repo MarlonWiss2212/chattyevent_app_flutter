@@ -16,25 +16,41 @@ class MessageCubit extends Cubit<MessageState> {
 
   MessageCubit({required this.messageUseCases}) : super(MessageInitial());
 
-  void reset() {
-    emit(MessageInitial());
-  }
+  MessageEntity mergeOrAdd({required MessageEntity message}) {
+    int foundIndex = state.messages.indexWhere(
+      (element) => element.id == message.id,
+    );
 
-  void addMessage({required MessageEntity message}) {
-    if (state is MessageLoaded) {
-      final state = this.state as MessageLoaded;
+    if (foundIndex != -1) {
+      List<MessageEntity> newMessages = state.messages;
+      newMessages[foundIndex] = MessageEntity.merge(
+        newEntity: message,
+        oldEntity: state.messages[foundIndex],
+      );
+      emit(
+        MessageLoaded(messages: newMessages),
+      );
+      return newMessages[foundIndex];
+    } else {
       emit(
         MessageLoaded(
           messages: List.from(state.messages)..add(message),
         ),
       );
-    } else {
-      emit(
-        MessageLoaded(
-          messages: [message],
-        ),
-      );
     }
+    return message;
+  }
+
+  List<MessageEntity> mergeOrAddMultiple({
+    required List<MessageEntity> messages,
+  }) {
+    List<MessageEntity> mergedMessages = [];
+    for (final message in messages) {
+      // state will be changed in mergeOrAdd
+      final mergedMessage = mergeOrAdd(message: message);
+      mergedMessages.add(mergedMessage);
+    }
+    return mergedMessages;
   }
 
   Future getMessages({required GetMessagesFilter getMessagesFilter}) async {
@@ -57,26 +73,7 @@ class MessageCubit extends Cubit<MessageState> {
         );
       },
       (messages) {
-        List<MessageEntity> messagesToEmit = messages;
-
-        for (final stateMessage in state.messages) {
-          bool savedTheMessage = false;
-
-          innerLoop:
-          for (final messageToEmit in messagesToEmit) {
-            if (messageToEmit.id == stateMessage.id) {
-              savedTheMessage = true;
-              break innerLoop;
-            }
-          }
-
-          if (!savedTheMessage) {
-            messagesToEmit.add(stateMessage);
-          }
-        }
-        emit(MessageLoaded(
-          messages: messagesToEmit,
-        ));
+        mergeOrAddMultiple(messages: messages);
       },
     );
   }

@@ -36,7 +36,7 @@ class AddMessageCubit extends Cubit<AddMessageState> {
         );
       },
       (message) {
-        messageCubit.addMessage(message: message);
+        messageCubit.mergeOrAdd(message: message);
         emit(AddMessageLoaded(addedMessage: message));
       },
     );
