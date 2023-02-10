@@ -20,10 +20,6 @@ class AddPrivateEventCubit extends Cubit<AddPrivateEventState> {
     required this.privateEventCubit,
   }) : super(AddPrivateEventInitial());
 
-  void reset() {
-    emit(AddPrivateEventInitial());
-  }
-
   Future createPrivateEvent({
     required CreatePrivateEventDto createPrivateEventDto,
   }) async {
@@ -40,7 +36,7 @@ class AddPrivateEventCubit extends Cubit<AddPrivateEventState> {
         ));
       },
       (privateEvent) {
-        privateEventCubit.addPrivateEvent(privateEvent: privateEvent);
+        privateEventCubit.mergeOrAdd(privateEvent: privateEvent);
         emit(AddPrivateEventLoaded(addedPrivateEvent: privateEvent));
       },
     );

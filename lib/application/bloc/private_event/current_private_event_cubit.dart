@@ -2,7 +2,6 @@ import 'dart:collection';
 
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
-import 'package:http/http.dart';
 import 'package:meta/meta.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/private_event_cubit.dart';
@@ -187,6 +186,8 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
     );
   }
 
+  //TODO merge or add shopping list items functions
+
   void addItem({required ShoppingListItemEntity shoppingListItem}) {
     emit(CurrentPrivateEventNormal(
       privateEvent: state.privateEvent,
@@ -229,8 +230,7 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
         ));
       },
       (privateEvent) {
-        final mergedPrivateEvent =
-            privateEventCubit.editPrivateEventIfExistOrAdd(
+        final mergedPrivateEvent = privateEventCubit.mergeOrAdd(
           privateEvent: privateEvent,
         );
         emit(CurrentPrivateEventNormal(
@@ -289,14 +289,14 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
   }
 
   void setCurrentPrivateEventData({
-    required PrivateEventEntity privateEvent,
-    required GroupchatEntity groupchat,
-    required List<ShoppingListItemEntity> shoppingList,
+    required PrivateEventEntity? privateEvent,
+    required GroupchatEntity? groupchat,
+    required List<ShoppingListItemEntity>? shoppingList,
   }) {
     emit(CurrentPrivateEventNormal(
-      privateEvent: privateEvent,
-      groupchat: groupchat,
-      shoppingList: shoppingList,
+      privateEvent: privateEvent ?? state.privateEvent,
+      groupchat: groupchat ?? state.groupchat,
+      shoppingList: shoppingList ?? state.shoppingList,
       loadingPrivateEvent: state.loadingPrivateEvent,
       loadingGroupchat: state.loadingGroupchat,
       loadingShoppingList: state.loadingShoppingList,
@@ -334,8 +334,7 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
         ));
       },
       (privateEvent) {
-        final mergedPrivateEvent =
-            privateEventCubit.editPrivateEventIfExistOrAdd(
+        final mergedPrivateEvent = privateEventCubit.mergeOrAdd(
           privateEvent: privateEvent,
         );
         emit(CurrentPrivateEventNormal(
@@ -381,8 +380,7 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
         ));
       },
       (privateEvent) {
-        final mergedPrivateEvent =
-            privateEventCubit.editPrivateEventIfExistOrAdd(
+        final mergedPrivateEvent = privateEventCubit.mergeOrAdd(
           privateEvent: privateEvent,
         );
         emit(CurrentPrivateEventNormal(
@@ -429,8 +427,7 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
         ));
       },
       (privateEvent) {
-        final mergedPrivateEvent =
-            privateEventCubit.editPrivateEventIfExistOrAdd(
+        final mergedPrivateEvent = privateEventCubit.mergeOrAdd(
           privateEvent: privateEvent,
         );
         emit(CurrentPrivateEventNormal(
