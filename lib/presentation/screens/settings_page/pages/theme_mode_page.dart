@@ -17,35 +17,31 @@ class ThemeModePage extends StatelessWidget {
           children: [
             Consumer<DarkModeProvider>(
               builder: (context, darkModeProvider, child) {
-                return ListTile(
+                return SwitchListTile.adaptive(
                   title: Text(
                     "Dark-Mode Automatisch: ",
                     style: Theme.of(context).textTheme.titleMedium,
                     softWrap: true,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  trailing: PlatformSwitch(
-                    value: darkModeProvider.autoDarkMode,
-                    onChanged: (value) => darkModeProvider.autoDarkMode = value,
-                  ),
+                  value: darkModeProvider.autoDarkMode,
+                  onChanged: (value) => darkModeProvider.autoDarkMode = value,
                 );
               },
             ),
             Consumer<DarkModeProvider>(
               builder: (context, darkModeProvider, child) {
-                return ListTile(
+                return SwitchListTile.adaptive(
                   title: Text(
                     "Dark-Mode",
                     style: Theme.of(context).textTheme.titleMedium,
                     softWrap: true,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  trailing: PlatformSwitch(
-                    value: darkModeProvider.darkMode,
-                    onChanged: darkModeProvider.autoDarkMode
-                        ? null
-                        : (value) => darkModeProvider.darkMode = value,
-                  ),
+                  value: darkModeProvider.darkMode,
+                  onChanged: darkModeProvider.autoDarkMode
+                      ? null
+                      : (value) => darkModeProvider.darkMode = value,
                 );
               },
             ),

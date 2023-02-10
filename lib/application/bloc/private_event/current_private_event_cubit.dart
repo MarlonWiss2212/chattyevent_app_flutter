@@ -275,7 +275,7 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
         ));
       },
       (groupchat) {
-        final mergedChat = chatCubit.editChatIfExistOrAdd(groupchat: groupchat);
+        final mergedChat = chatCubit.mergeOrAdd(groupchat: groupchat);
         emit(CurrentPrivateEventNormal(
           groupchat: mergedChat,
           shoppingList: state.shoppingList,

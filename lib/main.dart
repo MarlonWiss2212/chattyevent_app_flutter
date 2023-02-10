@@ -8,7 +8,7 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:provider/provider.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/home_page/home_profile_page/home_profile_page_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/auth/current_user_cubit.dart';
 import 'package:social_media_app_flutter/application/provider/darkMode.dart';
 import 'package:social_media_app_flutter/bloc_init.dart';
 import 'package:social_media_app_flutter/colors.dart';
@@ -91,7 +91,7 @@ class _AppState extends State<App> {
       widget.appRouter.replace(const HomePageRoute());
 
       if (authState.userResponse == null) {
-        BlocProvider.of<HomeProfilePageCubit>(context).getOneUserViaApi(
+        BlocProvider.of<CurrentUserCubit>(context).getOneUserViaApi(
           getOneUserFilter: GetOneUserFilter(
             id: Jwt.parseJwt(authState.token)["sub"],
           ),

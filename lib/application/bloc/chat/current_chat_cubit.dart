@@ -38,14 +38,13 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
         ));
       },
       (groupchat) {
-        final mergedChat = chatCubit.editChatIfExistOrAdd(groupchat: groupchat);
+        final mergedChat = chatCubit.mergeOrAdd(groupchat: groupchat);
         emit(CurrentChatLoaded(currentChat: mergedChat));
       },
     );
   }
 
   void setCurrentChat({required GroupchatEntity groupchat}) {
-    emit(CurrentChatLoading(currentChat: state.currentChat));
     emit(CurrentChatLoaded(currentChat: groupchat));
   }
 
@@ -70,7 +69,7 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
         ));
       },
       (groupchat) {
-        final mergedChat = chatCubit.editChatIfExistOrAdd(groupchat: groupchat);
+        final mergedChat = chatCubit.mergeOrAdd(groupchat: groupchat);
         emit(CurrentChatLoaded(currentChat: mergedChat));
       },
     );
@@ -97,7 +96,7 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
         ));
       },
       (groupchat) {
-        final mergedChat = chatCubit.editChatIfExistOrAdd(groupchat: groupchat);
+        final mergedChat = chatCubit.mergeOrAdd(groupchat: groupchat);
         emit(CurrentChatLoaded(currentChat: mergedChat));
       },
     );
