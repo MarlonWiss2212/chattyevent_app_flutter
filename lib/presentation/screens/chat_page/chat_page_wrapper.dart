@@ -35,8 +35,9 @@ class ChatPageWrapper extends StatelessWidget {
 
     return BlocProvider(
       create: (context) => CurrentChatCubit(
-        CurrentChatInitial(
+        CurrentChatNormal(
           currentChat: chatToSet ?? GroupchatEntity(id: ""),
+          loadingChat: false,
         ),
         chatCubit: BlocProvider.of<ChatCubit>(context),
         chatUseCases: ChatUseCases(

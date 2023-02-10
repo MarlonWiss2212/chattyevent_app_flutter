@@ -36,7 +36,7 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
         ));
       },
       (user) {
-        final mergedUser = userCubit.editUserIfExistOrAdd(user: user);
+        final mergedUser = userCubit.mergeOrAdd(user: user);
         emit(ProfilePageLoaded(user: mergedUser));
       },
     );
@@ -47,7 +47,7 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
   }) {
     emit(ProfilePageLoading(user: state.user));
 
-    final mergedUser = userCubit.editUserIfExistOrAdd(user: user);
+    final mergedUser = userCubit.mergeOrAdd(user: user);
     emit(ProfilePageLoaded(user: mergedUser));
   }
 }

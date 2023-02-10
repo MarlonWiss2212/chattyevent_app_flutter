@@ -13,11 +13,7 @@ class UserCubit extends Cubit<UserState> {
 
   UserCubit({required this.userUseCases}) : super(UserInitial());
 
-  void reset() {
-    emit(UserInitial());
-  }
-
-  UserEntity editUserIfExistOrAdd({required UserEntity user}) {
+  UserEntity mergeOrAdd({required UserEntity user}) {
     int foundIndex = state.users.indexWhere((element) => element.id == user.id);
 
     if (foundIndex != -1) {
@@ -30,10 +26,32 @@ class UserCubit extends Cubit<UserState> {
       return newUsers[foundIndex];
     } else {
       emit(
-        UserStateLoaded(users: List.from(state.users)..add(user)),
+        UserStateLoaded(
+          users: List.from(state.users)..add(user),
+        ),
       );
     }
     return user;
+  }
+
+  List<UserEntity> mergeOrAddMultiple({
+    required List<UserEntity> users,
+  }) {
+    List<UserEntity> mergedUsers = [];
+    for (final user in users) {
+      // state will be changed in mergeOrAdd
+      final mergedUser = mergeOrAdd(user: user);
+      mergedUsers.add(mergedUser);
+    }
+    return mergedUsers;
+  }
+
+  void delete({required String userId}) {
+    List<UserEntity> newUsers = state.users;
+    newUsers.removeWhere(
+      (element) => element.id == userId,
+    );
+    emit(UserStateLoaded(users: newUsers));
   }
 
   Future getUsersViaApi({
@@ -55,24 +73,7 @@ class UserCubit extends Cubit<UserState> {
         ),
       ),
       (users) {
-        List<UserEntity> usersToEmit = users;
-
-        for (final stateUser in state.users) {
-          bool savedTheUser = false;
-
-          innerLoop:
-          for (final userToEmit in usersToEmit) {
-            if (userToEmit.id == stateUser.id) {
-              savedTheUser = true;
-              break innerLoop;
-            }
-          }
-
-          if (!savedTheUser) {
-            usersToEmit.add(stateUser);
-          }
-        }
-        emit(UserStateLoaded(users: users));
+        mergeOrAddMultiple(users: users);
       },
     );
   }

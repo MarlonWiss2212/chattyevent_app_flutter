@@ -11,8 +11,7 @@ class DescriptionChatInfoPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (chatState.currentChat.description == null &&
-        chatState is CurrentChatLoading) {
+    if (chatState.currentChat.description == null && chatState.loadingChat) {
       return const SkeletonLine();
     } else {
       return Text(

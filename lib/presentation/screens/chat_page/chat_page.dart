@@ -2,11 +2,9 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/message/message_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
-import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:social_media_app_flutter/domain/filter/get_messages_filter.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 import 'package:social_media_app_flutter/presentation/widgets/chat_page/message_area.dart';
@@ -61,12 +59,12 @@ class ChatPage extends StatelessWidget {
               )
             ],
           ),
-          body: state is CurrentChatLoading && state.currentChat.id == ""
+          body: state.loadingChat && state.currentChat.id == ""
               ? Center(child: PlatformCircularProgressIndicator())
               : state.currentChat.id != ""
                   ? Column(
                       children: [
-                        if (state is CurrentChatLoading) ...{
+                        if (state.loadingChat) ...{
                           const LinearProgressIndicator()
                         },
                         Expanded(

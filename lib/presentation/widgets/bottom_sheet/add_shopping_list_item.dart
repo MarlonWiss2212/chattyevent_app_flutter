@@ -87,12 +87,9 @@ class _AddShoppingListItemState extends State<AddShoppingListItem> {
               BlocListener<AddShoppingListItemCubit, AddShoppingListItemState>(
                 listener: (context, state) {
                   if (state is AddShoppingListItemLoaded) {
-                    BlocProvider.of<CurrentPrivateEventCubit>(context).addItem(
-                      shoppingListItem: state.addedShoppingListItem,
-                    );
-                    BlocProvider.of<ShoppingListCubit>(context).addItem(
-                      shoppingListItem: state.addedShoppingListItem,
-                    );
+                    // to add the item to the current private too
+                    BlocProvider.of<CurrentPrivateEventCubit>(context)
+                        .reloadShoppingListFromShoppingListCubit();
                     Navigator.pop(context);
                   }
                 },

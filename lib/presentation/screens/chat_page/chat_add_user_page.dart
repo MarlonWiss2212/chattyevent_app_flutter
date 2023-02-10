@@ -23,12 +23,12 @@ class ChatAddUserPage extends StatelessWidget {
           appBar: PlatformAppBar(
             title: const Text("User zum Chat hinzufügen"),
           ),
-          body: state is CurrentChatLoading && state.currentChat.id == ""
+          body: state.loadingChat && state.currentChat.id == ""
               ? Center(child: PlatformCircularProgressIndicator())
               : state.currentChat.id != ""
                   ? Column(
                       children: [
-                        if (state is CurrentChatLoading) ...{
+                        if (state.loadingChat) ...{
                           const LinearProgressIndicator()
                         },
                         Expanded(

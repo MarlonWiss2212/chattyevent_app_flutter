@@ -53,7 +53,7 @@ class UserListWidgetChatInfoPage extends StatelessWidget {
             currentGrouppchatUser: currentGroupchatUser,
           ),
         ] else if (chatState.currentChat.users == null &&
-            chatState is CurrentChatLoading) ...[
+            chatState.loadingChat) ...[
           SkeletonListTile(
             hasSubtitle: true,
             hasLeading: false,

@@ -54,10 +54,6 @@ class ProfilePage extends StatelessWidget {
         }
 
         return BlocConsumer<ProfilePageCubit, ProfilePageState>(
-          bloc: BlocProvider.of<ProfilePageCubit>(context)
-            ..getOneUserViaApi(
-              getOneUserFilter: GetOneUserFilter(id: userId),
-            ),
           listener: (context, state) async {
             if (state is ProfilePageError) {
               return await showPlatformDialog(
