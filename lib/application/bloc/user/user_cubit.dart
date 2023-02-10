@@ -18,28 +18,13 @@ class UserCubit extends Cubit<UserState> {
   }
 
   UserEntity editUserIfExistOrAdd({required UserEntity user}) {
-    int foundIndex = -1;
-    state.users.asMap().forEach((index, chatToFind) {
-      if (chatToFind.id == user.id) {
-        foundIndex = index;
-      }
-    });
+    int foundIndex = state.users.indexWhere((element) => element.id == user.id);
 
     if (foundIndex != -1) {
       List<UserEntity> newUsers = state.users;
-      newUsers[foundIndex] = UserEntity(
-        id: user.id,
-        username: user.username ?? newUsers[foundIndex].username,
-        email: user.email ?? newUsers[foundIndex].email,
-        emailVerified: user.emailVerified ?? newUsers[foundIndex].emailVerified,
-        profileImageLink:
-            user.profileImageLink ?? newUsers[foundIndex].profileImageLink,
-        firstname: user.firstname ?? newUsers[foundIndex].firstname,
-        lastname: user.lastname ?? newUsers[foundIndex].lastname,
-        birthdate: user.birthdate ?? newUsers[foundIndex].birthdate,
-        lastTimeOnline:
-            user.lastTimeOnline ?? newUsers[foundIndex].lastTimeOnline,
-        createdAt: user.createdAt ?? newUsers[foundIndex].createdAt,
+      newUsers[foundIndex] = UserEntity.merge(
+        newEntity: user,
+        oldEntity: state.users[foundIndex],
       );
       emit(UserStateLoaded(users: newUsers));
       return newUsers[foundIndex];

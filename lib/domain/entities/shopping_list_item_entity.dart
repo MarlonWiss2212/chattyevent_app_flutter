@@ -22,4 +22,22 @@ class ShoppingListItemEntity {
     this.updatedAt,
     this.userToBuyItem,
   });
+
+  factory ShoppingListItemEntity.merge({
+    required ShoppingListItemEntity newEntity,
+    required ShoppingListItemEntity oldEntity,
+  }) {
+    return ShoppingListItemEntity(
+      id: newEntity.id,
+      itemName: newEntity.itemName ?? oldEntity.itemName,
+      unit: newEntity.unit ?? oldEntity.unit,
+      amount: newEntity.amount ?? oldEntity.amount,
+      boughtAmount: newEntity.boughtAmount ?? oldEntity.boughtAmount,
+      userToBuyItem: newEntity.userToBuyItem ?? oldEntity.userToBuyItem,
+      privateEvent: newEntity.privateEvent ?? oldEntity.privateEvent,
+      createdBy: newEntity.createdBy ?? oldEntity.createdBy,
+      createdAt: newEntity.createdAt ?? oldEntity.createdAt,
+      updatedAt: newEntity.updatedAt ?? oldEntity.updatedAt,
+    );
+  }
 }

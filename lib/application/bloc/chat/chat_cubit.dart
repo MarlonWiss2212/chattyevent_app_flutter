@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:meta/meta.dart';
@@ -16,26 +18,15 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   GroupchatEntity editChatIfExistOrAdd({required GroupchatEntity groupchat}) {
-    int foundIndex = -1;
-    state.chats.asMap().forEach((index, chatToFind) {
-      if (chatToFind.id == groupchat.id) {
-        foundIndex = index;
-      }
-    });
+    int foundIndex = state.chats.indexWhere(
+      (element) => element.id == groupchat.id,
+    );
 
     if (foundIndex != -1) {
       List<GroupchatEntity> newGroupchats = state.chats;
-      newGroupchats[foundIndex] = GroupchatEntity(
-        id: groupchat.id,
-        title: groupchat.title ?? newGroupchats[foundIndex].title,
-        description:
-            groupchat.description ?? newGroupchats[foundIndex].description,
-        users: groupchat.users ?? newGroupchats[foundIndex].users,
-        profileImageLink: groupchat.profileImageLink ??
-            newGroupchats[foundIndex].profileImageLink,
-        leftUsers: groupchat.leftUsers ?? newGroupchats[foundIndex].leftUsers,
-        createdBy: groupchat.createdBy ?? newGroupchats[foundIndex].createdBy,
-        createdAt: groupchat.createdAt ?? newGroupchats[foundIndex].createdAt,
+      newGroupchats[foundIndex] = GroupchatEntity.merge(
+        newEntity: groupchat,
+        oldEntity: state.chats[foundIndex],
       );
       emit(
         ChatLoaded(chats: newGroupchats),

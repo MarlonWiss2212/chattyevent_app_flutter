@@ -23,4 +23,22 @@ class GroupchatEntity {
     this.createdAt,
     this.updatedAt,
   });
+
+  factory GroupchatEntity.merge({
+    required GroupchatEntity newEntity,
+    required GroupchatEntity oldEntity,
+  }) {
+    return GroupchatEntity(
+      id: newEntity.id,
+      title: newEntity.title ?? oldEntity.title,
+      profileImageLink:
+          newEntity.profileImageLink ?? oldEntity.profileImageLink,
+      users: newEntity.users ?? oldEntity.users,
+      leftUsers: newEntity.leftUsers ?? oldEntity.leftUsers,
+      description: newEntity.description ?? oldEntity.description,
+      createdBy: newEntity.createdBy ?? oldEntity.createdBy,
+      createdAt: newEntity.createdAt ?? oldEntity.createdAt,
+      updatedAt: newEntity.updatedAt ?? oldEntity.updatedAt,
+    );
+  }
 }

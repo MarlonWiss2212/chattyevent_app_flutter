@@ -26,4 +26,26 @@ class PrivateEventEntity {
     this.eventLocation,
     this.updatedAt,
   });
+
+  factory PrivateEventEntity.merge({
+    required PrivateEventEntity newEntity,
+    required PrivateEventEntity oldEntity,
+  }) {
+    return PrivateEventEntity(
+      id: newEntity.id,
+      title: newEntity.title ?? oldEntity.title,
+      coverImageLink: newEntity.coverImageLink ?? oldEntity.coverImageLink,
+      usersThatWillBeThere:
+          newEntity.usersThatWillBeThere ?? oldEntity.usersThatWillBeThere,
+      usersThatWillNotBeThere: newEntity.usersThatWillNotBeThere ??
+          oldEntity.usersThatWillNotBeThere,
+      eventDate: newEntity.eventDate ?? oldEntity.eventDate,
+      connectedGroupchat:
+          newEntity.connectedGroupchat ?? oldEntity.connectedGroupchat,
+      eventLocation: newEntity.eventLocation ?? oldEntity.eventLocation,
+      createdBy: newEntity.createdBy ?? oldEntity.createdBy,
+      createdAt: newEntity.createdAt ?? oldEntity.createdAt,
+      updatedAt: newEntity.updatedAt ?? oldEntity.updatedAt,
+    );
+  }
 }

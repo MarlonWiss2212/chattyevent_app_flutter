@@ -12,4 +12,17 @@ class MessageEmojiReactionEntity {
     this.createdAt,
     this.updatedAt,
   });
+
+  factory MessageEmojiReactionEntity.merge({
+    required MessageEmojiReactionEntity newEntity,
+    required MessageEmojiReactionEntity oldEntity,
+  }) {
+    return MessageEmojiReactionEntity(
+      id: newEntity.id,
+      emoji: newEntity.emoji ?? oldEntity.emoji,
+      createdBy: newEntity.createdBy ?? oldEntity.createdBy,
+      createdAt: newEntity.createdAt ?? oldEntity.createdAt,
+      updatedAt: newEntity.updatedAt ?? oldEntity.updatedAt,
+    );
+  }
 }

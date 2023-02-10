@@ -24,4 +24,24 @@ class UserEntity {
     this.createdAt,
     this.updatedAt,
   });
+
+  factory UserEntity.merge({
+    required UserEntity newEntity,
+    required UserEntity oldEntity,
+  }) {
+    return UserEntity(
+      id: newEntity.id,
+      username: newEntity.username ?? oldEntity.username,
+      email: newEntity.email ?? oldEntity.email,
+      emailVerified: newEntity.emailVerified ?? oldEntity.emailVerified,
+      profileImageLink:
+          newEntity.profileImageLink ?? oldEntity.profileImageLink,
+      firstname: newEntity.firstname ?? oldEntity.firstname,
+      lastname: newEntity.lastname ?? oldEntity.lastname,
+      birthdate: newEntity.birthdate ?? oldEntity.birthdate,
+      lastTimeOnline: newEntity.lastTimeOnline ?? oldEntity.lastTimeOnline,
+      createdAt: newEntity.createdAt ?? oldEntity.createdAt,
+      updatedAt: newEntity.updatedAt ?? oldEntity.updatedAt,
+    );
+  }
 }

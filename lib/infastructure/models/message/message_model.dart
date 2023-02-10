@@ -26,9 +26,9 @@ class MessageModel extends MessageEntity {
         );
 
   factory MessageModel.fromJson(Map<String, dynamic> json) {
-    List<MessageEmojiReactionEntity> messageEmojiReactions = [];
-
+    List<MessageEmojiReactionEntity>? messageEmojiReactions = [];
     if (json["emojiReactions"] != null) {
+      messageEmojiReactions = [];
       for (final messageEmojiReaction in json["emojiReactions"]) {
         messageEmojiReactions.add(
           MessageEmojiReactionModel.fromJson(messageEmojiReaction),
