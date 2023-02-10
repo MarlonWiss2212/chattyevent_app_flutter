@@ -5,12 +5,14 @@ abstract class CurrentPrivateEventState {
   final PrivateEventEntity privateEvent;
   final GroupchatEntity groupchat;
   final List<ShoppingListItemEntity> shoppingList;
+  final List<PrivateEventUser> privateEventUsers;
   final bool loadingPrivateEvent;
   final bool loadingGroupchat;
   final bool loadingShoppingList;
 
   const CurrentPrivateEventState({
     required this.privateEvent,
+    required this.privateEventUsers,
     required this.groupchat,
     required this.shoppingList,
     required this.loadingPrivateEvent,
@@ -21,6 +23,7 @@ abstract class CurrentPrivateEventState {
 
 class CurrentPrivateEventNormal extends CurrentPrivateEventState {
   const CurrentPrivateEventNormal({
+    required super.privateEventUsers,
     required super.privateEvent,
     required super.groupchat,
     required super.shoppingList,
@@ -35,6 +38,7 @@ class CurrentPrivateEventError extends CurrentPrivateEventState {
   final String message;
 
   const CurrentPrivateEventError({
+    required super.privateEventUsers,
     required super.privateEvent,
     required this.message,
     required this.title,

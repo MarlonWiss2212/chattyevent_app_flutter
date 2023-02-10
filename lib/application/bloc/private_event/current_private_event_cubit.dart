@@ -6,8 +6,10 @@ import 'package:meta/meta.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/shopping_list/shopping_list_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
+import 'package:social_media_app_flutter/domain/entities/private_event/private_event_user.dart';
 import 'package:social_media_app_flutter/domain/entities/shopping_list_item_entity.dart';
 import 'package:social_media_app_flutter/domain/failures/failures.dart';
 import 'package:social_media_app_flutter/domain/filter/get_one_groupchat_filter.dart';
@@ -23,6 +25,7 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
   final PrivateEventCubit privateEventCubit;
   final ChatCubit chatCubit;
   final ShoppingListCubit shoppingListCubit;
+  final UserCubit userCubit;
 
   final PrivateEventUseCases privateEventUseCases;
   final ChatUseCases chatUseCases;
@@ -30,6 +33,7 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
 
   CurrentPrivateEventCubit(
     super.initialState, {
+    required this.userCubit,
     required this.shoppingListCubit,
     required this.privateEventCubit,
     required this.chatCubit,
@@ -56,12 +60,70 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
     }
   }
 
+  void setPrivateEventUsers() {
+    List<PrivateEventUser> usersToEmit = [];
+
+    if (state.privateEvent.usersThatWillBeThere != null) {
+      for (final userId in state.privateEvent.usersThatWillBeThere!) {
+        final foundUser = userCubit.state.users.firstWhere(
+          (element) => element.id == userId,
+        );
+        usersToEmit.add(
+          PrivateEventUser.fromUserEntity(user: foundUser, accapted: true),
+        );
+      }
+    }
+
+    if (state.privateEvent.usersThatWillNotBeThere != null) {
+      for (final userId in state.privateEvent.usersThatWillNotBeThere!) {
+        final foundUser = userCubit.state.users.firstWhere(
+          (element) => element.id == userId,
+        );
+        usersToEmit.add(
+          PrivateEventUser.fromUserEntity(user: foundUser, declined: true),
+        );
+      }
+    }
+
+    if (state.groupchat.users != null) {
+      for (final groupchatUser in state.groupchat.users!) {
+        final foundIndex = usersToEmit.indexWhere(
+          (element) => element.id == groupchatUser.userId,
+        );
+        if (foundIndex != -1) {
+          usersToEmit[foundIndex] = PrivateEventUser.fromPrivateEventUser(
+            privateEventUser: usersToEmit[foundIndex],
+            admin: groupchatUser.admin,
+          );
+        } else {
+          final foundUser = userCubit.state.users.firstWhere(
+            (element) => element.id == groupchatUser.userId,
+          );
+          usersToEmit.add(
+            PrivateEventUser.fromUserEntity(user: foundUser, invited: true),
+          );
+        }
+      }
+    }
+
+    emit(CurrentPrivateEventNormal(
+      groupchat: state.groupchat,
+      privateEvent: state.privateEvent,
+      privateEventUsers: usersToEmit,
+      shoppingList: state.shoppingList,
+      loadingGroupchat: state.loadingGroupchat,
+      loadingPrivateEvent: state.loadingPrivateEvent,
+      loadingShoppingList: state.loadingShoppingList,
+    ));
+  }
+
   Future getShoppingListViaApi({
     required GetShoppingListItemsFilter getShoppingListItemsFilter,
   }) async {
     emit(CurrentPrivateEventNormal(
       groupchat: state.groupchat,
       privateEvent: state.privateEvent,
+      privateEventUsers: state.privateEventUsers,
       shoppingList: state.shoppingList,
       loadingGroupchat: state.loadingGroupchat,
       loadingPrivateEvent: state.loadingPrivateEvent,
@@ -79,6 +141,7 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
         groupchat: state.groupchat,
         shoppingList: state.shoppingList,
         privateEvent: state.privateEvent,
+        privateEventUsers: state.privateEventUsers,
         message: mapFailureToMessage(error),
         loadingGroupchat: state.loadingGroupchat,
         loadingPrivateEvent: state.loadingPrivateEvent,
@@ -106,6 +169,7 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
           .where((element) => element.privateEvent == state.privateEvent.id)
           .toList(),
       privateEvent: state.privateEvent,
+      privateEventUsers: state.privateEventUsers,
       loadingGroupchat: state.loadingGroupchat,
       loadingPrivateEvent: state.loadingPrivateEvent,
       loadingShoppingList:
@@ -120,6 +184,7 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
       groupchat: state.groupchat,
       shoppingList: state.shoppingList,
       privateEvent: state.privateEvent,
+      privateEventUsers: state.privateEventUsers,
       loadingPrivateEvent: true,
       loadingGroupchat: state.loadingGroupchat,
       loadingShoppingList: state.loadingShoppingList,
@@ -136,6 +201,7 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
           groupchat: state.groupchat,
           shoppingList: state.shoppingList,
           privateEvent: state.privateEvent,
+          privateEventUsers: state.privateEventUsers,
           loadingPrivateEvent: false,
           loadingGroupchat: state.loadingGroupchat,
           loadingShoppingList: state.loadingShoppingList,
@@ -149,12 +215,14 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
         );
         emit(CurrentPrivateEventNormal(
           privateEvent: mergedPrivateEvent,
+          privateEventUsers: state.privateEventUsers,
           groupchat: state.groupchat,
           shoppingList: state.shoppingList,
           loadingPrivateEvent: false,
           loadingGroupchat: state.loadingGroupchat,
           loadingShoppingList: state.loadingShoppingList,
         ));
+        setPrivateEventUsers();
       },
     );
   }
@@ -166,6 +234,7 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
       groupchat: state.groupchat,
       shoppingList: state.shoppingList,
       privateEvent: state.privateEvent,
+      privateEventUsers: state.privateEventUsers,
       loadingPrivateEvent: state.loadingPrivateEvent,
       loadingGroupchat: true,
       loadingShoppingList: state.loadingShoppingList,
@@ -181,6 +250,7 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
           groupchat: state.groupchat,
           shoppingList: state.shoppingList,
           privateEvent: state.privateEvent,
+          privateEventUsers: state.privateEventUsers,
           loadingPrivateEvent: state.loadingPrivateEvent,
           loadingGroupchat: false,
           loadingShoppingList: state.loadingShoppingList,
@@ -194,27 +264,32 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
           groupchat: mergedChat,
           shoppingList: state.shoppingList,
           privateEvent: state.privateEvent,
+          privateEventUsers: state.privateEventUsers,
           loadingPrivateEvent: state.loadingPrivateEvent,
           loadingGroupchat: false,
           loadingShoppingList: state.loadingShoppingList,
         ));
+        setPrivateEventUsers();
       },
     );
   }
 
   void setCurrentPrivateEventData({
-    required PrivateEventEntity? privateEvent,
-    required GroupchatEntity? groupchat,
-    required List<ShoppingListItemEntity>? shoppingList,
+    PrivateEventEntity? privateEvent,
+    GroupchatEntity? groupchat,
+    List<ShoppingListItemEntity>? shoppingList,
+    List<PrivateEventUser>? privateEventUsers,
   }) {
     emit(CurrentPrivateEventNormal(
       privateEvent: privateEvent ?? state.privateEvent,
+      privateEventUsers: privateEventUsers ?? state.privateEventUsers,
       groupchat: groupchat ?? state.groupchat,
       shoppingList: shoppingList ?? state.shoppingList,
       loadingPrivateEvent: state.loadingPrivateEvent,
       loadingGroupchat: state.loadingGroupchat,
       loadingShoppingList: state.loadingShoppingList,
     ));
+    setPrivateEventUsers();
   }
 
   Future updateMeInPrivateEventWillBeThere({
@@ -222,6 +297,7 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
   }) async {
     emit(CurrentPrivateEventNormal(
       privateEvent: state.privateEvent,
+      privateEventUsers: state.privateEventUsers,
       groupchat: state.groupchat,
       shoppingList: state.shoppingList,
       loadingPrivateEvent: true,
@@ -240,6 +316,7 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
           groupchat: state.groupchat,
           shoppingList: state.shoppingList,
           privateEvent: state.privateEvent,
+          privateEventUsers: state.privateEventUsers,
           loadingPrivateEvent: false,
           loadingGroupchat: state.loadingGroupchat,
           loadingShoppingList: state.loadingShoppingList,
@@ -254,11 +331,13 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
         emit(CurrentPrivateEventNormal(
           privateEvent: mergedPrivateEvent,
           shoppingList: state.shoppingList,
+          privateEventUsers: state.privateEventUsers,
           groupchat: state.groupchat,
           loadingPrivateEvent: false,
           loadingGroupchat: state.loadingGroupchat,
           loadingShoppingList: state.loadingShoppingList,
         ));
+        setPrivateEventUsers();
       },
     );
   }
@@ -270,6 +349,7 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
       privateEvent: state.privateEvent,
       groupchat: state.groupchat,
       shoppingList: state.shoppingList,
+      privateEventUsers: state.privateEventUsers,
       loadingGroupchat: state.loadingGroupchat,
       loadingShoppingList: state.loadingShoppingList,
       loadingPrivateEvent: true,
@@ -285,6 +365,7 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
         emit(CurrentPrivateEventError(
           groupchat: state.groupchat,
           shoppingList: state.shoppingList,
+          privateEventUsers: state.privateEventUsers,
           privateEvent: state.privateEvent,
           loadingGroupchat: state.loadingGroupchat,
           loadingShoppingList: state.loadingShoppingList,
@@ -299,12 +380,14 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
         );
         emit(CurrentPrivateEventNormal(
           privateEvent: mergedPrivateEvent,
+          privateEventUsers: state.privateEventUsers,
           shoppingList: state.shoppingList,
           groupchat: state.groupchat,
           loadingGroupchat: state.loadingGroupchat,
           loadingShoppingList: state.loadingShoppingList,
           loadingPrivateEvent: false,
         ));
+        setPrivateEventUsers();
       },
     );
   }
@@ -315,6 +398,7 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
     emit(CurrentPrivateEventNormal(
       privateEvent: state.privateEvent,
       groupchat: state.groupchat,
+      privateEventUsers: state.privateEventUsers,
       shoppingList: state.shoppingList,
       loadingGroupchat: state.loadingGroupchat,
       loadingShoppingList: state.loadingShoppingList,
@@ -332,6 +416,7 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
         emit(CurrentPrivateEventError(
           groupchat: state.groupchat,
           shoppingList: state.shoppingList,
+          privateEventUsers: state.privateEventUsers,
           privateEvent: state.privateEvent,
           loadingGroupchat: state.loadingGroupchat,
           loadingShoppingList: state.loadingShoppingList,
@@ -346,12 +431,14 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
         );
         emit(CurrentPrivateEventNormal(
           privateEvent: mergedPrivateEvent,
+          privateEventUsers: state.privateEventUsers,
           shoppingList: state.shoppingList,
           groupchat: state.groupchat,
           loadingGroupchat: state.loadingGroupchat,
           loadingShoppingList: state.loadingShoppingList,
           loadingPrivateEvent: false,
         ));
+        setPrivateEventUsers();
       },
     );
   }
