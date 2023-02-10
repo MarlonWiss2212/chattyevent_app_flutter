@@ -10,7 +10,7 @@ class UserAreaWidgetInfoTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<GroupchatUserEntity>? invitedUsers;
+/*    List<GroupchatUserEntity>? invitedUsers;
 
     if (privateEventState.groupchat.users != null) {
       for (final chatUser in privateEventState.groupchat.users!) {
@@ -43,7 +43,7 @@ class UserAreaWidgetInfoTab extends StatelessWidget {
           invitedUsers.add(chatUser);
         }
       }
-    }
+    }*/
 
     return Column(
       children: [
@@ -79,17 +79,12 @@ class UserAreaWidgetInfoTab extends StatelessWidget {
             "Mitglieder die da sein werden: ${privateEventState.privateEvent.usersThatWillBeThere!.length.toString()}",
             style: Theme.of(context).textTheme.titleMedium,
           ),
-          if (privateEventState.privateEvent.usersThatWillBeThere!.isNotEmpty ||
-              invitedUsers != null && invitedUsers.isNotEmpty ||
-              privateEventState.privateEvent.usersThatWillNotBeThere != null &&
-                  privateEventState
-                      .privateEvent.usersThatWillNotBeThere!.isNotEmpty) ...{
+          if (privateEventState.privateEventUsers.isNotEmpty) ...{
             const SizedBox(height: 8),
           }
         ],
         PrivateEventInfoTabUserList(
           privateEventState: privateEventState,
-          invitedUsers: invitedUsers,
         ),
       ],
     );

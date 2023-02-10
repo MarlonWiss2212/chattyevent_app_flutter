@@ -30,166 +30,92 @@ class PrivateEventInfoTabUserList extends StatelessWidget {
       builder: (context, state) {
         List<Widget> widgetsToReturn = [];
 
-        // users that will be there
-        // message for when the user is null and state is not loading is in userareainfotab widget
-        if (privateEventState.privateEvent.usersThatWillBeThere == null &&
-            privateEventState.loadingPrivateEvent) {
+        for (final privateEventUser in privateEventState.privateEventUsers) {
+          Widget? trailingWidget;
+          String subtitle = "gekicked";
+          Color? subititleColor = Colors.red;
+
+          if (privateEventUser.accapted) {
+            subititleColor = Colors.green;
+            subtitle = "Angenommen";
+            trailingWidget = privateEventUser.id == currentUserId
+                ? Wrap(
+                    spacing: 8,
+                    children: [
+                      DeclineInviteIconButton(
+                        privateEventId: privateEventState.privateEvent.id,
+                      ),
+                      NeutralInviteIconButton(
+                        privateEventId: privateEventState.privateEvent.id,
+                      )
+                    ],
+                  )
+                : null;
+          } else if (privateEventUser.declined) {
+            subititleColor = Colors.red;
+            subtitle = "Abgelehnt";
+            trailingWidget = privateEventUser.id == currentUserId
+                ? Wrap(
+                    spacing: 8,
+                    children: [
+                      AcceptInviteIconButton(
+                        privateEventId: privateEventState.privateEvent.id,
+                      ),
+                      NeutralInviteIconButton(
+                        privateEventId: privateEventState.privateEvent.id,
+                      )
+                    ],
+                  )
+                : null;
+          } else if (privateEventUser.invited) {
+            subititleColor = null;
+            subtitle = "Eingeladen";
+            trailingWidget = privateEventUser.id == currentUserId
+                ? Wrap(
+                    spacing: 8,
+                    children: [
+                      AcceptInviteIconButton(
+                        privateEventId: privateEventState.privateEvent.id,
+                      ),
+                      DeclineInviteIconButton(
+                        privateEventId: privateEventState.privateEvent.id,
+                      )
+                    ],
+                  )
+                : null;
+          }
+
           widgetsToReturn.add(
-            SkeletonListTile(
-              padding: const EdgeInsets.all(8),
-              hasSubtitle: true,
-              titleStyle: const SkeletonLineStyle(width: 100, height: 22),
-              subtitleStyle:
-                  const SkeletonLineStyle(width: double.infinity, height: 16),
-              leadingStyle: const SkeletonAvatarStyle(
-                shape: BoxShape.circle,
+            UserListTile(
+              profileImageLink: privateEventUser.profileImageLink,
+              subtitle: Text(
+                subtitle,
+                style: TextStyle(color: subititleColor),
               ),
+              username: privateEventUser.username != null
+                  ? privateEventUser.username!
+                  : "Kein Username",
+              userId: privateEventUser.id,
+              trailing: trailingWidget,
             ),
           );
-        } else if (privateEventState.privateEvent.usersThatWillBeThere !=
-            null) {
-          for (final privateEventUserIdThatWillBeThere
-              in privateEventState.privateEvent.usersThatWillBeThere!) {
-            UserEntity foundUser = state.users.firstWhere(
-              (element) => element.id == privateEventUserIdThatWillBeThere,
-              orElse: () => UserEntity(id: ""),
-            );
-
-            widgetsToReturn.add(
-              UserListTile(
-                profileImageLink: foundUser.profileImageLink,
-                subtitle: const Text(
-                  "Angenommen",
-                  style: TextStyle(color: Colors.green),
-                ),
-                username: foundUser.username != null
-                    ? foundUser.username!
-                    : "Kein Username",
-                userId: privateEventUserIdThatWillBeThere,
-                trailing: privateEventUserIdThatWillBeThere == currentUserId
-                    ? Wrap(
-                        spacing: 8,
-                        children: [
-                          DeclineInviteIconButton(
-                            privateEventId: privateEventState.privateEvent.id,
-                          ),
-                          NeutralInviteIconButton(
-                            privateEventId: privateEventState.privateEvent.id,
-                          )
-                        ],
-                      )
-                    : null,
-              ),
-            );
-          }
         }
 
-        // users that will not be there
-        // message for when the user is null and state is not loading is in userareainfotab widget
-        if (privateEventState.privateEvent.usersThatWillNotBeThere == null &&
+        if (privateEventState.privateEventUsers.isEmpty &&
             privateEventState.loadingPrivateEvent) {
-          widgetsToReturn.add(
-            SkeletonListTile(
-              padding: const EdgeInsets.all(8),
-              hasSubtitle: true,
-              titleStyle: const SkeletonLineStyle(width: 100, height: 22),
-              subtitleStyle:
-                  const SkeletonLineStyle(width: double.infinity, height: 16),
-              leadingStyle: const SkeletonAvatarStyle(
-                shape: BoxShape.circle,
-              ),
+          Widget skeleton = SkeletonListTile(
+            padding: const EdgeInsets.all(8),
+            hasSubtitle: true,
+            titleStyle: const SkeletonLineStyle(width: 100, height: 22),
+            subtitleStyle:
+                const SkeletonLineStyle(width: double.infinity, height: 16),
+            leadingStyle: const SkeletonAvatarStyle(
+              shape: BoxShape.circle,
             ),
           );
-        } else if (privateEventState.privateEvent.usersThatWillNotBeThere !=
-            null) {
-          for (final privateEventUserIdThatWillNotBeThere
-              in privateEventState.privateEvent.usersThatWillNotBeThere!) {
-            UserEntity foundUser = state.users.firstWhere(
-              (element) => element.id == privateEventUserIdThatWillNotBeThere,
-              orElse: () => UserEntity(id: ""),
-            );
-
-            widgetsToReturn.add(
-              UserListTile(
-                profileImageLink: foundUser.profileImageLink,
-                subtitle: const Text(
-                  "Abgelehnt",
-                  style: TextStyle(color: Colors.red),
-                ),
-                username: foundUser.username != null
-                    ? foundUser.username!
-                    : "Kein Username",
-                userId: privateEventUserIdThatWillNotBeThere,
-                trailing: privateEventUserIdThatWillNotBeThere == currentUserId
-                    ? Wrap(
-                        spacing: 8,
-                        children: [
-                          AcceptInviteIconButton(
-                            privateEventId: privateEventState.privateEvent.id,
-                          ),
-                          NeutralInviteIconButton(
-                            privateEventId: privateEventState.privateEvent.id,
-                          )
-                        ],
-                      )
-                    : null,
-              ),
-            );
-          }
-        }
-
-        // invited users
-        // message for when the user is null and state is not loading is in userareainfotab widget
-        if (privateEventState.loadingGroupchat && invitedUsers == null) {
-          widgetsToReturn.add(
-            SkeletonListTile(
-              padding: const EdgeInsets.all(8),
-              hasSubtitle: true,
-              titleStyle: const SkeletonLineStyle(width: 100, height: 22),
-              subtitleStyle:
-                  const SkeletonLineStyle(width: double.infinity, height: 16),
-              leadingStyle: const SkeletonAvatarStyle(
-                shape: BoxShape.circle,
-              ),
-            ),
-          );
-        } else if (invitedUsers != null) {
-          for (final invitedUser in invitedUsers!) {
-            UserEntity foundUser = state.users.firstWhere(
-              (element) => element.id == invitedUser.userId,
-              orElse: () => UserEntity(id: ""),
-            );
-
-            widgetsToReturn.add(
-              UserListTile(
-                profileImageLink: foundUser.profileImageLink,
-                subtitle: privateEventState.privateEvent.usersThatWillBeThere ==
-                            null ||
-                        privateEventState
-                                .privateEvent.usersThatWillNotBeThere ==
-                            null
-                    ? const SkeletonLine()
-                    : const Text("Eingeladen"),
-                username: foundUser.username != null
-                    ? foundUser.username!
-                    : "Kein Username",
-                userId: invitedUser.userId,
-                trailing: invitedUser.userId == currentUserId
-                    ? Wrap(
-                        spacing: 8,
-                        children: [
-                          AcceptInviteIconButton(
-                            privateEventId: privateEventState.privateEvent.id,
-                          ),
-                          DeclineInviteIconButton(
-                            privateEventId: privateEventState.privateEvent.id,
-                          )
-                        ],
-                      )
-                    : null,
-              ),
-            );
-          }
+          widgetsToReturn.add(skeleton);
+          widgetsToReturn.add(skeleton);
+          widgetsToReturn.add(skeleton);
         }
 
         return Column(children: widgetsToReturn);

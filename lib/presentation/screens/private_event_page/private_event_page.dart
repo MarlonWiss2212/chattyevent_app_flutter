@@ -7,12 +7,12 @@ import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/shopping_list/shopping_list_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/shopping_list_item_entity.dart';
 import 'package:social_media_app_flutter/domain/filter/get_one_groupchat_filter.dart';
 import 'package:social_media_app_flutter/domain/filter/get_one_private_event_filter.dart';
-import 'package:social_media_app_flutter/domain/repositories/shopping_list_item_repository.dart';
 import 'package:social_media_app_flutter/domain/usecases/chat_usecases.dart';
 import 'package:social_media_app_flutter/domain/usecases/private_event_usecases.dart';
 import 'package:social_media_app_flutter/domain/usecases/shopping_list_item_usecases.dart';
@@ -62,6 +62,7 @@ class PrivateEventPage extends StatelessWidget {
     CurrentPrivateEventCubit currentPrivateEventCubit =
         CurrentPrivateEventCubit(
       CurrentPrivateEventNormal(
+        privateEventUsers: [],
         privateEvent: privateEventToSet ?? PrivateEventEntity(id: ""),
         groupchat: groupchatToSet,
         shoppingList: shoppingListItemsToSet,
@@ -69,6 +70,7 @@ class PrivateEventPage extends StatelessWidget {
         loadingPrivateEvent: false,
         loadingShoppingList: false,
       ),
+      userCubit: BlocProvider.of<UserCubit>(context),
       shoppingListCubit: BlocProvider.of<ShoppingListCubit>(context),
       chatCubit: BlocProvider.of<ChatCubit>(context),
       chatUseCases: ChatUseCases(
