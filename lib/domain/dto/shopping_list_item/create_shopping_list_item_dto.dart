@@ -14,12 +14,17 @@ class CreateShoppingListItemDto {
   });
 
   Map<dynamic, dynamic> toMap() {
-    return {
+    Map<dynamic, dynamic> map = {
       'itemName': itemName,
-      'unit': unit,
       'amount': amount,
       'userToBuyItem': userToBuyItem,
       'privateEventId': privateEventId,
     };
+
+    if (unit != null) {
+      map.addAll({'unit': unit});
+    }
+
+    return map;
   }
 }

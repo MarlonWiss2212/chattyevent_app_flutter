@@ -7,6 +7,7 @@ import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/shopping_list/shopping_list_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
+import 'package:social_media_app_flutter/domain/dto/shopping_list_item/update_shopping_list_item_dto.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_user.dart';
@@ -163,7 +164,46 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
     );
   }
 
-  // shopping list add update delte functions for this cubit
+  Future updateShoppingListItemViaApi({
+    required UpdateShoppingListItemDto updateShoppingListItemDto,
+    required String shoppingListItemId,
+  }) async {
+    emit(CurrentPrivateEventNormal(
+      groupchat: state.groupchat,
+      privateEvent: state.privateEvent,
+      privateEventUsers: state.privateEventUsers,
+      shoppingList: state.shoppingList,
+      loadingGroupchat: state.loadingGroupchat,
+      loadingPrivateEvent: state.loadingPrivateEvent,
+      loadingShoppingList: true,
+    ));
+    final Either<Failure, ShoppingListItemEntity> shoppingListItemOrFailure =
+        await shoppingListItemUseCases.updateShoppingListItemsViaApi(
+      updateShoppingListItemDto: updateShoppingListItemDto,
+      shoppingListItemId: shoppingListItemId,
+    );
+
+    shoppingListItemOrFailure.fold(
+      (error) => emit(CurrentPrivateEventError(
+        privateEventUsers: state.privateEventUsers,
+        privateEvent: state.privateEvent,
+        message: mapFailureToMessage(error),
+        title: "Update Failure",
+        groupchat: state.groupchat,
+        shoppingList: state.shoppingList,
+        loadingGroupchat: state.loadingGroupchat,
+        loadingPrivateEvent: state.loadingPrivateEvent,
+        loadingShoppingList: false,
+      )),
+      (shoppingListItem) {
+        shoppingListCubit.mergeOrAdd(shoppingListItem: shoppingListItem);
+        reloadShoppingListFromShoppingListCubit(
+          loadingShoppingListFromApi: false,
+        );
+      },
+    );
+  }
+
   void reloadShoppingListFromShoppingListCubit({
     bool? loadingShoppingListFromApi,
   }) {

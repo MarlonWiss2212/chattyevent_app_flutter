@@ -3,7 +3,7 @@ import 'package:dartz/dartz.dart';
 import 'package:meta/meta.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/shopping_list/shopping_list_cubit.dart';
-import 'package:social_media_app_flutter/domain/dto/create_shopping_list_item_dto.dart';
+import 'package:social_media_app_flutter/domain/dto/shopping_list_item/create_shopping_list_item_dto.dart';
 import 'package:social_media_app_flutter/domain/entities/shopping_list_item_entity.dart';
 import 'package:social_media_app_flutter/domain/failures/failures.dart';
 import 'package:social_media_app_flutter/domain/usecases/shopping_list_item_usecases.dart';
