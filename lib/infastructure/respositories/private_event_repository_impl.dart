@@ -15,7 +15,8 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
 
   @override
   Future<Either<Failure, PrivateEventEntity>> createPrivateEventViaApi(
-      CreatePrivateEventDto createPrivateEventDto) async {
+    CreatePrivateEventDto createPrivateEventDto,
+  ) async {
     try {
       final byteData = createPrivateEventDto.coverImage.readAsBytesSync();
       final multipartFile = MultipartFile.fromBytes(
@@ -39,6 +40,11 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
             eventLocation {
               latitude
               longitude
+              zip
+              city
+              country
+              street
+              housenumber
             }
             createdBy
             createdAt
@@ -80,6 +86,11 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
             eventLocation {
               latitude
               longitude
+              zip
+              city
+              country
+              street
+              housenumber
             }
             eventDate
             connectedGroupchat
