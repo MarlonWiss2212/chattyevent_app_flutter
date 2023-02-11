@@ -18,7 +18,7 @@ class PrivateEventMapMarker extends StatelessWidget {
         ),
         child: InkWell(
           onTap: () => AutoRouter.of(context).push(
-            PrivateEventPageRoute(
+            PrivateEventWrapperPageRoute(
               privateEventId: privateEvent.id,
               privateEventToSet: privateEvent,
               loadPrivateEventFromApiToo: true,

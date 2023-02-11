@@ -5,7 +5,7 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:skeletons/skeletons.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
 import 'package:social_media_app_flutter/domain/filter/get_shopping_list_items_filter.dart';
-import 'package:social_media_app_flutter/presentation/widgets/bottom_sheet/add_shopping_list_item.dart';
+import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 
 class ShoppingListTab extends StatelessWidget {
   final String privateEventId;
@@ -87,13 +87,8 @@ class ShoppingListTab extends StatelessWidget {
       material: (context, platform) => MaterialScaffoldData(
         floatingActionButton: FloatingActionButton.extended(
           onPressed: () async {
-            return await showModalBottomSheet(
-              context: context,
-              builder: (context) {
-                return AddShoppingListItem(
-                  privateEventId: privateEventId,
-                );
-              },
+            AutoRouter.of(context).push(
+              PrivateEventCreateShoppingListItemRoute(),
             );
           },
           icon: const Icon(Icons.add),

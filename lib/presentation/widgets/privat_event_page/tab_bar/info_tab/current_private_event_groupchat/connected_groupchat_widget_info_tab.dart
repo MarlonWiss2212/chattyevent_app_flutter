@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
 import 'package:social_media_app_flutter/presentation/widgets/divider.dart';
-import 'package:social_media_app_flutter/presentation/widgets/privat_event_page/info_tab/current_private_event_groupchat/connected_groupchat_tile_private_event.dart';
+import 'package:social_media_app_flutter/presentation/widgets/privat_event_page/tab_bar/info_tab/current_private_event_groupchat/connected_groupchat_tile_private_event.dart';
 
 class ConnectedGroupchatWidgetInfoTab extends StatelessWidget {
   final CurrentPrivateEventState privateEventState;

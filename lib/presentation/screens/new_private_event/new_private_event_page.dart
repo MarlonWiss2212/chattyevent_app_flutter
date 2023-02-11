@@ -115,7 +115,7 @@ class _NewPrivateEventPageState extends State<NewPrivateEventPage> {
               listener: (context, state) {
                 if (state is AddPrivateEventLoaded) {
                   AutoRouter.of(context).replace(
-                    PrivateEventPageRoute(
+                    PrivateEventWrapperPageRoute(
                       loadPrivateEventFromApiToo: false,
                       privateEventId: state.addedPrivateEvent.id,
                       privateEventToSet: state.addedPrivateEvent,

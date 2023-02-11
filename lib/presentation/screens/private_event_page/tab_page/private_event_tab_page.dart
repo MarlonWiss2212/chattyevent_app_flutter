@@ -6,11 +6,11 @@ import 'package:social_media_app_flutter/application/bloc/private_event/current_
 import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 
-class PrivateEventPageScaffold extends StatelessWidget {
+class PrivateEventTabPage extends StatelessWidget {
   final String privateEventId;
-  const PrivateEventPageScaffold({
+  const PrivateEventTabPage({
     super.key,
-    required this.privateEventId,
+    @PathParam('id') required this.privateEventId,
   });
 
   @override

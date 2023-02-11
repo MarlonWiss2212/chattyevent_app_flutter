@@ -7,9 +7,9 @@ import 'package:social_media_app_flutter/application/bloc/private_event/current_
 import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
-import 'package:social_media_app_flutter/presentation/widgets/privat_event_page/info_tab/icon_buttons_my_user_list_tile/accept_invite_icon_button.dart';
-import 'package:social_media_app_flutter/presentation/widgets/privat_event_page/info_tab/icon_buttons_my_user_list_tile/decline_invite_icon_button.dart';
-import 'package:social_media_app_flutter/presentation/widgets/privat_event_page/info_tab/icon_buttons_my_user_list_tile/neutral_invite_icon_button.dart';
+import 'package:social_media_app_flutter/presentation/widgets/privat_event_page/tab_bar/info_tab/icon_buttons_my_user_list_tile/accept_invite_icon_button.dart';
+import 'package:social_media_app_flutter/presentation/widgets/privat_event_page/tab_bar/info_tab/icon_buttons_my_user_list_tile/decline_invite_icon_button.dart';
+import 'package:social_media_app_flutter/presentation/widgets/privat_event_page/tab_bar/info_tab/icon_buttons_my_user_list_tile/neutral_invite_icon_button.dart';
 import 'package:social_media_app_flutter/presentation/widgets/user_list_tile.dart';
 
 class PrivateEventInfoTabUserList extends StatelessWidget {
