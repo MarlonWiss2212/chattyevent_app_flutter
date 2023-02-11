@@ -6,7 +6,6 @@ import 'package:jwt_decode/jwt_decode.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/shopping_list/add_shopping_list_item_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/shopping_list/shopping_list_cubit.dart';
 import 'package:social_media_app_flutter/domain/dto/create_shopping_list_item_dto.dart';
 import 'package:social_media_app_flutter/presentation/widgets/dialog/buttons/ok_button.dart';
 
@@ -123,7 +122,7 @@ class _AddShoppingListItemState extends State<AddShoppingListItem> {
                           amount: amountAsDouble,
                           itemName: itemNameController.text,
                           unit: unitController.text,
-                          privateEvent: widget.privateEventId,
+                          privateEventId: widget.privateEventId,
                         ),
                       );
                     },
