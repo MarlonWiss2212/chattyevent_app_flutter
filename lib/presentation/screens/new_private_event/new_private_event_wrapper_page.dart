@@ -16,7 +16,7 @@ class NewPrivateEventWrapperPage extends StatelessWidget {
     return BlocListener<AddPrivateEventCubit, AddPrivateEventState>(
       listener: (context, state) async {
         if (state is AddPrivateEventLoaded) {
-          AutoRouter.of(context).root.push(
+          AutoRouter.of(context).root.replace(
                 PrivateEventPageRoute(
                   privateEventId: state.addedPrivateEvent.id,
                   loadPrivateEventFromApiToo: false,

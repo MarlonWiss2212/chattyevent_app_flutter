@@ -16,7 +16,7 @@ class NewGroupchatWrapperPage extends StatelessWidget {
     return BlocListener<AddChatCubit, AddChatState>(
       listener: (context, state) async {
         if (state is AddChatLoaded) {
-          AutoRouter.of(context).root.push(
+          AutoRouter.of(context).root.replace(
                 ChatPageWrapperRoute(
                   groupchatId: state.addedChat.id,
                   loadChatFromApiToo: false,
