@@ -86,9 +86,21 @@ class LocationWidgetInfoTab extends StatelessWidget {
                 }
               },
             ),
-          ] else if (privateEventState.loadingPrivateEvent) ...{
+          ] else if (privateEventState.loadingPrivateEvent) ...[
             const SkeletonLine(),
-          },
+            const SizedBox(height: 8),
+            SkeletonListTile(
+              hasSubtitle: false,
+              titleStyle: const SkeletonLineStyle(width: 100, height: 22),
+              subtitleStyle: const SkeletonLineStyle(
+                width: double.infinity,
+                height: 16,
+              ),
+              leadingStyle: const SkeletonAvatarStyle(
+                shape: BoxShape.circle,
+              ),
+            )
+          ],
           const SizedBox(height: 8),
           Container(
             width: size.width,
