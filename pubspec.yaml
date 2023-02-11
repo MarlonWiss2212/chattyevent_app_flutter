@@ -63,6 +63,7 @@ dependencies:
   provider: ^6.0.5
   flutter_launcher_icons: ^0.11.0
   skeletons: ^0.0.3
+  url_launcher: ^6.1.9
 
 dev_dependencies:
   flutter_test:

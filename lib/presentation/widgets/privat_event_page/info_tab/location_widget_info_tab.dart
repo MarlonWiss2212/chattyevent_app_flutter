@@ -2,11 +2,15 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:skeletons/skeletons.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
 import 'package:social_media_app_flutter/presentation/widgets/circle_image/cirlce_image.dart';
+import 'package:social_media_app_flutter/presentation/widgets/dialog/buttons/ok_button.dart';
 import 'package:social_media_app_flutter/presentation/widgets/divider.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class LocationWidgetInfoTab extends StatelessWidget {
   final CurrentPrivateEventState privateEventState;
@@ -28,7 +32,7 @@ class LocationWidgetInfoTab extends StatelessWidget {
                   null &&
               privateEventState.privateEvent.eventLocation!.zip != null &&
               privateEventState.privateEvent.eventLocation!.country !=
-                  null) ...{
+                  null) ...[
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: Row(
@@ -55,9 +59,48 @@ class LocationWidgetInfoTab extends StatelessWidget {
                 ],
               ),
             ),
-          } else if (privateEventState.loadingPrivateEvent) ...{
+            const SizedBox(height: 8),
+            // start google maps navigation
+            ListTile(
+              leading: const Icon(Icons.map),
+              title: const Text("Zur Addresse navigieren"),
+              onTap: () async {
+                final String googleMapslocationUrl =
+                    "https://www.google.com/maps/search/?api=1&query=${privateEventState.privateEvent.eventLocation!.street} ${privateEventState.privateEvent.eventLocation!.housenumber}, ${privateEventState.privateEvent.eventLocation!.city}, ${privateEventState.privateEvent.eventLocation!.zip}, ${privateEventState.privateEvent.eventLocation!.country}";
+
+                if (await canLaunchUrlString(googleMapslocationUrl)) {
+                  await launchUrlString(googleMapslocationUrl);
+                } else {
+                  return await showPlatformDialog(
+                    context: context,
+                    builder: (context) {
+                      return PlatformAlertDialog(
+                        title: const Text("Fehler beim öffnen"),
+                        content: Text(
+                          "Konnte den Link zu google maps nicht öffnen",
+                        ),
+                        actions: const [OKButton()],
+                      );
+                    },
+                  );
+                }
+              },
+            ),
+          ] else if (privateEventState.loadingPrivateEvent) ...[
             const SkeletonLine(),
-          },
+            const SizedBox(height: 8),
+            SkeletonListTile(
+              hasSubtitle: false,
+              titleStyle: const SkeletonLineStyle(width: 100, height: 22),
+              subtitleStyle: const SkeletonLineStyle(
+                width: double.infinity,
+                height: 16,
+              ),
+              leadingStyle: const SkeletonAvatarStyle(
+                shape: BoxShape.circle,
+              ),
+            )
+          ],
           const SizedBox(height: 8),
           Container(
             width: size.width,
