@@ -32,7 +32,10 @@ class NewPrivateEventLocationPage extends StatefulWidget {
 
 class _NewPrivateEventLocationPageState
     extends State<NewPrivateEventLocationPage> {
-  CreatePrivateEventLocationDto? eventLocation;
+  TextEditingController cityController = TextEditingController();
+  TextEditingController zipController = TextEditingController();
+  TextEditingController streetController = TextEditingController();
+  TextEditingController housenumberController = TextEditingController();
 
   @override
   void initState() {
@@ -47,103 +50,70 @@ class _NewPrivateEventLocationPageState
       ),
       body: Column(
         children: [
-          BlocBuilder<AddPrivateEventCubit, AddPrivateEventState>(
-              builder: (context, state) {
-            if (state is AddPrivateEventLoading) {
-              return const LinearProgressIndicator();
-            }
-            return Container();
-          }),
           Expanded(
-            child: BlocConsumer<LocationCubit, LocationState>(
-              listener: (context, state) async {
-                if (state is LocationError) {
-                  return await showPlatformDialog(
-                    context: context,
-                    builder: (context) {
-                      return PlatformAlertDialog(
-                        title: Text(state.title),
-                        content: Text(state.message),
-                        actions: const [OKButton()],
-                      );
-                    },
-                  );
-                }
-              },
-              builder: (context, state) {
-                MapOptions mapOptions = MapOptions(
-                  center: state is LocationLoaded
-                      ? LatLng(state.lat, state.lng)
-                      : LatLng(47, 10),
-                  zoom: state is LocationLoaded ? 14 : 3,
-                  interactiveFlags: InteractiveFlag.doubleTapZoom |
-                      InteractiveFlag.doubleTapZoom |
-                      InteractiveFlag.drag |
-                      InteractiveFlag.flingAnimation |
-                      InteractiveFlag.pinchMove |
-                      InteractiveFlag.pinchZoom,
-                  onTap: (tapPosition, point) {
-                    setState(() {
-                      eventLocation = CreatePrivateEventLocationDto(
-                        latitude: point.latitude,
-                        longitude: point.longitude,
-                      );
-                    });
-                  },
-                );
-
-                if (state is LocationLoading) {
-                  return Center(child: PlatformCircularProgressIndicator());
-                }
-
-                return Center(
-                  child: Stack(children: [
-                    FlutterMap(
-                      options: mapOptions,
-                      children: [
-                        TileLayer(
-                          urlTemplate:
-                              'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                        ),
-                        MarkerLayer(
-                          markers: [
-                            if (eventLocation != null) ...{
-                              Marker(
-                                point: LatLng(
-                                  eventLocation!.latitude,
-                                  eventLocation!.longitude,
-                                ),
-                                builder: (context) {
-                                  return CircleImage(
-                                    width: 40,
-                                    height: 40,
-                                    image: widget.image,
-                                  );
-                                },
-                              ),
-                            }
-                          ],
-                        ),
-                      ],
-                    ),
-                    Align(
-                      alignment: Alignment.bottomCenter,
-                      child: SizedBox(
-                        width: double.infinity,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8),
-                          child: PlatformElevatedButton(
-                            onPressed: () =>
-                                BlocProvider.of<LocationCubit>(context)
-                                    .getLocationFromDevice(),
-                            child: const Text("Geradigen Standort setzen"),
-                          ),
+            child: Column(
+              children: [
+                BlocBuilder<AddPrivateEventCubit, AddPrivateEventState>(
+                    builder: (context, state) {
+                  if (state is AddPrivateEventLoading) {
+                    return const LinearProgressIndicator();
+                  }
+                  return Container();
+                }),
+                const SizedBox(height: 8),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 4,
+                  ),
+                  child: PlatformTextField(
+                    hintText: "Stadt",
+                    controller: cityController,
+                    textInputAction: TextInputAction.next,
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 4,
+                  ),
+                  child: PlatformTextField(
+                    hintText: "Postleitzahl",
+                    controller: zipController,
+                    keyboardType: TextInputType.number,
+                    textInputAction: TextInputAction.next,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 4,
+                  ),
+                  width: double.infinity,
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: PlatformTextFormField(
+                          controller: streetController,
+                          hintText: "Straße",
+                          keyboardType: TextInputType.streetAddress,
+                          textInputAction: TextInputAction.next,
                         ),
                       ),
-                    )
-                  ]),
-                );
-              },
+                      const SizedBox(width: 8.0),
+                      SizedBox(
+                        width: 100,
+                        child: PlatformTextFormField(
+                          controller: housenumberController,
+                          hintText: "Nr.",
+                          keyboardType: TextInputType.number,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
           ),
           Padding(
@@ -159,7 +129,13 @@ class _NewPrivateEventLocationPageState
                       eventDate: widget.date,
                       connectedGroupchat: widget.selectedGroupchat.id,
                       coverImage: widget.image,
-                      eventLocation: eventLocation,
+                      eventLocation: CreatePrivateEventLocationDto(
+                        city: cityController.text,
+                        country: "DE",
+                        housenumber: housenumberController.text,
+                        street: streetController.text,
+                        zip: zipController.text,
+                      ),
                     ),
                   );
                 },

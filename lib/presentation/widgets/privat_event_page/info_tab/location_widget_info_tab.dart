@@ -22,6 +22,43 @@ class LocationWidgetInfoTab extends StatelessWidget {
     if (privateEventState.privateEvent.eventLocation != null) {
       return Column(
         children: [
+          if (privateEventState.privateEvent.eventLocation!.city != null &&
+              privateEventState.privateEvent.eventLocation!.street != null &&
+              privateEventState.privateEvent.eventLocation!.housenumber !=
+                  null &&
+              privateEventState.privateEvent.eventLocation!.zip != null &&
+              privateEventState.privateEvent.eventLocation!.country !=
+                  null) ...{
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    "Addresse: ",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Column(
+                    children: [
+                      Text(
+                        "${privateEventState.privateEvent.eventLocation!.country}, ${privateEventState.privateEvent.eventLocation!.city}, ${privateEventState.privateEvent.eventLocation!.zip}",
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                      Text(
+                        "${privateEventState.privateEvent.eventLocation!.street} ${privateEventState.privateEvent.eventLocation!.housenumber}",
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+          } else if (privateEventState.loadingPrivateEvent) ...{
+            const SkeletonLine(),
+          },
+          const SizedBox(height: 8),
           Container(
             width: size.width,
             padding: const EdgeInsets.symmetric(horizontal: 8),

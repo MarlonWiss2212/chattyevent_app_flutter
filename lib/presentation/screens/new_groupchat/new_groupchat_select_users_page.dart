@@ -103,33 +103,20 @@ class _NewGroupchatPageSelectUsersPageState
                   ),
                   const SizedBox(height: 8),
                   // button to save groupchat
-                  BlocListener<AddChatCubit, AddChatState>(
-                    listener: (context, state) {
-                      if (state is AddChatLoaded) {
-                        AutoRouter.of(context).root.replace(
-                              ChatPageWrapperRoute(
-                                groupchatId: state.addedChat.id,
-                                loadChatFromApiToo: false,
-                                chatToSet: state.addedChat,
-                              ),
-                            );
-                      }
-                    },
-                    child: SizedBox(
-                      width: double.infinity,
-                      child: PlatformElevatedButton(
-                        onPressed: () {
-                          BlocProvider.of<AddChatCubit>(context).createChat(
-                            createGroupchatDto: CreateGroupchatDto(
-                              title: widget.title,
-                              description: widget.description,
-                              users: groupchatUsers,
-                              profileImage: widget.profileImage,
-                            ),
-                          );
-                        },
-                        child: const Text("Speichern"),
-                      ),
+                  SizedBox(
+                    width: double.infinity,
+                    child: PlatformElevatedButton(
+                      onPressed: () {
+                        BlocProvider.of<AddChatCubit>(context).createChat(
+                          createGroupchatDto: CreateGroupchatDto(
+                            title: widget.title,
+                            description: widget.description,
+                            users: groupchatUsers,
+                            profileImage: widget.profileImage,
+                          ),
+                        );
+                      },
+                      child: const Text("Speichern"),
                     ),
                   ),
                 ],
