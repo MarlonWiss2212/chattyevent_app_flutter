@@ -82,8 +82,9 @@ class _LoginPageState extends State<LoginPage> {
                     const SizedBox(height: 16),
                     PlatformTextButton(
                       onPressed: () {
-                        AutoRouter.of(context)
-                            .replace(const RegisterPageRoute());
+                        AutoRouter.of(context).replace(
+                          const RegisterPageRoute(),
+                        );
                       },
                       child: const Text("Registrieren?"),
                     ),

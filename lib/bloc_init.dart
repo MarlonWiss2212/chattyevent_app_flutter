@@ -47,9 +47,6 @@ class BlocInit extends StatelessWidget {
         state: BlocProvider.of<AuthCubit>(context).state,
       ),
     );
-
-    BlocProvider.of<AuthCubit>(context).getTokenAndLoadUser();
-
     return BlocBuilder<AuthCubit, AuthState>(
       builder: (context, state) {
         final client = getGraphQlClient(

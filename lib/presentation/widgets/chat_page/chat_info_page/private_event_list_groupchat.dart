@@ -20,7 +20,8 @@ class PrivateEventListGroupchat extends StatelessWidget {
         List<Widget> widgetsToReturn = [];
         List<PrivateEventEntity> filteredEvents = state.privateEvents
             .where(
-              (element) => element.id == chatState.currentChat.id,
+              (element) =>
+                  element.connectedGroupchat == chatState.currentChat.id,
             )
             .toList();
 

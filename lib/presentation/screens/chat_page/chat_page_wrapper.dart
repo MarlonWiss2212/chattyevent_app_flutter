@@ -5,6 +5,7 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:social_media_app_flutter/domain/filter/get_one_groupchat_filter.dart';
 import 'package:social_media_app_flutter/domain/usecases/chat_usecases.dart';
@@ -62,6 +63,8 @@ class ChatPageWrapper extends StatelessWidget {
           }
         },
         child: Builder(builder: (context) {
+          // load data here so that it does not get double loaded when the bloc state changes
+          BlocProvider.of<UserCubit>(context).getUsersViaApi();
           if (chatToSet == null || loadChatFromApiToo) {
             BlocProvider.of<CurrentChatCubit>(context).getCurrentChatViaApi(
               getOneGroupchatFilter: GetOneGroupchatFilter(id: groupchatId),

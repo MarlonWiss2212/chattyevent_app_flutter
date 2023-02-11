@@ -16,9 +16,6 @@ class ChatPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // load data here so that it does not get double loaded when the bloc state changes
-    BlocProvider.of<UserCubit>(context).getUsersViaApi();
-
     BlocProvider.of<MessageCubit>(context).getMessages(
       getMessagesFilter: GetMessagesFilter(groupchatTo: groupchatId),
     );

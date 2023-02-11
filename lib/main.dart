@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
@@ -15,6 +17,7 @@ import 'package:social_media_app_flutter/colors.dart';
 import 'package:social_media_app_flutter/domain/filter/get_one_user_filter.dart';
 import 'package:social_media_app_flutter/domain/usecases/settings_usecases.dart';
 import 'package:social_media_app_flutter/infastructure/respositories/device/settings_repository_impl.dart';
+import 'package:social_media_app_flutter/presentation/router/auth_guard.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
@@ -24,13 +27,18 @@ import 'one_signal.dart' as one_signal;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: '.env');
-  await MobileAds.instance.initialize();
   await di.init();
-  await one_signal.init();
+
+  if (!kIsWeb) {
+    if (Platform.isAndroid || Platform.isIOS) {
+      await MobileAds.instance.initialize();
+      await one_signal.init();
+    }
+  }
 
   runApp(
-    BlocProvider(
-      create: (context) => di.serviceLocator<AuthCubit>(),
+    BlocProvider.value(
+      value: di.serviceLocator<AuthCubit>()..getTokenAndLoadUser(),
       child: const BlocInit(),
     ),
   );
@@ -88,7 +96,6 @@ class _AppState extends State<App> {
     if (widget.authState is AuthLoaded) {
       final authState = widget.authState as AuthLoaded;
       widget.appRouter.authGuard.state = authState;
-      widget.appRouter.replace(const HomePageRoute());
 
       if (authState.userResponse == null) {
         BlocProvider.of<CurrentUserCubit>(context).getOneUserViaApi(
@@ -96,6 +103,8 @@ class _AppState extends State<App> {
             id: Jwt.parseJwt(authState.token)["sub"],
           ),
         );
+      } else if (authState.userResponse != null) {
+        widget.appRouter.replace(const HomePageRoute());
       }
     }
     return DynamicColorBuilder(
