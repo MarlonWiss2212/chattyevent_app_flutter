@@ -66,7 +66,7 @@ class PrivateEventListGroupchat extends StatelessWidget {
                 ),
                 onTap: () {
                   AutoRouter.of(context).push(
-                    PrivateEventPageRoute(
+                    PrivateEventWrapperPageRoute(
                       loadPrivateEventFromApiToo: true,
                       privateEventToSet: event,
                       privateEventId: event.id,

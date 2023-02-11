@@ -11,7 +11,7 @@ class ShoppingListItemModel extends ShoppingListItemEntity {
     double? boughtAmount,
     String? userToBuyItem,
     String? createdBy,
-    String? privateEvent,
+    String? privateEventId,
   }) : super(
           id: id,
           createdAt: createdAt,
@@ -22,7 +22,7 @@ class ShoppingListItemModel extends ShoppingListItemEntity {
           amount: amount,
           boughtAmount: boughtAmount,
           userToBuyItem: userToBuyItem,
-          privateEvent: privateEvent,
+          privateEventId: privateEventId,
         );
 
   factory ShoppingListItemModel.fromJson(Map<String, dynamic> json) {
@@ -33,17 +33,29 @@ class ShoppingListItemModel extends ShoppingListItemEntity {
         ? DateTime.parse(json["updatedAt"]).toLocal()
         : null;
 
+    final amount = json["amount"] == null
+        ? null
+        : json["amount"] is double
+            ? json["amount"]
+            : double.tryParse(json["amount"].toString());
+
+    final boughtAmount = json["boughtAmount"] == null
+        ? null
+        : json["boughtAmount"] is double
+            ? json["boughtAmount"]
+            : double.tryParse(json["boughtAmount"].toString());
+
     return ShoppingListItemModel(
       id: json["_id"],
       createdAt: createdAt,
       updatedAt: updatedAt,
       itemName: json["itemName"],
       unit: json["unit"],
-      amount: json["amount"],
+      amount: amount,
       createdBy: json["createdBy"],
-      boughtAmount: json['boughtAmount'],
+      boughtAmount: boughtAmount,
       userToBuyItem: json["userToBuyItem"],
-      privateEvent: json["privateEvent"],
+      privateEventId: json["privateEventId"],
     );
   }
 }

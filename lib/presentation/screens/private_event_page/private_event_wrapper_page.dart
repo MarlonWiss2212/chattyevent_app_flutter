@@ -22,14 +22,13 @@ import 'package:social_media_app_flutter/infastructure/respositories/private_eve
 import 'package:social_media_app_flutter/infastructure/respositories/shopping_list_item_repository_impl.dart';
 import 'package:social_media_app_flutter/injection.dart';
 import 'package:social_media_app_flutter/presentation/widgets/dialog/buttons/ok_button.dart';
-import 'package:social_media_app_flutter/presentation/widgets/privat_event_page/private_event_page_scaffold.dart';
 
-class PrivateEventPage extends StatelessWidget {
+class PrivateEventWrapperPage extends StatelessWidget {
   final String privateEventId;
   final PrivateEventEntity? privateEventToSet;
   final bool loadPrivateEventFromApiToo;
 
-  const PrivateEventPage({
+  const PrivateEventWrapperPage({
     @PathParam('id') required this.privateEventId,
     this.privateEventToSet,
     this.loadPrivateEventFromApiToo = true,
@@ -55,14 +54,14 @@ class PrivateEventPage extends StatelessWidget {
             .state
             .shoppingList
             .where(
-              (element) => element.privateEvent == privateEventId,
+              (element) => element.privateEventId == privateEventId,
             )
             .toList();
 
     CurrentPrivateEventCubit currentPrivateEventCubit =
         CurrentPrivateEventCubit(
       CurrentPrivateEventNormal(
-        privateEventUsers: [],
+        privateEventUsers: const [],
         privateEvent: privateEventToSet ?? PrivateEventEntity(id: ""),
         groupchat: groupchatToSet,
         shoppingList: shoppingListItemsToSet,
@@ -120,6 +119,8 @@ class PrivateEventPage extends StatelessWidget {
                   : null,
             );
           }
+          BlocProvider.of<CurrentPrivateEventCubit>(context)
+              .setPrivateEventUsers();
 
           return BlocListener<CurrentPrivateEventCubit,
               CurrentPrivateEventState>(
@@ -137,9 +138,7 @@ class PrivateEventPage extends StatelessWidget {
                 );
               }
             },
-            child: PrivateEventPageScaffold(
-              privateEventId: privateEventId,
-            ),
+            child: const AutoRouter(),
           );
         },
       ),

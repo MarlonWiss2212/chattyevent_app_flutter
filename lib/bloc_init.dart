@@ -135,9 +135,6 @@ class BlocInit extends StatelessWidget {
         );
 
         final shoppingListCubit = ShoppingListCubit(
-            shoppingListItemUseCases: shoppingListItemUseCases);
-        final addShoppingListItemCubit = AddShoppingListItemCubit(
-          shoppingListCubit: shoppingListCubit,
           shoppingListItemUseCases: shoppingListItemUseCases,
         );
 
@@ -155,7 +152,6 @@ class BlocInit extends StatelessWidget {
             BlocProvider.value(value: locationCubit),
             BlocProvider.value(value: imageCubit),
             BlocProvider.value(value: shoppingListCubit),
-            BlocProvider.value(value: addShoppingListItemCubit),
           ],
           child: App(
             authState: state,

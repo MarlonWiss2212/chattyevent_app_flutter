@@ -4,8 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:skeletons/skeletons.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
+import 'package:social_media_app_flutter/domain/entities/private_event/private_event_user.dart';
 import 'package:social_media_app_flutter/domain/filter/get_shopping_list_items_filter.dart';
-import 'package:social_media_app_flutter/presentation/widgets/bottom_sheet/add_shopping_list_item.dart';
+import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
+import 'package:social_media_app_flutter/presentation/widgets/privat_event_page/tab_bar/shopping_list_tab/shopping_list_item_tile.dart';
 
 class ShoppingListTab extends StatelessWidget {
   final String privateEventId;
@@ -18,7 +20,7 @@ class ShoppingListTab extends StatelessWidget {
   Widget build(BuildContext context) {
     BlocProvider.of<CurrentPrivateEventCubit>(context).getShoppingListViaApi(
       getShoppingListItemsFilter: GetShoppingListItemsFilter(
-        privateEvent: privateEventId,
+        privateEventId: privateEventId,
       ),
     );
 
@@ -27,7 +29,7 @@ class ShoppingListTab extends StatelessWidget {
         onRefresh: () => BlocProvider.of<CurrentPrivateEventCubit>(context)
             .getShoppingListViaApi(
           getShoppingListItemsFilter: GetShoppingListItemsFilter(
-            privateEvent: privateEventId,
+            privateEventId: privateEventId,
           ),
         ),
         child: BlocBuilder<CurrentPrivateEventCubit, CurrentPrivateEventState>(
@@ -63,20 +65,9 @@ class ShoppingListTab extends StatelessWidget {
             return ListView.builder(
               shrinkWrap: true,
               itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(
-                    state.shoppingList[index].itemName ?? "Kein Name",
-                    style: Theme.of(context).textTheme.titleMedium,
-                    softWrap: true,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  trailing: Text(
-                    "${state.shoppingList[index].amount} ${state.shoppingList[index].unit}",
-                    style: Theme.of(context).textTheme.titleMedium,
-                    softWrap: true,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  onTap: () {},
+                return ShoppingListItemTile(
+                  currentPrivateEventState: state,
+                  shoppingListItem: state.shoppingList[index],
                 );
               },
               itemCount: state.shoppingList.length,
@@ -87,13 +78,8 @@ class ShoppingListTab extends StatelessWidget {
       material: (context, platform) => MaterialScaffoldData(
         floatingActionButton: FloatingActionButton.extended(
           onPressed: () async {
-            return await showModalBottomSheet(
-              context: context,
-              builder: (context) {
-                return AddShoppingListItem(
-                  privateEventId: privateEventId,
-                );
-              },
+            AutoRouter.of(context).push(
+              PrivateEventCreateShoppingListItemRoute(),
             );
           },
           icon: const Icon(Icons.add),

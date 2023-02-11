@@ -17,7 +17,7 @@ class NewPrivateEventWrapperPage extends StatelessWidget {
       listener: (context, state) async {
         if (state is AddPrivateEventLoaded) {
           AutoRouter.of(context).root.replace(
-                PrivateEventPageRoute(
+                PrivateEventWrapperPageRoute(
                   privateEventId: state.addedPrivateEvent.id,
                   loadPrivateEventFromApiToo: false,
                   privateEventToSet: state.addedPrivateEvent,

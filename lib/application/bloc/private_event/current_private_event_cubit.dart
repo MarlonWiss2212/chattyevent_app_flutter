@@ -7,10 +7,12 @@ import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/shopping_list/shopping_list_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
+import 'package:social_media_app_flutter/domain/dto/shopping_list_item/update_shopping_list_item_dto.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_user.dart';
 import 'package:social_media_app_flutter/domain/entities/shopping_list_item_entity.dart';
+import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
 import 'package:social_media_app_flutter/domain/failures/failures.dart';
 import 'package:social_media_app_flutter/domain/filter/get_one_groupchat_filter.dart';
 import 'package:social_media_app_flutter/domain/filter/get_one_private_event_filter.dart';
@@ -67,6 +69,7 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
       for (final userId in state.privateEvent.usersThatWillBeThere!) {
         final foundUser = userCubit.state.users.firstWhere(
           (element) => element.id == userId,
+          orElse: () => UserEntity(id: ""),
         );
         usersToEmit.add(
           PrivateEventUser.fromUserEntity(user: foundUser, accapted: true),
@@ -78,6 +81,7 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
       for (final userId in state.privateEvent.usersThatWillNotBeThere!) {
         final foundUser = userCubit.state.users.firstWhere(
           (element) => element.id == userId,
+          orElse: () => UserEntity(id: ""),
         );
         usersToEmit.add(
           PrivateEventUser.fromUserEntity(user: foundUser, declined: true),
@@ -98,6 +102,7 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
         } else {
           final foundUser = userCubit.state.users.firstWhere(
             (element) => element.id == groupchatUser.userId,
+            orElse: () => UserEntity(id: ""),
           );
           usersToEmit.add(
             PrivateEventUser.fromUserEntity(user: foundUser, invited: true),
@@ -159,14 +164,53 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
     );
   }
 
-  // shopping list add update delte functions for this cubit
+  Future updateShoppingListItemViaApi({
+    required UpdateShoppingListItemDto updateShoppingListItemDto,
+    required String shoppingListItemId,
+  }) async {
+    emit(CurrentPrivateEventNormal(
+      groupchat: state.groupchat,
+      privateEvent: state.privateEvent,
+      privateEventUsers: state.privateEventUsers,
+      shoppingList: state.shoppingList,
+      loadingGroupchat: state.loadingGroupchat,
+      loadingPrivateEvent: state.loadingPrivateEvent,
+      loadingShoppingList: true,
+    ));
+    final Either<Failure, ShoppingListItemEntity> shoppingListItemOrFailure =
+        await shoppingListItemUseCases.updateShoppingListItemsViaApi(
+      updateShoppingListItemDto: updateShoppingListItemDto,
+      shoppingListItemId: shoppingListItemId,
+    );
+
+    shoppingListItemOrFailure.fold(
+      (error) => emit(CurrentPrivateEventError(
+        privateEventUsers: state.privateEventUsers,
+        privateEvent: state.privateEvent,
+        message: mapFailureToMessage(error),
+        title: "Update Failure",
+        groupchat: state.groupchat,
+        shoppingList: state.shoppingList,
+        loadingGroupchat: state.loadingGroupchat,
+        loadingPrivateEvent: state.loadingPrivateEvent,
+        loadingShoppingList: false,
+      )),
+      (shoppingListItem) {
+        shoppingListCubit.mergeOrAdd(shoppingListItem: shoppingListItem);
+        reloadShoppingListFromShoppingListCubit(
+          loadingShoppingListFromApi: false,
+        );
+      },
+    );
+  }
+
   void reloadShoppingListFromShoppingListCubit({
     bool? loadingShoppingListFromApi,
   }) {
     emit(CurrentPrivateEventNormal(
       groupchat: state.groupchat,
       shoppingList: shoppingListCubit.state.shoppingList
-          .where((element) => element.privateEvent == state.privateEvent.id)
+          .where((element) => element.privateEventId == state.privateEvent.id)
           .toList(),
       privateEvent: state.privateEvent,
       privateEventUsers: state.privateEventUsers,
