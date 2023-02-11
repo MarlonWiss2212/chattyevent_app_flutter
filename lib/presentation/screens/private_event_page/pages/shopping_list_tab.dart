@@ -18,7 +18,7 @@ class ShoppingListTab extends StatelessWidget {
   Widget build(BuildContext context) {
     BlocProvider.of<CurrentPrivateEventCubit>(context).getShoppingListViaApi(
       getShoppingListItemsFilter: GetShoppingListItemsFilter(
-        privateEvent: privateEventId,
+        privateEventId: privateEventId,
       ),
     );
 
@@ -27,7 +27,7 @@ class ShoppingListTab extends StatelessWidget {
         onRefresh: () => BlocProvider.of<CurrentPrivateEventCubit>(context)
             .getShoppingListViaApi(
           getShoppingListItemsFilter: GetShoppingListItemsFilter(
-            privateEvent: privateEventId,
+            privateEventId: privateEventId,
           ),
         ),
         child: BlocBuilder<CurrentPrivateEventCubit, CurrentPrivateEventState>(

@@ -1,17 +1,18 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/shopping_list/add_shopping_list_item_cubit.dart';
 import 'package:social_media_app_flutter/domain/dto/create_shopping_list_item_dto.dart';
 import 'package:social_media_app_flutter/presentation/widgets/dialog/buttons/ok_button.dart';
 
 class AddShoppingListItem extends StatefulWidget {
   final String privateEventId;
-  const AddShoppingListItem({super.key, required this.privateEventId});
+  const AddShoppingListItem({
+    super.key,
+    required this.privateEventId,
+  });
 
   @override
   State<AddShoppingListItem> createState() => _AddShoppingListItemState();
@@ -86,18 +87,16 @@ class _AddShoppingListItemState extends State<AddShoppingListItem> {
               BlocListener<AddShoppingListItemCubit, AddShoppingListItemState>(
                 listener: (context, state) {
                   if (state is AddShoppingListItemLoaded) {
-                    // to add the item to the current private too
-                    BlocProvider.of<CurrentPrivateEventCubit>(context)
-                        .reloadShoppingListFromShoppingListCubit();
-                    Navigator.pop(context);
+                    Navigator.of(context).pop();
                   }
                 },
                 child: SizedBox(
                   width: double.infinity,
                   child: PlatformElevatedButton(
                     onPressed: () async {
-                      final amountAsDouble =
-                          double.tryParse(amountController.text);
+                      final amountAsDouble = double.tryParse(
+                        amountController.text,
+                      );
 
                       if (amountAsDouble == null) {
                         return await showPlatformDialog(

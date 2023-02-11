@@ -55,14 +55,14 @@ class PrivateEventPage extends StatelessWidget {
             .state
             .shoppingList
             .where(
-              (element) => element.privateEvent == privateEventId,
+              (element) => element.privateEventId == privateEventId,
             )
             .toList();
 
     CurrentPrivateEventCubit currentPrivateEventCubit =
         CurrentPrivateEventCubit(
       CurrentPrivateEventNormal(
-        privateEventUsers: [],
+        privateEventUsers: const [],
         privateEvent: privateEventToSet ?? PrivateEventEntity(id: ""),
         groupchat: groupchatToSet,
         shoppingList: shoppingListItemsToSet,
@@ -120,6 +120,8 @@ class PrivateEventPage extends StatelessWidget {
                   : null,
             );
           }
+          BlocProvider.of<CurrentPrivateEventCubit>(context)
+              .setPrivateEventUsers();
 
           return BlocListener<CurrentPrivateEventCubit,
               CurrentPrivateEventState>(

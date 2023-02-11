@@ -11,6 +11,7 @@ import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_ent
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_user.dart';
 import 'package:social_media_app_flutter/domain/entities/shopping_list_item_entity.dart';
+import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
 import 'package:social_media_app_flutter/domain/failures/failures.dart';
 import 'package:social_media_app_flutter/domain/filter/get_one_groupchat_filter.dart';
 import 'package:social_media_app_flutter/domain/filter/get_one_private_event_filter.dart';
@@ -67,6 +68,7 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
       for (final userId in state.privateEvent.usersThatWillBeThere!) {
         final foundUser = userCubit.state.users.firstWhere(
           (element) => element.id == userId,
+          orElse: () => UserEntity(id: ""),
         );
         usersToEmit.add(
           PrivateEventUser.fromUserEntity(user: foundUser, accapted: true),
@@ -78,6 +80,7 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
       for (final userId in state.privateEvent.usersThatWillNotBeThere!) {
         final foundUser = userCubit.state.users.firstWhere(
           (element) => element.id == userId,
+          orElse: () => UserEntity(id: ""),
         );
         usersToEmit.add(
           PrivateEventUser.fromUserEntity(user: foundUser, declined: true),
@@ -98,6 +101,7 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
         } else {
           final foundUser = userCubit.state.users.firstWhere(
             (element) => element.id == groupchatUser.userId,
+            orElse: () => UserEntity(id: ""),
           );
           usersToEmit.add(
             PrivateEventUser.fromUserEntity(user: foundUser, invited: true),
@@ -166,7 +170,7 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
     emit(CurrentPrivateEventNormal(
       groupchat: state.groupchat,
       shoppingList: shoppingListCubit.state.shoppingList
-          .where((element) => element.privateEvent == state.privateEvent.id)
+          .where((element) => element.privateEventId == state.privateEvent.id)
           .toList(),
       privateEvent: state.privateEvent,
       privateEventUsers: state.privateEventUsers,

@@ -21,8 +21,12 @@ class PrivateEventLocationModel extends PrivateEventLocationEntity {
 
   factory PrivateEventLocationModel.fromJson(Map<String, dynamic> json) {
     return PrivateEventLocationModel(
-      latitude: json['latitude'],
-      longitude: json['longitude'],
+      latitude: json["latitude"] is double
+          ? json["latitude"]
+          : double.tryParse(json["latitude"].toString()),
+      longitude: json["longitude"] is double
+          ? json["longitude"]
+          : double.tryParse(json["longitude"].toString()),
       city: json['city'],
       country: json['country'],
       zip: json['zip'],

@@ -28,7 +28,7 @@ class ShoppingListItemRepositoryImpl implements ShoppingListItemRepository {
             amount
             boughtAmount
             userToBuyItem
-            privateEvent
+            privateEventId
             createdBy
           }
         }
@@ -39,7 +39,6 @@ class ShoppingListItemRepositoryImpl implements ShoppingListItemRepository {
       );
 
       if (response.hasException) {
-        print(response.exception);
         return Left(GeneralFailure());
       }
 
@@ -49,8 +48,6 @@ class ShoppingListItemRepositoryImpl implements ShoppingListItemRepository {
         ),
       );
     } catch (e) {
-      print(e);
-
       return Left(ServerFailure());
     }
   }
@@ -64,7 +61,7 @@ class ShoppingListItemRepositoryImpl implements ShoppingListItemRepository {
       final response = await graphQlDatasource.query(
         """
         query FindShoppingListItems(\$input: FindShoppingListItemsInput!) {
-          findShoppingListItems(findShoppingListItemsInput: \$input) {
+          findShoppingListItems(filter: \$input) {
             _id
             createdAt
             updatedAt
@@ -73,7 +70,7 @@ class ShoppingListItemRepositoryImpl implements ShoppingListItemRepository {
             amount
             boughtAmount
             userToBuyItem
-            privateEvent
+            privateEventId
             createdBy
           }
         }
