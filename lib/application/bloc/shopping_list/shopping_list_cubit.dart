@@ -65,11 +65,11 @@ class ShoppingListCubit extends Cubit<ShoppingListState> {
   }
 
   Future getShoppingListViaApi({
-    required GetShoppingListItemsFilter getShoppingListItemsFilter,
+    GetShoppingListItemsFilter? getShoppingListItemsFilter,
   }) async {
     emit(ShoppingListLoading(
       shoppingList: state.shoppingList,
-      loadingForPrivateEventId: getShoppingListItemsFilter.privateEventId,
+      loadingForPrivateEventId: getShoppingListItemsFilter?.privateEventId,
     ));
 
     final Either<Failure, List<ShoppingListItemEntity>>
@@ -82,7 +82,7 @@ class ShoppingListCubit extends Cubit<ShoppingListState> {
       (error) => emit(
         ShoppingListError(
           loadingErrorForPrivateEventId:
-              getShoppingListItemsFilter.privateEventId,
+              getShoppingListItemsFilter?.privateEventId,
           shoppingList: state.shoppingList,
           message: mapFailureToMessage(error),
           title: "Lade Fehler",

@@ -11,7 +11,7 @@ abstract class ShoppingListItemRepository {
   });
   Future<Either<Failure, List<ShoppingListItemEntity>>>
       getShoppingListItemsViaApi({
-    required GetShoppingListItemsFilter getShoppingListItemsFilter,
+    GetShoppingListItemsFilter? getShoppingListItemsFilter,
   });
   Future<Either<Failure, ShoppingListItemEntity>> updateShoppingListItemViaApi({
     required UpdateShoppingListItemDto updateShoppingListItemDto,

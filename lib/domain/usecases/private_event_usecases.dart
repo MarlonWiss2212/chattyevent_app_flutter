@@ -3,6 +3,7 @@ import 'package:social_media_app_flutter/domain/dto/private_event/create_private
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
 import 'package:social_media_app_flutter/domain/failures/failures.dart';
 import 'package:social_media_app_flutter/domain/filter/get_one_private_event_filter.dart';
+import 'package:social_media_app_flutter/domain/filter/get_private_events_filter.dart';
 import 'package:social_media_app_flutter/domain/repositories/private_event_repository.dart';
 
 class PrivateEventUseCases {
@@ -52,8 +53,11 @@ class PrivateEventUseCases {
     );
   }
 
-  Future<Either<Failure, List<PrivateEventEntity>>>
-      getPrivateEventsViaApiViaApi() async {
-    return await privateEventRepository.getPrivateEventsViaApiViaApi();
+  Future<Either<Failure, List<PrivateEventEntity>>> getPrivateEventsViaApi({
+    GetPrivateEventsFilter? getPrivateEventsFilter,
+  }) async {
+    return await privateEventRepository.getPrivateEventsViaApi(
+      getPrivateEventsFilter: getPrivateEventsFilter,
+    );
   }
 }

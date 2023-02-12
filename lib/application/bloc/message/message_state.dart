@@ -14,10 +14,10 @@ class MessageInitial extends MessageState {
 }
 
 class MessageLoading extends MessageState {
-  final String loadingForGroupchatId;
+  final String? loadingForGroupchatId;
   const MessageLoading({
     required super.messages,
-    required this.loadingForGroupchatId,
+    this.loadingForGroupchatId,
   });
 }
 

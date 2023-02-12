@@ -5,6 +5,7 @@ import 'package:social_media_app_flutter/domain/failures/failures.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
 import 'package:dartz/dartz.dart';
 import 'package:social_media_app_flutter/domain/filter/get_one_private_event_filter.dart';
+import 'package:social_media_app_flutter/domain/filter/get_private_events_filter.dart';
 import 'package:social_media_app_flutter/domain/repositories/private_event_repository.dart';
 import 'package:social_media_app_flutter/infastructure/datasources/remote/graphql.dart';
 import 'package:social_media_app_flutter/infastructure/models/private_event/private_event_model.dart';
@@ -116,12 +117,13 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
   }
 
   @override
-  Future<Either<Failure, List<PrivateEventEntity>>>
-      getPrivateEventsViaApiViaApi() async {
+  Future<Either<Failure, List<PrivateEventEntity>>> getPrivateEventsViaApi({
+    GetPrivateEventsFilter? getPrivateEventsFilter,
+  }) async {
     try {
       final response = await graphQlDatasource.query("""
-        query FindPrivateEvents {
-          findPrivateEvents {
+        query FindPrivateEvents(\$input: FindPrivateEventsInput) {
+          findPrivateEvents(filter: \$input) {
             _id
             title
             connectedGroupchat
@@ -133,9 +135,12 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
             coverImageLink
           }
         }
-      """);
+      """, variables: {
+        "input": getPrivateEventsFilter?.toMap(),
+      });
 
       if (response.hasException) {
+        print(response.exception);
         return Left(GeneralFailure());
       }
 
@@ -145,6 +150,8 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
       }
       return Right(privateEvents);
     } catch (e) {
+      print(e);
+
       return Left(ServerFailure());
     }
   }

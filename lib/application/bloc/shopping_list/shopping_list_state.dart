@@ -13,20 +13,20 @@ class ShoppingListInitial extends ShoppingListState {
 }
 
 class ShoppingListLoading extends ShoppingListState {
-  final String loadingForPrivateEventId;
+  final String? loadingForPrivateEventId;
   const ShoppingListLoading({
     required super.shoppingList,
-    required this.loadingForPrivateEventId,
+    this.loadingForPrivateEventId,
   });
 }
 
 class ShoppingListError extends ShoppingListState {
-  final String loadingErrorForPrivateEventId;
+  final String? loadingErrorForPrivateEventId;
   final String title;
   final String message;
 
   const ShoppingListError({
-    required this.loadingErrorForPrivateEventId,
+    this.loadingErrorForPrivateEventId,
     required this.message,
     required this.title,
     required super.shoppingList,

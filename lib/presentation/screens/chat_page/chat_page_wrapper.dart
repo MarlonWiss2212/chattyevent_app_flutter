@@ -5,12 +5,15 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/private_event/private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:social_media_app_flutter/domain/filter/get_one_groupchat_filter.dart';
 import 'package:social_media_app_flutter/domain/usecases/chat_usecases.dart';
+import 'package:social_media_app_flutter/domain/usecases/private_event_usecases.dart';
 import 'package:social_media_app_flutter/infastructure/datasources/remote/graphql.dart';
 import 'package:social_media_app_flutter/infastructure/respositories/chat_repository_impl.dart';
+import 'package:social_media_app_flutter/infastructure/respositories/private_event_repository_impl.dart';
 import 'package:social_media_app_flutter/injection.dart';
 import 'package:social_media_app_flutter/presentation/widgets/dialog/buttons/ok_button.dart';
 
@@ -37,10 +40,20 @@ class ChatPageWrapper extends StatelessWidget {
     return BlocProvider(
       create: (context) => CurrentChatCubit(
         CurrentChatNormal(
+          privateEvents: const [],
+          loadingPrivateEvents: false,
           usersWithGroupchatUserData: const [],
           usersWithLeftGroupchatUserData: const [],
           currentChat: chatToSet ?? GroupchatEntity(id: ""),
           loadingChat: false,
+        ),
+        privateEventCubit: BlocProvider.of<PrivateEventCubit>(context),
+        privateEventUseCases: PrivateEventUseCases(
+          privateEventRepository: PrivateEventRepositoryImpl(
+            graphQlDatasource: GraphQlDatasourceImpl(
+              client: client,
+            ),
+          ),
         ),
         userCubit: BlocProvider.of<UserCubit>(context),
         chatCubit: BlocProvider.of<ChatCubit>(context),

@@ -2,29 +2,94 @@ import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:meta/meta.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/private_event/private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/user_with_groupchat_user_data.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/user_with_left_groupchat_user_data.dart';
-import 'package:social_media_app_flutter/domain/entities/private_event/user_with_private_event_user_data.dart';
+import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
 import 'package:social_media_app_flutter/domain/failures/failures.dart';
 import 'package:social_media_app_flutter/domain/filter/get_one_groupchat_filter.dart';
+import 'package:social_media_app_flutter/domain/filter/get_one_private_event_filter.dart';
+import 'package:social_media_app_flutter/domain/filter/get_private_events_filter.dart';
 import 'package:social_media_app_flutter/domain/usecases/chat_usecases.dart';
+import 'package:social_media_app_flutter/domain/usecases/private_event_usecases.dart';
 
 part 'current_chat_state.dart';
 
 class CurrentChatCubit extends Cubit<CurrentChatState> {
   final ChatCubit chatCubit;
+  final PrivateEventCubit privateEventCubit;
   final UserCubit userCubit;
   final ChatUseCases chatUseCases;
+  final PrivateEventUseCases privateEventUseCases;
 
   CurrentChatCubit(
     super.initialState, {
+    required this.privateEventCubit,
+    required this.privateEventUseCases,
     required this.chatCubit,
     required this.userCubit,
     required this.chatUseCases,
   });
+
+  Future getPrivateEventsViaApi() async {
+    emit(CurrentChatNormal(
+      currentChat: state.currentChat,
+      privateEvents: state.privateEvents,
+      loadingPrivateEvents: true,
+      usersWithGroupchatUserData: state.usersWithGroupchatUserData,
+      usersWithLeftGroupchatUserData: state.usersWithLeftGroupchatUserData,
+      loadingChat: state.loadingChat,
+    ));
+
+    final Either<Failure, List<PrivateEventEntity>> privateEventsOrFailute =
+        await privateEventUseCases.getPrivateEventsViaApi(
+      getPrivateEventsFilter: GetPrivateEventsFilter(
+        connectedGroupchat: state.currentChat.id,
+      ),
+    );
+
+    privateEventsOrFailute.fold(
+      (error) => emit(CurrentChatError(
+        currentChat: state.currentChat,
+        loadingChat: state.loadingChat,
+        usersWithGroupchatUserData: state.usersWithGroupchatUserData,
+        loadingPrivateEvents: false,
+        privateEvents: state.privateEvents,
+        usersWithLeftGroupchatUserData: state.usersWithLeftGroupchatUserData,
+        message: mapFailureToMessage(error),
+        title: "Fehler Private Events",
+      )),
+      (privateEvents) {
+        privateEventCubit.mergeOrAddMultiple(
+          privateEvents: privateEvents,
+        );
+        setPrivateEventFromPrivateEventCubit(
+          loadingPrivateEventsFromApi: false,
+        );
+      },
+    );
+  }
+
+  void setPrivateEventFromPrivateEventCubit({
+    bool? loadingPrivateEventsFromApi,
+  }) {
+    emit(CurrentChatNormal(
+      currentChat: state.currentChat,
+      loadingChat: state.loadingChat,
+      usersWithGroupchatUserData: state.usersWithGroupchatUserData,
+      loadingPrivateEvents:
+          loadingPrivateEventsFromApi ?? state.loadingPrivateEvents,
+      privateEvents: privateEventCubit.state.privateEvents
+          .where(
+            (element) => element.connectedGroupchat == state.currentChat.id,
+          )
+          .toList(),
+      usersWithLeftGroupchatUserData: state.usersWithLeftGroupchatUserData,
+    ));
+  }
 
   Future getGroupchatUsersViaApi() async {
     await userCubit.getUsersViaApi();
@@ -68,6 +133,8 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
     emit(CurrentChatNormal(
       usersWithGroupchatUserData: usersToEmit,
       usersWithLeftGroupchatUserData: leftUsersToEmit,
+      loadingPrivateEvents: state.loadingPrivateEvents,
+      privateEvents: state.privateEvents,
       loadingChat: state.loadingChat,
       currentChat: state.currentChat,
     ));
@@ -80,6 +147,8 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
       currentChat: state.currentChat,
       loadingChat: true,
       usersWithGroupchatUserData: state.usersWithGroupchatUserData,
+      loadingPrivateEvents: state.loadingPrivateEvents,
+      privateEvents: state.privateEvents,
       usersWithLeftGroupchatUserData: state.usersWithLeftGroupchatUserData,
     ));
 
@@ -94,6 +163,8 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
           currentChat: state.currentChat,
           usersWithGroupchatUserData: state.usersWithGroupchatUserData,
           usersWithLeftGroupchatUserData: state.usersWithLeftGroupchatUserData,
+          loadingPrivateEvents: state.loadingPrivateEvents,
+          privateEvents: state.privateEvents,
           title: "Fehler",
           message: mapFailureToMessage(error),
           loadingChat: false,
@@ -105,6 +176,8 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
           currentChat: mergedChat,
           loadingChat: false,
           usersWithGroupchatUserData: state.usersWithGroupchatUserData,
+          loadingPrivateEvents: state.loadingPrivateEvents,
+          privateEvents: state.privateEvents,
           usersWithLeftGroupchatUserData: state.usersWithLeftGroupchatUserData,
         ));
         setGroupchatUsers();
@@ -117,6 +190,8 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
       currentChat: groupchat,
       loadingChat: state.loadingChat,
       usersWithGroupchatUserData: state.usersWithGroupchatUserData,
+      loadingPrivateEvents: state.loadingPrivateEvents,
+      privateEvents: state.privateEvents,
       usersWithLeftGroupchatUserData: state.usersWithLeftGroupchatUserData,
     ));
     setGroupchatUsers();
@@ -130,6 +205,8 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
       currentChat: state.currentChat,
       loadingChat: true,
       usersWithGroupchatUserData: state.usersWithGroupchatUserData,
+      loadingPrivateEvents: state.loadingPrivateEvents,
+      privateEvents: state.privateEvents,
       usersWithLeftGroupchatUserData: state.usersWithLeftGroupchatUserData,
     ));
 
@@ -144,6 +221,8 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
         emit(CurrentChatError(
           usersWithGroupchatUserData: state.usersWithGroupchatUserData,
           usersWithLeftGroupchatUserData: state.usersWithLeftGroupchatUserData,
+          loadingPrivateEvents: state.loadingPrivateEvents,
+          privateEvents: state.privateEvents,
           loadingChat: false,
           currentChat: state.currentChat,
           message: "Fehler",
@@ -155,6 +234,8 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
         emit(CurrentChatNormal(
           usersWithGroupchatUserData: state.usersWithGroupchatUserData,
           usersWithLeftGroupchatUserData: state.usersWithLeftGroupchatUserData,
+          loadingPrivateEvents: state.loadingPrivateEvents,
+          privateEvents: state.privateEvents,
           currentChat: mergedChat,
           loadingChat: false,
         ));
@@ -170,6 +251,8 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
     emit(CurrentChatNormal(
       usersWithGroupchatUserData: state.usersWithGroupchatUserData,
       usersWithLeftGroupchatUserData: state.usersWithLeftGroupchatUserData,
+      loadingPrivateEvents: state.loadingPrivateEvents,
+      privateEvents: state.privateEvents,
       currentChat: state.currentChat,
       loadingChat: true,
     ));
@@ -185,6 +268,8 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
         emit(CurrentChatError(
           usersWithGroupchatUserData: state.usersWithGroupchatUserData,
           usersWithLeftGroupchatUserData: state.usersWithLeftGroupchatUserData,
+          loadingPrivateEvents: state.loadingPrivateEvents,
+          privateEvents: state.privateEvents,
           loadingChat: false,
           currentChat: state.currentChat,
           message: mapFailureToMessage(error),
@@ -198,6 +283,8 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
           usersWithLeftGroupchatUserData: state.usersWithLeftGroupchatUserData,
           currentChat: mergedChat,
           loadingChat: false,
+          loadingPrivateEvents: state.loadingPrivateEvents,
+          privateEvents: state.privateEvents,
         ));
         setGroupchatUsers();
       },
