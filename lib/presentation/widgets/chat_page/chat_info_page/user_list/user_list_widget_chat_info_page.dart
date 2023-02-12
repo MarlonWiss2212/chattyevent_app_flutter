@@ -2,17 +2,17 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:skeletons/skeletons.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart';
-import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
+import 'package:social_media_app_flutter/domain/entities/groupchat/user_with_groupchat_user_data.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 import 'package:social_media_app_flutter/presentation/widgets/chat_page/chat_info_page/user_list/user_list_groupchat.dart';
 
 class UserListWidgetChatInfoPage extends StatelessWidget {
   final CurrentChatState chatState;
-  final GroupchatUserEntity? currentGroupchatUser;
+  final UserWithGroupchatUserData currentUserWithGroupchatUserData;
   const UserListWidgetChatInfoPage({
     super.key,
     required this.chatState,
-    this.currentGroupchatUser,
+    required this.currentUserWithGroupchatUserData,
   });
 
   @override
@@ -21,15 +21,12 @@ class UserListWidgetChatInfoPage extends StatelessWidget {
       children: [
         if (chatState.currentChat.users != null) ...[
           Text(
-            "Midglieder: ${chatState.currentChat.users!.length}",
+            "Midglieder: ${chatState.usersWithGroupchatUserData.length}",
             style: Theme.of(context).textTheme.titleMedium,
           ),
-          if (chatState.currentChat.users!.isNotEmpty) ...{
-            const SizedBox(height: 8)
-          },
-          if (currentGroupchatUser != null &&
-              currentGroupchatUser!.admin != null &&
-              currentGroupchatUser!.admin == true) ...{
+          const SizedBox(height: 8),
+          if (currentUserWithGroupchatUserData.admin != null &&
+              currentUserWithGroupchatUserData.admin == true) ...{
             // add user
             ListTile(
               leading: const Icon(
@@ -48,11 +45,10 @@ class UserListWidgetChatInfoPage extends StatelessWidget {
             )
           },
           UserListGroupchat(
-            groupchatUsers: chatState.currentChat.users!,
-            groupchatId: chatState.currentChat.id,
-            currentGrouppchatUser: currentGroupchatUser,
+            chatState: chatState,
+            currentUserWithGroupchatUserData: currentUserWithGroupchatUserData,
           ),
-        ] else if (chatState.currentChat.users == null &&
+        ] else if (chatState.usersWithGroupchatUserData.isEmpty &&
             chatState.loadingChat) ...[
           SkeletonListTile(
             hasSubtitle: true,

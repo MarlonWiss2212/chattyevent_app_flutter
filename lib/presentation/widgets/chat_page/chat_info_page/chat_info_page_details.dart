@@ -5,6 +5,7 @@ import 'package:jwt_decode/jwt_decode.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
+import 'package:social_media_app_flutter/domain/entities/groupchat/user_with_groupchat_user_data.dart';
 import 'package:social_media_app_flutter/presentation/widgets/chat_page/chat_info_page/description_widget_chat_info_page.dart';
 import 'package:social_media_app_flutter/presentation/widgets/chat_page/chat_info_page/leave_chat_widget_chat_info_page.dart';
 import 'package:social_media_app_flutter/presentation/widgets/chat_page/chat_info_page/left_user_list/user_left_list_widget_chat_info_page.dart';
@@ -24,10 +25,10 @@ class ChatInfoPageDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     final currentUserId = Jwt.parseJwt(
         (BlocProvider.of<AuthCubit>(context).state as AuthLoaded).token)["sub"];
-    GroupchatUserEntity? currentGroupchatUser =
-        chatState.currentChat.users?.firstWhere(
-      (element) => element.userId == currentUserId,
-      orElse: () => GroupchatUserEntity(userId: ""),
+    UserWithGroupchatUserData currentGroupchatUser =
+        chatState.usersWithGroupchatUserData.firstWhere(
+      (element) => element.id == currentUserId,
+      orElse: () => UserWithGroupchatUserData(id: ""),
     );
 
     return SingleChildScrollView(
@@ -44,12 +45,12 @@ class ChatInfoPageDetails extends StatelessWidget {
           const CustomDivider(),
           UserListWidgetChatInfoPage(
             chatState: chatState,
-            currentGroupchatUser: currentGroupchatUser,
+            currentUserWithGroupchatUserData: currentGroupchatUser,
           ),
           const CustomDivider(),
           UserLeftListWidgetChatInfoPage(
             chatState: chatState,
-            currentGroupchatUser: currentGroupchatUser,
+            currentUserWithGroupchatUserData: currentGroupchatUser,
           ),
           const CustomDivider(),
           LeaveChatWidgetChatInfoPage(

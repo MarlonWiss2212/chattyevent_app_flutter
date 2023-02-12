@@ -5,77 +5,67 @@ import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubi
 import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_left_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
+import 'package:social_media_app_flutter/domain/entities/groupchat/user_with_groupchat_user_data.dart';
 import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
 import 'package:social_media_app_flutter/presentation/widgets/user_list_tile.dart';
 
 class UserLeftListGroupchat extends StatelessWidget {
-  final List<GroupchatLeftUserEntity> groupchatLeftUsers;
-  final String groupchatId;
-  final GroupchatUserEntity? currentGrouppchatUser;
+  final CurrentChatState chatState;
+  final UserWithGroupchatUserData currentUserWithGroupchatUserData;
   const UserLeftListGroupchat({
     super.key,
-    required this.groupchatLeftUsers,
-    required this.groupchatId,
-    required this.currentGrouppchatUser,
+    required this.chatState,
+    required this.currentUserWithGroupchatUserData,
   });
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<UserCubit, UserState>(
-      builder: (context, state) {
-        List<Widget> widgetsToReturn = [];
-        for (final groupchatLeftUser in groupchatLeftUsers) {
-          UserEntity foundUser = state.users.firstWhere(
-            (element) => element.id == groupchatLeftUser.userId,
-            orElse: () => UserEntity(id: ""),
-          );
-
-          widgetsToReturn.add(
-            UserListTile(
-              profileImageLink: foundUser.profileImageLink,
-              subtitle: groupchatLeftUser.leftAt != null
-                  ? Text(
-                      DateFormat.yMd()
-                          .add_jm()
-                          .format(groupchatLeftUser.leftAt!),
-                      overflow: TextOverflow.ellipsis,
-                    )
-                  : const Text(
-                      "Kein Datum",
-                      overflow: TextOverflow.ellipsis,
-                    ),
-              username: foundUser.username != null
-                  ? foundUser.username!
-                  : "Kein Username",
-              userId: groupchatLeftUser.userId,
-              longPress: currentGrouppchatUser != null &&
-                      currentGrouppchatUser!.admin != null &&
-                      currentGrouppchatUser!.admin == true &&
-                      currentGrouppchatUser!.userId != groupchatLeftUser.userId
-                  ? (userId) {
-                      showMenu(
-                        position: const RelativeRect.fromLTRB(
-                            0, double.infinity, 0, 0),
-                        context: context,
-                        items: [
-                          PopupMenuItem(
-                            child: const Text("Hinzufügen"),
-                            onTap: () =>
-                                BlocProvider.of<CurrentChatCubit>(context)
-                                    .addUserToChat(
-                              groupchatId: groupchatId,
-                              userIdToAdd: userId,
-                            ),
-                          ),
-                        ],
-                      );
-                    }
-                  : null,
-            ),
-          );
-        }
-        return Column(children: widgetsToReturn);
-      },
-    );
+    List<Widget> widgetsToReturn = [];
+    for (final userWithLeftGroupchatUserData
+        in chatState.usersWithLeftGroupchatUserData) {
+      widgetsToReturn.add(
+        UserListTile(
+          profileImageLink: userWithLeftGroupchatUserData.profileImageLink,
+          subtitle: userWithLeftGroupchatUserData.leftAt != null
+              ? Text(
+                  DateFormat.yMd().add_jm().format(
+                        userWithLeftGroupchatUserData.leftAt!,
+                      ),
+                  overflow: TextOverflow.ellipsis,
+                )
+              : const Text(
+                  "Kein Datum",
+                  overflow: TextOverflow.ellipsis,
+                ),
+          username: userWithLeftGroupchatUserData.username != null
+              ? userWithLeftGroupchatUserData.username!
+              : "Kein Username",
+          userId: userWithLeftGroupchatUserData.id,
+          longPress: currentUserWithGroupchatUserData.admin != null &&
+                  currentUserWithGroupchatUserData.admin == true &&
+                  currentUserWithGroupchatUserData.id !=
+                      userWithLeftGroupchatUserData.id
+              ? (userId) {
+                  showMenu(
+                    position:
+                        const RelativeRect.fromLTRB(0, double.infinity, 0, 0),
+                    context: context,
+                    items: [
+                      PopupMenuItem(
+                        child: const Text("Hinzufügen"),
+                        onTap: () => BlocProvider.of<CurrentChatCubit>(context)
+                            .addUserToChat(
+                          groupchatId: chatState.currentChat.id,
+                          userIdToAdd: userId,
+                        ),
+                      ),
+                    ],
+                  );
+                }
+              : null,
+        ),
+      );
+    }
+    return Column(children: widgetsToReturn);
   }
 }

@@ -10,7 +10,7 @@ import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
 import 'package:social_media_app_flutter/domain/dto/shopping_list_item/update_shopping_list_item_dto.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
-import 'package:social_media_app_flutter/domain/entities/private_event/private_event_user.dart';
+import 'package:social_media_app_flutter/domain/entities/private_event/user_with_private_event_user_data.dart';
 import 'package:social_media_app_flutter/domain/entities/shopping_list_item_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
 import 'package:social_media_app_flutter/domain/failures/failures.dart';
@@ -63,7 +63,7 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
   }
 
   void setPrivateEventUsers() {
-    List<PrivateEventUser> usersToEmit = [];
+    List<UserWithPrivateEventUserData> usersToEmit = [];
 
     if (state.privateEvent.usersThatWillBeThere != null) {
       for (final userId in state.privateEvent.usersThatWillBeThere!) {
@@ -72,7 +72,10 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
           orElse: () => UserEntity(id: ""),
         );
         usersToEmit.add(
-          PrivateEventUser.fromUserEntity(user: foundUser, accapted: true),
+          UserWithPrivateEventUserData.fromUserEntity(
+            user: foundUser,
+            accapted: true,
+          ),
         );
       }
     }
@@ -84,7 +87,10 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
           orElse: () => UserEntity(id: ""),
         );
         usersToEmit.add(
-          PrivateEventUser.fromUserEntity(user: foundUser, declined: true),
+          UserWithPrivateEventUserData.fromUserEntity(
+            user: foundUser,
+            declined: true,
+          ),
         );
       }
     }
@@ -95,7 +101,8 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
           (element) => element.id == groupchatUser.userId,
         );
         if (foundIndex != -1) {
-          usersToEmit[foundIndex] = PrivateEventUser.fromPrivateEventUser(
+          usersToEmit[foundIndex] =
+              UserWithPrivateEventUserData.fromPrivateEventUser(
             privateEventUser: usersToEmit[foundIndex],
             admin: groupchatUser.admin,
           );
@@ -105,7 +112,10 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
             orElse: () => UserEntity(id: ""),
           );
           usersToEmit.add(
-            PrivateEventUser.fromUserEntity(user: foundUser, invited: true),
+            UserWithPrivateEventUserData.fromUserEntity(
+              user: foundUser,
+              invited: true,
+            ),
           );
         }
       }
@@ -322,7 +332,7 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
     PrivateEventEntity? privateEvent,
     GroupchatEntity? groupchat,
     List<ShoppingListItemEntity>? shoppingList,
-    List<PrivateEventUser>? privateEventUsers,
+    List<UserWithPrivateEventUserData>? privateEventUsers,
   }) {
     emit(CurrentPrivateEventNormal(
       privateEvent: privateEvent ?? state.privateEvent,

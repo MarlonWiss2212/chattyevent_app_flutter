@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
 import 'package:social_media_app_flutter/domain/dto/shopping_list_item/update_shopping_list_item_dto.dart';
-import 'package:social_media_app_flutter/domain/entities/private_event/private_event_user.dart';
+import 'package:social_media_app_flutter/domain/entities/private_event/user_with_private_event_user_data.dart';
 import 'package:social_media_app_flutter/domain/entities/shopping_list_item_entity.dart';
 
 class ShoppingListItemTile extends StatelessWidget {
@@ -17,7 +17,7 @@ class ShoppingListItemTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    PrivateEventUser userToBuyItem =
+    UserWithPrivateEventUserData userToBuyItem =
         currentPrivateEventState.privateEventUsers.firstWhere(
       (element) => element.id == shoppingListItem.userToBuyItem,
     );

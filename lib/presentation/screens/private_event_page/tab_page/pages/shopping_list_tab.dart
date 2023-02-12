@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:skeletons/skeletons.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
-import 'package:social_media_app_flutter/domain/entities/private_event/private_event_user.dart';
 import 'package:social_media_app_flutter/domain/filter/get_shopping_list_items_filter.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 import 'package:social_media_app_flutter/presentation/widgets/privat_event_page/tab_bar/shopping_list_tab/shopping_list_item_tile.dart';

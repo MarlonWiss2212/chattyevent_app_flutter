@@ -15,7 +15,10 @@ class PrivateEventTabPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<UserCubit>(context).getUsersViaApi();
+    BlocProvider.of<UserCubit>(context).getUsersViaApi().then((value) {
+      // to set the private event users with the new users
+      BlocProvider.of<CurrentPrivateEventCubit>(context).setPrivateEventUsers();
+    });
 
     return BlocBuilder<CurrentPrivateEventCubit, CurrentPrivateEventState>(
       builder: (context, state) {

@@ -96,6 +96,8 @@ class PrivateEventWrapperPage extends StatelessWidget {
       ],
       child: Builder(
         builder: (context) {
+          BlocProvider.of<CurrentPrivateEventCubit>(context)
+              .setPrivateEventUsers();
           if (privateEventToSet == null &&
               privateEventToSet!.connectedGroupchat == null &&
               !loadPrivateEventFromApiToo) {
@@ -119,9 +121,6 @@ class PrivateEventWrapperPage extends StatelessWidget {
                   : null,
             );
           }
-          BlocProvider.of<CurrentPrivateEventCubit>(context)
-              .setPrivateEventUsers();
-
           return BlocListener<CurrentPrivateEventCubit,
               CurrentPrivateEventState>(
             listener: (context, state) async {
