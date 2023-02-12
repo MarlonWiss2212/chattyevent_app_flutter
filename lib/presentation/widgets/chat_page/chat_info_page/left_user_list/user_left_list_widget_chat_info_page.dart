@@ -2,15 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:skeletons/skeletons.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
+import 'package:social_media_app_flutter/domain/entities/groupchat/user_with_groupchat_user_data.dart';
 import 'package:social_media_app_flutter/presentation/widgets/chat_page/chat_info_page/left_user_list/user_left_list_groupchat.dart';
 
 class UserLeftListWidgetChatInfoPage extends StatelessWidget {
   final CurrentChatState chatState;
-  final GroupchatUserEntity? currentGroupchatUser;
+  final UserWithGroupchatUserData currentUserWithGroupchatUserData;
   const UserLeftListWidgetChatInfoPage({
     super.key,
     required this.chatState,
-    this.currentGroupchatUser,
+    required this.currentUserWithGroupchatUserData,
   });
 
   @override
@@ -19,18 +20,15 @@ class UserLeftListWidgetChatInfoPage extends StatelessWidget {
       children: [
         if (chatState.currentChat.leftUsers != null) ...[
           Text(
-            "Frühere Midglieder: ${chatState.currentChat.leftUsers!.length}",
+            "Frühere Midglieder: ${chatState.usersWithLeftGroupchatUserData.length}",
             style: Theme.of(context).textTheme.titleMedium,
           ),
-          if (chatState.currentChat.leftUsers!.isNotEmpty) ...{
-            const SizedBox(height: 8)
-          },
+          const SizedBox(height: 8),
           UserLeftListGroupchat(
-            groupchatLeftUsers: chatState.currentChat.leftUsers!,
-            currentGrouppchatUser: currentGroupchatUser,
-            groupchatId: chatState.currentChat.id,
+            chatState: chatState,
+            currentUserWithGroupchatUserData: currentUserWithGroupchatUserData,
           ),
-        ] else if (chatState.currentChat.leftUsers == null &&
+        ] else if (chatState.usersWithLeftGroupchatUserData.isEmpty &&
             chatState.loadingChat) ...[
           SkeletonListTile(
             hasSubtitle: true,

@@ -4,7 +4,11 @@ import 'package:grouped_list/grouped_list.dart';
 import 'package:intl/intl.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
+import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
+import 'package:social_media_app_flutter/domain/entities/groupchat/user_with_groupchat_user_data.dart';
+import 'package:social_media_app_flutter/domain/entities/groupchat/user_with_left_groupchat_user_data.dart';
 import 'package:social_media_app_flutter/domain/entities/message/message_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
 import 'package:social_media_app_flutter/presentation/widgets/message_container.dart';
@@ -24,24 +28,33 @@ class MessageList extends StatelessWidget {
     final currentUserId = Jwt.parseJwt(
         (BlocProvider.of<AuthCubit>(context).state as AuthLoaded).token)["sub"];
 
-    return BlocBuilder<UserCubit, UserState>(
+    return BlocBuilder<CurrentChatCubit, CurrentChatState>(
       builder: (context, state) {
         return GroupedListView<MessageEntity, String>(
           padding: const EdgeInsets.only(top: 8),
           itemBuilder: (context, messageEntity) {
-            UserEntity? foundUser;
-            //TODO: handle this more efficient
-            if (state is UserStateLoaded) {
-              for (final user in state.users) {
-                if (user.id == messageEntity.createdBy) {
-                  foundUser = user;
-                }
+            UserEntity? user;
+            final foundUser = state.usersWithGroupchatUserData.firstWhere(
+              (element) => element.id == messageEntity.createdBy,
+              orElse: () => UserWithGroupchatUserData(id: ""),
+            );
+            if (foundUser.id == "") {
+              final foundLeftUser =
+                  state.usersWithLeftGroupchatUserData.firstWhere(
+                (element) => element.id == messageEntity.createdBy,
+                orElse: () => UserWithLeftGroupchatUserData(id: ""),
+              );
+
+              if (foundLeftUser.id != "") {
+                user = foundLeftUser;
               }
+            } else {
+              user = foundUser;
             }
 
             return MessageContainer(
-              title: foundUser != null && foundUser.username != null
-                  ? foundUser.username!
+              title: user != null && user.username != null
+                  ? user.username!
                   : messageEntity.createdBy ?? "",
               date: messageEntity.createdAt != null
                   ? DateFormat.jm().format(messageEntity.createdAt!)

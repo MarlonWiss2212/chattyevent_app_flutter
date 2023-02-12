@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
-import 'package:social_media_app_flutter/domain/entities/private_event/private_event_user.dart';
+import 'package:social_media_app_flutter/domain/entities/private_event/user_with_private_event_user_data.dart';
 import 'package:social_media_app_flutter/presentation/widgets/user_grid_list_item.dart';
 
 class SelectUserCreateShoppingListItem extends StatelessWidget {
-  final Function(PrivateEventUser privateEventUser) newUserSelected;
+  final Function(UserWithPrivateEventUserData privateEventUser) newUserSelected;
   const SelectUserCreateShoppingListItem({
     super.key,
     required this.newUserSelected,

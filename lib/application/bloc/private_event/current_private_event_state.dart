@@ -5,7 +5,9 @@ abstract class CurrentPrivateEventState {
   final PrivateEventEntity privateEvent;
   final GroupchatEntity groupchat;
   final List<ShoppingListItemEntity> shoppingList;
-  final List<PrivateEventUser> privateEventUsers;
+
+  final List<UserWithPrivateEventUserData> privateEventUsers;
+
   final bool loadingPrivateEvent;
   final bool loadingGroupchat;
   final bool loadingShoppingList;

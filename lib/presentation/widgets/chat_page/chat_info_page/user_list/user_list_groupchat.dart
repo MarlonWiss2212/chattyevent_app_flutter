@@ -1,94 +1,72 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:skeletons/skeletons.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
-import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
-import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
+import 'package:social_media_app_flutter/domain/entities/groupchat/user_with_groupchat_user_data.dart';
 import 'package:social_media_app_flutter/presentation/widgets/user_list_tile.dart';
 
 class UserListGroupchat extends StatelessWidget {
-  final List<GroupchatUserEntity> groupchatUsers;
-  final String groupchatId;
-  final GroupchatUserEntity? currentGrouppchatUser;
+  final UserWithGroupchatUserData currentUserWithGroupchatUserData;
+  final CurrentChatState chatState;
 
   const UserListGroupchat({
     super.key,
-    required this.groupchatUsers,
-    required this.groupchatId,
-    required this.currentGrouppchatUser,
+    required this.chatState,
+    required this.currentUserWithGroupchatUserData,
   });
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<UserCubit, UserState>(
-      builder: (context, state) {
-        List<Widget> widgetsToReturn = [];
+    List<Widget> widgetsToReturn = [];
 
-        for (final groupchatUser in groupchatUsers) {
-          UserEntity foundUser = state.users.firstWhere(
-            (element) => element.id == groupchatUser.userId,
-            orElse: () => UserEntity(id: ""),
-          );
-
-          widgetsToReturn.add(
-            UserListTile(
-              profileImageLink: foundUser.profileImageLink,
-              subtitle: groupchatUser.admin != null && groupchatUser.admin!
-                  ? Text(
-                      "Admin",
-                      softWrap: true,
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.primary,
+    for (final userWithGroupchatUserData
+        in chatState.usersWithGroupchatUserData) {
+      widgetsToReturn.add(
+        UserListTile(
+          profileImageLink: userWithGroupchatUserData.profileImageLink,
+          subtitle: userWithGroupchatUserData.admin != null &&
+                  userWithGroupchatUserData.admin! == true
+              ? Text(
+                  "Admin",
+                  softWrap: true,
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                )
+              : const Text(
+                  "Nicht Admin",
+                  softWrap: true,
+                  overflow: TextOverflow.ellipsis,
+                ),
+          username: userWithGroupchatUserData.username != null
+              ? userWithGroupchatUserData.username!
+              : "Kein Username",
+          userId: userWithGroupchatUserData.id,
+          longPress: currentUserWithGroupchatUserData.admin != null &&
+                  currentUserWithGroupchatUserData.admin == true &&
+                  currentUserWithGroupchatUserData.id !=
+                      userWithGroupchatUserData.id
+              ? (userId) {
+                  showMenu(
+                    position:
+                        const RelativeRect.fromLTRB(0, double.infinity, 0, 0),
+                    context: context,
+                    items: [
+                      PopupMenuItem(
+                        child: const Text("Kicken"),
+                        onTap: () => BlocProvider.of<CurrentChatCubit>(context)
+                            .deleteUserFromChatEvent(
+                          groupchatId: chatState.currentChat.id,
+                          userIdToDelete: userId,
+                        ),
                       ),
-                      overflow: TextOverflow.ellipsis,
-                    )
-                  : const Text(
-                      "Nicht Admin",
-                      softWrap: true,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-              username: foundUser.username != null
-                  ? foundUser.username!
-                  : "Kein Username",
-              userId: groupchatUser.userId,
-              longPress: currentGrouppchatUser != null &&
-                      currentGrouppchatUser!.admin != null &&
-                      currentGrouppchatUser!.admin == true &&
-                      currentGrouppchatUser!.userId != groupchatUser.userId
-                  ? (userId) {
-                      showMenu(
-                        position: const RelativeRect.fromLTRB(
-                            0, double.infinity, 0, 0),
-                        context: context,
-                        items: [
-                          PopupMenuItem(
-                            child: const Text("Kicken"),
-                            onTap: () =>
-                                BlocProvider.of<CurrentChatCubit>(context)
-                                    .deleteUserFromChatEvent(
-                              groupchatId: groupchatId,
-                              userIdToDelete: userId,
-                            ),
-                          ),
-                          /*    if (groupchatUser.admin != null) ...{
-                            groupchatUser.admin == false
-                                ? const PopupMenuItem(
-                                    child: Text("Zum Admin Machen"),
-                                  )
-                                : const PopupMenuItem(
-                                    child: Text("Zum User Degradieren"),
-                                  )
-                          }*/
-                        ],
-                      );
-                    }
-                  : null,
-            ),
-          );
-        }
-        return Column(children: widgetsToReturn);
-      },
-    );
+                    ],
+                  );
+                }
+              : null,
+        ),
+      );
+    }
+    return Column(children: widgetsToReturn);
   }
 }

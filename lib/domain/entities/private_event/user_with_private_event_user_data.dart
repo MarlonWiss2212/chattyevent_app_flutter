@@ -1,13 +1,13 @@
 import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
 
 /// this will only be used for the current cubit
-class PrivateEventUser extends UserEntity {
+class UserWithPrivateEventUserData extends UserEntity {
   final bool accapted;
   final bool declined;
   final bool invited;
   final bool? admin;
 
-  PrivateEventUser({
+  UserWithPrivateEventUserData({
     this.declined = false,
     this.accapted = false,
     this.invited = false,
@@ -25,14 +25,14 @@ class PrivateEventUser extends UserEntity {
     super.username,
   });
 
-  factory PrivateEventUser.fromUserEntity({
+  factory UserWithPrivateEventUserData.fromUserEntity({
     required UserEntity user,
     bool accapted = false,
     bool declined = false,
     bool invited = false,
     bool? admin,
   }) {
-    return PrivateEventUser(
+    return UserWithPrivateEventUserData(
       id: user.id,
       birthdate: user.birthdate,
       username: user.username,
@@ -51,14 +51,14 @@ class PrivateEventUser extends UserEntity {
     );
   }
 
-  factory PrivateEventUser.fromPrivateEventUser({
-    required PrivateEventUser privateEventUser,
+  factory UserWithPrivateEventUserData.fromPrivateEventUser({
+    required UserWithPrivateEventUserData privateEventUser,
     bool? accapted,
     bool? declined,
     bool? invited,
     bool? admin,
   }) {
-    return PrivateEventUser(
+    return UserWithPrivateEventUserData(
       id: privateEventUser.id,
       birthdate: privateEventUser.birthdate,
       username: privateEventUser.username,
