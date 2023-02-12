@@ -16,10 +16,12 @@ import 'package:social_media_app_flutter/domain/filter/get_one_private_event_fil
 import 'package:social_media_app_flutter/domain/usecases/chat_usecases.dart';
 import 'package:social_media_app_flutter/domain/usecases/private_event_usecases.dart';
 import 'package:social_media_app_flutter/domain/usecases/shopping_list_item_usecases.dart';
+import 'package:social_media_app_flutter/domain/usecases/user_usecases.dart';
 import 'package:social_media_app_flutter/infastructure/datasources/remote/graphql.dart';
 import 'package:social_media_app_flutter/infastructure/respositories/chat_repository_impl.dart';
 import 'package:social_media_app_flutter/infastructure/respositories/private_event_repository_impl.dart';
 import 'package:social_media_app_flutter/infastructure/respositories/shopping_list_item_repository_impl.dart';
+import 'package:social_media_app_flutter/infastructure/respositories/user_repository_impl.dart';
 import 'package:social_media_app_flutter/injection.dart';
 import 'package:social_media_app_flutter/presentation/widgets/dialog/buttons/ok_button.dart';
 
@@ -44,27 +46,13 @@ class PrivateEventWrapperPage extends StatelessWidget {
     );
     GraphQlDatasource graphQlDatasource = GraphQlDatasourceImpl(client: client);
 
-    GroupchatEntity groupchatToSet =
-        BlocProvider.of<ChatCubit>(context).state.chats.firstWhere(
-              (element) => element.id == privateEventToSet?.connectedGroupchat,
-              orElse: () => GroupchatEntity(id: ""),
-            );
-    List<ShoppingListItemEntity> shoppingListItemsToSet =
-        BlocProvider.of<ShoppingListCubit>(context)
-            .state
-            .shoppingList
-            .where(
-              (element) => element.privateEventId == privateEventId,
-            )
-            .toList();
-
     CurrentPrivateEventCubit currentPrivateEventCubit =
         CurrentPrivateEventCubit(
       CurrentPrivateEventNormal(
         privateEventUsers: const [],
         privateEvent: privateEventToSet ?? PrivateEventEntity(id: ""),
-        groupchat: groupchatToSet,
-        shoppingList: shoppingListItemsToSet,
+        groupchat: GroupchatEntity(id: ""),
+        shoppingList: const [],
         loadingGroupchat: false,
         loadingPrivateEvent: false,
         loadingShoppingList: false,
@@ -97,7 +85,16 @@ class PrivateEventWrapperPage extends StatelessWidget {
       child: Builder(
         builder: (context) {
           BlocProvider.of<CurrentPrivateEventCubit>(context)
+              .setCurrentChatFromChatCubit();
+          BlocProvider.of<CurrentPrivateEventCubit>(context)
+              .setShoppingListFromShoppingListCubit();
+          BlocProvider.of<CurrentPrivateEventCubit>(context)
               .setPrivateEventUsers();
+
+          // too get the users from the api too
+          BlocProvider.of<CurrentPrivateEventCubit>(context)
+              .getPrivateEventUsersViaApi();
+
           if (privateEventToSet == null &&
               privateEventToSet!.connectedGroupchat == null &&
               !loadPrivateEventFromApiToo) {

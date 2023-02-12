@@ -44,7 +44,7 @@ class AddShoppingListItemCubit extends Cubit<AddShoppingListItemState> {
         shoppingListCubit.mergeOrAdd(
           shoppingListItem: shoppingListItem,
         );
-        currentPrivateEventCubit.reloadShoppingListFromShoppingListCubit();
+        currentPrivateEventCubit.setShoppingListFromShoppingListCubit();
         emit(AddShoppingListItemLoaded(
           addedShoppingListItem: shoppingListItem,
         ));

@@ -26,6 +26,11 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
     required this.chatUseCases,
   });
 
+  Future getGroupchatUsersViaApi() async {
+    await userCubit.getUsersViaApi();
+    setGroupchatUsers();
+  }
+
   void setGroupchatUsers() {
     List<UserWithGroupchatUserData> usersToEmit = [];
     List<UserWithLeftGroupchatUserData> leftUsersToEmit = [];
@@ -94,7 +99,7 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
           loadingChat: false,
         ));
       },
-      (groupchat) {
+      (groupchat) async {
         final mergedChat = chatCubit.mergeOrAdd(groupchat: groupchat);
         emit(CurrentChatNormal(
           currentChat: mergedChat,

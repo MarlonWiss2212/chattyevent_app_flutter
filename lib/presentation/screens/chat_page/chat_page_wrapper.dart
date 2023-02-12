@@ -67,11 +67,10 @@ class ChatPageWrapper extends StatelessWidget {
         },
         child: Builder(builder: (context) {
           BlocProvider.of<CurrentChatCubit>(context).setGroupchatUsers();
-          // load data here so that it does not get double loaded when the bloc state changes
-          BlocProvider.of<UserCubit>(context).getUsersViaApi().then((value) {
-            // to set the new users state to the users in the groupchat
-            BlocProvider.of<CurrentChatCubit>(context).setGroupchatUsers();
-          });
+
+          // too get the users from the api too
+          BlocProvider.of<CurrentChatCubit>(context).getGroupchatUsersViaApi();
+
           if (chatToSet == null || loadChatFromApiToo) {
             BlocProvider.of<CurrentChatCubit>(context).getCurrentChatViaApi(
               getOneGroupchatFilter: GetOneGroupchatFilter(id: groupchatId),

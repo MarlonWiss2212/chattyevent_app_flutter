@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 
 class PrivateEventTabPage extends StatelessWidget {
@@ -15,11 +14,6 @@ class PrivateEventTabPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<UserCubit>(context).getUsersViaApi().then((value) {
-      // to set the private event users with the new users
-      BlocProvider.of<CurrentPrivateEventCubit>(context).setPrivateEventUsers();
-    });
-
     return BlocBuilder<CurrentPrivateEventCubit, CurrentPrivateEventState>(
       builder: (context, state) {
         return AutoTabsRouter.tabBar(
