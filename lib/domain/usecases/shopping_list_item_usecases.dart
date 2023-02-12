@@ -21,7 +21,7 @@ class ShoppingListItemUseCases {
 
   Future<Either<Failure, List<ShoppingListItemEntity>>>
       getShoppingListItemsViaApi({
-    required GetShoppingListItemsFilter getShoppingListItemsFilter,
+    GetShoppingListItemsFilter? getShoppingListItemsFilter,
   }) async {
     return await shoppingListItemRepository.getShoppingListItemsViaApi(
       getShoppingListItemsFilter: getShoppingListItemsFilter,

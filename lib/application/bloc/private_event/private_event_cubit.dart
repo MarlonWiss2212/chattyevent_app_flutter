@@ -62,7 +62,7 @@ class PrivateEventCubit extends Cubit<PrivateEventState> {
     emit(PrivateEventLoading(privateEvents: state.privateEvents));
 
     final Either<Failure, List<PrivateEventEntity>> privateEventOrFailure =
-        await privateEventUseCases.getPrivateEventsViaApiViaApi();
+        await privateEventUseCases.getPrivateEventsViaApi();
 
     privateEventOrFailure.fold(
       (error) => emit(

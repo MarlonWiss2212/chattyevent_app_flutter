@@ -56,12 +56,12 @@ class ShoppingListItemRepositoryImpl implements ShoppingListItemRepository {
   @override
   Future<Either<Failure, List<ShoppingListItemEntity>>>
       getShoppingListItemsViaApi({
-    required GetShoppingListItemsFilter getShoppingListItemsFilter,
+    GetShoppingListItemsFilter? getShoppingListItemsFilter,
   }) async {
     try {
       final response = await graphQlDatasource.query(
         """
-        query FindShoppingListItems(\$input: FindShoppingListItemsInput!) {
+        query FindShoppingListItems(\$input: FindShoppingListItemsInput) {
           findShoppingListItems(filter: \$input) {
             _id
             createdAt
@@ -77,7 +77,7 @@ class ShoppingListItemRepositoryImpl implements ShoppingListItemRepository {
         }
       """,
         variables: {
-          "input": getShoppingListItemsFilter.toMap(),
+          "input": getShoppingListItemsFilter?.toMap(),
         },
       );
 
