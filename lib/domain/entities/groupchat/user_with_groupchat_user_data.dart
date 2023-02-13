@@ -5,6 +5,7 @@ import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
 class UserWithGroupchatUserData extends UserEntity {
   final bool? admin;
   final DateTime? joinedAt;
+  final String? usernameForChat;
 
   UserWithGroupchatUserData({
     this.admin,
@@ -13,6 +14,7 @@ class UserWithGroupchatUserData extends UserEntity {
     super.birthdate,
     super.createdAt,
     super.email,
+    this.usernameForChat,
     super.emailVerified,
     super.firstname,
     super.lastTimeOnline,
@@ -37,9 +39,10 @@ class UserWithGroupchatUserData extends UserEntity {
       lastTimeOnline: user.lastTimeOnline,
       profileImageLink: user.profileImageLink,
       createdAt: user.createdAt,
+      usernameForChat: groupchatUser.usernameForChat,
       updatedAt: user.updatedAt,
       admin: groupchatUser.admin,
-      joinedAt: groupchatUser.joinedAt,
+      joinedAt: groupchatUser.createdAt,
     );
   }
 }

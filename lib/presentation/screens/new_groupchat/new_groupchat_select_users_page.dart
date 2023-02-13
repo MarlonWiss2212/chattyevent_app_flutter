@@ -7,7 +7,8 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/add_chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_search_cubit.dart';
 import 'package:social_media_app_flutter/domain/dto/groupchat/create_groupchat_dto.dart';
-import 'package:social_media_app_flutter/domain/dto/groupchat/create_user_groupchat_dto.dart';
+import 'package:social_media_app_flutter/domain/dto/groupchat/create_groupchat_user_dto.dart';
+import 'package:social_media_app_flutter/domain/dto/groupchat/create_groupchat_user_from_create_groupchat_dto.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 import 'package:social_media_app_flutter/presentation/widgets/new_groupchat/SelectableUserGridList.dart';
 import 'package:social_media_app_flutter/presentation/widgets/new_groupchat/SelectedUsersList.dart';
@@ -30,10 +31,11 @@ class NewGroupchatPageSelectUsersPage extends StatefulWidget {
 
 class _NewGroupchatPageSelectUsersPageState
     extends State<NewGroupchatPageSelectUsersPage> {
-  List<CreateUserGroupchatWithUsernameAndImageLink> groupchatUsers = [];
+  List<CreateGroupchatUserFromCreateGroupchatDtoWithUsernameAndLink>
+      groupchatUsers = [];
 
   void _addUserFromCreateGroupchatUsers(
-    CreateUserGroupchatWithUsernameAndImageLink userToCreate,
+    CreateGroupchatUserFromCreateGroupchatDtoWithUsernameAndLink userToCreate,
   ) {
     int foundIndex = _findUserInGroupchatUsers(userToCreate.userId);
 
@@ -111,7 +113,7 @@ class _NewGroupchatPageSelectUsersPageState
                           createGroupchatDto: CreateGroupchatDto(
                             title: widget.title,
                             description: widget.description,
-                            users: groupchatUsers,
+                            groupchatUsers: groupchatUsers,
                             profileImage: widget.profileImage,
                           ),
                         );

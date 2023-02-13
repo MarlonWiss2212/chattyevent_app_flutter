@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:social_media_app_flutter/domain/dto/groupchat/create_user_groupchat_dto.dart';
+import 'package:social_media_app_flutter/domain/dto/groupchat/create_groupchat_user_dto.dart';
+import 'package:social_media_app_flutter/domain/dto/groupchat/create_groupchat_user_from_create_groupchat_dto.dart';
 import 'package:social_media_app_flutter/presentation/widgets/image_with_label_button.dart';
 
 class SelectedUsersList extends StatelessWidget {
   final void Function(String userId) onDeleted;
-  final List<CreateUserGroupchatWithUsernameAndImageLink> groupchatUsers;
+  final List<CreateGroupchatUserFromCreateGroupchatDtoWithUsernameAndLink>
+      groupchatUsers;
 
   const SelectedUsersList({
     super.key,

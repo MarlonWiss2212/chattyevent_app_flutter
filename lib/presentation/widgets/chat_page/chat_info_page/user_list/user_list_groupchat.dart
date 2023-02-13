@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart';
+import 'package:social_media_app_flutter/domain/dto/groupchat/create_groupchat_left_user_dto.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/user_with_groupchat_user_data.dart';
 import 'package:social_media_app_flutter/presentation/widgets/user_list_tile.dart';
 
@@ -38,9 +39,11 @@ class UserListGroupchat extends StatelessWidget {
                   softWrap: true,
                   overflow: TextOverflow.ellipsis,
                 ),
-          username: userWithGroupchatUserData.username != null
-              ? userWithGroupchatUserData.username!
-              : "Kein Username",
+          username: userWithGroupchatUserData.usernameForChat != null
+              ? userWithGroupchatUserData.usernameForChat!
+              : userWithGroupchatUserData.username != null
+                  ? userWithGroupchatUserData.username!
+                  : "Kein Username",
           userId: userWithGroupchatUserData.id,
           longPress: currentUserWithGroupchatUserData.admin != null &&
                   currentUserWithGroupchatUserData.admin == true &&
@@ -56,8 +59,11 @@ class UserListGroupchat extends StatelessWidget {
                         child: const Text("Kicken"),
                         onTap: () => BlocProvider.of<CurrentChatCubit>(context)
                             .deleteUserFromChatEvent(
-                          groupchatId: chatState.currentChat.id,
-                          userIdToDelete: userId,
+                          createGroupchatLeftUserDto:
+                              CreateGroupchatLeftUserDto(
+                            userId: userId,
+                            leftGroupchatTo: chatState.currentChat.id,
+                          ),
                         ),
                       ),
                     ],

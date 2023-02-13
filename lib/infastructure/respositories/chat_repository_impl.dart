@@ -1,6 +1,8 @@
 import 'package:http/http.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:social_media_app_flutter/domain/dto/groupchat/create_groupchat_dto.dart';
+import 'package:social_media_app_flutter/domain/dto/groupchat/create_groupchat_left_user_dto.dart';
+import 'package:social_media_app_flutter/domain/dto/groupchat/create_groupchat_user_dto.dart';
 import 'package:social_media_app_flutter/domain/failures/failures.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:dartz/dartz.dart';
@@ -40,13 +42,20 @@ class ChatRepositoryImpl implements ChatRepository {
             description
             profileImageLink
             users {
+              _id
               admin
               userId
-              joinedAt
+              usernameForChat
+              groupchatTo
+              createdAt
+              updatedAt
             }
             leftUsers {
+              _id
               userId
-              leftAt
+              createdAt
+              updatedAt
+              leftGroupchatTo
             }
             createdBy
             createdAt
@@ -57,10 +66,12 @@ class ChatRepositoryImpl implements ChatRepository {
       );
 
       if (response.hasException) {
+        print(response.exception);
         return Left(GeneralFailure());
       }
       return Right(GroupchatModel.fromJson(response.data!["createGroupchat"]));
     } catch (e) {
+      print(e);
       return Left(ServerFailure());
     }
   }
@@ -79,13 +90,20 @@ class ChatRepositoryImpl implements ChatRepository {
             description
             profileImageLink
             users {
+              _id
               admin
               userId
-              joinedAt
+              usernameForChat
+              groupchatTo
+              createdAt
+              updatedAt
             }
             leftUsers {
+              _id
               userId
-              leftAt
+              createdAt
+              updatedAt
+              leftGroupchatTo
             }
             createdBy
             createdAt
@@ -117,8 +135,9 @@ class ChatRepositoryImpl implements ChatRepository {
             profileImageLink
             title
             users {
+              _id
               userId
-              admin
+              usernameForChat
             }
           }
         }
@@ -146,66 +165,35 @@ class ChatRepositoryImpl implements ChatRepository {
 
   @override
   Future<Either<Failure, GroupchatEntity>> addUserToGroupchatViaApi({
-    required String groupchatId,
-    required String userIdToAdd,
+    required CreateGroupchatUserDto createGroupchatUserDto,
   }) async {
     try {
       final response = await graphQlDatasource.mutation(
         """
-        mutation AddUserToChat(\$userIdToAdd: String!, \$groupchatId: String!) {
-          addUserToChat(userIdToAdd: \$userIdToAdd, groupchatId: \$groupchatId) {
+        mutation AddUserToGroupchat(\$input: CreateGroupchatUserInput!) {
+          addUserToGroupchat(createGroupchatUserInput: \$input) {
             _id
             users {
+              _id
               admin
               userId
-              joinedAt
+              groupchatTo
+              usernameForChat
+              createdAt
+              updatedAt
             }
             leftUsers {
+              _id
               userId
-              leftAt
-            }
-          }
-        }
-        """,
-        variables: {"userIdToAdd": userIdToAdd, "groupchatId": groupchatId},
-      );
-
-      if (response.hasException) {
-        return Left(GeneralFailure());
-      }
-
-      return Right(GroupchatModel.fromJson(response.data!["addUserToChat"]));
-    } catch (e) {
-      return Left(ServerFailure());
-    }
-  }
-
-  @override
-  Future<Either<Failure, GroupchatEntity>> deleteUserFromGroupchatViaApi({
-    required String groupchatId,
-    required String userIdToDelete,
-  }) async {
-    try {
-      final response = await graphQlDatasource.mutation(
-        """
-        mutation AddUserToChat(\$userIdToDelete: String!, \$groupchatId: String!) {
-          deleteUserFromChat(userIdToDelete: \$userIdToDelete, groupchatId: \$groupchatId) {
-            _id
-            users {
-              admin
-              userId
-              joinedAt
-            }
-            leftUsers {
-              userId
-              leftAt
+              createdAt
+              updatedAt
+              leftGroupchatTo
             }
           }
         }
         """,
         variables: {
-          "userIdToDelete": userIdToDelete,
-          "groupchatId": groupchatId
+          "input": createGroupchatUserDto.toMap(),
         },
       );
 
@@ -214,7 +202,51 @@ class ChatRepositoryImpl implements ChatRepository {
       }
 
       return Right(
-        GroupchatModel.fromJson(response.data!["deleteUserFromChat"]),
+        GroupchatModel.fromJson(response.data!["addUserToGroupchat"]),
+      );
+    } catch (e) {
+      return Left(ServerFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, GroupchatEntity>> deleteUserFromGroupchatViaApi({
+    required CreateGroupchatLeftUserDto createGroupchatLeftUserDto,
+  }) async {
+    try {
+      final response = await graphQlDatasource.mutation(
+        """
+        mutation DeleteUserFromGroupchat(\$input: CreateGroupchatLeftUserInput!) {
+          deleteUserFromGroupchat(createGroupchatLeftUserInput: \$input) {
+            _id
+            users {
+              _id
+              admin
+              userId
+              groupchatTo
+              usernameForChat
+              createdAt
+              updatedAt
+            }
+            leftUsers {
+              _id
+              userId
+              createdAt
+              updatedAt
+              leftGroupchatTo
+            }
+          }
+        }
+        """,
+        variables: {"input": createGroupchatLeftUserDto.toMap()},
+      );
+
+      if (response.hasException) {
+        return Left(GeneralFailure());
+      }
+
+      return Right(
+        GroupchatModel.fromJson(response.data!["deleteUserFromGroupchat"]),
       );
     } catch (e) {
       return Left(ServerFailure());

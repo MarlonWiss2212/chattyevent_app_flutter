@@ -1,20 +1,17 @@
 import 'dart:io';
-
-import 'package:http/http.dart';
-import 'package:http_parser/http_parser.dart';
-import 'package:social_media_app_flutter/domain/dto/groupchat/create_user_groupchat_dto.dart';
+import 'package:social_media_app_flutter/domain/dto/groupchat/create_groupchat_user_from_create_groupchat_dto.dart';
 
 class CreateGroupchatDto {
   String title;
   File? profileImage;
   String? description;
-  List<CreateUserGroupchatDto>? users;
+  List<CreateGroupchatUserFromCreateGroupchatDto>? groupchatUsers;
 
   CreateGroupchatDto({
     required this.title,
     this.profileImage,
     this.description,
-    this.users,
+    this.groupchatUsers,
   });
 
   Map<dynamic, dynamic> toMap() {
@@ -24,13 +21,13 @@ class CreateGroupchatDto {
       variables.addAll({'description': description!});
     }
 
-    if (users != null && users!.isNotEmpty) {
+    if (groupchatUsers != null && groupchatUsers!.isNotEmpty) {
       List<Map<dynamic, dynamic>> mappedUsers = [];
-      for (final user in users!) {
+      for (final user in groupchatUsers!) {
         mappedUsers.add(user.toMap());
       }
 
-      variables.addAll({'users': mappedUsers});
+      variables.addAll({'groupchatUsers': mappedUsers});
     }
 
     return variables;

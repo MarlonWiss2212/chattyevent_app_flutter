@@ -36,7 +36,7 @@ class UserWithLeftGroupchatUserData extends UserEntity {
       profileImageLink: user.profileImageLink,
       createdAt: user.createdAt,
       updatedAt: user.updatedAt,
-      leftAt: leftGroupchatUser.leftAt,
+      leftAt: leftGroupchatUser.createdAt,
     );
   }
 }

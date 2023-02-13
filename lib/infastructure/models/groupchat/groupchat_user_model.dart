@@ -2,24 +2,37 @@ import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_use
 
 class GroupchatUserModel extends GroupchatUserEntity {
   GroupchatUserModel({
-    required String userId,
+    required String id,
+    String? userId,
     bool? admin,
-    DateTime? joinedAt,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    String? usernameForChat,
   }) : super(
+          id: id,
           userId: userId,
           admin: admin,
-          joinedAt: joinedAt,
+          createdAt: createdAt,
+          updatedAt: updatedAt,
+          usernameForChat: usernameForChat,
         );
 
   factory GroupchatUserModel.fromJson(Map<String, dynamic> json) {
-    final joinedAt = json["joinedAt"] != null
-        ? DateTime.parse(json["joinedAt"]).toLocal()
+    final createdAt = json["createdAt"] != null
+        ? DateTime.parse(json["createdAt"]).toLocal()
+        : null;
+
+    final updatedAt = json["updatedAt"] != null
+        ? DateTime.parse(json["updatedAt"]).toLocal()
         : null;
 
     return GroupchatUserModel(
+      id: json["_id"],
       userId: json['userId'],
       admin: json['admin'],
-      joinedAt: joinedAt,
+      createdAt: createdAt,
+      updatedAt: updatedAt,
+      usernameForChat: json["usernameForChat"],
     );
   }
 }

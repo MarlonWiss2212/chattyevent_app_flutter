@@ -2,11 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
-import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_left_user_entity.dart';
-import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
+import 'package:social_media_app_flutter/domain/dto/groupchat/create_groupchat_user_dto.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/user_with_groupchat_user_data.dart';
-import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
 import 'package:social_media_app_flutter/presentation/widgets/user_list_tile.dart';
 
 class UserLeftListGroupchat extends StatelessWidget {
@@ -55,8 +52,11 @@ class UserLeftListGroupchat extends StatelessWidget {
                         child: const Text("Hinzufügen"),
                         onTap: () => BlocProvider.of<CurrentChatCubit>(context)
                             .addUserToChat(
-                          groupchatId: chatState.currentChat.id,
-                          userIdToAdd: userId,
+                          createGroupchatUserDto: CreateGroupchatUserDto(
+                            admin: false,
+                            userId: userId,
+                            groupchatTo: chatState.currentChat.id,
+                          ),
                         ),
                       ),
                     ],

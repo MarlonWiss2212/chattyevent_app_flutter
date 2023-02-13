@@ -4,6 +4,8 @@ import 'package:meta/meta.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
+import 'package:social_media_app_flutter/domain/dto/groupchat/create_groupchat_left_user_dto.dart';
+import 'package:social_media_app_flutter/domain/dto/groupchat/create_groupchat_user_dto.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/user_with_groupchat_user_data.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/user_with_left_groupchat_user_data.dart';
@@ -197,10 +199,8 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
     setGroupchatUsers();
   }
 
-  Future addUserToChat({
-    required String groupchatId,
-    required String userIdToAdd,
-  }) async {
+  Future addUserToChat(
+      {required CreateGroupchatUserDto createGroupchatUserDto}) async {
     emit(CurrentChatNormal(
       currentChat: state.currentChat,
       loadingChat: true,
@@ -212,8 +212,7 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
 
     final Either<Failure, GroupchatEntity> groupchatOrFailure =
         await chatUseCases.addUserToGroupchatViaApi(
-      groupchatId: groupchatId,
-      userIdToAdd: userIdToAdd,
+      createGroupchatUserDto: createGroupchatUserDto,
     );
 
     groupchatOrFailure.fold(
@@ -245,8 +244,7 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
   }
 
   Future deleteUserFromChatEvent({
-    required String groupchatId,
-    required String userIdToDelete,
+    required CreateGroupchatLeftUserDto createGroupchatLeftUserDto,
   }) async {
     emit(CurrentChatNormal(
       usersWithGroupchatUserData: state.usersWithGroupchatUserData,
@@ -259,8 +257,7 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
 
     final Either<Failure, GroupchatEntity> groupchatOrFailure =
         await chatUseCases.deleteUserFromGroupchatViaApi(
-      groupchatId: groupchatId,
-      userIdToDelete: userIdToDelete,
+      createGroupchatLeftUserDto: createGroupchatLeftUserDto,
     );
 
     groupchatOrFailure.fold(

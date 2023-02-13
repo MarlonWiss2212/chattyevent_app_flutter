@@ -1,10 +1,16 @@
 class GroupchatLeftUserEntity {
-  final String userId;
-  final DateTime? leftAt;
+  final String id;
+  final String? userId;
+  final String? leftGroupchatTo;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
 
   GroupchatLeftUserEntity({
-    required this.userId,
-    this.leftAt,
+    required this.id,
+    this.createdAt,
+    this.leftGroupchatTo,
+    this.updatedAt,
+    this.userId,
   });
 
   factory GroupchatLeftUserEntity.merge({
@@ -13,7 +19,10 @@ class GroupchatLeftUserEntity {
   }) {
     return GroupchatLeftUserEntity(
       userId: newEntity.userId,
-      leftAt: newEntity.leftAt ?? oldEntity.leftAt,
+      id: newEntity.id,
+      leftGroupchatTo: newEntity.leftGroupchatTo ?? oldEntity.leftGroupchatTo,
+      updatedAt: newEntity.updatedAt ?? oldEntity.updatedAt,
+      createdAt: newEntity.createdAt ?? oldEntity.createdAt,
     );
   }
 }

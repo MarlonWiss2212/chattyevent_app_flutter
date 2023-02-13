@@ -1,5 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:social_media_app_flutter/domain/dto/groupchat/create_groupchat_dto.dart';
+import 'package:social_media_app_flutter/domain/dto/groupchat/create_groupchat_left_user_dto.dart';
+import 'package:social_media_app_flutter/domain/dto/groupchat/create_groupchat_user_dto.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:social_media_app_flutter/domain/failures/failures.dart';
 import 'package:social_media_app_flutter/domain/filter/get_one_groupchat_filter.dart';
@@ -28,22 +30,18 @@ class ChatUseCases {
   }
 
   Future<Either<Failure, GroupchatEntity>> addUserToGroupchatViaApi({
-    required String groupchatId,
-    required String userIdToAdd,
+    required CreateGroupchatUserDto createGroupchatUserDto,
   }) async {
     return await chatRepository.addUserToGroupchatViaApi(
-      groupchatId: groupchatId,
-      userIdToAdd: userIdToAdd,
+      createGroupchatUserDto: createGroupchatUserDto,
     );
   }
 
   Future<Either<Failure, GroupchatEntity>> deleteUserFromGroupchatViaApi({
-    required String groupchatId,
-    required String userIdToDelete,
+    required CreateGroupchatLeftUserDto createGroupchatLeftUserDto,
   }) async {
     return await chatRepository.deleteUserFromGroupchatViaApi(
-      groupchatId: groupchatId,
-      userIdToDelete: userIdToDelete,
+      createGroupchatLeftUserDto: createGroupchatLeftUserDto,
     );
   }
 }
