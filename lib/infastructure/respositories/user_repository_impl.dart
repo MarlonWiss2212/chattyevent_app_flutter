@@ -24,6 +24,7 @@ class UserRepositoryImpl implements UserRepository {
             firstname
             lastname
             username
+            profileImageLink
             email
           }
         }
