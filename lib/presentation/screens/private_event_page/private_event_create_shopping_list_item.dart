@@ -137,7 +137,7 @@ class _PrivateEventCreateShoppingListItemState
                                     Row(
                                       children: [
                                         Text(
-                                          "User der das Item kauft: ${privateEventUser != null ? privateEventUser!.username : ''}",
+                                          "User der das Item kauft: ${privateEventUser != null ? privateEventUser!.user.username : ''}",
                                           softWrap: true,
                                           overflow: TextOverflow.ellipsis,
                                           style: Theme.of(context)
@@ -201,7 +201,7 @@ class _PrivateEventCreateShoppingListItemState
                                       .createShoppingListItem(
                                     createShoppingListItemDto:
                                         CreateShoppingListItemDto(
-                                      userToBuyItem: privateEventUser!.id,
+                                      userToBuyItem: privateEventUser!.user.id,
                                       amount: amountAsDouble,
                                       itemName: itemNameController.text,
                                       unit: unitController.text,

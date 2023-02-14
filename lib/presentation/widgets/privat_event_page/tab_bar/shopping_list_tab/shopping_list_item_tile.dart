@@ -3,8 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
 import 'package:social_media_app_flutter/domain/dto/shopping_list_item/update_shopping_list_item_dto.dart';
+import 'package:social_media_app_flutter/domain/entities/private_event/private_event_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/user_with_private_event_user_data.dart';
 import 'package:social_media_app_flutter/domain/entities/shopping_list_item_entity.dart';
+import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
 
 class ShoppingListItemTile extends StatelessWidget {
   final CurrentPrivateEventState currentPrivateEventState;
@@ -19,7 +21,11 @@ class ShoppingListItemTile extends StatelessWidget {
   Widget build(BuildContext context) {
     UserWithPrivateEventUserData userToBuyItem =
         currentPrivateEventState.privateEventUsers.firstWhere(
-      (element) => element.id == shoppingListItem.userToBuyItem,
+      (element) => element.user.id == shoppingListItem.userToBuyItem,
+      orElse: () => UserWithPrivateEventUserData(
+        privateEventUser: PrivateEventUserEntity(id: ""),
+        user: UserEntity(id: ""),
+      ),
     );
 
     return ListTile(
@@ -27,10 +33,13 @@ class ShoppingListItemTile extends StatelessWidget {
       title: Wrap(
         spacing: 8,
         children: [
-          if (userToBuyItem.declined || userToBuyItem.invited) ...{
+          if (userToBuyItem.privateEventUser.status == "rejected" ||
+              userToBuyItem.privateEventUser.status == "invited") ...{
             Badge(
               backgroundColor:
-                  userToBuyItem.declined ? Colors.red : Colors.yellow,
+                  userToBuyItem.privateEventUser.status == "rejected"
+                      ? Colors.red
+                      : Colors.yellow,
             ),
           },
           Text(
@@ -42,10 +51,10 @@ class ShoppingListItemTile extends StatelessWidget {
         ],
       ),
       leading: CircleAvatar(
-        backgroundImage: userToBuyItem.profileImageLink != null
-            ? NetworkImage(userToBuyItem.profileImageLink!)
+        backgroundImage: userToBuyItem.user.profileImageLink != null
+            ? NetworkImage(userToBuyItem.user.profileImageLink!)
             : null,
-        backgroundColor: userToBuyItem.profileImageLink == null
+        backgroundColor: userToBuyItem.user.profileImageLink == null
             ? Theme.of(context).colorScheme.secondaryContainer
             : null,
       ),
@@ -61,7 +70,7 @@ class ShoppingListItemTile extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  userToBuyItem.username ?? "Kein Username",
+                  userToBuyItem.getUsername(),
                   overflow: TextOverflow.ellipsis,
                   softWrap: true,
                 ),

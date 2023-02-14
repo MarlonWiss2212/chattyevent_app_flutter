@@ -7,9 +7,12 @@ import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/shopping_list/shopping_list_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
+import 'package:social_media_app_flutter/domain/dto/private_event/update_private_event_user_dto.dart';
 import 'package:social_media_app_flutter/domain/dto/shopping_list_item/update_shopping_list_item_dto.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
+import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
+import 'package:social_media_app_flutter/domain/entities/private_event/private_event_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/user_with_private_event_user_data.dart';
 import 'package:social_media_app_flutter/domain/entities/shopping_list_item_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
@@ -71,59 +74,23 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
   void setPrivateEventUsers() {
     List<UserWithPrivateEventUserData> usersToEmit = [];
 
-    if (state.privateEvent.usersThatWillBeThere != null) {
-      for (final userId in state.privateEvent.usersThatWillBeThere!) {
+    if (state.privateEvent.users != null) {
+      for (final privateEventUser in state.privateEvent.users!) {
         final foundUser = userCubit.state.users.firstWhere(
-          (element) => element.id == userId,
+          (element) => element.id == privateEventUser.userId,
           orElse: () => UserEntity(id: ""),
         );
-        usersToEmit.add(
-          UserWithPrivateEventUserData.fromUserEntity(
-            user: foundUser,
-            accapted: true,
-          ),
-        );
-      }
-    }
-
-    if (state.privateEvent.usersThatWillNotBeThere != null) {
-      for (final userId in state.privateEvent.usersThatWillNotBeThere!) {
-        final foundUser = userCubit.state.users.firstWhere(
-          (element) => element.id == userId,
-          orElse: () => UserEntity(id: ""),
+        final foundGroupchatUser = state.groupchat.users?.firstWhere(
+          (element) => element.id == privateEventUser.userId,
+          orElse: () => GroupchatUserEntity(id: ""),
         );
         usersToEmit.add(
-          UserWithPrivateEventUserData.fromUserEntity(
+          UserWithPrivateEventUserData(
             user: foundUser,
-            declined: true,
+            groupchatUser: foundGroupchatUser,
+            privateEventUser: privateEventUser,
           ),
         );
-      }
-    }
-
-    if (state.groupchat.users != null) {
-      for (final groupchatUser in state.groupchat.users!) {
-        final foundIndex = usersToEmit.indexWhere(
-          (element) => element.id == groupchatUser.userId,
-        );
-        if (foundIndex != -1) {
-          usersToEmit[foundIndex] =
-              UserWithPrivateEventUserData.fromPrivateEventUser(
-            privateEventUser: usersToEmit[foundIndex],
-            admin: groupchatUser.admin,
-          );
-        } else {
-          final foundUser = userCubit.state.users.firstWhere(
-            (element) => element.id == groupchatUser.userId,
-            orElse: () => UserEntity(id: ""),
-          );
-          usersToEmit.add(
-            UserWithPrivateEventUserData.fromUserEntity(
-              user: foundUser,
-              invited: true,
-            ),
-          );
-        }
       }
     }
 
@@ -351,7 +318,8 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
     );
   }
 
-  Future updateMeInPrivateEventWillBeThere({
+  Future updatePrivateEventUser({
+    required UpdatePrivateEventUserDto updatePrivateEventUserDto,
     required String privateEventId,
   }) async {
     emit(CurrentPrivateEventNormal(
@@ -364,9 +332,10 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
       loadingShoppingList: state.loadingShoppingList,
     ));
 
-    final Either<Failure, PrivateEventEntity> privateEventOrFailure =
-        await privateEventUseCases.updateMeInPrivateEventWillBeThere(
+    final Either<Failure, PrivateEventUserEntity> privateEventOrFailure =
+        await privateEventUseCases.updatePrivateEventUser(
       privateEventId: privateEventId,
+      updatePrivateEventUserDto: updatePrivateEventUserDto,
     );
 
     privateEventOrFailure.fold(
@@ -383,9 +352,16 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
           message: mapFailureToMessage(error),
         ));
       },
-      (privateEvent) {
+      (privateEventUser) {
+        final newPrivateEvent = PrivateEventEntity.merge(
+          setUsersFromOldEntity: false,
+          newEntity: PrivateEventEntity(
+              id: state.privateEvent.id, users: [privateEventUser]),
+          oldEntity: state.privateEvent,
+        );
+
         final mergedPrivateEvent = privateEventCubit.mergeOrAdd(
-          privateEvent: privateEvent,
+          privateEvent: newPrivateEvent,
         );
         emit(CurrentPrivateEventNormal(
           privateEvent: mergedPrivateEvent,
@@ -395,107 +371,6 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
           loadingPrivateEvent: false,
           loadingGroupchat: state.loadingGroupchat,
           loadingShoppingList: state.loadingShoppingList,
-        ));
-        setPrivateEventUsers();
-      },
-    );
-  }
-
-  Future updateMeInPrivateEventWillNotBeThere({
-    required String privateEventId,
-  }) async {
-    emit(CurrentPrivateEventNormal(
-      privateEvent: state.privateEvent,
-      groupchat: state.groupchat,
-      shoppingList: state.shoppingList,
-      privateEventUsers: state.privateEventUsers,
-      loadingGroupchat: state.loadingGroupchat,
-      loadingShoppingList: state.loadingShoppingList,
-      loadingPrivateEvent: true,
-    ));
-
-    final Either<Failure, PrivateEventEntity> privateEventOrFailure =
-        await privateEventUseCases.updateMeInPrivateEventWillNotBeThere(
-      privateEventId: privateEventId,
-    );
-
-    privateEventOrFailure.fold(
-      (error) {
-        emit(CurrentPrivateEventError(
-          groupchat: state.groupchat,
-          shoppingList: state.shoppingList,
-          privateEventUsers: state.privateEventUsers,
-          privateEvent: state.privateEvent,
-          loadingGroupchat: state.loadingGroupchat,
-          loadingShoppingList: state.loadingShoppingList,
-          loadingPrivateEvent: false,
-          title: "Fehler",
-          message: mapFailureToMessage(error),
-        ));
-      },
-      (privateEvent) {
-        final mergedPrivateEvent = privateEventCubit.mergeOrAdd(
-          privateEvent: privateEvent,
-        );
-        emit(CurrentPrivateEventNormal(
-          privateEvent: mergedPrivateEvent,
-          privateEventUsers: state.privateEventUsers,
-          shoppingList: state.shoppingList,
-          groupchat: state.groupchat,
-          loadingGroupchat: state.loadingGroupchat,
-          loadingShoppingList: state.loadingShoppingList,
-          loadingPrivateEvent: false,
-        ));
-        setPrivateEventUsers();
-      },
-    );
-  }
-
-  Future updateMeInPrivateEventNoInformationOnWillBeThere({
-    required String privateEventId,
-  }) async {
-    emit(CurrentPrivateEventNormal(
-      privateEvent: state.privateEvent,
-      groupchat: state.groupchat,
-      privateEventUsers: state.privateEventUsers,
-      shoppingList: state.shoppingList,
-      loadingGroupchat: state.loadingGroupchat,
-      loadingShoppingList: state.loadingShoppingList,
-      loadingPrivateEvent: true,
-    ));
-
-    final Either<Failure, PrivateEventEntity> privateEventOrFailure =
-        await privateEventUseCases
-            .updateMeInPrivateEventNoInformationOnWillBeThere(
-      privateEventId: privateEventId,
-    );
-
-    privateEventOrFailure.fold(
-      (error) {
-        emit(CurrentPrivateEventError(
-          groupchat: state.groupchat,
-          shoppingList: state.shoppingList,
-          privateEventUsers: state.privateEventUsers,
-          privateEvent: state.privateEvent,
-          loadingGroupchat: state.loadingGroupchat,
-          loadingShoppingList: state.loadingShoppingList,
-          loadingPrivateEvent: false,
-          title: "Fehler",
-          message: mapFailureToMessage(error),
-        ));
-      },
-      (privateEvent) {
-        final mergedPrivateEvent = privateEventCubit.mergeOrAdd(
-          privateEvent: privateEvent,
-        );
-        emit(CurrentPrivateEventNormal(
-          privateEvent: mergedPrivateEvent,
-          privateEventUsers: state.privateEventUsers,
-          shoppingList: state.shoppingList,
-          groupchat: state.groupchat,
-          loadingGroupchat: state.loadingGroupchat,
-          loadingShoppingList: state.loadingShoppingList,
-          loadingPrivateEvent: false,
         ));
         setPrivateEventUsers();
       },
