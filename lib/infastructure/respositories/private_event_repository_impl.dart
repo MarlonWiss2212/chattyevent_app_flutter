@@ -69,8 +69,6 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
       );
 
       if (response.hasException) {
-        print(response.exception);
-
         return Left(GeneralFailure());
       }
 
@@ -78,8 +76,6 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
         PrivateEventModel.fromJson(response.data!['createPrivateEvent']),
       );
     } catch (e) {
-      print(e);
-
       return Left(ServerFailure());
     }
   }
@@ -90,12 +86,12 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
   }) async {
     try {
       final response = await graphQlDatasource.query(
+        //coverImageLink
         """
         query FindPrivateEvent(\$input: FindOnePrivateEventInput!) {
           findPrivateEvent(filter: \$input) {
             _id
             title
-            coverImageLink
             users {
               isInvitedIndependetFromGroupchat
               _id
@@ -127,15 +123,12 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
       );
 
       if (response.hasException) {
-        print(response.exception);
         return Left(GeneralFailure());
       }
       return Right(
         PrivateEventModel.fromJson(response.data!["findPrivateEvent"]),
       );
     } catch (e) {
-      print(e);
-
       return Left(ServerFailure());
     }
   }
@@ -164,7 +157,6 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
       });
 
       if (response.hasException) {
-        print(response.exception);
         return Left(GeneralFailure());
       }
 
@@ -174,8 +166,6 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
       }
       return Right(privateEvents);
     } catch (e) {
-      print(e);
-
       return Left(ServerFailure());
     }
   }
@@ -219,8 +209,6 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
       );
 
       if (response.hasException) {
-        print(response.exception);
-
         return Left(GeneralFailure());
       }
       return Right(
@@ -229,8 +217,6 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
         ),
       );
     } catch (e) {
-      print(e);
-
       return Left(ServerFailure());
     }
   }

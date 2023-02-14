@@ -1,9 +1,7 @@
 import 'dart:io';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'package:social_media_app_flutter/application/bloc/private_event/add_private_event_cubit.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 import 'package:social_media_app_flutter/presentation/widgets/dialog/buttons/ok_button.dart';
@@ -111,62 +109,49 @@ class _NewPrivateEventPageState extends State<NewPrivateEventPage> {
               ),
             ),
             const SizedBox(height: 8),
-            BlocListener<AddPrivateEventCubit, AddPrivateEventState>(
-              listener: (context, state) {
-                if (state is AddPrivateEventLoaded) {
-                  AutoRouter.of(context).replace(
-                    PrivateEventWrapperPageRoute(
-                      loadPrivateEventFromApiToo: false,
-                      privateEventId: state.addedPrivateEvent.id,
-                      privateEventToSet: state.addedPrivateEvent,
+            SizedBox(
+              width: double.infinity,
+              child: PlatformElevatedButton(
+                onPressed: () async {
+                  if (selectedGroupchat == null) {
+                    return await showPlatformDialog(
+                      context: context,
+                      builder: (context) {
+                        return PlatformAlertDialog(
+                          title: const Text("Kein Gruppenchat"),
+                          content: const Text(
+                            "Ein Event muss einem Chat zugewiesen werden bitte wähle erst einen Chat aus",
+                          ),
+                          actions: const [OKButton()],
+                        );
+                      },
+                    );
+                  }
+
+                  if (image == null) {
+                    return await showPlatformDialog(
+                      context: context,
+                      builder: (context) {
+                        return PlatformAlertDialog(
+                          title: const Text("Kein Bild"),
+                          content: const Text(
+                            "Ein Event muss ein Bild haben",
+                          ),
+                          actions: const [OKButton()],
+                        );
+                      },
+                    );
+                  }
+                  AutoRouter.of(context).push(
+                    NewPrivateEventLocationPageRoute(
+                      date: date,
+                      image: image!,
+                      selectedGroupchat: selectedGroupchat!,
+                      title: titleFieldController.text,
                     ),
                   );
-                }
-              },
-              child: SizedBox(
-                width: double.infinity,
-                child: PlatformElevatedButton(
-                  onPressed: () async {
-                    if (selectedGroupchat == null) {
-                      return await showPlatformDialog(
-                        context: context,
-                        builder: (context) {
-                          return PlatformAlertDialog(
-                            title: const Text("Kein Gruppenchat"),
-                            content: const Text(
-                              "Ein Event muss einem Chat zugewiesen werden bitte wähle erst einen Chat aus",
-                            ),
-                            actions: const [OKButton()],
-                          );
-                        },
-                      );
-                    }
-
-                    if (image == null) {
-                      return await showPlatformDialog(
-                        context: context,
-                        builder: (context) {
-                          return PlatformAlertDialog(
-                            title: const Text("Kein Bild"),
-                            content: const Text(
-                              "Ein Event muss ein Bild haben",
-                            ),
-                            actions: const [OKButton()],
-                          );
-                        },
-                      );
-                    }
-
-                    AutoRouter.of(context).push(
-                      NewPrivateEventLocationPageRoute(
-                          date: date,
-                          image: image!,
-                          selectedGroupchat: selectedGroupchat!,
-                          title: titleFieldController.text),
-                    );
-                  },
-                  child: const Text("Weiter"),
-                ),
+                },
+                child: const Text("Weiter"),
               ),
             ),
             const SizedBox(height: 8.0),

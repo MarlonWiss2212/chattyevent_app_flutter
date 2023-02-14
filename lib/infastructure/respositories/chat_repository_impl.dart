@@ -89,7 +89,6 @@ class ChatRepositoryImpl implements ChatRepository {
             _id
             title
             description
-            profileImageLink
             users {
               _id
               admin

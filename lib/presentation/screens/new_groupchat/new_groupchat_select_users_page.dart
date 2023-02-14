@@ -1,15 +1,12 @@
 import 'dart:io';
 
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/add_chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_search_cubit.dart';
 import 'package:social_media_app_flutter/domain/dto/groupchat/create_groupchat_dto.dart';
-import 'package:social_media_app_flutter/domain/dto/groupchat/create_groupchat_user_dto.dart';
 import 'package:social_media_app_flutter/domain/dto/groupchat/create_groupchat_user_from_create_groupchat_dto.dart';
-import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 import 'package:social_media_app_flutter/presentation/widgets/new_groupchat/SelectableUserGridList.dart';
 import 'package:social_media_app_flutter/presentation/widgets/new_groupchat/SelectedUsersList.dart';
 
