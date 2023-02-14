@@ -354,6 +354,7 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
       },
       (privateEventUser) {
         final newPrivateEvent = PrivateEventEntity.merge(
+          setUsersFromOldEntity: false,
           newEntity: PrivateEventEntity(
               id: state.privateEvent.id, users: [privateEventUser]),
           oldEntity: state.privateEvent,

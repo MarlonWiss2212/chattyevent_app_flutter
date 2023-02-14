@@ -29,29 +29,29 @@ class PrivateEventEntity {
   factory PrivateEventEntity.merge({
     required PrivateEventEntity newEntity,
     required PrivateEventEntity oldEntity,
+    bool setUsersFromOldEntity = false,
   }) {
-    List<PrivateEventUserEntity>? users;
+    List<PrivateEventUserEntity>? users =
+        setUsersFromOldEntity ? oldEntity.users : [];
     if (newEntity.users != null) {
       for (final newUser in newEntity.users!) {
-        users ??= [];
-        if (oldEntity.users == null) {
+        if (users == null) {
+          users ??= [];
           users.add(newUser);
-          break;
+          continue;
         }
-        final oldUserIndex = oldEntity.users!.indexWhere(
+        final userIndex = users.indexWhere(
           (element) => element.id == newUser.id,
         );
-        if (oldUserIndex == -1) {
+        if (userIndex == -1) {
           users.add(newUser);
         } else {
-          users.add(PrivateEventUserEntity.merge(
+          users[userIndex] = PrivateEventUserEntity.merge(
             newEntity: newUser,
-            oldEntity: oldEntity.users![oldUserIndex],
-          ));
+            oldEntity: oldEntity.users![userIndex],
+          );
         }
       }
-    } else {
-      users = oldEntity.users;
     }
 
     return PrivateEventEntity(
