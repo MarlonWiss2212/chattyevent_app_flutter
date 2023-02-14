@@ -1,6 +1,8 @@
 import 'package:dartz/dartz.dart';
 import 'package:social_media_app_flutter/domain/dto/private_event/create_private_event_dto.dart';
+import 'package:social_media_app_flutter/domain/dto/private_event/update_private_event_user_dto.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
+import 'package:social_media_app_flutter/domain/entities/private_event/private_event_user_entity.dart';
 import 'package:social_media_app_flutter/domain/failures/failures.dart';
 import 'package:social_media_app_flutter/domain/filter/get_one_private_event_filter.dart';
 import 'package:social_media_app_flutter/domain/filter/get_private_events_filter.dart';
@@ -25,30 +27,12 @@ class PrivateEventUseCases {
     );
   }
 
-  Future<Either<Failure, PrivateEventEntity>>
-      updateMeInPrivateEventWillBeThere({
+  Future<Either<Failure, PrivateEventUserEntity>> updatePrivateEventUser({
+    required UpdatePrivateEventUserDto updatePrivateEventUserDto,
     required String privateEventId,
   }) async {
-    return await privateEventRepository.updateMeInPrivateEventWillBeThere(
-      privateEventId: privateEventId,
-    );
-  }
-
-  Future<Either<Failure, PrivateEventEntity>>
-      updateMeInPrivateEventWillNotBeThere({
-    required String privateEventId,
-  }) async {
-    return await privateEventRepository.updateMeInPrivateEventWillNotBeThere(
-      privateEventId: privateEventId,
-    );
-  }
-
-  Future<Either<Failure, PrivateEventEntity>>
-      updateMeInPrivateEventNoInformationOnWillBeThere({
-    required String privateEventId,
-  }) async {
-    return await privateEventRepository
-        .updateMeInPrivateEventNoInformationOnWillBeThere(
+    return await privateEventRepository.updatePrivateEventUser(
+      updatePrivateEventUserDto: updatePrivateEventUserDto,
       privateEventId: privateEventId,
     );
   }

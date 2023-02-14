@@ -17,7 +17,8 @@ class ChatRepositoryImpl implements ChatRepository {
 
   @override
   Future<Either<Failure, GroupchatEntity>> createGroupchatViaApi(
-      CreateGroupchatDto createGroupchatDto) async {
+    CreateGroupchatDto createGroupchatDto,
+  ) async {
     try {
       Map<String, dynamic> variables = {
         "input": createGroupchatDto.toMap(),

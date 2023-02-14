@@ -19,7 +19,7 @@ class ShoppingListItemTile extends StatelessWidget {
   Widget build(BuildContext context) {
     UserWithPrivateEventUserData userToBuyItem =
         currentPrivateEventState.privateEventUsers.firstWhere(
-      (element) => element.id == shoppingListItem.userToBuyItem,
+      (element) => element.user.id == shoppingListItem.userToBuyItem,
     );
 
     return ListTile(
@@ -27,10 +27,13 @@ class ShoppingListItemTile extends StatelessWidget {
       title: Wrap(
         spacing: 8,
         children: [
-          if (userToBuyItem.declined || userToBuyItem.invited) ...{
+          if (userToBuyItem.privateEventUser.status == "rejected" ||
+              userToBuyItem.privateEventUser.status == "invited") ...{
             Badge(
               backgroundColor:
-                  userToBuyItem.declined ? Colors.red : Colors.yellow,
+                  userToBuyItem.privateEventUser.status == "rejected"
+                      ? Colors.red
+                      : Colors.yellow,
             ),
           },
           Text(
@@ -42,10 +45,10 @@ class ShoppingListItemTile extends StatelessWidget {
         ],
       ),
       leading: CircleAvatar(
-        backgroundImage: userToBuyItem.profileImageLink != null
-            ? NetworkImage(userToBuyItem.profileImageLink!)
+        backgroundImage: userToBuyItem.user.profileImageLink != null
+            ? NetworkImage(userToBuyItem.user.profileImageLink!)
             : null,
-        backgroundColor: userToBuyItem.profileImageLink == null
+        backgroundColor: userToBuyItem.user.profileImageLink == null
             ? Theme.of(context).colorScheme.secondaryContainer
             : null,
       ),
@@ -61,7 +64,7 @@ class ShoppingListItemTile extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  userToBuyItem.username ?? "Kein Username",
+                  userToBuyItem.getUsername(),
                   overflow: TextOverflow.ellipsis,
                   softWrap: true,
                 ),

@@ -16,64 +16,37 @@ class SelectGroupchatHorizontalListNewPrivateEvent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final currentUserId = Jwt.parseJwt(
-        (BlocProvider.of<AuthCubit>(context).state as AuthLoaded).token)["sub"];
     return SizedBox(
       height: 100,
       child: BlocBuilder<ChatCubit, ChatState>(
         builder: (context, state) {
-          if (state is ChatLoaded) {
-            List<GroupchatEntity> filteredChats = [];
-
-            for (final chat in state.chats) {
-              bool currentUserIsAdmin = false;
-              if (chat.users != null) {
-                for (final chatUser in chat.users!) {
-                  if (chatUser.userId == currentUserId) {
-                    chatUser.admin != null && chatUser.admin!
-                        ? currentUserIsAdmin = true
-                        : null;
-                    break;
-                  }
-                }
-                if (currentUserIsAdmin) {
-                  filteredChats.add(chat);
-                }
-              }
-            }
-
-            return ListView.separated(
-              shrinkWrap: true,
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index) {
-                return SizedBox(
-                  width: 100,
-                  height: 100,
-                  child: ImageWithLabelButton(
-                    label: filteredChats[index].title ?? "Kein Titel",
-                    imageLink: filteredChats[index].profileImageLink,
-                    onTap: () => newGroupchatSelected(filteredChats[index]),
-                  ),
-                );
-              },
-              itemCount: filteredChats.length,
-              separatorBuilder: (context, index) => const SizedBox(width: 8),
-            );
-          } else if (state is ChatLoading) {
+          if (state.chats.isEmpty && state is ChatLoading) {
             return Center(
               child: PlatformCircularProgressIndicator(),
             );
-          } else {
-            return Center(
-              child: PlatformTextButton(
-                child: Text(
-                  state is ChatError ? state.message : "Chats Laden",
-                ),
-                onPressed: () =>
-                    BlocProvider.of<ChatCubit>(context).getChatsViaApi(),
-              ),
-            );
           }
+
+          if (state.chats.isEmpty && state is! ChatLoading) {
+            return const Center(child: Text("Keine Chats"));
+          }
+
+          return ListView.separated(
+            shrinkWrap: true,
+            scrollDirection: Axis.horizontal,
+            itemBuilder: (context, index) {
+              return SizedBox(
+                width: 100,
+                height: 100,
+                child: ImageWithLabelButton(
+                  label: state.chats[index].title ?? "Kein Titel",
+                  imageLink: state.chats[index].profileImageLink,
+                  onTap: () => newGroupchatSelected(state.chats[index]),
+                ),
+              );
+            },
+            itemCount: state.chats.length,
+            separatorBuilder: (context, index) => const SizedBox(width: 8),
+          );
         },
       ),
     );

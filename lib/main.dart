@@ -17,7 +17,6 @@ import 'package:social_media_app_flutter/colors.dart';
 import 'package:social_media_app_flutter/domain/filter/get_one_user_filter.dart';
 import 'package:social_media_app_flutter/domain/usecases/settings_usecases.dart';
 import 'package:social_media_app_flutter/infastructure/respositories/device/settings_repository_impl.dart';
-import 'package:social_media_app_flutter/presentation/router/auth_guard.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 

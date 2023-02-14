@@ -1,14 +1,15 @@
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_location_entity.dart';
+import 'package:social_media_app_flutter/domain/entities/private_event/private_event_user_entity.dart';
 import 'package:social_media_app_flutter/infastructure/models/private_event/private_event_location_model.dart';
+import 'package:social_media_app_flutter/infastructure/models/private_event/private_event_user_model.dart';
 
 class PrivateEventModel extends PrivateEventEntity {
   PrivateEventModel({
     required String id,
     String? title,
     String? coverImageLink,
-    List<String>? usersThatWillBeThere,
-    List<String>? usersThatWillNotBeThere,
+    List<PrivateEventUserEntity>? users,
     DateTime? eventDate,
     String? connectedGroupchat,
     String? createdBy,
@@ -19,8 +20,7 @@ class PrivateEventModel extends PrivateEventEntity {
           id: id,
           title: title,
           coverImageLink: coverImageLink,
-          usersThatWillBeThere: usersThatWillBeThere,
-          usersThatWillNotBeThere: usersThatWillNotBeThere,
+          users: users,
           eventDate: eventDate,
           connectedGroupchat: connectedGroupchat,
           createdAt: createdAt,
@@ -42,19 +42,11 @@ class PrivateEventModel extends PrivateEventEntity {
         ? DateTime.parse(json["eventDate"]).toLocal()
         : null;
 
-    List<String>? usersThatWillBeThere;
-    if (json["usersThatWillBeThere"] != null) {
-      usersThatWillBeThere = [];
-      for (final user in json["usersThatWillBeThere"]) {
-        usersThatWillBeThere.add(user.toString());
-      }
-    }
-
-    List<String>? usersThatWillNotBeThere;
-    if (json["usersThatWillNotBeThere"] != null) {
-      usersThatWillNotBeThere = [];
-      for (final user in json["usersThatWillNotBeThere"]) {
-        usersThatWillNotBeThere.add(user.toString());
+    List<PrivateEventUserEntity>? users;
+    if (json["users"] != null) {
+      users = [];
+      for (final user in json["users"]) {
+        users.add(PrivateEventUserModel.fromJson(user));
       }
     }
 
@@ -62,8 +54,7 @@ class PrivateEventModel extends PrivateEventEntity {
       id: json['_id'],
       title: json['title'],
       coverImageLink: json['coverImageLink'],
-      usersThatWillBeThere: usersThatWillBeThere,
-      usersThatWillNotBeThere: usersThatWillNotBeThere,
+      users: users,
       eventDate: eventDate,
       connectedGroupchat: json["connectedGroupchat"],
       createdBy: json["createdBy"],

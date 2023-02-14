@@ -27,7 +27,7 @@ class SelectUserCreateShoppingListItem extends StatelessWidget {
                   width: 100,
                   height: 100,
                   child: UserGridListItem(
-                    user: state.privateEventUsers[index],
+                    user: state.privateEventUsers[index].user,
                     onPress: () {
                       newUserSelected(state.privateEventUsers[index]);
                     },
@@ -46,7 +46,7 @@ class SelectUserCreateShoppingListItem extends StatelessWidget {
             return Center(
               child: PlatformTextButton(
                 child: const Text(
-                  "Private Event USer Laden",
+                  "Private Event User Laden",
                 ),
                 onPressed: () =>
                     BlocProvider.of<CurrentPrivateEventCubit>(context)

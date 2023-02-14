@@ -6,7 +6,6 @@ import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
-import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
 import 'package:social_media_app_flutter/presentation/widgets/privat_event_page/tab_bar/info_tab/icon_buttons_my_user_list_tile/accept_invite_icon_button.dart';
 import 'package:social_media_app_flutter/presentation/widgets/privat_event_page/tab_bar/info_tab/icon_buttons_my_user_list_tile/decline_invite_icon_button.dart';
 import 'package:social_media_app_flutter/presentation/widgets/privat_event_page/tab_bar/info_tab/icon_buttons_my_user_list_tile/neutral_invite_icon_button.dart';
@@ -34,27 +33,26 @@ class PrivateEventInfoTabUserList extends StatelessWidget {
           Widget? trailingWidget;
           String subtitle = "gekicked";
           Color? subititleColor = Colors.red;
-
-          if (privateEventUser.accapted) {
+          if (privateEventUser.privateEventUser.status == "accapted") {
             subititleColor = Colors.green;
             subtitle = "Angenommen";
-            trailingWidget = privateEventUser.id == currentUserId
+            trailingWidget = privateEventUser.user.id == currentUserId
                 ? Wrap(
                     spacing: 8,
                     children: [
+                      NeutralInviteIconButton(
+                        privateEventId: privateEventState.privateEvent.id,
+                      ),
                       DeclineInviteIconButton(
                         privateEventId: privateEventState.privateEvent.id,
                       ),
-                      NeutralInviteIconButton(
-                        privateEventId: privateEventState.privateEvent.id,
-                      )
                     ],
                   )
                 : null;
-          } else if (privateEventUser.declined) {
+          } else if (privateEventUser.privateEventUser.status == "rejected") {
             subititleColor = Colors.red;
             subtitle = "Abgelehnt";
-            trailingWidget = privateEventUser.id == currentUserId
+            trailingWidget = privateEventUser.user.id == currentUserId
                 ? Wrap(
                     spacing: 8,
                     children: [
@@ -67,10 +65,10 @@ class PrivateEventInfoTabUserList extends StatelessWidget {
                     ],
                   )
                 : null;
-          } else if (privateEventUser.invited) {
+          } else if (privateEventUser.privateEventUser.status == "invited") {
             subititleColor = null;
             subtitle = "Eingeladen";
-            trailingWidget = privateEventUser.id == currentUserId
+            trailingWidget = privateEventUser.user.id == currentUserId
                 ? Wrap(
                     spacing: 8,
                     children: [
@@ -87,15 +85,13 @@ class PrivateEventInfoTabUserList extends StatelessWidget {
 
           widgetsToReturn.add(
             UserListTile(
-              profileImageLink: privateEventUser.profileImageLink,
+              profileImageLink: privateEventUser.user.profileImageLink,
               subtitle: Text(
                 subtitle,
                 style: TextStyle(color: subititleColor),
               ),
-              username: privateEventUser.username != null
-                  ? privateEventUser.username!
-                  : "Kein Username",
-              userId: privateEventUser.id,
+              username: privateEventUser.getUsername(),
+              userId: privateEventUser.user.id,
               trailing: trailingWidget,
             ),
           );

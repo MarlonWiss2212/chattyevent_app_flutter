@@ -1,6 +1,8 @@
 import 'package:http/http.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:social_media_app_flutter/domain/dto/private_event/create_private_event_dto.dart';
+import 'package:social_media_app_flutter/domain/dto/private_event/update_private_event_user_dto.dart';
+import 'package:social_media_app_flutter/domain/entities/private_event/private_event_user_entity.dart';
 import 'package:social_media_app_flutter/domain/failures/failures.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
 import 'package:dartz/dartz.dart';
@@ -9,6 +11,7 @@ import 'package:social_media_app_flutter/domain/filter/get_private_events_filter
 import 'package:social_media_app_flutter/domain/repositories/private_event_repository.dart';
 import 'package:social_media_app_flutter/infastructure/datasources/remote/graphql.dart';
 import 'package:social_media_app_flutter/infastructure/models/private_event/private_event_model.dart';
+import 'package:social_media_app_flutter/infastructure/models/private_event/private_event_user_model.dart';
 
 class PrivateEventRepositoryImpl implements PrivateEventRepository {
   final GraphQlDatasource graphQlDatasource;
@@ -34,8 +37,15 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
             _id
             title
             coverImageLink
-            usersThatWillBeThere
-            usersThatWillNotBeThere
+            users {
+              isInvitedIndependetFromGroupchat
+              _id
+              privateEventTo
+              userId
+              status
+              createdAt
+              updatedAt
+            }
             eventDate
             connectedGroupchat
             eventLocation {
@@ -59,6 +69,8 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
       );
 
       if (response.hasException) {
+        print(response.exception);
+
         return Left(GeneralFailure());
       }
 
@@ -66,6 +78,8 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
         PrivateEventModel.fromJson(response.data!['createPrivateEvent']),
       );
     } catch (e) {
+      print(e);
+
       return Left(ServerFailure());
     }
   }
@@ -82,8 +96,15 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
             _id
             title
             coverImageLink
-            usersThatWillBeThere
-            usersThatWillNotBeThere
+            users {
+              isInvitedIndependetFromGroupchat
+              _id
+              privateEventTo
+              userId
+              status
+              createdAt
+              updatedAt
+            }
             eventLocation {
               latitude
               longitude
@@ -106,12 +127,15 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
       );
 
       if (response.hasException) {
+        print(response.exception);
         return Left(GeneralFailure());
       }
       return Right(
         PrivateEventModel.fromJson(response.data!["findPrivateEvent"]),
       );
     } catch (e) {
+      print(e);
+
       return Left(ServerFailure());
     }
   }
@@ -169,97 +193,44 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
   }
 
   @override
-  Future<Either<Failure, PrivateEventEntity>>
-      updateMeInPrivateEventWillBeThere({
+  Future<Either<Failure, PrivateEventUserEntity>> updatePrivateEventUser({
+    required UpdatePrivateEventUserDto updatePrivateEventUserDto,
     required String privateEventId,
   }) async {
     try {
       final response = await graphQlDatasource.mutation(
         """
-          mutation UpdateMeInPrivateEventWillBeThere(\$privateEventId: String!) {
-            updateMeInPrivateEventWillBeThere(privateEventId: \$privateEventId) {
+          mutation UpdatePrivateEventUser(\$privateEventId: String!, \$input: UpdatePrivateEventUserInput!) {
+            updatePrivateEventUser(privateEventId: \$privateEventId, updatePrivateEventUserInput: \$input) {
+              isInvitedIndependetFromGroupchat
               _id
-              usersThatWillBeThere
-              usersThatWillNotBeThere
+              privateEventTo
+              userId
+              status
+              createdAt
+              updatedAt
             }
           }
         """,
-        variables: {"privateEventId": privateEventId},
+        variables: {
+          "privateEventId": privateEventId,
+          "input": updatePrivateEventUserDto.toMap()
+        },
       );
 
       if (response.hasException) {
+        print(response.exception);
+
         return Left(GeneralFailure());
       }
       return Right(
-        PrivateEventModel.fromJson(
-          response.data!["updateMeInPrivateEventWillBeThere"],
+        PrivateEventUserModel.fromJson(
+          response.data!["updatePrivateEventUser"],
         ),
       );
     } catch (e) {
-      return Left(ServerFailure());
-    }
-  }
+      print(e);
 
-  @override
-  Future<Either<Failure, PrivateEventEntity>>
-      updateMeInPrivateEventWillNotBeThere({
-    required String privateEventId,
-  }) async {
-    try {
-      final response = await graphQlDatasource.mutation(
-        """
-          mutation UpdateMeInPrivateEventWillNotBeThere(\$privateEventId: String!) {
-            updateMeInPrivateEventWillNotBeThere(privateEventId: \$privateEventId) {
-              _id
-              usersThatWillBeThere
-              usersThatWillNotBeThere
-            }
-          }
-        """,
-        variables: {"privateEventId": privateEventId},
-      );
-
-      if (response.hasException) {
-        return Left(GeneralFailure());
-      }
-      return Right(
-        PrivateEventModel.fromJson(
-          response.data!["updateMeInPrivateEventWillNotBeThere"],
-        ),
-      );
-    } catch (e) {
-      return Left(ServerFailure());
-    }
-  }
-
-  @override
-  Future<Either<Failure, PrivateEventEntity>>
-      updateMeInPrivateEventNoInformationOnWillBeThere({
-    required String privateEventId,
-  }) async {
-    try {
-      final response = await graphQlDatasource.mutation(
-        """
-          mutation UpdateMeInPrivateEventNoInformationOnWillBeThere(\$privateEventId: String!) {
-            updateMeInPrivateEventNoInformationOnWillBeThere(privateEventId: \$privateEventId) {
-              _id
-              usersThatWillBeThere
-              usersThatWillNotBeThere
-            }
-          }
-        """,
-        variables: {"privateEventId": privateEventId},
-      );
-
-      if (response.hasException) {
-        return Left(GeneralFailure());
-      }
-      return Right(
-        PrivateEventModel.fromJson(
-          response.data!["updateMeInPrivateEventNoInformationOnWillBeThere"],
-        ),
-      );
-    } catch (e) {
       return Left(ServerFailure());
     }
   }
