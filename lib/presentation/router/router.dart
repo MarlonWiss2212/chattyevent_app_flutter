@@ -11,10 +11,10 @@ import 'package:social_media_app_flutter/presentation/screens/home_page/pages/ho
 import 'package:social_media_app_flutter/presentation/screens/home_page/pages/home_profile_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/home_page/pages/home_search_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/login_page.dart';
+import 'package:social_media_app_flutter/presentation/screens/new_groupchat/pages/new_groupchat_details_tab.dart';
+import 'package:social_media_app_flutter/presentation/screens/new_groupchat/pages/new_groupchat_select_user_tab.dart';
 import 'package:social_media_app_flutter/presentation/screens/new_private_event/new_private_event_location_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/new_private_event/new_private_event_page.dart';
-import 'package:social_media_app_flutter/presentation/screens/new_groupchat/new_groupchat_page.dart';
-import 'package:social_media_app_flutter/presentation/screens/new_groupchat/new_groupchat_select_users_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/new_groupchat/new_groupchat_wrapper_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/new_private_event/new_private_event_wrapper_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/private_event_page/private_event_create_shopping_list_item.dart';
@@ -38,7 +38,7 @@ import 'package:social_media_app_flutter/presentation/screens/settings_page/sett
       page: ProfilePage,
       initial: false,
       guards: [AuthGuard],
-      path: '/profile-page/:id',
+      path: '/profile/:id',
     ),
 
     // settings page
@@ -78,7 +78,7 @@ import 'package:social_media_app_flutter/presentation/screens/settings_page/sett
     AutoRoute(
       page: ChatPageWrapper,
       guards: [AuthGuard],
-      path: '/chat-page/:id',
+      path: '/chat/:id',
       children: [
         AutoRoute(
           page: ChatPage,
@@ -137,13 +137,13 @@ import 'package:social_media_app_flutter/presentation/screens/settings_page/sett
       path: '/new-groupchat',
       children: [
         AutoRoute(
-          page: NewGroupchatPage,
+          page: NewGroupchatDetailsTab,
           initial: true,
           guards: [AuthGuard],
           path: '',
         ),
         AutoRoute(
-          page: NewGroupchatPageSelectUsersPage,
+          page: NewGroupchatSelectUserTab,
           initial: false,
           guards: [AuthGuard],
           path: 'users',

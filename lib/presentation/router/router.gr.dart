@@ -30,9 +30,10 @@ import '../screens/home_page/pages/home_map_page.dart' as _i14;
 import '../screens/home_page/pages/home_profile_page.dart' as _i16;
 import '../screens/home_page/pages/home_search_page.dart' as _i15;
 import '../screens/login_page.dart' as _i1;
-import '../screens/new_groupchat/new_groupchat_page.dart' as _i24;
-import '../screens/new_groupchat/new_groupchat_select_users_page.dart' as _i25;
 import '../screens/new_groupchat/new_groupchat_wrapper_page.dart' as _i8;
+import '../screens/new_groupchat/pages/new_groupchat_details_tab.dart' as _i24;
+import '../screens/new_groupchat/pages/new_groupchat_select_user_tab.dart'
+    as _i25;
 import '../screens/new_private_event/new_private_event_location_page.dart'
     as _i27;
 import '../screens/new_private_event/new_private_event_page.dart' as _i26;
@@ -272,22 +273,16 @@ class AppRouter extends _i28.RootStackRouter {
         ),
       );
     },
-    NewGroupchatPageRoute.name: (routeData) {
+    NewGroupchatDetailsTabRoute.name: (routeData) {
       return _i28.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i24.NewGroupchatPage(),
+        child: const _i24.NewGroupchatDetailsTab(),
       );
     },
-    NewGroupchatPageSelectUsersPageRoute.name: (routeData) {
-      final args = routeData.argsAs<NewGroupchatPageSelectUsersPageRouteArgs>();
+    NewGroupchatSelectUserTabRoute.name: (routeData) {
       return _i28.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: _i25.NewGroupchatPageSelectUsersPage(
-          key: args.key,
-          title: args.title,
-          profileImage: args.profileImage,
-          description: args.description,
-        ),
+        child: const _i25.NewGroupchatSelectUserTab(),
       );
     },
     NewPrivateEventPageRoute.name: (routeData) {
@@ -323,7 +318,7 @@ class AppRouter extends _i28.RootStackRouter {
         ),
         _i28.RouteConfig(
           ProfilePageRoute.name,
-          path: '/profile-page/:id',
+          path: '/profile/:id',
           guards: [authGuard],
         ),
         _i28.RouteConfig(
@@ -405,7 +400,7 @@ class AppRouter extends _i28.RootStackRouter {
         ),
         _i28.RouteConfig(
           ChatPageWrapperRoute.name,
-          path: '/chat-page/:id',
+          path: '/chat/:id',
           guards: [authGuard],
           children: [
             _i28.RouteConfig(
@@ -488,13 +483,13 @@ class AppRouter extends _i28.RootStackRouter {
           guards: [authGuard],
           children: [
             _i28.RouteConfig(
-              NewGroupchatPageRoute.name,
+              NewGroupchatDetailsTabRoute.name,
               path: '',
               parent: NewGroupchatWrapperPageRoute.name,
               guards: [authGuard],
             ),
             _i28.RouteConfig(
-              NewGroupchatPageSelectUsersPageRoute.name,
+              NewGroupchatSelectUserTabRoute.name,
               path: 'users',
               parent: NewGroupchatWrapperPageRoute.name,
               guards: [authGuard],
@@ -577,7 +572,7 @@ class ProfilePageRoute extends _i28.PageRouteInfo<ProfilePageRouteArgs> {
     required String userId,
   }) : super(
           ProfilePageRoute.name,
-          path: '/profile-page/:id',
+          path: '/profile/:id',
           args: ProfilePageRouteArgs(
             key: key,
             loadUserFromApiToo: loadUserFromApiToo,
@@ -650,7 +645,7 @@ class ChatPageWrapperRoute
     List<_i28.PageRouteInfo>? children,
   }) : super(
           ChatPageWrapperRoute.name,
-          path: '/chat-page/:id',
+          path: '/chat/:id',
           args: ChatPageWrapperRouteArgs(
             key: key,
             groupchatId: groupchatId,
@@ -1020,60 +1015,27 @@ class ShoppingListTabRouteArgs {
 }
 
 /// generated route for
-/// [_i24.NewGroupchatPage]
-class NewGroupchatPageRoute extends _i28.PageRouteInfo<void> {
-  const NewGroupchatPageRoute()
+/// [_i24.NewGroupchatDetailsTab]
+class NewGroupchatDetailsTabRoute extends _i28.PageRouteInfo<void> {
+  const NewGroupchatDetailsTabRoute()
       : super(
-          NewGroupchatPageRoute.name,
+          NewGroupchatDetailsTabRoute.name,
           path: '',
         );
 
-  static const String name = 'NewGroupchatPageRoute';
+  static const String name = 'NewGroupchatDetailsTabRoute';
 }
 
 /// generated route for
-/// [_i25.NewGroupchatPageSelectUsersPage]
-class NewGroupchatPageSelectUsersPageRoute
-    extends _i28.PageRouteInfo<NewGroupchatPageSelectUsersPageRouteArgs> {
-  NewGroupchatPageSelectUsersPageRoute({
-    _i29.Key? key,
-    required String title,
-    _i34.File? profileImage,
-    String? description,
-  }) : super(
-          NewGroupchatPageSelectUsersPageRoute.name,
+/// [_i25.NewGroupchatSelectUserTab]
+class NewGroupchatSelectUserTabRoute extends _i28.PageRouteInfo<void> {
+  const NewGroupchatSelectUserTabRoute()
+      : super(
+          NewGroupchatSelectUserTabRoute.name,
           path: 'users',
-          args: NewGroupchatPageSelectUsersPageRouteArgs(
-            key: key,
-            title: title,
-            profileImage: profileImage,
-            description: description,
-          ),
         );
 
-  static const String name = 'NewGroupchatPageSelectUsersPageRoute';
-}
-
-class NewGroupchatPageSelectUsersPageRouteArgs {
-  const NewGroupchatPageSelectUsersPageRouteArgs({
-    this.key,
-    required this.title,
-    this.profileImage,
-    this.description,
-  });
-
-  final _i29.Key? key;
-
-  final String title;
-
-  final _i34.File? profileImage;
-
-  final String? description;
-
-  @override
-  String toString() {
-    return 'NewGroupchatPageSelectUsersPageRouteArgs{key: $key, title: $title, profileImage: $profileImage, description: $description}';
-  }
+  static const String name = 'NewGroupchatSelectUserTabRoute';
 }
 
 /// generated route for

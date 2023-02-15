@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/current_user_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/chat/add_chat_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/chat/add_groupchat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/location/location_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/shopping_list/add_shopping_list_item_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/shopping_list/shopping_list_cubit.dart';
@@ -98,10 +98,6 @@ class BlocInit extends StatelessWidget {
         );
 
         final chatCubit = ChatCubit(chatUseCases: chatUseCases);
-        final addChatCubit = AddChatCubit(
-          chatCubit: chatCubit,
-          chatUseCases: chatUseCases,
-        );
         final privateEventCubit = PrivateEventCubit(
           privateEventUseCases: privateEventUseCases,
         );
@@ -147,7 +143,6 @@ class BlocInit extends StatelessWidget {
             BlocProvider.value(value: privateEventCubit),
             BlocProvider.value(value: addPrivateEventCubit),
             BlocProvider.value(value: chatCubit),
-            BlocProvider.value(value: addChatCubit),
             BlocProvider.value(value: homeProfilePageCubit),
             BlocProvider.value(value: locationCubit),
             BlocProvider.value(value: imageCubit),
