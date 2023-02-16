@@ -1,25 +1,39 @@
 part of 'add_private_event_cubit.dart';
 
-@immutable
-abstract class AddPrivateEventState {}
+enum AddPrivateEventStateStatus { initial, loading, success, error }
 
-class AddPrivateEventInitial extends AddPrivateEventState {}
+class AddPrivateEventState {
+  final PrivateEventEntity? addedPrivateEvent;
+  final ErrorWithTitleAndMessage? error;
+  final AddPrivateEventStateStatus status;
 
-class AddPrivateEventLoading extends AddPrivateEventState {}
+  final String? title;
+  final String? description;
+  final File? coverImage;
+  final DateTime? eventDate;
 
-class AddPrivateEventError extends AddPrivateEventState {
-  final String title;
-  final String message;
+  final GroupchatEntity? selectedGroupchat;
 
-  AddPrivateEventError({
-    required this.message,
-    required this.title,
-  });
-}
+  // create private event location
+  final String? country;
+  final String? zip;
+  final String? city;
+  final String? street;
+  final String? housenumber;
 
-class AddPrivateEventLoaded extends AddPrivateEventState {
-  final PrivateEventEntity addedPrivateEvent;
-  AddPrivateEventLoaded({
-    required this.addedPrivateEvent,
+  AddPrivateEventState({
+    this.addedPrivateEvent,
+    this.error,
+    this.status = AddPrivateEventStateStatus.initial,
+    this.title,
+    this.description,
+    this.coverImage,
+    this.selectedGroupchat,
+    this.eventDate,
+    this.city,
+    this.country,
+    this.housenumber,
+    this.street,
+    this.zip,
   });
 }

@@ -11,8 +11,6 @@
 // ignore_for_file: type=lint
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:io' as _i34;
-
 import 'package:auto_route/auto_route.dart' as _i28;
 import 'package:flutter/material.dart' as _i29;
 
@@ -34,11 +32,11 @@ import '../screens/new_groupchat/new_groupchat_wrapper_page.dart' as _i8;
 import '../screens/new_groupchat/pages/new_groupchat_details_tab.dart' as _i24;
 import '../screens/new_groupchat/pages/new_groupchat_select_user_tab.dart'
     as _i25;
-import '../screens/new_private_event/new_private_event_location_page.dart'
+import '../screens/new_private_event/new_private_event_page.dart' as _i9;
+import '../screens/new_private_event/pages/new_private_event_details_tab.dart'
+    as _i26;
+import '../screens/new_private_event/pages/new_private_event_location_tab.dart'
     as _i27;
-import '../screens/new_private_event/new_private_event_page.dart' as _i26;
-import '../screens/new_private_event/new_private_event_wrapper_page.dart'
-    as _i9;
 import '../screens/private_event_page/private_event_create_shopping_list_item.dart'
     as _i21;
 import '../screens/private_event_page/private_event_wrapper_page.dart' as _i7;
@@ -139,10 +137,10 @@ class AppRouter extends _i28.RootStackRouter {
         child: const _i8.NewGroupchatWrapperPage(),
       );
     },
-    NewPrivateEventWrapperPageRoute.name: (routeData) {
+    NewPrivateEventPageRoute.name: (routeData) {
       return _i28.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i9.NewPrivateEventWrapperPage(),
+        child: const _i9.NewPrivateEventPage(),
       );
     },
     SettingsPageRoute.name: (routeData) {
@@ -285,23 +283,16 @@ class AppRouter extends _i28.RootStackRouter {
         child: const _i25.NewGroupchatSelectUserTab(),
       );
     },
-    NewPrivateEventPageRoute.name: (routeData) {
+    NewPrivateEventDetailsTabRoute.name: (routeData) {
       return _i28.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i26.NewPrivateEventPage(),
+        child: const _i26.NewPrivateEventDetailsTab(),
       );
     },
-    NewPrivateEventLocationPageRoute.name: (routeData) {
-      final args = routeData.argsAs<NewPrivateEventLocationPageRouteArgs>();
+    NewPrivateEventLocationTabRoute.name: (routeData) {
       return _i28.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: _i27.NewPrivateEventLocationPage(
-          key: args.key,
-          date: args.date,
-          image: args.image,
-          selectedGroupchat: args.selectedGroupchat,
-          title: args.title,
-        ),
+        child: const _i27.NewPrivateEventLocationTab(),
       );
     },
   };
@@ -504,26 +495,26 @@ class AppRouter extends _i28.RootStackRouter {
           ],
         ),
         _i28.RouteConfig(
-          NewPrivateEventWrapperPageRoute.name,
+          NewPrivateEventPageRoute.name,
           path: '/new-private-event',
           guards: [authGuard],
           children: [
             _i28.RouteConfig(
-              NewPrivateEventPageRoute.name,
+              NewPrivateEventDetailsTabRoute.name,
               path: '',
-              parent: NewPrivateEventWrapperPageRoute.name,
+              parent: NewPrivateEventPageRoute.name,
               guards: [authGuard],
             ),
             _i28.RouteConfig(
-              NewPrivateEventLocationPageRoute.name,
+              NewPrivateEventLocationTabRoute.name,
               path: 'location',
-              parent: NewPrivateEventWrapperPageRoute.name,
+              parent: NewPrivateEventPageRoute.name,
               guards: [authGuard],
             ),
             _i28.RouteConfig(
               '*#redirect',
               path: '*',
-              parent: NewPrivateEventWrapperPageRoute.name,
+              parent: NewPrivateEventPageRoute.name,
               redirectTo: '',
               fullMatch: true,
             ),
@@ -743,16 +734,16 @@ class NewGroupchatWrapperPageRoute extends _i28.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i9.NewPrivateEventWrapperPage]
-class NewPrivateEventWrapperPageRoute extends _i28.PageRouteInfo<void> {
-  const NewPrivateEventWrapperPageRoute({List<_i28.PageRouteInfo>? children})
+/// [_i9.NewPrivateEventPage]
+class NewPrivateEventPageRoute extends _i28.PageRouteInfo<void> {
+  const NewPrivateEventPageRoute({List<_i28.PageRouteInfo>? children})
       : super(
-          NewPrivateEventWrapperPageRoute.name,
+          NewPrivateEventPageRoute.name,
           path: '/new-private-event',
           initialChildren: children,
         );
 
-  static const String name = 'NewPrivateEventWrapperPageRoute';
+  static const String name = 'NewPrivateEventPageRoute';
 }
 
 /// generated route for
@@ -1039,63 +1030,25 @@ class NewGroupchatSelectUserTabRoute extends _i28.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i26.NewPrivateEventPage]
-class NewPrivateEventPageRoute extends _i28.PageRouteInfo<void> {
-  const NewPrivateEventPageRoute()
+/// [_i26.NewPrivateEventDetailsTab]
+class NewPrivateEventDetailsTabRoute extends _i28.PageRouteInfo<void> {
+  const NewPrivateEventDetailsTabRoute()
       : super(
-          NewPrivateEventPageRoute.name,
+          NewPrivateEventDetailsTabRoute.name,
           path: '',
         );
 
-  static const String name = 'NewPrivateEventPageRoute';
+  static const String name = 'NewPrivateEventDetailsTabRoute';
 }
 
 /// generated route for
-/// [_i27.NewPrivateEventLocationPage]
-class NewPrivateEventLocationPageRoute
-    extends _i28.PageRouteInfo<NewPrivateEventLocationPageRouteArgs> {
-  NewPrivateEventLocationPageRoute({
-    _i29.Key? key,
-    required DateTime date,
-    required _i34.File image,
-    required _i32.GroupchatEntity selectedGroupchat,
-    required String title,
-  }) : super(
-          NewPrivateEventLocationPageRoute.name,
+/// [_i27.NewPrivateEventLocationTab]
+class NewPrivateEventLocationTabRoute extends _i28.PageRouteInfo<void> {
+  const NewPrivateEventLocationTabRoute()
+      : super(
+          NewPrivateEventLocationTabRoute.name,
           path: 'location',
-          args: NewPrivateEventLocationPageRouteArgs(
-            key: key,
-            date: date,
-            image: image,
-            selectedGroupchat: selectedGroupchat,
-            title: title,
-          ),
         );
 
-  static const String name = 'NewPrivateEventLocationPageRoute';
-}
-
-class NewPrivateEventLocationPageRouteArgs {
-  const NewPrivateEventLocationPageRouteArgs({
-    this.key,
-    required this.date,
-    required this.image,
-    required this.selectedGroupchat,
-    required this.title,
-  });
-
-  final _i29.Key? key;
-
-  final DateTime date;
-
-  final _i34.File image;
-
-  final _i32.GroupchatEntity selectedGroupchat;
-
-  final String title;
-
-  @override
-  String toString() {
-    return 'NewPrivateEventLocationPageRouteArgs{key: $key, date: $date, image: $image, selectedGroupchat: $selectedGroupchat, title: $title}';
-  }
+  static const String name = 'NewPrivateEventLocationTabRoute';
 }

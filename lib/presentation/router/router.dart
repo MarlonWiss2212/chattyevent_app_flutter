@@ -13,10 +13,10 @@ import 'package:social_media_app_flutter/presentation/screens/home_page/pages/ho
 import 'package:social_media_app_flutter/presentation/screens/login_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/new_groupchat/pages/new_groupchat_details_tab.dart';
 import 'package:social_media_app_flutter/presentation/screens/new_groupchat/pages/new_groupchat_select_user_tab.dart';
-import 'package:social_media_app_flutter/presentation/screens/new_private_event/new_private_event_location_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/new_private_event/new_private_event_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/new_groupchat/new_groupchat_wrapper_page.dart';
-import 'package:social_media_app_flutter/presentation/screens/new_private_event/new_private_event_wrapper_page.dart';
+import 'package:social_media_app_flutter/presentation/screens/new_private_event/pages/new_private_event_details_tab.dart';
+import 'package:social_media_app_flutter/presentation/screens/new_private_event/pages/new_private_event_location_tab.dart';
 import 'package:social_media_app_flutter/presentation/screens/private_event_page/private_event_create_shopping_list_item.dart';
 import 'package:social_media_app_flutter/presentation/screens/private_event_page/private_event_wrapper_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/private_event_page/tab_page/pages/info_tab.dart';
@@ -154,18 +154,18 @@ import 'package:social_media_app_flutter/presentation/screens/settings_page/sett
 
     // new private event
     AutoRoute(
-      page: NewPrivateEventWrapperPage,
+      page: NewPrivateEventPage,
       guards: [AuthGuard],
       path: '/new-private-event',
       children: [
         AutoRoute(
-          page: NewPrivateEventPage,
+          page: NewPrivateEventDetailsTab,
           initial: true,
           guards: [AuthGuard],
           path: '',
         ),
         AutoRoute(
-          page: NewPrivateEventLocationPage,
+          page: NewPrivateEventLocationTab,
           initial: false,
           guards: [AuthGuard],
           path: 'location',

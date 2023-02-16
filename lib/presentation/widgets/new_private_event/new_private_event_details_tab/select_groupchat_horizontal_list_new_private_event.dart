@@ -1,18 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'package:jwt_decode/jwt_decode.dart';
-import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
-import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
+import 'package:social_media_app_flutter/application/bloc/private_event/add_private_event_cubit.dart';
 import 'package:social_media_app_flutter/presentation/widgets/image_with_label_button.dart';
 
 class SelectGroupchatHorizontalListNewPrivateEvent extends StatelessWidget {
-  final Function(GroupchatEntity groupchat) newGroupchatSelected;
-  const SelectGroupchatHorizontalListNewPrivateEvent({
-    super.key,
-    required this.newGroupchatSelected,
-  });
+  const SelectGroupchatHorizontalListNewPrivateEvent({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +34,11 @@ class SelectGroupchatHorizontalListNewPrivateEvent extends StatelessWidget {
                 child: ImageWithLabelButton(
                   label: state.chats[index].title ?? "Kein Titel",
                   imageLink: state.chats[index].profileImageLink,
-                  onTap: () => newGroupchatSelected(state.chats[index]),
+                  onTap: () {
+                    BlocProvider.of<AddPrivateEventCubit>(context).emitState(
+                      selectedGroupchat: state.chats[index],
+                    );
+                  },
                 ),
               );
             },

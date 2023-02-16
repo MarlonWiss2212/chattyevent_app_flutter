@@ -1,162 +1,124 @@
-import 'dart:io';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/private_event/add_private_event_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/private_event/private_event_cubit.dart';
+import 'package:social_media_app_flutter/domain/usecases/private_event_usecases.dart';
+import 'package:social_media_app_flutter/infastructure/datasources/remote/graphql.dart';
+import 'package:social_media_app_flutter/infastructure/respositories/private_event_repository_impl.dart';
+import 'package:social_media_app_flutter/injection.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 import 'package:social_media_app_flutter/presentation/widgets/dialog/buttons/ok_button.dart';
-import 'package:social_media_app_flutter/presentation/widgets/new_private_event/select_cover_image.dart';
-import 'package:social_media_app_flutter/presentation/widgets/new_private_event/select_groupchat_horizontal_list_new_private_event.dart';
 
-class NewPrivateEventPage extends StatefulWidget {
-  const NewPrivateEventPage({super.key});
-
-  @override
-  State<NewPrivateEventPage> createState() => _NewPrivateEventPageState();
-}
-
-class _NewPrivateEventPageState extends State<NewPrivateEventPage> {
-  DateTime date = DateTime.now();
-  final titleFieldController = TextEditingController();
-  File? image;
-  GroupchatEntity? selectedGroupchat;
+class NewPrivateEventPage extends StatelessWidget {
+  const NewPrivateEventPage({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
+    final client = getGraphQlClient(
+      token: BlocProvider.of<AuthCubit>(context).state is AuthLoaded
+          ? (BlocProvider.of<AuthCubit>(context).state as AuthLoaded).token
+          : null,
+    );
 
-    return PlatformScaffold(
-      appBar: PlatformAppBar(
-        leading: const AutoLeadingButton(),
-        title: const Text('Neues Event'),
+    return BlocProvider.value(
+      value: AddPrivateEventCubit(
+        privateEventCubit: BlocProvider.of<PrivateEventCubit>(context),
+        privateEventUseCases: PrivateEventUseCases(
+          privateEventRepository: PrivateEventRepositoryImpl(
+            graphQlDatasource: GraphQlDatasourceImpl(
+              client: client,
+            ),
+          ),
+        ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-        child: Column(
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    const SizedBox(height: 8),
-                    SelectCoverImage(
-                      imageChanged: (newImage) {
-                        setState(() {
-                          image = newImage;
-                        });
-                      },
-                      image: image,
-                    ),
-                    const SizedBox(height: 8),
-                    PlatformTextFormField(
-                      controller: titleFieldController,
-                      hintText: 'Name*',
-                    ),
-                    const SizedBox(height: 8),
-                    SizedBox(
-                      width: double.infinity,
-                      child: PlatformElevatedButton(
-                        child: Text("Datum wählen: $date"),
-                        onPressed: () async {
-                          DateTime currentDate = DateTime.now();
-                          DateTime? newDate = await showDatePicker(
-                            context: context,
-                            initialDate: date,
-                            firstDate: currentDate,
-                            lastDate: DateTime(currentDate.year + 10),
-                          );
-                          TimeOfDay? newTime = await showTimePicker(
-                            context: context,
-                            initialTime: TimeOfDay(
-                              hour: date.hour,
-                              minute: date.minute,
-                            ),
-                          );
-
-                          if (newDate == null || newTime == null) return;
-                          setState(() {
-                            date = DateTime(
-                              newDate.year,
-                              newDate.month,
-                              newDate.day,
-                              newTime.hour,
-                              newTime.minute,
-                            );
-                          });
+      child: Builder(
+        builder: (context) {
+          return BlocListener<AddPrivateEventCubit, AddPrivateEventState>(
+            listener: (context, state) async {
+              if (state.status == AddPrivateEventStateStatus.success &&
+                  state.addedPrivateEvent != null) {
+                AutoRouter.of(context).root.replace(
+                      PrivateEventWrapperPageRoute(
+                        privateEventId: state.addedPrivateEvent!.id,
+                        loadPrivateEventFromApiToo: false,
+                        privateEventToSet: state.addedPrivateEvent,
+                      ),
+                    );
+              } else if (state.status == AddPrivateEventStateStatus.error &&
+                  state.error != null) {
+                return await showPlatformDialog(
+                  context: context,
+                  builder: (context) {
+                    return PlatformAlertDialog(
+                      title: Text(state.error!.title),
+                      content: Text(state.error!.message),
+                      actions: const [OKButton()],
+                    );
+                  },
+                );
+              }
+            },
+            child: PlatformScaffold(
+              appBar: PlatformAppBar(
+                title: const Text('Neues Private Event'),
+              ),
+              body: AutoTabsRouter.pageView(
+                routes: const [
+                  NewPrivateEventDetailsTabRoute(),
+                  NewPrivateEventLocationTabRoute(),
+                ],
+                builder: (context, child, pageController) {
+                  return Column(
+                    children: [
+                      BlocBuilder<AddPrivateEventCubit, AddPrivateEventState>(
+                        builder: (context, state) {
+                          if (state.status ==
+                              AddPrivateEventStateStatus.loading) {
+                            return const LinearProgressIndicator();
+                          }
+                          return Container();
                         },
                       ),
-                    ),
-                    const SizedBox(height: 8),
-                    Row(
-                      children: [
-                        Text(
-                          "Wähle einen Gruppenchat aus: ${selectedGroupchat != null ? selectedGroupchat!.title : ''}",
-                          style: Theme.of(context).textTheme.titleMedium,
+                      Expanded(child: child),
+                      const SizedBox(height: 8),
+                      SmoothPageIndicator(
+                        controller: pageController,
+                        count: 2,
+                        onDotClicked: (index) {
+                          pageController.jumpToPage(index);
+                        },
+                        effect: WormEffect(
+                          activeDotColor: Theme.of(context).colorScheme.primary,
                         ),
-                      ],
-                    ),
-                    SelectGroupchatHorizontalListNewPrivateEvent(
-                      newGroupchatSelected: (groupchat) {
-                        setState(
-                          () {
-                            selectedGroupchat = groupchat;
-                          },
-                        );
-                      },
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(height: 8),
-            SizedBox(
-              width: double.infinity,
-              child: PlatformElevatedButton(
-                onPressed: () async {
-                  if (selectedGroupchat == null) {
-                    return await showPlatformDialog(
-                      context: context,
-                      builder: (context) {
-                        return PlatformAlertDialog(
-                          title: const Text("Kein Gruppenchat"),
-                          content: const Text(
-                            "Ein Event muss einem Chat zugewiesen werden bitte wähle erst einen Chat aus",
+                      ),
+                      const SizedBox(height: 8),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: SizedBox(
+                          width: double.infinity,
+                          child: PlatformElevatedButton(
+                            onPressed: () {
+                              BlocProvider.of<AddPrivateEventCubit>(context)
+                                  .createPrivateEventViaApi();
+                            },
+                            child: const Text("Speichern"),
                           ),
-                          actions: const [OKButton()],
-                        );
-                      },
-                    );
-                  }
-
-                  if (image == null) {
-                    return await showPlatformDialog(
-                      context: context,
-                      builder: (context) {
-                        return PlatformAlertDialog(
-                          title: const Text("Kein Bild"),
-                          content: const Text(
-                            "Ein Event muss ein Bild haben",
-                          ),
-                          actions: const [OKButton()],
-                        );
-                      },
-                    );
-                  }
-                  AutoRouter.of(context).push(
-                    NewPrivateEventLocationPageRoute(
-                      date: date,
-                      image: image!,
-                      selectedGroupchat: selectedGroupchat!,
-                      title: titleFieldController.text,
-                    ),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                    ],
                   );
                 },
-                child: const Text("Weiter"),
               ),
             ),
-            const SizedBox(height: 8.0),
-          ],
-        ),
+          );
+        },
       ),
     );
   }

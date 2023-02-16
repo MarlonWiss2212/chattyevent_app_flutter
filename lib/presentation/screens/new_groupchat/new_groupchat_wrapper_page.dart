@@ -35,83 +35,88 @@ class NewGroupchatWrapperPage extends StatelessWidget {
           ),
         ),
       ),
-      child: Builder(builder: (context) {
-        return BlocListener<AddGroupchatCubit, AddGroupchatState>(
-          listener: (context, state) async {
-            if (state.status == AddChatStateStatus.success &&
-                state.addedChat != null) {
-              AutoRouter.of(context).root.replace(
-                    ChatPageWrapperRoute(
-                      groupchatId: state.addedChat!.id,
-                      loadChatFromApiToo: false,
-                      chatToSet: state.addedChat,
-                    ),
-                  );
-            } else if (state.status == AddChatStateStatus.error &&
-                state.error != null) {
-              return await showPlatformDialog(
-                context: context,
-                builder: (context) {
-                  return PlatformAlertDialog(
-                    title: Text(state.error!.title),
-                    content: Text(state.error!.message),
-                    actions: const [OKButton()],
-                  );
-                },
-              );
-            }
-          },
-          child: PlatformScaffold(
-            appBar: PlatformAppBar(
-              title: const Text('Neuer Gruppenchat'),
-            ),
-            body: AutoTabsRouter.pageView(
-              routes: const [
-                NewGroupchatDetailsTabRoute(),
-                NewGroupchatSelectUserTabRoute(),
-              ],
-              builder: (context, child, pageController) {
-                return Column(
-                  children: [
-                    BlocBuilder<AddGroupchatCubit, AddGroupchatState>(
-                      builder: (context, state) {
-                        if (state.status == AddChatStateStatus.loading) {
-                          return const LinearProgressIndicator();
-                        }
-                        return Container();
-                      },
-                    ),
-                    Expanded(child: child),
-                    const SizedBox(height: 8),
-                    SmoothPageIndicator(
-                      controller: pageController,
-                      count: 2,
-                      effect: WormEffect(
-                        activeDotColor: Theme.of(context).colorScheme.primary,
+      child: Builder(
+        builder: (context) {
+          return BlocListener<AddGroupchatCubit, AddGroupchatState>(
+            listener: (context, state) async {
+              if (state.status == AddGroupchatStateStatus.success &&
+                  state.addedChat != null) {
+                AutoRouter.of(context).root.replace(
+                      ChatPageWrapperRoute(
+                        groupchatId: state.addedChat!.id,
+                        loadChatFromApiToo: false,
+                        chatToSet: state.addedChat,
                       ),
-                    ),
-                    const SizedBox(height: 8),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: SizedBox(
-                        width: double.infinity,
-                        child: PlatformElevatedButton(
-                          onPressed: () {
-                            BlocProvider.of<AddGroupchatCubit>(context)
-                                .createGroupchatViaApi();
-                          },
-                          child: const Text("Speichern"),
+                    );
+              } else if (state.status == AddGroupchatStateStatus.error &&
+                  state.error != null) {
+                return await showPlatformDialog(
+                  context: context,
+                  builder: (context) {
+                    return PlatformAlertDialog(
+                      title: Text(state.error!.title),
+                      content: Text(state.error!.message),
+                      actions: const [OKButton()],
+                    );
+                  },
+                );
+              }
+            },
+            child: PlatformScaffold(
+              appBar: PlatformAppBar(
+                title: const Text('Neuer Gruppenchat'),
+              ),
+              body: AutoTabsRouter.pageView(
+                routes: const [
+                  NewGroupchatDetailsTabRoute(),
+                  NewGroupchatSelectUserTabRoute(),
+                ],
+                builder: (context, child, pageController) {
+                  return Column(
+                    children: [
+                      BlocBuilder<AddGroupchatCubit, AddGroupchatState>(
+                        builder: (context, state) {
+                          if (state.status == AddGroupchatStateStatus.loading) {
+                            return const LinearProgressIndicator();
+                          }
+                          return Container();
+                        },
+                      ),
+                      Expanded(child: child),
+                      const SizedBox(height: 8),
+                      SmoothPageIndicator(
+                        controller: pageController,
+                        count: 2,
+                        onDotClicked: (index) {
+                          pageController.jumpToPage(index);
+                        },
+                        effect: WormEffect(
+                          activeDotColor: Theme.of(context).colorScheme.primary,
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 8),
-                  ],
-                );
-              },
+                      const SizedBox(height: 8),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: SizedBox(
+                          width: double.infinity,
+                          child: PlatformElevatedButton(
+                            onPressed: () {
+                              BlocProvider.of<AddGroupchatCubit>(context)
+                                  .createGroupchatViaApi();
+                            },
+                            child: const Text("Speichern"),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                    ],
+                  );
+                },
+              ),
             ),
-          ),
-        );
-      }),
+          );
+        },
+      ),
     );
   }
 }

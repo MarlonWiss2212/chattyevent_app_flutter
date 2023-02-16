@@ -5,7 +5,10 @@ import 'package:dartz/dartz.dart';
 import 'package:meta/meta.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/private_event_cubit.dart';
+import 'package:social_media_app_flutter/domain/dto/private_event/create_location_private_event_dto.dart';
 import 'package:social_media_app_flutter/domain/dto/private_event/create_private_event_dto.dart';
+import 'package:social_media_app_flutter/domain/entities/error_with_title_and_message.dart';
+import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
 import 'package:social_media_app_flutter/domain/failures/failures.dart';
 import 'package:social_media_app_flutter/domain/usecases/private_event_usecases.dart';
@@ -19,27 +22,97 @@ class AddPrivateEventCubit extends Cubit<AddPrivateEventState> {
   AddPrivateEventCubit({
     required this.privateEventUseCases,
     required this.privateEventCubit,
-  }) : super(AddPrivateEventInitial());
+  }) : super(AddPrivateEventState());
 
-  Future createPrivateEvent({
-    required CreatePrivateEventDto createPrivateEventDto,
-  }) async {
-    emit(AddPrivateEventLoading());
+  Future createPrivateEventViaApi() async {
+    emitState(status: AddPrivateEventStateStatus.loading);
+    if (state.coverImage == null ||
+        state.title == null ||
+        state.selectedGroupchat == null ||
+        state.eventDate == null) {
+      return emitState(
+        status: AddPrivateEventStateStatus.error,
+        error: ErrorWithTitleAndMessage(
+          title: "Fehler",
+          message: "Bitte fülle alle verpflichtenen Felder aus",
+        ),
+      );
+    }
     final Either<Failure, PrivateEventEntity> privateEventOrFailure =
-        await privateEventUseCases
-            .createPrivateEventViaApi(createPrivateEventDto);
+        await privateEventUseCases.createPrivateEventViaApi(
+      CreatePrivateEventDto(
+        title: state.title!,
+        coverImage: state.coverImage!,
+        connectedGroupchat: state.selectedGroupchat!.id,
+        eventDate: state.eventDate!,
+        eventLocation: state.city != null &&
+                state.zip != null &&
+                state.housenumber != null &&
+                state.street != null &&
+                state.city!.isNotEmpty &&
+                state.zip!.isNotEmpty &&
+                state.housenumber!.isNotEmpty &&
+                state.street!.isNotEmpty
+            ? CreatePrivateEventLocationDto(
+                city: state.city!,
+                country: "DE",
+                housenumber: state.housenumber!,
+                street: state.street!,
+                zip: state.zip!,
+              )
+            : null,
+      ),
+    );
 
     privateEventOrFailure.fold(
       (error) {
-        emit(AddPrivateEventError(
-          title: "Fehler",
-          message: mapFailureToMessage(error),
-        ));
+        emitState(
+          error: ErrorWithTitleAndMessage(
+            title: "Fehler",
+            message: mapFailureToMessage(error),
+          ),
+          status: AddPrivateEventStateStatus.error,
+        );
       },
       (privateEvent) {
         privateEventCubit.mergeOrAdd(privateEvent: privateEvent);
-        emit(AddPrivateEventLoaded(addedPrivateEvent: privateEvent));
+        emit(AddPrivateEventState(
+          status: AddPrivateEventStateStatus.success,
+          addedPrivateEvent: privateEvent,
+        ));
       },
     );
+  }
+
+  void emitState({
+    String? title,
+    String? description,
+    File? coverImage,
+    GroupchatEntity? selectedGroupchat,
+    DateTime? eventDate,
+    String? country,
+    String? zip,
+    String? city,
+    String? street,
+    String? housenumber,
+    AddPrivateEventStateStatus? status,
+    ErrorWithTitleAndMessage? error,
+    PrivateEventEntity? addedPrivateEvent,
+  }) {
+    emit(AddPrivateEventState(
+      title: title ?? state.title,
+      description: description ?? state.description,
+      coverImage: coverImage ?? state.coverImage,
+      selectedGroupchat: selectedGroupchat ?? state.selectedGroupchat,
+      eventDate: eventDate ?? state.eventDate,
+      country: country ?? state.country,
+      zip: zip ?? state.zip,
+      city: city ?? state.city,
+      street: street ?? state.street,
+      housenumber: housenumber ?? state.housenumber,
+      status: status ?? AddPrivateEventStateStatus.initial,
+      error: error ?? state.error,
+      addedPrivateEvent: addedPrivateEvent ?? state.addedPrivateEvent,
+    ));
   }
 }

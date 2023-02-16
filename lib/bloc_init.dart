@@ -3,16 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/current_user_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/chat/add_groupchat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/location/location_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/shopping_list/add_shopping_list_item_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/shopping_list/shopping_list_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_search_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/message/message_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/message/add_message_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/private_event_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/private_event/add_private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/image/image_cubit.dart';
 import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
 import 'package:social_media_app_flutter/domain/usecases/chat_usecases.dart';
@@ -101,10 +98,7 @@ class BlocInit extends StatelessWidget {
         final privateEventCubit = PrivateEventCubit(
           privateEventUseCases: privateEventUseCases,
         );
-        final addPrivateEventCubit = AddPrivateEventCubit(
-          privateEventUseCases: privateEventUseCases,
-          privateEventCubit: privateEventCubit,
-        );
+
         final messageCubit = MessageCubit(messageUseCases: messageUseCases);
         final addMessageCubit = AddMessageCubit(
           messageCubit: messageCubit,
@@ -141,7 +135,6 @@ class BlocInit extends StatelessWidget {
             BlocProvider.value(value: userCubit),
             BlocProvider.value(value: userSearchCubit),
             BlocProvider.value(value: privateEventCubit),
-            BlocProvider.value(value: addPrivateEventCubit),
             BlocProvider.value(value: chatCubit),
             BlocProvider.value(value: homeProfilePageCubit),
             BlocProvider.value(value: locationCubit),
