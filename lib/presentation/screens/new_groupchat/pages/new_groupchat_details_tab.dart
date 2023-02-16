@@ -14,8 +14,7 @@ class NewGroupchatDetailsTab extends StatelessWidget {
       child: SingleChildScrollView(
         child: BlocBuilder<AddGroupchatCubit, AddGroupchatState>(
           buildWhen: (previous, current) {
-            return previous.createGroupchatDto.profileImage?.path !=
-                current.createGroupchatDto.profileImage?.path;
+            return previous.profileImage?.path != current.profileImage?.path;
           },
           builder: (context, state) {
             return Column(
@@ -23,21 +22,19 @@ class NewGroupchatDetailsTab extends StatelessWidget {
                 const SizedBox(height: 20),
                 SelectCircleImage(
                   imageChanged: (newImage) {
-                    BlocProvider.of<AddGroupchatCubit>(context)
-                        .setCreateGroupchatDto(
+                    BlocProvider.of<AddGroupchatCubit>(context).emitState(
                       profileImage: newImage,
                     );
                   },
-                  image: state.createGroupchatDto.profileImage,
+                  image: state.profileImage,
                 ),
                 const SizedBox(height: 20),
                 PlatformTextFormField(
                   controller: TextEditingController(
-                    text: state.createGroupchatDto.title,
+                    text: state.title,
                   ),
                   onChanged: (value) =>
-                      BlocProvider.of<AddGroupchatCubit>(context)
-                          .setCreateGroupchatDto(
+                      BlocProvider.of<AddGroupchatCubit>(context).emitState(
                     title: value,
                   ),
                   hintText: 'Name*',
@@ -45,11 +42,10 @@ class NewGroupchatDetailsTab extends StatelessWidget {
                 const SizedBox(height: 8),
                 PlatformTextFormField(
                   controller: TextEditingController(
-                    text: state.createGroupchatDto.description,
+                    text: state.description,
                   ),
                   onChanged: (value) =>
-                      BlocProvider.of<AddGroupchatCubit>(context)
-                          .setCreateGroupchatDto(
+                      BlocProvider.of<AddGroupchatCubit>(context).emitState(
                     description: value,
                   ),
                   hintText: 'Beschreibung',

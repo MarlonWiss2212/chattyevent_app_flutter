@@ -4,6 +4,7 @@ import 'package:social_media_app_flutter/domain/dto/private_event/create_locatio
 
 class CreatePrivateEventDto {
   String title;
+  String? description;
   File coverImage;
   String connectedGroupchat;
   DateTime eventDate;
@@ -18,11 +19,18 @@ class CreatePrivateEventDto {
   });
 
   Map<dynamic, dynamic> toMap() {
-    return {
+    Map<dynamic, dynamic> map = {
       "title": title,
       "connectedGroupchat": connectedGroupchat,
       "eventDate": eventDate.toIso8601String(),
-      "eventLocation": eventLocation?.toMap(),
     };
+    if (eventLocation != null) {
+      map.addAll({"eventLocation": eventLocation!.toMap()});
+    }
+    if (description != null) {
+      map.addAll({'description': description});
+    }
+
+    return map;
   }
 }

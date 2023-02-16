@@ -6,7 +6,7 @@ import 'package:social_media_app_flutter/application/bloc/user/user_search_cubit
 import 'package:social_media_app_flutter/domain/dto/groupchat/create_groupchat_user_from_create_groupchat_dto.dart';
 import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
 import 'package:social_media_app_flutter/domain/filter/get_users_filter.dart';
-import 'package:social_media_app_flutter/presentation/widgets/user_grid_list.dart';
+import 'package:social_media_app_flutter/presentation/widgets/user_list/user_grid_list.dart';
 
 class SelectableUserGridList extends StatelessWidget {
   const SelectableUserGridList({super.key});
@@ -26,15 +26,6 @@ class SelectableUserGridList extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           BlocBuilder<AddGroupchatCubit, AddGroupchatState>(
-            buildWhen: (previous, current) {
-              if (current.createGroupchatDto.groupchatUsers != null &&
-                  previous.createGroupchatDto.groupchatUsers != null &&
-                  current.createGroupchatDto.groupchatUsers!.length ==
-                      previous.createGroupchatDto.groupchatUsers!.length) {
-                return false;
-              }
-              return true;
-            },
             builder: (context, addGroupchatState) {
               return BlocBuilder<UserSearchCubit, UserSearchState>(
                 builder: (context, state) {
@@ -42,14 +33,12 @@ class SelectableUserGridList extends StatelessWidget {
                     List<UserEntity> filteredUsers = [];
 
                     for (final user in state.users) {
-                      if (addGroupchatState.createGroupchatDto.groupchatUsers ==
-                          null) {
+                      if (addGroupchatState.groupchatUsers == null) {
                         filteredUsers = state.users;
                         break;
                       }
-                      int foundIndex = addGroupchatState
-                          .createGroupchatDto.groupchatUsers!
-                          .indexWhere(
+                      int foundIndex =
+                          addGroupchatState.groupchatUsers!.indexWhere(
                         (groupchatUser) => groupchatUser.userId == user.id,
                       );
                       if (foundIndex == -1) {
@@ -63,17 +52,14 @@ class SelectableUserGridList extends StatelessWidget {
                         onPress: (user) {
                           List<CreateGroupchatUserFromCreateGroupchatDtoWithUserEntity>
                               newGroupchatUsers = List.from(
-                            addGroupchatState
-                                    .createGroupchatDto.groupchatUsers ??
-                                [],
+                            addGroupchatState.groupchatUsers ?? [],
                           )..add(
                                   CreateGroupchatUserFromCreateGroupchatDtoWithUserEntity(
                                     user: user,
                                   ),
                                 );
 
-                          BlocProvider.of<AddGroupchatCubit>(context)
-                              .setCreateGroupchatDto(
+                          BlocProvider.of<AddGroupchatCubit>(context).emitState(
                             groupchatUsers: newGroupchatUsers,
                           );
                         },

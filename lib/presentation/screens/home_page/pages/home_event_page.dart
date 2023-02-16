@@ -71,7 +71,7 @@ class HomeEventPage extends StatelessWidget {
       material: (context, platform) => MaterialScaffoldData(
         floatingActionButton: FloatingActionButton.extended(
           onPressed: () => AutoRouter.of(context).push(
-            const NewPrivateEventWrapperPageRoute(),
+            const NewPrivateEventPageRoute(),
           ),
           icon: const Icon(Icons.event),
           label: Text(

@@ -8,7 +8,6 @@ import 'package:social_media_app_flutter/domain/dto/groupchat/create_groupchat_d
 import 'package:social_media_app_flutter/domain/dto/groupchat/create_groupchat_user_from_create_groupchat_dto.dart';
 import 'package:social_media_app_flutter/domain/entities/error_with_title_and_message.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
-import 'package:social_media_app_flutter/domain/entities/groupchat/user_with_groupchat_user_data.dart';
 import 'package:social_media_app_flutter/domain/failures/failures.dart';
 import 'package:social_media_app_flutter/domain/usecases/chat_usecases.dart';
 
@@ -20,31 +19,28 @@ class AddGroupchatCubit extends Cubit<AddGroupchatState> {
   AddGroupchatCubit({
     required this.chatCubit,
     required this.chatUseCases,
-  }) : super(AddGroupchatState(
-          createGroupchatDto: CreateGroupchatDto(title: ""),
-        ));
+  }) : super(AddGroupchatState());
 
   Future createGroupchatViaApi() async {
-    emit(AddGroupchatState(
-      createGroupchatDto: state.createGroupchatDto,
-      status: AddChatStateStatus.loading,
-    ));
+    emitState(status: AddGroupchatStateStatus.loading);
 
     final Either<Failure, GroupchatEntity> groupchatOrFailure =
         await chatUseCases.createGroupchatViaApi(
-      createGroupchatDto: state.createGroupchatDto,
+      createGroupchatDto: CreateGroupchatDto(
+        title: state.title ?? "",
+        profileImage: state.profileImage,
+        description: state.description,
+        groupchatUsers: state.groupchatUsers,
+      ),
     );
 
     groupchatOrFailure.fold(
       (error) {
-        emit(
-          AddGroupchatState(
-            createGroupchatDto: state.createGroupchatDto,
-            status: AddChatStateStatus.error,
-            error: ErrorWithTitleAndMessage(
-              title: "Fehler",
-              message: mapFailureToMessage(error),
-            ),
+        emitState(
+          status: AddGroupchatStateStatus.error,
+          error: ErrorWithTitleAndMessage(
+            title: "Fehler",
+            message: mapFailureToMessage(error),
           ),
         );
       },
@@ -52,27 +48,30 @@ class AddGroupchatCubit extends Cubit<AddGroupchatState> {
         chatCubit.mergeOrAdd(groupchat: groupchat);
         emit(AddGroupchatState(
           addedChat: groupchat,
-          createGroupchatDto: state.createGroupchatDto,
-          status: AddChatStateStatus.success,
+          status: AddGroupchatStateStatus.success,
         ));
       },
     );
   }
 
-  void setCreateGroupchatDto({
+  void emitState({
     String? title,
     File? profileImage,
     String? description,
-    List<CreateGroupchatUserFromCreateGroupchatDto>? groupchatUsers,
+    List<CreateGroupchatUserFromCreateGroupchatDtoWithUserEntity>?
+        groupchatUsers,
+    AddGroupchatStateStatus? status,
+    ErrorWithTitleAndMessage? error,
+    GroupchatEntity? addedChat,
   }) {
     emit(AddGroupchatState(
-      createGroupchatDto: CreateGroupchatDto(
-        title: title ?? state.createGroupchatDto.title,
-        profileImage: profileImage ?? state.createGroupchatDto.profileImage,
-        description: description ?? state.createGroupchatDto.description,
-        groupchatUsers:
-            groupchatUsers ?? state.createGroupchatDto.groupchatUsers,
-      ),
+      title: title ?? state.title,
+      profileImage: profileImage ?? state.profileImage,
+      description: description ?? state.description,
+      groupchatUsers: groupchatUsers ?? state.groupchatUsers,
+      status: status ?? AddGroupchatStateStatus.initial,
+      error: error ?? state.error,
+      addedChat: addedChat ?? state.addedChat,
     ));
   }
 }

@@ -2,15 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
-import 'package:social_media_app_flutter/domain/entities/private_event/user_with_private_event_user_data.dart';
-import 'package:social_media_app_flutter/presentation/widgets/user_grid_list_item.dart';
+import 'package:social_media_app_flutter/application/bloc/shopping_list/add_shopping_list_item_cubit.dart';
+import 'package:social_media_app_flutter/presentation/widgets/user_list/user_grid_list_item.dart';
 
 class SelectUserCreateShoppingListItem extends StatelessWidget {
-  final Function(UserWithPrivateEventUserData privateEventUser) newUserSelected;
-  const SelectUserCreateShoppingListItem({
-    super.key,
-    required this.newUserSelected,
-  });
+  const SelectUserCreateShoppingListItem({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +25,10 @@ class SelectUserCreateShoppingListItem extends StatelessWidget {
                   child: UserGridListItem(
                     user: state.privateEventUsers[index].user,
                     onPress: () {
-                      newUserSelected(state.privateEventUsers[index]);
+                      BlocProvider.of<AddShoppingListItemCubit>(context)
+                          .emitState(
+                        userToBuyItemEntity: state.privateEventUsers[index],
+                      );
                     },
                   ),
                 );
