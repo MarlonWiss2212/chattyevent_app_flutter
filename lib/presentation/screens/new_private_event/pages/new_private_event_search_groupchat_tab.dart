@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/add_private_event_cubit.dart';
-import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:social_media_app_flutter/presentation/widgets/chat_list/chat_grid_list.dart';
 import 'package:social_media_app_flutter/presentation/widgets/chat_list/chat_grid_list_item.dart';
 
@@ -20,6 +19,8 @@ class _NewPrivateEventSearchGroupchatTabState
 
   @override
   Widget build(BuildContext context) {
+    BlocProvider.of<ChatCubit>(context).getChatsViaApi();
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8),
       child: Column(

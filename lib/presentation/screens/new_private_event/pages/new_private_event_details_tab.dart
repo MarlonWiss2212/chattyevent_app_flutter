@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/add_private_event_cubit.dart';
 import 'package:social_media_app_flutter/presentation/widgets/new_private_event/new_private_event_details_tab/select_cover_image.dart';
-import 'package:social_media_app_flutter/presentation/widgets/new_private_event/new_private_event_details_tab/select_groupchat_horizontal_list_new_private_event.dart';
 
 class NewPrivateEventDetailsTab extends StatelessWidget {
   const NewPrivateEventDetailsTab({super.key});
