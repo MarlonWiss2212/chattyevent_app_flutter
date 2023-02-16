@@ -7,7 +7,7 @@ import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_search_cubit.dart';
 import 'package:social_media_app_flutter/domain/filter/get_users_filter.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
-import 'package:social_media_app_flutter/presentation/widgets/user_grid_list.dart';
+import 'package:social_media_app_flutter/presentation/widgets/user_list/user_grid_list.dart';
 
 class UserGridListWithSearchbar extends StatelessWidget {
   const UserGridListWithSearchbar({super.key});

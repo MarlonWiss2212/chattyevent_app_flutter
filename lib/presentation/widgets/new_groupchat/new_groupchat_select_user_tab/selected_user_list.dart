@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/add_groupchat_cubit.dart';
-import 'package:social_media_app_flutter/presentation/widgets/user_grid_list_item.dart';
+import 'package:social_media_app_flutter/presentation/widgets/user_list/user_grid_list_item.dart';
 
 class SelectedUsersList extends StatelessWidget {
   const SelectedUsersList({super.key});

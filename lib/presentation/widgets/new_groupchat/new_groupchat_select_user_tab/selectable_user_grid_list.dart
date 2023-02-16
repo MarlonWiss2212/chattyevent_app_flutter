@@ -6,7 +6,7 @@ import 'package:social_media_app_flutter/application/bloc/user/user_search_cubit
 import 'package:social_media_app_flutter/domain/dto/groupchat/create_groupchat_user_from_create_groupchat_dto.dart';
 import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
 import 'package:social_media_app_flutter/domain/filter/get_users_filter.dart';
-import 'package:social_media_app_flutter/presentation/widgets/user_grid_list.dart';
+import 'package:social_media_app_flutter/presentation/widgets/user_list/user_grid_list.dart';
 
 class SelectableUserGridList extends StatelessWidget {
   const SelectableUserGridList({super.key});

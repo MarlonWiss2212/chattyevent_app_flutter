@@ -71,6 +71,7 @@ class NewPrivateEventPage extends StatelessWidget {
               body: AutoTabsRouter.pageView(
                 routes: const [
                   NewPrivateEventDetailsTabRoute(),
+                  NewPrivateEventSearchGroupchatTabRoute(),
                   NewPrivateEventLocationTabRoute(),
                 ],
                 builder: (context, child, pageController) {
@@ -89,7 +90,7 @@ class NewPrivateEventPage extends StatelessWidget {
                       const SizedBox(height: 8),
                       SmoothPageIndicator(
                         controller: pageController,
-                        count: 2,
+                        count: 3,
                         onDotClicked: (index) {
                           pageController.jumpToPage(index);
                         },

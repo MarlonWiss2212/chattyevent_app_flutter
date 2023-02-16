@@ -89,6 +89,7 @@ class AddPrivateEventCubit extends Cubit<AddPrivateEventState> {
     String? description,
     File? coverImage,
     GroupchatEntity? selectedGroupchat,
+    bool resetSelectedGroupchat = false,
     DateTime? eventDate,
     String? country,
     String? zip,
@@ -103,7 +104,9 @@ class AddPrivateEventCubit extends Cubit<AddPrivateEventState> {
       title: title ?? state.title,
       description: description ?? state.description,
       coverImage: coverImage ?? state.coverImage,
-      selectedGroupchat: selectedGroupchat ?? state.selectedGroupchat,
+      selectedGroupchat: resetSelectedGroupchat
+          ? null
+          : selectedGroupchat ?? state.selectedGroupchat,
       eventDate: eventDate ?? state.eventDate,
       country: country ?? state.country,
       zip: zip ?? state.zip,
