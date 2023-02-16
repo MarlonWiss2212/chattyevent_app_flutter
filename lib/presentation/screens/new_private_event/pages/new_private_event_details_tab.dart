@@ -87,15 +87,6 @@ class NewPrivateEventDetailsTab extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 8),
-              Row(
-                children: [
-                  Text(
-                    "Wähle einen Gruppenchat aus: ${state.selectedGroupchat != null ? state.selectedGroupchat!.title : ''}",
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
-                ],
-              ),
-              const SelectGroupchatHorizontalListNewPrivateEvent(),
             ],
           );
         },

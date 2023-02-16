@@ -1,26 +1,27 @@
 part of 'add_shopping_list_item_cubit.dart';
 
-@immutable
-abstract class AddShoppingListItemState {}
+enum AddShoppingListItemStateStatus { initial, loading, success, error }
 
-class AddShoppingListItemInitial extends AddShoppingListItemState {}
+class AddShoppingListItemState {
+  final ShoppingListItemEntity? addedShoppingListItem;
+  final ErrorWithTitleAndMessage? error;
+  final AddShoppingListItemStateStatus status;
 
-class AddShoppingListItemLoading extends AddShoppingListItemState {}
+  // dto data
+  String? itemName;
+  String? unit;
+  double? amount;
+  UserWithPrivateEventUserData? userToBuyItemEntity;
+  PrivateEventEntity? selectedPrivateEvent;
 
-class AddShoppingListItemError extends AddShoppingListItemState {
-  final String title;
-  final String message;
-
-  AddShoppingListItemError({
-    required this.message,
-    required this.title,
-  });
-}
-
-class AddShoppingListItemLoaded extends AddShoppingListItemState {
-  final ShoppingListItemEntity addedShoppingListItem;
-
-  AddShoppingListItemLoaded({
-    required this.addedShoppingListItem,
+  AddShoppingListItemState({
+    this.status = AddShoppingListItemStateStatus.initial,
+    this.addedShoppingListItem,
+    this.amount,
+    this.error,
+    this.itemName,
+    this.selectedPrivateEvent,
+    this.unit,
+    this.userToBuyItemEntity,
   });
 }
