@@ -1,12 +1,12 @@
 import 'package:http/http.dart';
 import 'package:http_parser/http_parser.dart';
-import 'package:social_media_app_flutter/domain/dto/groupchat/create_groupchat_dto.dart';
-import 'package:social_media_app_flutter/domain/dto/groupchat/create_groupchat_left_user_dto.dart';
-import 'package:social_media_app_flutter/domain/dto/groupchat/create_groupchat_user_dto.dart';
-import 'package:social_media_app_flutter/domain/failures/failures.dart';
+import 'package:social_media_app_flutter/core/dto/groupchat/create_groupchat_dto.dart';
+import 'package:social_media_app_flutter/core/dto/groupchat/create_groupchat_left_user_dto.dart';
+import 'package:social_media_app_flutter/core/dto/groupchat/create_groupchat_user_dto.dart';
+import 'package:social_media_app_flutter/core/failures/failures.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:dartz/dartz.dart';
-import 'package:social_media_app_flutter/domain/filter/get_one_groupchat_filter.dart';
+import 'package:social_media_app_flutter/core/filter/get_one_groupchat_filter.dart';
 import 'package:social_media_app_flutter/domain/repositories/chat_repository.dart';
 import 'package:social_media_app_flutter/infastructure/datasources/remote/graphql.dart';
 import 'package:social_media_app_flutter/infastructure/models/groupchat/groupchat_model.dart';
@@ -116,11 +116,14 @@ class ChatRepositoryImpl implements ChatRepository {
       );
 
       if (response.hasException) {
+        print(response.exception);
+
         return Left(GeneralFailure());
       }
 
       return Right(GroupchatModel.fromJson(response.data!["findGroupchat"]));
     } catch (e) {
+      print(e);
       return Left(GeneralFailure());
     }
   }

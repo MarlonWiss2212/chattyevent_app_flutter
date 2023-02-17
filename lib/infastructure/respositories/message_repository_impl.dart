@@ -1,9 +1,9 @@
 import 'package:graphql/client.dart';
-import 'package:social_media_app_flutter/domain/dto/create_message_dto.dart';
-import 'package:social_media_app_flutter/domain/failures/failures.dart';
+import 'package:social_media_app_flutter/core/dto/create_message_dto.dart';
+import 'package:social_media_app_flutter/core/failures/failures.dart';
 import 'package:social_media_app_flutter/domain/entities/message/message_entity.dart';
 import 'package:dartz/dartz.dart';
-import 'package:social_media_app_flutter/domain/filter/get_messages_filter.dart';
+import 'package:social_media_app_flutter/core/filter/get_messages_filter.dart';
 import 'package:social_media_app_flutter/domain/repositories/message_repository.dart';
 import 'package:social_media_app_flutter/infastructure/datasources/remote/graphql.dart';
 import 'package:social_media_app_flutter/infastructure/models/message/message_model.dart';

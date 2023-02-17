@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/private_event_cubit.dart';
-import 'package:social_media_app_flutter/domain/filter/get_one_private_event_filter.dart';
+import 'package:social_media_app_flutter/core/filter/get_one_private_event_filter.dart';
 import 'package:social_media_app_flutter/presentation/widgets/privat_event_page/tab_bar/info_tab/private_event_info_tab_details.dart';
 
 class InfoTab extends StatelessWidget {

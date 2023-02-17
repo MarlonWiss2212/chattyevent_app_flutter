@@ -3,8 +3,8 @@ import 'package:dartz/dartz.dart';
 import 'package:meta/meta.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
 import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
-import 'package:social_media_app_flutter/domain/failures/failures.dart';
-import 'package:social_media_app_flutter/domain/filter/get_one_user_filter.dart';
+import 'package:social_media_app_flutter/core/failures/failures.dart';
+import 'package:social_media_app_flutter/core/filter/get_one_user_filter.dart';
 import 'package:social_media_app_flutter/domain/usecases/user_usecases.dart';
 
 part 'profile_page_state.dart';

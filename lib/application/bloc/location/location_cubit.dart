@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:social_media_app_flutter/domain/failures/location_failures.dart';
+import 'package:social_media_app_flutter/core/failures/location_failures.dart';
 import 'package:social_media_app_flutter/domain/usecases/location_usecases.dart';
 
 part 'location_state.dart';

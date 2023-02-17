@@ -3,10 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_search_cubit.dart';
-import 'package:social_media_app_flutter/domain/dto/groupchat/create_groupchat_user_dto.dart';
+import 'package:social_media_app_flutter/core/dto/groupchat/create_groupchat_user_dto.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
-import 'package:social_media_app_flutter/domain/filter/get_users_filter.dart';
+import 'package:social_media_app_flutter/core/filter/get_users_filter.dart';
 import 'package:social_media_app_flutter/presentation/widgets/user_list/user_grid_list.dart';
 
 class AddUserGroupchatListWithSearchbar extends StatelessWidget {

@@ -1,8 +1,8 @@
 import 'package:dartz/dartz.dart';
 import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
-import 'package:social_media_app_flutter/domain/failures/failures.dart';
-import 'package:social_media_app_flutter/domain/filter/get_one_user_filter.dart';
-import 'package:social_media_app_flutter/domain/filter/get_users_filter.dart';
+import 'package:social_media_app_flutter/core/failures/failures.dart';
+import 'package:social_media_app_flutter/core/filter/get_one_user_filter.dart';
+import 'package:social_media_app_flutter/core/filter/get_users_filter.dart';
 import 'package:social_media_app_flutter/domain/repositories/user_repository.dart';
 import 'package:social_media_app_flutter/infastructure/datasources/remote/graphql.dart';
 import 'package:social_media_app_flutter/infastructure/models/user_model.dart';

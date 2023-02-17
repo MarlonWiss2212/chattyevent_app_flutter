@@ -5,7 +5,8 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/message/message_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
-import 'package:social_media_app_flutter/domain/filter/get_messages_filter.dart';
+import 'package:social_media_app_flutter/core/filter/get_messages_filter.dart';
+import 'package:social_media_app_flutter/core/filter/limit_filter.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 import 'package:social_media_app_flutter/presentation/widgets/chat_page/message_area.dart';
 import 'package:social_media_app_flutter/presentation/widgets/chat_page/message_input.dart';
@@ -17,7 +18,10 @@ class ChatPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     BlocProvider.of<MessageCubit>(context).getMessages(
-      getMessagesFilter: GetMessagesFilter(groupchatTo: groupchatId),
+      getMessagesFilter: GetMessagesFilter(
+        groupchatTo: groupchatId,
+        limitFilter: LimitFilter(limit: 1000),
+      ),
     );
 
     return BlocBuilder<CurrentChatCubit, CurrentChatState>(

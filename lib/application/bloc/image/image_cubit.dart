@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:meta/meta.dart';
-import 'package:social_media_app_flutter/domain/failures/image_picker_failures.dart';
+import 'package:social_media_app_flutter/core/failures/image_picker_failures.dart';
 import 'package:social_media_app_flutter/domain/usecases/image_picker_usecases.dart';
 
 part 'image_state.dart';

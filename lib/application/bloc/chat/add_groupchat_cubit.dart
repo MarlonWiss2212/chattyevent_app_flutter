@@ -4,11 +4,11 @@ import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:meta/meta.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
-import 'package:social_media_app_flutter/domain/dto/groupchat/create_groupchat_dto.dart';
-import 'package:social_media_app_flutter/domain/dto/groupchat/create_groupchat_user_from_create_groupchat_dto.dart';
+import 'package:social_media_app_flutter/core/dto/groupchat/create_groupchat_dto.dart';
+import 'package:social_media_app_flutter/core/dto/groupchat/create_groupchat_user_from_create_groupchat_dto.dart';
 import 'package:social_media_app_flutter/domain/entities/error_with_title_and_message.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
-import 'package:social_media_app_flutter/domain/failures/failures.dart';
+import 'package:social_media_app_flutter/core/failures/failures.dart';
 import 'package:social_media_app_flutter/domain/usecases/chat_usecases.dart';
 
 part 'add_groupchat_state.dart';

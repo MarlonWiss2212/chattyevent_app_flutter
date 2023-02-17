@@ -2,8 +2,8 @@ import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:meta/meta.dart';
 import 'package:social_media_app_flutter/domain/entities/shopping_list_item_entity.dart';
-import 'package:social_media_app_flutter/domain/failures/failures.dart';
-import 'package:social_media_app_flutter/domain/filter/get_shopping_list_items_filter.dart';
+import 'package:social_media_app_flutter/core/failures/failures.dart';
+import 'package:social_media_app_flutter/core/filter/get_shopping_list_items_filter.dart';
 import 'package:social_media_app_flutter/domain/usecases/shopping_list_item_usecases.dart';
 
 part 'shopping_list_state.dart';

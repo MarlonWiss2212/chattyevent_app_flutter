@@ -10,8 +10,8 @@ import 'package:social_media_app_flutter/application/bloc/shopping_list/shopping
 import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
-import 'package:social_media_app_flutter/domain/filter/get_one_groupchat_filter.dart';
-import 'package:social_media_app_flutter/domain/filter/get_one_private_event_filter.dart';
+import 'package:social_media_app_flutter/core/filter/get_one_groupchat_filter.dart';
+import 'package:social_media_app_flutter/core/filter/get_one_private_event_filter.dart';
 import 'package:social_media_app_flutter/domain/usecases/chat_usecases.dart';
 import 'package:social_media_app_flutter/domain/usecases/private_event_usecases.dart';
 import 'package:social_media_app_flutter/domain/usecases/shopping_list_item_usecases.dart';

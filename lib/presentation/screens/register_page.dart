@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
-import 'package:social_media_app_flutter/domain/dto/create_user_dto.dart';
+import 'package:social_media_app_flutter/core/dto/create_user_dto.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 import 'package:social_media_app_flutter/presentation/widgets/dialog/buttons/ok_button.dart';
 import 'package:social_media_app_flutter/presentation/widgets/circle_image/select_circle_image.dart';

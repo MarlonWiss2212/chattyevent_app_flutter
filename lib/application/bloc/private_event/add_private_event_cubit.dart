@@ -3,14 +3,13 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:meta/meta.dart';
-import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/private_event_cubit.dart';
-import 'package:social_media_app_flutter/domain/dto/private_event/create_location_private_event_dto.dart';
-import 'package:social_media_app_flutter/domain/dto/private_event/create_private_event_dto.dart';
+import 'package:social_media_app_flutter/core/dto/private_event/create_location_private_event_dto.dart';
+import 'package:social_media_app_flutter/core/dto/private_event/create_private_event_dto.dart';
 import 'package:social_media_app_flutter/domain/entities/error_with_title_and_message.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
-import 'package:social_media_app_flutter/domain/failures/failures.dart';
+import 'package:social_media_app_flutter/core/failures/failures.dart';
 import 'package:social_media_app_flutter/domain/usecases/private_event_usecases.dart';
 
 part 'add_private_event_state.dart';

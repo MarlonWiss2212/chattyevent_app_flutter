@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart';
-import 'package:social_media_app_flutter/domain/dto/groupchat/create_groupchat_left_user_dto.dart';
+import 'package:social_media_app_flutter/core/dto/groupchat/create_groupchat_left_user_dto.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/user_with_groupchat_user_data.dart';
 import 'package:social_media_app_flutter/presentation/widgets/user_list/user_list_tile.dart';
 

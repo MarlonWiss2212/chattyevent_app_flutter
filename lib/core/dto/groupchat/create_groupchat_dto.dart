@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:social_media_app_flutter/domain/dto/groupchat/create_groupchat_user_from_create_groupchat_dto.dart';
+import 'package:social_media_app_flutter/core/dto/groupchat/create_groupchat_user_from_create_groupchat_dto.dart';
 
 class CreateGroupchatDto {
   String title;

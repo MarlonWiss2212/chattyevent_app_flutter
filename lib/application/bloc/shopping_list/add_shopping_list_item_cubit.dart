@@ -1,17 +1,14 @@
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:meta/meta.dart';
-import 'package:social_media_app_flutter/application/bloc/private_event/add_private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/shopping_list/shopping_list_cubit.dart';
-import 'package:social_media_app_flutter/domain/dto/shopping_list_item/create_shopping_list_item_dto.dart';
+import 'package:social_media_app_flutter/core/dto/shopping_list_item/create_shopping_list_item_dto.dart';
 import 'package:social_media_app_flutter/domain/entities/error_with_title_and_message.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
-import 'package:social_media_app_flutter/domain/entities/private_event/private_event_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/user_with_private_event_user_data.dart';
 import 'package:social_media_app_flutter/domain/entities/shopping_list_item_entity.dart';
-import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
-import 'package:social_media_app_flutter/domain/failures/failures.dart';
+import 'package:social_media_app_flutter/core/failures/failures.dart';
 import 'package:social_media_app_flutter/domain/usecases/shopping_list_item_usecases.dart';
 
 part 'add_shopping_list_item_state.dart';

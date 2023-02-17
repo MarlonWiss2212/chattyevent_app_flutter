@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:social_media_app_flutter/domain/failures/location_failures.dart';
+import 'package:social_media_app_flutter/core/failures/location_failures.dart';
 import 'package:social_media_app_flutter/domain/repositories/device/location_repository.dart';
 
 class LocationUseCases {

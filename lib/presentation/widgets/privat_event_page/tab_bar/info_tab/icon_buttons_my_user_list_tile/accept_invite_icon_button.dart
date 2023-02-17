@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
-import 'package:social_media_app_flutter/domain/dto/private_event/update_private_event_user_dto.dart';
+import 'package:social_media_app_flutter/core/dto/private_event/update_private_event_user_dto.dart';
 
 class AcceptInviteIconButton extends StatelessWidget {
   final String privateEventId;

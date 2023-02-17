@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:social_media_app_flutter/domain/dto/private_event/create_location_private_event_dto.dart';
+import 'package:social_media_app_flutter/core/dto/private_event/create_location_private_event_dto.dart';
 
 class CreatePrivateEventDto {
   String title;

@@ -14,7 +14,7 @@ import 'package:social_media_app_flutter/application/bloc/auth/current_user_cubi
 import 'package:social_media_app_flutter/application/provider/darkMode.dart';
 import 'package:social_media_app_flutter/bloc_init.dart';
 import 'package:social_media_app_flutter/colors.dart';
-import 'package:social_media_app_flutter/domain/filter/get_one_user_filter.dart';
+import 'package:social_media_app_flutter/core/filter/get_one_user_filter.dart';
 import 'package:social_media_app_flutter/domain/usecases/settings_usecases.dart';
 import 'package:social_media_app_flutter/infastructure/respositories/device/settings_repository_impl.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
