@@ -48,7 +48,7 @@ class PrivateEventEntity {
         } else {
           users[userIndex] = PrivateEventUserEntity.merge(
             newEntity: newUser,
-            oldEntity: oldEntity.users![userIndex],
+            oldEntity: users[userIndex],
           );
         }
       }

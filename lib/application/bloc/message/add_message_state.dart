@@ -1,20 +1,15 @@
 part of 'add_message_cubit.dart';
 
-@immutable
-abstract class AddMessageState {}
+enum AddMessageStateStatus { initial, loading, success, error }
 
-class AddMessageInitial extends AddMessageState {}
+class AddMessageState {
+  final MessageEntity? addedMessage;
+  final ErrorWithTitleAndMessage? error;
+  final AddMessageStateStatus status;
 
-class AddMessageLoading extends AddMessageState {}
-
-class AddMessageError extends AddMessageState {
-  final String title;
-  final String message;
-
-  AddMessageError({required this.message, required this.title});
-}
-
-class AddMessageLoaded extends AddMessageState {
-  final MessageEntity addedMessage;
-  AddMessageLoaded({required this.addedMessage});
+  AddMessageState({
+    this.addedMessage,
+    this.error,
+    this.status = AddMessageStateStatus.initial,
+  });
 }

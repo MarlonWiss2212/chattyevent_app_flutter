@@ -63,7 +63,7 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   Future getChatsViaApi() async {
-    emit(ChatState(chats: state.chats));
+    emit(ChatState(chats: state.chats, status: ChatStateStatus.loading));
 
     final Either<Failure, List<GroupchatEntity>> groupchatsOrFailure =
         await chatUseCases.getGroupchatsViaApi(
@@ -81,6 +81,7 @@ class ChatCubit extends Cubit<ChatState> {
             message: mapFailureToMessage(error),
             title: "Fehler",
           ),
+          status: ChatStateStatus.error,
         ),
       ),
       (groupchats) {

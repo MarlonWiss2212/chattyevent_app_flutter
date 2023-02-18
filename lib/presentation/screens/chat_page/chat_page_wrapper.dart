@@ -11,9 +11,11 @@ import 'package:social_media_app_flutter/core/graphql.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:social_media_app_flutter/core/filter/get_one_groupchat_filter.dart';
 import 'package:social_media_app_flutter/domain/usecases/chat_usecases.dart';
+import 'package:social_media_app_flutter/domain/usecases/message_usecases.dart';
 import 'package:social_media_app_flutter/domain/usecases/private_event_usecases.dart';
 import 'package:social_media_app_flutter/infastructure/datasources/remote/graphql.dart';
 import 'package:social_media_app_flutter/infastructure/respositories/chat_repository_impl.dart';
+import 'package:social_media_app_flutter/infastructure/respositories/message_repository_impl.dart';
 import 'package:social_media_app_flutter/infastructure/respositories/private_event_repository_impl.dart';
 import 'package:social_media_app_flutter/presentation/widgets/dialog/buttons/ok_button.dart';
 
@@ -39,13 +41,21 @@ class ChatPageWrapper extends StatelessWidget {
 
     return BlocProvider(
       create: (context) => CurrentChatCubit(
-        CurrentChatNormal(
+        CurrentChatState(
           privateEvents: const [],
           loadingPrivateEvents: false,
+          loadingMessages: false,
           usersWithGroupchatUserData: const [],
           usersWithLeftGroupchatUserData: const [],
           currentChat: chatToSet ?? GroupchatEntity(id: ""),
           loadingChat: false,
+        ),
+        messageUseCases: MessageUseCases(
+          messageRepository: MessageRepositoryImpl(
+            graphQlDatasource: GraphQlDatasourceImpl(
+              client: client,
+            ),
+          ),
         ),
         privateEventCubit: BlocProvider.of<PrivateEventCubit>(context),
         privateEventUseCases: PrivateEventUseCases(
@@ -65,13 +75,13 @@ class ChatPageWrapper extends StatelessWidget {
       ),
       child: BlocListener<CurrentChatCubit, CurrentChatState>(
         listener: (context, state) async {
-          if (state is CurrentChatError) {
+          if (state.error != null && state.showError) {
             return await showPlatformDialog(
               context: context,
               builder: (context) {
                 return PlatformAlertDialog(
-                  title: Text(state.title),
-                  content: Text(state.message),
+                  title: Text(state.error!.title),
+                  content: Text(state.error!.message),
                   actions: const [OKButton()],
                 );
               },

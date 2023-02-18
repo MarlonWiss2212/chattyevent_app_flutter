@@ -1,3 +1,4 @@
+import 'package:flutter_map/flutter_map.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_left_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/message/message_entity.dart';
@@ -72,24 +73,28 @@ class GroupchatEntity {
       users = oldEntity.users;
     }
 
-    List<MessageEntity>? messages = [];
+    List<MessageEntity>? messages = oldEntity.messages;
     if (newEntity.messages != null) {
       for (final newMessage in newEntity.messages!) {
-        if (oldEntity.messages != null) {
-          final oldMessage = oldEntity.messages!.firstWhere(
-            (element) => element.id == newMessage.id,
-            orElse: () => MessageEntity(id: "", emojiReactions: []),
-          );
-          messages.add(
-            MessageEntity.merge(newEntity: newMessage, oldEntity: oldMessage),
-          );
-        } else {
+        if (messages == null) {
+          messages ??= [];
           messages.add(newMessage);
+          continue;
+        }
+        final messageIndex = messages.indexWhere(
+          (element) => element.id == newMessage.id,
+        );
+        if (messageIndex == -1) {
+          messages.add(newMessage);
+        } else {
+          messages[messageIndex] = MessageEntity.merge(
+            newEntity: newMessage,
+            oldEntity: messages[messageIndex],
+          );
         }
       }
-    } else {
-      messages = oldEntity.messages;
     }
+    messages?.sort((a, b) => b.createdAt!.compareTo(a.createdAt!));
 
     return GroupchatEntity(
       id: newEntity.id,

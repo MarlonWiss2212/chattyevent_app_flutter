@@ -1,8 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:meta/meta.dart';
-import 'package:social_media_app_flutter/application/bloc/message/message_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart';
 import 'package:social_media_app_flutter/core/dto/create_message_dto.dart';
+import 'package:social_media_app_flutter/domain/entities/error_with_title_and_message.dart';
 import 'package:social_media_app_flutter/domain/entities/message/message_entity.dart';
 import 'package:social_media_app_flutter/core/failures/failures.dart';
 import 'package:social_media_app_flutter/domain/usecases/message_usecases.dart';
@@ -10,19 +11,15 @@ import 'package:social_media_app_flutter/domain/usecases/message_usecases.dart';
 part 'add_message_state.dart';
 
 class AddMessageCubit extends Cubit<AddMessageState> {
-  final MessageCubit messageCubit;
+  final CurrentChatCubit currentChatCubit;
   final MessageUseCases messageUseCases;
   AddMessageCubit({
-    required this.messageCubit,
+    required this.currentChatCubit,
     required this.messageUseCases,
-  }) : super(AddMessageInitial());
-
-  void reset() {
-    emit(AddMessageInitial());
-  }
+  }) : super(AddMessageState());
 
   Future createMessage({required CreateMessageDto createMessageDto}) async {
-    emit(AddMessageLoading());
+    emitState(status: AddMessageStateStatus.loading);
 
     final Either<Failure, MessageEntity> messageOrFailure =
         await messageUseCases.createMessageViaApi(
@@ -31,14 +28,33 @@ class AddMessageCubit extends Cubit<AddMessageState> {
 
     messageOrFailure.fold(
       (error) {
-        emit(
-          AddMessageError(title: "Fehler", message: mapFailureToMessage(error)),
+        emitState(
+          status: AddMessageStateStatus.error,
+          error: ErrorWithTitleAndMessage(
+            title: "Fehler",
+            message: mapFailureToMessage(error),
+          ),
         );
       },
       (message) {
-        messageCubit.mergeOrAdd(message: message);
-        emit(AddMessageLoaded(addedMessage: message));
+        currentChatCubit.mergeOrAddMessage(message: message);
+        emitState(
+          status: AddMessageStateStatus.success,
+          addedMessage: message,
+        );
       },
     );
+  }
+
+  void emitState({
+    AddMessageStateStatus? status,
+    ErrorWithTitleAndMessage? error,
+    MessageEntity? addedMessage,
+  }) {
+    emit(AddMessageState(
+      status: status ?? AddMessageStateStatus.initial,
+      error: error ?? state.error,
+      addedMessage: addedMessage ?? state.addedMessage,
+    ));
   }
 }

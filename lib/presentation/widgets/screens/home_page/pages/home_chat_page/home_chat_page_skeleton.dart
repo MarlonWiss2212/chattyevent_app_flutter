@@ -7,9 +7,9 @@ class HomeChatPageSkeleton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SkeletonListView(
+      spacing: 0,
       itemBuilder: (p0, p1) {
         return SkeletonListTile(
-          contentSpacing: 0,
           hasSubtitle: true,
           titleStyle: const SkeletonLineStyle(width: 100, height: 22),
           subtitleStyle:

@@ -7,8 +7,6 @@ import 'package:social_media_app_flutter/application/bloc/location/location_cubi
 import 'package:social_media_app_flutter/application/bloc/shopping_list/shopping_list_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_search_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/message/message_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/message/add_message_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/image/image_cubit.dart';
 import 'package:social_media_app_flutter/core/graphql.dart';
@@ -99,11 +97,6 @@ class BlocInit extends StatelessWidget {
           privateEventUseCases: privateEventUseCases,
         );
 
-        final messageCubit = MessageCubit(messageUseCases: messageUseCases);
-        final addMessageCubit = AddMessageCubit(
-          messageCubit: messageCubit,
-          messageUseCases: messageUseCases,
-        );
         final userCubit = UserCubit(userUseCases: userUseCases);
         final userSearchCubit = UserSearchCubit(userUseCases: userUseCases);
         final locationCubit = LocationCubit(
@@ -130,8 +123,6 @@ class BlocInit extends StatelessWidget {
 
         return MultiBlocProvider(
           providers: [
-            BlocProvider.value(value: messageCubit),
-            BlocProvider.value(value: addMessageCubit),
             BlocProvider.value(value: userCubit),
             BlocProvider.value(value: userSearchCubit),
             BlocProvider.value(value: privateEventCubit),
