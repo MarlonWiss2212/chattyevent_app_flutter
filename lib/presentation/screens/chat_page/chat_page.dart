@@ -15,12 +15,12 @@ class ChatPage extends StatelessWidget {
   Widget build(BuildContext context) {
     BlocProvider.of<CurrentChatCubit>(context).loadMessages();
 
-    return BlocBuilder<CurrentChatCubit, CurrentChatState>(
-      builder: (context, state) {
-        return PlatformScaffold(
-          appBar: PlatformAppBar(
-            leading: const AutoLeadingButton(),
-            title: Row(
+    return PlatformScaffold(
+      appBar: PlatformAppBar(
+        leading: const AutoLeadingButton(),
+        title: BlocBuilder<CurrentChatCubit, CurrentChatState>(
+          builder: (context, state) {
+            return Row(
               children: [
                 CircleAvatar(
                   backgroundImage: state.currentChat.profileImageLink != null
@@ -41,36 +41,43 @@ class ChatPage extends StatelessWidget {
                   ),
                 ),
               ],
+            );
+          },
+        ),
+        trailingActions: [
+          PlatformIconButton(
+            icon: const Icon(Icons.info),
+            onPressed: () => AutoRouter.of(context).push(
+              ChatInfoPageRoute(),
             ),
-            trailingActions: [
-              PlatformIconButton(
-                icon: const Icon(Icons.info),
-                onPressed: () => AutoRouter.of(context).push(
-                  ChatInfoPageRoute(),
-                ),
-              )
-            ],
+          )
+        ],
+      ),
+      body: Column(
+        children: [
+          BlocBuilder<CurrentChatCubit, CurrentChatState>(
+            builder: (context, state) {
+              if (state.loadingChat) {
+                return const LinearProgressIndicator();
+              }
+              return const SizedBox();
+            },
           ),
-          body: Column(
-            children: [
-              if (state.loadingChat) ...{const LinearProgressIndicator()},
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Column(
-                    children: [
-                      MessageArea(chatState: state),
-                      const SizedBox(height: 8),
-                      MessageInput(groupchatTo: groupchatId),
-                      const SizedBox(height: 8)
-                    ],
-                  ),
-                ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: Column(
+                children: [
+                  const MessageArea(),
+                  const SizedBox(height: 8),
+                  MessageInput(groupchatTo: groupchatId),
+                  const SizedBox(height: 8)
+                ],
               ),
-            ],
+            ),
           ),
-        );
-      },
+        ],
+      ),
     );
   }
 }

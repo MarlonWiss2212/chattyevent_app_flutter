@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
@@ -66,14 +68,18 @@ class _MessageInputState extends State<MessageInput> {
               children: [
                 // input area
                 Expanded(
-                  child: Container(
+                  child: AnimatedContainer(
                     alignment: Alignment.center,
                     padding: const EdgeInsets.symmetric(
                       horizontal: 8,
                     ),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
+                      border: Border.all(
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
                     ),
+                    duration: const Duration(seconds: 5),
                     child: PlatformTextField(
                       material: (context, platform) => MaterialTextFieldData(
                         decoration: const InputDecoration.collapsed(

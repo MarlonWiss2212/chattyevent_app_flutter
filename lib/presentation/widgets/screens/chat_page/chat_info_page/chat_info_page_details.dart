@@ -35,9 +35,7 @@ class ChatInfoPageDetails extends StatelessWidget {
       child: Column(
         children: [
           const SizedBox(height: 20),
-          CircleImage(
-            imageLink: chatState.currentChat.profileImageLink,
-          ),
+          CircleImage(imageLink: chatState.currentChat.profileImageLink),
           const SizedBox(height: 20),
           DescriptionChatInfoPage(chatState: chatState),
           const CustomDivider(),

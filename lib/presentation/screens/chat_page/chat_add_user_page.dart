@@ -17,36 +17,27 @@ class ChatAddUserPage extends StatelessWidget {
   Widget build(BuildContext context) {
     BlocProvider.of<UserSearchCubit>(context).getUsersViaApi();
 
-    return BlocBuilder<CurrentChatCubit, CurrentChatState>(
-      builder: (context, state) {
-        return PlatformScaffold(
-          appBar: PlatformAppBar(
-            title: const Text("User zum Chat hinzufügen"),
+    return PlatformScaffold(
+      appBar: PlatformAppBar(
+        title: const Text("User zum Chat hinzufügen"),
+      ),
+      body: Column(
+        children: [
+          BlocBuilder<CurrentChatCubit, CurrentChatState>(
+            builder: (context, state) {
+              if (state.loadingChat) {
+                return const LinearProgressIndicator();
+              }
+              return const SizedBox();
+            },
           ),
-          body: state.loadingChat && state.currentChat.id == ""
-              ? Center(child: PlatformCircularProgressIndicator())
-              : state.currentChat.id != ""
-                  ? Column(
-                      children: [
-                        if (state.loadingChat) ...{
-                          const LinearProgressIndicator()
-                        },
-                        Expanded(
-                          child: AddUserGroupchatListWithSearchbar(
-                            groupchatUsers: state.currentChat.users ?? [],
-                            groupchatId: groupchatId,
-                          ),
-                        ),
-                      ],
-                    )
-                  : Center(
-                      child: Text(
-                        "Fehler beim Laden des Chats mit der Id $groupchatId",
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-        );
-      },
+          Expanded(
+            child: AddUserGroupchatListWithSearchbar(
+              groupchatId: groupchatId,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
