@@ -79,7 +79,7 @@ import 'package:social_media_app_flutter/presentation/screens/settings_page/sett
     AutoRoute(
       page: ChatPageWrapper,
       guards: [AuthGuard],
-      path: '/chat/:id',
+      path: '/chats/:id',
       children: [
         AutoRoute(
           page: ChatPage,

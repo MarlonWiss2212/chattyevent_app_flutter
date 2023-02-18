@@ -399,7 +399,7 @@ class AppRouter extends _i29.RootStackRouter {
         ),
         _i29.RouteConfig(
           ChatPageWrapperRoute.name,
-          path: '/chat/:id',
+          path: '/chats/:id',
           guards: [authGuard],
           children: [
             _i29.RouteConfig(
@@ -650,7 +650,7 @@ class ChatPageWrapperRoute
     List<_i29.PageRouteInfo>? children,
   }) : super(
           ChatPageWrapperRoute.name,
-          path: '/chat/:id',
+          path: '/chats/:id',
           args: ChatPageWrapperRouteArgs(
             key: key,
             groupchatId: groupchatId,
