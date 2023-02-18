@@ -8,6 +8,7 @@ import 'package:social_media_app_flutter/application/bloc/private_event/current_
 import 'package:social_media_app_flutter/application/bloc/private_event/private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/shopping_list/shopping_list_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
+import 'package:social_media_app_flutter/core/graphql.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
 import 'package:social_media_app_flutter/core/filter/get_one_groupchat_filter.dart';
@@ -19,7 +20,6 @@ import 'package:social_media_app_flutter/infastructure/datasources/remote/graphq
 import 'package:social_media_app_flutter/infastructure/respositories/chat_repository_impl.dart';
 import 'package:social_media_app_flutter/infastructure/respositories/private_event_repository_impl.dart';
 import 'package:social_media_app_flutter/infastructure/respositories/shopping_list_item_repository_impl.dart';
-import 'package:social_media_app_flutter/injection.dart';
 import 'package:social_media_app_flutter/presentation/widgets/dialog/buttons/ok_button.dart';
 
 class PrivateEventWrapperPage extends StatelessWidget {

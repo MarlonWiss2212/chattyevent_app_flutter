@@ -50,7 +50,6 @@ class NewPrivateEventLocationTab extends StatelessWidget {
                   textInputAction: TextInputAction.next,
                 ),
               ),
-              const SizedBox(height: 8),
               Container(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 8,

@@ -11,6 +11,7 @@ import 'package:social_media_app_flutter/application/bloc/message/message_cubit.
 import 'package:social_media_app_flutter/application/bloc/message/add_message_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/image/image_cubit.dart';
+import 'package:social_media_app_flutter/core/graphql.dart';
 import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
 import 'package:social_media_app_flutter/domain/usecases/chat_usecases.dart';
 import 'package:social_media_app_flutter/domain/usecases/image_picker_usecases.dart';
@@ -29,7 +30,6 @@ import 'package:social_media_app_flutter/infastructure/respositories/message_rep
 import 'package:social_media_app_flutter/infastructure/respositories/private_event_repository_impl.dart';
 import 'package:social_media_app_flutter/infastructure/respositories/shopping_list_item_repository_impl.dart';
 import 'package:social_media_app_flutter/infastructure/respositories/user_repository_impl.dart';
-import 'package:social_media_app_flutter/injection.dart';
 import 'package:social_media_app_flutter/main.dart';
 import 'package:social_media_app_flutter/presentation/router/auth_guard.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';

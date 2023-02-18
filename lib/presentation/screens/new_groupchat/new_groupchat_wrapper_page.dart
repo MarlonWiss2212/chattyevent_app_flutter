@@ -6,10 +6,10 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/add_groupchat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
+import 'package:social_media_app_flutter/core/graphql.dart';
 import 'package:social_media_app_flutter/domain/usecases/chat_usecases.dart';
 import 'package:social_media_app_flutter/infastructure/datasources/remote/graphql.dart';
 import 'package:social_media_app_flutter/infastructure/respositories/chat_repository_impl.dart';
-import 'package:social_media_app_flutter/injection.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 import 'package:social_media_app_flutter/presentation/widgets/dialog/buttons/ok_button.dart';
 

@@ -7,6 +7,7 @@ import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
+import 'package:social_media_app_flutter/core/graphql.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:social_media_app_flutter/core/filter/get_one_groupchat_filter.dart';
 import 'package:social_media_app_flutter/domain/usecases/chat_usecases.dart';
@@ -14,7 +15,6 @@ import 'package:social_media_app_flutter/domain/usecases/private_event_usecases.
 import 'package:social_media_app_flutter/infastructure/datasources/remote/graphql.dart';
 import 'package:social_media_app_flutter/infastructure/respositories/chat_repository_impl.dart';
 import 'package:social_media_app_flutter/infastructure/respositories/private_event_repository_impl.dart';
-import 'package:social_media_app_flutter/injection.dart';
 import 'package:social_media_app_flutter/presentation/widgets/dialog/buttons/ok_button.dart';
 
 class ChatPageWrapper extends StatelessWidget {

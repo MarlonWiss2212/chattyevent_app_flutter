@@ -12,7 +12,7 @@ import 'package:social_media_app_flutter/core/failures/failures.dart';
 import 'package:social_media_app_flutter/domain/usecases/auth_usecases.dart';
 import 'package:social_media_app_flutter/domain/usecases/notification_usecases.dart';
 import 'package:social_media_app_flutter/domain/usecases/user_usecases.dart';
-import './../../../one_signal.dart' as one_signal;
+import '../../../core/one_signal.dart' as one_signal;
 
 part 'auth_state.dart';
 
