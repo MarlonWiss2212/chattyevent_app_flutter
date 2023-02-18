@@ -66,6 +66,7 @@ class MessageList extends StatelessWidget {
           elements: messages,
           useStickyGroupSeparators: true,
           reverse: true,
+          sort: false,
           order: GroupedListOrder.DESC,
           floatingHeader: true,
           groupBy: (messageEntity) {

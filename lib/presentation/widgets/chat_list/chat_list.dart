@@ -12,6 +12,10 @@ class ChatList extends StatelessWidget {
     return ListView.builder(
       shrinkWrap: true,
       itemBuilder: (context, index) {
+        final message =
+            chats[index].messages != null && chats[index].messages!.isNotEmpty
+                ? chats[index].messages!.last
+                : null;
         return ListTile(
           leading: CircleAvatar(
             backgroundImage: chats[index].profileImageLink != null
@@ -28,11 +32,17 @@ class ChatList extends StatelessWidget {
               style: Theme.of(context).textTheme.titleMedium,
             ),
           ),
-          subtitle: const Text(
-            "Letzte Nachricht",
-            softWrap: true,
-            overflow: TextOverflow.ellipsis,
-          ),
+          subtitle: message != null
+              ? Text(
+                  "${message.createdBy}: ${message.message}",
+                  softWrap: true,
+                  overflow: TextOverflow.ellipsis,
+                )
+              : const Text(
+                  "Keine Nachricht",
+                  softWrap: true,
+                  overflow: TextOverflow.ellipsis,
+                ),
           onTap: () {
             AutoRouter.of(context).push(
               ChatPageWrapperRoute(

@@ -69,7 +69,6 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
       );
 
       if (response.hasException) {
-        print(response.exception);
         return Left(GeneralFailure());
       }
 
@@ -77,8 +76,6 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
         PrivateEventModel.fromJson(response.data!['createPrivateEvent']),
       );
     } catch (e) {
-      print(e);
-
       return Left(ServerFailure());
     }
   }

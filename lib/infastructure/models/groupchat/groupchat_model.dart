@@ -1,8 +1,10 @@
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_left_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
+import 'package:social_media_app_flutter/domain/entities/message/message_entity.dart';
 import 'package:social_media_app_flutter/infastructure/models/groupchat/groupchat_left_user_model.dart';
 import 'package:social_media_app_flutter/infastructure/models/groupchat/groupchat_user_model.dart';
+import 'package:social_media_app_flutter/infastructure/models/message/message_model.dart';
 
 class GroupchatModel extends GroupchatEntity {
   GroupchatModel({
@@ -11,6 +13,7 @@ class GroupchatModel extends GroupchatEntity {
     String? profileImageLink,
     List<GroupchatUserEntity>? users,
     List<GroupchatLeftUserEntity>? leftUsers,
+    List<MessageEntity>? messages,
     String? description,
     String? createdBy,
     DateTime? createdAt,
@@ -20,6 +23,7 @@ class GroupchatModel extends GroupchatEntity {
           title: title,
           profileImageLink: profileImageLink,
           users: users,
+          messages: messages,
           leftUsers: leftUsers,
           description: description,
           createdAt: createdAt,
@@ -44,6 +48,14 @@ class GroupchatModel extends GroupchatEntity {
       }
     }
 
+    List<MessageEntity>? messages;
+    if (json["messages"] != null) {
+      messages = [];
+      for (final message in json["messages"]) {
+        messages.add(MessageModel.fromJson(message));
+      }
+    }
+
     final createdAt = json["createdAt"] != null
         ? DateTime.parse(json["createdAt"]).toLocal()
         : null;
@@ -58,6 +70,7 @@ class GroupchatModel extends GroupchatEntity {
       profileImageLink: json['profileImageLink'],
       users: users,
       leftUsers: leftUsers,
+      messages: messages,
       description: json["description"],
       createdBy: json["createdBy"],
       createdAt: createdAt,

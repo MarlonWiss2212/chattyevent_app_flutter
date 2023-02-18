@@ -9,7 +9,7 @@ class MessageModel extends MessageEntity {
     String? fileLink,
     String? groupchatTo,
     String? messageToReactTo,
-    required List<MessageEmojiReactionEntity> emojiReactions,
+    List<MessageEmojiReactionEntity>? emojiReactions,
     String? createdBy,
     DateTime? createdAt,
     DateTime? updatedAt,
@@ -26,7 +26,7 @@ class MessageModel extends MessageEntity {
         );
 
   factory MessageModel.fromJson(Map<String, dynamic> json) {
-    List<MessageEmojiReactionEntity>? messageEmojiReactions = [];
+    List<MessageEmojiReactionEntity>? messageEmojiReactions;
     if (json["emojiReactions"] != null) {
       messageEmojiReactions = [];
       for (final messageEmojiReaction in json["emojiReactions"]) {

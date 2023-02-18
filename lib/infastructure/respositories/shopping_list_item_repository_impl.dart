@@ -124,7 +124,6 @@ class ShoppingListItemRepositoryImpl implements ShoppingListItemRepository {
       );
 
       if (response.hasException) {
-        print(response.exception);
         return Left(GeneralFailure());
       }
 
@@ -134,8 +133,6 @@ class ShoppingListItemRepositoryImpl implements ShoppingListItemRepository {
         ),
       );
     } catch (e) {
-      print(e);
-
       return Left(ServerFailure());
     }
   }

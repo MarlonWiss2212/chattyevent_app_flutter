@@ -4,6 +4,8 @@ import 'package:social_media_app_flutter/core/dto/groupchat/create_groupchat_dto
 import 'package:social_media_app_flutter/core/dto/groupchat/create_groupchat_left_user_dto.dart';
 import 'package:social_media_app_flutter/core/dto/groupchat/create_groupchat_user_dto.dart';
 import 'package:social_media_app_flutter/core/failures/failures.dart';
+import 'package:social_media_app_flutter/core/filter/get_messages_filter.dart';
+import 'package:social_media_app_flutter/core/filter/limit_filter.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:dartz/dartz.dart';
 import 'package:social_media_app_flutter/core/filter/get_one_groupchat_filter.dart';
@@ -67,12 +69,10 @@ class ChatRepositoryImpl implements ChatRepository {
       );
 
       if (response.hasException) {
-        print(response.exception);
         return Left(GeneralFailure());
       }
       return Right(GroupchatModel.fromJson(response.data!["createGroupchat"]));
     } catch (e) {
-      print(e);
       return Left(ServerFailure());
     }
   }
@@ -80,12 +80,13 @@ class ChatRepositoryImpl implements ChatRepository {
   @override
   Future<Either<Failure, GroupchatEntity>> getGroupchatViaApi({
     required GetOneGroupchatFilter getOneGroupchatFilter,
+    GetMessagesFilter? getMessagesFilter,
   }) async {
     try {
       final response = await graphQlDatasource.query(
         """
-        query FindGroupchat(\$input: FindOneGroupchatInput!) {
-          findGroupchat(filter: \$input) {
+        query FindGroupchat(\$input: FindOneGroupchatInput!, \$messageInput: FindMessagesInput) {
+          findGroupchat(filter: \$input, findMessagesInput: \$messageInput) {
             _id
             title
             description
@@ -105,6 +106,13 @@ class ChatRepositoryImpl implements ChatRepository {
               updatedAt
               leftGroupchatTo
             }
+            messages {
+              _id
+              message
+              groupchatTo
+              createdBy
+              createdAt
+            }
             createdBy
             createdAt
           }
@@ -112,28 +120,29 @@ class ChatRepositoryImpl implements ChatRepository {
         """,
         variables: {
           "input": getOneGroupchatFilter.toMap(),
+          "messageInput": getMessagesFilter?.toMap()
         },
       );
 
       if (response.hasException) {
-        print(response.exception);
-
         return Left(GeneralFailure());
       }
 
       return Right(GroupchatModel.fromJson(response.data!["findGroupchat"]));
     } catch (e) {
-      print(e);
       return Left(GeneralFailure());
     }
   }
 
   @override
-  Future<Either<Failure, List<GroupchatEntity>>> getGroupchatsViaApi() async {
+  Future<Either<Failure, List<GroupchatEntity>>> getGroupchatsViaApi({
+    LimitFilter? messagesLimitFilter,
+  }) async {
     try {
-      final response = await graphQlDatasource.query("""
-        query FindGroupchats {
-          findGroupchats {
+      final response = await graphQlDatasource.query(
+        """
+        query FindGroupchats(\$input: LimitFilterInput!) {
+          findGroupchats(messageFilterForEveryGroupchat: \$input) {
             _id
             profileImageLink
             title
@@ -142,9 +151,18 @@ class ChatRepositoryImpl implements ChatRepository {
               userId
               usernameForChat
             }
+            messages {
+              _id
+              message
+              groupchatTo
+              createdBy
+              createdAt
+            }
           }
         }
-        """);
+        """,
+        variables: {"input": messagesLimitFilter?.toMap()},
+      );
 
       if (response.hasException) {
         return Left(GeneralFailure());

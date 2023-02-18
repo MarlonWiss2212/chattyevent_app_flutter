@@ -1,5 +1,6 @@
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_left_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
+import 'package:social_media_app_flutter/domain/entities/message/message_entity.dart';
 
 class GroupchatEntity {
   final String id;
@@ -7,6 +8,7 @@ class GroupchatEntity {
   final String? profileImageLink;
   final List<GroupchatUserEntity>? users;
   final List<GroupchatLeftUserEntity>? leftUsers;
+  final List<MessageEntity>? messages;
   final String? description;
   final String? createdBy;
   final DateTime? createdAt;
@@ -15,6 +17,7 @@ class GroupchatEntity {
   GroupchatEntity({
     required this.id,
     this.title,
+    this.messages,
     this.description,
     this.profileImageLink,
     this.users,
@@ -69,12 +72,32 @@ class GroupchatEntity {
       users = oldEntity.users;
     }
 
+    List<MessageEntity>? messages = [];
+    if (newEntity.messages != null) {
+      for (final newMessage in newEntity.messages!) {
+        if (oldEntity.messages != null) {
+          final oldMessage = oldEntity.messages!.firstWhere(
+            (element) => element.id == newMessage.id,
+            orElse: () => MessageEntity(id: "", emojiReactions: []),
+          );
+          messages.add(
+            MessageEntity.merge(newEntity: newMessage, oldEntity: oldMessage),
+          );
+        } else {
+          messages.add(newMessage);
+        }
+      }
+    } else {
+      messages = oldEntity.messages;
+    }
+
     return GroupchatEntity(
       id: newEntity.id,
       title: newEntity.title ?? oldEntity.title,
       profileImageLink:
           newEntity.profileImageLink ?? oldEntity.profileImageLink,
       users: users,
+      messages: messages,
       leftUsers: leftUsers,
       description: newEntity.description ?? oldEntity.description,
       createdBy: newEntity.createdBy ?? oldEntity.createdBy,

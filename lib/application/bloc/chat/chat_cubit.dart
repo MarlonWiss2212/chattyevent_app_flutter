@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:meta/meta.dart';
+import 'package:social_media_app_flutter/core/filter/limit_filter.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:social_media_app_flutter/core/failures/failures.dart';
 import 'package:social_media_app_flutter/domain/usecases/chat_usecases.dart';
@@ -13,7 +14,9 @@ class ChatCubit extends Cubit<ChatState> {
   final ChatUseCases chatUseCases;
   ChatCubit({required this.chatUseCases}) : super(ChatInitial());
 
-  GroupchatEntity mergeOrAdd({required GroupchatEntity groupchat}) {
+  GroupchatEntity mergeOrAdd({
+    required GroupchatEntity groupchat,
+  }) {
     int foundIndex = state.chats.indexWhere(
       (element) => element.id == groupchat.id,
     );
@@ -62,7 +65,12 @@ class ChatCubit extends Cubit<ChatState> {
     emit(ChatLoading(chats: state.chats));
 
     final Either<Failure, List<GroupchatEntity>> groupchatsOrFailure =
-        await chatUseCases.getGroupchatsViaApi();
+        await chatUseCases.getGroupchatsViaApi(
+      messagesLimitFilter: LimitFilter(
+        limit: 1,
+        offset: 0,
+      ),
+    );
 
     groupchatsOrFailure.fold(
       (error) => emit(

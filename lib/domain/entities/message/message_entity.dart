@@ -17,7 +17,7 @@ class MessageEntity {
     this.fileLink,
     this.groupchatTo,
     this.messageToReactTo,
-    required this.emojiReactions,
+    this.emojiReactions,
     this.createdBy,
     this.createdAt,
     this.updatedAt,
