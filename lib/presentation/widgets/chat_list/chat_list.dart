@@ -35,7 +35,7 @@ class ChatList extends StatelessWidget {
           subtitle: message != null
               ? Text(
                   //${message.createdBy}:
-                  " ${message.message}",
+                  "${message.message}",
                   softWrap: true,
                   overflow: TextOverflow.ellipsis,
                 )
