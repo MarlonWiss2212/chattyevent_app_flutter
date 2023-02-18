@@ -8,8 +8,8 @@ import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
 import 'package:social_media_app_flutter/core/filter/get_messages_filter.dart';
 import 'package:social_media_app_flutter/core/filter/limit_filter.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
-import 'package:social_media_app_flutter/presentation/widgets/chat_page/message_area.dart';
-import 'package:social_media_app_flutter/presentation/widgets/chat_page/message_input.dart';
+import 'package:social_media_app_flutter/presentation/widgets/screens/chat_page/message_area.dart';
+import 'package:social_media_app_flutter/presentation/widgets/screens/chat_page/message_input.dart';
 
 class ChatPage extends StatelessWidget {
   const ChatPage({@PathParam('id') required this.groupchatId, super.key});

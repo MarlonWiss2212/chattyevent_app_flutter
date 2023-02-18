@@ -2,11 +2,11 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'package:skeletons/skeletons.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 import 'package:social_media_app_flutter/presentation/widgets/chat_list/chat_list.dart';
 import 'package:social_media_app_flutter/presentation/widgets/dialog/buttons/ok_button.dart';
+import 'package:social_media_app_flutter/presentation/widgets/screens/home_page/pages/home_chat_page/home_chat_pageskeleton.dart';
 
 class HomeChatPage extends StatelessWidget {
   const HomeChatPage({super.key});
@@ -24,13 +24,13 @@ class HomeChatPage extends StatelessWidget {
         triggerMode: RefreshIndicatorTriggerMode.anywhere,
         child: BlocConsumer<ChatCubit, ChatState>(
           listener: (context, state) async {
-            if (state is ChatError) {
+            if (state.status == ChatStateStatus.error && state.error != null) {
               return await showPlatformDialog(
                 context: context,
                 builder: (context) {
                   return PlatformAlertDialog(
-                    title: Text(state.title),
-                    content: Text(state.message),
+                    title: Text(state.error!.title),
+                    content: Text(state.error!.message),
                     actions: const [OKButton()],
                   );
                 },
@@ -38,31 +38,17 @@ class HomeChatPage extends StatelessWidget {
             }
           },
           builder: (context, state) {
-            const emptyReturn = Center(child: Text("Keine Chats"));
-
-            if (state.chats.isEmpty && state is! ChatLoading) {
-              return emptyReturn;
+            if (state.chats.isEmpty &&
+                state.status != ChatStateStatus.loading) {
+              return const Center(child: Text("Keine Chats"));
             }
 
-            if (state.chats.isEmpty && state is ChatLoading) {
-              return SkeletonListView(
-                itemBuilder: (p0, p1) {
-                  return SkeletonListTile(
-                    hasSubtitle: true,
-                    titleStyle: const SkeletonLineStyle(width: 100, height: 22),
-                    subtitleStyle: const SkeletonLineStyle(
-                        width: double.infinity, height: 16),
-                    leadingStyle: const SkeletonAvatarStyle(
-                      shape: BoxShape.circle,
-                    ),
-                  );
-                },
-              );
+            if (state.chats.isEmpty &&
+                state.status == ChatStateStatus.loading) {
+              return const HomeChatPageSkeleton();
             }
 
-            return ChatList(
-              chats: state.chats,
-            );
+            return ChatList(chats: state.chats);
           },
         ),
       ),

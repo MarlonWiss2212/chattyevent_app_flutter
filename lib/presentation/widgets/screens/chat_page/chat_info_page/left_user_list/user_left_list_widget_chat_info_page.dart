@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:skeletons/skeletons.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart';
-import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/user_with_groupchat_user_data.dart';
-import 'package:social_media_app_flutter/presentation/widgets/chat_page/chat_info_page/left_user_list/user_left_list_groupchat.dart';
+import 'package:social_media_app_flutter/presentation/widgets/screens/chat_page/chat_info_page/left_user_list/user_left_list_groupchat.dart';
 
 class UserLeftListWidgetChatInfoPage extends StatelessWidget {
   final CurrentChatState chatState;

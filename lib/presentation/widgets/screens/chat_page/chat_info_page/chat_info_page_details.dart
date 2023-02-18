@@ -6,13 +6,13 @@ import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/user_with_groupchat_user_data.dart';
-import 'package:social_media_app_flutter/presentation/widgets/chat_page/chat_info_page/description_widget_chat_info_page.dart';
-import 'package:social_media_app_flutter/presentation/widgets/chat_page/chat_info_page/leave_chat_widget_chat_info_page.dart';
-import 'package:social_media_app_flutter/presentation/widgets/chat_page/chat_info_page/left_user_list/user_left_list_widget_chat_info_page.dart';
-import 'package:social_media_app_flutter/presentation/widgets/chat_page/chat_info_page/private_event_list_groupchat.dart';
-import 'package:social_media_app_flutter/presentation/widgets/chat_page/chat_info_page/user_list/user_list_widget_chat_info_page.dart';
 import 'package:social_media_app_flutter/presentation/widgets/circle_image/cirlce_image.dart';
 import 'package:social_media_app_flutter/presentation/widgets/divider.dart';
+import 'package:social_media_app_flutter/presentation/widgets/screens/chat_page/chat_info_page/description_widget_chat_info_page.dart';
+import 'package:social_media_app_flutter/presentation/widgets/screens/chat_page/chat_info_page/leave_chat_widget_chat_info_page.dart';
+import 'package:social_media_app_flutter/presentation/widgets/screens/chat_page/chat_info_page/left_user_list/user_left_list_widget_chat_info_page.dart';
+import 'package:social_media_app_flutter/presentation/widgets/screens/chat_page/chat_info_page/private_event_list_groupchat.dart';
+import 'package:social_media_app_flutter/presentation/widgets/screens/chat_page/chat_info_page/user_list/user_list_widget_chat_info_page.dart';
 
 class ChatInfoPageDetails extends StatelessWidget {
   final CurrentChatState chatState;

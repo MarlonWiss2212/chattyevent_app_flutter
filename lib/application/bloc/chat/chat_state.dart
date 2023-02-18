@@ -1,17 +1,17 @@
 part of 'chat_cubit.dart';
 
-@immutable
-abstract class ChatState {
+enum ChatStateStatus { initial, loading, success, error }
+
+class ChatState {
+  final ChatStateStatus status;
   final List<GroupchatEntity> chats;
-  const ChatState({required this.chats});
-}
+  final ErrorWithTitleAndMessage? error;
 
-class ChatInitial extends ChatState {
-  ChatInitial() : super(chats: []);
-}
-
-class ChatLoading extends ChatState {
-  const ChatLoading({required super.chats});
+  const ChatState({
+    required this.chats,
+    this.status = ChatStateStatus.initial,
+    this.error,
+  });
 }
 
 class ChatError extends ChatState {
@@ -22,8 +22,4 @@ class ChatError extends ChatState {
     required this.title,
     required this.message,
   });
-}
-
-class ChatLoaded extends ChatState {
-  const ChatLoaded({required super.chats});
 }

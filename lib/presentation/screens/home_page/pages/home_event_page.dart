@@ -6,7 +6,7 @@ import 'package:skeletons/skeletons.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/private_event_cubit.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 import 'package:social_media_app_flutter/presentation/widgets/dialog/buttons/ok_button.dart';
-import 'package:social_media_app_flutter/presentation/widgets/home_page/pages/home_event_page/private_event_grid_lists.dart';
+import 'package:social_media_app_flutter/presentation/widgets/screens/home_page/pages/home_event_page/private_event_grid_lists.dart';
 
 class HomeEventPage extends StatelessWidget {
   const HomeEventPage({super.key});

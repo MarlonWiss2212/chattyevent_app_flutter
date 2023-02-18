@@ -4,7 +4,7 @@ import 'package:skeletons/skeletons.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/user_with_groupchat_user_data.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
-import 'package:social_media_app_flutter/presentation/widgets/chat_page/chat_info_page/user_list/user_list_groupchat.dart';
+import 'package:social_media_app_flutter/presentation/widgets/screens/chat_page/chat_info_page/user_list/user_list_groupchat.dart';
 
 class UserListWidgetChatInfoPage extends StatelessWidget {
   final CurrentChatState chatState;

@@ -14,14 +14,12 @@ class SelectGroupchatHorizontalListNewPrivateEvent extends StatelessWidget {
       height: 100,
       child: BlocBuilder<ChatCubit, ChatState>(
         builder: (context, state) {
-          if (state.chats.isEmpty && state is ChatLoading) {
-            return Center(
-              child: PlatformCircularProgressIndicator(),
-            );
+          if (state.chats.isEmpty && state.status != ChatStateStatus.loading) {
+            return const Center(child: Text("Keine Chats"));
           }
 
-          if (state.chats.isEmpty && state is! ChatLoading) {
-            return const Center(child: Text("Keine Chats"));
+          if (state.chats.isEmpty && state.status == ChatStateStatus.loading) {
+            return Center(child: PlatformCircularProgressIndicator());
           }
 
           return ListView.separated(

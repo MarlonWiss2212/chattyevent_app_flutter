@@ -6,7 +6,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:social_media_app_flutter/application/bloc/location/location_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/private_event_cubit.dart';
 import 'package:social_media_app_flutter/presentation/widgets/dialog/buttons/ok_button.dart';
-import 'package:social_media_app_flutter/presentation/widgets/home_page/pages/home_map_page/private_event_map_marker.dart';
+import 'package:social_media_app_flutter/presentation/widgets/screens/home_page/pages/home_map_page/private_event_map_marker.dart';
 
 class Location extends StatelessWidget {
   const Location({super.key});

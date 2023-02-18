@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart';
-import 'package:social_media_app_flutter/presentation/widgets/chat_page/chat_info_page/chat_info_page_details.dart';
+import 'package:social_media_app_flutter/presentation/widgets/screens/chat_page/chat_info_page/chat_info_page_details.dart';
 
 class ChatInfoPage extends StatelessWidget {
   const ChatInfoPage({@PathParam('id') required this.groupchatId, super.key});

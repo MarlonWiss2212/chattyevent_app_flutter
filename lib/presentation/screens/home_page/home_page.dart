@@ -5,7 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
-import 'package:social_media_app_flutter/presentation/widgets/home_page/mini_profile_image.dart';
+import 'package:social_media_app_flutter/presentation/widgets/screens/home_page/mini_profile_image.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});

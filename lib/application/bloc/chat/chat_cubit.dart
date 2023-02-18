@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:meta/meta.dart';
 import 'package:social_media_app_flutter/core/filter/limit_filter.dart';
+import 'package:social_media_app_flutter/domain/entities/error_with_title_and_message.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:social_media_app_flutter/core/failures/failures.dart';
 import 'package:social_media_app_flutter/domain/usecases/chat_usecases.dart';
@@ -12,7 +13,7 @@ part 'chat_state.dart';
 
 class ChatCubit extends Cubit<ChatState> {
   final ChatUseCases chatUseCases;
-  ChatCubit({required this.chatUseCases}) : super(ChatInitial());
+  ChatCubit({required this.chatUseCases}) : super(const ChatState(chats: []));
 
   GroupchatEntity mergeOrAdd({
     required GroupchatEntity groupchat,
@@ -28,12 +29,12 @@ class ChatCubit extends Cubit<ChatState> {
         oldEntity: state.chats[foundIndex],
       );
       emit(
-        ChatLoaded(chats: newGroupchats),
+        ChatState(chats: newGroupchats),
       );
       return newGroupchats[foundIndex];
     } else {
       emit(
-        ChatLoaded(
+        ChatState(
           chats: List.from(state.chats)..add(groupchat),
         ),
       );
@@ -58,11 +59,11 @@ class ChatCubit extends Cubit<ChatState> {
     newChats.removeWhere(
       (element) => element.id == groupchatId,
     );
-    emit(ChatLoaded(chats: newChats));
+    emit(ChatState(chats: newChats));
   }
 
   Future getChatsViaApi() async {
-    emit(ChatLoading(chats: state.chats));
+    emit(ChatState(chats: state.chats));
 
     final Either<Failure, List<GroupchatEntity>> groupchatsOrFailure =
         await chatUseCases.getGroupchatsViaApi(
@@ -74,10 +75,12 @@ class ChatCubit extends Cubit<ChatState> {
 
     groupchatsOrFailure.fold(
       (error) => emit(
-        ChatError(
+        ChatState(
           chats: state.chats,
-          title: "Fehler",
-          message: mapFailureToMessage(error),
+          error: ErrorWithTitleAndMessage(
+            message: mapFailureToMessage(error),
+            title: "Fehler",
+          ),
         ),
       ),
       (groupchats) {
