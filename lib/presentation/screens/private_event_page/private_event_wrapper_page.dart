@@ -8,18 +8,11 @@ import 'package:social_media_app_flutter/application/bloc/private_event/current_
 import 'package:social_media_app_flutter/application/bloc/private_event/private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/shopping_list/shopping_list_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
-import 'package:social_media_app_flutter/core/graphql.dart';
+import 'package:social_media_app_flutter/core/injection.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
 import 'package:social_media_app_flutter/core/filter/get_one_groupchat_filter.dart';
 import 'package:social_media_app_flutter/core/filter/get_one_private_event_filter.dart';
-import 'package:social_media_app_flutter/domain/usecases/chat_usecases.dart';
-import 'package:social_media_app_flutter/domain/usecases/private_event_usecases.dart';
-import 'package:social_media_app_flutter/domain/usecases/shopping_list_item_usecases.dart';
-import 'package:social_media_app_flutter/infastructure/datasources/remote/graphql.dart';
-import 'package:social_media_app_flutter/infastructure/respositories/chat_repository_impl.dart';
-import 'package:social_media_app_flutter/infastructure/respositories/private_event_repository_impl.dart';
-import 'package:social_media_app_flutter/infastructure/respositories/shopping_list_item_repository_impl.dart';
 import 'package:social_media_app_flutter/presentation/widgets/dialog/buttons/ok_button.dart';
 
 class PrivateEventWrapperPage extends StatelessWidget {
@@ -36,13 +29,6 @@ class PrivateEventWrapperPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final client = getGraphQlClient(
-      token: BlocProvider.of<AuthCubit>(context).state is AuthLoaded
-          ? (BlocProvider.of<AuthCubit>(context).state as AuthLoaded).token
-          : null,
-    );
-    GraphQlDatasource graphQlDatasource = GraphQlDatasourceImpl(client: client);
-
     CurrentPrivateEventCubit currentPrivateEventCubit =
         CurrentPrivateEventCubit(
       CurrentPrivateEventNormal(
@@ -57,21 +43,15 @@ class PrivateEventWrapperPage extends StatelessWidget {
       userCubit: BlocProvider.of<UserCubit>(context),
       shoppingListCubit: BlocProvider.of<ShoppingListCubit>(context),
       chatCubit: BlocProvider.of<ChatCubit>(context),
-      chatUseCases: ChatUseCases(
-        chatRepository: ChatRepositoryImpl(
-          graphQlDatasource: graphQlDatasource,
-        ),
+      chatUseCases: serviceLocator(
+        param1: BlocProvider.of<AuthCubit>(context).state,
       ),
-      shoppingListItemUseCases: ShoppingListItemUseCases(
-        shoppingListItemRepository: ShoppingListItemRepositoryImpl(
-          graphQlDatasource: graphQlDatasource,
-        ),
+      shoppingListItemUseCases: serviceLocator(
+        param1: BlocProvider.of<AuthCubit>(context).state,
       ),
       privateEventCubit: BlocProvider.of<PrivateEventCubit>(context),
-      privateEventUseCases: PrivateEventUseCases(
-        privateEventRepository: PrivateEventRepositoryImpl(
-          graphQlDatasource: graphQlDatasource,
-        ),
+      privateEventUseCases: serviceLocator(
+        param1: BlocProvider.of<AuthCubit>(context).state,
       ),
     );
 

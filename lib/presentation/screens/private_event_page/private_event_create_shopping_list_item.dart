@@ -5,10 +5,7 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/shopping_list/shopping_list_cubit.dart';
-import 'package:social_media_app_flutter/core/graphql.dart';
-import 'package:social_media_app_flutter/domain/usecases/shopping_list_item_usecases.dart';
-import 'package:social_media_app_flutter/infastructure/datasources/remote/graphql.dart';
-import 'package:social_media_app_flutter/infastructure/respositories/shopping_list_item_repository_impl.dart';
+import 'package:social_media_app_flutter/core/injection.dart';
 import 'package:social_media_app_flutter/presentation/widgets/dialog/buttons/ok_button.dart';
 import 'package:social_media_app_flutter/presentation/widgets/privat_event_page/create_shopping_list_item/create_shopping_list_item_detail_tab.dart';
 import '../../../application/bloc/shopping_list/add_shopping_list_item_cubit.dart';
@@ -29,13 +26,6 @@ class _PrivateEventCreateShoppingListItemState
     extends State<PrivateEventCreateShoppingListItem> {
   @override
   Widget build(BuildContext context) {
-    final client = getGraphQlClient(
-      token: BlocProvider.of<AuthCubit>(context).state is AuthLoaded
-          ? (BlocProvider.of<AuthCubit>(context).state as AuthLoaded).token
-          : null,
-    );
-    GraphQlDatasource graphQlDatasource = GraphQlDatasourceImpl(client: client);
-
     final currentPrivateEventCubit =
         BlocProvider.of<CurrentPrivateEventCubit>(context);
 
@@ -45,10 +35,8 @@ class _PrivateEventCreateShoppingListItemState
       ),
       currentPrivateEventCubit: currentPrivateEventCubit,
       shoppingListCubit: BlocProvider.of<ShoppingListCubit>(context),
-      shoppingListItemUseCases: ShoppingListItemUseCases(
-        shoppingListItemRepository: ShoppingListItemRepositoryImpl(
-          graphQlDatasource: graphQlDatasource,
-        ),
+      shoppingListItemUseCases: serviceLocator(
+        param1: BlocProvider.of<AuthCubit>(context).state,
       ),
     );
 

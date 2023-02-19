@@ -5,12 +5,9 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/profile_page_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
-import 'package:social_media_app_flutter/core/graphql.dart';
+import 'package:social_media_app_flutter/core/injection.dart';
 import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
 import 'package:social_media_app_flutter/core/filter/get_one_user_filter.dart';
-import 'package:social_media_app_flutter/domain/usecases/user_usecases.dart';
-import 'package:social_media_app_flutter/infastructure/datasources/remote/graphql.dart';
-import 'package:social_media_app_flutter/infastructure/respositories/user_repository_impl.dart';
 import 'package:social_media_app_flutter/presentation/widgets/dialog/buttons/ok_button.dart';
 import 'package:social_media_app_flutter/presentation/widgets/profile/user_profile_data_page.dart';
 
@@ -28,21 +25,13 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final client = getGraphQlClient(
-      token: BlocProvider.of<AuthCubit>(context).state is AuthLoaded
-          ? (BlocProvider.of<AuthCubit>(context).state as AuthLoaded).token
-          : null,
-    );
-
     return BlocProvider(
       create: (context) => ProfilePageCubit(
         ProfilePageInitial(
           user: userToSet ?? UserEntity(id: ""),
         ),
-        userUseCases: UserUseCases(
-          userRepository: UserRepositoryImpl(
-            graphQlDatasource: GraphQlDatasourceImpl(client: client),
-          ),
+        userUseCases: serviceLocator(
+          param1: BlocProvider.of<AuthCubit>(context).state,
         ),
         userCubit: BlocProvider.of<UserCubit>(context),
       ),

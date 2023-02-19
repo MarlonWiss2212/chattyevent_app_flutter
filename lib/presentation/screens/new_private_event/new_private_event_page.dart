@@ -6,10 +6,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/add_private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/private_event_cubit.dart';
-import 'package:social_media_app_flutter/core/graphql.dart';
-import 'package:social_media_app_flutter/domain/usecases/private_event_usecases.dart';
-import 'package:social_media_app_flutter/infastructure/datasources/remote/graphql.dart';
-import 'package:social_media_app_flutter/infastructure/respositories/private_event_repository_impl.dart';
+import 'package:social_media_app_flutter/core/injection.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 import 'package:social_media_app_flutter/presentation/widgets/dialog/buttons/ok_button.dart';
 
@@ -20,21 +17,11 @@ class NewPrivateEventPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final client = getGraphQlClient(
-      token: BlocProvider.of<AuthCubit>(context).state is AuthLoaded
-          ? (BlocProvider.of<AuthCubit>(context).state as AuthLoaded).token
-          : null,
-    );
-
     return BlocProvider.value(
       value: AddPrivateEventCubit(
         privateEventCubit: BlocProvider.of<PrivateEventCubit>(context),
-        privateEventUseCases: PrivateEventUseCases(
-          privateEventRepository: PrivateEventRepositoryImpl(
-            graphQlDatasource: GraphQlDatasourceImpl(
-              client: client,
-            ),
-          ),
+        privateEventUseCases: serviceLocator(
+          param1: BlocProvider.of<AuthCubit>(context).state,
         ),
       ),
       child: Builder(

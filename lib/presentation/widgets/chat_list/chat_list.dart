@@ -14,7 +14,7 @@ class ChatList extends StatelessWidget {
       itemBuilder: (context, index) {
         final message =
             chats[index].messages != null && chats[index].messages!.isNotEmpty
-                ? chats[index].messages!.last
+                ? chats[index].messages!.first
                 : null;
         return ListTile(
           leading: CircleAvatar(

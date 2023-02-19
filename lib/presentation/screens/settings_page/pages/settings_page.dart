@@ -2,9 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'package:provider/provider.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
-import 'package:social_media_app_flutter/application/provider/darkMode.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -44,8 +42,8 @@ class SettingsPage extends StatelessWidget {
               ),
               onTap: () {
                 BlocProvider.of<AuthCubit>(context).logout();
-                AutoRouter.of(context).popUntilRoot();
-                AutoRouter.of(context).replace(const LoginPageRoute());
+                AutoRouter.of(context).root.popUntilRoot();
+                AutoRouter.of(context).root.replace(const LoginPageRoute());
               },
             ),
           ],

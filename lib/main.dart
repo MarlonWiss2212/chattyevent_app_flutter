@@ -9,26 +9,13 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/current_user_cubit.dart';
 import 'package:social_media_app_flutter/application/provider/darkMode.dart';
 import 'package:social_media_app_flutter/bloc_init.dart';
 import 'package:social_media_app_flutter/core/colors.dart';
 import 'package:social_media_app_flutter/core/filter/get_one_user_filter.dart';
-import 'package:social_media_app_flutter/core/graphql.dart';
 import 'package:social_media_app_flutter/core/injection.dart';
-import 'package:social_media_app_flutter/domain/usecases/auth_usecases.dart';
-import 'package:social_media_app_flutter/domain/usecases/notification_usecases.dart';
-import 'package:social_media_app_flutter/domain/usecases/settings_usecases.dart';
-import 'package:social_media_app_flutter/domain/usecases/user_usecases.dart';
-import 'package:social_media_app_flutter/infastructure/datasources/device/notification.dart';
-import 'package:social_media_app_flutter/infastructure/datasources/local/sharedPreferences.dart';
-import 'package:social_media_app_flutter/infastructure/datasources/remote/graphql.dart';
-import 'package:social_media_app_flutter/infastructure/respositories/auth_repository_impl.dart';
-import 'package:social_media_app_flutter/infastructure/respositories/device/notification_repository_impl.dart';
-import 'package:social_media_app_flutter/infastructure/respositories/device/settings_repository_impl.dart';
-import 'package:social_media_app_flutter/infastructure/respositories/user_repository_impl.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
@@ -47,31 +34,12 @@ Future<void> main() async {
     }
   }
 
-  final client = getGraphQlClient();
-  final datasource = GraphQlDatasourceImpl(client: client);
-  final sharedPrefs = await SharedPreferences.getInstance();
-
   runApp(
     BlocProvider.value(
       value: AuthCubit(
-        notificationUseCases: NotificationUseCases(
-          notificationRepository: NotificationRepositoryImpl(
-            notificationDatasource: NotificationDatasourceImpl(),
-          ),
-        ),
-        userUseCases: UserUseCases(
-          userRepository: UserRepositoryImpl(
-            graphQlDatasource: datasource,
-          ),
-        ),
-        authUseCases: AuthUseCases(
-          authRepository: AuthRepositoryImpl(
-            sharedPrefrencesDatasource: SharedPreferencesDatasourceImpl(
-              sharedPreferences: sharedPrefs,
-            ),
-            graphQlDatasource: datasource,
-          ),
-        ),
+        notificationUseCases: di.serviceLocator(),
+        userUseCases: di.serviceLocator(),
+        authUseCases: di.serviceLocator(),
       )..getTokenAndLoadUser(),
       child: const BlocInit(),
     ),
@@ -93,12 +61,7 @@ class App extends StatefulWidget {
 
 class _AppState extends State<App> {
   DarkModeProvider darkModeProvider = DarkModeProvider(
-    settingsUseCases: SettingsUseCases(
-      settingsRepository: SettingsRepositoryImpl(
-        sharedPrefrencesDatasource:
-            serviceLocator.get<SharedPreferencesDatasource>(),
-      ),
-    ),
+    settingsUseCases: serviceLocator(),
   );
 
   // for dark mode provider

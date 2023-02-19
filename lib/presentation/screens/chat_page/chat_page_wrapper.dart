@@ -7,16 +7,12 @@ import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
-import 'package:social_media_app_flutter/core/graphql.dart';
+import 'package:social_media_app_flutter/core/injection.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:social_media_app_flutter/core/filter/get_one_groupchat_filter.dart';
-import 'package:social_media_app_flutter/domain/usecases/chat_usecases.dart';
 import 'package:social_media_app_flutter/domain/usecases/message_usecases.dart';
-import 'package:social_media_app_flutter/domain/usecases/private_event_usecases.dart';
 import 'package:social_media_app_flutter/infastructure/datasources/remote/graphql.dart';
-import 'package:social_media_app_flutter/infastructure/respositories/chat_repository_impl.dart';
 import 'package:social_media_app_flutter/infastructure/respositories/message_repository_impl.dart';
-import 'package:social_media_app_flutter/infastructure/respositories/private_event_repository_impl.dart';
 import 'package:social_media_app_flutter/presentation/widgets/dialog/buttons/ok_button.dart';
 
 class ChatPageWrapper extends StatelessWidget {
@@ -33,12 +29,6 @@ class ChatPageWrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final client = getGraphQlClient(
-      token: BlocProvider.of<AuthCubit>(context).state is AuthLoaded
-          ? (BlocProvider.of<AuthCubit>(context).state as AuthLoaded).token
-          : null,
-    );
-
     return BlocProvider(
       create: (context) => CurrentChatCubit(
         CurrentChatState(
@@ -50,27 +40,17 @@ class ChatPageWrapper extends StatelessWidget {
           currentChat: chatToSet ?? GroupchatEntity(id: ""),
           loadingChat: false,
         ),
-        messageUseCases: MessageUseCases(
-          messageRepository: MessageRepositoryImpl(
-            graphQlDatasource: GraphQlDatasourceImpl(
-              client: client,
-            ),
-          ),
+        messageUseCases: serviceLocator(
+          param1: BlocProvider.of<AuthCubit>(context).state,
         ),
         privateEventCubit: BlocProvider.of<PrivateEventCubit>(context),
-        privateEventUseCases: PrivateEventUseCases(
-          privateEventRepository: PrivateEventRepositoryImpl(
-            graphQlDatasource: GraphQlDatasourceImpl(
-              client: client,
-            ),
-          ),
+        privateEventUseCases: serviceLocator(
+          param1: BlocProvider.of<AuthCubit>(context).state,
         ),
         userCubit: BlocProvider.of<UserCubit>(context),
         chatCubit: BlocProvider.of<ChatCubit>(context),
-        chatUseCases: ChatUseCases(
-          chatRepository: ChatRepositoryImpl(
-            graphQlDatasource: GraphQlDatasourceImpl(client: client),
-          ),
+        chatUseCases: serviceLocator(
+          param1: BlocProvider.of<AuthCubit>(context).state,
         ),
       ),
       child: BlocListener<CurrentChatCubit, CurrentChatState>(

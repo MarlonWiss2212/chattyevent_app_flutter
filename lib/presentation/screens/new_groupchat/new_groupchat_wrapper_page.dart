@@ -6,10 +6,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/add_groupchat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
-import 'package:social_media_app_flutter/core/graphql.dart';
-import 'package:social_media_app_flutter/domain/usecases/chat_usecases.dart';
-import 'package:social_media_app_flutter/infastructure/datasources/remote/graphql.dart';
-import 'package:social_media_app_flutter/infastructure/respositories/chat_repository_impl.dart';
+import 'package:social_media_app_flutter/core/injection.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 import 'package:social_media_app_flutter/presentation/widgets/dialog/buttons/ok_button.dart';
 
@@ -18,21 +15,11 @@ class NewGroupchatWrapperPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final client = getGraphQlClient(
-      token: BlocProvider.of<AuthCubit>(context).state is AuthLoaded
-          ? (BlocProvider.of<AuthCubit>(context).state as AuthLoaded).token
-          : null,
-    );
-
     return BlocProvider.value(
       value: AddGroupchatCubit(
         chatCubit: BlocProvider.of<ChatCubit>(context),
-        chatUseCases: ChatUseCases(
-          chatRepository: ChatRepositoryImpl(
-            graphQlDatasource: GraphQlDatasourceImpl(
-              client: client,
-            ),
-          ),
+        chatUseCases: serviceLocator(
+          param1: BlocProvider.of<AuthCubit>(context).state,
         ),
       ),
       child: Builder(

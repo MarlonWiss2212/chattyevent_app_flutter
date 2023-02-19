@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
@@ -7,10 +5,7 @@ import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/message/add_message_cubit.dart';
 import 'package:social_media_app_flutter/core/dto/create_message_dto.dart';
-import 'package:social_media_app_flutter/core/graphql.dart';
-import 'package:social_media_app_flutter/domain/usecases/message_usecases.dart';
-import 'package:social_media_app_flutter/infastructure/datasources/remote/graphql.dart';
-import 'package:social_media_app_flutter/infastructure/respositories/message_repository_impl.dart';
+import 'package:social_media_app_flutter/core/injection.dart';
 import 'package:social_media_app_flutter/presentation/widgets/dialog/buttons/ok_button.dart';
 
 class MessageInput extends StatefulWidget {
@@ -26,21 +21,11 @@ class _MessageInputState extends State<MessageInput> {
 
   @override
   Widget build(BuildContext context) {
-    final client = getGraphQlClient(
-      token: BlocProvider.of<AuthCubit>(context).state is AuthLoaded
-          ? (BlocProvider.of<AuthCubit>(context).state as AuthLoaded).token
-          : null,
-    );
-
     return BlocProvider.value(
       value: AddMessageCubit(
         currentChatCubit: BlocProvider.of<CurrentChatCubit>(context),
-        messageUseCases: MessageUseCases(
-          messageRepository: MessageRepositoryImpl(
-            graphQlDatasource: GraphQlDatasourceImpl(
-              client: client,
-            ),
-          ),
+        messageUseCases: serviceLocator(
+          param1: BlocProvider.of<AuthCubit>(context).state,
         ),
       ),
       child: Builder(builder: (context) {
@@ -75,9 +60,6 @@ class _MessageInputState extends State<MessageInput> {
                     ),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
-                      border: Border.all(
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
                     ),
                     duration: const Duration(seconds: 5),
                     child: PlatformTextField(
