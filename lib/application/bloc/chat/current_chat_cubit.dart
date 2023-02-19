@@ -234,8 +234,10 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
       getMessagesFilter: GetMessagesFilter(
         groupchatTo: state.currentChat.id,
         limitFilter: LimitFilter(
-          limit: 10000,
-          offset: 0,
+          limit: 20,
+          offset: state.currentChat.messages != null
+              ? state.currentChat.messages!.length
+              : 0,
         ),
       ),
     );

@@ -4,13 +4,14 @@ import 'package:grouped_list/grouped_list.dart';
 import 'package:intl/intl.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/user_with_groupchat_user_data.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/user_with_left_groupchat_user_data.dart';
 import 'package:social_media_app_flutter/domain/entities/message/message_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
 import 'package:social_media_app_flutter/presentation/widgets/message_container.dart';
 
-class MessageList extends StatelessWidget {
+class MessageList extends StatefulWidget {
   final String groupchatTo;
   final List<UserWithGroupchatUserData> usersWithGroupchatUserData;
   final List<UserWithLeftGroupchatUserData> usersWithLeftGroupchatUserData;
@@ -25,21 +26,48 @@ class MessageList extends StatelessWidget {
   });
 
   @override
+  State<MessageList> createState() => _MessageListState();
+}
+
+class _MessageListState extends State<MessageList> {
+  late ScrollController _scrollController;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController()..addListener(_scrollListener);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_scrollListener);
+    super.dispose();
+  }
+
+  void _scrollListener() {
+    if (_scrollController.position.extentAfter <= 0) {
+      BlocProvider.of<CurrentChatCubit>(context).loadMessages();
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     final currentUserId = Jwt.parseJwt(
       (BlocProvider.of<AuthCubit>(context).state as AuthLoaded).token,
     )["sub"];
 
     return GroupedListView<MessageEntity, String>(
+      controller: _scrollController,
       padding: const EdgeInsets.only(top: 8),
       itemBuilder: (context, messageEntity) {
         UserEntity? user;
-        final foundUser = usersWithGroupchatUserData.firstWhere(
+        final foundUser = widget.usersWithGroupchatUserData.firstWhere(
           (element) => element.id == messageEntity.createdBy,
           orElse: () => UserWithGroupchatUserData(id: ""),
         );
         if (foundUser.id == "") {
-          final foundLeftUser = usersWithLeftGroupchatUserData.firstWhere(
+          final foundLeftUser =
+              widget.usersWithLeftGroupchatUserData.firstWhere(
             (element) => element.id == messageEntity.createdBy,
             orElse: () => UserWithLeftGroupchatUserData(id: ""),
           );
@@ -62,7 +90,7 @@ class MessageList extends StatelessWidget {
           alignStart: messageEntity.createdBy != currentUserId,
         );
       },
-      elements: messages,
+      elements: widget.messages,
       useStickyGroupSeparators: true,
       reverse: true,
       sort: false,

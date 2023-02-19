@@ -57,7 +57,7 @@ class ChatPage extends StatelessWidget {
         children: [
           BlocBuilder<CurrentChatCubit, CurrentChatState>(
             builder: (context, state) {
-              if (state.loadingChat) {
+              if (state.loadingChat || state.loadingMessages) {
                 return const LinearProgressIndicator();
               }
               return const SizedBox();
