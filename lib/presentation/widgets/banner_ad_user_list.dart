@@ -13,6 +13,7 @@ class _BannerAdUserListState extends State<BannerAdUserList> {
   BannerAd? _ad;
   @override
   void initState() {
+    super.initState();
     BannerAd(
       adUnitId: "ca-app-pub-3940256099942544/6300978111",
       size: AdSize.banner,
@@ -28,7 +29,6 @@ class _BannerAdUserListState extends State<BannerAdUserList> {
         },
       ),
     ).load();
-    super.initState();
   }
 
   @override
@@ -39,6 +39,13 @@ class _BannerAdUserListState extends State<BannerAdUserList> {
 
   @override
   Widget build(BuildContext context) {
-    return _ad != null ? AdWidget(ad: _ad!) : Container();
+    return _ad != null
+        ? Container(
+            width: _ad!.size.width.toDouble(),
+            alignment: Alignment.center,
+            height: _ad!.size.height.toDouble(),
+            child: AdWidget(ad: _ad!),
+          )
+        : Container();
   }
 }

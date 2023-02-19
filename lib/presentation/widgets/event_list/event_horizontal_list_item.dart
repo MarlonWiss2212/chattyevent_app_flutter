@@ -20,8 +20,6 @@ class EventHorizontalListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-
     return InkWell(
       borderRadius: const BorderRadius.all(Radius.circular(8.0)),
       onLongPress: onLongPress == null ? null : () => onLongPress!(),
@@ -67,7 +65,9 @@ class EventHorizontalListItem extends StatelessWidget {
                       tag: "${privateEvent.id} title",
                       child: Text(
                         privateEvent.title ?? "Kein Titel",
-                        style: Theme.of(context).textTheme.titleLarge,
+                        style: Theme.of(context).textTheme.titleLarge?.apply(
+                              color: Colors.white,
+                            ),
                       ),
                     ),
                     Text(
@@ -76,7 +76,9 @@ class EventHorizontalListItem extends StatelessWidget {
                               .add_jm()
                               .format(privateEvent.eventDate!)
                           : "Kein Datum",
-                      style: Theme.of(context).textTheme.labelSmall,
+                      style: Theme.of(context).textTheme.labelSmall?.apply(
+                            color: Colors.white,
+                          ),
                     ),
                   ],
                 ),

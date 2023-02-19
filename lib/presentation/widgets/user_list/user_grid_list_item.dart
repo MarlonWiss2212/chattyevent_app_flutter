@@ -56,7 +56,9 @@ class UserGridListItem extends StatelessWidget {
                     tag: "${user.id} username",
                     child: Text(
                       user.username ?? "Kein Name",
-                      style: Theme.of(context).textTheme.labelMedium,
+                      style: Theme.of(context).textTheme.labelMedium?.apply(
+                            color: Colors.white,
+                          ),
                       overflow: TextOverflow.ellipsis,
                       softWrap: true,
                     ),
