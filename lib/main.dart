@@ -24,7 +24,7 @@ import 'core/injection.dart' as di;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await dotenv.load(fileName: '.env');
+  await dotenv.load(fileName: '.dev.env');
   await di.init();
 
   if (!kIsWeb) {
