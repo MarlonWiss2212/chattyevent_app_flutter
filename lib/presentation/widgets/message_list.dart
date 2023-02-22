@@ -58,7 +58,7 @@ class _MessageListState extends State<MessageList> {
 
     return GroupedListView<MessageEntity, String>(
       controller: _scrollController,
-      padding: const EdgeInsets.only(top: 8),
+      padding: const EdgeInsets.symmetric(vertical: 8),
       itemBuilder: (context, messageEntity) {
         UserEntity? user;
         final foundUser = widget.usersWithGroupchatUserData.firstWhere(
@@ -88,6 +88,7 @@ class _MessageListState extends State<MessageList> {
               : "Fehler",
           content: messageEntity.message ?? "Kein Inhalt",
           alignStart: messageEntity.createdBy != currentUserId,
+          fileLink: messageEntity.fileLink,
         );
       },
       elements: widget.messages,
@@ -123,11 +124,8 @@ class _MessageListState extends State<MessageList> {
           ),
         );
       },
-      groupSeparatorBuilder: (value) {
-        return const SizedBox(
-          height: 8,
-        );
-      },
+      groupSeparatorBuilder: (_) => const SizedBox(height: 8),
+      separator: const SizedBox(height: 8),
     );
   }
 }

@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:meta/meta.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart';
 import 'package:social_media_app_flutter/core/dto/create_message_dto.dart';
+import 'package:social_media_app_flutter/core/failures/image_picker_failures.dart';
 import 'package:social_media_app_flutter/domain/entities/error_with_title_and_message.dart';
 import 'package:social_media_app_flutter/domain/entities/message/message_entity.dart';
 import 'package:social_media_app_flutter/core/failures/failures.dart';
@@ -13,17 +16,34 @@ part 'add_message_state.dart';
 class AddMessageCubit extends Cubit<AddMessageState> {
   final CurrentChatCubit currentChatCubit;
   final MessageUseCases messageUseCases;
-  AddMessageCubit({
+
+  AddMessageCubit(
+    super.initialState, {
     required this.currentChatCubit,
     required this.messageUseCases,
-  }) : super(AddMessageState());
+  });
 
-  Future createMessage({required CreateMessageDto createMessageDto}) async {
+  Future createMessage() async {
     emitState(status: AddMessageStateStatus.loading);
+
+    if (state.message == null || state.groupchatTo == null) {
+      emitState(
+        status: AddMessageStateStatus.error,
+        error: ErrorWithTitleAndMessage(
+          title: "Ausfüll Fehler",
+          message: "Bitte fülle erst alle Felder aus",
+        ),
+      );
+    }
 
     final Either<Failure, MessageEntity> messageOrFailure =
         await messageUseCases.createMessageViaApi(
-      createMessageDto: createMessageDto,
+      createMessageDto: CreateMessageDto(
+        message: state.message!,
+        groupchatTo: state.groupchatTo!,
+        messageToReactTo: state.messageToReactTo,
+        file: state.file,
+      ),
     );
 
     messageOrFailure.fold(
@@ -38,10 +58,12 @@ class AddMessageCubit extends Cubit<AddMessageState> {
       },
       (message) {
         currentChatCubit.mergeOrAddMessage(message: message);
-        emitState(
+
+        /// to reset everything else
+        emit(AddMessageState(
           status: AddMessageStateStatus.success,
           addedMessage: message,
-        );
+        ));
       },
     );
   }
@@ -50,8 +72,17 @@ class AddMessageCubit extends Cubit<AddMessageState> {
     AddMessageStateStatus? status,
     ErrorWithTitleAndMessage? error,
     MessageEntity? addedMessage,
+    File? file,
+    bool removeFile = false,
+    String? message,
+    String? groupchatTo,
+    String? messageToReactTo,
   }) {
     emit(AddMessageState(
+      message: message ?? state.message,
+      messageToReactTo: messageToReactTo ?? state.messageToReactTo,
+      groupchatTo: groupchatTo ?? state.groupchatTo,
+      file: removeFile ? null : file ?? state.file,
       status: status ?? AddMessageStateStatus.initial,
       error: error ?? state.error,
       addedMessage: addedMessage ?? state.addedMessage,

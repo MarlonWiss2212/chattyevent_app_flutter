@@ -7,8 +7,17 @@ class AddMessageState {
   final ErrorWithTitleAndMessage? error;
   final AddMessageStateStatus status;
 
+  final File? file;
+  final String? message;
+  final String? groupchatTo;
+  final String? messageToReactTo;
+
   AddMessageState({
     this.addedMessage,
+    this.message,
+    this.messageToReactTo,
+    this.groupchatTo,
+    this.file,
     this.error,
     this.status = AddMessageStateStatus.initial,
   });

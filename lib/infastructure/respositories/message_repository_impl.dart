@@ -1,4 +1,6 @@
 import 'package:graphql/client.dart';
+import 'package:http/http.dart';
+import 'package:http_parser/http_parser.dart';
 import 'package:social_media_app_flutter/core/dto/create_message_dto.dart';
 import 'package:social_media_app_flutter/core/failures/failures.dart';
 import 'package:social_media_app_flutter/domain/entities/message/message_entity.dart';
@@ -17,19 +19,36 @@ class MessageRepositoryImpl implements MessageRepository {
     required CreateMessageDto createMessageDto,
   }) async {
     try {
+      Map<String, dynamic> variables = {
+        "input": createMessageDto.toMap(),
+      };
+      if (createMessageDto.file != null) {
+        final byteData = createMessageDto.file!.readAsBytesSync();
+
+        /// TODO: should accapt other files than jpg too
+        final multipartFile = MultipartFile.fromBytes(
+          'photo',
+          byteData,
+          filename: '1.jpg',
+          contentType: MediaType("image", "jpg"),
+        );
+        variables.addAll({'file': multipartFile});
+      }
+
       final response = await graphQlDatasource.mutation(
         """
-        mutation createMessage(\$input: CreateMessageInput!) {
-          createMessage(createMessageInput: \$input) {
+        mutation createMessage(\$input: CreateMessageInput!, \$file: Upload) {
+          createMessage(createMessageInput: \$input, file: \$file) {
             _id
             message
+            fileLink
             groupchatTo
             createdBy
             createdAt
           }
         }
       """,
-        variables: {"input": createMessageDto.toMap()},
+        variables: variables,
       );
 
       if (response.hasException) {
@@ -59,6 +78,7 @@ class MessageRepositoryImpl implements MessageRepository {
             _id
             message
             groupchatTo
+            fileLink
             createdBy
             createdAt
           }
@@ -93,6 +113,7 @@ class MessageRepositoryImpl implements MessageRepository {
             _id
             message
             groupchatTo
+            fileLink
             createdBy
             createdAt
           }

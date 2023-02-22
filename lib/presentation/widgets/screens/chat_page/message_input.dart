@@ -4,111 +4,150 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/message/add_message_cubit.dart';
-import 'package:social_media_app_flutter/core/dto/create_message_dto.dart';
 import 'package:social_media_app_flutter/core/injection.dart';
+import 'package:social_media_app_flutter/presentation/widgets/bottom_sheet/image_picker_list.dart';
 import 'package:social_media_app_flutter/presentation/widgets/dialog/buttons/ok_button.dart';
 
-class MessageInput extends StatefulWidget {
+class MessageInput extends StatelessWidget {
   final String groupchatTo;
   const MessageInput({super.key, required this.groupchatTo});
-
-  @override
-  State<MessageInput> createState() => _MessageInputState();
-}
-
-class _MessageInputState extends State<MessageInput> {
-  final messageInputController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider.value(
       value: AddMessageCubit(
+        AddMessageState(groupchatTo: groupchatTo),
         currentChatCubit: BlocProvider.of<CurrentChatCubit>(context),
         messageUseCases: serviceLocator(
           param1: BlocProvider.of<AuthCubit>(context).state,
         ),
       ),
-      child: Builder(builder: (context) {
-        return BlocListener<AddMessageCubit, AddMessageState>(
-          listener: (context, state) async {
-            if (state.status == AddMessageStateStatus.success) {
-              messageInputController.clear();
-            } else if (state.status == AddMessageStateStatus.error &&
-                state.error != null) {
-              return await showPlatformDialog(
-                context: context,
-                builder: (context) {
-                  return PlatformAlertDialog(
-                    title: Text(state.error!.title),
-                    content: Text(state.error!.message),
-                    actions: const [OKButton()],
-                  );
-                },
-              );
-            }
-          },
-          child: SizedBox(
-            height: 50,
-            child: Row(
-              children: [
-                // input area
-                Expanded(
-                  child: AnimatedContainer(
-                    alignment: Alignment.center,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 8,
-                    ),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    duration: const Duration(seconds: 5),
-                    child: PlatformTextField(
-                      material: (context, platform) => MaterialTextFieldData(
-                        decoration: const InputDecoration.collapsed(
-                          hintText: "Nachricht",
-                        ),
-                      ),
-                      controller: messageInputController,
-                      hintText: 'Nachricht',
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 8),
-                // send button
-                PlatformTextButton(
-                  // ios style missing
-                  material: ((context, platform) => MaterialTextButtonData(
-                        style: ButtonStyle(
-                          shape: MaterialStateProperty.resolveWith(
-                            (states) => const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(8),
-                              ),
-                            ),
-                          ),
-                          backgroundColor: MaterialStateProperty.resolveWith(
-                            (states) =>
-                                Theme.of(context).colorScheme.primaryContainer,
-                          ),
-                        ),
-                      )),
-                  onPressed: () {
-                    BlocProvider.of<AddMessageCubit>(context).createMessage(
-                      createMessageDto: CreateMessageDto(
-                        groupchatTo: widget.groupchatTo,
-                        message: messageInputController.text,
-                      ),
+      child: Builder(
+        builder: (context) {
+          return BlocConsumer<AddMessageCubit, AddMessageState>(
+            listener: (context, state) async {
+              if (state.status == AddMessageStateStatus.error &&
+                  state.error != null) {
+                return await showPlatformDialog(
+                  context: context,
+                  builder: (context) {
+                    return PlatformAlertDialog(
+                      title: Text(state.error!.title),
+                      content: Text(state.error!.message),
+                      actions: const [OKButton()],
                     );
                   },
-                  child: const Center(
-                    child: Icon(Icons.send),
+                );
+              }
+            },
+            buildWhen: (previous, current) =>
+                current.status == AddMessageStateStatus.success,
+            builder: (context, state) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  BlocBuilder<AddMessageCubit, AddMessageState>(
+                    buildWhen: (previous, current) =>
+                        previous.status != current.status,
+                    builder: (context, state) {
+                      if (state.status == AddMessageStateStatus.loading) {
+                        return const LinearProgressIndicator();
+                      }
+                      return Container();
+                    },
                   ),
-                )
-              ],
-            ),
-          ),
-        );
-      }),
+                  BlocBuilder<AddMessageCubit, AddMessageState>(
+                    buildWhen: (previous, current) =>
+                        previous.file != current.file,
+                    builder: (context, state) {
+                      if (state.file != null) {
+                        return SizedBox(
+                          height: 100,
+                          child: InkWell(
+                            onTap: () {
+                              BlocProvider.of<AddMessageCubit>(context)
+                                  .emitState(
+                                removeFile: true,
+                              );
+                            },
+                            child: Image.file(
+                              BlocProvider.of<AddMessageCubit>(context)
+                                  .state
+                                  .file!,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        );
+                      }
+                      return Container();
+                    },
+                  ),
+                  Row(
+                    children: [
+                      // input area
+                      Expanded(
+                        child: Container(
+                          alignment: Alignment.center,
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: PlatformTextField(
+                                  keyboardType: TextInputType.multiline,
+                                  minLines: 1,
+                                  maxLines: 6,
+                                  controller: TextEditingController(text: ""),
+                                  material: (context, platform) =>
+                                      MaterialTextFieldData(
+                                    decoration: const InputDecoration.collapsed(
+                                      hintText: "Nachricht",
+                                    ),
+                                  ),
+                                  onChanged: (p0) {
+                                    BlocProvider.of<AddMessageCubit>(context)
+                                        .emitState(message: p0);
+                                  },
+                                  hintText: 'Nachricht',
+                                ),
+                              ),
+                              IconButton(
+                                onPressed: () async {
+                                  await showModalBottomSheet(
+                                    context: context,
+                                    builder: (modalContext) {
+                                      return ImagePickerList(
+                                        imageChanged: (newImage) {
+                                          BlocProvider.of<AddMessageCubit>(
+                                                  context)
+                                              .emitState(file: newImage);
+                                          Navigator.of(modalContext).pop();
+                                        },
+                                      );
+                                    },
+                                  );
+                                },
+                                icon: const Icon(Icons.file_copy),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      // send button
+                      IconButton(
+                        onPressed: () {
+                          BlocProvider.of<AddMessageCubit>(context)
+                              .createMessage();
+                        },
+                        icon: const Icon(Icons.send),
+                      )
+                    ],
+                  ),
+                ],
+              );
+            },
+          );
+        },
+      ),
     );
   }
 }

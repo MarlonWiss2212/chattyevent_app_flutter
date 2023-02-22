@@ -24,6 +24,7 @@ class ImageCubit extends Cubit<ImageState> {
         emit(ImageError(message: error.message, title: error.title));
       },
       (image) {
+        print(image.path);
         emit(ImageLoaded(image: image));
       },
     );

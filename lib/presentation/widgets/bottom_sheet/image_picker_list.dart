@@ -10,17 +10,25 @@ import 'package:social_media_app_flutter/presentation/widgets/dialog/buttons/ok_
 
 class ImagePickerList extends StatelessWidget {
   final void Function(File newImage) imageChanged;
-  final double ratioX;
-  final double ratioY;
+  final double? ratioX;
+  final double? ratioY;
   const ImagePickerList({
     super.key,
     required this.imageChanged,
-    required this.ratioX,
-    required this.ratioY,
+    this.ratioX,
+    this.ratioY,
   });
 
   @override
   Widget build(BuildContext context) {
+    CropAspectRatio? cropAspectRatio;
+    if (ratioX != null && ratioY != null) {
+      cropAspectRatio = CropAspectRatio(
+        ratioX: ratioX!,
+        ratioY: ratioY!,
+      );
+    }
+
     return BlocListener<ImageCubit, ImageState>(
       listener: (context, state) async {
         if (state is ImageLoaded) {
@@ -52,10 +60,7 @@ class ImagePickerList extends StatelessWidget {
                   borderRadius: BorderRadius.circular(12),
                   onTap: () {
                     BlocProvider.of<ImageCubit>(context).getImageFromCamera(
-                      cropAspectRatio: CropAspectRatio(
-                        ratioX: ratioX,
-                        ratioY: ratioY,
-                      ),
+                      cropAspectRatio: cropAspectRatio,
                     );
                   },
                   child: Container(
@@ -77,10 +82,7 @@ class ImagePickerList extends StatelessWidget {
                   borderRadius: BorderRadius.circular(12),
                   onTap: () {
                     BlocProvider.of<ImageCubit>(context).getImageFromGallery(
-                      cropAspectRatio: CropAspectRatio(
-                        ratioX: ratioX,
-                        ratioY: ratioY,
-                      ),
+                      cropAspectRatio: cropAspectRatio,
                     );
                   },
                   child: Container(

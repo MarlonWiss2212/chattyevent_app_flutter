@@ -64,16 +64,17 @@ class ChatPage extends StatelessWidget {
             },
           ),
           Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: Column(
-                children: [
-                  const MessageArea(),
-                  const SizedBox(height: 8),
-                  MessageInput(groupchatTo: groupchatId),
-                  const SizedBox(height: 8)
-                ],
-              ),
+            child: Column(
+              children: [
+                const Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 8.0),
+                    child: MessageArea(),
+                  ),
+                ),
+                const Divider(height: 1),
+                MessageInput(groupchatTo: groupchatId),
+              ],
             ),
           ),
         ],

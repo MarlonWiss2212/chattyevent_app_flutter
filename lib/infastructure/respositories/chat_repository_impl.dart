@@ -109,6 +109,7 @@ class ChatRepositoryImpl implements ChatRepository {
             messages {
               _id
               message
+              fileLink
               groupchatTo
               createdBy
               createdAt
