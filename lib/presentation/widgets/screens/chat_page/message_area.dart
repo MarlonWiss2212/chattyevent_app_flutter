@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletons/skeletons.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart';
-import 'package:social_media_app_flutter/presentation/widgets/message_list.dart';
+import 'package:social_media_app_flutter/presentation/widgets/screens/chat_page/message_list.dart';
 
 class MessageArea extends StatelessWidget {
   const MessageArea({super.key});
@@ -42,8 +42,8 @@ class MessageArea extends StatelessWidget {
         }
 
         final loadingMessages =
-            state.currentChat.messages!.isEmpty && state.loadingMessages ||
-                state.currentChat.messages == null && state.loadingMessages;
+            state.currentChat.messages == null && state.loadingMessages ||
+                state.currentChat.messages!.isEmpty && state.loadingMessages;
 
         if (loadingMessages) {
           return SkeletonListView(

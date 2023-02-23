@@ -8,8 +8,7 @@ import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubi
 import 'package:social_media_app_flutter/domain/entities/groupchat/user_with_groupchat_user_data.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/user_with_left_groupchat_user_data.dart';
 import 'package:social_media_app_flutter/domain/entities/message/message_entity.dart';
-import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
-import 'package:social_media_app_flutter/presentation/widgets/message_container.dart';
+import 'package:social_media_app_flutter/presentation/widgets/screens/chat_page/message_container.dart';
 
 class MessageList extends StatefulWidget {
   final String groupchatTo;
@@ -59,36 +58,12 @@ class _MessageListState extends State<MessageList> {
     return GroupedListView<MessageEntity, String>(
       controller: _scrollController,
       padding: const EdgeInsets.symmetric(vertical: 8),
-      itemBuilder: (context, messageEntity) {
-        UserEntity? user;
-        final foundUser = widget.usersWithGroupchatUserData.firstWhere(
-          (element) => element.id == messageEntity.createdBy,
-          orElse: () => UserWithGroupchatUserData(id: ""),
-        );
-        if (foundUser.id == "") {
-          final foundLeftUser =
-              widget.usersWithLeftGroupchatUserData.firstWhere(
-            (element) => element.id == messageEntity.createdBy,
-            orElse: () => UserWithLeftGroupchatUserData(id: ""),
-          );
-
-          if (foundLeftUser.id != "") {
-            user = foundLeftUser;
-          }
-        } else {
-          user = foundUser;
-        }
-
+      itemBuilder: (context, message) {
         return MessageContainer(
-          title: user != null && user.username != null
-              ? user.username!
-              : messageEntity.createdBy ?? "",
-          date: messageEntity.createdAt != null
-              ? DateFormat.jm().format(messageEntity.createdAt!)
-              : "Fehler",
-          content: messageEntity.message ?? "Kein Inhalt",
-          alignStart: messageEntity.createdBy != currentUserId,
-          fileLink: messageEntity.fileLink,
+          currentUserId: currentUserId,
+          message: message,
+          usersWithGroupchatUserData: widget.usersWithGroupchatUserData,
+          usersWithLeftGroupchatUserData: widget.usersWithLeftGroupchatUserData,
         );
       },
       elements: widget.messages,

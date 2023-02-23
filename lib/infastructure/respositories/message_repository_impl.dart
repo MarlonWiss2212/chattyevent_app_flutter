@@ -41,6 +41,7 @@ class MessageRepositoryImpl implements MessageRepository {
           createMessage(createMessageInput: \$input, file: \$file) {
             _id
             message
+            messageToReactTo
             fileLink
             groupchatTo
             createdBy
@@ -77,6 +78,7 @@ class MessageRepositoryImpl implements MessageRepository {
           findMessages(filter: \$input) {
             _id
             message
+            messageToReactTo
             groupchatTo
             fileLink
             createdBy
@@ -112,6 +114,7 @@ class MessageRepositoryImpl implements MessageRepository {
           messageAdded {
             _id
             message
+            messageToReactTo
             groupchatTo
             fileLink
             createdBy

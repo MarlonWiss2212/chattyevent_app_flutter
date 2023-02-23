@@ -2,7 +2,10 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/message/add_message_cubit.dart';
+import 'package:social_media_app_flutter/core/injection.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/chat_page/message_area.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/chat_page/message_input.dart';
@@ -64,17 +67,26 @@ class ChatPage extends StatelessWidget {
             },
           ),
           Expanded(
-            child: Column(
-              children: [
-                const Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 8.0),
-                    child: MessageArea(),
-                  ),
+            child: BlocProvider.value(
+              value: AddMessageCubit(
+                AddMessageState(groupchatTo: groupchatId),
+                currentChatCubit: BlocProvider.of<CurrentChatCubit>(context),
+                messageUseCases: serviceLocator(
+                  param1: BlocProvider.of<AuthCubit>(context).state,
                 ),
-                const Divider(height: 1),
-                MessageInput(groupchatTo: groupchatId),
-              ],
+              ),
+              child: Column(
+                children: [
+                  const Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 8.0),
+                      child: MessageArea(),
+                    ),
+                  ),
+                  const Divider(height: 1),
+                  MessageInput(groupchatTo: groupchatId),
+                ],
+              ),
             ),
           ),
         ],

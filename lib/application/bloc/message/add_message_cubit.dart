@@ -61,6 +61,7 @@ class AddMessageCubit extends Cubit<AddMessageState> {
 
         /// to reset everything else
         emit(AddMessageState(
+          groupchatTo: state.groupchatTo,
           status: AddMessageStateStatus.success,
           addedMessage: message,
         ));
@@ -74,13 +75,16 @@ class AddMessageCubit extends Cubit<AddMessageState> {
     MessageEntity? addedMessage,
     File? file,
     bool removeFile = false,
+    bool removeMessageToReactTo = false,
     String? message,
     String? groupchatTo,
     String? messageToReactTo,
   }) {
     emit(AddMessageState(
       message: message ?? state.message,
-      messageToReactTo: messageToReactTo ?? state.messageToReactTo,
+      messageToReactTo: removeMessageToReactTo
+          ? null
+          : messageToReactTo ?? state.messageToReactTo,
       groupchatTo: groupchatTo ?? state.groupchatTo,
       file: removeFile ? null : file ?? state.file,
       status: status ?? AddMessageStateStatus.initial,

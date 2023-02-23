@@ -1,3 +1,4 @@
+/// implement this at a later date
 class MessageEmojiReactionEntity {
   final String id;
   final String? emoji;
