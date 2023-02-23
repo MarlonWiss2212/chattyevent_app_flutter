@@ -38,6 +38,7 @@ class ChatList extends StatelessWidget {
                   "${message.message}",
                   softWrap: true,
                   overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
                 )
               : const Text(
                   "Keine Nachricht",
