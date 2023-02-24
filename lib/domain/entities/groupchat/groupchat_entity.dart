@@ -31,6 +31,7 @@ class GroupchatEntity {
   factory GroupchatEntity.merge({
     required GroupchatEntity newEntity,
     required GroupchatEntity oldEntity,
+    bool setMessagesFromOldEntity = true,
   }) {
     List<GroupchatUserEntity>? users = [];
     if (newEntity.users != null) {
@@ -73,7 +74,8 @@ class GroupchatEntity {
       users = oldEntity.users;
     }
 
-    List<MessageEntity>? messages = oldEntity.messages;
+    List<MessageEntity>? messages =
+        setMessagesFromOldEntity ? oldEntity.messages : [];
     if (newEntity.messages != null) {
       for (final newMessage in newEntity.messages!) {
         if (messages == null) {

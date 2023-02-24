@@ -5,7 +5,7 @@ import 'package:social_media_app_flutter/application/bloc/private_event/current_
 import 'package:social_media_app_flutter/core/dto/shopping_list_item/update_shopping_list_item_dto.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/user_with_private_event_user_data.dart';
-import 'package:social_media_app_flutter/domain/entities/shopping_list_item_entity.dart';
+import 'package:social_media_app_flutter/domain/entities/shopping_list_item/shopping_list_item_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
 
 class ShoppingListItemTile extends StatelessWidget {
@@ -27,6 +27,15 @@ class ShoppingListItemTile extends StatelessWidget {
         user: UserEntity(id: ""),
       ),
     );
+
+    double boughtAmountCount = 0;
+    if (shoppingListItem.boughtAmount != null) {
+      for (final singleBoughtAmount in shoppingListItem.boughtAmount!) {
+        if (singleBoughtAmount.boughtAmount != null) {
+          boughtAmountCount += singleBoughtAmount.boughtAmount!;
+        }
+      }
+    }
 
     return ListTile(
       isThreeLine: true,
@@ -78,22 +87,7 @@ class ShoppingListItemTile extends StatelessWidget {
                   children: [
                     SizedBox(
                       width: 50,
-                      child: PlatformTextField(
-                        controller: TextEditingController(
-                          text: shoppingListItem.boughtAmount.toString(),
-                        ),
-                        keyboardType: TextInputType.number,
-                        onSubmitted: (p0) {
-                          BlocProvider.of<CurrentPrivateEventCubit>(context)
-                              .updateShoppingListItemViaApi(
-                            updateShoppingListItemDto:
-                                UpdateShoppingListItemDto(
-                              boughtAmount: double.parse(p0),
-                            ),
-                            shoppingListItemId: shoppingListItem.id,
-                          );
-                        },
-                      ),
+                      child: Text(boughtAmountCount.toString()),
                     ),
                     const SizedBox(width: 8),
                     Expanded(
@@ -105,11 +99,9 @@ class ShoppingListItemTile extends StatelessWidget {
                           ),
                           gradient: LinearGradient(
                             stops: [
-                              (shoppingListItem.boughtAmount! /
-                                      shoppingListItem.amount!) -
+                              (boughtAmountCount / shoppingListItem.amount!) -
                                   0.02,
-                              (shoppingListItem.boughtAmount! /
-                                      shoppingListItem.amount!) +
+                              (boughtAmountCount / shoppingListItem.amount!) +
                                   0.02
                             ],
                             colors: [
