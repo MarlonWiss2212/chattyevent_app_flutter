@@ -19,7 +19,7 @@ class PrivateEventTabPage extends StatelessWidget {
         return AutoTabsRouter.tabBar(
           routes: [
             InfoTabRoute(),
-            ShoppingListTabRoute(),
+            const ShoppingListWrapperPageRoute(),
           ],
           builder: (context, child, tabController) {
             return PlatformScaffold(
@@ -47,10 +47,7 @@ class PrivateEventTabPage extends StatelessWidget {
               ),
               body: Column(
                 children: [
-                  if (state.loadingGroupchat ||
-                      state.loadingPrivateEvent ||
-                      state.loadingShoppingList &&
-                          state.privateEvent.id != "") ...{
+                  if (state.loadingGroupchat || state.loadingPrivateEvent) ...{
                     const LinearProgressIndicator()
                   },
                   Expanded(child: child),

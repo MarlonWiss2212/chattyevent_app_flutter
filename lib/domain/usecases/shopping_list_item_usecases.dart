@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:social_media_app_flutter/core/dto/shopping_list_item/create_shopping_list_item_dto.dart';
 import 'package:social_media_app_flutter/core/dto/shopping_list_item/update_shopping_list_item_dto.dart';
+import 'package:social_media_app_flutter/core/filter/get_one_shopping_list_item_filter.dart';
 import 'package:social_media_app_flutter/domain/entities/shopping_list_item/shopping_list_item_entity.dart';
 import 'package:social_media_app_flutter/core/failures/failures.dart';
 import 'package:social_media_app_flutter/core/filter/get_shopping_list_items_filter.dart';
@@ -29,6 +30,15 @@ class ShoppingListItemUseCases {
   }
 
   Future<Either<Failure, ShoppingListItemEntity>>
+      getOneShoppingListItemsViaApi({
+    required GetOneShoppingListItemsFilter getOneShoppingListItemsFilter,
+  }) async {
+    return await shoppingListItemRepository.getShoppingListItemViaApi(
+      getOneShoppingListItemsFilter: getOneShoppingListItemsFilter,
+    );
+  }
+
+  Future<Either<Failure, ShoppingListItemEntity>>
       updateShoppingListItemsViaApi({
     required UpdateShoppingListItemDto updateShoppingListItemDto,
     required String shoppingListItemId,
@@ -39,7 +49,11 @@ class ShoppingListItemUseCases {
     );
   }
 
-  Future<Either<Failure, void>> deleteShoppingListItemsViaApi() async {
-    return await shoppingListItemRepository.deleteShoppingListItemViaApi();
+  Future<Either<Failure, bool>> deleteShoppingListItemViaApi({
+    required String shoppingListItemId,
+  }) async {
+    return await shoppingListItemRepository.deleteShoppingListItemViaApi(
+      shoppingListItemId: shoppingListItemId,
+    );
   }
 }

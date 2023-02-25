@@ -35,10 +35,8 @@ class PrivateEventWrapperPage extends StatelessWidget {
         privateEventUsers: const [],
         privateEvent: privateEventToSet ?? PrivateEventEntity(id: ""),
         groupchat: GroupchatEntity(id: ""),
-        shoppingList: const [],
         loadingGroupchat: false,
         loadingPrivateEvent: false,
-        loadingShoppingList: false,
       ),
       userCubit: BlocProvider.of<UserCubit>(context),
       shoppingListCubit: BlocProvider.of<ShoppingListCubit>(context),
@@ -64,15 +62,13 @@ class PrivateEventWrapperPage extends StatelessWidget {
           BlocProvider.of<CurrentPrivateEventCubit>(context)
               .setCurrentChatFromChatCubit();
           BlocProvider.of<CurrentPrivateEventCubit>(context)
-              .setShoppingListFromShoppingListCubit();
-          BlocProvider.of<CurrentPrivateEventCubit>(context)
               .setPrivateEventUsers();
 
           // too get the users from the api too
           BlocProvider.of<CurrentPrivateEventCubit>(context)
               .getPrivateEventUsersViaApi();
 
-          if (privateEventToSet == null &&
+          if (privateEventToSet != null &&
               privateEventToSet!.connectedGroupchat == null &&
               !loadPrivateEventFromApiToo) {
             BlocProvider.of<CurrentPrivateEventCubit>(context)

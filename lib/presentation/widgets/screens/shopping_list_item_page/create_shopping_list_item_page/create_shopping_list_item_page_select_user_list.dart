@@ -5,8 +5,8 @@ import 'package:social_media_app_flutter/application/bloc/private_event/current_
 import 'package:social_media_app_flutter/application/bloc/shopping_list/add_shopping_list_item_cubit.dart';
 import 'package:social_media_app_flutter/presentation/widgets/user_list/user_grid_list_item.dart';
 
-class SelectUserCreateShoppingListItem extends StatelessWidget {
-  const SelectUserCreateShoppingListItem({super.key});
+class CreateShoppingListItemPageSelectUserList extends StatelessWidget {
+  const CreateShoppingListItemPageSelectUserList({super.key});
 
   @override
   Widget build(BuildContext context) {

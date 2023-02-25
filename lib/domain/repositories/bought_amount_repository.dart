@@ -16,7 +16,7 @@ abstract class BoughtAmountRepository {
     required UpdateBoughtAmountDto updateBoughtAmountDto,
     required String boughtAmountId,
   });
-  Future<Either<Failure, void>> deleteBoughtAmountViaApi({
+  Future<Either<Failure, bool>> deleteBoughtAmountViaApi({
     required String boughtAmountId,
   });
 }

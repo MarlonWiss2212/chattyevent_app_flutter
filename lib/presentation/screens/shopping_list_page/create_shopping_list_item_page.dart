@@ -7,23 +7,21 @@ import 'package:social_media_app_flutter/application/bloc/private_event/current_
 import 'package:social_media_app_flutter/application/bloc/shopping_list/shopping_list_cubit.dart';
 import 'package:social_media_app_flutter/core/injection.dart';
 import 'package:social_media_app_flutter/presentation/widgets/dialog/buttons/ok_button.dart';
-import 'package:social_media_app_flutter/presentation/widgets/privat_event_page/create_shopping_list_item/create_shopping_list_item_detail_tab.dart';
+import 'package:social_media_app_flutter/presentation/widgets/screens/shopping_list_item_page/create_shopping_list_item_page/create_shopping_list_item_page_detail.dart';
 import '../../../application/bloc/shopping_list/add_shopping_list_item_cubit.dart';
 
-class PrivateEventCreateShoppingListItem extends StatefulWidget {
+class CreateShoppingListItem extends StatefulWidget {
   final String privateEventId;
-  const PrivateEventCreateShoppingListItem({
+  const CreateShoppingListItem({
     super.key,
     @PathParam('id') required this.privateEventId,
   });
 
   @override
-  State<PrivateEventCreateShoppingListItem> createState() =>
-      _PrivateEventCreateShoppingListItemState();
+  State<CreateShoppingListItem> createState() => _CreateShoppingListItemState();
 }
 
-class _PrivateEventCreateShoppingListItemState
-    extends State<PrivateEventCreateShoppingListItem> {
+class _CreateShoppingListItemState extends State<CreateShoppingListItem> {
   @override
   Widget build(BuildContext context) {
     final currentPrivateEventCubit =
@@ -95,7 +93,7 @@ class _PrivateEventCreateShoppingListItemState
                           child: Column(
                             children: [
                               const Expanded(
-                                child: CreateShoppingListItemDetailTab(),
+                                child: CreateShoppingListItemPageDetail(),
                               ),
                               const SizedBox(height: 8.0),
                               SizedBox(

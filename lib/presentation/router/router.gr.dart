@@ -11,12 +11,14 @@
 // ignore_for_file: type=lint
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:auto_route/auto_route.dart' as _i29;
-import 'package:flutter/material.dart' as _i30;
+import 'package:auto_route/auto_route.dart' as _i31;
+import 'package:flutter/material.dart' as _i32;
 
-import '../../domain/entities/groupchat/groupchat_entity.dart' as _i33;
-import '../../domain/entities/private_event/private_event_entity.dart' as _i34;
-import '../../domain/entities/user_entity.dart' as _i32;
+import '../../domain/entities/groupchat/groupchat_entity.dart' as _i35;
+import '../../domain/entities/private_event/private_event_entity.dart' as _i36;
+import '../../domain/entities/shopping_list_item/shopping_list_item_entity.dart'
+    as _i37;
+import '../../domain/entities/user_entity.dart' as _i34;
 import '../screens/chat_page/chat_add_user_page.dart' as _i19;
 import '../screens/chat_page/chat_info_page.dart' as _i18;
 import '../screens/chat_page/chat_page.dart' as _i17;
@@ -29,22 +31,18 @@ import '../screens/home_page/pages/home_profile_page.dart' as _i16;
 import '../screens/home_page/pages/home_search_page.dart' as _i15;
 import '../screens/login_page.dart' as _i1;
 import '../screens/new_groupchat/new_groupchat_wrapper_page.dart' as _i8;
-import '../screens/new_groupchat/pages/new_groupchat_details_tab.dart' as _i24;
+import '../screens/new_groupchat/pages/new_groupchat_details_tab.dart' as _i26;
 import '../screens/new_groupchat/pages/new_groupchat_select_user_tab.dart'
-    as _i25;
+    as _i27;
 import '../screens/new_private_event/new_private_event_page.dart' as _i9;
 import '../screens/new_private_event/pages/new_private_event_details_tab.dart'
-    as _i26;
-import '../screens/new_private_event/pages/new_private_event_location_tab.dart'
     as _i28;
+import '../screens/new_private_event/pages/new_private_event_location_tab.dart'
+    as _i30;
 import '../screens/new_private_event/pages/new_private_event_search_groupchat_tab.dart'
-    as _i27;
-import '../screens/private_event_page/private_event_create_shopping_list_item.dart'
-    as _i21;
+    as _i29;
 import '../screens/private_event_page/private_event_wrapper_page.dart' as _i7;
-import '../screens/private_event_page/tab_page/pages/info_tab.dart' as _i22;
-import '../screens/private_event_page/tab_page/pages/shopping_list_tab.dart'
-    as _i23;
+import '../screens/private_event_page/tab_page/pages/info_tab.dart' as _i21;
 import '../screens/private_event_page/tab_page/private_event_tab_page.dart'
     as _i20;
 import '../screens/profile_page.dart' as _i3;
@@ -52,26 +50,32 @@ import '../screens/register_page.dart' as _i2;
 import '../screens/settings_page/pages/settings_page.dart' as _i10;
 import '../screens/settings_page/pages/theme_mode_page.dart' as _i11;
 import '../screens/settings_page/settings_page_wrapper.dart' as _i4;
-import 'auth_guard.dart' as _i31;
+import '../screens/shopping_list_page/create_shopping_list_item_page.dart'
+    as _i25;
+import '../screens/shopping_list_page/current_shopping_list_item_page.dart'
+    as _i24;
+import '../screens/shopping_list_page/shopping_list_page.dart' as _i23;
+import '../screens/shopping_list_page/shopping_list_wrapper_page.dart' as _i22;
+import 'auth_guard.dart' as _i33;
 
-class AppRouter extends _i29.RootStackRouter {
+class AppRouter extends _i31.RootStackRouter {
   AppRouter({
-    _i30.GlobalKey<_i30.NavigatorState>? navigatorKey,
+    _i32.GlobalKey<_i32.NavigatorState>? navigatorKey,
     required this.authGuard,
   }) : super(navigatorKey);
 
-  final _i31.AuthGuard authGuard;
+  final _i33.AuthGuard authGuard;
 
   @override
-  final Map<String, _i29.PageFactory> pagesMap = {
+  final Map<String, _i31.PageFactory> pagesMap = {
     LoginPageRoute.name: (routeData) {
-      return _i29.MaterialPageX<dynamic>(
+      return _i31.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i1.LoginPage(),
       );
     },
     RegisterPageRoute.name: (routeData) {
-      return _i29.MaterialPageX<dynamic>(
+      return _i31.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i2.RegisterPage(),
       );
@@ -81,7 +85,7 @@ class AppRouter extends _i29.RootStackRouter {
       final args = routeData.argsAs<ProfilePageRouteArgs>(
           orElse: () =>
               ProfilePageRouteArgs(userId: pathParams.getString('id')));
-      return _i29.MaterialPageX<dynamic>(
+      return _i31.MaterialPageX<dynamic>(
         routeData: routeData,
         child: _i3.ProfilePage(
           key: args.key,
@@ -92,13 +96,13 @@ class AppRouter extends _i29.RootStackRouter {
       );
     },
     SettingsWrapperPageRoute.name: (routeData) {
-      return _i29.MaterialPageX<dynamic>(
+      return _i31.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i4.SettingsWrapperPage(),
       );
     },
     HomePageRoute.name: (routeData) {
-      return _i29.MaterialPageX<dynamic>(
+      return _i31.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i5.HomePage(),
       );
@@ -108,7 +112,7 @@ class AppRouter extends _i29.RootStackRouter {
       final args = routeData.argsAs<ChatPageWrapperRouteArgs>(
           orElse: () => ChatPageWrapperRouteArgs(
               groupchatId: pathParams.getString('id')));
-      return _i29.MaterialPageX<dynamic>(
+      return _i31.MaterialPageX<dynamic>(
         routeData: routeData,
         child: _i6.ChatPageWrapper(
           key: args.key,
@@ -123,7 +127,7 @@ class AppRouter extends _i29.RootStackRouter {
       final args = routeData.argsAs<PrivateEventWrapperPageRouteArgs>(
           orElse: () => PrivateEventWrapperPageRouteArgs(
               privateEventId: pathParams.getString('id')));
-      return _i29.MaterialPageX<dynamic>(
+      return _i31.MaterialPageX<dynamic>(
         routeData: routeData,
         child: _i7.PrivateEventWrapperPage(
           privateEventId: args.privateEventId,
@@ -134,55 +138,55 @@ class AppRouter extends _i29.RootStackRouter {
       );
     },
     NewGroupchatWrapperPageRoute.name: (routeData) {
-      return _i29.MaterialPageX<dynamic>(
+      return _i31.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i8.NewGroupchatWrapperPage(),
       );
     },
     NewPrivateEventPageRoute.name: (routeData) {
-      return _i29.MaterialPageX<dynamic>(
+      return _i31.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i9.NewPrivateEventPage(),
       );
     },
     SettingsPageRoute.name: (routeData) {
-      return _i29.MaterialPageX<dynamic>(
+      return _i31.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i10.SettingsPage(),
       );
     },
     ThemeModePageRoute.name: (routeData) {
-      return _i29.MaterialPageX<dynamic>(
+      return _i31.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i11.ThemeModePage(),
       );
     },
     HomeChatPageRoute.name: (routeData) {
-      return _i29.MaterialPageX<dynamic>(
+      return _i31.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i12.HomeChatPage(),
       );
     },
     HomeEventPageRoute.name: (routeData) {
-      return _i29.MaterialPageX<dynamic>(
+      return _i31.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i13.HomeEventPage(),
       );
     },
     LocationRoute.name: (routeData) {
-      return _i29.MaterialPageX<dynamic>(
+      return _i31.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i14.Location(),
       );
     },
     HomeSearchPageRoute.name: (routeData) {
-      return _i29.MaterialPageX<dynamic>(
+      return _i31.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i15.HomeSearchPage(),
       );
     },
     HomeProfilePageRoute.name: (routeData) {
-      return _i29.MaterialPageX<dynamic>(
+      return _i31.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i16.HomeProfilePage(),
       );
@@ -191,7 +195,7 @@ class AppRouter extends _i29.RootStackRouter {
       final pathParams = routeData.inheritedPathParams;
       final args = routeData.argsAs<ChatPageRouteArgs>(
           orElse: () => const ChatPageRouteArgs());
-      return _i29.MaterialPageX<dynamic>(
+      return _i31.MaterialPageX<dynamic>(
         routeData: routeData,
         child: _i17.ChatPage(
           groupchatId: pathParams.getString('id'),
@@ -203,7 +207,7 @@ class AppRouter extends _i29.RootStackRouter {
       final pathParams = routeData.inheritedPathParams;
       final args = routeData.argsAs<ChatInfoPageRouteArgs>(
           orElse: () => const ChatInfoPageRouteArgs());
-      return _i29.MaterialPageX<dynamic>(
+      return _i31.MaterialPageX<dynamic>(
         routeData: routeData,
         child: _i18.ChatInfoPage(
           groupchatId: pathParams.getString('id'),
@@ -215,7 +219,7 @@ class AppRouter extends _i29.RootStackRouter {
       final pathParams = routeData.inheritedPathParams;
       final args = routeData.argsAs<ChatAddUserPageRouteArgs>(
           orElse: () => const ChatAddUserPageRouteArgs());
-      return _i29.MaterialPageX<dynamic>(
+      return _i31.MaterialPageX<dynamic>(
         routeData: routeData,
         child: _i19.ChatAddUserPage(
           groupchatId: pathParams.getString('id'),
@@ -227,23 +231,9 @@ class AppRouter extends _i29.RootStackRouter {
       final pathParams = routeData.inheritedPathParams;
       final args = routeData.argsAs<PrivateEventTabPageRouteArgs>(
           orElse: () => const PrivateEventTabPageRouteArgs());
-      return _i29.MaterialPageX<dynamic>(
+      return _i31.MaterialPageX<dynamic>(
         routeData: routeData,
         child: _i20.PrivateEventTabPage(
-          key: args.key,
-          privateEventId: pathParams.getString('id'),
-        ),
-      );
-    },
-    PrivateEventCreateShoppingListItemRoute.name: (routeData) {
-      final pathParams = routeData.inheritedPathParams;
-      final args =
-          routeData.argsAs<PrivateEventCreateShoppingListItemRouteArgs>(
-              orElse: () =>
-                  const PrivateEventCreateShoppingListItemRouteArgs());
-      return _i29.MaterialPageX<dynamic>(
-        routeData: routeData,
-        child: _i21.PrivateEventCreateShoppingListItem(
           key: args.key,
           privateEventId: pathParams.getString('id'),
         ),
@@ -253,91 +243,124 @@ class AppRouter extends _i29.RootStackRouter {
       final pathParams = routeData.inheritedPathParams;
       final args = routeData.argsAs<InfoTabRouteArgs>(
           orElse: () => const InfoTabRouteArgs());
-      return _i29.MaterialPageX<dynamic>(
+      return _i31.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: _i22.InfoTab(
+        child: _i21.InfoTab(
           privateEventId: pathParams.getString('id'),
           key: args.key,
         ),
       );
     },
-    ShoppingListTabRoute.name: (routeData) {
-      final pathParams = routeData.inheritedPathParams;
-      final args = routeData.argsAs<ShoppingListTabRouteArgs>(
-          orElse: () => const ShoppingListTabRouteArgs());
-      return _i29.MaterialPageX<dynamic>(
+    ShoppingListWrapperPageRoute.name: (routeData) {
+      return _i31.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: _i23.ShoppingListTab(
+        child: const _i22.ShoppingListWrapperPage(),
+      );
+    },
+    ShoppingListPageRoute.name: (routeData) {
+      final pathParams = routeData.inheritedPathParams;
+      final args = routeData.argsAs<ShoppingListPageRouteArgs>(
+          orElse: () => const ShoppingListPageRouteArgs());
+      return _i31.MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: _i23.ShoppingListPage(
           privateEventId: pathParams.getString('id'),
           key: args.key,
+        ),
+      );
+    },
+    CurrentShoppingListItemPageRoute.name: (routeData) {
+      final pathParams = routeData.inheritedPathParams;
+      final args = routeData.argsAs<CurrentShoppingListItemPageRouteArgs>(
+          orElse: () => CurrentShoppingListItemPageRouteArgs(
+              shoppingListItemId: pathParams.getString('shoppingListItemId')));
+      return _i31.MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: _i24.CurrentShoppingListItemPage(
+          key: args.key,
+          shoppingListItemId: args.shoppingListItemId,
+          shoppingListItemToSet: args.shoppingListItemToSet,
+          loadShoppingListItemFromApiToo: args.loadShoppingListItemFromApiToo,
+        ),
+      );
+    },
+    CreateShoppingListItemRoute.name: (routeData) {
+      final pathParams = routeData.inheritedPathParams;
+      final args = routeData.argsAs<CreateShoppingListItemRouteArgs>(
+          orElse: () => const CreateShoppingListItemRouteArgs());
+      return _i31.MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: _i25.CreateShoppingListItem(
+          key: args.key,
+          privateEventId: pathParams.getString('id'),
         ),
       );
     },
     NewGroupchatDetailsTabRoute.name: (routeData) {
-      return _i29.MaterialPageX<dynamic>(
+      return _i31.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i24.NewGroupchatDetailsTab(),
+        child: const _i26.NewGroupchatDetailsTab(),
       );
     },
     NewGroupchatSelectUserTabRoute.name: (routeData) {
-      return _i29.MaterialPageX<dynamic>(
+      return _i31.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i25.NewGroupchatSelectUserTab(),
+        child: const _i27.NewGroupchatSelectUserTab(),
       );
     },
     NewPrivateEventDetailsTabRoute.name: (routeData) {
-      return _i29.MaterialPageX<dynamic>(
+      return _i31.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i26.NewPrivateEventDetailsTab(),
+        child: const _i28.NewPrivateEventDetailsTab(),
       );
     },
     NewPrivateEventSearchGroupchatTabRoute.name: (routeData) {
-      return _i29.MaterialPageX<dynamic>(
+      return _i31.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i27.NewPrivateEventSearchGroupchatTab(),
+        child: const _i29.NewPrivateEventSearchGroupchatTab(),
       );
     },
     NewPrivateEventLocationTabRoute.name: (routeData) {
-      return _i29.MaterialPageX<dynamic>(
+      return _i31.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i28.NewPrivateEventLocationTab(),
+        child: const _i30.NewPrivateEventLocationTab(),
       );
     },
   };
 
   @override
-  List<_i29.RouteConfig> get routes => [
-        _i29.RouteConfig(
+  List<_i31.RouteConfig> get routes => [
+        _i31.RouteConfig(
           LoginPageRoute.name,
           path: '/login-page',
         ),
-        _i29.RouteConfig(
+        _i31.RouteConfig(
           RegisterPageRoute.name,
           path: '/register-page',
         ),
-        _i29.RouteConfig(
+        _i31.RouteConfig(
           ProfilePageRoute.name,
           path: '/profile/:id',
           guards: [authGuard],
         ),
-        _i29.RouteConfig(
+        _i31.RouteConfig(
           SettingsWrapperPageRoute.name,
           path: '/settings',
           guards: [authGuard],
           children: [
-            _i29.RouteConfig(
+            _i31.RouteConfig(
               SettingsPageRoute.name,
               path: '',
               parent: SettingsWrapperPageRoute.name,
               guards: [authGuard],
             ),
-            _i29.RouteConfig(
+            _i31.RouteConfig(
               ThemeModePageRoute.name,
               path: 'theme-mode',
               parent: SettingsWrapperPageRoute.name,
               guards: [authGuard],
             ),
-            _i29.RouteConfig(
+            _i31.RouteConfig(
               '*#redirect',
               path: '*',
               parent: SettingsWrapperPageRoute.name,
@@ -346,49 +369,49 @@ class AppRouter extends _i29.RootStackRouter {
             ),
           ],
         ),
-        _i29.RouteConfig(
+        _i31.RouteConfig(
           HomePageRoute.name,
           path: '/',
           guards: [authGuard],
           children: [
-            _i29.RouteConfig(
+            _i31.RouteConfig(
               '#redirect',
               path: '',
               parent: HomePageRoute.name,
               redirectTo: 'chats',
               fullMatch: true,
             ),
-            _i29.RouteConfig(
+            _i31.RouteConfig(
               HomeChatPageRoute.name,
               path: 'chats',
               parent: HomePageRoute.name,
               guards: [authGuard],
             ),
-            _i29.RouteConfig(
+            _i31.RouteConfig(
               HomeEventPageRoute.name,
               path: 'events',
               parent: HomePageRoute.name,
               guards: [authGuard],
             ),
-            _i29.RouteConfig(
+            _i31.RouteConfig(
               LocationRoute.name,
               path: 'map',
               parent: HomePageRoute.name,
               guards: [authGuard],
             ),
-            _i29.RouteConfig(
+            _i31.RouteConfig(
               HomeSearchPageRoute.name,
               path: 'search',
               parent: HomePageRoute.name,
               guards: [authGuard],
             ),
-            _i29.RouteConfig(
+            _i31.RouteConfig(
               HomeProfilePageRoute.name,
               path: 'profile',
               parent: HomePageRoute.name,
               guards: [authGuard],
             ),
-            _i29.RouteConfig(
+            _i31.RouteConfig(
               '*#redirect',
               path: '*',
               parent: HomePageRoute.name,
@@ -397,30 +420,30 @@ class AppRouter extends _i29.RootStackRouter {
             ),
           ],
         ),
-        _i29.RouteConfig(
+        _i31.RouteConfig(
           ChatPageWrapperRoute.name,
           path: '/chats/:id',
           guards: [authGuard],
           children: [
-            _i29.RouteConfig(
+            _i31.RouteConfig(
               ChatPageRoute.name,
               path: '',
               parent: ChatPageWrapperRoute.name,
               guards: [authGuard],
             ),
-            _i29.RouteConfig(
+            _i31.RouteConfig(
               ChatInfoPageRoute.name,
               path: 'info',
               parent: ChatPageWrapperRoute.name,
               guards: [authGuard],
             ),
-            _i29.RouteConfig(
+            _i31.RouteConfig(
               ChatAddUserPageRoute.name,
               path: 'add-user',
               parent: ChatPageWrapperRoute.name,
               guards: [authGuard],
             ),
-            _i29.RouteConfig(
+            _i31.RouteConfig(
               '*#redirect',
               path: '*',
               parent: ChatPageWrapperRoute.name,
@@ -429,45 +452,73 @@ class AppRouter extends _i29.RootStackRouter {
             ),
           ],
         ),
-        _i29.RouteConfig(
+        _i31.RouteConfig(
           PrivateEventWrapperPageRoute.name,
           path: '/private-event/:id',
           guards: [authGuard],
           children: [
-            _i29.RouteConfig(
+            _i31.RouteConfig(
               PrivateEventTabPageRoute.name,
               path: '',
               parent: PrivateEventWrapperPageRoute.name,
               guards: [authGuard],
               children: [
-                _i29.RouteConfig(
+                _i31.RouteConfig(
                   '#redirect',
                   path: '',
                   parent: PrivateEventTabPageRoute.name,
                   redirectTo: 'info',
                   fullMatch: true,
                 ),
-                _i29.RouteConfig(
+                _i31.RouteConfig(
                   InfoTabRoute.name,
                   path: 'info',
                   parent: PrivateEventTabPageRoute.name,
                   guards: [authGuard],
                 ),
-                _i29.RouteConfig(
-                  ShoppingListTabRoute.name,
+                _i31.RouteConfig(
+                  ShoppingListWrapperPageRoute.name,
                   path: 'shopping-list',
                   parent: PrivateEventTabPageRoute.name,
                   guards: [authGuard],
+                  children: [
+                    _i31.RouteConfig(
+                      ShoppingListPageRoute.name,
+                      path: '',
+                      parent: ShoppingListWrapperPageRoute.name,
+                      guards: [authGuard],
+                    ),
+                    _i31.RouteConfig(
+                      CurrentShoppingListItemPageRoute.name,
+                      path: ':shoppingListItemId',
+                      parent: ShoppingListWrapperPageRoute.name,
+                      guards: [authGuard],
+                    ),
+                    _i31.RouteConfig(
+                      CreateShoppingListItemRoute.name,
+                      path: 'create',
+                      parent: ShoppingListWrapperPageRoute.name,
+                      guards: [authGuard],
+                    ),
+                    _i31.RouteConfig(
+                      '*#redirect',
+                      path: '*',
+                      parent: ShoppingListWrapperPageRoute.name,
+                      redirectTo: 'shopping-list',
+                      fullMatch: true,
+                    ),
+                  ],
+                ),
+                _i31.RouteConfig(
+                  '*#redirect',
+                  path: '*',
+                  parent: PrivateEventTabPageRoute.name,
+                  redirectTo: 'info',
+                  fullMatch: true,
                 ),
               ],
             ),
-            _i29.RouteConfig(
-              PrivateEventCreateShoppingListItemRoute.name,
-              path: 'create-shopping-list-item',
-              parent: PrivateEventWrapperPageRoute.name,
-              guards: [authGuard],
-            ),
-            _i29.RouteConfig(
+            _i31.RouteConfig(
               '*#redirect',
               path: '*',
               parent: PrivateEventWrapperPageRoute.name,
@@ -476,24 +527,24 @@ class AppRouter extends _i29.RootStackRouter {
             ),
           ],
         ),
-        _i29.RouteConfig(
+        _i31.RouteConfig(
           NewGroupchatWrapperPageRoute.name,
           path: '/new-groupchat',
           guards: [authGuard],
           children: [
-            _i29.RouteConfig(
+            _i31.RouteConfig(
               NewGroupchatDetailsTabRoute.name,
               path: '',
               parent: NewGroupchatWrapperPageRoute.name,
               guards: [authGuard],
             ),
-            _i29.RouteConfig(
+            _i31.RouteConfig(
               NewGroupchatSelectUserTabRoute.name,
               path: 'users',
               parent: NewGroupchatWrapperPageRoute.name,
               guards: [authGuard],
             ),
-            _i29.RouteConfig(
+            _i31.RouteConfig(
               '*#redirect',
               path: '*',
               parent: NewGroupchatWrapperPageRoute.name,
@@ -502,30 +553,30 @@ class AppRouter extends _i29.RootStackRouter {
             ),
           ],
         ),
-        _i29.RouteConfig(
+        _i31.RouteConfig(
           NewPrivateEventPageRoute.name,
           path: '/new-private-event',
           guards: [authGuard],
           children: [
-            _i29.RouteConfig(
+            _i31.RouteConfig(
               NewPrivateEventDetailsTabRoute.name,
               path: '',
               parent: NewPrivateEventPageRoute.name,
               guards: [authGuard],
             ),
-            _i29.RouteConfig(
+            _i31.RouteConfig(
               NewPrivateEventSearchGroupchatTabRoute.name,
               path: 'groupchat',
               parent: NewPrivateEventPageRoute.name,
               guards: [authGuard],
             ),
-            _i29.RouteConfig(
+            _i31.RouteConfig(
               NewPrivateEventLocationTabRoute.name,
               path: 'location',
               parent: NewPrivateEventPageRoute.name,
               guards: [authGuard],
             ),
-            _i29.RouteConfig(
+            _i31.RouteConfig(
               '*#redirect',
               path: '*',
               parent: NewPrivateEventPageRoute.name,
@@ -534,7 +585,7 @@ class AppRouter extends _i29.RootStackRouter {
             ),
           ],
         ),
-        _i29.RouteConfig(
+        _i31.RouteConfig(
           '*#redirect',
           path: '*',
           redirectTo: '/chats',
@@ -545,7 +596,7 @@ class AppRouter extends _i29.RootStackRouter {
 
 /// generated route for
 /// [_i1.LoginPage]
-class LoginPageRoute extends _i29.PageRouteInfo<void> {
+class LoginPageRoute extends _i31.PageRouteInfo<void> {
   const LoginPageRoute()
       : super(
           LoginPageRoute.name,
@@ -557,7 +608,7 @@ class LoginPageRoute extends _i29.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i2.RegisterPage]
-class RegisterPageRoute extends _i29.PageRouteInfo<void> {
+class RegisterPageRoute extends _i31.PageRouteInfo<void> {
   const RegisterPageRoute()
       : super(
           RegisterPageRoute.name,
@@ -569,11 +620,11 @@ class RegisterPageRoute extends _i29.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i3.ProfilePage]
-class ProfilePageRoute extends _i29.PageRouteInfo<ProfilePageRouteArgs> {
+class ProfilePageRoute extends _i31.PageRouteInfo<ProfilePageRouteArgs> {
   ProfilePageRoute({
-    _i30.Key? key,
+    _i32.Key? key,
     bool loadUserFromApiToo = true,
-    _i32.UserEntity? userToSet,
+    _i34.UserEntity? userToSet,
     required String userId,
   }) : super(
           ProfilePageRoute.name,
@@ -598,11 +649,11 @@ class ProfilePageRouteArgs {
     required this.userId,
   });
 
-  final _i30.Key? key;
+  final _i32.Key? key;
 
   final bool loadUserFromApiToo;
 
-  final _i32.UserEntity? userToSet;
+  final _i34.UserEntity? userToSet;
 
   final String userId;
 
@@ -614,8 +665,8 @@ class ProfilePageRouteArgs {
 
 /// generated route for
 /// [_i4.SettingsWrapperPage]
-class SettingsWrapperPageRoute extends _i29.PageRouteInfo<void> {
-  const SettingsWrapperPageRoute({List<_i29.PageRouteInfo>? children})
+class SettingsWrapperPageRoute extends _i31.PageRouteInfo<void> {
+  const SettingsWrapperPageRoute({List<_i31.PageRouteInfo>? children})
       : super(
           SettingsWrapperPageRoute.name,
           path: '/settings',
@@ -627,8 +678,8 @@ class SettingsWrapperPageRoute extends _i29.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i5.HomePage]
-class HomePageRoute extends _i29.PageRouteInfo<void> {
-  const HomePageRoute({List<_i29.PageRouteInfo>? children})
+class HomePageRoute extends _i31.PageRouteInfo<void> {
+  const HomePageRoute({List<_i31.PageRouteInfo>? children})
       : super(
           HomePageRoute.name,
           path: '/',
@@ -641,13 +692,13 @@ class HomePageRoute extends _i29.PageRouteInfo<void> {
 /// generated route for
 /// [_i6.ChatPageWrapper]
 class ChatPageWrapperRoute
-    extends _i29.PageRouteInfo<ChatPageWrapperRouteArgs> {
+    extends _i31.PageRouteInfo<ChatPageWrapperRouteArgs> {
   ChatPageWrapperRoute({
-    _i30.Key? key,
+    _i32.Key? key,
     required String groupchatId,
-    _i33.GroupchatEntity? chatToSet,
+    _i35.GroupchatEntity? chatToSet,
     bool loadChatFromApiToo = true,
-    List<_i29.PageRouteInfo>? children,
+    List<_i31.PageRouteInfo>? children,
   }) : super(
           ChatPageWrapperRoute.name,
           path: '/chats/:id',
@@ -672,11 +723,11 @@ class ChatPageWrapperRouteArgs {
     this.loadChatFromApiToo = true,
   });
 
-  final _i30.Key? key;
+  final _i32.Key? key;
 
   final String groupchatId;
 
-  final _i33.GroupchatEntity? chatToSet;
+  final _i35.GroupchatEntity? chatToSet;
 
   final bool loadChatFromApiToo;
 
@@ -689,13 +740,13 @@ class ChatPageWrapperRouteArgs {
 /// generated route for
 /// [_i7.PrivateEventWrapperPage]
 class PrivateEventWrapperPageRoute
-    extends _i29.PageRouteInfo<PrivateEventWrapperPageRouteArgs> {
+    extends _i31.PageRouteInfo<PrivateEventWrapperPageRouteArgs> {
   PrivateEventWrapperPageRoute({
     required String privateEventId,
-    _i34.PrivateEventEntity? privateEventToSet,
+    _i36.PrivateEventEntity? privateEventToSet,
     bool loadPrivateEventFromApiToo = true,
-    _i30.Key? key,
-    List<_i29.PageRouteInfo>? children,
+    _i32.Key? key,
+    List<_i31.PageRouteInfo>? children,
   }) : super(
           PrivateEventWrapperPageRoute.name,
           path: '/private-event/:id',
@@ -722,11 +773,11 @@ class PrivateEventWrapperPageRouteArgs {
 
   final String privateEventId;
 
-  final _i34.PrivateEventEntity? privateEventToSet;
+  final _i36.PrivateEventEntity? privateEventToSet;
 
   final bool loadPrivateEventFromApiToo;
 
-  final _i30.Key? key;
+  final _i32.Key? key;
 
   @override
   String toString() {
@@ -736,8 +787,8 @@ class PrivateEventWrapperPageRouteArgs {
 
 /// generated route for
 /// [_i8.NewGroupchatWrapperPage]
-class NewGroupchatWrapperPageRoute extends _i29.PageRouteInfo<void> {
-  const NewGroupchatWrapperPageRoute({List<_i29.PageRouteInfo>? children})
+class NewGroupchatWrapperPageRoute extends _i31.PageRouteInfo<void> {
+  const NewGroupchatWrapperPageRoute({List<_i31.PageRouteInfo>? children})
       : super(
           NewGroupchatWrapperPageRoute.name,
           path: '/new-groupchat',
@@ -749,8 +800,8 @@ class NewGroupchatWrapperPageRoute extends _i29.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i9.NewPrivateEventPage]
-class NewPrivateEventPageRoute extends _i29.PageRouteInfo<void> {
-  const NewPrivateEventPageRoute({List<_i29.PageRouteInfo>? children})
+class NewPrivateEventPageRoute extends _i31.PageRouteInfo<void> {
+  const NewPrivateEventPageRoute({List<_i31.PageRouteInfo>? children})
       : super(
           NewPrivateEventPageRoute.name,
           path: '/new-private-event',
@@ -762,7 +813,7 @@ class NewPrivateEventPageRoute extends _i29.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i10.SettingsPage]
-class SettingsPageRoute extends _i29.PageRouteInfo<void> {
+class SettingsPageRoute extends _i31.PageRouteInfo<void> {
   const SettingsPageRoute()
       : super(
           SettingsPageRoute.name,
@@ -774,7 +825,7 @@ class SettingsPageRoute extends _i29.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i11.ThemeModePage]
-class ThemeModePageRoute extends _i29.PageRouteInfo<void> {
+class ThemeModePageRoute extends _i31.PageRouteInfo<void> {
   const ThemeModePageRoute()
       : super(
           ThemeModePageRoute.name,
@@ -786,7 +837,7 @@ class ThemeModePageRoute extends _i29.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i12.HomeChatPage]
-class HomeChatPageRoute extends _i29.PageRouteInfo<void> {
+class HomeChatPageRoute extends _i31.PageRouteInfo<void> {
   const HomeChatPageRoute()
       : super(
           HomeChatPageRoute.name,
@@ -798,7 +849,7 @@ class HomeChatPageRoute extends _i29.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i13.HomeEventPage]
-class HomeEventPageRoute extends _i29.PageRouteInfo<void> {
+class HomeEventPageRoute extends _i31.PageRouteInfo<void> {
   const HomeEventPageRoute()
       : super(
           HomeEventPageRoute.name,
@@ -810,7 +861,7 @@ class HomeEventPageRoute extends _i29.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i14.Location]
-class LocationRoute extends _i29.PageRouteInfo<void> {
+class LocationRoute extends _i31.PageRouteInfo<void> {
   const LocationRoute()
       : super(
           LocationRoute.name,
@@ -822,7 +873,7 @@ class LocationRoute extends _i29.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i15.HomeSearchPage]
-class HomeSearchPageRoute extends _i29.PageRouteInfo<void> {
+class HomeSearchPageRoute extends _i31.PageRouteInfo<void> {
   const HomeSearchPageRoute()
       : super(
           HomeSearchPageRoute.name,
@@ -834,7 +885,7 @@ class HomeSearchPageRoute extends _i29.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i16.HomeProfilePage]
-class HomeProfilePageRoute extends _i29.PageRouteInfo<void> {
+class HomeProfilePageRoute extends _i31.PageRouteInfo<void> {
   const HomeProfilePageRoute()
       : super(
           HomeProfilePageRoute.name,
@@ -846,8 +897,8 @@ class HomeProfilePageRoute extends _i29.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i17.ChatPage]
-class ChatPageRoute extends _i29.PageRouteInfo<ChatPageRouteArgs> {
-  ChatPageRoute({_i30.Key? key})
+class ChatPageRoute extends _i31.PageRouteInfo<ChatPageRouteArgs> {
+  ChatPageRoute({_i32.Key? key})
       : super(
           ChatPageRoute.name,
           path: '',
@@ -860,7 +911,7 @@ class ChatPageRoute extends _i29.PageRouteInfo<ChatPageRouteArgs> {
 class ChatPageRouteArgs {
   const ChatPageRouteArgs({this.key});
 
-  final _i30.Key? key;
+  final _i32.Key? key;
 
   @override
   String toString() {
@@ -870,8 +921,8 @@ class ChatPageRouteArgs {
 
 /// generated route for
 /// [_i18.ChatInfoPage]
-class ChatInfoPageRoute extends _i29.PageRouteInfo<ChatInfoPageRouteArgs> {
-  ChatInfoPageRoute({_i30.Key? key})
+class ChatInfoPageRoute extends _i31.PageRouteInfo<ChatInfoPageRouteArgs> {
+  ChatInfoPageRoute({_i32.Key? key})
       : super(
           ChatInfoPageRoute.name,
           path: 'info',
@@ -884,7 +935,7 @@ class ChatInfoPageRoute extends _i29.PageRouteInfo<ChatInfoPageRouteArgs> {
 class ChatInfoPageRouteArgs {
   const ChatInfoPageRouteArgs({this.key});
 
-  final _i30.Key? key;
+  final _i32.Key? key;
 
   @override
   String toString() {
@@ -895,8 +946,8 @@ class ChatInfoPageRouteArgs {
 /// generated route for
 /// [_i19.ChatAddUserPage]
 class ChatAddUserPageRoute
-    extends _i29.PageRouteInfo<ChatAddUserPageRouteArgs> {
-  ChatAddUserPageRoute({_i30.Key? key})
+    extends _i31.PageRouteInfo<ChatAddUserPageRouteArgs> {
+  ChatAddUserPageRoute({_i32.Key? key})
       : super(
           ChatAddUserPageRoute.name,
           path: 'add-user',
@@ -909,7 +960,7 @@ class ChatAddUserPageRoute
 class ChatAddUserPageRouteArgs {
   const ChatAddUserPageRouteArgs({this.key});
 
-  final _i30.Key? key;
+  final _i32.Key? key;
 
   @override
   String toString() {
@@ -920,10 +971,10 @@ class ChatAddUserPageRouteArgs {
 /// generated route for
 /// [_i20.PrivateEventTabPage]
 class PrivateEventTabPageRoute
-    extends _i29.PageRouteInfo<PrivateEventTabPageRouteArgs> {
+    extends _i31.PageRouteInfo<PrivateEventTabPageRouteArgs> {
   PrivateEventTabPageRoute({
-    _i30.Key? key,
-    List<_i29.PageRouteInfo>? children,
+    _i32.Key? key,
+    List<_i31.PageRouteInfo>? children,
   }) : super(
           PrivateEventTabPageRoute.name,
           path: '',
@@ -937,7 +988,7 @@ class PrivateEventTabPageRoute
 class PrivateEventTabPageRouteArgs {
   const PrivateEventTabPageRouteArgs({this.key});
 
-  final _i30.Key? key;
+  final _i32.Key? key;
 
   @override
   String toString() {
@@ -946,34 +997,9 @@ class PrivateEventTabPageRouteArgs {
 }
 
 /// generated route for
-/// [_i21.PrivateEventCreateShoppingListItem]
-class PrivateEventCreateShoppingListItemRoute
-    extends _i29.PageRouteInfo<PrivateEventCreateShoppingListItemRouteArgs> {
-  PrivateEventCreateShoppingListItemRoute({_i30.Key? key})
-      : super(
-          PrivateEventCreateShoppingListItemRoute.name,
-          path: 'create-shopping-list-item',
-          args: PrivateEventCreateShoppingListItemRouteArgs(key: key),
-        );
-
-  static const String name = 'PrivateEventCreateShoppingListItemRoute';
-}
-
-class PrivateEventCreateShoppingListItemRouteArgs {
-  const PrivateEventCreateShoppingListItemRouteArgs({this.key});
-
-  final _i30.Key? key;
-
-  @override
-  String toString() {
-    return 'PrivateEventCreateShoppingListItemRouteArgs{key: $key}';
-  }
-}
-
-/// generated route for
-/// [_i22.InfoTab]
-class InfoTabRoute extends _i29.PageRouteInfo<InfoTabRouteArgs> {
-  InfoTabRoute({_i30.Key? key})
+/// [_i21.InfoTab]
+class InfoTabRoute extends _i31.PageRouteInfo<InfoTabRouteArgs> {
+  InfoTabRoute({_i32.Key? key})
       : super(
           InfoTabRoute.name,
           path: 'info',
@@ -986,7 +1012,7 @@ class InfoTabRoute extends _i29.PageRouteInfo<InfoTabRouteArgs> {
 class InfoTabRouteArgs {
   const InfoTabRouteArgs({this.key});
 
-  final _i30.Key? key;
+  final _i32.Key? key;
 
   @override
   String toString() {
@@ -995,33 +1021,117 @@ class InfoTabRouteArgs {
 }
 
 /// generated route for
-/// [_i23.ShoppingListTab]
-class ShoppingListTabRoute
-    extends _i29.PageRouteInfo<ShoppingListTabRouteArgs> {
-  ShoppingListTabRoute({_i30.Key? key})
+/// [_i22.ShoppingListWrapperPage]
+class ShoppingListWrapperPageRoute extends _i31.PageRouteInfo<void> {
+  const ShoppingListWrapperPageRoute({List<_i31.PageRouteInfo>? children})
       : super(
-          ShoppingListTabRoute.name,
+          ShoppingListWrapperPageRoute.name,
           path: 'shopping-list',
-          args: ShoppingListTabRouteArgs(key: key),
+          initialChildren: children,
         );
 
-  static const String name = 'ShoppingListTabRoute';
+  static const String name = 'ShoppingListWrapperPageRoute';
 }
 
-class ShoppingListTabRouteArgs {
-  const ShoppingListTabRouteArgs({this.key});
+/// generated route for
+/// [_i23.ShoppingListPage]
+class ShoppingListPageRoute
+    extends _i31.PageRouteInfo<ShoppingListPageRouteArgs> {
+  ShoppingListPageRoute({_i32.Key? key})
+      : super(
+          ShoppingListPageRoute.name,
+          path: '',
+          args: ShoppingListPageRouteArgs(key: key),
+        );
 
-  final _i30.Key? key;
+  static const String name = 'ShoppingListPageRoute';
+}
+
+class ShoppingListPageRouteArgs {
+  const ShoppingListPageRouteArgs({this.key});
+
+  final _i32.Key? key;
 
   @override
   String toString() {
-    return 'ShoppingListTabRouteArgs{key: $key}';
+    return 'ShoppingListPageRouteArgs{key: $key}';
   }
 }
 
 /// generated route for
-/// [_i24.NewGroupchatDetailsTab]
-class NewGroupchatDetailsTabRoute extends _i29.PageRouteInfo<void> {
+/// [_i24.CurrentShoppingListItemPage]
+class CurrentShoppingListItemPageRoute
+    extends _i31.PageRouteInfo<CurrentShoppingListItemPageRouteArgs> {
+  CurrentShoppingListItemPageRoute({
+    _i32.Key? key,
+    required String shoppingListItemId,
+    _i37.ShoppingListItemEntity? shoppingListItemToSet,
+    bool loadShoppingListItemFromApiToo = true,
+  }) : super(
+          CurrentShoppingListItemPageRoute.name,
+          path: ':shoppingListItemId',
+          args: CurrentShoppingListItemPageRouteArgs(
+            key: key,
+            shoppingListItemId: shoppingListItemId,
+            shoppingListItemToSet: shoppingListItemToSet,
+            loadShoppingListItemFromApiToo: loadShoppingListItemFromApiToo,
+          ),
+          rawPathParams: {'shoppingListItemId': shoppingListItemId},
+        );
+
+  static const String name = 'CurrentShoppingListItemPageRoute';
+}
+
+class CurrentShoppingListItemPageRouteArgs {
+  const CurrentShoppingListItemPageRouteArgs({
+    this.key,
+    required this.shoppingListItemId,
+    this.shoppingListItemToSet,
+    this.loadShoppingListItemFromApiToo = true,
+  });
+
+  final _i32.Key? key;
+
+  final String shoppingListItemId;
+
+  final _i37.ShoppingListItemEntity? shoppingListItemToSet;
+
+  final bool loadShoppingListItemFromApiToo;
+
+  @override
+  String toString() {
+    return 'CurrentShoppingListItemPageRouteArgs{key: $key, shoppingListItemId: $shoppingListItemId, shoppingListItemToSet: $shoppingListItemToSet, loadShoppingListItemFromApiToo: $loadShoppingListItemFromApiToo}';
+  }
+}
+
+/// generated route for
+/// [_i25.CreateShoppingListItem]
+class CreateShoppingListItemRoute
+    extends _i31.PageRouteInfo<CreateShoppingListItemRouteArgs> {
+  CreateShoppingListItemRoute({_i32.Key? key})
+      : super(
+          CreateShoppingListItemRoute.name,
+          path: 'create',
+          args: CreateShoppingListItemRouteArgs(key: key),
+        );
+
+  static const String name = 'CreateShoppingListItemRoute';
+}
+
+class CreateShoppingListItemRouteArgs {
+  const CreateShoppingListItemRouteArgs({this.key});
+
+  final _i32.Key? key;
+
+  @override
+  String toString() {
+    return 'CreateShoppingListItemRouteArgs{key: $key}';
+  }
+}
+
+/// generated route for
+/// [_i26.NewGroupchatDetailsTab]
+class NewGroupchatDetailsTabRoute extends _i31.PageRouteInfo<void> {
   const NewGroupchatDetailsTabRoute()
       : super(
           NewGroupchatDetailsTabRoute.name,
@@ -1032,8 +1142,8 @@ class NewGroupchatDetailsTabRoute extends _i29.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i25.NewGroupchatSelectUserTab]
-class NewGroupchatSelectUserTabRoute extends _i29.PageRouteInfo<void> {
+/// [_i27.NewGroupchatSelectUserTab]
+class NewGroupchatSelectUserTabRoute extends _i31.PageRouteInfo<void> {
   const NewGroupchatSelectUserTabRoute()
       : super(
           NewGroupchatSelectUserTabRoute.name,
@@ -1044,8 +1154,8 @@ class NewGroupchatSelectUserTabRoute extends _i29.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i26.NewPrivateEventDetailsTab]
-class NewPrivateEventDetailsTabRoute extends _i29.PageRouteInfo<void> {
+/// [_i28.NewPrivateEventDetailsTab]
+class NewPrivateEventDetailsTabRoute extends _i31.PageRouteInfo<void> {
   const NewPrivateEventDetailsTabRoute()
       : super(
           NewPrivateEventDetailsTabRoute.name,
@@ -1056,8 +1166,8 @@ class NewPrivateEventDetailsTabRoute extends _i29.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i27.NewPrivateEventSearchGroupchatTab]
-class NewPrivateEventSearchGroupchatTabRoute extends _i29.PageRouteInfo<void> {
+/// [_i29.NewPrivateEventSearchGroupchatTab]
+class NewPrivateEventSearchGroupchatTabRoute extends _i31.PageRouteInfo<void> {
   const NewPrivateEventSearchGroupchatTabRoute()
       : super(
           NewPrivateEventSearchGroupchatTabRoute.name,
@@ -1068,8 +1178,8 @@ class NewPrivateEventSearchGroupchatTabRoute extends _i29.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i28.NewPrivateEventLocationTab]
-class NewPrivateEventLocationTabRoute extends _i29.PageRouteInfo<void> {
+/// [_i30.NewPrivateEventLocationTab]
+class NewPrivateEventLocationTabRoute extends _i31.PageRouteInfo<void> {
   const NewPrivateEventLocationTabRoute()
       : super(
           NewPrivateEventLocationTabRoute.name,

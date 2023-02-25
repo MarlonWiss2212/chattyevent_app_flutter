@@ -98,27 +98,8 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
       groupchat: state.groupchat,
       privateEvent: state.privateEvent,
       privateEventUsers: usersToEmit,
-      shoppingList: state.shoppingList,
       loadingGroupchat: state.loadingGroupchat,
       loadingPrivateEvent: state.loadingPrivateEvent,
-      loadingShoppingList: state.loadingShoppingList,
-    ));
-  }
-
-  void setShoppingListFromShoppingListCubit({
-    bool? loadingShoppingListFromApi,
-  }) {
-    emit(CurrentPrivateEventNormal(
-      groupchat: state.groupchat,
-      shoppingList: shoppingListCubit.state.shoppingList
-          .where((element) => element.privateEventId == state.privateEvent.id)
-          .toList(),
-      privateEvent: state.privateEvent,
-      privateEventUsers: state.privateEventUsers,
-      loadingGroupchat: state.loadingGroupchat,
-      loadingPrivateEvent: state.loadingPrivateEvent,
-      loadingShoppingList:
-          loadingShoppingListFromApi ?? state.loadingShoppingList,
     ));
   }
 
@@ -130,95 +111,11 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
         (element) => element.id == state.privateEvent.connectedGroupchat,
         orElse: () => state.groupchat,
       ),
-      shoppingList: state.shoppingList,
       privateEvent: state.privateEvent,
       privateEventUsers: state.privateEventUsers,
       loadingGroupchat: loadingCurrentChatFromApi ?? state.loadingGroupchat,
       loadingPrivateEvent: state.loadingPrivateEvent,
-      loadingShoppingList: state.loadingShoppingList,
     ));
-  }
-
-  Future getShoppingListViaApi({
-    required GetShoppingListItemsFilter getShoppingListItemsFilter,
-  }) async {
-    emit(CurrentPrivateEventNormal(
-      groupchat: state.groupchat,
-      privateEvent: state.privateEvent,
-      privateEventUsers: state.privateEventUsers,
-      shoppingList: state.shoppingList,
-      loadingGroupchat: state.loadingGroupchat,
-      loadingPrivateEvent: state.loadingPrivateEvent,
-      loadingShoppingList: true,
-    ));
-
-    final Either<Failure, List<ShoppingListItemEntity>>
-        shoppingListItemsOrFailure =
-        await shoppingListItemUseCases.getShoppingListItemsViaApi(
-      getShoppingListItemsFilter: getShoppingListItemsFilter,
-    );
-
-    shoppingListItemsOrFailure.fold(
-      (error) => emit(CurrentPrivateEventError(
-        groupchat: state.groupchat,
-        shoppingList: state.shoppingList,
-        privateEvent: state.privateEvent,
-        privateEventUsers: state.privateEventUsers,
-        message: mapFailureToMessage(error),
-        loadingGroupchat: state.loadingGroupchat,
-        loadingPrivateEvent: state.loadingPrivateEvent,
-        loadingShoppingList: false,
-        title: "Fehler Shopping List",
-      )),
-      (shoppingListItems) {
-        shoppingListCubit.mergeOrAddMultiple(
-          shoppingListItems: shoppingListItems,
-        );
-        setShoppingListFromShoppingListCubit(
-          loadingShoppingListFromApi: false,
-        );
-      },
-    );
-  }
-
-  Future updateShoppingListItemViaApi({
-    required UpdateShoppingListItemDto updateShoppingListItemDto,
-    required String shoppingListItemId,
-  }) async {
-    emit(CurrentPrivateEventNormal(
-      groupchat: state.groupchat,
-      privateEvent: state.privateEvent,
-      privateEventUsers: state.privateEventUsers,
-      shoppingList: state.shoppingList,
-      loadingGroupchat: state.loadingGroupchat,
-      loadingPrivateEvent: state.loadingPrivateEvent,
-      loadingShoppingList: true,
-    ));
-    final Either<Failure, ShoppingListItemEntity> shoppingListItemOrFailure =
-        await shoppingListItemUseCases.updateShoppingListItemsViaApi(
-      updateShoppingListItemDto: updateShoppingListItemDto,
-      shoppingListItemId: shoppingListItemId,
-    );
-
-    shoppingListItemOrFailure.fold(
-      (error) => emit(CurrentPrivateEventError(
-        privateEventUsers: state.privateEventUsers,
-        privateEvent: state.privateEvent,
-        message: mapFailureToMessage(error),
-        title: "Update Failure",
-        groupchat: state.groupchat,
-        shoppingList: state.shoppingList,
-        loadingGroupchat: state.loadingGroupchat,
-        loadingPrivateEvent: state.loadingPrivateEvent,
-        loadingShoppingList: false,
-      )),
-      (shoppingListItem) {
-        shoppingListCubit.mergeOrAdd(shoppingListItem: shoppingListItem);
-        setShoppingListFromShoppingListCubit(
-          loadingShoppingListFromApi: false,
-        );
-      },
-    );
   }
 
   Future getCurrentChatViaApi({
@@ -226,12 +123,10 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
   }) async {
     emit(CurrentPrivateEventNormal(
       groupchat: state.groupchat,
-      shoppingList: state.shoppingList,
       privateEvent: state.privateEvent,
       privateEventUsers: state.privateEventUsers,
       loadingPrivateEvent: state.loadingPrivateEvent,
       loadingGroupchat: true,
-      loadingShoppingList: state.loadingShoppingList,
     ));
     final Either<Failure, GroupchatEntity> groupchatOrFailure =
         await chatUseCases.getGroupchatViaApi(
@@ -242,12 +137,10 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
       (error) {
         emit(CurrentPrivateEventError(
           groupchat: state.groupchat,
-          shoppingList: state.shoppingList,
           privateEvent: state.privateEvent,
           privateEventUsers: state.privateEventUsers,
           loadingPrivateEvent: state.loadingPrivateEvent,
           loadingGroupchat: false,
-          loadingShoppingList: state.loadingShoppingList,
           title: "Fehler",
           message: mapFailureToMessage(error),
         ));
@@ -256,12 +149,10 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
         final mergedChat = chatCubit.mergeOrAdd(groupchat: groupchat);
         emit(CurrentPrivateEventNormal(
           groupchat: mergedChat,
-          shoppingList: state.shoppingList,
           privateEvent: state.privateEvent,
           privateEventUsers: state.privateEventUsers,
           loadingPrivateEvent: state.loadingPrivateEvent,
           loadingGroupchat: false,
-          loadingShoppingList: state.loadingShoppingList,
         ));
         setPrivateEventUsers();
       },
@@ -273,12 +164,10 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
   }) async {
     emit(CurrentPrivateEventNormal(
       groupchat: state.groupchat,
-      shoppingList: state.shoppingList,
       privateEvent: state.privateEvent,
       privateEventUsers: state.privateEventUsers,
       loadingPrivateEvent: true,
       loadingGroupchat: state.loadingGroupchat,
-      loadingShoppingList: state.loadingShoppingList,
     ));
 
     final Either<Failure, PrivateEventEntity> privateEventOrFailure =
@@ -290,12 +179,10 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
       (error) {
         emit(CurrentPrivateEventError(
           groupchat: state.groupchat,
-          shoppingList: state.shoppingList,
           privateEvent: state.privateEvent,
           privateEventUsers: state.privateEventUsers,
           loadingPrivateEvent: false,
           loadingGroupchat: state.loadingGroupchat,
-          loadingShoppingList: state.loadingShoppingList,
           message: mapFailureToMessage(error),
           title: "Fehler Geradiges Event",
         ));
@@ -308,10 +195,8 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
           privateEvent: mergedPrivateEvent,
           privateEventUsers: state.privateEventUsers,
           groupchat: state.groupchat,
-          shoppingList: state.shoppingList,
           loadingPrivateEvent: false,
           loadingGroupchat: state.loadingGroupchat,
-          loadingShoppingList: state.loadingShoppingList,
         ));
         setPrivateEventUsers();
       },
@@ -326,10 +211,8 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
       privateEvent: state.privateEvent,
       privateEventUsers: state.privateEventUsers,
       groupchat: state.groupchat,
-      shoppingList: state.shoppingList,
       loadingPrivateEvent: true,
       loadingGroupchat: state.loadingGroupchat,
-      loadingShoppingList: state.loadingShoppingList,
     ));
 
     final Either<Failure, PrivateEventUserEntity> privateEventOrFailure =
@@ -342,12 +225,10 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
       (error) {
         emit(CurrentPrivateEventError(
           groupchat: state.groupchat,
-          shoppingList: state.shoppingList,
           privateEvent: state.privateEvent,
           privateEventUsers: state.privateEventUsers,
           loadingPrivateEvent: false,
           loadingGroupchat: state.loadingGroupchat,
-          loadingShoppingList: state.loadingShoppingList,
           title: "Fehler",
           message: mapFailureToMessage(error),
         ));
@@ -365,12 +246,10 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
         );
         emit(CurrentPrivateEventNormal(
           privateEvent: mergedPrivateEvent,
-          shoppingList: state.shoppingList,
           privateEventUsers: state.privateEventUsers,
           groupchat: state.groupchat,
           loadingPrivateEvent: false,
           loadingGroupchat: state.loadingGroupchat,
-          loadingShoppingList: state.loadingShoppingList,
         ));
         setPrivateEventUsers();
       },

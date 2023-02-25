@@ -18,16 +18,18 @@ import 'package:social_media_app_flutter/presentation/screens/new_groupchat/new_
 import 'package:social_media_app_flutter/presentation/screens/new_private_event/pages/new_private_event_details_tab.dart';
 import 'package:social_media_app_flutter/presentation/screens/new_private_event/pages/new_private_event_location_tab.dart';
 import 'package:social_media_app_flutter/presentation/screens/new_private_event/pages/new_private_event_search_groupchat_tab.dart';
-import 'package:social_media_app_flutter/presentation/screens/private_event_page/private_event_create_shopping_list_item.dart';
+import 'package:social_media_app_flutter/presentation/screens/shopping_list_page/create_shopping_list_item_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/private_event_page/private_event_wrapper_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/private_event_page/tab_page/pages/info_tab.dart';
-import 'package:social_media_app_flutter/presentation/screens/private_event_page/tab_page/pages/shopping_list_tab.dart';
+import 'package:social_media_app_flutter/presentation/screens/shopping_list_page/current_shopping_list_item_page.dart';
+import 'package:social_media_app_flutter/presentation/screens/shopping_list_page/shopping_list_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/private_event_page/tab_page/private_event_tab_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/profile_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/register_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/settings_page/pages/theme_mode_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/settings_page/pages/settings_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/settings_page/settings_page_wrapper.dart';
+import 'package:social_media_app_flutter/presentation/screens/shopping_list_page/shopping_list_wrapper_page.dart';
 
 @MaterialAutoRouter(
   routes: <AutoRoute>[
@@ -99,33 +101,42 @@ import 'package:social_media_app_flutter/presentation/screens/settings_page/sett
 
     // private event page
     AutoRoute(
-      page: PrivateEventWrapperPage,
+      page: PrivateEventTabPage,
       guards: [AuthGuard],
       path: '/private-event/:id',
       children: [
         AutoRoute(
-          page: PrivateEventTabPage,
+          page: InfoTab,
+          initial: true,
+          path: 'info',
           guards: [AuthGuard],
-          path: '',
+        ),
+        // TODO: make this to an own router
+        AutoRoute(
+          page: ShoppingListWrapperPage,
+          guards: [AuthGuard],
+          path: 'shopping-list',
           children: [
             AutoRoute(
-              page: InfoTab,
+              page: ShoppingListPage,
               initial: true,
-              path: 'info',
+              path: '',
               guards: [AuthGuard],
             ),
             AutoRoute(
-              page: ShoppingListTab,
-              path: 'shopping-list',
+              page: CurrentShoppingListItemPage,
+              initial: true,
+              path: ':shoppingListItemId',
               guards: [AuthGuard],
             ),
+            AutoRoute(
+              page: CreateShoppingListItem,
+              initial: false,
+              path: 'create',
+              guards: [AuthGuard],
+            ),
+            RedirectRoute(path: '*', redirectTo: ''),
           ],
-        ),
-        AutoRoute(
-          page: PrivateEventCreateShoppingListItem,
-          initial: false,
-          path: 'create-shopping-list-item',
-          guards: [AuthGuard],
         ),
         RedirectRoute(path: '*', redirectTo: 'info'),
       ],

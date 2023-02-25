@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:meta/meta.dart';
+import 'package:social_media_app_flutter/domain/entities/error_with_title_and_message.dart';
 import 'package:social_media_app_flutter/domain/entities/shopping_list_item/shopping_list_item_entity.dart';
 import 'package:social_media_app_flutter/core/failures/failures.dart';
 import 'package:social_media_app_flutter/core/filter/get_shopping_list_items_filter.dart';
@@ -13,7 +14,7 @@ class ShoppingListCubit extends Cubit<ShoppingListState> {
 
   ShoppingListCubit({
     required this.shoppingListItemUseCases,
-  }) : super(ShoppingListInitial());
+  }) : super(const ShoppingListState(shoppingList: []));
 
   ShoppingListItemEntity mergeOrAdd({
     required ShoppingListItemEntity shoppingListItem,
@@ -28,13 +29,11 @@ class ShoppingListCubit extends Cubit<ShoppingListState> {
         newEntity: shoppingListItem,
         oldEntity: state.shoppingList[foundIndex],
       );
-      emit(
-        ShoppingListLoaded(shoppingList: newShoppingList),
-      );
+      emit(ShoppingListState(shoppingList: newShoppingList));
       return newShoppingList[foundIndex];
     } else {
       emit(
-        ShoppingListLoaded(
+        ShoppingListState(
           shoppingList: List.from(state.shoppingList)..add(shoppingListItem),
         ),
       );
@@ -57,17 +56,21 @@ class ShoppingListCubit extends Cubit<ShoppingListState> {
   }
 
   void delete({required String shoppingListItemId}) {
-    List<ShoppingListItemEntity> newShoppingList = state.shoppingList;
-    newShoppingList.removeWhere(
-      (element) => element.id == shoppingListItemId,
+    emit(
+      ShoppingListState(
+        shoppingList: state.shoppingList
+            .where(
+              (element) => element.id != shoppingListItemId,
+            )
+            .toList(),
+      ),
     );
-    emit(ShoppingListLoaded(shoppingList: newShoppingList));
   }
 
   Future getShoppingListViaApi({
     GetShoppingListItemsFilter? getShoppingListItemsFilter,
   }) async {
-    emit(ShoppingListLoading(
+    emit(ShoppingListState(
       shoppingList: state.shoppingList,
       loadingForPrivateEventId: getShoppingListItemsFilter?.privateEventId,
     ));
@@ -80,12 +83,12 @@ class ShoppingListCubit extends Cubit<ShoppingListState> {
 
     shoppingListItemsOrFailure.fold(
       (error) => emit(
-        ShoppingListError(
-          loadingErrorForPrivateEventId:
-              getShoppingListItemsFilter?.privateEventId,
+        ShoppingListState(
           shoppingList: state.shoppingList,
-          message: mapFailureToMessage(error),
-          title: "Lade Fehler",
+          error: ErrorWithTitleAndMessage(
+            message: mapFailureToMessage(error),
+            title: "Lade Fehler",
+          ),
         ),
       ),
       (shoppingListItems) {

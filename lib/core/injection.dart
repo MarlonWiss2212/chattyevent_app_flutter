@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/core/graphql.dart';
 import 'package:social_media_app_flutter/domain/repositories/auth_repository.dart';
+import 'package:social_media_app_flutter/domain/repositories/bought_amount_repository.dart';
 import 'package:social_media_app_flutter/domain/repositories/chat_repository.dart';
 import 'package:social_media_app_flutter/domain/repositories/device/image_picker_repository.dart';
 import 'package:social_media_app_flutter/domain/repositories/device/location_repository.dart';
@@ -14,6 +15,7 @@ import 'package:social_media_app_flutter/domain/repositories/private_event_repos
 import 'package:social_media_app_flutter/domain/repositories/shopping_list_item_repository.dart';
 import 'package:social_media_app_flutter/domain/repositories/user_repository.dart';
 import 'package:social_media_app_flutter/domain/usecases/auth_usecases.dart';
+import 'package:social_media_app_flutter/domain/usecases/bought_amount_usecases.dart';
 import 'package:social_media_app_flutter/domain/usecases/chat_usecases.dart';
 import 'package:social_media_app_flutter/domain/usecases/image_picker_usecases.dart';
 import 'package:social_media_app_flutter/domain/usecases/location_usecases.dart';
@@ -29,6 +31,7 @@ import 'package:social_media_app_flutter/infastructure/datasources/device/notifi
 import 'package:social_media_app_flutter/infastructure/datasources/local/sharedPreferences.dart';
 import 'package:social_media_app_flutter/infastructure/datasources/remote/graphql.dart';
 import 'package:social_media_app_flutter/infastructure/respositories/auth_repository_impl.dart';
+import 'package:social_media_app_flutter/infastructure/respositories/bought_amount_repository_impl.dart';
 import 'package:social_media_app_flutter/infastructure/respositories/chat_repository_impl.dart';
 import 'package:social_media_app_flutter/infastructure/respositories/device/image_picker_repository_impl.dart';
 import 'package:social_media_app_flutter/infastructure/respositories/device/location_repository_impl.dart';
@@ -58,6 +61,11 @@ Future init() async {
   serviceLocator.registerFactoryParam<ChatUseCases, AuthState?, void>(
     (param1, param2) => ChatUseCases(
       chatRepository: serviceLocator(param1: param1),
+    ),
+  );
+  serviceLocator.registerFactoryParam<BoughtAmountUseCases, AuthState?, void>(
+    (param1, param2) => BoughtAmountUseCases(
+      boughtAmountRepository: serviceLocator(param1: param1),
     ),
   );
   serviceLocator.registerFactoryParam<MessageUseCases, AuthState?, void>(
@@ -107,6 +115,11 @@ Future init() async {
   );
   serviceLocator.registerFactoryParam<ChatRepository, AuthState?, void>(
     (param1, param2) => ChatRepositoryImpl(
+      graphQlDatasource: serviceLocator(param1: param1),
+    ),
+  );
+  serviceLocator.registerFactoryParam<BoughtAmountRepository, AuthState?, void>(
+    (param1, param2) => BoughtAmountRepositoryImpl(
       graphQlDatasource: serviceLocator(param1: param1),
     ),
   );

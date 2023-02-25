@@ -37,7 +37,7 @@ class BoughtAmountUseCases {
     );
   }
 
-  Future<Either<Failure, void>> deleteBoughtAmountViaApi({
+  Future<Either<Failure, bool>> deleteBoughtAmountViaApi({
     required String boughtAmountId,
   }) async {
     return await boughtAmountRepository.deleteBoughtAmountViaApi(

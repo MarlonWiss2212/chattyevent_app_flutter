@@ -123,14 +123,14 @@ class BoughtAmountRepositoryImpl implements BoughtAmountRepository {
   }
 
   @override
-  Future<Either<Failure, void>> deleteBoughtAmountViaApi({
+  Future<Either<Failure, bool>> deleteBoughtAmountViaApi({
     required String boughtAmountId,
   }) async {
     try {
       final response = await graphQlDatasource.mutation(
         """
         mutation DeleteBoughtAmount(\$boughtAmountId: String!) {
-          deleteBoughtAmount(updateBoughtAmountInput: \$input)
+          deleteBoughtAmount(boughtAmountId: \$input)
         }
       """,
         variables: {"boughtAmountId": boughtAmountId},
