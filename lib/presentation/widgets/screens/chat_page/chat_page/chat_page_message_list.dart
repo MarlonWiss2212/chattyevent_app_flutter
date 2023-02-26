@@ -8,15 +8,15 @@ import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubi
 import 'package:social_media_app_flutter/domain/entities/groupchat/user_with_groupchat_user_data.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/user_with_left_groupchat_user_data.dart';
 import 'package:social_media_app_flutter/domain/entities/message/message_entity.dart';
-import 'package:social_media_app_flutter/presentation/widgets/screens/chat_page/message_container.dart';
+import 'package:social_media_app_flutter/presentation/widgets/screens/chat_page/chat_page/chat_page_message_container.dart';
 
-class MessageList extends StatefulWidget {
+class ChatPageMessageList extends StatefulWidget {
   final String groupchatTo;
   final List<UserWithGroupchatUserData> usersWithGroupchatUserData;
   final List<UserWithLeftGroupchatUserData> usersWithLeftGroupchatUserData;
   final List<MessageEntity> messages;
 
-  const MessageList({
+  const ChatPageMessageList({
     super.key,
     required this.groupchatTo,
     required this.messages,
@@ -25,10 +25,10 @@ class MessageList extends StatefulWidget {
   });
 
   @override
-  State<MessageList> createState() => _MessageListState();
+  State<ChatPageMessageList> createState() => _ChatPageMessageListState();
 }
 
-class _MessageListState extends State<MessageList> {
+class _ChatPageMessageListState extends State<ChatPageMessageList> {
   late ScrollController _scrollController;
 
   @override
@@ -59,7 +59,7 @@ class _MessageListState extends State<MessageList> {
       controller: _scrollController,
       padding: const EdgeInsets.symmetric(vertical: 8),
       itemBuilder: (context, message) {
-        return MessageContainer(
+        return ChatPageMessageContainer(
           currentUserId: currentUserId,
           message: message,
           usersWithGroupchatUserData: widget.usersWithGroupchatUserData,

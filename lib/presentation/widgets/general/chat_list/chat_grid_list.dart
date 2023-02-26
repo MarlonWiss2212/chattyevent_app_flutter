@@ -1,7 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
-import 'package:social_media_app_flutter/presentation/widgets/chat_list/chat_grid_list_item.dart';
+import 'package:social_media_app_flutter/presentation/widgets/general/chat_list/chat_grid_list_item.dart';
 
 class ChatGridList extends StatelessWidget {
   final List<GroupchatEntity> groupchats;

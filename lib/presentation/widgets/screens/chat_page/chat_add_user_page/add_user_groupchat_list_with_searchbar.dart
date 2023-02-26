@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_search_cubit.dart';
-import 'package:social_media_app_flutter/core/dto/groupchat/create_groupchat_user_dto.dart';
 import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
 import 'package:social_media_app_flutter/core/filter/get_users_filter.dart';
 import 'package:social_media_app_flutter/presentation/widgets/user_list/user_grid_list.dart';
@@ -31,6 +30,8 @@ class AddUserGroupchatListWithSearchbar extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           BlocBuilder<CurrentChatCubit, CurrentChatState>(
+            buildWhen: (previous, current) =>
+                previous.currentChat.users != current.currentChat.users,
             builder: (context, currentChatState) {
               return BlocBuilder<UserSearchCubit, UserSearchState>(
                 builder: (context, state) {
@@ -59,13 +60,7 @@ class AddUserGroupchatListWithSearchbar extends StatelessWidget {
                           color: Theme.of(context).colorScheme.primaryContainer,
                           onPressed: () {
                             BlocProvider.of<CurrentChatCubit>(context)
-                                .addUserToChat(
-                              createGroupchatUserDto: CreateGroupchatUserDto(
-                                userId: user.id,
-                                groupchatTo: groupchatId,
-                                admin: false,
-                              ),
-                            );
+                                .addUserToChat(userId: user.id);
                           },
                           child: Text(
                             "Hinzufügen",

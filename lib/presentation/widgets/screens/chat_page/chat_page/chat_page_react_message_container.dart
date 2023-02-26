@@ -4,13 +4,13 @@ import 'package:jwt_decode/jwt_decode.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart';
 import 'package:social_media_app_flutter/domain/entities/message/message_entity.dart';
-import 'package:social_media_app_flutter/presentation/widgets/screens/chat_page/message_container.dart';
+import 'package:social_media_app_flutter/presentation/widgets/screens/chat_page/chat_page/chat_page_message_container.dart';
 
-class ReactMessageContainer extends StatelessWidget {
+class ChatPageReactMessageContainer extends StatelessWidget {
   final String messageToReactTo;
   final bool? showImage;
 
-  const ReactMessageContainer({
+  const ChatPageReactMessageContainer({
     super.key,
     required this.messageToReactTo,
     this.showImage,
@@ -20,7 +20,7 @@ class ReactMessageContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<CurrentChatCubit, CurrentChatState>(
       builder: (context, state) {
-        return MessageContainer(
+        return ChatPageMessageContainer(
           showImage: showImage ?? true,
           message: state.currentChat.messages != null
               ? state.currentChat.messages!.firstWhere(

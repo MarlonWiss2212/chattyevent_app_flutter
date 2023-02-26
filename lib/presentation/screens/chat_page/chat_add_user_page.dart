@@ -24,6 +24,8 @@ class ChatAddUserPage extends StatelessWidget {
       body: Column(
         children: [
           BlocBuilder<CurrentChatCubit, CurrentChatState>(
+            buildWhen: (previous, current) =>
+                previous.loadingChat != current.loadingChat,
             builder: (context, state) {
               if (state.loadingChat) {
                 return const LinearProgressIndicator();

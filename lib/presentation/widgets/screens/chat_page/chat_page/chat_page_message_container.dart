@@ -7,10 +7,10 @@ import 'package:social_media_app_flutter/domain/entities/groupchat/user_with_gro
 import 'package:social_media_app_flutter/domain/entities/groupchat/user_with_left_groupchat_user_data.dart';
 import 'package:social_media_app_flutter/domain/entities/message/message_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
-import 'package:social_media_app_flutter/presentation/widgets/screens/chat_page/react_message_container.dart';
+import 'package:social_media_app_flutter/presentation/widgets/screens/chat_page/chat_page/chat_page_react_message_container.dart';
 
-class MessageContainer extends StatelessWidget {
-  const MessageContainer({
+class ChatPageMessageContainer extends StatelessWidget {
+  const ChatPageMessageContainer({
     super.key,
     required this.message,
     required this.currentUserId,
@@ -128,7 +128,7 @@ class MessageContainer extends StatelessWidget {
                         width: 2,
                       ),
                     ),
-                    child: ReactMessageContainer(
+                    child: ChatPageReactMessageContainer(
                       messageToReactTo: message.messageToReactTo!,
                     ),
                   ),

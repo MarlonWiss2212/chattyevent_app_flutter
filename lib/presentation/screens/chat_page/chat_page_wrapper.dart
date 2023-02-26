@@ -5,14 +5,9 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/private_event/private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
 import 'package:social_media_app_flutter/core/injection.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
-import 'package:social_media_app_flutter/core/filter/get_one_groupchat_filter.dart';
-import 'package:social_media_app_flutter/domain/usecases/message_usecases.dart';
-import 'package:social_media_app_flutter/infastructure/datasources/remote/graphql.dart';
-import 'package:social_media_app_flutter/infastructure/respositories/message_repository_impl.dart';
 import 'package:social_media_app_flutter/presentation/widgets/dialog/buttons/ok_button.dart';
 
 class ChatPageWrapper extends StatelessWidget {
@@ -32,19 +27,13 @@ class ChatPageWrapper extends StatelessWidget {
     return BlocProvider(
       create: (context) => CurrentChatCubit(
         CurrentChatState(
-          privateEvents: const [],
-          loadingPrivateEvents: false,
           loadingMessages: false,
           usersWithGroupchatUserData: const [],
           usersWithLeftGroupchatUserData: const [],
-          currentChat: chatToSet ?? GroupchatEntity(id: ""),
+          currentChat: chatToSet ?? GroupchatEntity(id: groupchatId),
           loadingChat: false,
         ),
         messageUseCases: serviceLocator(
-          param1: BlocProvider.of<AuthCubit>(context).state,
-        ),
-        privateEventCubit: BlocProvider.of<PrivateEventCubit>(context),
-        privateEventUseCases: serviceLocator(
           param1: BlocProvider.of<AuthCubit>(context).state,
         ),
         userCubit: BlocProvider.of<UserCubit>(context),
@@ -70,16 +59,11 @@ class ChatPageWrapper extends StatelessWidget {
         },
         child: Builder(builder: (context) {
           BlocProvider.of<CurrentChatCubit>(context).setGroupchatUsers();
-          BlocProvider.of<CurrentChatCubit>(context)
-              .setPrivateEventFromPrivateEventCubit();
-
-          // too get the users from the api too
+          // TODO too get the users from the api too but more efficient soon
           BlocProvider.of<CurrentChatCubit>(context).getGroupchatUsersViaApi();
 
           if (chatToSet == null || loadChatFromApiToo) {
-            BlocProvider.of<CurrentChatCubit>(context).getCurrentChatViaApi(
-              getOneGroupchatFilter: GetOneGroupchatFilter(id: groupchatId),
-            );
+            BlocProvider.of<CurrentChatCubit>(context).getCurrentChatViaApi();
           }
 
           return const AutoRouter();

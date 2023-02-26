@@ -4,11 +4,11 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:social_media_app_flutter/application/bloc/message/add_message_cubit.dart';
 import 'package:social_media_app_flutter/presentation/widgets/bottom_sheet/image_picker_list.dart';
 import 'package:social_media_app_flutter/presentation/widgets/dialog/buttons/ok_button.dart';
-import 'package:social_media_app_flutter/presentation/widgets/screens/chat_page/react_message_container.dart';
+import 'package:social_media_app_flutter/presentation/widgets/screens/chat_page/chat_page/chat_page_react_message_container.dart';
 
-class MessageInput extends StatelessWidget {
+class ChatPageMessageInput extends StatelessWidget {
   final String groupchatTo;
-  const MessageInput({super.key, required this.groupchatTo});
+  const ChatPageMessageInput({super.key, required this.groupchatTo});
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +83,7 @@ class MessageInput extends StatelessWidget {
                             width: 2,
                           ),
                         ),
-                        child: ReactMessageContainer(
+                        child: ChatPageReactMessageContainer(
                           showImage: false,
                           messageToReactTo: state.messageToReactTo!,
                         ),

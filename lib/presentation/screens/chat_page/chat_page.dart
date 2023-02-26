@@ -7,8 +7,8 @@ import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubi
 import 'package:social_media_app_flutter/application/bloc/message/add_message_cubit.dart';
 import 'package:social_media_app_flutter/core/injection.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
-import 'package:social_media_app_flutter/presentation/widgets/screens/chat_page/message_area.dart';
-import 'package:social_media_app_flutter/presentation/widgets/screens/chat_page/message_input.dart';
+import 'package:social_media_app_flutter/presentation/widgets/screens/chat_page/chat_page/chat_page_message_area.dart';
+import 'package:social_media_app_flutter/presentation/widgets/screens/chat_page/chat_page/chat_page_message_input.dart';
 
 class ChatPage extends StatelessWidget {
   const ChatPage({@PathParam('id') required this.groupchatId, super.key});
@@ -80,11 +80,11 @@ class ChatPage extends StatelessWidget {
                   const Expanded(
                     child: Padding(
                       padding: EdgeInsets.symmetric(horizontal: 8.0),
-                      child: MessageArea(),
+                      child: ChatPageMessageArea(),
                     ),
                   ),
                   const Divider(height: 1),
-                  MessageInput(groupchatTo: groupchatId),
+                  ChatPageMessageInput(groupchatTo: groupchatId),
                 ],
               ),
             ),

@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletons/skeletons.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart';
-import 'package:social_media_app_flutter/presentation/widgets/screens/chat_page/message_list.dart';
+import 'package:social_media_app_flutter/presentation/widgets/screens/chat_page/chat_page/chat_page_message_list.dart';
 
-class MessageArea extends StatelessWidget {
-  const MessageArea({super.key});
+class ChatPageMessageArea extends StatelessWidget {
+  const ChatPageMessageArea({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +64,7 @@ class MessageArea extends StatelessWidget {
           );
         }
 
-        return MessageList(
+        return ChatPageMessageList(
           groupchatTo: state.currentChat.id,
           usersWithGroupchatUserData: state.usersWithGroupchatUserData,
           usersWithLeftGroupchatUserData: state.usersWithLeftGroupchatUserData,
