@@ -205,7 +205,6 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
 
   Future updatePrivateEventUser({
     required UpdatePrivateEventUserDto updatePrivateEventUserDto,
-    required String privateEventId,
   }) async {
     emit(CurrentPrivateEventNormal(
       privateEvent: state.privateEvent,
@@ -217,7 +216,7 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
 
     final Either<Failure, PrivateEventUserEntity> privateEventOrFailure =
         await privateEventUseCases.updatePrivateEventUser(
-      privateEventId: privateEventId,
+      privateEventId: state.privateEvent.id,
       updatePrivateEventUserDto: updatePrivateEventUserDto,
     );
 

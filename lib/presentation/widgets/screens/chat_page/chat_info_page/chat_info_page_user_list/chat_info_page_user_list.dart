@@ -7,7 +7,7 @@ import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/user_with_groupchat_user_data.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
-import 'package:social_media_app_flutter/presentation/widgets/screens/chat_page/chat_info_page/user_list/chat_info_page_user_list_item.dart';
+import 'package:social_media_app_flutter/presentation/widgets/screens/chat_page/chat_info_page/chat_info_page_user_list/chat_info_page_user_list_item.dart';
 
 class ChatInfoPageUserList extends StatelessWidget {
   const ChatInfoPageUserList({super.key});

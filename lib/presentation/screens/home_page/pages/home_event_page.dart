@@ -13,10 +13,7 @@ class HomeEventPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (BlocProvider.of<PrivateEventCubit>(context).state
-        is! PrivateEventLoaded) {
-      BlocProvider.of<PrivateEventCubit>(context).getPrivateEventsViaApi();
-    }
+    BlocProvider.of<PrivateEventCubit>(context).getPrivateEventsViaApi();
 
     return PlatformScaffold(
       appBar: PlatformAppBar(
@@ -28,13 +25,14 @@ class HomeEventPage extends StatelessWidget {
             BlocProvider.of<PrivateEventCubit>(context).getPrivateEventsViaApi,
         child: BlocConsumer<PrivateEventCubit, PrivateEventState>(
           listener: (context, state) async {
-            if (state is PrivateEventError) {
+            if (state.status == PrivateEventStateStatus.error &&
+                state.error != null) {
               return await showPlatformDialog(
                 context: context,
                 builder: (context) {
                   return PlatformAlertDialog(
-                    title: Text(state.title),
-                    content: Text(state.message),
+                    title: Text(state.error!.title),
+                    content: Text(state.error!.message),
                     actions: const [OKButton()],
                   );
                 },
@@ -42,13 +40,13 @@ class HomeEventPage extends StatelessWidget {
             }
           },
           builder: (context, state) {
-            const emptyReturn = Center(child: Text("Keine Privaten Events"));
-
-            if (state.privateEvents.isEmpty && state is! PrivateEventLoading) {
-              return emptyReturn;
+            if (state.privateEvents.isEmpty &&
+                state.status != PrivateEventStateStatus.loading) {
+              return const Center(child: Text("Keine Privaten Events"));
             }
 
-            if (state.privateEvents.isEmpty && state is PrivateEventLoading) {
+            if (state.privateEvents.isEmpty &&
+                state.status == PrivateEventStateStatus.loading) {
               return SkeletonListView(
                 itemBuilder: (p0, p1) {
                   return SkeletonListTile(

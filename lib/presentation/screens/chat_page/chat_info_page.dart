@@ -9,8 +9,8 @@ import 'package:social_media_app_flutter/presentation/widgets/screens/chat_page/
 import 'package:social_media_app_flutter/presentation/widgets/screens/chat_page/chat_info_page/chat_info_page_description.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/chat_page/chat_info_page/chat_info_page_leave_chat.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/chat_page/chat_info_page/chat_info_page_private_event_list/chat_info_page_private_event_list.dart';
-import 'package:social_media_app_flutter/presentation/widgets/screens/chat_page/chat_info_page/left_user_list/chat_info_page_left_user_list.dart';
-import 'package:social_media_app_flutter/presentation/widgets/screens/chat_page/chat_info_page/user_list/chat_info_page_user_list.dart';
+import 'package:social_media_app_flutter/presentation/widgets/screens/chat_page/chat_info_page/chat_info_page_left_user_list/chat_info_page_left_user_list.dart';
+import 'package:social_media_app_flutter/presentation/widgets/screens/chat_page/chat_info_page/chat_info_page_user_list/chat_info_page_user_list.dart';
 
 class ChatInfoPage extends StatelessWidget {
   const ChatInfoPage({@PathParam('id') required this.groupchatId, super.key});

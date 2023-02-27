@@ -18,8 +18,8 @@ class PrivateEventTabPage extends StatelessWidget {
       builder: (context, state) {
         return AutoTabsRouter.tabBar(
           routes: [
-            InfoTabRoute(),
-            const ShoppingListWrapperPageRoute(),
+            PrivateEventTabInfoRoute(),
+            PrivateEventTabShoppingListRoute(),
           ],
           builder: (context, child, tabController) {
             return PlatformScaffold(

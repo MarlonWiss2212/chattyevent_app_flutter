@@ -10,36 +10,26 @@ import 'package:social_media_app_flutter/presentation/widgets/dialog/buttons/ok_
 import 'package:social_media_app_flutter/presentation/widgets/screens/shopping_list_item_page/create_shopping_list_item_page/create_shopping_list_item_page_detail.dart';
 import '../../../application/bloc/shopping_list/add_shopping_list_item_cubit.dart';
 
-class CreateShoppingListItem extends StatefulWidget {
+class PrivateEventCreateShoppingListItemPage extends StatelessWidget {
   final String privateEventId;
-  const CreateShoppingListItem({
+  const PrivateEventCreateShoppingListItemPage({
     super.key,
     @PathParam('id') required this.privateEventId,
   });
 
   @override
-  State<CreateShoppingListItem> createState() => _CreateShoppingListItemState();
-}
-
-class _CreateShoppingListItemState extends State<CreateShoppingListItem> {
-  @override
   Widget build(BuildContext context) {
-    final currentPrivateEventCubit =
-        BlocProvider.of<CurrentPrivateEventCubit>(context);
-
-    final addShoppingListItemCubit = AddShoppingListItemCubit(
-      AddShoppingListItemState(
-        selectedPrivateEvent: currentPrivateEventCubit.state.privateEvent,
-      ),
-      currentPrivateEventCubit: currentPrivateEventCubit,
-      shoppingListCubit: BlocProvider.of<ShoppingListCubit>(context),
-      shoppingListItemUseCases: serviceLocator(
-        param1: BlocProvider.of<AuthCubit>(context).state,
-      ),
-    );
+    final currentPrivateEvent =
+        BlocProvider.of<CurrentPrivateEventCubit>(context).state.privateEvent;
 
     return BlocProvider.value(
-      value: addShoppingListItemCubit,
+      value: AddShoppingListItemCubit(
+        AddShoppingListItemState(selectedPrivateEvent: currentPrivateEvent),
+        shoppingListCubit: BlocProvider.of<ShoppingListCubit>(context),
+        shoppingListItemUseCases: serviceLocator(
+          param1: BlocProvider.of<AuthCubit>(context).state,
+        ),
+      ),
       child: Builder(
         builder: (context) {
           return BlocBuilder<AddShoppingListItemCubit,

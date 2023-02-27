@@ -60,9 +60,9 @@ class PrivateEventWrapperPage extends StatelessWidget {
       child: Builder(
         builder: (context) {
           BlocProvider.of<CurrentPrivateEventCubit>(context)
-              .setCurrentChatFromChatCubit();
-          BlocProvider.of<CurrentPrivateEventCubit>(context)
               .setPrivateEventUsers();
+          BlocProvider.of<CurrentPrivateEventCubit>(context)
+              .setCurrentChatFromChatCubit();
 
           // too get the users from the api too
           BlocProvider.of<CurrentPrivateEventCubit>(context)

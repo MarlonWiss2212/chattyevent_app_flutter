@@ -4,8 +4,7 @@ import 'package:social_media_app_flutter/application/bloc/private_event/current_
 import 'package:social_media_app_flutter/core/dto/private_event/update_private_event_user_dto.dart';
 
 class NeutralInviteIconButton extends StatelessWidget {
-  final String privateEventId;
-  const NeutralInviteIconButton({super.key, required this.privateEventId});
+  const NeutralInviteIconButton({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +19,6 @@ class NeutralInviteIconButton extends StatelessWidget {
           updatePrivateEventUserDto: UpdatePrivateEventUserDto(
             status: "invited",
           ),
-          privateEventId: privateEventId,
         );
       },
     );

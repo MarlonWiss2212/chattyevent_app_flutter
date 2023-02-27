@@ -13,10 +13,7 @@ class Location extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (BlocProvider.of<PrivateEventCubit>(context).state
-        is! PrivateEventLoaded) {
-      BlocProvider.of<PrivateEventCubit>(context).getPrivateEventsViaApi();
-    }
+    BlocProvider.of<PrivateEventCubit>(context).getPrivateEventsViaApi();
     BlocProvider.of<LocationCubit>(context).getLocationFromDevice();
 
     return PlatformScaffold(
@@ -66,25 +63,23 @@ class Location extends StatelessWidget {
                   BlocBuilder<PrivateEventCubit, PrivateEventState>(
                     builder: (context, state) {
                       List<Marker> markers = [];
-                      if (state is PrivateEventLoaded) {
-                        for (final event in state.privateEvents) {
-                          if (event.eventLocation != null) {
-                            markers.add(
-                              Marker(
-                                point: LatLng(
-                                  event.eventLocation!.latitude,
-                                  event.eventLocation!.longitude,
-                                ),
-                                height: 50,
-                                width: 100,
-                                builder: (context) {
-                                  return PrivateEventMapMarker(
-                                    privateEvent: event,
-                                  );
-                                },
+                      for (final event in state.privateEvents) {
+                        if (event.eventLocation != null) {
+                          markers.add(
+                            Marker(
+                              point: LatLng(
+                                event.eventLocation!.latitude,
+                                event.eventLocation!.longitude,
                               ),
-                            );
-                          }
+                              height: 50,
+                              width: 100,
+                              builder: (context) {
+                                return PrivateEventMapMarker(
+                                  privateEvent: event,
+                                );
+                              },
+                            ),
+                          );
                         }
                       }
                       return MarkerLayer(

@@ -13,12 +13,12 @@ import 'package:social_media_app_flutter/presentation/widgets/screens/shopping_l
 import 'package:social_media_app_flutter/presentation/widgets/screens/shopping_list_item_page/current_shopping_list_item_page/current_shopping_list_item_page_private_event_tile.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/shopping_list_item_page/current_shopping_list_item_page/current_shopping_list_item_page_progress_bar.dart';
 
-class CurrentShoppingListItemPage extends StatelessWidget {
+class PrivateEventCurrentShoppingListItemPage extends StatelessWidget {
   final String shoppingListItemId;
   final ShoppingListItemEntity? shoppingListItemToSet;
   final bool loadShoppingListItemFromApiToo;
 
-  const CurrentShoppingListItemPage({
+  const PrivateEventCurrentShoppingListItemPage({
     super.key,
     @PathParam('shoppingListItemId') required this.shoppingListItemId,
     this.shoppingListItemToSet,

@@ -13,13 +13,12 @@ import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/shopping_list_item_page/shopping_list_page/shopping_list_item_tile.dart';
 
-class ShoppingListPage extends StatelessWidget {
+class PrivateEventTabShoppingList extends StatelessWidget {
   final String privateEventId;
-  const ShoppingListPage({
+  const PrivateEventTabShoppingList({
     @PathParam('id') required this.privateEventId,
     super.key,
   });
-
   @override
   Widget build(BuildContext context) {
     BlocProvider.of<ShoppingListCubit>(context).getShoppingListViaApi(
@@ -90,7 +89,7 @@ class ShoppingListPage extends StatelessWidget {
                       userToBuyItem: userToBuyItem,
                       onTap: () {
                         AutoRouter.of(context).push(
-                          CurrentShoppingListItemPageRoute(
+                          PrivateEventCurrentShoppingListItemPageRoute(
                             shoppingListItemId: filteredItems[index].id,
                             shoppingListItemToSet: filteredItems[index],
                             loadShoppingListItemFromApiToo: true,
@@ -111,7 +110,7 @@ class ShoppingListPage extends StatelessWidget {
         floatingActionButton: FloatingActionButton.extended(
           onPressed: () async {
             AutoRouter.of(context).push(
-              CreateShoppingListItemRoute(),
+              PrivateEventCreateShoppingListItemPageRoute(),
             );
           },
           icon: const Icon(Icons.add),

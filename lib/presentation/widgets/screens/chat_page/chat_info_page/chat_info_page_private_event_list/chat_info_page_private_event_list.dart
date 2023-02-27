@@ -31,7 +31,8 @@ class ChatInfoPagePrivateEventList extends StatelessWidget {
                   "Private Events: ${filteredEvents.length}",
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
-                if (filteredEvents.isEmpty && state is PrivateEventLoading) ...[
+                if (filteredEvents.isEmpty &&
+                    state.status == PrivateEventStateStatus.loading) ...[
                   const SizedBox(height: 8),
                   SkeletonListTile(
                     padding: const EdgeInsets.all(8),

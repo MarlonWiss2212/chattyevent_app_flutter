@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:meta/meta.dart';
+import 'package:social_media_app_flutter/domain/entities/error_with_title_and_message.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
 import 'package:social_media_app_flutter/core/failures/failures.dart';
 import 'package:social_media_app_flutter/domain/usecases/private_event_usecases.dart';
@@ -11,7 +12,7 @@ class PrivateEventCubit extends Cubit<PrivateEventState> {
   final PrivateEventUseCases privateEventUseCases;
   PrivateEventCubit({
     required this.privateEventUseCases,
-  }) : super(PrivateEventInitial());
+  }) : super(const PrivateEventState(privateEvents: []));
 
   PrivateEventEntity mergeOrAdd({required PrivateEventEntity privateEvent}) {
     int foundIndex = state.privateEvents.indexWhere(
@@ -24,15 +25,13 @@ class PrivateEventCubit extends Cubit<PrivateEventState> {
         newEntity: privateEvent,
         oldEntity: state.privateEvents[foundIndex],
       );
-      emit(
-        PrivateEventLoaded(privateEvents: newPrivateEvents),
-      );
+
+      emitState(privateEvents: newPrivateEvents);
+
       return newPrivateEvents[foundIndex];
     } else {
-      emit(
-        PrivateEventLoaded(
-          privateEvents: List.from(state.privateEvents)..add(privateEvent),
-        ),
+      emitState(
+        privateEvents: List.from(state.privateEvents)..add(privateEvent),
       );
     }
     return privateEvent;
@@ -55,19 +54,23 @@ class PrivateEventCubit extends Cubit<PrivateEventState> {
     newPrivateEvents.removeWhere(
       (element) => element.id == privateEventId,
     );
-    emit(PrivateEventLoaded(privateEvents: newPrivateEvents));
+    emitState(privateEvents: newPrivateEvents);
   }
 
   Future getPrivateEventsViaApi() async {
-    emit(PrivateEventLoading(privateEvents: state.privateEvents));
+    emitState(
+      privateEvents: state.privateEvents,
+      status: PrivateEventStateStatus.loading,
+    );
 
     final Either<Failure, List<PrivateEventEntity>> privateEventOrFailure =
         await privateEventUseCases.getPrivateEventsViaApi();
 
     privateEventOrFailure.fold(
-      (error) => emit(
-        PrivateEventError(
-          privateEvents: state.privateEvents,
+      (error) => emitState(
+        privateEvents: state.privateEvents,
+        status: PrivateEventStateStatus.error,
+        error: ErrorWithTitleAndMessage(
           title: "Fehler",
           message: mapFailureToMessage(error),
         ),
@@ -75,6 +78,21 @@ class PrivateEventCubit extends Cubit<PrivateEventState> {
       (privateEvents) {
         mergeOrAddMultiple(privateEvents: privateEvents);
       },
+    );
+  }
+
+  emitState({
+    List<PrivateEventEntity>? privateEvents,
+    PrivateEventStateStatus? status,
+    String? loadingForPrivateEventId,
+    ErrorWithTitleAndMessage? error,
+  }) {
+    emit(
+      PrivateEventState(
+        privateEvents: privateEvents ?? state.privateEvents,
+        error: error,
+        status: status ?? PrivateEventStateStatus.initial,
+      ),
     );
   }
 }

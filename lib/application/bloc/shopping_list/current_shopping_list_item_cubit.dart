@@ -110,17 +110,21 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
     );
   }
 
+  // TODO: add bought amount
+
+  // TODO: update bought amount
+
+  // TODO: delete bought amount
+
   void emitState({
     ShoppingListItemEntity? shoppingListItem,
     CurrentShoppingListItemStateStatus? status,
     ErrorWithTitleAndMessage? error,
   }) {
-    emit(
-      CurrentShoppingListItemState(
-        status: status ?? CurrentShoppingListItemStateStatus.initial,
-        shoppingListItem: shoppingListItem ?? state.shoppingListItem,
-        error: error ?? state.error,
-      ),
-    );
+    emit(CurrentShoppingListItemState(
+      status: status ?? CurrentShoppingListItemStateStatus.initial,
+      shoppingListItem: shoppingListItem ?? state.shoppingListItem,
+      error: error ?? state.error,
+    ));
   }
 }

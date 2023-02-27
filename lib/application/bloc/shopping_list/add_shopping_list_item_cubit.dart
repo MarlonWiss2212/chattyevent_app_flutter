@@ -16,13 +16,11 @@ part 'add_shopping_list_item_state.dart';
 class AddShoppingListItemCubit extends Cubit<AddShoppingListItemState> {
   final ShoppingListItemUseCases shoppingListItemUseCases;
   final ShoppingListCubit shoppingListCubit;
-  final CurrentPrivateEventCubit currentPrivateEventCubit;
 
   AddShoppingListItemCubit(
     super.initialState, {
     required this.shoppingListItemUseCases,
     required this.shoppingListCubit,
-    required this.currentPrivateEventCubit,
   });
 
   Future createShoppingListItemViaApi() async {
