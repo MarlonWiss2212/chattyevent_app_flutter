@@ -2,11 +2,15 @@ import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:meta/meta.dart';
 import 'package:social_media_app_flutter/application/bloc/shopping_list/shopping_list_cubit.dart';
+import 'package:social_media_app_flutter/core/dto/bought_amount/create_bought_amount_dto.dart';
+import 'package:social_media_app_flutter/core/dto/bought_amount/update_bought_amount_dto.dart';
 import 'package:social_media_app_flutter/core/dto/shopping_list_item/update_shopping_list_item_dto.dart';
 import 'package:social_media_app_flutter/core/failures/failures.dart';
 import 'package:social_media_app_flutter/core/filter/get_one_shopping_list_item_filter.dart';
+import 'package:social_media_app_flutter/domain/entities/bought_amount_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/error_with_title_and_message.dart';
 import 'package:social_media_app_flutter/domain/entities/shopping_list_item/shopping_list_item_entity.dart';
+import 'package:social_media_app_flutter/domain/usecases/bought_amount_usecases.dart';
 import 'package:social_media_app_flutter/domain/usecases/shopping_list_item_usecases.dart';
 
 part 'current_shopping_list_item_state.dart';
@@ -14,9 +18,11 @@ part 'current_shopping_list_item_state.dart';
 class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
   final ShoppingListCubit shoppingListCubit;
   final ShoppingListItemUseCases shoppingListItemUseCases;
+  final BoughtAmountUseCases boughtAmountUseCases;
 
   CurrentShoppingListItemCubit(
     super.initialState, {
+    required this.boughtAmountUseCases,
     required this.shoppingListCubit,
     required this.shoppingListItemUseCases,
   });
@@ -110,11 +116,186 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
     );
   }
 
-  // TODO: add bought amount
+  Future addBoughtAmount({
+    required double boughtAmount,
+  }) async {
+    emitState(status: CurrentShoppingListItemStateStatus.loading);
 
-  // TODO: update bought amount
+    final Either<Failure, BoughtAmountEntity> boughtAmountOrFailure =
+        await boughtAmountUseCases.createBoughtAmountViaApi(
+      createBoughtAmountDto: CreateBoughtAmountDto(
+        shoppingListItemId: state.shoppingListItem.id,
+        boughtAmount: boughtAmount,
+      ),
+    );
 
-  // TODO: delete bought amount
+    boughtAmountOrFailure.fold(
+      (error) => emitState(
+        status: CurrentShoppingListItemStateStatus.error,
+        error: ErrorWithTitleAndMessage(
+          title: "Create Bought Amount Error",
+          message: mapFailureToMessage(error),
+        ),
+      ),
+      (boughtAmount) {
+        final newShoppingListItem = ShoppingListItemEntity.merge(
+          newEntity: ShoppingListItemEntity(
+            id: state.shoppingListItem.id,
+            boughtAmount: state.shoppingListItem.boughtAmount != null
+                ? (List.from(state.shoppingListItem.boughtAmount!)
+                  ..add(boughtAmount))
+                : [boughtAmount],
+          ),
+          oldEntity: state.shoppingListItem,
+        );
+        emitState(
+          status: CurrentShoppingListItemStateStatus.successBoughtAmountAdd,
+          shoppingListItem: newShoppingListItem,
+        );
+        shoppingListCubit.mergeOrAdd(shoppingListItem: newShoppingListItem);
+      },
+    );
+  }
+
+  Future updateBoughtAmount({
+    required UpdateBoughtAmountDto updateBoughtAmountDto,
+    required String boughtAmountId,
+  }) async {
+    emitState(status: CurrentShoppingListItemStateStatus.loading);
+
+    final Either<Failure, BoughtAmountEntity> boughtAmountOrFailure =
+        await boughtAmountUseCases.updateBoughtAmountViaApi(
+      updateBoughtAmountDto: updateBoughtAmountDto,
+      boughtAmountId: boughtAmountId,
+    );
+
+    boughtAmountOrFailure.fold(
+      (error) => emitState(
+        status: CurrentShoppingListItemStateStatus.error,
+        error: ErrorWithTitleAndMessage(
+          title: "Update Bought Amount Error",
+          message: mapFailureToMessage(error),
+        ),
+      ),
+      (boughtAmount) {
+        if (state.shoppingListItem.boughtAmount != null) {
+          final foundIndex = state.shoppingListItem.boughtAmount!.indexWhere(
+            (element) => element.id == boughtAmount.id,
+          );
+          if (foundIndex == -1) {
+            ShoppingListItemEntity newShoppingListItem =
+                ShoppingListItemEntity.merge(
+              newEntity: ShoppingListItemEntity(
+                id: state.shoppingListItem.id,
+                boughtAmount: List.from(state.shoppingListItem.boughtAmount!)
+                  ..add(boughtAmount),
+              ),
+              oldEntity: state.shoppingListItem,
+            );
+            emitState(
+              status:
+                  CurrentShoppingListItemStateStatus.successBoughtAmountUpdate,
+              shoppingListItem: newShoppingListItem,
+            );
+            shoppingListCubit.mergeOrAdd(shoppingListItem: newShoppingListItem);
+          } else {
+            List<BoughtAmountEntity> newBoughtAmountList =
+                state.shoppingListItem.boughtAmount!;
+            newBoughtAmountList[foundIndex] = boughtAmount;
+
+            ShoppingListItemEntity newShoppingListItem =
+                ShoppingListItemEntity.merge(
+              newEntity: ShoppingListItemEntity(
+                id: state.shoppingListItem.id,
+                boughtAmount: newBoughtAmountList,
+              ),
+              oldEntity: state.shoppingListItem,
+            );
+
+            emitState(
+              status:
+                  CurrentShoppingListItemStateStatus.successBoughtAmountUpdate,
+              shoppingListItem: newShoppingListItem,
+            );
+            shoppingListCubit.mergeOrAdd(shoppingListItem: newShoppingListItem);
+          }
+        } else {
+          ShoppingListItemEntity newShoppingListItem =
+              ShoppingListItemEntity.merge(
+            newEntity: ShoppingListItemEntity(
+              id: state.shoppingListItem.id,
+              boughtAmount: [boughtAmount],
+            ),
+            oldEntity: state.shoppingListItem,
+          );
+
+          emitState(
+            status:
+                CurrentShoppingListItemStateStatus.successBoughtAmountUpdate,
+            shoppingListItem: newShoppingListItem,
+          );
+          shoppingListCubit.mergeOrAdd(shoppingListItem: newShoppingListItem);
+        }
+      },
+    );
+  }
+
+  Future deleteBoughtAmount({
+    required String boughtAmountId,
+  }) async {
+    emitState(status: CurrentShoppingListItemStateStatus.loading);
+
+    final Either<Failure, bool> boughtAmountOrFailure =
+        await boughtAmountUseCases.deleteBoughtAmountViaApi(
+      boughtAmountId: boughtAmountId,
+    );
+
+    boughtAmountOrFailure.fold(
+      (error) => emitState(
+        status: CurrentShoppingListItemStateStatus.error,
+        error: ErrorWithTitleAndMessage(
+          title: "Delete Bought Amount Error",
+          message: mapFailureToMessage(error),
+        ),
+      ),
+      (deleted) {
+        if (deleted) {
+          if (state.shoppingListItem.boughtAmount == null) {
+            final ShoppingListItemEntity newShoppingListItem =
+                ShoppingListItemEntity.merge(
+              newEntity: ShoppingListItemEntity(
+                id: state.shoppingListItem.id,
+                boughtAmount: [],
+              ),
+              oldEntity: state.shoppingListItem,
+            );
+            emitState(
+              status: CurrentShoppingListItemStateStatus.successBoughtAmountAdd,
+              shoppingListItem: newShoppingListItem,
+            );
+            shoppingListCubit.mergeOrAdd(shoppingListItem: newShoppingListItem);
+          } else {
+            final ShoppingListItemEntity newShoppingListItem =
+                ShoppingListItemEntity.merge(
+              newEntity: ShoppingListItemEntity(
+                id: state.shoppingListItem.id,
+                boughtAmount: List.from(state.shoppingListItem.boughtAmount!)
+                  ..removeWhere(
+                    (element) => element.id == boughtAmountId,
+                  ),
+              ),
+              oldEntity: state.shoppingListItem,
+            );
+            emitState(
+              status: CurrentShoppingListItemStateStatus.successBoughtAmountAdd,
+              shoppingListItem: newShoppingListItem,
+            );
+            shoppingListCubit.mergeOrAdd(shoppingListItem: newShoppingListItem);
+          }
+        }
+      },
+    );
+  }
 
   void emitState({
     ShoppingListItemEntity? shoppingListItem,

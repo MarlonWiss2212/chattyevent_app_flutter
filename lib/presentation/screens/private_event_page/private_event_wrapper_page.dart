@@ -31,7 +31,7 @@ class PrivateEventWrapperPage extends StatelessWidget {
   Widget build(BuildContext context) {
     CurrentPrivateEventCubit currentPrivateEventCubit =
         CurrentPrivateEventCubit(
-      CurrentPrivateEventNormal(
+      CurrentPrivateEventState(
         privateEventUsers: const [],
         privateEvent: privateEventToSet ?? PrivateEventEntity(id: ""),
         groupchat: GroupchatEntity(id: ""),
@@ -94,13 +94,14 @@ class PrivateEventWrapperPage extends StatelessWidget {
           return BlocListener<CurrentPrivateEventCubit,
               CurrentPrivateEventState>(
             listener: (context, state) async {
-              if (state is CurrentPrivateEventError) {
+              if (state.status == CurrentPrivateEventStateStatus.error &&
+                  state.error != null) {
                 return await showPlatformDialog(
                   context: context,
                   builder: (context) {
                     return PlatformAlertDialog(
-                      title: Text(state.title),
-                      content: Text(state.message),
+                      title: Text(state.error!.title),
+                      content: Text(state.error!.message),
                       actions: const [OKButton()],
                     );
                   },

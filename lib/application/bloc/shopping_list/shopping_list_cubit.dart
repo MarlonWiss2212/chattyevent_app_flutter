@@ -52,6 +52,9 @@ class ShoppingListCubit extends Cubit<ShoppingListState> {
       );
       mergedShoppingList.add(mergedShoppingListItem);
     }
+    if (shoppingListItems.isEmpty) {
+      emit(const ShoppingListState(shoppingList: []));
+    }
     return mergedShoppingList;
   }
 

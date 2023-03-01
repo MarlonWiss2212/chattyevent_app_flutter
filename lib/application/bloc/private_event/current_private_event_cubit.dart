@@ -1,4 +1,5 @@
 import 'dart:collection';
+import 'dart:math';
 
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
@@ -9,6 +10,7 @@ import 'package:social_media_app_flutter/application/bloc/shopping_list/shopping
 import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
 import 'package:social_media_app_flutter/core/dto/private_event/update_private_event_user_dto.dart';
 import 'package:social_media_app_flutter/core/dto/shopping_list_item/update_shopping_list_item_dto.dart';
+import 'package:social_media_app_flutter/domain/entities/error_with_title_and_message.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
@@ -94,40 +96,25 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
       }
     }
 
-    emit(CurrentPrivateEventNormal(
-      groupchat: state.groupchat,
-      privateEvent: state.privateEvent,
-      privateEventUsers: usersToEmit,
-      loadingGroupchat: state.loadingGroupchat,
-      loadingPrivateEvent: state.loadingPrivateEvent,
-    ));
+    emitState(privateEventUsers: usersToEmit);
   }
 
   void setCurrentChatFromChatCubit({
     bool? loadingCurrentChatFromApi,
   }) {
-    emit(CurrentPrivateEventNormal(
+    emitState(
       groupchat: chatCubit.state.chats.firstWhere(
         (element) => element.id == state.privateEvent.connectedGroupchat,
         orElse: () => state.groupchat,
       ),
-      privateEvent: state.privateEvent,
-      privateEventUsers: state.privateEventUsers,
-      loadingGroupchat: loadingCurrentChatFromApi ?? state.loadingGroupchat,
-      loadingPrivateEvent: state.loadingPrivateEvent,
-    ));
+      loadingGroupchat: loadingCurrentChatFromApi,
+    );
   }
 
   Future getCurrentChatViaApi({
     required GetOneGroupchatFilter getOneGroupchatFilter,
   }) async {
-    emit(CurrentPrivateEventNormal(
-      groupchat: state.groupchat,
-      privateEvent: state.privateEvent,
-      privateEventUsers: state.privateEventUsers,
-      loadingPrivateEvent: state.loadingPrivateEvent,
-      loadingGroupchat: true,
-    ));
+    emitState(loadingGroupchat: true);
     final Either<Failure, GroupchatEntity> groupchatOrFailure =
         await chatUseCases.getGroupchatViaApi(
       getOneGroupchatFilter: getOneGroupchatFilter,
@@ -135,25 +122,18 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
 
     await groupchatOrFailure.fold(
       (error) {
-        emit(CurrentPrivateEventError(
-          groupchat: state.groupchat,
-          privateEvent: state.privateEvent,
-          privateEventUsers: state.privateEventUsers,
-          loadingPrivateEvent: state.loadingPrivateEvent,
+        emitState(
+          status: CurrentPrivateEventStateStatus.error,
+          error: ErrorWithTitleAndMessage(
+            title: "Get Groupchat Fehler",
+            message: mapFailureToMessage(error),
+          ),
           loadingGroupchat: false,
-          title: "Fehler",
-          message: mapFailureToMessage(error),
-        ));
+        );
       },
       (groupchat) async {
         final mergedChat = chatCubit.mergeOrAdd(groupchat: groupchat);
-        emit(CurrentPrivateEventNormal(
-          groupchat: mergedChat,
-          privateEvent: state.privateEvent,
-          privateEventUsers: state.privateEventUsers,
-          loadingPrivateEvent: state.loadingPrivateEvent,
-          loadingGroupchat: false,
-        ));
+        emitState(groupchat: mergedChat, loadingGroupchat: false);
         setPrivateEventUsers();
       },
     );
@@ -162,13 +142,7 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
   Future getCurrentPrivateEvent({
     required GetOnePrivateEventFilter getOnePrivateEventFilter,
   }) async {
-    emit(CurrentPrivateEventNormal(
-      groupchat: state.groupchat,
-      privateEvent: state.privateEvent,
-      privateEventUsers: state.privateEventUsers,
-      loadingPrivateEvent: true,
-      loadingGroupchat: state.loadingGroupchat,
-    ));
+    emitState(loadingPrivateEvent: true);
 
     final Either<Failure, PrivateEventEntity> privateEventOrFailure =
         await privateEventUseCases.getPrivateEventViaApi(
@@ -177,27 +151,23 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
 
     privateEventOrFailure.fold(
       (error) {
-        emit(CurrentPrivateEventError(
-          groupchat: state.groupchat,
-          privateEvent: state.privateEvent,
-          privateEventUsers: state.privateEventUsers,
+        emitState(
+          status: CurrentPrivateEventStateStatus.error,
           loadingPrivateEvent: false,
-          loadingGroupchat: state.loadingGroupchat,
-          message: mapFailureToMessage(error),
-          title: "Fehler Geradiges Event",
-        ));
+          error: ErrorWithTitleAndMessage(
+            title: "Fehler Geradiges Event",
+            message: mapFailureToMessage(error),
+          ),
+        );
       },
       (privateEvent) {
         final mergedPrivateEvent = privateEventCubit.mergeOrAdd(
           privateEvent: privateEvent,
         );
-        emit(CurrentPrivateEventNormal(
+        emitState(
           privateEvent: mergedPrivateEvent,
-          privateEventUsers: state.privateEventUsers,
-          groupchat: state.groupchat,
           loadingPrivateEvent: false,
-          loadingGroupchat: state.loadingGroupchat,
-        ));
+        );
         setPrivateEventUsers();
       },
     );
@@ -206,13 +176,7 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
   Future updatePrivateEventUser({
     required UpdatePrivateEventUserDto updatePrivateEventUserDto,
   }) async {
-    emit(CurrentPrivateEventNormal(
-      privateEvent: state.privateEvent,
-      privateEventUsers: state.privateEventUsers,
-      groupchat: state.groupchat,
-      loadingPrivateEvent: true,
-      loadingGroupchat: state.loadingGroupchat,
-    ));
+    emitState(loadingPrivateEvent: true);
 
     final Either<Failure, PrivateEventUserEntity> privateEventOrFailure =
         await privateEventUseCases.updatePrivateEventUser(
@@ -222,15 +186,14 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
 
     privateEventOrFailure.fold(
       (error) {
-        emit(CurrentPrivateEventError(
-          groupchat: state.groupchat,
-          privateEvent: state.privateEvent,
-          privateEventUsers: state.privateEventUsers,
+        emitState(
+          status: CurrentPrivateEventStateStatus.error,
           loadingPrivateEvent: false,
-          loadingGroupchat: state.loadingGroupchat,
-          title: "Fehler",
-          message: mapFailureToMessage(error),
-        ));
+          error: ErrorWithTitleAndMessage(
+            title: "Fehler",
+            message: mapFailureToMessage(error),
+          ),
+        );
       },
       (privateEventUser) {
         final newPrivateEvent = PrivateEventEntity.merge(
@@ -243,15 +206,33 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
         final mergedPrivateEvent = privateEventCubit.mergeOrAdd(
           privateEvent: newPrivateEvent,
         );
-        emit(CurrentPrivateEventNormal(
-          privateEvent: mergedPrivateEvent,
-          privateEventUsers: state.privateEventUsers,
-          groupchat: state.groupchat,
+
+        emitState(
           loadingPrivateEvent: false,
-          loadingGroupchat: state.loadingGroupchat,
-        ));
+          privateEvent: mergedPrivateEvent,
+        );
         setPrivateEventUsers();
       },
     );
+  }
+
+  void emitState({
+    PrivateEventEntity? privateEvent,
+    List<UserWithPrivateEventUserData>? privateEventUsers,
+    GroupchatEntity? groupchat,
+    bool? loadingPrivateEvent,
+    bool? loadingGroupchat,
+    CurrentPrivateEventStateStatus? status,
+    ErrorWithTitleAndMessage? error,
+  }) {
+    emit(CurrentPrivateEventState(
+      privateEvent: privateEvent ?? state.privateEvent,
+      privateEventUsers: privateEventUsers ?? state.privateEventUsers,
+      groupchat: groupchat ?? state.groupchat,
+      loadingPrivateEvent: loadingPrivateEvent ?? state.loadingPrivateEvent,
+      loadingGroupchat: loadingGroupchat ?? state.loadingGroupchat,
+      error: error ?? state.error,
+      status: status ?? CurrentPrivateEventStateStatus.initial,
+    ));
   }
 }

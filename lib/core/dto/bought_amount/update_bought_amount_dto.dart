@@ -1,5 +1,5 @@
 class UpdateBoughtAmountDto {
-  String boughtAmount;
+  double boughtAmount;
 
   UpdateBoughtAmountDto({
     required this.boughtAmount,

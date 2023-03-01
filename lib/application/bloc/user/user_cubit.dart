@@ -43,6 +43,9 @@ class UserCubit extends Cubit<UserState> {
       final mergedUser = mergeOrAdd(user: user);
       mergedUsers.add(mergedUser);
     }
+    if (users.isEmpty) {
+      emit(const UserStateLoaded(users: []));
+    }
     return mergedUsers;
   }
 

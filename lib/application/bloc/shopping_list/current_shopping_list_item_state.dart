@@ -6,6 +6,9 @@ enum CurrentShoppingListItemStateStatus {
   success,
   sucessDelete,
   successUpdate,
+  successBoughtAmountAdd,
+  successBoughtAmountUpdate,
+  successBoughtAmountDelete,
   error
 }
 

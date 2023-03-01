@@ -1,9 +1,13 @@
 part of 'current_private_event_cubit.dart';
 
-@immutable
-abstract class CurrentPrivateEventState {
+enum CurrentPrivateEventStateStatus { initial, success, error }
+
+class CurrentPrivateEventState {
   final PrivateEventEntity privateEvent;
   final GroupchatEntity groupchat;
+
+  final CurrentPrivateEventStateStatus status;
+  final ErrorWithTitleAndMessage? error;
 
   final List<UserWithPrivateEventUserData> privateEventUsers;
 
@@ -16,30 +20,7 @@ abstract class CurrentPrivateEventState {
     required this.groupchat,
     required this.loadingPrivateEvent,
     required this.loadingGroupchat,
-  });
-}
-
-class CurrentPrivateEventNormal extends CurrentPrivateEventState {
-  const CurrentPrivateEventNormal({
-    required super.privateEventUsers,
-    required super.privateEvent,
-    required super.groupchat,
-    required super.loadingGroupchat,
-    required super.loadingPrivateEvent,
-  });
-}
-
-class CurrentPrivateEventError extends CurrentPrivateEventState {
-  final String title;
-  final String message;
-
-  const CurrentPrivateEventError({
-    required super.privateEventUsers,
-    required super.privateEvent,
-    required this.message,
-    required this.title,
-    required super.groupchat,
-    required super.loadingGroupchat,
-    required super.loadingPrivateEvent,
+    this.status = CurrentPrivateEventStateStatus.initial,
+    this.error,
   });
 }

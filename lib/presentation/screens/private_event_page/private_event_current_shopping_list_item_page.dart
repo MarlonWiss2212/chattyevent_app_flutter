@@ -10,6 +10,8 @@ import 'package:social_media_app_flutter/domain/entities/shopping_list_item/shop
 import 'package:social_media_app_flutter/presentation/widgets/dialog/buttons/ok_button.dart';
 import 'package:social_media_app_flutter/presentation/widgets/divider.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/shopping_list_item_page/current_shopping_list_item_page/current_shopping_list_item_page_bought_amount_list.dart';
+import 'package:social_media_app_flutter/presentation/widgets/screens/shopping_list_item_page/current_shopping_list_item_page/current_shopping_list_item_page_create_bought_amount_tile.dart';
+import 'package:social_media_app_flutter/presentation/widgets/screens/shopping_list_item_page/current_shopping_list_item_page/current_shopping_list_item_page_edit_title_tile.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/shopping_list_item_page/current_shopping_list_item_page/current_shopping_list_item_page_private_event_tile.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/shopping_list_item_page/current_shopping_list_item_page/current_shopping_list_item_page_progress_bar.dart';
 
@@ -32,6 +34,9 @@ class PrivateEventCurrentShoppingListItemPage extends StatelessWidget {
         CurrentShoppingListItemState(
           shoppingListItem: shoppingListItemToSet ??
               ShoppingListItemEntity(id: shoppingListItemId),
+        ),
+        boughtAmountUseCases: serviceLocator(
+          param1: BlocProvider.of<AuthCubit>(context).state,
         ),
         shoppingListCubit: BlocProvider.of<ShoppingListCubit>(context),
         shoppingListItemUseCases: serviceLocator(
@@ -85,15 +90,19 @@ class PrivateEventCurrentShoppingListItemPage extends StatelessWidget {
                 )
               ],
             ),
-            body: Column(
-              children: const [
-                SizedBox(height: 20),
-                CurrentShoppingListItemPageWithProgressBar(),
-                CustomDivider(),
-                CurrentShopppingListItemPagePrivateEventTile(),
-                CustomDivider(),
-                CurrentShoppingListItemPageBoughtAmountList(),
-              ],
+            body: SingleChildScrollView(
+              child: Column(
+                children: const [
+                  SizedBox(height: 20),
+                  CurrentShoppingListItemPageWithProgressBar(),
+                  CurrentShoppingListItemPageEditAmountTile(),
+                  CustomDivider(),
+                  CurrentShopppingListItemPagePrivateEventTile(),
+                  CustomDivider(),
+                  CurrentShoppingListItemPageCreateBoughtAmountTile(),
+                  CurrentShoppingListItemPageBoughtAmountList(),
+                ],
+              ),
             ),
           ),
         );

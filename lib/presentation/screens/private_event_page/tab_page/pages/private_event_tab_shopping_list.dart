@@ -95,7 +95,6 @@ class PrivateEventTabShoppingList extends StatelessWidget {
                             loadShoppingListItemFromApiToo: true,
                           ),
                         );
-                        // navigate to nested route where the current shopping list item is
                       },
                     );
                   },

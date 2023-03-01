@@ -46,6 +46,9 @@ class PrivateEventCubit extends Cubit<PrivateEventState> {
       final mergedPrivateEvent = mergeOrAdd(privateEvent: privateEvent);
       mergedPrivateEvents.add(mergedPrivateEvent);
     }
+    if (privateEvents.isEmpty) {
+      emit(const PrivateEventState(privateEvents: []));
+    }
     return mergedPrivateEvents;
   }
 

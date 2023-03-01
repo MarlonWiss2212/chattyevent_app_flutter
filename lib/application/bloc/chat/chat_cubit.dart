@@ -51,6 +51,9 @@ class ChatCubit extends Cubit<ChatState> {
       final mergedChat = mergeOrAdd(groupchat: chat);
       mergedChats.add(mergedChat);
     }
+    if (groupchats.isEmpty) {
+      emit(const ChatState(chats: []));
+    }
     return mergedChats;
   }
 

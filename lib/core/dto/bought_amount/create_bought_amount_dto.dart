@@ -1,5 +1,5 @@
 class CreateBoughtAmountDto {
-  String boughtAmount;
+  double boughtAmount;
   String shoppingListItemId;
 
   CreateBoughtAmountDto({
