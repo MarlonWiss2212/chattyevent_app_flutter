@@ -4,13 +4,16 @@ import 'package:dartz/dartz.dart';
 import 'package:social_media_app_flutter/domain/repositories/auth_repository.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
+  final FirebaseAuth auth;
+  AuthRepositoryImpl({required this.auth});
+
   @override
   Future<Either<String, UserCredential>> loginWithEmailAndPassword({
     required String email,
     required String password,
   }) async {
     try {
-      final authUser = await FirebaseAuth.instance.signInWithEmailAndPassword(
+      final authUser = await auth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
@@ -34,8 +37,7 @@ class AuthRepositoryImpl implements AuthRepository {
     required String password,
   }) async {
     try {
-      final authUser =
-          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      final authUser = await auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
@@ -61,5 +63,10 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<void> logout() async {
     await FirebaseAuth.instance.signOut();
+  }
+
+  @override
+  Future<void> reloadUser() async {
+    return await auth.currentUser?.reload();
   }
 }

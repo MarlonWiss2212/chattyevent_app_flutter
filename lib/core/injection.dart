@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
 import 'package:graphql/client.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -45,6 +46,8 @@ import 'package:social_media_app_flutter/infastructure/respositories/user_reposi
 final serviceLocator = GetIt.I;
 
 Future init() async {
+  serviceLocator.registerLazySingleton(() => FirebaseAuth.instance);
+
   // use cases
   serviceLocator.registerLazySingleton<NotificationUseCases>(
     () => NotificationUseCases(notificationRepository: serviceLocator()),
@@ -107,7 +110,7 @@ Future init() async {
     () => SettingsRepositoryImpl(sharedPrefrencesDatasource: serviceLocator()),
   );
   serviceLocator.registerLazySingleton<AuthRepository>(
-    () => AuthRepositoryImpl(),
+    () => AuthRepositoryImpl(auth: serviceLocator()),
   );
   serviceLocator.registerFactoryParam<MessageRepository, AuthState?, void>(
     (param1, param2) => MessageRepositoryImpl(

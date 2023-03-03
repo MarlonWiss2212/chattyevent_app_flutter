@@ -16,8 +16,7 @@ class ChatInfoPageUserListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return UserListTile(
-      profileImageLink: user.profileImageLink,
-      authId: user.authId,
+      user: user,
       subtitle: user.admin != null && user.admin! == true
           ? Text(
               "Admin",
@@ -30,16 +29,11 @@ class ChatInfoPageUserListItem extends StatelessWidget {
               "Nicht Admin",
               overflow: TextOverflow.ellipsis,
             ),
-      username: user.usernameForChat != null
-          ? user.usernameForChat!
-          : user.username != null
-              ? user.username!
-              : "Kein Username",
-      userId: user.id,
+      customTitle: user.usernameForChat != null ? user.usernameForChat! : null,
       longPress: currentUser.admin != null &&
               currentUser.admin == true &&
               currentUser.id != user.id
-          ? (userId) {
+          ? (user) {
               showMenu(
                 position: const RelativeRect.fromLTRB(0, double.infinity, 0, 0),
                 context: context,
@@ -47,7 +41,7 @@ class ChatInfoPageUserListItem extends StatelessWidget {
                   PopupMenuItem(
                     child: const Text("Kicken"),
                     onTap: () => BlocProvider.of<CurrentChatCubit>(context)
-                        .deleteUserFromChatEvent(userId: userId),
+                        .deleteUserFromChatEvent(authId: user.authId),
                   ),
                 ],
               );

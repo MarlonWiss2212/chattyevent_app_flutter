@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
@@ -41,7 +42,11 @@ class BlocInit extends StatelessWidget {
             BlocProvider.value(
               value: CurrentUserCubit(
                 CurrentUserState(
-                  user: UserEntity(id: "", authId: state.user?.uid ?? ""),
+                  user: UserEntity(
+                    id: "",
+                    authId:
+                        serviceLocator<FirebaseAuth>().currentUser?.uid ?? "",
+                  ),
                 ),
                 userUseCases: serviceLocator(param1: state),
               ),

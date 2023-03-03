@@ -4,21 +4,17 @@ import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 
 class UserListTile extends StatelessWidget {
-  final String userId;
-  final String authId;
-  final String username;
-  final String? profileImageLink;
+  final String? customTitle;
+  final UserEntity user;
   final Widget? subtitle;
   final Widget? trailing;
-  final Function(String userId)? longPress;
+  final Function(UserEntity user)? longPress;
 
   const UserListTile({
     super.key,
+    this.customTitle,
     this.subtitle,
-    required this.authId,
-    required this.username,
-    required this.userId,
-    this.profileImageLink,
+    required this.user,
     this.trailing,
     this.longPress,
   });
@@ -27,16 +23,17 @@ class UserListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       leading: CircleAvatar(
-        backgroundImage:
-            profileImageLink != null ? NetworkImage(profileImageLink!) : null,
-        backgroundColor: profileImageLink == null
+        backgroundImage: user.profileImageLink != null
+            ? NetworkImage(user.profileImageLink!)
+            : null,
+        backgroundColor: user.profileImageLink == null
             ? Theme.of(context).colorScheme.secondaryContainer
             : null,
       ),
       title: Hero(
-        tag: "$userId username",
+        tag: "${user.id} username",
         child: Text(
-          username,
+          customTitle ?? user.username ?? "Kein Username",
           style: Theme.of(context).textTheme.titleMedium,
         ),
       ),
@@ -44,18 +41,10 @@ class UserListTile extends StatelessWidget {
       onTap: () {
         AutoRouter.of(context).root.push(
               ProfilePageRoute(
-                userId: userId,
-                loadUserFromApiToo: true,
-                userToSet: UserEntity(
-                  authId: authId,
-                  id: userId,
-                  username: username,
-                  profileImageLink: profileImageLink,
-                ),
-              ),
+                  userId: user.id, loadUserFromApiToo: true, userToSet: user),
             );
       },
-      onLongPress: longPress != null ? () => longPress!(userId) : null,
+      onLongPress: longPress != null ? () => longPress!(user) : null,
       trailing: trailing,
     );
   }

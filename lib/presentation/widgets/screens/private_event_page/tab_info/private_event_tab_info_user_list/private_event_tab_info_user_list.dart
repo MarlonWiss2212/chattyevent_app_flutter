@@ -1,8 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletons/skeletons.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
+import 'package:social_media_app_flutter/core/injection.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/private_event_page/tab_info/private_event_tab_info_user_list/private_event_tab_info_user_list_item.dart';
 
 class PrivateEventTabInfoUserList extends StatelessWidget {
@@ -38,9 +40,8 @@ class PrivateEventTabInfoUserList extends StatelessWidget {
                 physics: const NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
                   return PrivateEventTabInfoUserListItem(
-                    currentUserId:
-                        BlocProvider.of<AuthCubit>(context).state.user?.uid ??
-                            "",
+                    currentUserAuthId:
+                        serviceLocator<FirebaseAuth>().currentUser?.uid ?? "",
                     privateEventUser: state.privateEventUsers[index],
                   );
                 },

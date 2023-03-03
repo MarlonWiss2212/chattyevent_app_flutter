@@ -43,7 +43,7 @@ class AddUserGroupchatListWithSearchbar extends StatelessWidget {
                       bool pushUser = true;
                       for (final groupchatUser
                           in currentChatState.currentChat.users ?? []) {
-                        if (groupchatUser.userId == user.id) {
+                        if (groupchatUser.authId == user.authId) {
                           pushUser = false;
                           break;
                         }
@@ -60,7 +60,7 @@ class AddUserGroupchatListWithSearchbar extends StatelessWidget {
                           color: Theme.of(context).colorScheme.primaryContainer,
                           onPressed: () {
                             BlocProvider.of<CurrentChatCubit>(context)
-                                .addUserToChat(userId: user.id);
+                                .addUserToChat(authId: user.authId);
                           },
                           child: Text(
                             "Hinzufügen",

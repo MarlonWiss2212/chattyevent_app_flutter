@@ -14,15 +14,18 @@ import '../../../core/one_signal.dart' as one_signal;
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
+  final FirebaseAuth auth;
   final AuthUseCases authUseCases;
   final UserUseCases userUseCases;
   final NotificationUseCases notificationUseCases;
 
-  AuthCubit({
+  AuthCubit(
+    super.initialState, {
+    required this.auth,
     required this.authUseCases,
     required this.userUseCases,
     required this.notificationUseCases,
-  }) : super(AuthState());
+  });
 
   Future loginWithEmailAndPassword({
     required String email,
@@ -47,10 +50,9 @@ class AuthCubit extends Cubit<AuthState> {
       (authUser) async {
         emitState(
           status: AuthStateStatus.success,
-          user: authUser.user,
           token: await authUser.user?.getIdToken(),
         );
-        await one_signal.setExternalUserId(authUser.user!.uid);
+        await one_signal.setExternalUserId(authUser.user?.uid ?? "");
         await notificationUseCases.requestNotificationPermission();
       },
     );
@@ -79,19 +81,24 @@ class AuthCubit extends Cubit<AuthState> {
       (authUser) async {
         emitState(
           status: AuthStateStatus.success,
-          user: authUser.user,
           token: await authUser.user?.getIdToken(),
         );
-        await one_signal.setExternalUserId(authUser.user!.uid);
+        await one_signal.setExternalUserId(authUser.user?.uid ?? "");
         await notificationUseCases.requestNotificationPermission();
       },
     );
   }
 
   Future sendEmailVerification() async {
-    if (state.user != null) {
-      return await authUseCases.sendEmailVerification(authUser: state.user!);
+    if (auth.currentUser != null) {
+      return await authUseCases.sendEmailVerification(
+        authUser: auth.currentUser!,
+      );
     }
+  }
+
+  Future reloadUser() async {
+    return await authUseCases.reloadUser();
   }
 
   Future logout() async {
@@ -99,25 +106,14 @@ class AuthCubit extends Cubit<AuthState> {
     emit(AuthState());
   }
 
-  Future setAuthData() async {
-    final authUser = FirebaseAuth.instance.currentUser;
-    emitState(
-      user: authUser,
-      token: await authUser?.getIdToken(),
-      status: AuthStateStatus.success,
-    );
-  }
-
   void emitState({
     AuthStateStatus? status,
     ErrorWithTitleAndMessage? error,
-    User? user,
     String? token,
   }) {
     emit(AuthState(
       error: state.error ?? state.error,
       status: status ?? AuthStateStatus.initial,
-      user: user ?? state.user,
       token: token ?? state.token,
     ));
   }

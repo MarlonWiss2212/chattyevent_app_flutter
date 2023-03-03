@@ -35,8 +35,8 @@ class SelectedUsersList extends StatelessWidget {
                               final newGroupchatUsers = state.groupchatUsers!
                                   .where(
                                     (element) =>
-                                        element.userId !=
-                                        state.groupchatUsers![index].userId,
+                                        element.authId !=
+                                        state.groupchatUsers![index].authId,
                                   )
                                   .toList();
                               BlocProvider.of<AddGroupchatCubit>(context)

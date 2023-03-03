@@ -1,10 +1,12 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:skeletons/skeletons.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart';
+import 'package:social_media_app_flutter/core/injection.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/user_with_groupchat_user_data.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/chat_page/chat_info_page/chat_info_page_user_list/chat_info_page_user_list_item.dart';
@@ -29,9 +31,11 @@ class ChatInfoPageUserList extends StatelessWidget {
         UserWithGroupchatUserData currentGroupchatUser =
             state.usersWithGroupchatUserData.firstWhere(
           (element) =>
-              element.authId ==
-              BlocProvider.of<AuthCubit>(context).state.user?.uid,
-          orElse: () => UserWithGroupchatUserData(id: "", authId: ""),
+              element.authId == serviceLocator<FirebaseAuth>().currentUser?.uid,
+          orElse: () => UserWithGroupchatUserData(
+            id: "",
+            authId: serviceLocator<FirebaseAuth>().currentUser?.uid ?? "",
+          ),
         );
 
         return Column(

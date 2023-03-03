@@ -109,13 +109,13 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
     );
   }
 
-  Future addUserToChat({required String userId}) async {
+  Future addUserToChat({required String authId}) async {
     emitState(loadingChat: true);
 
     final Either<Failure, GroupchatEntity> groupchatOrFailure =
         await chatUseCases.addUserToGroupchatViaApi(
       createGroupchatUserDto: CreateGroupchatUserDto(
-        userId: userId,
+        authId: authId,
         groupchatTo: state.currentChat.id,
       ),
     );
@@ -142,13 +142,13 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
     );
   }
 
-  Future deleteUserFromChatEvent({required String userId}) async {
+  Future deleteUserFromChatEvent({required String authId}) async {
     emitState(loadingChat: true);
 
     final Either<Failure, GroupchatEntity> groupchatOrFailure =
         await chatUseCases.deleteUserFromGroupchatViaApi(
       createGroupchatLeftUserDto: CreateGroupchatLeftUserDto(
-        userId: userId,
+        authId: authId,
         leftGroupchatTo: state.currentChat.id,
       ),
     );

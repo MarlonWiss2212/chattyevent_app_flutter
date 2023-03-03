@@ -19,8 +19,7 @@ class ChatInfoPageLeftUserListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return UserListTile(
-      authId: user.authId,
-      profileImageLink: user.profileImageLink,
+      user: user,
       subtitle: user.leftAt != null
           ? Text(
               DateFormat.yMd().add_jm().format(user.leftAt!),
@@ -30,12 +29,10 @@ class ChatInfoPageLeftUserListItem extends StatelessWidget {
               "Kein Datum",
               overflow: TextOverflow.ellipsis,
             ),
-      username: user.username ?? "Kein Username",
-      userId: user.id,
       longPress: currentUser.admin != null &&
               currentUser.admin == true &&
               currentUser.id != user.id
-          ? (userId) {
+          ? (user) {
               showMenu(
                 position: const RelativeRect.fromLTRB(0, double.infinity, 0, 0),
                 context: context,
@@ -43,7 +40,7 @@ class ChatInfoPageLeftUserListItem extends StatelessWidget {
                   PopupMenuItem(
                     child: const Text("Hinzufügen"),
                     onTap: () => BlocProvider.of<CurrentChatCubit>(context)
-                        .addUserToChat(userId: userId),
+                        .addUserToChat(authId: user.authId),
                   ),
                 ],
               );

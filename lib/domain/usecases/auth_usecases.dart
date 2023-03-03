@@ -40,6 +40,10 @@ class AuthUseCases {
     return await authRepository.sendEmailVerification(authUser: authUser);
   }
 
+  Future<void> reloadUser() async {
+    return await authRepository.reloadUser();
+  }
+
   Future<void> logout() async {
     await authRepository.logout();
   }

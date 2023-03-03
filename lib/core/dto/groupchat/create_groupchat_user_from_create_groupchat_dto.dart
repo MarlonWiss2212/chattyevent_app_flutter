@@ -1,19 +1,19 @@
 import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
 
 class CreateGroupchatUserFromCreateGroupchatDto {
-  String userId;
+  String authId;
   bool? admin;
   String? usernameForChat;
 
   CreateGroupchatUserFromCreateGroupchatDto({
-    required this.userId,
+    required this.authId,
     this.usernameForChat,
     this.admin,
   });
 
   Map<dynamic, dynamic> toMap() {
     Map<dynamic, dynamic> variables = {
-      'userId': userId,
+      'authId': authId,
     };
 
     if (admin != null) {
@@ -36,5 +36,5 @@ class CreateGroupchatUserFromCreateGroupchatDtoWithUserEntity
     required this.user,
     super.admin,
     super.usernameForChat,
-  }) : super(userId: user.id);
+  }) : super(authId: user.authId);
 }

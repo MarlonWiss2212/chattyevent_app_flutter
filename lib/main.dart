@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:dynamic_color/dynamic_color.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -39,13 +40,22 @@ Future<void> main() async {
     }
   }
 
+  final String? token =
+      await serviceLocator<FirebaseAuth>().currentUser?.getIdToken();
+
   runApp(
     BlocProvider.value(
       value: AuthCubit(
+        AuthState(
+          token: token,
+          status:
+              token != null ? AuthStateStatus.success : AuthStateStatus.initial,
+        ),
+        auth: di.serviceLocator(),
         notificationUseCases: di.serviceLocator(),
         userUseCases: di.serviceLocator(),
         authUseCases: di.serviceLocator(),
-      )..setAuthData(),
+      ),
       child: const BlocInit(),
     ),
   );
@@ -95,14 +105,12 @@ class _AppState extends State<App> {
   @override
   Widget build(BuildContext context) {
     final AppRouter appRouter = AppRouter(
-      authGuard: AuthGuard(
-        state: BlocProvider.of<AuthCubit>(context).state,
-      ),
+      authGuard: AuthGuard(),
     );
     if (widget.authState.status == AuthStateStatus.success) {
       BlocProvider.of<CurrentUserCubit>(context).getOneUserViaApi(
         getOneUserFilter: GetOneUserFilter(
-          id: widget.authState.user?.uid,
+          id: serviceLocator<FirebaseAuth>().currentUser?.uid ?? "",
         ),
       );
       appRouter.replace(const HomePageRoute());
