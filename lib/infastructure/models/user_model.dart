@@ -3,6 +3,7 @@ import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
 class UserModel extends UserEntity {
   UserModel({
     required String id,
+    required String authId,
     String? username,
     String? email,
     String? firstname,
@@ -15,6 +16,7 @@ class UserModel extends UserEntity {
     DateTime? updatedAt,
   }) : super(
           id: id,
+          authId: authId,
           username: username,
           email: email,
           firstname: firstname,
@@ -38,6 +40,7 @@ class UserModel extends UserEntity {
 
     return UserModel(
       id: json['_id'],
+      authId: json["authId"],
       username: json['username'],
       email: json['email'],
       profileImageLink: json['profileImageLink'],

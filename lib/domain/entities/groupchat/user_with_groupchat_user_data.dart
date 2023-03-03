@@ -11,6 +11,7 @@ class UserWithGroupchatUserData extends UserEntity {
     this.admin,
     this.joinedAt,
     required super.id,
+    required super.authId,
     super.birthdate,
     super.createdAt,
     super.email,
@@ -30,6 +31,7 @@ class UserWithGroupchatUserData extends UserEntity {
   }) {
     return UserWithGroupchatUserData(
       id: user.id,
+      authId: user.authId,
       birthdate: user.birthdate,
       username: user.username,
       firstname: user.firstname,

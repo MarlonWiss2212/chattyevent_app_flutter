@@ -17,6 +17,7 @@ class ChatInfoPageUserListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return UserListTile(
       profileImageLink: user.profileImageLink,
+      authId: user.authId,
       subtitle: user.admin != null && user.admin! == true
           ? Text(
               "Admin",

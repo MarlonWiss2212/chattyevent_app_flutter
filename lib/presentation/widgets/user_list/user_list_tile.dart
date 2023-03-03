@@ -5,6 +5,7 @@ import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 
 class UserListTile extends StatelessWidget {
   final String userId;
+  final String authId;
   final String username;
   final String? profileImageLink;
   final Widget? subtitle;
@@ -14,6 +15,7 @@ class UserListTile extends StatelessWidget {
   const UserListTile({
     super.key,
     this.subtitle,
+    required this.authId,
     required this.username,
     required this.userId,
     this.profileImageLink,
@@ -45,6 +47,7 @@ class UserListTile extends StatelessWidget {
                 userId: userId,
                 loadUserFromApiToo: true,
                 userToSet: UserEntity(
+                  authId: authId,
                   id: userId,
                   username: username,
                   profileImageLink: profileImageLink,

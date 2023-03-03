@@ -65,6 +65,7 @@ class PrivateEventTabInfoUserListItem extends StatelessWidget {
         subtitle,
         style: TextStyle(color: subititleColor),
       ),
+      authId: privateEventUser.user.authId,
       username: privateEventUser.getUsername(),
       userId: privateEventUser.user.id,
       trailing: trailingWidget,

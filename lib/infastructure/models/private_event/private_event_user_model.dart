@@ -3,7 +3,7 @@ import 'package:social_media_app_flutter/domain/entities/private_event/private_e
 class PrivateEventUserModel extends PrivateEventUserEntity {
   PrivateEventUserModel({
     required String id,
-    String? userId,
+    String? authId,
     String? privateEventTo,
     DateTime? createdAt,
     DateTime? updatedAt,
@@ -11,7 +11,7 @@ class PrivateEventUserModel extends PrivateEventUserEntity {
     String? status,
   }) : super(
           id: id,
-          userId: userId,
+          authId: authId,
           privateEventTo: privateEventTo,
           isInvitedIndependetFromGroupchat: isInvitedIndependetFromGroupchat,
           updatedAt: updatedAt,
@@ -30,7 +30,7 @@ class PrivateEventUserModel extends PrivateEventUserEntity {
 
     return PrivateEventUserModel(
       id: json['_id'],
-      userId: json['userId'],
+      authId: json['authId'],
       privateEventTo: json['privateEventTo'],
       createdAt: createdAt,
       updatedAt: updatedAt,

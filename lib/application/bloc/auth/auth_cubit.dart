@@ -2,13 +2,10 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jwt_decode/jwt_decode.dart';
 import 'package:meta/meta.dart';
-import 'package:social_media_app_flutter/core/dto/create_user_dto.dart';
-import 'package:social_media_app_flutter/domain/entities/user_and_token_entity.dart';
-import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
-import 'package:social_media_app_flutter/core/failures/failures.dart';
+import 'package:social_media_app_flutter/domain/entities/error_with_title_and_message.dart';
 import 'package:social_media_app_flutter/domain/usecases/auth_usecases.dart';
 import 'package:social_media_app_flutter/domain/usecases/notification_usecases.dart';
 import 'package:social_media_app_flutter/domain/usecases/user_usecases.dart';
@@ -25,91 +22,103 @@ class AuthCubit extends Cubit<AuthState> {
     required this.authUseCases,
     required this.userUseCases,
     required this.notificationUseCases,
-  }) : super(AuthInitial());
+  }) : super(AuthState());
 
-  Future login({required String email, required String password}) async {
-    emit(AuthLoading());
+  Future loginWithEmailAndPassword({
+    required String email,
+    required String password,
+  }) async {
+    emitState(status: AuthStateStatus.loading);
 
-    final Either<Failure, UserAndTokenEntity> authOrFailure =
-        await authUseCases.login(
-      email,
-      password,
+    final Either<String, UserCredential> authUserOrFailureString =
+        await authUseCases.loginWithEmailAndPassword(
+      email: email,
+      password: password,
     );
 
-    authOrFailure.fold(
-      (error) => emit(
-        AuthError(
-          tokenError: false,
+    authUserOrFailureString.fold(
+      (errorMsg) => emitState(
+        status: AuthStateStatus.error,
+        error: ErrorWithTitleAndMessage(
+          message: errorMsg,
           title: "Login Fehler",
-          message: mapFailureToMessage(error),
         ),
       ),
-      (userAndToken) async {
-        emit(AuthLoaded(
-          token: userAndToken.accessToken,
-          userResponse: userAndToken.user,
-        ));
-
-        await one_signal.setExternalUserId(
-          Jwt.parseJwt(userAndToken.accessToken)["sub"],
+      (authUser) async {
+        emitState(
+          status: AuthStateStatus.success,
+          user: authUser.user,
+          token: await authUser.user?.getIdToken(),
         );
+        await one_signal.setExternalUserId(authUser.user!.uid);
         await notificationUseCases.requestNotificationPermission();
       },
     );
   }
 
-  Future register({required CreateUserDto createUserDto}) async {
-    emit(AuthLoading());
+  Future registerWithEmailAndPassword({
+    required String email,
+    required String password,
+  }) async {
+    emitState(status: AuthStateStatus.loading);
 
-    final Either<Failure, UserAndTokenEntity> authOrFailure =
-        await authUseCases.register(createUserDto);
+    final Either<String, UserCredential> authUserOrFailureString =
+        await authUseCases.registerWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
 
-    authOrFailure.fold(
-      (error) => emit(
-        AuthError(
-          tokenError: false,
-          title: "Registrier Fehler",
-          message: mapFailureToMessage(error),
+    authUserOrFailureString.fold(
+      (errorMsg) => emitState(
+        status: AuthStateStatus.error,
+        error: ErrorWithTitleAndMessage(
+          message: errorMsg,
+          title: "Login Fehler",
         ),
       ),
-      (userAndToken) async {
-        emit(AuthLoaded(
-          token: userAndToken.accessToken,
-          userResponse: userAndToken.user,
-        ));
-
-        await notificationUseCases.requestNotificationPermission();
-        await one_signal.setExternalUserId(
-          Jwt.parseJwt(userAndToken.accessToken)["sub"],
+      (authUser) async {
+        emitState(
+          status: AuthStateStatus.success,
+          user: authUser.user,
+          token: await authUser.user?.getIdToken(),
         );
+        await one_signal.setExternalUserId(authUser.user!.uid);
+        await notificationUseCases.requestNotificationPermission();
       },
     );
   }
 
-  Future getTokenAndLoadUser() async {
-    emit(AuthLoading());
-
-    final Either<Failure, String> authTokenOrFailure =
-        await authUseCases.getAuthTokenFromStorage();
-
-    await authTokenOrFailure.fold(
-      (error) async {
-        emit(AuthError(
-          tokenError: true,
-          title: "Kein Access Token",
-          message: mapFailureToMessage(error),
-        ));
-      },
-      (token) async {
-        emit(AuthLoaded(
-          token: token,
-        ));
-      },
-    );
+  Future sendEmailVerification() async {
+    if (state.user != null) {
+      return await authUseCases.sendEmailVerification(authUser: state.user!);
+    }
   }
 
   Future logout() async {
     await authUseCases.logout();
-    emit(AuthInitial());
+    emit(AuthState());
+  }
+
+  Future setAuthData() async {
+    final authUser = FirebaseAuth.instance.currentUser;
+    emitState(
+      user: authUser,
+      token: await authUser?.getIdToken(),
+      status: AuthStateStatus.success,
+    );
+  }
+
+  void emitState({
+    AuthStateStatus? status,
+    ErrorWithTitleAndMessage? error,
+    User? user,
+    String? token,
+  }) {
+    emit(AuthState(
+      error: state.error ?? state.error,
+      status: status ?? AuthStateStatus.initial,
+      user: user ?? state.user,
+      token: token ?? state.token,
+    ));
   }
 }

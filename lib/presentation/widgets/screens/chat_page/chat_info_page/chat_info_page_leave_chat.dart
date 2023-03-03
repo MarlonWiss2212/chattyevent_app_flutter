@@ -9,9 +9,6 @@ class ChatInfoPageLeaveChat extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final currentUserId = Jwt.parseJwt(
-        (BlocProvider.of<AuthCubit>(context).state as AuthLoaded).token)["sub"];
-
     return ListTile(
       leading: const Icon(
         Icons.logout,
@@ -23,7 +20,7 @@ class ChatInfoPageLeaveChat extends StatelessWidget {
       ),
       onTap: () {
         BlocProvider.of<CurrentChatCubit>(context).deleteUserFromChatEvent(
-          userId: currentUserId,
+          userId: BlocProvider.of<AuthCubit>(context).state.user?.uid ?? "",
         );
       },
     );

@@ -2,7 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'package:jwt_decode/jwt_decode.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/current_user_cubit.dart';
 import 'package:social_media_app_flutter/core/filter/get_one_user_filter.dart';
@@ -15,22 +14,22 @@ class HomeProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final currentUserId = Jwt.parseJwt(
-        (BlocProvider.of<AuthCubit>(context).state as AuthLoaded).token)["sub"];
-
     return BlocConsumer<CurrentUserCubit, CurrentUserState>(
       bloc: BlocProvider.of<CurrentUserCubit>(context)
         ..getOneUserViaApi(
-          getOneUserFilter: GetOneUserFilter(id: currentUserId),
+          getOneUserFilter: GetOneUserFilter(
+            authId: BlocProvider.of<AuthCubit>(context).state.user?.uid,
+          ),
         ),
       listener: (context, state) async {
-        if (state is CurrentUserError) {
+        if (state.status == CurrentUserStateStatus.error &&
+            state.error != null) {
           return await showPlatformDialog(
             context: context,
             builder: (context) {
               return PlatformAlertDialog(
-                title: Text(state.title),
-                content: Text(state.message),
+                title: Text(state.error!.title),
+                content: Text(state.error!.message),
                 actions: const [OKButton()],
               );
             },
@@ -42,15 +41,19 @@ class HomeProfilePage extends StatelessWidget {
 
         if (state.user.id != "") {
           body = UserProfileDataPage(user: state.user);
-        } else if (state.loadingUser && state.user.id == "") {
+        } else if (state.status == CurrentUserStateStatus.loading &&
+            state.user.id == "") {
           body = Center(child: PlatformCircularProgressIndicator());
         } else {
           body = Center(
             child: PlatformTextButton(
-              child: Text("Keinen User mit der Id: $currentUserId"),
+              child: Text(
+                  "Keinen User mit der Id: ${BlocProvider.of<AuthCubit>(context).state.user?.uid}"),
               onPressed: () =>
                   BlocProvider.of<CurrentUserCubit>(context).getOneUserViaApi(
-                getOneUserFilter: GetOneUserFilter(id: currentUserId),
+                getOneUserFilter: GetOneUserFilter(
+                  id: BlocProvider.of<AuthCubit>(context).state.user?.uid,
+                ),
               ),
             ),
           );
@@ -76,9 +79,8 @@ class HomeProfilePage extends StatelessWidget {
           ),
           body: Column(
             children: [
-              if (state.loadingUser && state.user.id != "") ...{
-                const LinearProgressIndicator()
-              },
+              if (state.status == CurrentUserStateStatus.loading &&
+                  state.user.id != "") ...{const LinearProgressIndicator()},
               Expanded(child: body),
             ],
           ),

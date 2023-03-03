@@ -28,7 +28,7 @@ class ProfilePage extends StatelessWidget {
     return BlocProvider(
       create: (context) => ProfilePageCubit(
         ProfilePageInitial(
-          user: userToSet ?? UserEntity(id: ""),
+          user: userToSet ?? UserEntity(id: "", authId: ""),
         ),
         userUseCases: serviceLocator(
           param1: BlocProvider.of<AuthCubit>(context).state,

@@ -8,6 +8,7 @@ class UserWithLeftGroupchatUserData extends UserEntity {
   UserWithLeftGroupchatUserData({
     this.leftAt,
     required super.id,
+    required super.authId,
     super.birthdate,
     super.createdAt,
     super.email,
@@ -26,6 +27,7 @@ class UserWithLeftGroupchatUserData extends UserEntity {
   }) {
     return UserWithLeftGroupchatUserData(
       id: user.id,
+      authId: user.authId,
       birthdate: user.birthdate,
       username: user.username,
       firstname: user.firstname,

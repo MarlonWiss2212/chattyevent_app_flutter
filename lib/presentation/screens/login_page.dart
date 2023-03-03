@@ -26,7 +26,7 @@ class _LoginPageState extends State<LoginPage> {
       body: Column(
         children: [
           BlocBuilder<AuthCubit, AuthState>(builder: (context, state) {
-            if (state is AuthLoading) {
+            if (state.status == AuthStateStatus.loading) {
               return const LinearProgressIndicator();
             }
             return Container();
@@ -53,13 +53,14 @@ class _LoginPageState extends State<LoginPage> {
                     const SizedBox(height: 8),
                     BlocListener<AuthCubit, AuthState>(
                       listener: (context, state) async {
-                        if (state is AuthError && state.tokenError == false) {
+                        if (state.status == AuthStateStatus.error &&
+                            state.error != null) {
                           return await showPlatformDialog(
                             context: context,
                             builder: (context) {
                               return PlatformAlertDialog(
-                                title: Text(state.title),
-                                content: Text(state.message),
+                                title: Text(state.error!.title),
+                                content: Text(state.error!.message),
                                 actions: const [OKButton()],
                               );
                             },
@@ -70,7 +71,8 @@ class _LoginPageState extends State<LoginPage> {
                         width: double.infinity,
                         child: PlatformElevatedButton(
                           onPressed: () {
-                            BlocProvider.of<AuthCubit>(context).login(
+                            BlocProvider.of<AuthCubit>(context)
+                                .loginWithEmailAndPassword(
                               email: emailFieldController.text,
                               password: passwordFieldController.text,
                             );

@@ -1,27 +1,17 @@
 part of 'auth_cubit.dart';
 
-@immutable
-abstract class AuthState {}
+enum AuthStateStatus { initial, loading, success, error }
 
-class AuthInitial extends AuthState {}
+class AuthState {
+  final ErrorWithTitleAndMessage? error;
+  final AuthStateStatus status;
+  final User? user;
+  final String? token;
 
-class AuthLoading extends AuthState {}
-
-class AuthError extends AuthState {
-  final bool tokenError;
-  final String title;
-  final String message;
-  AuthError({
-    required this.message,
-    required this.title,
-    required this.tokenError,
+  AuthState({
+    this.error,
+    this.status = AuthStateStatus.initial,
+    this.user,
+    this.token,
   });
-}
-
-class AuthLoaded extends AuthState {
-  final String token;
-
-  // only for login and register for efficiency
-  final UserEntity? userResponse;
-  AuthLoaded({required this.token, this.userResponse});
 }

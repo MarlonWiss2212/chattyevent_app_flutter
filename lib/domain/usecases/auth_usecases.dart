@@ -1,48 +1,43 @@
 import 'package:dartz/dartz.dart';
-import 'package:social_media_app_flutter/core/dto/create_user_dto.dart';
-import 'package:social_media_app_flutter/domain/entities/user_and_token_entity.dart';
-import 'package:social_media_app_flutter/core/failures/failures.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:social_media_app_flutter/domain/repositories/auth_repository.dart';
 
 class AuthUseCases {
   final AuthRepository authRepository;
   AuthUseCases({required this.authRepository});
 
-  Future<Either<Failure, UserAndTokenEntity>> login(
-    String email,
-    String password,
-  ) async {
-    final Either<Failure, UserAndTokenEntity> authOrFailure =
-        await authRepository.login(email, password);
-
-    await authOrFailure.fold(
-      (error) => null,
-      (userAndToken) async {
-        await authRepository.saveAuthTokenInStorage(userAndToken.accessToken);
-      },
+  Future<Either<String, UserCredential>> loginWithEmailAndPassword({
+    required String email,
+    required String password,
+  }) async {
+    return await authRepository.loginWithEmailAndPassword(
+      email: email,
+      password: password,
     );
-    return authOrFailure;
   }
 
-  Future<Either<Failure, UserAndTokenEntity>> register(
-    CreateUserDto createUserDto,
-  ) async {
-    final Either<Failure, UserAndTokenEntity> authOrFailure =
-        await authRepository.register(createUserDto);
-
-    await authOrFailure.fold(
-      (error) => null,
-      (userAndToken) async {
-        await authRepository.saveAuthTokenInStorage(userAndToken.accessToken);
-      },
+  Future<Either<String, UserCredential>> registerWithEmailAndPassword({
+    required String email,
+    required String password,
+  }) async {
+    final userCredOrFailureString =
+        await authRepository.registerWithEmailAndPassword(
+      email: email,
+      password: password,
     );
-    return authOrFailure;
+
+    await userCredOrFailureString.fold((l) => null, (userCredential) async {
+      if (userCredential.user != null) {
+        await authRepository.sendEmailVerification(
+          authUser: userCredential.user!,
+        );
+      }
+    });
+    return userCredOrFailureString;
   }
 
-  Future<Either<Failure, String>> getAuthTokenFromStorage() async {
-    final Either<Failure, String> authOrFailure =
-        await authRepository.getAuthTokenFromStorage();
-    return authOrFailure;
+  Future<void> sendEmailVerification({required User authUser}) async {
+    return await authRepository.sendEmailVerification(authUser: authUser);
   }
 
   Future<void> logout() async {

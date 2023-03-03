@@ -1,16 +1,16 @@
 class GetOneUserFilter {
   String? id;
-  String? email;
+  String? authId;
 
-  GetOneUserFilter({this.id, this.email});
+  GetOneUserFilter({this.id, this.authId});
 
   Map<dynamic, dynamic> toMap() {
     Map<dynamic, dynamic> map = {};
     if (id != null) {
       map.addAll({"_id": id});
     }
-    if (email != null) {
-      map.addAll({"email": email});
+    if (authId != null) {
+      map.addAll({"authId": authId});
     }
     return map;
   }

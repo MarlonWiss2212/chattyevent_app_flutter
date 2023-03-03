@@ -12,9 +12,6 @@ class ChatInfoPageLeftUserList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final currentUserId = Jwt.parseJwt(
-        (BlocProvider.of<AuthCubit>(context).state as AuthLoaded).token)["sub"];
-
     return BlocBuilder<CurrentChatCubit, CurrentChatState>(
       buildWhen: (previous, current) {
         if (previous.usersWithLeftGroupchatUserData.length !=
@@ -29,8 +26,9 @@ class ChatInfoPageLeftUserList extends StatelessWidget {
       builder: (context, state) {
         UserWithGroupchatUserData currentGroupchatUser =
             state.usersWithGroupchatUserData.firstWhere(
-          (element) => element.id == currentUserId,
-          orElse: () => UserWithGroupchatUserData(id: ""),
+          (element) =>
+              element.id == BlocProvider.of<AuthCubit>(context).state.user?.uid,
+          orElse: () => UserWithGroupchatUserData(id: "", authId: ""),
         );
 
         return Column(

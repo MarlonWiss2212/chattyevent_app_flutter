@@ -12,17 +12,12 @@ import 'package:social_media_app_flutter/application/bloc/image/image_cubit.dart
 import 'package:social_media_app_flutter/core/injection.dart';
 import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
 import 'package:social_media_app_flutter/main.dart';
-import 'package:social_media_app_flutter/presentation/router/auth_guard.dart';
-import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 
 class BlocInit extends StatelessWidget {
   const BlocInit({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final AppRouter appRouter = AppRouter(
-      authGuard: AuthGuard(state: BlocProvider.of<AuthCubit>(context).state),
-    );
     return BlocBuilder<AuthCubit, AuthState>(
       builder: (context, state) {
         return MultiBlocProvider(
@@ -45,11 +40,8 @@ class BlocInit extends StatelessWidget {
             ),
             BlocProvider.value(
               value: CurrentUserCubit(
-                CurrentUserNormal(
-                  loadingUser: false,
-                  user: state is AuthLoaded
-                      ? state.userResponse ?? UserEntity(id: "")
-                      : UserEntity(id: ""),
+                CurrentUserState(
+                  user: UserEntity(id: "", authId: state.user?.uid ?? ""),
                 ),
                 userUseCases: serviceLocator(param1: state),
               ),
@@ -66,10 +58,7 @@ class BlocInit extends StatelessWidget {
               ),
             ),
           ],
-          child: App(
-            authState: state,
-            appRouter: appRouter,
-          ),
+          child: App(authState: state),
         );
       },
     );

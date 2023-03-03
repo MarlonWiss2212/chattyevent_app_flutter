@@ -16,14 +16,19 @@ import 'package:social_media_app_flutter/bloc_init.dart';
 import 'package:social_media_app_flutter/core/colors.dart';
 import 'package:social_media_app_flutter/core/filter/get_one_user_filter.dart';
 import 'package:social_media_app_flutter/core/injection.dart';
+import 'package:social_media_app_flutter/firebase_options.dart';
+import 'package:social_media_app_flutter/presentation/router/auth_guard.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 import 'core/one_signal.dart' as one_signal;
 import 'core/injection.dart' as di;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
   await dotenv.load(fileName: '.dev.env');
   await di.init();
 
@@ -40,7 +45,7 @@ Future<void> main() async {
         notificationUseCases: di.serviceLocator(),
         userUseCases: di.serviceLocator(),
         authUseCases: di.serviceLocator(),
-      )..getTokenAndLoadUser(),
+      )..setAuthData(),
       child: const BlocInit(),
     ),
   );
@@ -48,11 +53,9 @@ Future<void> main() async {
 
 class App extends StatefulWidget {
   final AuthState authState;
-  final AppRouter appRouter;
   const App({
     super.key,
     required this.authState,
-    required this.appRouter,
   });
 
   @override
@@ -91,20 +94,20 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.authState is AuthLoaded) {
-      final authState = widget.authState as AuthLoaded;
-      widget.appRouter.authGuard.state = authState;
-
-      if (authState.userResponse == null) {
-        BlocProvider.of<CurrentUserCubit>(context).getOneUserViaApi(
-          getOneUserFilter: GetOneUserFilter(
-            id: Jwt.parseJwt(authState.token)["sub"],
-          ),
-        );
-      } else if (authState.userResponse != null) {
-        widget.appRouter.replace(const HomePageRoute());
-      }
+    final AppRouter appRouter = AppRouter(
+      authGuard: AuthGuard(
+        state: BlocProvider.of<AuthCubit>(context).state,
+      ),
+    );
+    if (widget.authState.status == AuthStateStatus.success) {
+      BlocProvider.of<CurrentUserCubit>(context).getOneUserViaApi(
+        getOneUserFilter: GetOneUserFilter(
+          id: widget.authState.user?.uid,
+        ),
+      );
+      appRouter.replace(const HomePageRoute());
     }
+
     return DynamicColorBuilder(
       builder: (lightDynamic, darkDynamic) {
         ColorScheme lightColorScheme;
@@ -123,16 +126,14 @@ class _AppState extends State<App> {
             builder: (context, value, child) {
               return PlatformApp.router(
                 title: 'Social Media App',
-                routeInformationParser: widget.appRouter.defaultRouteParser(),
-                routerDelegate: widget.appRouter.delegate(),
+                routeInformationParser: appRouter.defaultRouteParser(),
+                routerDelegate: appRouter.delegate(),
                 material: (context, platform) => MaterialAppRouterData(
                   theme: ThemeData(
-                    //  scaffoldBackgroundColor: Colors.white,
                     useMaterial3: true,
                     colorScheme: lightColorScheme,
                   ),
                   darkTheme: ThemeData(
-                    //    scaffoldBackgroundColor: Colors.black,
                     useMaterial3: true,
                     colorScheme: darkColorScheme,
                   ),

@@ -1,6 +1,6 @@
 class GroupchatUserEntity {
   final String id;
-  final String? userId;
+  final String? authId;
   final String? usernameForChat;
   final bool? admin;
   final DateTime? createdAt;
@@ -9,7 +9,7 @@ class GroupchatUserEntity {
   GroupchatUserEntity({
     required this.id,
     this.admin,
-    this.userId,
+    this.authId,
     this.usernameForChat,
     this.createdAt,
     this.updatedAt,
@@ -25,7 +25,7 @@ class GroupchatUserEntity {
       createdAt: newEntity.createdAt ?? oldEntity.createdAt,
       usernameForChat: newEntity.usernameForChat ?? oldEntity.usernameForChat,
       updatedAt: newEntity.updatedAt ?? oldEntity.updatedAt,
-      userId: newEntity.userId ?? oldEntity.userId,
+      authId: newEntity.authId ?? oldEntity.authId,
     );
   }
 }

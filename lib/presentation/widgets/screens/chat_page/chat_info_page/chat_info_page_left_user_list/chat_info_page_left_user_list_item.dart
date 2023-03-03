@@ -19,6 +19,7 @@ class ChatInfoPageLeftUserListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return UserListTile(
+      authId: user.authId,
       profileImageLink: user.profileImageLink,
       subtitle: user.leftAt != null
           ? Text(
@@ -33,7 +34,7 @@ class ChatInfoPageLeftUserListItem extends StatelessWidget {
       userId: user.id,
       longPress: currentUser.admin != null &&
               currentUser.admin == true &&
-              currentUser.id != currentUser.id
+              currentUser.id != user.id
           ? (userId) {
               showMenu(
                 position: const RelativeRect.fromLTRB(0, double.infinity, 0, 0),

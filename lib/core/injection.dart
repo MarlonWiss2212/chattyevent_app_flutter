@@ -58,6 +58,9 @@ Future init() async {
   serviceLocator.registerLazySingleton<SettingsUseCases>(
     () => SettingsUseCases(settingsRepository: serviceLocator()),
   );
+  serviceLocator.registerLazySingleton<AuthUseCases>(
+    () => AuthUseCases(authRepository: serviceLocator()),
+  );
   serviceLocator.registerFactoryParam<ChatUseCases, AuthState?, void>(
     (param1, param2) => ChatUseCases(
       chatRepository: serviceLocator(param1: param1),
@@ -89,11 +92,6 @@ Future init() async {
       shoppingListItemRepository: serviceLocator(param1: param1),
     ),
   );
-  serviceLocator.registerFactoryParam<AuthUseCases, AuthState?, void>(
-    (param1, param2) => AuthUseCases(
-      authRepository: serviceLocator(param1: param1),
-    ),
-  );
 
   // repositories
   serviceLocator.registerLazySingleton<NotificationRepository>(
@@ -107,6 +105,9 @@ Future init() async {
   );
   serviceLocator.registerLazySingleton<SettingsRepository>(
     () => SettingsRepositoryImpl(sharedPrefrencesDatasource: serviceLocator()),
+  );
+  serviceLocator.registerLazySingleton<AuthRepository>(
+    () => AuthRepositoryImpl(),
   );
   serviceLocator.registerFactoryParam<MessageRepository, AuthState?, void>(
     (param1, param2) => MessageRepositoryImpl(
@@ -139,12 +140,6 @@ Future init() async {
       graphQlDatasource: serviceLocator(param1: param1),
     ),
   );
-  serviceLocator.registerFactoryParam<AuthRepository, AuthState?, void>(
-    (param1, param2) => AuthRepositoryImpl(
-      sharedPrefrencesDatasource: serviceLocator(),
-      graphQlDatasource: serviceLocator(param1: param1),
-    ),
-  );
 
   // datasources
   final sharedPrefs = await SharedPreferences.getInstance();
@@ -156,7 +151,7 @@ Future init() async {
   serviceLocator.registerFactoryParam<GraphQlDatasource, AuthState?, void>(
     (param1, param2) {
       GraphQLClient client;
-      if (param1 is AuthLoaded) {
+      if (param1 != null && param1.token != null) {
         client = getGraphQlClient(token: param1.token);
       } else {
         client = getGraphQlClient();

@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:meta/meta.dart';
+import 'package:social_media_app_flutter/domain/entities/error_with_title_and_message.dart';
 import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
 import 'package:social_media_app_flutter/core/failures/failures.dart';
 import 'package:social_media_app_flutter/core/filter/get_one_user_filter.dart';
@@ -18,7 +19,7 @@ class CurrentUserCubit extends Cubit<CurrentUserState> {
   Future getOneUserViaApi({
     required GetOneUserFilter getOneUserFilter,
   }) async {
-    emit(CurrentUserNormal(user: state.user, loadingUser: true));
+    emitState(status: CurrentUserStateStatus.loading);
 
     final Either<Failure, UserEntity> userOrFailure =
         await userUseCases.getUserViaApi(
@@ -27,16 +28,30 @@ class CurrentUserCubit extends Cubit<CurrentUserState> {
 
     userOrFailure.fold(
       (error) {
-        emit(CurrentUserError(
+        emitState(
           user: state.user,
-          title: "Fehler",
-          message: mapFailureToMessage(error),
-          loadingUser: false,
-        ));
+          error: ErrorWithTitleAndMessage(
+            title: "Fehler Get Current User",
+            message: mapFailureToMessage(error),
+          ),
+          status: CurrentUserStateStatus.error,
+        );
       },
       (user) {
-        emit(CurrentUserNormal(user: user, loadingUser: false));
+        emitState(user: user, status: CurrentUserStateStatus.success);
       },
     );
+  }
+
+  void emitState({
+    UserEntity? user,
+    CurrentUserStateStatus? status,
+    ErrorWithTitleAndMessage? error,
+  }) {
+    emit(CurrentUserState(
+      user: user ?? state.user,
+      status: status ?? CurrentUserStateStatus.initial,
+      error: error ?? state.error,
+    ));
   }
 }

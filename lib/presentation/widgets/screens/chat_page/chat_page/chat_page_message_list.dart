@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:intl/intl.dart';
-import 'package:jwt_decode/jwt_decode.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/user_with_groupchat_user_data.dart';
@@ -51,16 +50,13 @@ class _ChatPageMessageListState extends State<ChatPageMessageList> {
 
   @override
   Widget build(BuildContext context) {
-    final currentUserId = Jwt.parseJwt(
-      (BlocProvider.of<AuthCubit>(context).state as AuthLoaded).token,
-    )["sub"];
-
     return GroupedListView<MessageEntity, String>(
       controller: _scrollController,
       padding: const EdgeInsets.symmetric(vertical: 8),
       itemBuilder: (context, message) {
         return ChatPageMessageContainer(
-          currentUserId: currentUserId,
+          currentUserId:
+              BlocProvider.of<AuthCubit>(context).state.user?.uid ?? "",
           message: message,
           usersWithGroupchatUserData: widget.usersWithGroupchatUserData,
           usersWithLeftGroupchatUserData: widget.usersWithLeftGroupchatUserData,

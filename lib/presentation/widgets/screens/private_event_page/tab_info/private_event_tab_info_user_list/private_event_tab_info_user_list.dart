@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jwt_decode/jwt_decode.dart';
 import 'package:skeletons/skeletons.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
@@ -11,9 +10,6 @@ class PrivateEventTabInfoUserList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final currentUserId = Jwt.parseJwt(
-        (BlocProvider.of<AuthCubit>(context).state as AuthLoaded).token)["sub"];
-
     return BlocBuilder<CurrentPrivateEventCubit, CurrentPrivateEventState>(
       builder: (context, state) {
         return Column(
@@ -42,7 +38,9 @@ class PrivateEventTabInfoUserList extends StatelessWidget {
                 physics: const NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
                   return PrivateEventTabInfoUserListItem(
-                    currentUserId: currentUserId,
+                    currentUserId:
+                        BlocProvider.of<AuthCubit>(context).state.user?.uid ??
+                            "",
                     privateEventUser: state.privateEventUsers[index],
                   );
                 },

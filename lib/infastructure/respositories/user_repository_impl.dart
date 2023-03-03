@@ -1,4 +1,7 @@
 import 'package:dartz/dartz.dart';
+import 'package:http/http.dart';
+import 'package:http_parser/http_parser.dart';
+import 'package:social_media_app_flutter/core/dto/create_user_dto.dart';
 import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
 import 'package:social_media_app_flutter/core/failures/failures.dart';
 import 'package:social_media_app_flutter/core/filter/get_one_user_filter.dart';
@@ -22,10 +25,10 @@ class UserRepositoryImpl implements UserRepository {
           findUser(filter: \$input) {
             _id
             firstname
+            authId
             lastname
             username
             profileImageLink
-            email
           }
         }
         """,
@@ -52,6 +55,7 @@ class UserRepositoryImpl implements UserRepository {
         query FindUsers(\$input: FindUsersInput!) {
           findUsers(filter: \$input) {
             _id
+            authId
             username
             profileImageLink
           }
@@ -83,5 +87,51 @@ class UserRepositoryImpl implements UserRepository {
   Future<Either<Failure, UserEntity>> deleteUserViaApi() {
     // TODO: implement deleteUserViaApi
     throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<Failure, UserEntity>> createUserViaApi({
+    required CreateUserDto createUserDto,
+  }) async {
+    try {
+      Map<String, dynamic> variables = {"input": createUserDto.toMap()};
+
+      if (createUserDto.profileImage != null) {
+        final byteData = createUserDto.profileImage!.readAsBytesSync();
+        final multipartFile = MultipartFile.fromBytes(
+          'photo',
+          byteData,
+          filename: '${createUserDto.username}.jpg',
+          contentType: MediaType("image", "jpg"),
+        );
+        variables.addAll({"profileImage": multipartFile});
+      }
+
+      final response = await graphQlDatasource.mutation(
+        """
+        mutation CreateUser(\$input: CreateUserInput!,\$profileImage: Upload) {
+          createUser(createUserInput: \$input, profileImage: \$profileImage) {
+            _id
+            firstname
+            authId
+            lastname
+            username
+            profileImageLink
+          }
+        }
+        """,
+        variables: variables,
+      );
+
+      if (response.hasException) {
+        print(response.exception);
+        return Left(GeneralFailure());
+      }
+
+      return Right(UserModel.fromJson(response.data!["createUser"]));
+    } catch (e) {
+      print(e);
+      return Left(ServerFailure());
+    }
   }
 }

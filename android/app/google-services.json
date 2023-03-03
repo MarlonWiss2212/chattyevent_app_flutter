@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "386131382515",
+    "project_id": "social-media-app-3cc43",
+    "storage_bucket": "social-media-app-3cc43.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:386131382515:android:dfc22e6b9d302bb7d16786",
+        "android_client_info": {
+          "package_name": "com.example.social_media_app_flutter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "386131382515-eqji07g4gr9tu9crmgsqqahaj4kob4ui.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAlKcP6_QKfGgyH6k1a4oDkATunai21cq4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "386131382515-eqji07g4gr9tu9crmgsqqahaj4kob4ui.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

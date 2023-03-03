@@ -5,8 +5,6 @@ class CreateUserDto {
   String firstname;
   String lastname;
   String username;
-  String email;
-  String password;
   DateTime birthdate;
 
   CreateUserDto({
@@ -14,8 +12,6 @@ class CreateUserDto {
     required this.firstname,
     required this.lastname,
     required this.username,
-    required this.email,
-    required this.password,
     required this.birthdate,
   });
 
@@ -24,8 +20,6 @@ class CreateUserDto {
       'firstname': firstname,
       'lastname': lastname,
       'username': username,
-      'email': email,
-      'password': password,
       'birthdate': birthdate.toIso8601String(),
     };
     return variables;

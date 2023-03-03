@@ -1,5 +1,6 @@
 class UserEntity {
   final String id;
+  final String authId;
   final String? username;
   final String? firstname;
   final String? lastname;
@@ -13,6 +14,7 @@ class UserEntity {
 
   UserEntity({
     required this.id,
+    required this.authId,
     this.username,
     this.email,
     this.emailVerified,
@@ -30,6 +32,7 @@ class UserEntity {
     required UserEntity oldEntity,
   }) {
     return UserEntity(
+      authId: newEntity.authId,
       id: newEntity.id,
       username: newEntity.username ?? oldEntity.username,
       email: newEntity.email ?? oldEntity.email,

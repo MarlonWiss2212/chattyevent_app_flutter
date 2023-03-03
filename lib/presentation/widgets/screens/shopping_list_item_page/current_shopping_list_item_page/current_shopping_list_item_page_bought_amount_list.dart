@@ -65,6 +65,7 @@ class CurrentShoppingListItemPageBoughtAmountList extends StatelessWidget {
                 );
 
                 return UserListTile(
+                  authId: user.user.authId,
                   username: user.getUsername(),
                   profileImageLink: user.user.profileImageLink,
                   userId: user.user.id,

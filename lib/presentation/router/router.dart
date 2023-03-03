@@ -4,6 +4,7 @@ import 'package:social_media_app_flutter/presentation/screens/chat_page/chat_inf
 import 'package:social_media_app_flutter/presentation/screens/chat_page/chat_add_user_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/chat_page/chat_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/chat_page/chat_page_wrapper.dart';
+import 'package:social_media_app_flutter/presentation/screens/create_user_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/home_page/home_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/home_page/pages/home_chat_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/home_page/pages/home_event_page.dart';
@@ -29,10 +30,13 @@ import 'package:social_media_app_flutter/presentation/screens/register_page.dart
 import 'package:social_media_app_flutter/presentation/screens/settings_page/pages/theme_mode_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/settings_page/pages/settings_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/settings_page/settings_page_wrapper.dart';
+import 'package:social_media_app_flutter/presentation/screens/verify_email_page.dart';
 
 @MaterialAutoRouter(
   routes: <AutoRoute>[
     AutoRoute(page: LoginPage, initial: false),
+    AutoRoute(page: VerifyEmailPage, initial: false),
+    AutoRoute(page: CreateUserPage, initial: false),
     AutoRoute(page: RegisterPage, initial: false),
 
     //profile page

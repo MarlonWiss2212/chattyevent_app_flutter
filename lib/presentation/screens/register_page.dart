@@ -4,10 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
-import 'package:social_media_app_flutter/core/dto/create_user_dto.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 import 'package:social_media_app_flutter/presentation/widgets/dialog/buttons/ok_button.dart';
-import 'package:social_media_app_flutter/presentation/widgets/circle_image/select_circle_image.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -17,14 +15,8 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  File? image;
-  final usernameFieldController = TextEditingController();
-  final firstnameFieldController = TextEditingController();
-  final lastnameFieldController = TextEditingController();
   final emailFieldController = TextEditingController();
   final passwordFieldController = TextEditingController();
-
-  DateTime birthdate = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +27,7 @@ class _RegisterPageState extends State<RegisterPage> {
       body: Column(
         children: [
           BlocBuilder<AuthCubit, AuthState>(builder: (context, state) {
-            if (state is AuthLoading) {
+            if (state.status == AuthStateStatus.loading) {
               return const LinearProgressIndicator();
             }
             return Container();
@@ -48,51 +40,6 @@ class _RegisterPageState extends State<RegisterPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    const SizedBox(height: 20),
-                    SelectCircleImage(
-                      imageChanged: (newImage) {
-                        setState(() {
-                          image = newImage;
-                        });
-                      },
-                      image: image,
-                    ),
-                    const SizedBox(height: 20),
-                    PlatformTextFormField(
-                      controller: usernameFieldController,
-                      hintText: 'Benutzername',
-                    ),
-                    const SizedBox(height: 8),
-                    PlatformTextFormField(
-                      controller: firstnameFieldController,
-                      hintText: 'Vorname',
-                    ),
-                    const SizedBox(height: 8),
-                    PlatformTextFormField(
-                      controller: lastnameFieldController,
-                      hintText: 'Nachname',
-                    ),
-                    const SizedBox(height: 8),
-                    SizedBox(
-                      width: double.infinity,
-                      child: PlatformElevatedButton(
-                        onPressed: () async {
-                          DateTime currentDate = DateTime.now();
-                          DateTime? newDate = await showDatePicker(
-                            context: context,
-                            initialDate: birthdate,
-                            firstDate: DateTime(currentDate.year - 200),
-                            lastDate: currentDate,
-                          );
-
-                          if (newDate == null) return;
-                          setState(() {
-                            birthdate = newDate;
-                          });
-                        },
-                        child: Text("Geburtstag: $birthdate"),
-                      ),
-                    ),
                     const SizedBox(height: 8),
                     PlatformTextFormField(
                       controller: emailFieldController,
@@ -107,13 +54,14 @@ class _RegisterPageState extends State<RegisterPage> {
                     const SizedBox(height: 8),
                     BlocListener<AuthCubit, AuthState>(
                       listener: (context, state) async {
-                        if (state is AuthError && state.tokenError == false) {
+                        if (state.status == AuthStateStatus.error &&
+                            state.error != null) {
                           return await showPlatformDialog(
                             context: context,
                             builder: (context) {
                               return PlatformAlertDialog(
-                                title: Text(state.title),
-                                content: Text(state.message),
+                                title: Text(state.error!.title),
+                                content: Text(state.error!.message),
                                 actions: const [OKButton()],
                               );
                             },
@@ -124,16 +72,10 @@ class _RegisterPageState extends State<RegisterPage> {
                         width: double.infinity,
                         child: PlatformElevatedButton(
                           onPressed: () {
-                            BlocProvider.of<AuthCubit>(context).register(
-                              createUserDto: CreateUserDto(
-                                profileImage: image,
-                                username: usernameFieldController.text,
-                                firstname: firstnameFieldController.text,
-                                lastname: lastnameFieldController.text,
-                                birthdate: birthdate,
-                                email: emailFieldController.text,
-                                password: passwordFieldController.text,
-                              ),
+                            BlocProvider.of<AuthCubit>(context)
+                                .registerWithEmailAndPassword(
+                              email: emailFieldController.text,
+                              password: passwordFieldController.text,
                             );
                           },
                           child: const Text("Registrieren"),

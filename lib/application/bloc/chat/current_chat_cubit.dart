@@ -46,8 +46,8 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
     if (state.currentChat.users != null) {
       for (final groupchatUser in state.currentChat.users!) {
         final foundUser = userCubit.state.users.firstWhere(
-          (element) => element.id == groupchatUser.userId,
-          orElse: () => UserEntity(id: ""),
+          (element) => element.authId == groupchatUser.authId,
+          orElse: () => UserEntity(id: "", authId: ""),
         );
         usersToEmit.add(
           UserWithGroupchatUserData.fromUserEntity(
@@ -61,8 +61,8 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
     if (state.currentChat.leftUsers != null) {
       for (final groupchatLeftUser in state.currentChat.leftUsers!) {
         final foundUser = userCubit.state.users.firstWhere(
-          (element) => element.id == groupchatLeftUser.userId,
-          orElse: () => UserEntity(id: ""),
+          (element) => element.authId == groupchatLeftUser.authId,
+          orElse: () => UserEntity(id: "", authId: ""),
         );
         leftUsersToEmit.add(
           UserWithLeftGroupchatUserData.fromUserEntity(

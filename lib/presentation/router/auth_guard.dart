@@ -8,10 +8,13 @@ class AuthGuard extends AutoRouteGuard {
 
   @override
   void onNavigation(NavigationResolver resolver, StackRouter router) {
-    if (state is AuthLoaded) {
-      resolver.next(true);
-    } else {
-      router.replace(const LoginPageRoute());
+    if (state.user != null && state.user!.emailVerified) {
+      return resolver.next(true);
+    } else if (state.user != null && state.user!.emailVerified == false) {
+      router.replace(const VerifyEmailPageRoute());
+      return;
     }
+
+    router.replace(const LoginPageRoute());
   }
 }

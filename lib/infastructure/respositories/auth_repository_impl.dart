@@ -1,124 +1,65 @@
-import 'package:http/http.dart';
-import 'package:http_parser/http_parser.dart';
-import 'package:social_media_app_flutter/core/dto/create_user_dto.dart';
-import 'package:social_media_app_flutter/domain/entities/user_and_token_entity.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:social_media_app_flutter/core/failures/failures.dart';
 import 'package:dartz/dartz.dart';
 import 'package:social_media_app_flutter/domain/repositories/auth_repository.dart';
-import 'package:social_media_app_flutter/infastructure/datasources/remote/graphql.dart';
-import 'package:social_media_app_flutter/infastructure/datasources/local/sharedPreferences.dart';
-import 'package:social_media_app_flutter/infastructure/models/user_and_token_model.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
-  final SharedPreferencesDatasource sharedPrefrencesDatasource;
-  final GraphQlDatasource graphQlDatasource;
-
-  AuthRepositoryImpl({
-    required this.sharedPrefrencesDatasource,
-    required this.graphQlDatasource,
-  });
-
   @override
-  Future<Either<Failure, String>> getAuthTokenFromStorage() async {
+  Future<Either<String, UserCredential>> loginWithEmailAndPassword({
+    required String email,
+    required String password,
+  }) async {
     try {
-      return await sharedPrefrencesDatasource
-          .getStringFromStorage("access_token");
-    } catch (e) {
-      return Left(ServerFailure());
-    }
-  }
-
-  @override
-  Future<void> saveAuthTokenInStorage(String token) {
-    return sharedPrefrencesDatasource.saveStringToStorage(
-        "access_token", token);
-  }
-
-  @override
-  Future<Either<Failure, UserAndTokenEntity>> login(
-      String email, String password) async {
-    try {
-      final response = await graphQlDatasource.mutation(
-        """
-          mutation Login(\$input: LoginUserInput!) {
-            login(loginUserInput: \$input) {
-              access_token
-              user {
-                _id
-                firstname
-                lastname
-                username
-                profileImageLink
-                email
-              }
-            }
-          }
-        """,
-        variables: {
-          "input": {
-            'email': email,
-            'password': password,
-          }
-        },
+      final authUser = await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: email,
+        password: password,
       );
-
-      if (response.hasException) {
-        return Left(GeneralFailure());
+      return Right(authUser);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        return const Left('No user found for that email.');
+      } else if (e.code == 'wrong-password') {
+        return const Left('Wrong password provided for that user.');
+      } else {
+        return Left(mapFailureToMessage(ServerFailure()));
       }
-      return Right(UserAndTokenModel.fromJson(response.data!["login"]));
     } catch (e) {
-      return Left(ServerFailure());
+      return Left(mapFailureToMessage(ServerFailure()));
     }
   }
 
   @override
-  Future<Either<Failure, UserAndTokenEntity>> register(
-      CreateUserDto createUserDto) async {
+  Future<Either<String, UserCredential>> registerWithEmailAndPassword({
+    required String email,
+    required String password,
+  }) async {
     try {
-      Map<String, dynamic> variables = {
-        "input": createUserDto.toMap(),
-      };
-      if (createUserDto.profileImage != null) {
-        final byteData = createUserDto.profileImage!.readAsBytesSync();
-        final multipartFile = MultipartFile.fromBytes(
-          'photo',
-          byteData,
-          filename:
-              '${createUserDto.firstname}${createUserDto.lastname}${createUserDto.username}.jpg',
-          contentType: MediaType("image", "jpg"),
-        );
-        variables.addAll({'profileImage': multipartFile});
-      }
-      final response = await graphQlDatasource.mutation(
-        """
-          mutation signup(\$input: CreateUserInput!, \$profileImage: Upload) {
-            signup(createUserInput: \$input, profileImage: \$profileImage) {
-              access_token
-              user {
-                _id
-                firstname
-                lastname
-                username
-                profileImageLink
-                email
-              }
-            }
-          }
-        """,
-        variables: variables,
+      final authUser =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
       );
-
-      if (response.hasException) {
-        return Left(GeneralFailure());
+      return Right(authUser);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        return const Left('The password provided is too weak.');
+      } else if (e.code == 'email-already-in-use') {
+        return const Left('The account already exists for that email.');
+      } else {
+        return Left(mapFailureToMessage(ServerFailure()));
       }
-      return Right(UserAndTokenModel.fromJson(response.data!["signup"]));
     } catch (e) {
-      return Left(ServerFailure());
+      return Left(mapFailureToMessage(ServerFailure()));
     }
+  }
+
+  @override
+  Future<void> sendEmailVerification({required User authUser}) async {
+    await authUser.sendEmailVerification();
   }
 
   @override
   Future<void> logout() async {
-    return await sharedPrefrencesDatasource.deleteFromStorage("access_token");
+    await FirebaseAuth.instance.signOut();
   }
 }

@@ -1,29 +1,15 @@
 part of 'current_user_cubit.dart';
 
-@immutable
-abstract class CurrentUserState {
+enum CurrentUserStateStatus { initial, loading, success, error }
+
+class CurrentUserState {
   final UserEntity user;
-  final bool loadingUser;
+  final ErrorWithTitleAndMessage? error;
+  final CurrentUserStateStatus status;
+
   const CurrentUserState({
     required this.user,
-    required this.loadingUser,
-  });
-}
-
-class CurrentUserNormal extends CurrentUserState {
-  const CurrentUserNormal({
-    required super.user,
-    required super.loadingUser,
-  });
-}
-
-class CurrentUserError extends CurrentUserState {
-  final String title;
-  final String message;
-  const CurrentUserError({
-    required this.message,
-    required this.title,
-    required super.user,
-    required super.loadingUser,
+    this.status = CurrentUserStateStatus.initial,
+    this.error,
   });
 }
