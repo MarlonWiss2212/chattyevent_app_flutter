@@ -22,6 +22,21 @@ class AddCurrentUserCubit extends Cubit<AddCurrentUserState> {
   }) : super(AddCurrentUserState());
 
   Future createCurrentUser() async {
+    emitState(status: AddCurrentUserStateStatus.loading);
+
+    if (state.firstname == null ||
+        state.lastname == null ||
+        state.username == null ||
+        state.birthdate == null) {
+      emitState(
+        error: ErrorWithTitleAndMessage(
+          title: "Ausfüll Fehler",
+          message: "Fülle bitte erst alle Felder aus",
+        ),
+        status: AddCurrentUserStateStatus.error,
+      );
+    }
+
     final Either<Failure, UserEntity> userOrFailure =
         await userUseCases.createUserViaApi(
       createUserDto: CreateUserDto(
@@ -29,6 +44,7 @@ class AddCurrentUserCubit extends Cubit<AddCurrentUserState> {
         lastname: state.lastname!,
         username: state.username!,
         birthdate: state.birthdate!,
+        profileImage: state.profileImage,
       ),
     );
 
@@ -38,6 +54,7 @@ class AddCurrentUserCubit extends Cubit<AddCurrentUserState> {
           title: "Fehler Create User",
           message: mapFailureToMessage(error),
         ),
+        status: AddCurrentUserStateStatus.error,
       ),
       (user) {
         currentUserCubit.emitState(
