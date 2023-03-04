@@ -23,7 +23,7 @@ import '../screens/chat_page/chat_add_user_page.dart' as _i21;
 import '../screens/chat_page/chat_info_page.dart' as _i20;
 import '../screens/chat_page/chat_page.dart' as _i19;
 import '../screens/chat_page/chat_page_wrapper.dart' as _i8;
-import '../screens/create_user_page.dart' as _i3;
+import '../screens/create_user_page.dart' as _i4;
 import '../screens/home_page/home_page.dart' as _i7;
 import '../screens/home_page/pages/home_chat_page.dart' as _i14;
 import '../screens/home_page/pages/home_event_page.dart' as _i15;
@@ -54,7 +54,7 @@ import '../screens/private_event_page/tab_page/pages/private_event_tab_shopping_
 import '../screens/private_event_page/tab_page/private_event_tab_page.dart'
     as _i22;
 import '../screens/profile_page.dart' as _i5;
-import '../screens/register_page.dart' as _i4;
+import '../screens/register_page.dart' as _i3;
 import '../screens/settings_page/pages/settings_page.dart' as _i12;
 import '../screens/settings_page/pages/theme_mode_page.dart' as _i13;
 import '../screens/settings_page/settings_page_wrapper.dart' as _i6;
@@ -83,16 +83,16 @@ class AppRouter extends _i32.RootStackRouter {
         child: const _i2.VerifyEmailPage(),
       );
     },
-    CreateUserPageRoute.name: (routeData) {
-      return _i32.MaterialPageX<dynamic>(
-        routeData: routeData,
-        child: const _i3.CreateUserPage(),
-      );
-    },
     RegisterPageRoute.name: (routeData) {
       return _i32.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i4.RegisterPage(),
+        child: const _i3.RegisterPage(),
+      );
+    },
+    CreateUserPageRoute.name: (routeData) {
+      return _i32.MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: const _i4.CreateUserPage(),
       );
     },
     ProfilePageRoute.name: (routeData) {
@@ -352,12 +352,13 @@ class AppRouter extends _i32.RootStackRouter {
           path: '/verify-email-page',
         ),
         _i32.RouteConfig(
-          CreateUserPageRoute.name,
-          path: '/create-user-page',
-        ),
-        _i32.RouteConfig(
           RegisterPageRoute.name,
           path: '/register-page',
+        ),
+        _i32.RouteConfig(
+          CreateUserPageRoute.name,
+          path: '/create-user-page',
+          guards: [authGuard],
         ),
         _i32.RouteConfig(
           ProfilePageRoute.name,
@@ -625,19 +626,7 @@ class VerifyEmailPageRoute extends _i32.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i3.CreateUserPage]
-class CreateUserPageRoute extends _i32.PageRouteInfo<void> {
-  const CreateUserPageRoute()
-      : super(
-          CreateUserPageRoute.name,
-          path: '/create-user-page',
-        );
-
-  static const String name = 'CreateUserPageRoute';
-}
-
-/// generated route for
-/// [_i4.RegisterPage]
+/// [_i3.RegisterPage]
 class RegisterPageRoute extends _i32.PageRouteInfo<void> {
   const RegisterPageRoute()
       : super(
@@ -646,6 +635,18 @@ class RegisterPageRoute extends _i32.PageRouteInfo<void> {
         );
 
   static const String name = 'RegisterPageRoute';
+}
+
+/// generated route for
+/// [_i4.CreateUserPage]
+class CreateUserPageRoute extends _i32.PageRouteInfo<void> {
+  const CreateUserPageRoute()
+      : super(
+          CreateUserPageRoute.name,
+          path: '/create-user-page',
+        );
+
+  static const String name = 'CreateUserPageRoute';
 }
 
 /// generated route for

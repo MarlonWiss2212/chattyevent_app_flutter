@@ -65,6 +65,9 @@ class _LoginPageState extends State<LoginPage> {
                               );
                             },
                           );
+                        } else if (state.status == AuthStateStatus.success &&
+                            state.token != null) {
+                          AutoRouter.of(context).replace(const HomePageRoute());
                         }
                       },
                       child: SizedBox(

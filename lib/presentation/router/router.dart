@@ -36,8 +36,8 @@ import 'package:social_media_app_flutter/presentation/screens/verify_email_page.
   routes: <AutoRoute>[
     AutoRoute(page: LoginPage, initial: false),
     AutoRoute(page: VerifyEmailPage, initial: false),
-    AutoRoute(page: CreateUserPage, initial: false),
     AutoRoute(page: RegisterPage, initial: false),
+    AutoRoute(page: CreateUserPage, initial: false, guards: [AuthGuard]),
 
     //profile page
     AutoRoute(

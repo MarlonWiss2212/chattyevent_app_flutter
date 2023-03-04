@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
@@ -5,6 +6,7 @@ import 'package:social_media_app_flutter/application/bloc/auth/add_current_user_
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/current_user_cubit.dart';
 import 'package:social_media_app_flutter/core/injection.dart';
+import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 import 'package:social_media_app_flutter/presentation/widgets/dialog/buttons/ok_button.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/create_user_page/create_user_page_birthdate_button.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/create_user_page/create_user_page_profile_image.dart';
@@ -23,7 +25,19 @@ class CreateUserPage extends StatelessWidget {
       ),
       child: Builder(builder: (context) {
         return PlatformScaffold(
-          appBar: PlatformAppBar(title: const Text("User Erstellen")),
+          appBar: PlatformAppBar(
+            title: const Text("User Erstellen"),
+            trailingActions: [
+              IconButton(
+                onPressed: () {
+                  BlocProvider.of<AuthCubit>(context).logout();
+                  AutoRouter.of(context).root.popUntilRoot();
+                  AutoRouter.of(context).root.replace(const LoginPageRoute());
+                },
+                icon: const Icon(Icons.logout),
+              ),
+            ],
+          ),
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: Column(
@@ -73,7 +87,10 @@ class CreateUserPage extends StatelessWidget {
                 const SizedBox(height: 8),
                 BlocListener<CurrentUserCubit, CurrentUserState>(
                   listener: (context, state) async {
-                    if (state.status == AuthStateStatus.success) {
+                    if (state.status == CurrentUserStateStatus.success) {
+                      AutoRouter.of(context).replace(const HomePageRoute());
+                    } else if (state.status == CurrentUserStateStatus.error &&
+                        state.error != null) {
                       return await showPlatformDialog(
                         context: context,
                         builder: (context) {

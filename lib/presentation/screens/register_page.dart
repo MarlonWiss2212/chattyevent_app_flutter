@@ -66,6 +66,9 @@ class _RegisterPageState extends State<RegisterPage> {
                               );
                             },
                           );
+                        } else if (state.status == AuthStateStatus.success &&
+                            state.token != null) {
+                          AutoRouter.of(context).replace(const HomePageRoute());
                         }
                       },
                       child: SizedBox(

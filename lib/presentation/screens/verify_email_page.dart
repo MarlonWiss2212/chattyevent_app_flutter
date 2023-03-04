@@ -9,7 +9,6 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/core/injection.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
-import 'package:social_media_app_flutter/presentation/screens/create_user_page.dart';
 
 class VerifyEmailPage extends StatefulWidget {
   const VerifyEmailPage({super.key});
@@ -42,7 +41,19 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
   @override
   Widget build(BuildContext context) {
     return PlatformScaffold(
-      appBar: PlatformAppBar(title: const Text("Email Bestätigen")),
+      appBar: PlatformAppBar(
+        title: const Text("Email Bestätigen"),
+        trailingActions: [
+          IconButton(
+            onPressed: () {
+              BlocProvider.of<AuthCubit>(context).logout();
+              AutoRouter.of(context).root.popUntilRoot();
+              AutoRouter.of(context).root.replace(const LoginPageRoute());
+            },
+            icon: const Icon(Icons.logout),
+          ),
+        ],
+      ),
       body: Center(
         child: SingleChildScrollView(
           child: Column(
