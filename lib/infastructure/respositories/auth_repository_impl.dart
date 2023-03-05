@@ -24,7 +24,7 @@ class AuthRepositoryImpl implements AuthRepository {
       } else if (e.code == 'wrong-password') {
         return const Left('Wrong password provided for that user.');
       } else {
-        return Left(mapFailureToMessage(ServerFailure()));
+        return Left(mapFailureToMessage(GeneralFailure()));
       }
     } catch (e) {
       return Left(mapFailureToMessage(ServerFailure()));
@@ -56,13 +56,48 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<void> sendEmailVerification({required User authUser}) async {
-    await authUser.sendEmailVerification();
+  Future<Either<Failure, bool>> sendEmailVerification() async {
+    try {
+      if (auth.currentUser == null) {
+        return Left(GeneralFailure());
+      }
+      await auth.currentUser!.sendEmailVerification();
+      return const Right(true);
+    } catch (e) {
+      return Left(ServerFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, bool>> sendResetPasswordEmail({
+    required String email,
+  }) async {
+    try {
+      await auth.sendPasswordResetEmail(email: email);
+      return const Right(true);
+    } catch (e) {
+      return Left(ServerFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, bool>> updatePassword({
+    required String newPassword,
+  }) async {
+    try {
+      if (auth.currentUser == null) {
+        return Left(GeneralFailure());
+      }
+      await auth.currentUser!.updatePassword(newPassword);
+      return const Right(true);
+    } catch (e) {
+      return Left(ServerFailure());
+    }
   }
 
   @override
   Future<void> logout() async {
-    await FirebaseAuth.instance.signOut();
+    await auth.signOut();
   }
 
   @override

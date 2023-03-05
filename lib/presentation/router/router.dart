@@ -27,8 +27,10 @@ import 'package:social_media_app_flutter/presentation/screens/private_event_page
 import 'package:social_media_app_flutter/presentation/screens/private_event_page/tab_page/private_event_tab_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/profile_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/register_page.dart';
+import 'package:social_media_app_flutter/presentation/screens/reset_password_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/settings_page/pages/theme_mode_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/settings_page/pages/settings_page.dart';
+import 'package:social_media_app_flutter/presentation/screens/settings_page/pages/update_password_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/settings_page/settings_page_wrapper.dart';
 import 'package:social_media_app_flutter/presentation/screens/verify_email_page.dart';
 
@@ -36,6 +38,7 @@ import 'package:social_media_app_flutter/presentation/screens/verify_email_page.
   routes: <AutoRoute>[
     AutoRoute(page: LoginPage, initial: false),
     AutoRoute(page: VerifyEmailPage, initial: false),
+    AutoRoute(page: ResetPasswordPage, initial: false),
     AutoRoute(page: RegisterPage, initial: false),
     AutoRoute(page: CreateUserPage, initial: false, guards: [AuthGuard]),
 
@@ -55,6 +58,11 @@ import 'package:social_media_app_flutter/presentation/screens/verify_email_page.
       children: [
         AutoRoute(page: SettingsPage, guards: [AuthGuard], path: ''),
         AutoRoute(page: ThemeModePage, guards: [AuthGuard], path: 'theme-mode'),
+        AutoRoute(
+          page: UpdatePasswordPage,
+          guards: [AuthGuard],
+          path: 'update-password',
+        ),
         RedirectRoute(path: '*', redirectTo: '')
       ],
     ),

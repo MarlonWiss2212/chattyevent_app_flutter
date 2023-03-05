@@ -1,6 +1,13 @@
 part of 'auth_cubit.dart';
 
-enum AuthStateStatus { initial, loading, success, error }
+enum AuthStateStatus {
+  initial,
+  loading,
+  success,
+  sendedResetPasswordEmail,
+  sendedVerificationEmail,
+  error
+}
 
 class AuthState {
   final ErrorWithTitleAndMessage? error;

@@ -87,6 +87,17 @@ class _LoginPageState extends State<LoginPage> {
                     const SizedBox(height: 16),
                     PlatformTextButton(
                       onPressed: () {
+                        AutoRouter.of(context).push(
+                          ResetPasswordPageRoute(
+                            standardEmail: emailFieldController.text,
+                          ),
+                        );
+                      },
+                      child: const Text("Passwort vergessen?"),
+                    ),
+                    const SizedBox(height: 16),
+                    PlatformTextButton(
+                      onPressed: () {
                         AutoRouter.of(context).replace(
                           const RegisterPageRoute(),
                         );
