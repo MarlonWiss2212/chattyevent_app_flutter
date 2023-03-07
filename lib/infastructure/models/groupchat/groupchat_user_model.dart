@@ -3,14 +3,14 @@ import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_use
 class GroupchatUserModel extends GroupchatUserEntity {
   GroupchatUserModel({
     required String id,
-    String? authId,
+    String? userId,
     bool? admin,
     DateTime? createdAt,
     DateTime? updatedAt,
     String? usernameForChat,
   }) : super(
           id: id,
-          authId: authId,
+          userId: userId,
           admin: admin,
           createdAt: createdAt,
           updatedAt: updatedAt,
@@ -28,7 +28,7 @@ class GroupchatUserModel extends GroupchatUserEntity {
 
     return GroupchatUserModel(
       id: json["_id"],
-      authId: json['authId'],
+      userId: json['userId'],
       admin: json['admin'],
       createdAt: createdAt,
       updatedAt: updatedAt,

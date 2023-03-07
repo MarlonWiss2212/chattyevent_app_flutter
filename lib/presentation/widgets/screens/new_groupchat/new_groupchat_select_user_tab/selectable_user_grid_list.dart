@@ -39,7 +39,7 @@ class SelectableUserGridList extends StatelessWidget {
                       }
                       int foundIndex =
                           addGroupchatState.groupchatUsers!.indexWhere(
-                        (groupchatUser) => groupchatUser.authId == user.authId,
+                        (groupchatUser) => groupchatUser.user.id == user.id,
                       );
                       if (foundIndex == -1) {
                         filteredUsers.add(user);

@@ -80,7 +80,7 @@ class PrivateEventTabShoppingList extends StatelessWidget {
                           element.user.id == filteredItems[index].userToBuyItem,
                       orElse: () => UserWithPrivateEventUserData(
                         privateEventUser:
-                            PrivateEventUserEntity(id: "", authId: ""),
+                            PrivateEventUserEntity(id: "", userId: ""),
                         user: UserEntity(id: "", authId: ""),
                       ),
                     );

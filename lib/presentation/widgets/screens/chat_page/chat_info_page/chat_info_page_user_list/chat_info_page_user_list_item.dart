@@ -41,7 +41,7 @@ class ChatInfoPageUserListItem extends StatelessWidget {
                   PopupMenuItem(
                     child: const Text("Kicken"),
                     onTap: () => BlocProvider.of<CurrentChatCubit>(context)
-                        .deleteUserFromChatEvent(authId: user.authId),
+                        .deleteUserFromChatEvent(userId: user.id),
                   ),
                 ],
               );

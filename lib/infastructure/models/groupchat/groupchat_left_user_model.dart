@@ -3,13 +3,13 @@ import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_lef
 class GroupchatLeftUserModel extends GroupchatLeftUserEntity {
   GroupchatLeftUserModel({
     required String id,
-    String? authId,
+    String? userId,
     DateTime? createdAt,
     DateTime? updatedAt,
     String? leftGroupchatTo,
   }) : super(
           id: id,
-          authId: authId,
+          userId: userId,
           createdAt: createdAt,
           updatedAt: updatedAt,
           leftGroupchatTo: leftGroupchatTo,
@@ -25,7 +25,7 @@ class GroupchatLeftUserModel extends GroupchatLeftUserEntity {
 
     return GroupchatLeftUserModel(
       id: json["_id"],
-      authId: json['authId'],
+      userId: json['userId'],
       leftGroupchatTo: json['leftGroupchatTo'],
       createdAt: createdAt,
       updatedAt: updatedAt,

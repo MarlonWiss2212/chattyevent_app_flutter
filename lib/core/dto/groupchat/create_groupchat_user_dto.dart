@@ -4,7 +4,7 @@ class CreateGroupchatUserDto extends CreateGroupchatUserFromCreateGroupchatDto {
   String groupchatTo;
 
   CreateGroupchatUserDto({
-    required super.authId,
+    required super.userId,
     required this.groupchatTo,
     super.admin,
     super.usernameForChat,

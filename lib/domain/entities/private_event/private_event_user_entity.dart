@@ -2,7 +2,7 @@ class PrivateEventUserEntity {
   String id;
   DateTime? createdAt;
   DateTime? updatedAt;
-  String? authId;
+  String? userId;
   String? privateEventTo;
   bool? isInvitedIndependetFromGroupchat;
   String? status;
@@ -11,7 +11,7 @@ class PrivateEventUserEntity {
     required this.id,
     this.createdAt,
     this.updatedAt,
-    this.authId,
+    this.userId,
     this.isInvitedIndependetFromGroupchat,
     this.privateEventTo,
     this.status,
@@ -25,7 +25,7 @@ class PrivateEventUserEntity {
       id: newEntity.id,
       createdAt: newEntity.createdAt ?? oldEntity.createdAt,
       updatedAt: newEntity.updatedAt ?? oldEntity.updatedAt,
-      authId: newEntity.authId ?? oldEntity.authId,
+      userId: newEntity.userId ?? oldEntity.userId,
       privateEventTo: newEntity.privateEventTo ?? oldEntity.privateEventTo,
       isInvitedIndependetFromGroupchat:
           newEntity.isInvitedIndependetFromGroupchat ??

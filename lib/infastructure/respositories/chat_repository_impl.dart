@@ -47,7 +47,7 @@ class ChatRepositoryImpl implements ChatRepository {
             users {
               _id
               admin
-              authId
+              userId
               usernameForChat
               groupchatTo
               createdAt
@@ -55,7 +55,7 @@ class ChatRepositoryImpl implements ChatRepository {
             }
             leftUsers {
               _id
-              authId
+              userId
               createdAt
               updatedAt
               leftGroupchatTo
@@ -95,7 +95,7 @@ class ChatRepositoryImpl implements ChatRepository {
             users {
               _id
               admin
-              authId
+              userId
               usernameForChat
               groupchatTo
               createdAt
@@ -103,7 +103,7 @@ class ChatRepositoryImpl implements ChatRepository {
             }
             leftUsers {
               _id
-              authId
+              userId
               createdAt
               updatedAt
               leftGroupchatTo
@@ -152,7 +152,7 @@ class ChatRepositoryImpl implements ChatRepository {
             title
             users {
               _id
-              authId
+              userId
               usernameForChat
             }
             messages {
@@ -201,7 +201,7 @@ class ChatRepositoryImpl implements ChatRepository {
             users {
               _id
               admin
-              authId
+              userId
               groupchatTo
               usernameForChat
               createdAt
@@ -209,7 +209,7 @@ class ChatRepositoryImpl implements ChatRepository {
             }
             leftUsers {
               _id
-              authId
+              userId
               createdAt
               updatedAt
               leftGroupchatTo
@@ -247,7 +247,7 @@ class ChatRepositoryImpl implements ChatRepository {
             users {
               _id
               admin
-              authId
+              userId
               groupchatTo
               usernameForChat
               createdAt
@@ -255,7 +255,7 @@ class ChatRepositoryImpl implements ChatRepository {
             }
             leftUsers {
               _id
-              authId
+              userId
               createdAt
               updatedAt
               leftGroupchatTo

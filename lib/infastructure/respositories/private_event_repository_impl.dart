@@ -41,7 +41,7 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
               isInvitedIndependetFromGroupchat
               _id
               privateEventTo
-              authId
+              userId
               status
               createdAt
               updatedAt
@@ -96,7 +96,7 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
               isInvitedIndependetFromGroupchat
               _id
               privateEventTo
-              authId
+              userId
               status
               createdAt
               updatedAt
@@ -195,7 +195,7 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
               isInvitedIndependetFromGroupchat
               _id
               privateEventTo
-              authId
+              userId
               status
               createdAt
               updatedAt

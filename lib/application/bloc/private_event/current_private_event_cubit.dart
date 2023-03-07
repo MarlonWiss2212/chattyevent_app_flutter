@@ -76,11 +76,11 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
     if (state.privateEvent.users != null) {
       for (final privateEventUser in state.privateEvent.users!) {
         final foundUser = userCubit.state.users.firstWhere(
-          (element) => element.authId == privateEventUser.authId,
+          (element) => element.id == privateEventUser.userId,
           orElse: () => UserEntity(id: "", authId: ""),
         );
         final foundGroupchatUser = state.groupchat.users?.firstWhere(
-          (element) => element.authId == privateEventUser.authId,
+          (element) => element.userId == privateEventUser.userId,
           orElse: () => GroupchatUserEntity(id: ""),
         );
         usersToEmit.add(

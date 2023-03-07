@@ -40,7 +40,7 @@ class ChatInfoPageLeftUserListItem extends StatelessWidget {
                   PopupMenuItem(
                     child: const Text("Hinzufügen"),
                     onTap: () => BlocProvider.of<CurrentChatCubit>(context)
-                        .addUserToChat(authId: user.authId),
+                        .addUserToChat(userId: user.id),
                   ),
                 ],
               );

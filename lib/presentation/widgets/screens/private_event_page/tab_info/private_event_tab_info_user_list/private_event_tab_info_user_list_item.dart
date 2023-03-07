@@ -7,11 +7,11 @@ import 'package:social_media_app_flutter/presentation/widgets/user_list/user_lis
 
 class PrivateEventTabInfoUserListItem extends StatelessWidget {
   final UserWithPrivateEventUserData privateEventUser;
-  final String currentUserAuthId;
+  final String currentUserId;
 
   const PrivateEventTabInfoUserListItem({
     super.key,
-    required this.currentUserAuthId,
+    required this.currentUserId,
     required this.privateEventUser,
   });
 
@@ -24,7 +24,7 @@ class PrivateEventTabInfoUserListItem extends StatelessWidget {
     if (privateEventUser.privateEventUser.status == "accapted") {
       subititleColor = Colors.green;
       subtitle = "Angenommen";
-      trailingWidget = privateEventUser.user.authId == currentUserAuthId
+      trailingWidget = privateEventUser.user.id == currentUserId
           ? Wrap(
               spacing: 8,
               children: const [
@@ -36,7 +36,7 @@ class PrivateEventTabInfoUserListItem extends StatelessWidget {
     } else if (privateEventUser.privateEventUser.status == "rejected") {
       subititleColor = Colors.red;
       subtitle = "Abgelehnt";
-      trailingWidget = privateEventUser.user.authId == currentUserAuthId
+      trailingWidget = privateEventUser.user.id == currentUserId
           ? Wrap(
               spacing: 8,
               children: const [
@@ -48,7 +48,7 @@ class PrivateEventTabInfoUserListItem extends StatelessWidget {
     } else if (privateEventUser.privateEventUser.status == "invited") {
       subititleColor = null;
       subtitle = "Eingeladen";
-      trailingWidget = privateEventUser.user.authId == currentUserAuthId
+      trailingWidget = privateEventUser.user.id == currentUserId
           ? Wrap(
               spacing: 8,
               children: const [

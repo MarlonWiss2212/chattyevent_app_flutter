@@ -46,7 +46,7 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
     if (state.currentChat.users != null) {
       for (final groupchatUser in state.currentChat.users!) {
         final foundUser = userCubit.state.users.firstWhere(
-          (element) => element.authId == groupchatUser.authId,
+          (element) => element.id == groupchatUser.userId,
           orElse: () => UserEntity(id: "", authId: ""),
         );
         usersToEmit.add(
@@ -61,7 +61,7 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
     if (state.currentChat.leftUsers != null) {
       for (final groupchatLeftUser in state.currentChat.leftUsers!) {
         final foundUser = userCubit.state.users.firstWhere(
-          (element) => element.authId == groupchatLeftUser.authId,
+          (element) => element.id == groupchatLeftUser.userId,
           orElse: () => UserEntity(id: "", authId: ""),
         );
         leftUsersToEmit.add(
@@ -109,13 +109,13 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
     );
   }
 
-  Future addUserToChat({required String authId}) async {
+  Future addUserToChat({required String userId}) async {
     emitState(loadingChat: true);
 
     final Either<Failure, GroupchatEntity> groupchatOrFailure =
         await chatUseCases.addUserToGroupchatViaApi(
       createGroupchatUserDto: CreateGroupchatUserDto(
-        authId: authId,
+        userId: userId,
         groupchatTo: state.currentChat.id,
       ),
     );
@@ -142,13 +142,13 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
     );
   }
 
-  Future deleteUserFromChatEvent({required String authId}) async {
+  Future deleteUserFromChatEvent({required String userId}) async {
     emitState(loadingChat: true);
 
     final Either<Failure, GroupchatEntity> groupchatOrFailure =
         await chatUseCases.deleteUserFromGroupchatViaApi(
       createGroupchatLeftUserDto: CreateGroupchatLeftUserDto(
-        authId: authId,
+        userId: userId,
         leftGroupchatTo: state.currentChat.id,
       ),
     );
