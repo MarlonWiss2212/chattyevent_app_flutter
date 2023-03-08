@@ -1,7 +1,6 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/location/location_cubit.dart';
@@ -14,7 +13,6 @@ import 'package:social_media_app_flutter/core/injection.dart';
 import 'package:social_media_app_flutter/main.dart';
 import 'package:social_media_app_flutter/presentation/router/auth_guard.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
-import 'package:social_media_app_flutter/presentation/widgets/dialog/buttons/ok_button.dart';
 
 class BlocInit extends StatelessWidget {
   const BlocInit({super.key});
@@ -24,27 +22,16 @@ class BlocInit extends StatelessWidget {
     final AppRouter appRouter = AppRouter(authGuard: AuthGuard());
 
     return BlocConsumer<AuthCubit, AuthState>(
-      listener: (context, state) async {
-        if (state.status == AuthStateStatus.error && state.error != null) {
-          return await showPlatformDialog(
-            context: context,
-            builder: (context) {
-              return PlatformAlertDialog(
-                title: Text(state.error!.title),
-                content: Text(state.error!.message),
-                actions: const [OKButton()],
-              );
-            },
-          );
-        }
-      },
-      buildWhen: (previous, current) => current.token != previous.token,
-      builder: (context, state) {
+      listener: (context, state) {
         if (state.currentUser.id == "" &&
-            state.status != AuthStateStatus.loading) {
+            state.status == AuthStateStatus.error) {
           appRouter.replace(const CreateUserPageRoute());
         }
-
+      },
+      bloc: BlocProvider.of<AuthCubit>(context)
+        ..setCurrentUserFromFirebaseViaApi(),
+      buildWhen: (previous, current) => previous.token != current.token,
+      builder: (context, state) {
         return MultiBlocProvider(
           providers: [
             BlocProvider.value(

@@ -36,11 +36,13 @@ class UserRepositoryImpl implements UserRepository {
       );
 
       if (response.hasException) {
+        print(response.exception);
         return Left(GeneralFailure());
       }
 
       return Right(UserModel.fromJson(response.data!["findUser"]));
     } catch (e) {
+      print(e);
       return Left(ServerFailure());
     }
   }

@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:social_media_app_flutter/core/failures/failures.dart';
 import 'package:social_media_app_flutter/core/filter/get_one_user_filter.dart';
+import 'package:social_media_app_flutter/core/injection.dart';
 import 'package:social_media_app_flutter/domain/entities/error_with_title_and_message.dart';
 import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
 import 'package:social_media_app_flutter/domain/usecases/auth_usecases.dart';
@@ -19,8 +20,8 @@ part 'auth_state.dart';
 class AuthCubit extends Cubit<AuthState> {
   final FirebaseAuth auth;
   final AuthUseCases authUseCases;
-  final UserUseCases userUseCases;
   final NotificationUseCases notificationUseCases;
+  UserUseCases userUseCases;
 
   AuthCubit(
     super.initialState, {
@@ -31,11 +32,10 @@ class AuthCubit extends Cubit<AuthState> {
   });
 
   Future setCurrentUserFromFirebaseViaApi() async {
-    emitState(status: AuthStateStatus.loading);
-
     if (auth.currentUser == null) {
       return;
     }
+    emitState(status: AuthStateStatus.loading);
 
     final Either<Failure, UserEntity> userOrFailure =
         await userUseCases.getUserViaApi(
@@ -200,7 +200,6 @@ class AuthCubit extends Cubit<AuthState> {
   Future logout() async {
     emitState(status: AuthStateStatus.loading);
     await authUseCases.logout();
-
     emit(AuthState(currentUser: UserEntity(authId: "", id: "")));
   }
 
@@ -220,5 +219,8 @@ class AuthCubit extends Cubit<AuthState> {
       sendedResetPasswordEmail: sendedResetPasswordEmail ?? false,
       sendedVerificationEmail: sendedVerificationEmail ?? false,
     ));
+    if (token != null) {
+      userUseCases = serviceLocator(param1: state);
+    }
   }
 }

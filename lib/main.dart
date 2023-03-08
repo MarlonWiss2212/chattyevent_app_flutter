@@ -40,20 +40,24 @@ Future<void> main() async {
   final String? token =
       await serviceLocator<FirebaseAuth>().currentUser?.getIdToken();
 
+  final authState = AuthState(
+    currentUser: UserEntity(
+      authId: di.serviceLocator<FirebaseAuth>().currentUser?.uid ?? "",
+      id: "",
+    ),
+    token: token,
+    status: token != null ? AuthStateStatus.success : AuthStateStatus.initial,
+  );
+
   runApp(
     BlocProvider.value(
       value: AuthCubit(
-        AuthState(
-          currentUser: UserEntity(authId: "", id: ""),
-          token: token,
-          status:
-              token != null ? AuthStateStatus.success : AuthStateStatus.initial,
-        ),
+        authState,
         auth: di.serviceLocator(),
         notificationUseCases: di.serviceLocator(),
-        userUseCases: di.serviceLocator(),
+        userUseCases: di.serviceLocator(param1: authState),
         authUseCases: di.serviceLocator(),
-      )..setCurrentUserFromFirebaseViaApi(),
+      ),
       child: const BlocInit(),
     ),
   );
