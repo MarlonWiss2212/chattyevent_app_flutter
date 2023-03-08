@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/add_current_user_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/auth/current_user_cubit.dart';
 import 'package:social_media_app_flutter/core/injection.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 import 'package:social_media_app_flutter/presentation/widgets/dialog/buttons/ok_button.dart';
@@ -18,7 +17,7 @@ class CreateUserPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider.value(
       value: AddCurrentUserCubit(
-        currentUserCubit: BlocProvider.of<CurrentUserCubit>(context),
+        authCubit: BlocProvider.of<AuthCubit>(context),
         userUseCases: serviceLocator(
           param1: BlocProvider.of<AuthCubit>(context).state,
         ),
@@ -96,24 +95,11 @@ class CreateUserPage extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 8),
-                      BlocListener<CurrentUserCubit, CurrentUserState>(
+                      BlocListener<AuthCubit, AuthState>(
                         listener: (context, state) async {
-                          if (state.status == CurrentUserStateStatus.success) {
+                          if (state.status == AuthStateStatus.success) {
                             AutoRouter.of(context)
                                 .replace(const HomePageRoute());
-                          } else if (state.status ==
-                                  CurrentUserStateStatus.error &&
-                              state.error != null) {
-                            return await showPlatformDialog(
-                              context: context,
-                              builder: (context) {
-                                return PlatformAlertDialog(
-                                  title: Text(state.error!.title),
-                                  content: Text(state.error!.message),
-                                  actions: const [OKButton()],
-                                );
-                              },
-                            );
                           }
                         },
                         child: SizedBox(

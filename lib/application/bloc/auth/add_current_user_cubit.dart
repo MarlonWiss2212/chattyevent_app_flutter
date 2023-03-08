@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:meta/meta.dart';
-import 'package:social_media_app_flutter/application/bloc/auth/current_user_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/core/dto/create_user_dto.dart';
 import 'package:social_media_app_flutter/core/failures/failures.dart';
 import 'package:social_media_app_flutter/domain/entities/error_with_title_and_message.dart';
@@ -14,11 +14,11 @@ part 'add_current_user_state.dart';
 
 class AddCurrentUserCubit extends Cubit<AddCurrentUserState> {
   final UserUseCases userUseCases;
-  final CurrentUserCubit currentUserCubit;
+  final AuthCubit authCubit;
 
   AddCurrentUserCubit({
     required this.userUseCases,
-    required this.currentUserCubit,
+    required this.authCubit,
   }) : super(AddCurrentUserState());
 
   Future createCurrentUser() async {
@@ -57,9 +57,9 @@ class AddCurrentUserCubit extends Cubit<AddCurrentUserState> {
         status: AddCurrentUserStateStatus.error,
       ),
       (user) {
-        currentUserCubit.emitState(
-          user: user,
-          status: CurrentUserStateStatus.success,
+        authCubit.emitState(
+          currentUser: user,
+          status: AuthStateStatus.success,
         );
         emit(AddCurrentUserState(
           addedUser: user,

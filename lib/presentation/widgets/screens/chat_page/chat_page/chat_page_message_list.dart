@@ -1,12 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:intl/intl.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/auth/current_user_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart';
-import 'package:social_media_app_flutter/core/injection.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/user_with_groupchat_user_data.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/user_with_left_groupchat_user_data.dart';
 import 'package:social_media_app_flutter/domain/entities/message/message_entity.dart';
@@ -59,7 +56,7 @@ class _ChatPageMessageListState extends State<ChatPageMessageList> {
       itemBuilder: (context, message) {
         return ChatPageMessageContainer(
           currentUserId:
-              BlocProvider.of<CurrentUserCubit>(context).state.user.id,
+              BlocProvider.of<AuthCubit>(context).state.currentUser.id,
           message: message,
           usersWithGroupchatUserData: widget.usersWithGroupchatUserData,
           usersWithLeftGroupchatUserData: widget.usersWithLeftGroupchatUserData,

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:social_media_app_flutter/application/bloc/auth/current_user_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart';
 
 class ChatInfoPageLeaveChat extends StatelessWidget {
@@ -19,7 +19,7 @@ class ChatInfoPageLeaveChat extends StatelessWidget {
       ),
       onTap: () {
         BlocProvider.of<CurrentChatCubit>(context).deleteUserFromChatEvent(
-          userId: BlocProvider.of<CurrentUserCubit>(context).state.user.id,
+          userId: BlocProvider.of<AuthCubit>(context).state.currentUser.id,
         );
       },
     );

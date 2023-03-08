@@ -47,8 +47,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                   if (state.status == AuthStateStatus.success &&
                       state.token != null) {
                     AutoRouter.of(context).replace(const HomePageRoute());
-                  } else if (state.status ==
-                      AuthStateStatus.sendedResetPasswordEmail) {
+                  } else if (state.sendedResetPasswordEmail) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         content: Text("Email gesendet"),

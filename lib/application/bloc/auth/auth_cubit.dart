@@ -6,11 +6,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:social_media_app_flutter/core/failures/failures.dart';
+import 'package:social_media_app_flutter/core/filter/get_one_user_filter.dart';
 import 'package:social_media_app_flutter/domain/entities/error_with_title_and_message.dart';
+import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
 import 'package:social_media_app_flutter/domain/usecases/auth_usecases.dart';
 import 'package:social_media_app_flutter/domain/usecases/notification_usecases.dart';
 import 'package:social_media_app_flutter/domain/usecases/user_usecases.dart';
-import 'package:social_media_app_flutter/presentation/screens/settings_page/pages/update_password_page.dart';
 import '../../../core/one_signal.dart' as one_signal;
 
 part 'auth_state.dart';
@@ -28,6 +29,34 @@ class AuthCubit extends Cubit<AuthState> {
     required this.userUseCases,
     required this.notificationUseCases,
   });
+
+  Future setCurrentUserFromFirebaseViaApi() async {
+    emitState(status: AuthStateStatus.loading);
+
+    if (auth.currentUser == null) {
+      return;
+    }
+
+    final Either<Failure, UserEntity> userOrFailure =
+        await userUseCases.getUserViaApi(
+      getOneUserFilter: GetOneUserFilter(authId: auth.currentUser!.uid),
+    );
+
+    userOrFailure.fold(
+      (error) {
+        emitState(
+          error: ErrorWithTitleAndMessage(
+            title: "Fehler Get Current User",
+            message: mapFailureToMessage(error),
+          ),
+          status: AuthStateStatus.error,
+        );
+      },
+      (user) {
+        emitState(currentUser: user, status: AuthStateStatus.success);
+      },
+    );
+  }
 
   Future loginWithEmailAndPassword({
     required String email,
@@ -54,6 +83,7 @@ class AuthCubit extends Cubit<AuthState> {
           status: AuthStateStatus.success,
           token: await authUser.user?.getIdToken(),
         );
+        await setCurrentUserFromFirebaseViaApi();
         await one_signal.setExternalUserId(authUser.user?.uid ?? "");
         await notificationUseCases.requestNotificationPermission();
       },
@@ -107,7 +137,8 @@ class AuthCubit extends Cubit<AuthState> {
       ),
       (worked) {
         emitState(
-          status: AuthStateStatus.sendedVerificationEmail,
+          status: AuthStateStatus.success,
+          sendedVerificationEmail: true,
         );
       },
     );
@@ -130,7 +161,8 @@ class AuthCubit extends Cubit<AuthState> {
       ),
       (worked) {
         emitState(
-          status: AuthStateStatus.sendedResetPasswordEmail,
+          status: AuthStateStatus.success,
+          sendedResetPasswordEmail: true,
         );
       },
     );
@@ -155,7 +187,7 @@ class AuthCubit extends Cubit<AuthState> {
       ),
       (worked) {
         emitState(
-          status: AuthStateStatus.sendedResetPasswordEmail,
+          status: AuthStateStatus.success,
         );
       },
     );
@@ -168,18 +200,25 @@ class AuthCubit extends Cubit<AuthState> {
   Future logout() async {
     emitState(status: AuthStateStatus.loading);
     await authUseCases.logout();
-    emit(AuthState());
+
+    emit(AuthState(currentUser: UserEntity(authId: "", id: "")));
   }
 
   void emitState({
     AuthStateStatus? status,
     ErrorWithTitleAndMessage? error,
     String? token,
+    UserEntity? currentUser,
+    bool? sendedResetPasswordEmail,
+    bool? sendedVerificationEmail,
   }) {
     emit(AuthState(
       error: error ?? state.error,
       status: status ?? AuthStateStatus.initial,
       token: token ?? state.token,
+      currentUser: currentUser ?? state.currentUser,
+      sendedResetPasswordEmail: sendedResetPasswordEmail ?? false,
+      sendedVerificationEmail: sendedVerificationEmail ?? false,
     ));
   }
 }

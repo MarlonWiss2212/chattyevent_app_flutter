@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletons/skeletons.dart';
-import 'package:social_media_app_flutter/application/bloc/auth/current_user_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart';
 import 'package:social_media_app_flutter/core/injection.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/user_with_groupchat_user_data.dart';
@@ -31,7 +31,7 @@ class ChatInfoPageUserList extends StatelessWidget {
             state.usersWithGroupchatUserData.firstWhere(
           (element) =>
               element.id ==
-              BlocProvider.of<CurrentUserCubit>(context).state.user.id,
+              BlocProvider.of<AuthCubit>(context).state.currentUser.id,
           orElse: () => UserWithGroupchatUserData(
             id: "",
             authId: serviceLocator<FirebaseAuth>().currentUser?.uid ?? "",

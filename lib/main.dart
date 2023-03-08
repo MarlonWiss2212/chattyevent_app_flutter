@@ -10,12 +10,11 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/auth/current_user_cubit.dart';
 import 'package:social_media_app_flutter/application/provider/darkMode.dart';
 import 'package:social_media_app_flutter/bloc_init.dart';
 import 'package:social_media_app_flutter/core/colors.dart';
-import 'package:social_media_app_flutter/core/filter/get_one_user_filter.dart';
 import 'package:social_media_app_flutter/core/injection.dart';
+import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
 import 'package:social_media_app_flutter/firebase_options.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -45,6 +44,7 @@ Future<void> main() async {
     BlocProvider.value(
       value: AuthCubit(
         AuthState(
+          currentUser: UserEntity(authId: "", id: ""),
           token: token,
           status:
               token != null ? AuthStateStatus.success : AuthStateStatus.initial,
@@ -53,7 +53,7 @@ Future<void> main() async {
         notificationUseCases: di.serviceLocator(),
         userUseCases: di.serviceLocator(),
         authUseCases: di.serviceLocator(),
-      ),
+      )..setCurrentUserFromFirebaseViaApi(),
       child: const BlocInit(),
     ),
   );
@@ -104,66 +104,49 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.authState.status == AuthStateStatus.success) {
-      BlocProvider.of<CurrentUserCubit>(context).getOneUserViaApi(
-        getOneUserFilter: GetOneUserFilter(
-          authId: serviceLocator<FirebaseAuth>().currentUser?.uid ?? "",
-        ),
-      );
-    }
+    return DynamicColorBuilder(
+      builder: (lightDynamic, darkDynamic) {
+        ColorScheme lightColorScheme;
+        ColorScheme darkColorScheme;
 
-    return BlocListener<CurrentUserCubit, CurrentUserState>(
-      listener: (context, state) {
-        if (state.status == CurrentUserStateStatus.error &&
-            state.user.id == "") {
-          // TODO: check if this works
-          widget.appRouter.replace(const CreateUserPageRoute());
-        }
+        lightDynamic != null
+            ? lightColorScheme = lightDynamic
+            : lightColorScheme = lightColorSchemeStatic;
+        darkDynamic != null
+            ? darkColorScheme = darkDynamic
+            : darkColorScheme = darkColorSchemeStatic;
+
+        return ChangeNotifierProvider(
+          create: (context) => darkModeProvider,
+          child: Consumer<DarkModeProvider>(
+            builder: (context, value, child) {
+              return PlatformApp.router(
+                title: 'Social Media App',
+                routeInformationParser: widget.appRouter.defaultRouteParser(),
+                routerDelegate: widget.appRouter.delegate(),
+                material: (context, platform) => MaterialAppRouterData(
+                  theme: ThemeData(
+                    useMaterial3: true,
+                    colorScheme: lightColorScheme,
+                  ),
+                  darkTheme: ThemeData(
+                    useMaterial3: true,
+                    colorScheme: darkColorScheme,
+                  ),
+                  themeMode: value.autoDarkMode == true
+                      ? ThemeMode.system
+                      : value.darkMode == true
+                          ? ThemeMode.dark
+                          : ThemeMode.light,
+                ),
+                cupertino: (context, platform) => CupertinoAppRouterData(
+                  theme: const CupertinoThemeData(),
+                ),
+              );
+            },
+          ),
+        );
       },
-      child: DynamicColorBuilder(
-        builder: (lightDynamic, darkDynamic) {
-          ColorScheme lightColorScheme;
-          ColorScheme darkColorScheme;
-
-          lightDynamic != null
-              ? lightColorScheme = lightDynamic
-              : lightColorScheme = lightColorSchemeStatic;
-          darkDynamic != null
-              ? darkColorScheme = darkDynamic
-              : darkColorScheme = darkColorSchemeStatic;
-
-          return ChangeNotifierProvider(
-            create: (context) => darkModeProvider,
-            child: Consumer<DarkModeProvider>(
-              builder: (context, value, child) {
-                return PlatformApp.router(
-                  title: 'Social Media App',
-                  routeInformationParser: widget.appRouter.defaultRouteParser(),
-                  routerDelegate: widget.appRouter.delegate(),
-                  material: (context, platform) => MaterialAppRouterData(
-                    theme: ThemeData(
-                      useMaterial3: true,
-                      colorScheme: lightColorScheme,
-                    ),
-                    darkTheme: ThemeData(
-                      useMaterial3: true,
-                      colorScheme: darkColorScheme,
-                    ),
-                    themeMode: value.autoDarkMode == true
-                        ? ThemeMode.system
-                        : value.darkMode == true
-                            ? ThemeMode.dark
-                            : ThemeMode.light,
-                  ),
-                  cupertino: (context, platform) => CupertinoAppRouterData(
-                    theme: const CupertinoThemeData(),
-                  ),
-                );
-              },
-            ),
-          );
-        },
-      ),
     );
   }
 }

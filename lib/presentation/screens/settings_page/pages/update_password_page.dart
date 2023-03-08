@@ -43,20 +43,7 @@ class _UpdatePasswordPageState extends State<UpdatePasswordPage> {
               const SizedBox(height: 8),
               BlocListener<AuthCubit, AuthState>(
                 listener: (context, state) async {
-                  if (state.status == AuthStateStatus.error &&
-                      state.error != null) {
-                    return await showPlatformDialog(
-                      context: context,
-                      builder: (context) {
-                        return PlatformAlertDialog(
-                          title: Text(state.error!.title),
-                          content: Text(state.error!.message),
-                          actions: const [OKButton()],
-                        );
-                      },
-                    );
-                  } else if (state.status ==
-                      AuthStateStatus.sendedResetPasswordEmail) {
+                  if (state.sendedResetPasswordEmail) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         content: Text("Passwort geändert"),
