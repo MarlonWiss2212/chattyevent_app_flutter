@@ -29,22 +29,18 @@ class ChatInfoPageLeftUserListItem extends StatelessWidget {
               "Kein Datum",
               overflow: TextOverflow.ellipsis,
             ),
-      longPress: currentUser.admin != null &&
+      items: currentUser.admin != null &&
               currentUser.admin == true &&
               currentUser.id != user.id
-          ? (user) {
-              showMenu(
-                position: const RelativeRect.fromLTRB(0, double.infinity, 0, 0),
-                context: context,
-                items: [
-                  PopupMenuItem(
-                    child: const Text("Hinzufügen"),
-                    onTap: () => BlocProvider.of<CurrentChatCubit>(context)
-                        .addUserToChat(userId: user.id),
-                  ),
-                ],
-              );
-            }
+          ? [
+              PopupMenuItem(
+                child: const Text("Hinzufügen"),
+                onTap: () =>
+                    BlocProvider.of<CurrentChatCubit>(context).addUserToChat(
+                  userId: user.id,
+                ),
+              ),
+            ]
           : null,
     );
   }
