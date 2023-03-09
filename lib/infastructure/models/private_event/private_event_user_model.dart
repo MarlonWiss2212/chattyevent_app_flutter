@@ -7,13 +7,11 @@ class PrivateEventUserModel extends PrivateEventUserEntity {
     String? privateEventTo,
     DateTime? createdAt,
     DateTime? updatedAt,
-    bool? isInvitedIndependetFromGroupchat,
     String? status,
   }) : super(
           id: id,
           userId: userId,
           privateEventTo: privateEventTo,
-          isInvitedIndependetFromGroupchat: isInvitedIndependetFromGroupchat,
           updatedAt: updatedAt,
           createdAt: createdAt,
           status: status,
@@ -34,8 +32,6 @@ class PrivateEventUserModel extends PrivateEventUserEntity {
       privateEventTo: json['privateEventTo'],
       createdAt: createdAt,
       updatedAt: updatedAt,
-      isInvitedIndependetFromGroupchat:
-          json["isInvitedIndependetFromGroupchat"],
       status: json["status"],
     );
   }

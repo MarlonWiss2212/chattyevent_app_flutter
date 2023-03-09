@@ -37,8 +37,7 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
             _id
             title
             coverImageLink
-            users {
-              isInvitedIndependetFromGroupchat
+            users { 
               _id
               privateEventTo
               userId
@@ -93,7 +92,6 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
             _id
             title
             users {
-              isInvitedIndependetFromGroupchat
               _id
               privateEventTo
               userId
@@ -192,7 +190,6 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
         """
           mutation UpdatePrivateEventUser(\$privateEventId: String!, \$input: UpdatePrivateEventUserInput!) {
             updatePrivateEventUser(privateEventId: \$privateEventId, updatePrivateEventUserInput: \$input) {
-              isInvitedIndependetFromGroupchat
               _id
               privateEventTo
               userId
