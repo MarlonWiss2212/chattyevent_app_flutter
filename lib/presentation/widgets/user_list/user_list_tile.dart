@@ -1,6 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
+import 'package:social_media_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 
 class UserListTile extends StatefulWidget {
@@ -59,10 +59,11 @@ class _UserListTileState extends State<UserListTile> {
         subtitle: widget.subtitle,
         onTap: () {
           AutoRouter.of(context).root.push(
-                ProfilePageRoute(
-                    userId: widget.user.id,
-                    loadUserFromApiToo: true,
-                    userToSet: widget.user),
+                ProfileWrapperPageRoute(
+                  userId: widget.user.id,
+                  loadUserFromApiToo: true,
+                  userToSet: widget.user,
+                ),
               );
         },
         onLongPress: () {

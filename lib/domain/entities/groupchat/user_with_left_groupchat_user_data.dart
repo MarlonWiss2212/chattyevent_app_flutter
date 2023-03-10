@@ -1,5 +1,5 @@
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_left_user_entity.dart';
-import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
+import 'package:social_media_app_flutter/domain/entities/user/user_entity.dart';
 
 /// this will only be used for the current cubit
 class UserWithLeftGroupchatUserData extends UserEntity {

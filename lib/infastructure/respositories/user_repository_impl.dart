@@ -2,13 +2,13 @@ import 'package:dartz/dartz.dart';
 import 'package:http/http.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:social_media_app_flutter/core/dto/create_user_dto.dart';
-import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
+import 'package:social_media_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:social_media_app_flutter/core/failures/failures.dart';
 import 'package:social_media_app_flutter/core/filter/get_one_user_filter.dart';
 import 'package:social_media_app_flutter/core/filter/get_users_filter.dart';
 import 'package:social_media_app_flutter/domain/repositories/user_repository.dart';
 import 'package:social_media_app_flutter/infastructure/datasources/remote/graphql.dart';
-import 'package:social_media_app_flutter/infastructure/models/user_model.dart';
+import 'package:social_media_app_flutter/infastructure/models/user/user_model.dart';
 
 class UserRepositoryImpl implements UserRepository {
   final GraphQlDatasource graphQlDatasource;
@@ -29,6 +29,24 @@ class UserRepositoryImpl implements UserRepository {
             lastname
             username
             profileImageLink
+            userRelationCounts {
+              followerCount
+              followedCount
+              followRequestCount
+            }
+            myUserRelationToTheUser {
+              _id
+              createdAt
+              updatedAt
+              targetUserId
+              requesterUserId
+              statusOnRelatedUser
+              followData {
+                canInviteFollowedToPrivateEvent
+                canInviteFollowedToGroupchat
+                followedUserAt
+              }
+            }
           }
         }
         """,
@@ -36,13 +54,11 @@ class UserRepositoryImpl implements UserRepository {
       );
 
       if (response.hasException) {
-        print(response.exception);
         return Left(GeneralFailure());
       }
 
       return Right(UserModel.fromJson(response.data!["findUser"]));
     } catch (e) {
-      print(e);
       return Left(ServerFailure());
     }
   }
@@ -60,6 +76,12 @@ class UserRepositoryImpl implements UserRepository {
             authId
             username
             profileImageLink
+            myUserRelationToTheUser {
+              _id
+              targetUserId
+              requesterUserId
+              statusOnRelatedUser
+            }
           }
         }
         """,
@@ -126,13 +148,11 @@ class UserRepositoryImpl implements UserRepository {
       );
 
       if (response.hasException) {
-        print(response.exception);
         return Left(GeneralFailure());
       }
 
       return Right(UserModel.fromJson(response.data!["createUser"]));
     } catch (e) {
-      print(e);
       return Left(ServerFailure());
     }
   }

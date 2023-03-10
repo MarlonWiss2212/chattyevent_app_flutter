@@ -1,3 +1,6 @@
+import 'package:social_media_app_flutter/domain/entities/user-relation/user_relation_entity.dart';
+import 'package:social_media_app_flutter/domain/entities/user-relation/user_relations_count_entity.dart';
+
 class UserEntity {
   final String id;
   final String authId;
@@ -9,12 +12,16 @@ class UserEntity {
   final String? profileImageLink;
   final String? birthdate;
   final String? lastTimeOnline;
+  final UserRelationsCountEntity? userRelationCounts;
+  final UserRelationEntity? myUserRelationToTheUser;
   final DateTime? createdAt;
   final DateTime? updatedAt;
 
   UserEntity({
     required this.id,
     required this.authId,
+    this.myUserRelationToTheUser,
+    this.userRelationCounts,
     this.username,
     this.email,
     this.emailVerified,
@@ -37,9 +44,19 @@ class UserEntity {
       username: newEntity.username ?? oldEntity.username,
       email: newEntity.email ?? oldEntity.email,
       emailVerified: newEntity.emailVerified ?? oldEntity.emailVerified,
+      myUserRelationToTheUser: UserRelationEntity.merge(
+        newEntity: newEntity.myUserRelationToTheUser ??
+            UserRelationEntity(id: oldEntity.myUserRelationToTheUser?.id ?? ""),
+        oldEntity:
+            oldEntity.myUserRelationToTheUser ?? UserRelationEntity(id: ""),
+      ),
       profileImageLink:
           newEntity.profileImageLink ?? oldEntity.profileImageLink,
       firstname: newEntity.firstname ?? oldEntity.firstname,
+      userRelationCounts: UserRelationsCountEntity.merge(
+        newEntity: newEntity.userRelationCounts ?? UserRelationsCountEntity(),
+        oldEntity: oldEntity.userRelationCounts ?? UserRelationsCountEntity(),
+      ),
       lastname: newEntity.lastname ?? oldEntity.lastname,
       birthdate: newEntity.birthdate ?? oldEntity.birthdate,
       lastTimeOnline: newEntity.lastTimeOnline ?? oldEntity.lastTimeOnline,

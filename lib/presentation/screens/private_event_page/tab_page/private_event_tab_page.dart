@@ -14,47 +14,65 @@ class PrivateEventTabPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CurrentPrivateEventCubit, CurrentPrivateEventState>(
-      builder: (context, state) {
-        return AutoTabsRouter.tabBar(
-          routes: [
-            PrivateEventTabInfoRoute(),
-            PrivateEventTabShoppingListRoute(),
-          ],
-          builder: (context, child, tabController) {
-            return PlatformScaffold(
-              appBar: PlatformAppBar(
-                leading: const AutoLeadingButton(),
-                title: Hero(
+    return AutoTabsRouter.tabBar(
+      routes: [
+        PrivateEventTabInfoRoute(),
+        PrivateEventTabShoppingListRoute(),
+      ],
+      builder: (context, child, tabController) {
+        return PlatformScaffold(
+          appBar: PlatformAppBar(
+            leading: const AutoLeadingButton(),
+            title:
+                BlocBuilder<CurrentPrivateEventCubit, CurrentPrivateEventState>(
+              buildWhen: (previous, current) =>
+                  previous.privateEvent.title != current.privateEvent.title,
+              builder: (context, state) {
+                return Hero(
                   tag: "$privateEventId title",
                   child: Text(
                     state.privateEvent.title ?? "Kein Titel",
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
-                ),
-                material: (context, platform) => MaterialAppBarData(
-                  bottom: TabBar(
-                    controller: tabController,
-                    tabs: const [
-                      Tab(text: "Info", icon: Icon(Icons.celebration)),
-                      Tab(
-                        text: "Einkaufsliste",
-                        icon: Icon(Icons.shopping_cart),
-                      ),
-                    ],
+                );
+              },
+            ),
+            material: (context, platform) => MaterialAppBarData(
+              bottom: TabBar(
+                controller: tabController,
+                tabs: const [
+                  Tab(text: "Info", icon: Icon(Icons.celebration)),
+                  Tab(
+                    text: "Einkaufsliste",
+                    icon: Icon(Icons.shopping_cart),
                   ),
-                ),
-              ),
-              body: Column(
-                children: [
-                  if (state.loadingGroupchat || state.loadingPrivateEvent) ...{
-                    const LinearProgressIndicator()
-                  },
-                  Expanded(child: child),
                 ],
               ),
-            );
-          },
+            ),
+          ),
+          body: Column(
+            children: [
+              BlocBuilder<CurrentPrivateEventCubit, CurrentPrivateEventState>(
+                buildWhen: (previous, current) {
+                  if (previous.loadingGroupchat != current.loadingGroupchat) {
+                    return true;
+                  }
+                  if (previous.loadingPrivateEvent !=
+                      current.loadingPrivateEvent) {
+                    return true;
+                  }
+                  return false;
+                },
+                builder: (context, state) {
+                  if (state.loadingGroupchat || state.loadingPrivateEvent) {
+                    const LinearProgressIndicator();
+                  }
+                  return const SizedBox();
+                },
+              ),
+              Expanded(child: child),
+            ],
+          ),
         );
       },
     );

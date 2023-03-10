@@ -64,12 +64,14 @@ class Location extends StatelessWidget {
                     builder: (context, state) {
                       List<Marker> markers = [];
                       for (final event in state.privateEvents) {
-                        if (event.eventLocation != null) {
+                        if (event.eventLocation != null &&
+                            event.eventLocation!.longitude != null &&
+                            event.eventLocation!.latitude != null) {
                           markers.add(
                             Marker(
                               point: LatLng(
-                                event.eventLocation!.latitude,
-                                event.eventLocation!.longitude,
+                                event.eventLocation!.latitude!,
+                                event.eventLocation!.longitude!,
                               ),
                               height: 50,
                               width: 100,

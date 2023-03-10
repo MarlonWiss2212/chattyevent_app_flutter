@@ -62,7 +62,10 @@ class PrivateEventEntity {
       eventDate: newEntity.eventDate ?? oldEntity.eventDate,
       connectedGroupchat:
           newEntity.connectedGroupchat ?? oldEntity.connectedGroupchat,
-      eventLocation: newEntity.eventLocation ?? oldEntity.eventLocation,
+      eventLocation: PrivateEventLocationEntity.merge(
+        newEntity: newEntity.eventLocation ?? PrivateEventLocationEntity(),
+        oldEntity: oldEntity.eventLocation ?? PrivateEventLocationEntity(),
+      ),
       createdBy: newEntity.createdBy ?? oldEntity.createdBy,
       createdAt: newEntity.createdAt ?? oldEntity.createdAt,
       updatedAt: newEntity.updatedAt ?? oldEntity.updatedAt,

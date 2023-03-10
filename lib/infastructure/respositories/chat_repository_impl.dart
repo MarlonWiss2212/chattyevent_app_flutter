@@ -69,12 +69,10 @@ class ChatRepositoryImpl implements ChatRepository {
       );
 
       if (response.hasException) {
-        print(response.exception);
         return Left(GeneralFailure());
       }
       return Right(GroupchatModel.fromJson(response.data!["createGroupchat"]));
     } catch (e) {
-      print(e);
       return Left(ServerFailure());
     }
   }

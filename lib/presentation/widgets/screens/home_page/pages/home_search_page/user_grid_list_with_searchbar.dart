@@ -39,7 +39,7 @@ class UserGridListWithSearchbar extends StatelessWidget {
                         user: user,
                       );
                       AutoRouter.of(context).push(
-                        ProfilePageRoute(
+                        ProfileWrapperPageRoute(
                           userId: user.id,
                           userToSet: user,
                           loadUserFromApiToo: true,

@@ -12,7 +12,7 @@ import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_ent
 import 'package:social_media_app_flutter/domain/entities/groupchat/user_with_groupchat_user_data.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/user_with_left_groupchat_user_data.dart';
 import 'package:social_media_app_flutter/domain/entities/message/message_entity.dart';
-import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
+import 'package:social_media_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:social_media_app_flutter/core/failures/failures.dart';
 import 'package:social_media_app_flutter/core/filter/get_one_groupchat_filter.dart';
 import 'package:social_media_app_flutter/domain/usecases/chat_usecases.dart';

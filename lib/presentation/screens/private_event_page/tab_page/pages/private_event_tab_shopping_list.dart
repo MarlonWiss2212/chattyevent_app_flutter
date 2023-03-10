@@ -9,7 +9,7 @@ import 'package:social_media_app_flutter/core/filter/get_shopping_list_items_fil
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/user_with_private_event_user_data.dart';
 import 'package:social_media_app_flutter/domain/entities/shopping_list_item/shopping_list_item_entity.dart';
-import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
+import 'package:social_media_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/shopping_list_item_page/shopping_list_page/shopping_list_item_tile.dart';
 

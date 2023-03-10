@@ -9,7 +9,7 @@ import 'package:social_media_app_flutter/core/failures/failures.dart';
 import 'package:social_media_app_flutter/core/filter/get_one_user_filter.dart';
 import 'package:social_media_app_flutter/core/injection.dart';
 import 'package:social_media_app_flutter/domain/entities/error_with_title_and_message.dart';
-import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
+import 'package:social_media_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:social_media_app_flutter/domain/usecases/auth_usecases.dart';
 import 'package:social_media_app_flutter/domain/usecases/notification_usecases.dart';
 import 'package:social_media_app_flutter/domain/usecases/user_usecases.dart';

@@ -25,7 +25,12 @@ import 'package:social_media_app_flutter/presentation/screens/private_event_page
 import 'package:social_media_app_flutter/presentation/screens/private_event_page/tab_page/pages/private_event_tab_info.dart';
 import 'package:social_media_app_flutter/presentation/screens/private_event_page/tab_page/pages/private_event_tab_shopping_list.dart';
 import 'package:social_media_app_flutter/presentation/screens/private_event_page/tab_page/private_event_tab_page.dart';
-import 'package:social_media_app_flutter/presentation/screens/profile_page.dart';
+import 'package:social_media_app_flutter/presentation/screens/profile_page/profile_page.dart';
+import 'package:social_media_app_flutter/presentation/screens/profile_page/profile_user_relations_tabs/profile_follow_requests_tab.dart';
+import 'package:social_media_app_flutter/presentation/screens/profile_page/profile_user_relations_tabs/profile_user_relations_tab_page.dart';
+import 'package:social_media_app_flutter/presentation/screens/profile_page/profile_user_relations_tabs/profile_followed_tab.dart';
+import 'package:social_media_app_flutter/presentation/screens/profile_page/profile_user_relations_tabs/profile_follower_tab.dart';
+import 'package:social_media_app_flutter/presentation/screens/profile_page/profile_wrapper_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/register_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/reset_password_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/settings_page/pages/theme_mode_page.dart';
@@ -44,10 +49,40 @@ import 'package:social_media_app_flutter/presentation/screens/verify_email_page.
 
     //profile page
     AutoRoute(
-      page: ProfilePage,
+      page: ProfileWrapperPage,
       initial: false,
       guards: [AuthGuard],
       path: '/profile/:id',
+      children: [
+        AutoRoute(
+          page: ProfilePage,
+          guards: [AuthGuard],
+          path: '',
+        ),
+        AutoRoute(
+          page: ProfileUserRelationsTabPage,
+          guards: [AuthGuard],
+          path: 'user-relations',
+          children: [
+            AutoRoute(
+              page: ProfileFollowerTab,
+              guards: [AuthGuard],
+              path: 'follower',
+            ),
+            AutoRoute(
+              page: ProfileFollowedTab,
+              guards: [AuthGuard],
+              path: 'followed',
+            ),
+            AutoRoute(
+              page: ProfileFollowRequestsTab,
+              guards: [AuthGuard],
+              path: 'follow-requests',
+            ),
+          ],
+        ),
+        RedirectRoute(path: '*', redirectTo: '')
+      ],
     ),
 
     // settings page
@@ -83,7 +118,42 @@ import 'package:social_media_app_flutter/presentation/screens/verify_email_page.
         AutoRoute(page: HomeEventPage, guards: [AuthGuard], path: 'events'),
         AutoRoute(page: Location, guards: [AuthGuard], path: 'map'),
         AutoRoute(page: HomeSearchPage, guards: [AuthGuard], path: 'search'),
-        AutoRoute(page: HomeProfilePage, guards: [AuthGuard], path: 'profile'),
+        AutoRoute(
+          page: HomeProfilePage,
+          guards: [AuthGuard],
+          path: 'current-profile/:id',
+          children: [
+            AutoRoute(
+              page: ProfilePage,
+              guards: [AuthGuard],
+              path: '',
+            ),
+            AutoRoute(
+              page: ProfileUserRelationsTabPage,
+              guards: [AuthGuard],
+              path: 'user-relations',
+              fullscreenDialog: true,
+              children: [
+                AutoRoute(
+                  page: ProfileFollowerTab,
+                  guards: [AuthGuard],
+                  path: 'follower',
+                ),
+                AutoRoute(
+                  page: ProfileFollowedTab,
+                  guards: [AuthGuard],
+                  path: 'followed',
+                ),
+                AutoRoute(
+                  page: ProfileFollowRequestsTab,
+                  guards: [AuthGuard],
+                  path: 'follow-requests',
+                ),
+              ],
+            ),
+            RedirectRoute(path: '*', redirectTo: '')
+          ],
+        ),
         RedirectRoute(path: '*', redirectTo: 'chats')
       ],
     ),

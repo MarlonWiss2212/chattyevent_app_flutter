@@ -98,52 +98,55 @@ class PrivateEventTabInfoLocation extends StatelessWidget {
                 )
               ],
               const SizedBox(height: 8),
-              Container(
-                width: size.width,
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                height: min(size.width, 300),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8.0),
-                  child: FlutterMap(
-                    options: MapOptions(
-                      interactiveFlags: InteractiveFlag.none,
-                      center: LatLng(
-                        state.privateEvent.eventLocation!.latitude,
-                        state.privateEvent.eventLocation!.longitude,
+              if (state.privateEvent.eventLocation!.latitude != null &&
+                  state.privateEvent.eventLocation!.longitude != null)
+                Container(
+                  width: size.width,
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  height: min(size.width, 300),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8.0),
+                    child: FlutterMap(
+                      options: MapOptions(
+                        interactiveFlags: InteractiveFlag.none,
+                        center: LatLng(
+                          state.privateEvent.eventLocation!.latitude!,
+                          state.privateEvent.eventLocation!.longitude!,
+                        ),
                       ),
-                    ),
-                    children: [
-                      TileLayer(
-                        urlTemplate:
-                            'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                      ),
-                      MarkerLayer(
-                        markers: [
-                          Marker(
-                            point: LatLng(
-                              state.privateEvent.eventLocation!.latitude,
-                              state.privateEvent.eventLocation!.longitude,
+                      children: [
+                        TileLayer(
+                          urlTemplate:
+                              'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                        ),
+                        MarkerLayer(
+                          markers: [
+                            Marker(
+                              point: LatLng(
+                                state.privateEvent.eventLocation!.latitude!,
+                                state.privateEvent.eventLocation!.longitude!,
+                              ),
+                              builder: (context) {
+                                return CircleImage(
+                                  width: 40,
+                                  height: 40,
+                                  imageLink: state.privateEvent.coverImageLink,
+                                  icon:
+                                      state.privateEvent.coverImageLink == null
+                                          ? const Icon(Icons.celebration)
+                                          : null,
+                                );
+                              },
                             ),
-                            builder: (context) {
-                              return CircleImage(
-                                width: 40,
-                                height: 40,
-                                imageLink: state.privateEvent.coverImageLink,
-                                icon: state.privateEvent.coverImageLink == null
-                                    ? const Icon(Icons.celebration)
-                                    : null,
-                              );
-                            },
-                          ),
-                        ],
-                      ),
-                    ],
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
               const CustomDivider(),
             ],
           );

@@ -14,7 +14,7 @@ import 'package:social_media_app_flutter/application/provider/darkMode.dart';
 import 'package:social_media_app_flutter/bloc_init.dart';
 import 'package:social_media_app_flutter/core/colors.dart';
 import 'package:social_media_app_flutter/core/injection.dart';
-import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
+import 'package:social_media_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:social_media_app_flutter/firebase_options.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';

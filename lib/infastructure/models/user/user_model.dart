@@ -1,4 +1,8 @@
-import 'package:social_media_app_flutter/domain/entities/user_entity.dart';
+import 'package:social_media_app_flutter/domain/entities/user-relation/user_relation_entity.dart';
+import 'package:social_media_app_flutter/domain/entities/user-relation/user_relations_count_entity.dart';
+import 'package:social_media_app_flutter/domain/entities/user/user_entity.dart';
+import 'package:social_media_app_flutter/infastructure/models/user_relation/user_relation_count_model.dart';
+import 'package:social_media_app_flutter/infastructure/models/user_relation/user_relation_model.dart';
 
 class UserModel extends UserEntity {
   UserModel({
@@ -12,6 +16,8 @@ class UserModel extends UserEntity {
     String? profileImageLink,
     String? birthdate,
     String? lastTimeOnline,
+    UserRelationsCountEntity? userRelationCounts,
+    UserRelationEntity? myUserRelationToTheUser,
     DateTime? createdAt,
     DateTime? updatedAt,
   }) : super(
@@ -25,6 +31,8 @@ class UserModel extends UserEntity {
           profileImageLink: profileImageLink,
           birthdate: birthdate,
           lastTimeOnline: lastTimeOnline,
+          userRelationCounts: userRelationCounts,
+          myUserRelationToTheUser: myUserRelationToTheUser,
           createdAt: createdAt,
           updatedAt: updatedAt,
         );
@@ -49,6 +57,16 @@ class UserModel extends UserEntity {
       emailVerified: json["emailVerified"],
       birthdate: json["birthdate"],
       lastTimeOnline: json["lastTimeOnline"],
+      userRelationCounts: json['userRelationCounts'] != null
+          ? UserRelationsCountModel.fromJson(
+              json['userRelationCounts'],
+            )
+          : null,
+      myUserRelationToTheUser: json['myUserRelationToTheUser'] != null
+          ? UserRelationModel.fromJson(
+              json['myUserRelationToTheUser'],
+            )
+          : null,
       createdAt: createdAt,
       updatedAt: updatedAt,
     );
