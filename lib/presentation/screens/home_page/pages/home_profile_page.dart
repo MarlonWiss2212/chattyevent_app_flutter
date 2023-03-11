@@ -22,8 +22,11 @@ class HomeProfilePage extends StatelessWidget {
         userUseCases: serviceLocator(
           param1: BlocProvider.of<AuthCubit>(context).state,
         ),
+        userRelationUseCases: serviceLocator(
+          param1: BlocProvider.of<AuthCubit>(context).state,
+        ),
         userCubit: BlocProvider.of<UserCubit>(context),
-        auth: serviceLocator<FirebaseAuth>(),
+        authCubit: BlocProvider.of<AuthCubit>(context),
       ),
       child: Builder(
         builder: (context) {

@@ -14,6 +14,7 @@ import 'package:social_media_app_flutter/domain/repositories/device/settings_rep
 import 'package:social_media_app_flutter/domain/repositories/message_repository.dart';
 import 'package:social_media_app_flutter/domain/repositories/private_event_repository.dart';
 import 'package:social_media_app_flutter/domain/repositories/shopping_list_item_repository.dart';
+import 'package:social_media_app_flutter/domain/repositories/user_relation_repository.dart';
 import 'package:social_media_app_flutter/domain/repositories/user_repository.dart';
 import 'package:social_media_app_flutter/domain/usecases/auth_usecases.dart';
 import 'package:social_media_app_flutter/domain/usecases/bought_amount_usecases.dart';
@@ -25,6 +26,7 @@ import 'package:social_media_app_flutter/domain/usecases/notification_usecases.d
 import 'package:social_media_app_flutter/domain/usecases/private_event_usecases.dart';
 import 'package:social_media_app_flutter/domain/usecases/settings_usecases.dart';
 import 'package:social_media_app_flutter/domain/usecases/shopping_list_item_usecases.dart';
+import 'package:social_media_app_flutter/domain/usecases/user_relation_usecases.dart';
 import 'package:social_media_app_flutter/domain/usecases/user_usecases.dart';
 import 'package:social_media_app_flutter/infastructure/datasources/device/image_picker.dart';
 import 'package:social_media_app_flutter/infastructure/datasources/device/location.dart';
@@ -41,6 +43,7 @@ import 'package:social_media_app_flutter/infastructure/respositories/device/sett
 import 'package:social_media_app_flutter/infastructure/respositories/message_repository_impl.dart';
 import 'package:social_media_app_flutter/infastructure/respositories/private_event_repository_impl.dart';
 import 'package:social_media_app_flutter/infastructure/respositories/shopping_list_item_repository_impl.dart';
+import 'package:social_media_app_flutter/infastructure/respositories/user_relation_repository_impl.dart';
 import 'package:social_media_app_flutter/infastructure/respositories/user_repository_impl.dart';
 
 final serviceLocator = GetIt.I;
@@ -89,6 +92,11 @@ Future init() async {
       userRepository: serviceLocator(param1: param1),
     ),
   );
+  serviceLocator.registerFactoryParam<UserRelationUseCases, AuthState?, void>(
+    (param1, param2) => UserRelationUseCases(
+      userRelationRepository: serviceLocator(param1: param1),
+    ),
+  );
   serviceLocator
       .registerFactoryParam<ShoppingListItemUseCases, AuthState?, void>(
     (param1, param2) => ShoppingListItemUseCases(
@@ -129,6 +137,11 @@ Future init() async {
   );
   serviceLocator.registerFactoryParam<UserRepository, AuthState?, void>(
     (param1, param2) => UserRepositoryImpl(
+      graphQlDatasource: serviceLocator(param1: param1),
+    ),
+  );
+  serviceLocator.registerFactoryParam<UserRelationRepository, AuthState?, void>(
+    (param1, param2) => UserRelationRepositoryImpl(
       graphQlDatasource: serviceLocator(param1: param1),
     ),
   );

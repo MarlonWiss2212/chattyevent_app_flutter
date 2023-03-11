@@ -118,8 +118,10 @@ class UserRelationRepositoryImpl extends UserRelationRepository {
       );
 
       if (response.hasException) {
+        print(response.exception);
         return Left(GeneralFailure());
       }
+      print(response.data);
 
       final List<UserRelationEntity> userRelations = [];
       for (var userRelation in response.data!["findFollowerUserRelations"]) {
@@ -128,6 +130,7 @@ class UserRelationRepositoryImpl extends UserRelationRepository {
 
       return Right(userRelations);
     } catch (e) {
+      print(e);
       return Left(ServerFailure());
     }
   }

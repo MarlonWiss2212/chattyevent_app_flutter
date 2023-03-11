@@ -29,11 +29,14 @@ class ProfileWrapperPage extends StatelessWidget {
         ProfilePageState(
           user: userToSet ?? UserEntity(id: userId, authId: ""),
         ),
+        userRelationUseCases: serviceLocator(
+          param1: BlocProvider.of<AuthCubit>(context).state,
+        ),
         userUseCases: serviceLocator(
           param1: BlocProvider.of<AuthCubit>(context).state,
         ),
         userCubit: BlocProvider.of<UserCubit>(context),
-        auth: serviceLocator<FirebaseAuth>(),
+        authCubit: BlocProvider.of<AuthCubit>(context),
       ),
       child: Builder(
         builder: (context) {
