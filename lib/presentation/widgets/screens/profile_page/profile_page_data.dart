@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:social_media_app_flutter/presentation/widgets/general/follow_button.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/profile_page/profile_page_circle_image.dart';
+import 'package:social_media_app_flutter/presentation/widgets/screens/profile_page/profile_page_follow_button.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/profile_page/profile_page_follower_counts.dart';
 
 class ProfilePageData extends StatelessWidget {
@@ -16,6 +18,8 @@ class ProfilePageData extends StatelessWidget {
             ProfilePageCircleImage(),
             SizedBox(height: 20),
             ProfileFollowerCounts(),
+            SizedBox(height: 20),
+            ProfilePageFollowButton(),
           ],
         ),
       ),

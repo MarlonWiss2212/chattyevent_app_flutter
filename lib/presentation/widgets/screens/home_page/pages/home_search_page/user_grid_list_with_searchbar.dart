@@ -7,6 +7,7 @@ import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_search_cubit.dart';
 import 'package:social_media_app_flutter/core/filter/get_users_filter.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
+import 'package:social_media_app_flutter/presentation/widgets/general/follow_button.dart';
 import 'package:social_media_app_flutter/presentation/widgets/user_list/user_grid_list.dart';
 
 class UserGridListWithSearchbar extends StatelessWidget {
@@ -34,6 +35,9 @@ class UserGridListWithSearchbar extends StatelessWidget {
                 return Expanded(
                   child: UserGridList(
                     users: state.users,
+                    button: (user) {
+                      return FollowButton(user: user);
+                    },
                     onPress: (user) {
                       BlocProvider.of<UserCubit>(context).mergeOrAdd(
                         user: user,

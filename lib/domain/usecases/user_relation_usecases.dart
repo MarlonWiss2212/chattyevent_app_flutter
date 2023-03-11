@@ -52,4 +52,33 @@ class UserRelationUseCases {
       findOneUserRelationFilter: findOneUserRelationFilter,
     );
   }
+
+  Future<Either<Failure, Either<UserRelationEntity, bool>>>
+      followOrUnfollowUserViaApi({
+    required FindOneUserRelationFilter findOneUserRelationFilter,
+    required UserRelationEntity? userRelationEntity,
+  }) async {
+    if (userRelationEntity?.statusOnRelatedUser != "follower" &&
+        userRelationEntity?.statusOnRelatedUser != "requestToFollow") {
+      final userRelationOrFailure =
+          await userRelationRepository.createUserRelationViaApi(
+              createUserRelationDto: CreateUserRelationDto(
+        targetUserId: findOneUserRelationFilter.targetUserId,
+      ));
+      return userRelationOrFailure.fold(
+        (error) => Left(error),
+        (userRelation) => Right(Left(userRelation)),
+      );
+    } else {
+      final booleanOrFailure =
+          await userRelationRepository.deleteUserRelationViaApi(
+        findOneUserRelationFilter: findOneUserRelationFilter,
+      );
+
+      return booleanOrFailure.fold(
+        (error) => Left(error),
+        (boolean) => Right(Right(boolean)),
+      );
+    }
+  }
 }

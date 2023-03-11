@@ -4,9 +4,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:meta/meta.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
+import 'package:social_media_app_flutter/core/dto/user_relation/create_user_relation_dto.dart';
 import 'package:social_media_app_flutter/core/filter/user_relation/find_all_follower_user_relation_filter.dart';
+import 'package:social_media_app_flutter/core/filter/user_relation/find_one_user_relation_filter.dart';
 import 'package:social_media_app_flutter/domain/entities/error_with_title_and_message.dart';
 import 'package:social_media_app_flutter/domain/entities/user-relation/user_relation_entity.dart';
+import 'package:social_media_app_flutter/domain/entities/user-relation/user_relations_count_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:social_media_app_flutter/core/failures/failures.dart';
 import 'package:social_media_app_flutter/core/filter/get_one_user_filter.dart';
@@ -86,6 +89,83 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
         emitState(
           userRelationStatus: ProfilePageStateUserRelationStatus.success,
           userRelations: userRelation,
+        );
+      },
+    );
+  }
+
+  Future followOrUnfollowUserViaApi() async {
+    emitState(userRelationStatus: ProfilePageStateUserRelationStatus.loading);
+
+    final userRelationOrFailure =
+        await userRelationUseCases.followOrUnfollowUserViaApi(
+      findOneUserRelationFilter: FindOneUserRelationFilter(
+        requesterUserId: authCubit.state.currentUser.id,
+        targetUserId: state.user.id,
+      ),
+      userRelationEntity: state.user.myUserRelationToTheUser,
+    );
+
+    userRelationOrFailure.fold(
+      (error) => emitState(
+        userRelationStatus: ProfilePageStateUserRelationStatus.error,
+        errorRelationError: ErrorWithTitleAndMessage(
+          title: "Follow Or Unfollow Failure",
+          message: mapFailureToMessage(error),
+        ),
+      ),
+      (booleanOrUserRelation) {
+        booleanOrUserRelation.fold(
+          (userRelation) {
+            emitState(
+              userRelationStatus: ProfilePageStateUserRelationStatus.success,
+              userRelations: List.from(state.userRelations ?? [])
+                ..add(userRelation),
+              user: UserEntity.merge(
+                newEntity: UserEntity(
+                  id: state.user.id,
+                  authId: state.user.authId,
+                  myUserRelationToTheUser: userRelation,
+                  userRelationCounts: UserRelationsCountEntity(
+                    followerCount: state.user.userRelationCounts != null &&
+                            state.user.userRelationCounts!.followerCount != null
+                        ? state.user.userRelationCounts!.followerCount! + 1
+                        : 0,
+                  ),
+                ),
+                oldEntity: state.user,
+              ),
+            );
+          },
+          (boolean) {
+            if (boolean == false) {
+              return;
+            }
+            emitState(
+              userRelationStatus: ProfilePageStateUserRelationStatus.success,
+              userRelations: List.from(state.userRelations ?? [])
+                ..removeWhere(
+                  (element) =>
+                      element.requesterUserId == authCubit.state.currentUser.id,
+                ),
+              user: UserEntity.merge(
+                removeUserRelation: true,
+                newEntity: UserEntity(
+                  id: state.user.id,
+                  authId: state.user.authId,
+                  userRelationCounts: UserRelationsCountEntity(
+                    followerCount: state.user.userRelationCounts != null &&
+                            state.user.userRelationCounts!.followerCount !=
+                                null &&
+                            state.user.userRelationCounts!.followerCount! > 0
+                        ? state.user.userRelationCounts!.followerCount! - 1
+                        : 0,
+                  ),
+                ),
+                oldEntity: state.user,
+              ),
+            );
+          },
         );
       },
     );

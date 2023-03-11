@@ -21,7 +21,7 @@ class UserRelationRepositoryImpl extends UserRelationRepository {
       final response = await graphQlDatasource.query(
         """
         mutation CreateUserRelation(\$input: CreateUserRelationInput!) {
-          createUserRelation(createUserRelationDto: \$input) {
+          createUserRelation(createUserRelationInput: \$input) {
             _id
             createdAt
             updatedAt
@@ -118,11 +118,8 @@ class UserRelationRepositoryImpl extends UserRelationRepository {
       );
 
       if (response.hasException) {
-        print(response.exception);
         return Left(GeneralFailure());
       }
-      print(response.data);
-
       final List<UserRelationEntity> userRelations = [];
       for (var userRelation in response.data!["findFollowerUserRelations"]) {
         userRelations.add(UserRelationModel.fromJson(userRelation));

@@ -35,6 +35,7 @@ class UserEntity {
   });
 
   factory UserEntity.merge({
+    bool removeUserRelation = false,
     required UserEntity newEntity,
     required UserEntity oldEntity,
   }) {
@@ -44,12 +45,15 @@ class UserEntity {
       username: newEntity.username ?? oldEntity.username,
       email: newEntity.email ?? oldEntity.email,
       emailVerified: newEntity.emailVerified ?? oldEntity.emailVerified,
-      myUserRelationToTheUser: UserRelationEntity.merge(
-        newEntity: newEntity.myUserRelationToTheUser ??
-            UserRelationEntity(id: oldEntity.myUserRelationToTheUser?.id ?? ""),
-        oldEntity:
-            oldEntity.myUserRelationToTheUser ?? UserRelationEntity(id: ""),
-      ),
+      myUserRelationToTheUser: removeUserRelation
+          ? null
+          : UserRelationEntity.merge(
+              newEntity: newEntity.myUserRelationToTheUser ??
+                  UserRelationEntity(
+                      id: oldEntity.myUserRelationToTheUser?.id ?? ""),
+              oldEntity: oldEntity.myUserRelationToTheUser ??
+                  UserRelationEntity(id: ""),
+            ),
       profileImageLink:
           newEntity.profileImageLink ?? oldEntity.profileImageLink,
       firstname: newEntity.firstname ?? oldEntity.firstname,
