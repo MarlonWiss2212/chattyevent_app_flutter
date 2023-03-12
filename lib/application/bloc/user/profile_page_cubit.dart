@@ -4,7 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:meta/meta.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
-import 'package:social_media_app_flutter/core/dto/user_relation/create_user_relation_dto.dart';
 import 'package:social_media_app_flutter/core/filter/user_relation/find_all_follower_user_relation_filter.dart';
 import 'package:social_media_app_flutter/core/filter/user_relation/find_one_user_relation_filter.dart';
 import 'package:social_media_app_flutter/domain/entities/error_with_title_and_message.dart';
@@ -13,6 +12,7 @@ import 'package:social_media_app_flutter/domain/entities/user-relation/user_rela
 import 'package:social_media_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:social_media_app_flutter/core/failures/failures.dart';
 import 'package:social_media_app_flutter/core/filter/get_one_user_filter.dart';
+import 'package:social_media_app_flutter/core/filter/user_relation/request_user_id_filter.dart';
 import 'package:social_media_app_flutter/domain/usecases/user_relation_usecases.dart';
 import 'package:social_media_app_flutter/domain/usecases/user_usecases.dart';
 
@@ -94,6 +94,63 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
     );
   }
 
+  Future acceptFollowRequest({
+    required RequestUserIdFilter requestUserIdFilter,
+  }) async {
+    emitState(userRelationStatus: ProfilePageStateUserRelationStatus.loading);
+
+    final userRelationOrFailure =
+        await userRelationUseCases.acceptUserRelationViaApi(
+      requestUserIdFilter: requestUserIdFilter,
+    );
+
+    userRelationOrFailure.fold(
+      (error) => emitState(
+        userRelationStatus: ProfilePageStateUserRelationStatus.error,
+        errorRelationError: ErrorWithTitleAndMessage(
+          title: "Accept User Relation Failure",
+          message: mapFailureToMessage(error),
+        ),
+      ),
+      (userRelation) {
+        final userRelations = state.userRelations ?? [];
+        int foundIndex = userRelations.indexWhere(
+          (element) => element.id == userRelation.id,
+        );
+        if (foundIndex != -1) {
+          userRelations[foundIndex] = userRelation;
+        } else {
+          emitState(
+            userRelationStatus: ProfilePageStateUserRelationStatus.error,
+            errorRelationError: ErrorWithTitleAndMessage(
+              title: "Accept User Relation Failure",
+              message: "Fehler user nicht gefunden in den relations",
+            ),
+          );
+          return;
+        }
+
+        emitState(
+          userRelationStatus: ProfilePageStateUserRelationStatus.success,
+          userRelations: userRelations,
+          user: UserEntity.merge(
+            newEntity: UserEntity(
+              id: state.user.id,
+              authId: state.user.authId,
+              userRelationCounts: UserRelationsCountEntity(
+                followedCount: state.user.userRelationCounts != null &&
+                        state.user.userRelationCounts!.followedCount != null
+                    ? state.user.userRelationCounts!.followedCount! + 1
+                    : 1,
+              ),
+            ),
+            oldEntity: state.user,
+          ),
+        );
+      },
+    );
+  }
+
   Future followOrUnfollowUserViaApi() async {
     emitState(userRelationStatus: ProfilePageStateUserRelationStatus.loading);
 
@@ -126,12 +183,6 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
                   id: state.user.id,
                   authId: state.user.authId,
                   myUserRelationToTheUser: userRelation,
-                  userRelationCounts: UserRelationsCountEntity(
-                    followerCount: state.user.userRelationCounts != null &&
-                            state.user.userRelationCounts!.followerCount != null
-                        ? state.user.userRelationCounts!.followerCount! + 1
-                        : 0,
-                  ),
                 ),
                 oldEntity: state.user,
               ),

@@ -127,7 +127,6 @@ class UserRelationRepositoryImpl extends UserRelationRepository {
 
       return Right(userRelations);
     } catch (e) {
-      print(e);
       return Left(ServerFailure());
     }
   }
@@ -163,7 +162,7 @@ class UserRelationRepositoryImpl extends UserRelationRepository {
       }
 
       return Right(
-        UserRelationModel.fromJson(response.data!["createUserRelation"]),
+        UserRelationModel.fromJson(response.data!["acceptUserRelation"]),
       );
     } catch (e) {
       return Left(ServerFailure());

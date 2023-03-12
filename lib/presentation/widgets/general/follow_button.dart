@@ -25,7 +25,7 @@ class FollowButton extends StatelessWidget {
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
-                      color: Theme.of(context).colorScheme.primaryContainer,
+                      color: Colors.black,
                     ),
                     child: Center(
                       child: Text(
@@ -43,8 +43,9 @@ class FollowButton extends StatelessWidget {
                 : Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        color: Colors.black),
+                      borderRadius: BorderRadius.circular(8),
+                      color: Theme.of(context).colorScheme.primaryContainer,
+                    ),
                     child: Center(
                       child: Text(
                         "Folgen",
