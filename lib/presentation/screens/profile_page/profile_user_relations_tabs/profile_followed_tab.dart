@@ -9,8 +9,8 @@ class ProfileFollowedTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ProfilePageCubit, ProfilePageState>(
-      buildWhen: (previous, current) =>
-          previous.userRelations?.length != current.userRelations?.length,
+      //   buildWhen: (previous, current) =>
+      //       previous.userRelations?.length != current.userRelations?.length,
       builder: (context, state) {
         if (state.userRelations == null) {
           return const Center(
@@ -27,7 +27,7 @@ class ProfileFollowedTab extends StatelessWidget {
           itemBuilder: (context, index) {
             return ListTile(
               title: Text(
-                state.userRelations![index].targetUserId ?? "Keine Id",
+                filteredRelations[index].targetUserId ?? "Keine Id",
               ),
             );
           },
