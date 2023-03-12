@@ -42,7 +42,7 @@ class AuthCubit extends Cubit<AuthState> {
       getOneUserFilter: GetOneUserFilter(authId: auth.currentUser!.uid),
     );
 
-    userOrFailure.fold(
+    await userOrFailure.fold(
       (error) {
         emitState(
           error: ErrorWithTitleAndMessage(
@@ -52,8 +52,9 @@ class AuthCubit extends Cubit<AuthState> {
           status: AuthStateStatus.error,
         );
       },
-      (user) {
+      (user) async {
         emitState(currentUser: user, status: AuthStateStatus.success);
+        await one_signal.setExternalUserId(user.id);
       },
     );
   }
@@ -84,7 +85,6 @@ class AuthCubit extends Cubit<AuthState> {
           token: await authUser.user?.getIdToken(),
         );
         await setCurrentUserFromFirebaseViaApi();
-        await one_signal.setExternalUserId(authUser.user?.uid ?? "");
         await notificationUseCases.requestNotificationPermission();
       },
     );
@@ -115,7 +115,6 @@ class AuthCubit extends Cubit<AuthState> {
           status: AuthStateStatus.success,
           token: await authUser.user?.getIdToken(),
         );
-        await one_signal.setExternalUserId(authUser.user?.uid ?? "");
         await notificationUseCases.requestNotificationPermission();
       },
     );
