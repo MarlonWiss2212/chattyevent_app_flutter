@@ -18,8 +18,8 @@ class FollowButton extends StatelessWidget {
       borderRadius: BorderRadius.circular(8),
       child: Ink(
         child:
-            user.myUserRelationToTheUser?.statusOnRelatedUser == "follower" ||
-                    user.myUserRelationToTheUser?.statusOnRelatedUser ==
+            user.myUserRelationToOtherUser?.statusOnRelatedUser == "follower" ||
+                    user.myUserRelationToOtherUser?.statusOnRelatedUser ==
                         "requestToFollow"
                 ? Container(
                     padding: const EdgeInsets.all(8),
@@ -29,7 +29,7 @@ class FollowButton extends StatelessWidget {
                     ),
                     child: Center(
                       child: Text(
-                        user.myUserRelationToTheUser?.statusOnRelatedUser ==
+                        user.myUserRelationToOtherUser?.statusOnRelatedUser ==
                                 "requestToFollow"
                             ? "Angefragt"
                             : "Entfernen",

@@ -13,14 +13,16 @@ class UserEntity {
   final String? birthdate;
   final String? lastTimeOnline;
   final UserRelationsCountEntity? userRelationCounts;
-  final UserRelationEntity? myUserRelationToTheUser;
+  final UserRelationEntity? myUserRelationToOtherUser;
+  final UserRelationEntity? otherUserRelationToMyUser;
   final DateTime? createdAt;
   final DateTime? updatedAt;
 
   UserEntity({
     required this.id,
     required this.authId,
-    this.myUserRelationToTheUser,
+    this.myUserRelationToOtherUser,
+    this.otherUserRelationToMyUser,
     this.userRelationCounts,
     this.username,
     this.email,
@@ -35,7 +37,7 @@ class UserEntity {
   });
 
   factory UserEntity.merge({
-    bool removeUserRelation = false,
+    bool removeMyUserRelation = false,
     required UserEntity newEntity,
     required UserEntity oldEntity,
   }) {
@@ -45,15 +47,22 @@ class UserEntity {
       username: newEntity.username ?? oldEntity.username,
       email: newEntity.email ?? oldEntity.email,
       emailVerified: newEntity.emailVerified ?? oldEntity.emailVerified,
-      myUserRelationToTheUser: removeUserRelation
+      myUserRelationToOtherUser: removeMyUserRelation
           ? null
           : UserRelationEntity.merge(
-              newEntity: newEntity.myUserRelationToTheUser ??
+              newEntity: newEntity.myUserRelationToOtherUser ??
                   UserRelationEntity(
-                      id: oldEntity.myUserRelationToTheUser?.id ?? ""),
-              oldEntity: oldEntity.myUserRelationToTheUser ??
+                      id: oldEntity.myUserRelationToOtherUser?.id ?? ""),
+              oldEntity: oldEntity.myUserRelationToOtherUser ??
                   UserRelationEntity(id: ""),
             ),
+      otherUserRelationToMyUser: UserRelationEntity.merge(
+        newEntity: newEntity.otherUserRelationToMyUser ??
+            UserRelationEntity(
+                id: oldEntity.otherUserRelationToMyUser?.id ?? ""),
+        oldEntity:
+            oldEntity.otherUserRelationToMyUser ?? UserRelationEntity(id: ""),
+      ),
       profileImageLink:
           newEntity.profileImageLink ?? oldEntity.profileImageLink,
       firstname: newEntity.firstname ?? oldEntity.firstname,

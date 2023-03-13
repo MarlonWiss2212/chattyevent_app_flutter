@@ -1,13 +1,12 @@
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:meta/meta.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
-import 'package:social_media_app_flutter/core/filter/user_relation/find_all_follower_user_relation_filter.dart';
+import 'package:social_media_app_flutter/core/filter/limit_filter.dart';
 import 'package:social_media_app_flutter/core/filter/user_relation/find_one_user_relation_filter.dart';
+import 'package:social_media_app_flutter/core/filter/user_relation/target_user_id_filter.dart';
 import 'package:social_media_app_flutter/domain/entities/error_with_title_and_message.dart';
-import 'package:social_media_app_flutter/domain/entities/user-relation/user_relation_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/user-relation/user_relations_count_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:social_media_app_flutter/core/failures/failures.dart';
@@ -65,74 +64,64 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
     );
   }
 
-  Future getFollowerUserRelationsViaApi() async {
-    emitState(userRelationStatus: ProfilePageStateUserRelationStatus.loading);
+  Future getFollowers() async {
+    const int limit = 30;
 
-    final Either<Failure, List<UserRelationEntity>> userOrFailure =
-        await userRelationUseCases.getFollowerUserRelationsViaApi(
-      findAllFollowerUserRelationFilter: FindAllFollowerUserRelationFilter(
-        userId: state.user.id,
-      ),
+    emitState(followersStatus: ProfilePageStateFollowersStatus.loading);
+
+    final Either<Failure, List<UserEntity>> userOrFailure =
+        await userRelationUseCases.getFollowersViaApi(
+      targetUserIdFilter: TargetUserIdFilter(targetUserId: state.user.id),
+      limitFilter: LimitFilter(limit: limit, offset: state.followersOffset),
     );
 
     userOrFailure.fold(
       (error) {
         emitState(
-          userRelationStatus: ProfilePageStateUserRelationStatus.error,
-          errorRelationError: ErrorWithTitleAndMessage(
+          followersStatus: ProfilePageStateFollowersStatus.error,
+          followersError: ErrorWithTitleAndMessage(
             title: "Get User Relation Fehler",
             message: mapFailureToMessage(error),
           ),
         );
       },
-      (userRelation) {
+      (users) {
         emitState(
-          userRelationStatus: ProfilePageStateUserRelationStatus.success,
-          userRelations: userRelation,
+          followersOffset: state.followersOffset + limit,
+          followersStatus: ProfilePageStateFollowersStatus.success,
+          followers: List.from(state.followers ?? [])..addAll(users),
         );
       },
     );
   }
 
+  /// fix the response of this
   Future acceptFollowRequest({
     required RequestUserIdFilter requestUserIdFilter,
   }) async {
-    emitState(userRelationStatus: ProfilePageStateUserRelationStatus.loading);
+    emitState(
+      followRequestsStatus: ProfilePageStateFollowRequestsStatus.loading,
+    );
 
     final userRelationOrFailure =
-        await userRelationUseCases.acceptUserRelationViaApi(
+        await userRelationUseCases.acceptFollowRequestViaApi(
       requestUserIdFilter: requestUserIdFilter,
     );
 
     userRelationOrFailure.fold(
       (error) => emitState(
-        userRelationStatus: ProfilePageStateUserRelationStatus.error,
-        errorRelationError: ErrorWithTitleAndMessage(
+        followRequestsStatus: ProfilePageStateFollowRequestsStatus.error,
+        followRequestsError: ErrorWithTitleAndMessage(
           title: "Accept User Relation Failure",
           message: mapFailureToMessage(error),
         ),
       ),
-      (userRelation) {
-        final userRelations = state.userRelations ?? [];
-        int foundIndex = userRelations.indexWhere(
-          (element) => element.id == userRelation.id,
-        );
-        if (foundIndex != -1) {
-          userRelations[foundIndex] = userRelation;
-        } else {
-          emitState(
-            userRelationStatus: ProfilePageStateUserRelationStatus.error,
-            errorRelationError: ErrorWithTitleAndMessage(
-              title: "Accept User Relation Failure",
-              message: "Fehler user nicht gefunden in den relations",
-            ),
-          );
-          return;
-        }
-
+      (user) {
         emitState(
-          userRelationStatus: ProfilePageStateUserRelationStatus.success,
-          userRelations: userRelations,
+          followRequests: List.from(state.followRequests ?? [])..remove(user),
+          followRequestsStatus: ProfilePageStateFollowRequestsStatus.success,
+          //   followers: List.from(state.followers ?? [])..add(user),
+          followersStatus: ProfilePageStateFollowersStatus.success,
           user: UserEntity.merge(
             newEntity: UserEntity(
               id: state.user.id,
@@ -152,7 +141,10 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
   }
 
   Future followOrUnfollowUserViaApi() async {
-    emitState(userRelationStatus: ProfilePageStateUserRelationStatus.loading);
+    emitState(
+      followRequestsStatus: ProfilePageStateFollowRequestsStatus.loading,
+      followedStatus: ProfilePageStateFollowedStatus.error,
+    );
 
     final userRelationOrFailure =
         await userRelationUseCases.followOrUnfollowUserViaApi(
@@ -160,13 +152,13 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
         requesterUserId: authCubit.state.currentUser.id,
         targetUserId: state.user.id,
       ),
-      userRelationEntity: state.user.myUserRelationToTheUser,
+      userRelationEntity: state.user.myUserRelationToOtherUser,
     );
 
     userRelationOrFailure.fold(
       (error) => emitState(
-        userRelationStatus: ProfilePageStateUserRelationStatus.error,
-        errorRelationError: ErrorWithTitleAndMessage(
+        status: ProfilePageStateStatus.error,
+        error: ErrorWithTitleAndMessage(
           title: "Follow Or Unfollow Failure",
           message: mapFailureToMessage(error),
         ),
@@ -175,14 +167,11 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
         booleanOrUserRelation.fold(
           (userRelation) {
             emitState(
-              userRelationStatus: ProfilePageStateUserRelationStatus.success,
-              userRelations: List.from(state.userRelations ?? [])
-                ..add(userRelation),
               user: UserEntity.merge(
                 newEntity: UserEntity(
                   id: state.user.id,
                   authId: state.user.authId,
-                  myUserRelationToTheUser: userRelation,
+                  myUserRelationToOtherUser: userRelation,
                 ),
                 oldEntity: state.user,
               ),
@@ -193,14 +182,13 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
               return;
             }
             emitState(
-              userRelationStatus: ProfilePageStateUserRelationStatus.success,
-              userRelations: List.from(state.userRelations ?? [])
+              followedStatus: ProfilePageStateFollowedStatus.success,
+              followed: List.from(state.followed ?? [])
                 ..removeWhere(
-                  (element) =>
-                      element.requesterUserId == authCubit.state.currentUser.id,
+                  (element) => element.id == authCubit.state.currentUser.id,
                 ),
               user: UserEntity.merge(
-                removeUserRelation: true,
+                removeMyUserRelation: true,
                 newEntity: UserEntity(
                   id: state.user.id,
                   authId: state.user.authId,
@@ -224,21 +212,42 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
 
   emitState({
     UserEntity? user,
-    ErrorWithTitleAndMessage? error,
     ProfilePageStateStatus? status,
-    ProfilePageStateUserRelationStatus? userRelationStatus,
-    List<UserRelationEntity>? userRelations,
-    ErrorWithTitleAndMessage? errorRelationError,
+    ErrorWithTitleAndMessage? error,
+    List<UserEntity>? followers,
+    ProfilePageStateFollowersStatus? followersStatus,
+    ErrorWithTitleAndMessage? followersError,
+    int? followersOffset,
+    List<UserEntity>? followRequests,
+    ProfilePageStateFollowRequestsStatus? followRequestsStatus,
+    ErrorWithTitleAndMessage? followRequestsError,
+    int? followRequestsOffset,
+    List<UserEntity>? followed,
+    ProfilePageStateFollowedStatus? followedStatus,
+    ErrorWithTitleAndMessage? followedError,
+    int? followedOffset,
   }) {
     emit(
       ProfilePageState(
         user: user ?? state.user,
-        error: error ?? state.error,
         status: status ?? ProfilePageStateStatus.initial,
-        userRelationStatus:
-            userRelationStatus ?? ProfilePageStateUserRelationStatus.initial,
-        userRelations: userRelations ?? state.userRelations,
-        errorRelationError: errorRelationError ?? state.errorRelationError,
+        error: error ?? state.error,
+        followers: followers ?? state.followers,
+        followersStatus:
+            followersStatus ?? ProfilePageStateFollowersStatus.initial,
+        followersError: followersError ?? state.followersError,
+        followersOffset: followersOffset ?? state.followersOffset,
+        followRequests: followRequests ?? state.followRequests,
+        followRequestsStatus: followRequestsStatus ??
+            ProfilePageStateFollowRequestsStatus.initial,
+        followRequestsError: followRequestsError ?? state.followRequestsError,
+        followRequestsOffset:
+            followRequestsOffset ?? state.followRequestsOffset,
+        followed: followed ?? state.followed,
+        followedStatus:
+            followedStatus ?? ProfilePageStateFollowedStatus.initial,
+        followedError: followedError ?? state.followedError,
+        followedOffset: followedOffset ?? state.followedOffset,
       ),
     );
   }

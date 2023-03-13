@@ -17,8 +17,6 @@ class ProfileUserRelationsTabPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<ProfilePageCubit>(context).getFollowerUserRelationsViaApi();
-
     return BlocBuilder<AuthCubit, AuthState>(
       buildWhen: (previous, current) =>
           previous.currentUser.id != current.currentUser.id,
@@ -34,23 +32,7 @@ class ProfileUserRelationsTabPage extends StatelessWidget {
           builder: (context, child, tabController) {
             return PlatformScaffold(
               appBar: PlatformAppBar(
-                title: BlocConsumer<ProfilePageCubit, ProfilePageState>(
-                  listener: (context, state) async {
-                    if (state.userRelationStatus ==
-                            ProfilePageStateUserRelationStatus.error &&
-                        state.errorRelationError != null) {
-                      return await showPlatformDialog(
-                        context: context,
-                        builder: (context) {
-                          return PlatformAlertDialog(
-                            title: Text(state.errorRelationError!.title),
-                            content: Text(state.errorRelationError!.message),
-                            actions: const [OKButton()],
-                          );
-                        },
-                      );
-                    }
-                  },
+                title: BlocBuilder<ProfilePageCubit, ProfilePageState>(
                   buildWhen: (previous, current) {
                     return previous.user.username != current.user.username;
                   },

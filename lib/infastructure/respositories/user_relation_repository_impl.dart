@@ -1,12 +1,15 @@
+import 'package:social_media_app_flutter/core/filter/user_relation/target_user_id_filter.dart';
+import 'package:social_media_app_flutter/core/filter/limit_filter.dart';
 import 'package:social_media_app_flutter/domain/entities/user-relation/user_relation_entity.dart';
 import 'package:social_media_app_flutter/core/filter/user_relation/request_user_id_filter.dart';
 import 'package:social_media_app_flutter/core/filter/user_relation/find_one_user_relation_filter.dart';
-import 'package:social_media_app_flutter/core/filter/user_relation/find_all_follower_user_relation_filter.dart';
 import 'package:social_media_app_flutter/core/failures/failures.dart';
 import 'package:social_media_app_flutter/core/dto/user_relation/create_user_relation_dto.dart';
 import 'package:dartz/dartz.dart';
+import 'package:social_media_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:social_media_app_flutter/domain/repositories/user_relation_repository.dart';
 import 'package:social_media_app_flutter/infastructure/datasources/remote/graphql.dart';
+import 'package:social_media_app_flutter/infastructure/models/user/user_model.dart';
 import 'package:social_media_app_flutter/infastructure/models/user_relation/user_relation_model.dart';
 
 class UserRelationRepositoryImpl extends UserRelationRepository {
@@ -90,56 +93,150 @@ class UserRelationRepositoryImpl extends UserRelationRepository {
   }
 
   @override
-  Future<Either<Failure, List<UserRelationEntity>>>
-      getFollowerUserRelationsViaApi({
-    required FindAllFollowerUserRelationFilter
-        findAllFollowerUserRelationFilter,
+  Future<Either<Failure, List<UserEntity>>> getFollowersViaApi({
+    required LimitFilter limitFilter,
+    required TargetUserIdFilter targetUserIdFilter,
   }) async {
     try {
       final response = await graphQlDatasource.query(
         """
-        query FindFollowerUserRelations(\$input: FindAllFollowerUserRelationInput!) {
-          findFollowerUserRelations(findAllFollowerUserRelationInput: \$input) {
+        query FindFollowers(\$limitFilter: LimitFilterInput!, \$targetUserIdInput: TargetUserIdInput!) {
+          findFollowers(limitFilterInput: \$limitFilter, targetUserIdInput: \$targetUserIdInput) {
             _id
-            createdAt
-            updatedAt
-            targetUserId
-            requesterUserId
-            statusOnRelatedUser
-            followData {
-              canInviteFollowedToPrivateEvent
-              canInviteFollowedToGroupchat
-              followedUserAt
+            authId
+            username
+            profileImageLink
+            myUserRelationToOtherUser {
+              _id
+              statusOnRelatedUser
+            }
+            otherUserRelationToMyUser {
+              _id
+              statusOnRelatedUser
             }
           }
         }
         """,
-        variables: {"input": findAllFollowerUserRelationFilter.toMap()},
+        variables: {
+          "targetUserIdInput": targetUserIdFilter.toMap(),
+          "limitFilter": limitFilter.toMap(),
+        },
+      );
+
+      if (response.hasException) {
+        print(response.exception);
+        return Left(GeneralFailure());
+      }
+      final List<UserEntity> users = [];
+      for (var user in response.data!["findFollowers"]) {
+        users.add(UserModel.fromJson(user));
+      }
+
+      return Right(users);
+    } catch (e) {
+      print(e);
+
+      return Left(ServerFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<UserEntity>>> getFollowerRequestsViaApi({
+    required LimitFilter limitFilter,
+  }) async {
+    try {
+      final response = await graphQlDatasource.query(
+        """
+        query FindFollowRequests(\$limitFilter: LimitFilterInput!) {
+          findFollowRequests(limitFilterInput: \$limitFilter) {
+            _id
+            authId
+            username
+            profileImageLink
+            myUserRelationToOtherUser {
+              _id
+              statusOnRelatedUser
+            }
+            otherUserRelationToMyUser {
+              _id
+              statusOnRelatedUser
+            }
+          }
+        }
+        """,
+        variables: {
+          "limitFilter": limitFilter.toMap(),
+        },
       );
 
       if (response.hasException) {
         return Left(GeneralFailure());
       }
-      final List<UserRelationEntity> userRelations = [];
-      for (var userRelation in response.data!["findFollowerUserRelations"]) {
-        userRelations.add(UserRelationModel.fromJson(userRelation));
+      final List<UserEntity> users = [];
+      for (var user in response.data!["findFollowRequests"]) {
+        users.add(UserModel.fromJson(user));
       }
 
-      return Right(userRelations);
+      return Right(users);
     } catch (e) {
       return Left(ServerFailure());
     }
   }
 
   @override
-  Future<Either<Failure, UserRelationEntity>> acceptUserRelationViaApi({
+  Future<Either<Failure, List<UserEntity>>> getFollowedViaApi({
+    required LimitFilter limitFilter,
     required RequestUserIdFilter requestUserIdFilter,
   }) async {
     try {
       final response = await graphQlDatasource.query(
         """
-        mutation AcceptUserRelation(\$input: RequestUserIdInput!) {
-          acceptUserRelation(requestUserIdInput: \$input) {
+        query FindFollowed(\$requestUserIdInput: RequestUserIdInput!, \$limitFilter: LimitFilterInput!) {
+          findFollowed(requestUserIdInput: \$requestUserIdInput, limitFilterInput: \$limitFilter) {
+            _id
+            authId
+            username
+            profileImageLink
+            myUserRelationToOtherUser {
+              _id
+              statusOnRelatedUser
+            }
+            otherUserRelationToMyUser {
+              _id
+              statusOnRelatedUser
+            }
+          }
+        }
+        """,
+        variables: {
+          "requestUserIdInput": requestUserIdFilter.toMap(),
+          "limitFilter": limitFilter.toMap(),
+        },
+      );
+
+      if (response.hasException) {
+        return Left(GeneralFailure());
+      }
+      final List<UserEntity> users = [];
+      for (var user in response.data!["findFollowed"]) {
+        users.add(UserModel.fromJson(user));
+      }
+
+      return Right(users);
+    } catch (e) {
+      return Left(ServerFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, UserRelationEntity>> acceptFollowRequestViaApi({
+    required RequestUserIdFilter requestUserIdFilter,
+  }) async {
+    try {
+      final response = await graphQlDatasource.query(
+        """
+        mutation AcceptFollowRequest(\$input: RequestUserIdInput!) {
+          acceptFollowRequest(requestUserIdInput: \$input) {
             _id
             createdAt
             updatedAt
@@ -162,7 +259,7 @@ class UserRelationRepositoryImpl extends UserRelationRepository {
       }
 
       return Right(
-        UserRelationModel.fromJson(response.data!["acceptUserRelation"]),
+        UserRelationModel.fromJson(response.data!["acceptFollowRequest"]),
       );
     } catch (e) {
       return Left(ServerFailure());

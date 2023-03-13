@@ -1,45 +1,52 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:social_media_app_flutter/application/bloc/user/profile_page_cubit.dart';
 import 'package:social_media_app_flutter/core/filter/user_relation/request_user_id_filter.dart';
-import 'package:social_media_app_flutter/domain/entities/user-relation/user_relation_entity.dart';
+import 'package:social_media_app_flutter/presentation/widgets/dialog/buttons/ok_button.dart';
+import 'package:social_media_app_flutter/presentation/widgets/user_list/user_list_tile.dart';
 
 class ProfileFollowRequestsTab extends StatelessWidget {
   const ProfileFollowRequestsTab({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ProfilePageCubit, ProfilePageState>(
+    return BlocConsumer<ProfilePageCubit, ProfilePageState>(
+      listener: (context, state) async {
+        if (state.followRequestsError != null &&
+            state.followRequestsStatus ==
+                ProfilePageStateFollowRequestsStatus.error) {
+          return await showPlatformDialog(
+            context: context,
+            builder: (context) {
+              return PlatformAlertDialog(
+                title: Text(state.followRequestsError!.title),
+                content: Text(state.followRequestsError!.message),
+                actions: const [OKButton()],
+              );
+            },
+          );
+        }
+      },
       //  buildWhen: (previous, current) =>
       //      previous.userRelations?.length != current.userRelations?.length,
       builder: (context, state) {
-        if (state.userRelations == null) {
+        if (state.followRequests == null) {
           return const Center(
             child: Text("Keine Relationen"),
           );
         }
-        List<UserRelationEntity> filteredRelations =
-            state.userRelations!.where((element) {
-          return element.targetUserId == state.user.id &&
-              element.statusOnRelatedUser == "requestToFollow";
-        }).toList();
 
         return ListView.builder(
           itemBuilder: (context, index) {
-            return ListTile(
-              title: Text(
-                filteredRelations[index].requesterUserId ?? "Keine Id",
-              ),
+            return UserListTile(
+              user: state.followRequests![index],
               trailing: InkWell(
                 onTap: () {
-                  if (filteredRelations[index].requesterUserId == null) {
-                    return;
-                  }
                   BlocProvider.of<ProfilePageCubit>(context)
                       .acceptFollowRequest(
                     requestUserIdFilter: RequestUserIdFilter(
-                      requesterUserId:
-                          filteredRelations[index].requesterUserId!,
+                      requesterUserId: state.followRequests![index].id,
                     ),
                   );
                 },
@@ -62,7 +69,7 @@ class ProfileFollowRequestsTab extends StatelessWidget {
               ),
             );
           },
-          itemCount: filteredRelations.length,
+          itemCount: state.followRequests!.length,
         );
       },
     );

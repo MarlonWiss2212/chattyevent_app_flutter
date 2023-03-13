@@ -40,6 +40,8 @@ Future<void> main() async {
   final String? token =
       await serviceLocator<FirebaseAuth>().currentUser?.getIdToken();
 
+  print(token);
+
   final authState = AuthState(
     currentUser: UserEntity(
       authId: di.serviceLocator<FirebaseAuth>().currentUser?.uid ?? "",

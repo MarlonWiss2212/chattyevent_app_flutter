@@ -27,6 +27,9 @@ class ProfileWrapperPage extends StatelessWidget {
     return BlocProvider(
       create: (context) => ProfilePageCubit(
         ProfilePageState(
+          followedOffset: 0,
+          followersOffset: 0,
+          followRequestsOffset: 0,
           user: userToSet ?? UserEntity(id: userId, authId: ""),
         ),
         userRelationUseCases: serviceLocator(

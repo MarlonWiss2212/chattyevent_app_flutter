@@ -1,37 +1,46 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:social_media_app_flutter/application/bloc/user/profile_page_cubit.dart';
-import 'package:social_media_app_flutter/domain/entities/user-relation/user_relation_entity.dart';
+import 'package:social_media_app_flutter/presentation/widgets/dialog/buttons/ok_button.dart';
+import 'package:social_media_app_flutter/presentation/widgets/user_list/user_list_tile.dart';
 
 class ProfileFollowerTab extends StatelessWidget {
   const ProfileFollowerTab({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ProfilePageCubit, ProfilePageState>(
-      //   buildWhen: (previous, current) =>
-      //      previous.userRelations?.length != current.userRelations?.length,
+    BlocProvider.of<ProfilePageCubit>(context).getFollowers();
+
+    return BlocConsumer<ProfilePageCubit, ProfilePageState>(
+      listener: (context, state) async {
+        if (state.followersError != null &&
+            state.followersStatus == ProfilePageStateFollowersStatus.error) {
+          return await showPlatformDialog(
+            context: context,
+            builder: (context) {
+              return PlatformAlertDialog(
+                title: Text(state.followersError!.title),
+                content: Text(state.followersError!.message),
+                actions: const [OKButton()],
+              );
+            },
+          );
+        }
+      },
       builder: (context, state) {
-        if (state.userRelations == null) {
+        if (state.followers == null) {
           return const Center(
             child: Text("Keine Relationen"),
           );
         }
-        List<UserRelationEntity> filteredRelations =
-            state.userRelations!.where((element) {
-          return element.targetUserId == state.user.id &&
-              element.statusOnRelatedUser == "follower";
-        }).toList();
-
         return ListView.builder(
           itemBuilder: (context, index) {
-            return ListTile(
-              title: Text(
-                filteredRelations[index].requesterUserId ?? "Keine Id",
-              ),
+            return UserListTile(
+              user: state.followers![index],
             );
           },
-          itemCount: filteredRelations.length,
+          itemCount: state.followers!.length,
         );
       },
     );

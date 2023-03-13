@@ -17,7 +17,8 @@ class UserModel extends UserEntity {
     String? birthdate,
     String? lastTimeOnline,
     UserRelationsCountEntity? userRelationCounts,
-    UserRelationEntity? myUserRelationToTheUser,
+    UserRelationEntity? myUserRelationToOtherUser,
+    UserRelationEntity? otherUserRelationToMyUser,
     DateTime? createdAt,
     DateTime? updatedAt,
   }) : super(
@@ -32,7 +33,8 @@ class UserModel extends UserEntity {
           birthdate: birthdate,
           lastTimeOnline: lastTimeOnline,
           userRelationCounts: userRelationCounts,
-          myUserRelationToTheUser: myUserRelationToTheUser,
+          myUserRelationToOtherUser: myUserRelationToOtherUser,
+          otherUserRelationToMyUser: otherUserRelationToMyUser,
           createdAt: createdAt,
           updatedAt: updatedAt,
         );
@@ -62,9 +64,14 @@ class UserModel extends UserEntity {
               json['userRelationCounts'],
             )
           : null,
-      myUserRelationToTheUser: json['myUserRelationToTheUser'] != null
+      otherUserRelationToMyUser: json['otherUserRelationToMyUser'] != null
           ? UserRelationModel.fromJson(
-              json['myUserRelationToTheUser'],
+              json['otherUserRelationToMyUser'],
+            )
+          : null,
+      myUserRelationToOtherUser: json['myUserRelationToOtherUser'] != null
+          ? UserRelationModel.fromJson(
+              json['myUserRelationToOtherUser'],
             )
           : null,
       createdAt: createdAt,
