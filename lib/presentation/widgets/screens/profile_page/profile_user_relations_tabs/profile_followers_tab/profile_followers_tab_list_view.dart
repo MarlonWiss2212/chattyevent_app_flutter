@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:social_media_app_flutter/application/bloc/user/profile_page_cubit.dart';
 import 'package:social_media_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:social_media_app_flutter/presentation/widgets/general/follow_button.dart';
+import 'package:social_media_app_flutter/presentation/widgets/screens/profile_page/profile_user_relations_tabs/profile_followers_tab/profile_followers_tab_list_view_button_my_follower.dart';
 import 'package:social_media_app_flutter/presentation/widgets/user_list/user_list_tile.dart';
 
 class ProfileFollowersTabListView extends StatelessWidget {
+  final bool isCurrentUsersProfilePage;
   final List<UserEntity> followers;
 
-  const ProfileFollowersTabListView({super.key, required this.followers});
+  const ProfileFollowersTabListView({
+    super.key,
+    required this.followers,
+    required this.isCurrentUsersProfilePage,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -19,14 +23,9 @@ class ProfileFollowersTabListView extends StatelessWidget {
           trailing: SizedBox(
             width: 90,
             height: 40,
-            child: FollowButton(
+            child: ProfileFollowersTabListViewButtonMyFollower(
+              isCurrentUsersProfilePage: isCurrentUsersProfilePage,
               user: followers[index],
-              onTap: () {
-                BlocProvider.of<ProfilePageCubit>(context)
-                    .followOrUnfollowUserViaApi(
-                  user: followers[index],
-                );
-              },
             ),
           ),
         );

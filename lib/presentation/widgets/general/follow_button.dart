@@ -32,7 +32,7 @@ class FollowButton extends StatelessWidget {
                         user.myUserRelationToOtherUser?.statusOnRelatedUser ==
                                 "requestToFollow"
                             ? "Angefragt"
-                            : "Entfernen",
+                            : "gefolgt",
                         style: Theme.of(context)
                             .textTheme
                             .labelMedium

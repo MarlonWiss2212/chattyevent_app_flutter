@@ -174,6 +174,8 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
     );
   }
 
+  /// this three can only be made if the profile user is the current user
+
   Future acceptFollowRequest({
     required String userId,
   }) async {
@@ -207,9 +209,7 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
       (userRelation) {
         emitState(
           followRequests: List.from(state.followRequests ?? [])
-            ..removeWhere(
-              (user) => user.otherUserRelationToMyUser?.id == userRelation.id,
-            ),
+            ..removeWhere((user) => user.id == userId),
           user: UserEntity.merge(
             newEntity: UserEntity(
               id: state.user.id,
@@ -266,6 +266,7 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
               message: "Fehler beim löschen der Relation",
             ),
           );
+          return;
         }
         emitState(
           followRequests: List.from(state.followRequests ?? [])
@@ -288,6 +289,70 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
     );
   }
 
+  Future deleteFollower({
+    required String userId,
+  }) async {
+    if (state.user.authId != authCubit.state.currentUser.authId) {
+      emitState(
+        followersStatus: ProfilePageStateFollowersStatus.error,
+        followersError: ErrorWithTitleAndMessage(
+          title: "Accept User Relation Failure",
+          message: "Du kannst keinen Follower eines anderen Profiles löschen",
+        ),
+      );
+    }
+
+    final userRelationOrFailure =
+        await userRelationUseCases.deleteUserRelationViaApi(
+      findOneUserRelationFilter: FindOneUserRelationFilter(
+        targetUserId: authCubit.state.currentUser.id,
+        requesterUserId: userId,
+      ),
+    );
+
+    userRelationOrFailure.fold(
+      (error) => emitState(
+        followersStatus: ProfilePageStateFollowersStatus.error,
+        followersError: ErrorWithTitleAndMessage(
+          title: "Delete User Relation Failure",
+          message: mapFailureToMessage(error),
+        ),
+      ),
+      (boolean) {
+        if (boolean == false) {
+          emitState(
+            followersStatus: ProfilePageStateFollowersStatus.error,
+            followersError: ErrorWithTitleAndMessage(
+              title: "Delete User Relation Failure",
+              message: "Fehler beim löschen der Relation",
+            ),
+          );
+          return;
+        }
+        emitState(
+          followers: List.from(state.followRequests ?? [])
+            ..removeWhere(
+              (user) => user.id == userId,
+            ),
+          user: UserEntity.merge(
+            newEntity: UserEntity(
+              id: state.user.id,
+              authId: state.user.authId,
+              userRelationCounts: UserRelationsCountEntity(
+                followerCount: state.user.userRelationCounts != null &&
+                        state.user.userRelationCounts!.followedCount != null
+                    ? state.user.userRelationCounts!.followedCount! - 1
+                    : 0,
+              ),
+            ),
+            oldEntity: state.user,
+          ),
+        );
+      },
+    );
+  }
+
+  /// this is then you try to follow or unfollow the current profile user
   Future followOrUnfollowCurrentProfileUserViaApi() async {
     final userRelationOrFailure =
         await userRelationUseCases.followOrUnfollowUserViaApi(
