@@ -21,7 +21,7 @@ class PrivateEventTabInfoUserListItem extends StatelessWidget {
     String subtitle = "gekicked";
     Color? subititleColor = Colors.red;
 
-    if (privateEventUser.privateEventUser.status == "accapted") {
+    if (privateEventUser.privateEventUser.status == "accepted") {
       subititleColor = Colors.green;
       subtitle = "Angenommen";
       trailingWidget = privateEventUser.user.id == currentUserId

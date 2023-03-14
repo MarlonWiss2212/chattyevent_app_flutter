@@ -1,5 +1,4 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
@@ -27,9 +26,6 @@ class ProfileWrapperPage extends StatelessWidget {
     return BlocProvider(
       create: (context) => ProfilePageCubit(
         ProfilePageState(
-          followedOffset: 0,
-          followersOffset: 0,
-          followRequestsOffset: 0,
           user: userToSet ?? UserEntity(id: userId, authId: ""),
         ),
         userRelationUseCases: serviceLocator(

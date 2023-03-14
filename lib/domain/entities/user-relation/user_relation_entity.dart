@@ -31,7 +31,7 @@ class UserRelationEntity {
       requesterUserId: newEntity.requesterUserId ?? oldEntity.requesterUserId,
       statusOnRelatedUser:
           newEntity.statusOnRelatedUser ?? oldEntity.statusOnRelatedUser,
-      followData: newEntity.followData ?? oldEntity.followData,
+      followData: newEntity.followData,
     );
   }
 }

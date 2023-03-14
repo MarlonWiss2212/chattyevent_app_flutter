@@ -76,10 +76,10 @@ class UserRelationUseCases {
   Future<Either<Failure, Either<UserRelationEntity, bool>>>
       followOrUnfollowUserViaApi({
     required FindOneUserRelationFilter findOneUserRelationFilter,
-    required UserRelationEntity? userRelationEntity,
+    required UserRelationEntity? myUserRelationToOtherUser,
   }) async {
-    if (userRelationEntity?.statusOnRelatedUser != "follower" &&
-        userRelationEntity?.statusOnRelatedUser != "requestToFollow") {
+    if (myUserRelationToOtherUser?.statusOnRelatedUser != "follower" &&
+        myUserRelationToOtherUser?.statusOnRelatedUser != "requestToFollow") {
       final userRelationOrFailure =
           await userRelationRepository.createUserRelationViaApi(
               createUserRelationDto: CreateUserRelationDto(

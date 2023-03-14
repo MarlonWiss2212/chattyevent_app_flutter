@@ -38,8 +38,6 @@ class UserRepositoryImpl implements UserRepository {
               _id
               createdAt
               updatedAt
-              targetUserId
-              requesterUserId
               statusOnRelatedUser
               followData {
                 canInviteFollowedToPrivateEvent
@@ -78,8 +76,6 @@ class UserRepositoryImpl implements UserRepository {
             profileImageLink
             myUserRelationToOtherUser {
               _id
-              targetUserId
-              requesterUserId
               statusOnRelatedUser
             }
           }
@@ -88,7 +84,6 @@ class UserRepositoryImpl implements UserRepository {
         variables: {"input": getUsersFilter.toMap()},
       );
       if (response.hasException) {
-        print(response.exception);
         return Left(GeneralFailure());
       }
       final List<UserEntity> users = [];
@@ -98,7 +93,6 @@ class UserRepositoryImpl implements UserRepository {
 
       return Right(users);
     } catch (e) {
-      print(e);
       return Left(ServerFailure());
     }
   }

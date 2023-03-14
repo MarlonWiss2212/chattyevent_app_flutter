@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_search_cubit.dart';
 import 'package:social_media_app_flutter/core/filter/get_users_filter.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
@@ -31,46 +30,36 @@ class UserGridListWithSearchbar extends StatelessWidget {
           const SizedBox(height: 8),
           BlocBuilder<UserSearchCubit, UserSearchState>(
             builder: (context, state) {
-              if (state is UserSearchStateLoaded) {
-                return Expanded(
-                  child: UserGridList(
-                    users: state.users,
-                    button: (user) {
-                      return FollowButton(user: user);
-                    },
-                    onPress: (user) {
-                      BlocProvider.of<UserCubit>(context).mergeOrAdd(
-                        user: user,
-                      );
-                      AutoRouter.of(context).push(
-                        ProfileWrapperPageRoute(
-                          userId: user.id,
-                          userToSet: user,
-                          loadUserFromApiToo: true,
-                        ),
-                      );
-                    },
-                  ),
-                );
-              } else if (state is UserSearchStateLoading) {
+              if (state.status == UserSearchStateStatus.loading) {
                 return Expanded(
                   child: Center(child: PlatformCircularProgressIndicator()),
                 );
-              } else {
-                return Expanded(
-                  child: Center(
-                    child: PlatformTextButton(
-                      child: Text(
-                        state is UserSearchStateError
-                            ? state.message
-                            : "User laden",
-                      ),
-                      onPressed: () => BlocProvider.of<UserSearchCubit>(context)
-                          .getUsersViaApi(),
-                    ),
-                  ),
-                );
               }
+              return Expanded(
+                child: UserGridList(
+                  users: state.users,
+                  button: (user) {
+                    return FollowButton(
+                      user: user,
+                      onTap: () {
+                        BlocProvider.of<UserSearchCubit>(context)
+                            .followOrUnfollowUserViaApi(
+                          user: user,
+                        );
+                      },
+                    );
+                  },
+                  onPress: (user) {
+                    AutoRouter.of(context).push(
+                      ProfileWrapperPageRoute(
+                        userId: user.id,
+                        userToSet: user,
+                        loadUserFromApiToo: true,
+                      ),
+                    );
+                  },
+                ),
+              );
             },
           ),
         ],

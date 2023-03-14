@@ -2,15 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:social_media_app_flutter/application/bloc/user/profile_page_cubit.dart';
-import 'package:social_media_app_flutter/core/filter/user_relation/request_user_id_filter.dart';
 import 'package:social_media_app_flutter/presentation/widgets/dialog/buttons/ok_button.dart';
-import 'package:social_media_app_flutter/presentation/widgets/user_list/user_list_tile.dart';
+import 'package:social_media_app_flutter/presentation/widgets/screens/profile_page/profile_user_relations_tabs/profile_follow_requests_tab/profile_follow_requests_tab_list_view.dart';
+import 'package:social_media_app_flutter/presentation/widgets/screens/profile_page/profile_user_relations_tabs/profile_follow_requests_tab/profile_follow_requests_tab_skeleton_list_view.dart';
 
 class ProfileFollowRequestsTab extends StatelessWidget {
   const ProfileFollowRequestsTab({super.key});
 
   @override
   Widget build(BuildContext context) {
+    BlocProvider.of<ProfilePageCubit>(context).getFollowRequests();
+
     return BlocConsumer<ProfilePageCubit, ProfilePageState>(
       listener: (context, state) async {
         if (state.followRequestsError != null &&
@@ -28,48 +30,26 @@ class ProfileFollowRequestsTab extends StatelessWidget {
           );
         }
       },
-      //  buildWhen: (previous, current) =>
-      //      previous.userRelations?.length != current.userRelations?.length,
       builder: (context, state) {
-        if (state.followRequests == null) {
+        if (state.followRequests != null &&
+                state.followRequestsStatus ==
+                    ProfilePageStateFollowRequestsStatus.loading &&
+                state.followRequests!.isEmpty ||
+            state.followRequestsStatus ==
+                    ProfilePageStateFollowRequestsStatus.loading &&
+                state.followRequests == null) {
+          return const ProfileFollowRequestsTabSkeletonListView();
+        }
+
+        if (state.followRequests == null ||
+            state.followRequests != null && state.followRequests!.isEmpty) {
           return const Center(
-            child: Text("Keine Relationen"),
+            child: Text("Keine Freundschaftsanfragen"),
           );
         }
 
-        return ListView.builder(
-          itemBuilder: (context, index) {
-            return UserListTile(
-              user: state.followRequests![index],
-              trailing: InkWell(
-                onTap: () {
-                  BlocProvider.of<ProfilePageCubit>(context)
-                      .acceptFollowRequest(
-                    requestUserIdFilter: RequestUserIdFilter(
-                      requesterUserId: state.followRequests![index].id,
-                    ),
-                  );
-                },
-                borderRadius: BorderRadius.circular(8),
-                child: Ink(
-                  child: Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      color: Theme.of(context).colorScheme.primaryContainer,
-                    ),
-                    child: Text(
-                      "Akzeptieren",
-                      style: Theme.of(context).textTheme.labelMedium?.apply(
-                            color: Colors.white,
-                          ),
-                    ),
-                  ),
-                ),
-              ),
-            );
-          },
-          itemCount: state.followRequests!.length,
+        return ProfileFollowRequestsTabListView(
+          followRequests: state.followRequests ?? [],
         );
       },
     );

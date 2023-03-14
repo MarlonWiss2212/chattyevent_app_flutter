@@ -3,7 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:social_media_app_flutter/application/bloc/user/profile_page_cubit.dart';
 import 'package:social_media_app_flutter/presentation/widgets/dialog/buttons/ok_button.dart';
-import 'package:social_media_app_flutter/presentation/widgets/user_list/user_list_tile.dart';
+import 'package:social_media_app_flutter/presentation/widgets/screens/profile_page/profile_user_relations_tabs/profile_followers_tab/profile_followers_tab_list_view.dart';
+import 'package:social_media_app_flutter/presentation/widgets/screens/profile_page/profile_user_relations_tabs/profile_followers_tab/profile_followers_tab_skeleton_list_view.dart';
 
 class ProfileFollowerTab extends StatelessWidget {
   const ProfileFollowerTab({super.key});
@@ -29,18 +30,22 @@ class ProfileFollowerTab extends StatelessWidget {
         }
       },
       builder: (context, state) {
-        if (state.followers == null) {
-          return const Center(
-            child: Text("Keine Relationen"),
-          );
+        if (state.followersStatus == ProfilePageStateFollowersStatus.loading &&
+                state.followers == null ||
+            state.followers != null &&
+                state.followersStatus ==
+                    ProfilePageStateFollowersStatus.loading &&
+                state.followers!.isEmpty) {
+          return const ProfileFollowersTabSkeletonListView();
         }
-        return ListView.builder(
-          itemBuilder: (context, index) {
-            return UserListTile(
-              user: state.followers![index],
-            );
-          },
-          itemCount: state.followers!.length,
+
+        if (state.followers == null ||
+            state.followers != null && state.followers!.isEmpty) {
+          return const Center(child: Text("Keiner Folgt dir"));
+        }
+
+        return ProfileFollowersTabListView(
+          followers: state.followers ?? [],
         );
       },
     );

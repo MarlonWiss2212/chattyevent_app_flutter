@@ -18,7 +18,7 @@ class ProfilePageFollowButton extends StatelessWidget {
           user: state.user,
           onTap: () {
             BlocProvider.of<ProfilePageCubit>(context)
-                .followOrUnfollowUserViaApi();
+                .followOrUnfollowCurrentProfileUserViaApi();
           },
         );
       },

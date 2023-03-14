@@ -17,9 +17,6 @@ class HomeProfilePage extends StatelessWidget {
     return BlocProvider(
       create: (context) => ProfilePageCubit(
         ProfilePageState(
-          followedOffset: 0,
-          followersOffset: 0,
-          followRequestsOffset: 0,
           user: BlocProvider.of<AuthCubit>(context).state.currentUser,
         ),
         userUseCases: serviceLocator(

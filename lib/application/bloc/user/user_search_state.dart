@@ -1,19 +1,15 @@
 part of 'user_search_cubit.dart';
 
-@immutable
-abstract class UserSearchState {}
+enum UserSearchStateStatus { initial, loading, error, success }
 
-class UserSearchInitial extends UserSearchState {}
-
-class UserSearchStateLoading extends UserSearchState {}
-
-class UserSearchStateError extends UserSearchState {
-  final String title;
-  final String message;
-  UserSearchStateError({required this.title, required this.message});
-}
-
-class UserSearchStateLoaded extends UserSearchState {
+class UserSearchState {
   final List<UserEntity> users;
-  UserSearchStateLoaded({required this.users});
+  final UserSearchStateStatus status;
+  final ErrorWithTitleAndMessage? error;
+
+  UserSearchState({
+    required this.users,
+    this.error,
+    this.status = UserSearchStateStatus.initial,
+  });
 }

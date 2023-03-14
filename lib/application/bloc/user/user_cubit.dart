@@ -13,15 +13,12 @@ class UserCubit extends Cubit<UserState> {
 
   UserCubit({required this.userUseCases}) : super(UserInitial());
 
-  UserEntity mergeOrAdd({required UserEntity user}) {
+  UserEntity replaceOrAdd({required UserEntity user}) {
     int foundIndex = state.users.indexWhere((element) => element.id == user.id);
 
     if (foundIndex != -1) {
       List<UserEntity> newUsers = state.users;
-      newUsers[foundIndex] = UserEntity.merge(
-        newEntity: user,
-        oldEntity: state.users[foundIndex],
-      );
+      newUsers[foundIndex] = user;
       emit(UserStateLoaded(users: newUsers));
       return newUsers[foundIndex];
     } else {
@@ -34,13 +31,13 @@ class UserCubit extends Cubit<UserState> {
     return user;
   }
 
-  List<UserEntity> mergeOrAddMultiple({
+  List<UserEntity> replaceOrAddMultiple({
     required List<UserEntity> users,
   }) {
     List<UserEntity> mergedUsers = [];
     for (final user in users) {
       // state will be changed in mergeOrAdd
-      final mergedUser = mergeOrAdd(user: user);
+      final mergedUser = replaceOrAdd(user: user);
       mergedUsers.add(mergedUser);
     }
     if (users.isEmpty) {
@@ -76,7 +73,7 @@ class UserCubit extends Cubit<UserState> {
         ),
       ),
       (users) {
-        mergeOrAddMultiple(users: users);
+        replaceOrAddMultiple(users: users);
       },
     );
   }

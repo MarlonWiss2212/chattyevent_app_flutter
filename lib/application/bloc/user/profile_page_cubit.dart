@@ -55,11 +55,11 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
         );
       },
       (user) {
-        final mergedUser = userCubit.mergeOrAdd(user: user);
+        userCubit.replaceOrAdd(user: user);
         if (state.user.authId == authCubit.state.currentUser.authId) {
-          authCubit.emitState(currentUser: mergedUser);
+          authCubit.emitState(currentUser: user);
         }
-        emitState(status: ProfilePageStateStatus.success, user: mergedUser);
+        emitState(status: ProfilePageStateStatus.success, user: user);
       },
     );
   }
@@ -72,7 +72,10 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
     final Either<Failure, List<UserEntity>> userOrFailure =
         await userRelationUseCases.getFollowersViaApi(
       targetUserIdFilter: TargetUserIdFilter(targetUserId: state.user.id),
-      limitFilter: LimitFilter(limit: limit, offset: state.followersOffset),
+      limitFilter: LimitFilter(
+        limit: limit,
+        offset: state.followers?.length ?? 0,
+      ),
     );
 
     userOrFailure.fold(
@@ -87,7 +90,6 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
       },
       (users) {
         emitState(
-          followersOffset: state.followersOffset + limit,
           followersStatus: ProfilePageStateFollowersStatus.success,
           followers: List.from(state.followers ?? [])..addAll(users),
         );
@@ -95,17 +97,103 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
     );
   }
 
-  /// fix the response of this
+  Future getFollowRequests() async {
+    const int limit = 30;
+
+    if (authCubit.state.currentUser.id != state.user.id) {
+      emitState(
+        followRequestsStatus: ProfilePageStateFollowRequestsStatus.error,
+        followRequestsError: ErrorWithTitleAndMessage(
+          title: "Get Follow Request Fehler",
+          message: "Du kannst nicht die Freundschaftsanfragen anderer sehen",
+        ),
+      );
+    }
+
+    emitState(
+      followRequestsStatus: ProfilePageStateFollowRequestsStatus.loading,
+    );
+
+    final Either<Failure, List<UserEntity>> userOrFailure =
+        await userRelationUseCases.getFollowerRequestsViaApi(
+      limitFilter: LimitFilter(
+        limit: limit,
+        offset: state.followRequests?.length ?? 0,
+      ),
+    );
+
+    userOrFailure.fold(
+      (error) {
+        emitState(
+          followRequestsStatus: ProfilePageStateFollowRequestsStatus.error,
+          followRequestsError: ErrorWithTitleAndMessage(
+            title: "Get Follow Request Fehler",
+            message: mapFailureToMessage(error),
+          ),
+        );
+      },
+      (users) {
+        emitState(
+          followRequestsStatus: ProfilePageStateFollowRequestsStatus.success,
+          followRequests: List.from(state.followRequests ?? [])..addAll(users),
+        );
+      },
+    );
+  }
+
+  Future getFollowed() async {
+    const int limit = 30;
+
+    emitState(followedStatus: ProfilePageStateFollowedStatus.loading);
+
+    final Either<Failure, List<UserEntity>> userOrFailure =
+        await userRelationUseCases.getFollowedViaApi(
+      requestUserIdFilter: RequestUserIdFilter(requesterUserId: state.user.id),
+      limitFilter: LimitFilter(
+        limit: limit,
+        offset: state.followed?.length ?? 0,
+      ),
+    );
+
+    userOrFailure.fold(
+      (error) {
+        emitState(
+          followedStatus: ProfilePageStateFollowedStatus.error,
+          followedError: ErrorWithTitleAndMessage(
+            title: "Get User Relation Fehler",
+            message: mapFailureToMessage(error),
+          ),
+        );
+      },
+      (users) {
+        emitState(
+          followedStatus: ProfilePageStateFollowedStatus.success,
+          followed: List.from(state.followed ?? [])..addAll(users),
+        );
+      },
+    );
+  }
+
   Future acceptFollowRequest({
-    required RequestUserIdFilter requestUserIdFilter,
+    required String userId,
   }) async {
+    if (state.user.authId != authCubit.state.currentUser.authId) {
+      emitState(
+        followRequestsStatus: ProfilePageStateFollowRequestsStatus.error,
+        followRequestsError: ErrorWithTitleAndMessage(
+          title: "Accept User Relation Failure",
+          message:
+              "Du kannst keine Freundschaftsanfragen auf anderen Profilen annehmen",
+        ),
+      );
+    }
     emitState(
       followRequestsStatus: ProfilePageStateFollowRequestsStatus.loading,
     );
 
     final userRelationOrFailure =
         await userRelationUseCases.acceptFollowRequestViaApi(
-      requestUserIdFilter: requestUserIdFilter,
+      requestUserIdFilter: RequestUserIdFilter(requesterUserId: userId),
     );
 
     userRelationOrFailure.fold(
@@ -116,12 +204,12 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
           message: mapFailureToMessage(error),
         ),
       ),
-      (user) {
+      (userRelation) {
         emitState(
-          followRequests: List.from(state.followRequests ?? [])..remove(user),
-          followRequestsStatus: ProfilePageStateFollowRequestsStatus.success,
-          //   followers: List.from(state.followers ?? [])..add(user),
-          followersStatus: ProfilePageStateFollowersStatus.success,
+          followRequests: List.from(state.followRequests ?? [])
+            ..removeWhere(
+              (user) => user.otherUserRelationToMyUser?.id == userRelation.id,
+            ),
           user: UserEntity.merge(
             newEntity: UserEntity(
               id: state.user.id,
@@ -140,19 +228,74 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
     );
   }
 
-  Future followOrUnfollowUserViaApi() async {
-    emitState(
-      followRequestsStatus: ProfilePageStateFollowRequestsStatus.loading,
-      followedStatus: ProfilePageStateFollowedStatus.error,
+  Future deleteFollowRequest({
+    required String userId,
+  }) async {
+    if (state.user.authId != authCubit.state.currentUser.authId) {
+      emitState(
+        followRequestsStatus: ProfilePageStateFollowRequestsStatus.error,
+        followRequestsError: ErrorWithTitleAndMessage(
+          title: "Accept User Relation Failure",
+          message:
+              "Du kannst keine Freundschaftsanfragen auf anderen Profilen ablehnen",
+        ),
+      );
+    }
+    final userRelationOrFailure =
+        await userRelationUseCases.deleteUserRelationViaApi(
+      findOneUserRelationFilter: FindOneUserRelationFilter(
+        targetUserId: state.user.id,
+        requesterUserId: userId,
+      ),
     );
 
+    userRelationOrFailure.fold(
+      (error) => emitState(
+        status: ProfilePageStateStatus.error,
+        error: ErrorWithTitleAndMessage(
+          title: "Delete User Relation Failure",
+          message: mapFailureToMessage(error),
+        ),
+      ),
+      (boolean) {
+        if (boolean == false) {
+          emitState(
+            status: ProfilePageStateStatus.error,
+            error: ErrorWithTitleAndMessage(
+              title: "Delete User Relation Failure",
+              message: "Fehler beim löschen der Relation",
+            ),
+          );
+        }
+        emitState(
+          followRequests: List.from(state.followRequests ?? [])
+            ..removeWhere((user) => user.id == userId),
+          user: UserEntity.merge(
+            newEntity: UserEntity(
+              id: state.user.id,
+              authId: state.user.authId,
+              userRelationCounts: UserRelationsCountEntity(
+                followRequestCount: state.user.userRelationCounts != null &&
+                        state.user.userRelationCounts!.followedCount != null
+                    ? state.user.userRelationCounts!.followedCount! - 1
+                    : 0,
+              ),
+            ),
+            oldEntity: state.user,
+          ),
+        );
+      },
+    );
+  }
+
+  Future followOrUnfollowCurrentProfileUserViaApi() async {
     final userRelationOrFailure =
         await userRelationUseCases.followOrUnfollowUserViaApi(
       findOneUserRelationFilter: FindOneUserRelationFilter(
         requesterUserId: authCubit.state.currentUser.id,
         targetUserId: state.user.id,
       ),
-      userRelationEntity: state.user.myUserRelationToOtherUser,
+      myUserRelationToOtherUser: state.user.myUserRelationToOtherUser,
     );
 
     userRelationOrFailure.fold(
@@ -182,11 +325,6 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
               return;
             }
             emitState(
-              followedStatus: ProfilePageStateFollowedStatus.success,
-              followed: List.from(state.followed ?? [])
-                ..removeWhere(
-                  (element) => element.id == authCubit.state.currentUser.id,
-                ),
               user: UserEntity.merge(
                 removeMyUserRelation: true,
                 newEntity: UserEntity(
@@ -210,6 +348,125 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
     );
   }
 
+  /// this is when you try to follow any user and not the current profile user
+  Future followOrUnfollowUserViaApi({required UserEntity user}) async {
+    final userRelationOrFailure =
+        await userRelationUseCases.followOrUnfollowUserViaApi(
+      findOneUserRelationFilter: FindOneUserRelationFilter(
+        requesterUserId: authCubit.state.currentUser.id,
+        targetUserId: user.id,
+      ),
+      myUserRelationToOtherUser: user.myUserRelationToOtherUser,
+    );
+
+    userRelationOrFailure.fold(
+      (error) => emitState(
+        status: ProfilePageStateStatus.error,
+        error: ErrorWithTitleAndMessage(
+          title: "Follow Or Unfollow Failure",
+          message: mapFailureToMessage(error),
+        ),
+      ),
+      (booleanOrUserRelation) {
+        booleanOrUserRelation.fold(
+          (userRelation) {
+            List<UserEntity>? followed = state.followed;
+            List<UserEntity>? followers = state.followers;
+
+            if (followed != null) {
+              final foundIndex = followed.indexWhere(
+                (element) => element.id == user.id,
+              );
+              if (foundIndex != -1) {
+                followed[foundIndex] = UserEntity.merge(
+                  newEntity: UserEntity(
+                    id: user.id,
+                    authId: user.authId,
+                    myUserRelationToOtherUser: userRelation,
+                  ),
+                  oldEntity: user,
+                );
+              }
+            }
+            if (followers != null) {
+              final foundIndex = followers.indexWhere(
+                (element) => element.id == user.id,
+              );
+              if (foundIndex != -1) {
+                followers[foundIndex] = UserEntity.merge(
+                  newEntity: UserEntity(
+                    id: user.id,
+                    authId: user.authId,
+                    myUserRelationToOtherUser: userRelation,
+                  ),
+                  oldEntity: user,
+                );
+              }
+            }
+            emitState(followers: followers, followed: followed);
+          },
+          (boolean) {
+            if (boolean == false) {
+              return;
+            }
+            List<UserEntity>? followed = state.followed;
+            List<UserEntity>? followers = state.followers;
+
+            if (followed != null) {
+              final foundIndex = followed.indexWhere(
+                (element) => element.id == user.id,
+              );
+
+              if (foundIndex != -1) {
+                followed[foundIndex] = UserEntity.merge(
+                  removeMyUserRelation: true,
+                  newEntity: UserEntity(
+                    id: user.id,
+                    authId: user.authId,
+                    userRelationCounts: UserRelationsCountEntity(
+                      followerCount: user.userRelationCounts != null &&
+                              user.userRelationCounts!.followerCount != null &&
+                              user.userRelationCounts!.followerCount! > 0
+                          ? user.userRelationCounts!.followerCount! - 1
+                          : 0,
+                    ),
+                  ),
+                  oldEntity: user,
+                );
+              }
+            }
+            if (followers != null) {
+              final foundIndex = followers.indexWhere(
+                (element) => element.id == user.id,
+              );
+              if (foundIndex != -1) {
+                followers[foundIndex] = UserEntity.merge(
+                  removeMyUserRelation: true,
+                  newEntity: UserEntity(
+                    id: user.id,
+                    authId: user.authId,
+                    userRelationCounts: UserRelationsCountEntity(
+                      followerCount: user.userRelationCounts != null &&
+                              user.userRelationCounts!.followerCount != null &&
+                              user.userRelationCounts!.followerCount! > 0
+                          ? user.userRelationCounts!.followerCount! - 1
+                          : 0,
+                    ),
+                  ),
+                  oldEntity: user,
+                );
+              }
+            }
+
+            emitState(followed: followed, followers: followers);
+          },
+        );
+      },
+    );
+  }
+
+  ///
+
   emitState({
     UserEntity? user,
     ProfilePageStateStatus? status,
@@ -217,15 +474,12 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
     List<UserEntity>? followers,
     ProfilePageStateFollowersStatus? followersStatus,
     ErrorWithTitleAndMessage? followersError,
-    int? followersOffset,
     List<UserEntity>? followRequests,
     ProfilePageStateFollowRequestsStatus? followRequestsStatus,
     ErrorWithTitleAndMessage? followRequestsError,
-    int? followRequestsOffset,
     List<UserEntity>? followed,
     ProfilePageStateFollowedStatus? followedStatus,
     ErrorWithTitleAndMessage? followedError,
-    int? followedOffset,
   }) {
     emit(
       ProfilePageState(
@@ -236,18 +490,14 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
         followersStatus:
             followersStatus ?? ProfilePageStateFollowersStatus.initial,
         followersError: followersError ?? state.followersError,
-        followersOffset: followersOffset ?? state.followersOffset,
         followRequests: followRequests ?? state.followRequests,
         followRequestsStatus: followRequestsStatus ??
             ProfilePageStateFollowRequestsStatus.initial,
         followRequestsError: followRequestsError ?? state.followRequestsError,
-        followRequestsOffset:
-            followRequestsOffset ?? state.followRequestsOffset,
         followed: followed ?? state.followed,
         followedStatus:
             followedStatus ?? ProfilePageStateFollowedStatus.initial,
         followedError: followedError ?? state.followedError,
-        followedOffset: followedOffset ?? state.followedOffset,
       ),
     );
   }

@@ -39,6 +39,8 @@ class BlocInit extends StatelessWidget {
             ),
             BlocProvider.value(
               value: UserSearchCubit(
+                authCubit: BlocProvider.of<AuthCubit>(context),
+                userRelationUseCases: serviceLocator(param1: state),
                 userUseCases: serviceLocator(param1: state),
               ),
             ),

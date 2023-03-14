@@ -15,7 +15,7 @@ class PrivateEventTabInfoUserList extends StatelessWidget {
         return Column(
           children: [
             Text(
-              "Mitglieder die da sein werden: ${state.privateEvent.users?.where((element) => element.status == "accapted").length.toString()}",
+              "Mitglieder die da sein werden: ${state.privateEvent.users?.where((element) => element.status == "accepted").length.toString()}",
               style: Theme.of(context).textTheme.titleMedium,
             ),
             if (state.privateEventUsers.isEmpty &&

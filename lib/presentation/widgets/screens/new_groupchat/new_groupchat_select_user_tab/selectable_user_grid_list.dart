@@ -29,64 +29,48 @@ class SelectableUserGridList extends StatelessWidget {
             builder: (context, addGroupchatState) {
               return BlocBuilder<UserSearchCubit, UserSearchState>(
                 builder: (context, state) {
-                  if (state is UserSearchStateLoaded) {
-                    List<UserEntity> filteredUsers = [];
-
-                    for (final user in state.users) {
-                      if (addGroupchatState.groupchatUsers == null) {
-                        filteredUsers = state.users;
-                        break;
-                      }
-                      int foundIndex =
-                          addGroupchatState.groupchatUsers!.indexWhere(
-                        (groupchatUser) => groupchatUser.user.id == user.id,
-                      );
-                      if (foundIndex == -1) {
-                        filteredUsers.add(user);
-                      }
-                    }
-
-                    return Expanded(
-                      child: UserGridList(
-                        users: filteredUsers,
-                        onPress: (user) {
-                          List<CreateGroupchatUserFromCreateGroupchatDtoWithUserEntity>
-                              newGroupchatUsers = List.from(
-                            addGroupchatState.groupchatUsers ?? [],
-                          )..add(
-                                  CreateGroupchatUserFromCreateGroupchatDtoWithUserEntity(
-                                    user: user,
-                                  ),
-                                );
-
-                          BlocProvider.of<AddGroupchatCubit>(context).emitState(
-                            groupchatUsers: newGroupchatUsers,
-                          );
-                        },
-                      ),
-                    );
-                  } else if (state is UserSearchStateLoading) {
+                  if (state.status == UserSearchStateStatus.loading) {
                     return Expanded(
                       child: Center(
                         child: PlatformCircularProgressIndicator(),
                       ),
                     );
-                  } else {
-                    return Expanded(
-                      child: Center(
-                        child: PlatformTextButton(
-                          child: Text(
-                            state is UserSearchStateError
-                                ? state.message
-                                : "User laden",
-                          ),
-                          onPressed: () =>
-                              BlocProvider.of<UserSearchCubit>(context)
-                                  .getUsersViaApi(),
-                        ),
-                      ),
-                    );
                   }
+                  List<UserEntity> filteredUsers = [];
+
+                  for (final user in state.users) {
+                    if (addGroupchatState.groupchatUsers == null) {
+                      filteredUsers = state.users;
+                      break;
+                    }
+                    int foundIndex =
+                        addGroupchatState.groupchatUsers!.indexWhere(
+                      (groupchatUser) => groupchatUser.user.id == user.id,
+                    );
+                    if (foundIndex == -1) {
+                      filteredUsers.add(user);
+                    }
+                  }
+
+                  return Expanded(
+                    child: UserGridList(
+                      users: filteredUsers,
+                      onPress: (user) {
+                        List<CreateGroupchatUserFromCreateGroupchatDtoWithUserEntity>
+                            newGroupchatUsers = List.from(
+                          addGroupchatState.groupchatUsers ?? [],
+                        )..add(
+                                CreateGroupchatUserFromCreateGroupchatDtoWithUserEntity(
+                                  user: user,
+                                ),
+                              );
+
+                        BlocProvider.of<AddGroupchatCubit>(context).emitState(
+                          groupchatUsers: newGroupchatUsers,
+                        );
+                      },
+                    ),
+                  );
                 },
               );
             },
