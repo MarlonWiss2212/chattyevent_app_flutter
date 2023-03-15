@@ -207,23 +207,25 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
         ),
       ),
       (userRelation) {
+        final user = UserEntity.merge(
+          newEntity: UserEntity(
+            id: state.user.id,
+            authId: state.user.authId,
+            userRelationCounts: UserRelationsCountEntity(
+              followedCount: state.user.userRelationCounts != null &&
+                      state.user.userRelationCounts!.followedCount != null
+                  ? state.user.userRelationCounts!.followedCount! + 1
+                  : 1,
+            ),
+          ),
+          oldEntity: state.user,
+        );
         emitState(
           followRequests: List.from(state.followRequests ?? [])
             ..removeWhere((user) => user.id == userId),
-          user: UserEntity.merge(
-            newEntity: UserEntity(
-              id: state.user.id,
-              authId: state.user.authId,
-              userRelationCounts: UserRelationsCountEntity(
-                followedCount: state.user.userRelationCounts != null &&
-                        state.user.userRelationCounts!.followedCount != null
-                    ? state.user.userRelationCounts!.followedCount! + 1
-                    : 1,
-              ),
-            ),
-            oldEntity: state.user,
-          ),
+          user: user,
         );
+        authCubit.emitState(currentUser: user);
       },
     );
   }
@@ -268,23 +270,25 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
           );
           return;
         }
+        final user = UserEntity.merge(
+          newEntity: UserEntity(
+            id: state.user.id,
+            authId: state.user.authId,
+            userRelationCounts: UserRelationsCountEntity(
+              followRequestCount: state.user.userRelationCounts != null &&
+                      state.user.userRelationCounts!.followedCount != null
+                  ? state.user.userRelationCounts!.followedCount! - 1
+                  : 0,
+            ),
+          ),
+          oldEntity: state.user,
+        );
         emitState(
           followRequests: List.from(state.followRequests ?? [])
             ..removeWhere((user) => user.id == userId),
-          user: UserEntity.merge(
-            newEntity: UserEntity(
-              id: state.user.id,
-              authId: state.user.authId,
-              userRelationCounts: UserRelationsCountEntity(
-                followRequestCount: state.user.userRelationCounts != null &&
-                        state.user.userRelationCounts!.followedCount != null
-                    ? state.user.userRelationCounts!.followedCount! - 1
-                    : 0,
-              ),
-            ),
-            oldEntity: state.user,
-          ),
+          user: user,
         );
+        authCubit.emitState(currentUser: user);
       },
     );
   }
@@ -329,25 +333,27 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
           );
           return;
         }
+        final user = UserEntity.merge(
+          newEntity: UserEntity(
+            id: state.user.id,
+            authId: state.user.authId,
+            userRelationCounts: UserRelationsCountEntity(
+              followerCount: state.user.userRelationCounts != null &&
+                      state.user.userRelationCounts!.followedCount != null
+                  ? state.user.userRelationCounts!.followedCount! - 1
+                  : 0,
+            ),
+          ),
+          oldEntity: state.user,
+        );
         emitState(
           followers: List.from(state.followRequests ?? [])
             ..removeWhere(
               (user) => user.id == userId,
             ),
-          user: UserEntity.merge(
-            newEntity: UserEntity(
-              id: state.user.id,
-              authId: state.user.authId,
-              userRelationCounts: UserRelationsCountEntity(
-                followerCount: state.user.userRelationCounts != null &&
-                        state.user.userRelationCounts!.followedCount != null
-                    ? state.user.userRelationCounts!.followedCount! - 1
-                    : 0,
-              ),
-            ),
-            oldEntity: state.user,
-          ),
+          user: user,
         );
+        authCubit.emitState(currentUser: user);
       },
     );
   }
