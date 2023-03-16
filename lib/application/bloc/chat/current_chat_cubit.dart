@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:meta/meta.dart';
+import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
 import 'package:social_media_app_flutter/core/dto/groupchat/create_groupchat_left_user_dto.dart';
@@ -21,6 +22,7 @@ import 'package:social_media_app_flutter/domain/usecases/message_usecases.dart';
 part 'current_chat_state.dart';
 
 class CurrentChatCubit extends Cubit<CurrentChatState> {
+  final AuthCubit authCubit;
   final ChatCubit chatCubit;
   final UserCubit userCubit;
   final ChatUseCases chatUseCases;
@@ -28,6 +30,7 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
 
   CurrentChatCubit(
     super.initialState, {
+    required this.authCubit,
     required this.messageUseCases,
     required this.chatCubit,
     required this.userCubit,
@@ -35,6 +38,7 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
   });
 
   Future getGroupchatUsersViaApi() async {
+    /// optimize this
     await userCubit.getUsersViaApi();
     setGroupchatUsers();
   }
@@ -133,10 +137,7 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
       },
       (groupchat) {
         final mergedChat = chatCubit.mergeOrAdd(groupchat: groupchat);
-        emitState(
-          loadingChat: false,
-          currentChat: mergedChat,
-        );
+        emitState(loadingChat: false, currentChat: mergedChat);
         setGroupchatUsers();
       },
     );
@@ -165,12 +166,14 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
         );
       },
       (groupchat) {
-        final mergedChat = chatCubit.mergeOrAdd(groupchat: groupchat);
-        emitState(
-          loadingChat: false,
-          currentChat: mergedChat,
-        );
-        setGroupchatUsers();
+        if (userId == authCubit.state.currentUser.id) {
+          chatCubit.delete(groupchatId: state.currentChat.id);
+          emitState(loadingChat: false, currentUserLeftChat: true);
+        } else {
+          final mergedChat = chatCubit.mergeOrAdd(groupchat: groupchat);
+          emitState(loadingChat: false, currentChat: mergedChat);
+          setGroupchatUsers();
+        }
       },
     );
   }
@@ -263,6 +266,7 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
 
   void emitState({
     GroupchatEntity? currentChat,
+    bool? currentUserLeftChat,
     bool? loadingChat,
     bool? loadingMessages,
     bool? showError,
@@ -272,6 +276,7 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
   }) {
     emit(
       CurrentChatState(
+        currentUserLeftChat: currentUserLeftChat ?? state.currentUserLeftChat,
         showError: showError ?? false,
         currentChat: currentChat ?? state.currentChat,
         loadingChat: loadingChat ?? state.loadingChat,

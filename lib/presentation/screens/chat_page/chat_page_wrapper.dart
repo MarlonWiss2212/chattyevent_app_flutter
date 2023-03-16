@@ -27,12 +27,14 @@ class ChatPageWrapper extends StatelessWidget {
     return BlocProvider(
       create: (context) => CurrentChatCubit(
         CurrentChatState(
+          currentUserLeftChat: false,
           loadingMessages: false,
           usersWithGroupchatUserData: const [],
           usersWithLeftGroupchatUserData: const [],
           currentChat: chatToSet ?? GroupchatEntity(id: groupchatId),
           loadingChat: false,
         ),
+        authCubit: BlocProvider.of<AuthCubit>(context),
         messageUseCases: serviceLocator(
           param1: BlocProvider.of<AuthCubit>(context).state,
         ),
@@ -44,6 +46,9 @@ class ChatPageWrapper extends StatelessWidget {
       ),
       child: BlocListener<CurrentChatCubit, CurrentChatState>(
         listener: (context, state) async {
+          if (state.currentUserLeftChat == true) {
+            AutoRouter.of(context).root.pop();
+          }
           if (state.error != null && state.showError) {
             return await showPlatformDialog(
               context: context,

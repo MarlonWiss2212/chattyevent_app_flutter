@@ -5,6 +5,8 @@ class CurrentChatState {
   final List<UserWithGroupchatUserData> usersWithGroupchatUserData;
   final List<UserWithLeftGroupchatUserData> usersWithLeftGroupchatUserData;
 
+  final bool currentUserLeftChat;
+
   final bool loadingChat;
   final bool loadingMessages;
 
@@ -14,6 +16,7 @@ class CurrentChatState {
   const CurrentChatState({
     this.error,
     this.showError = false,
+    required this.currentUserLeftChat,
     required this.loadingMessages,
     required this.currentChat,
     required this.loadingChat,
