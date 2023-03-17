@@ -9,9 +9,13 @@ import 'package:social_media_app_flutter/core/filter/limit_filter.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:dartz/dartz.dart';
 import 'package:social_media_app_flutter/core/filter/get_one_groupchat_filter.dart';
+import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_left_user_entity.dart';
+import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
 import 'package:social_media_app_flutter/domain/repositories/chat_repository.dart';
 import 'package:social_media_app_flutter/infastructure/datasources/remote/graphql.dart';
+import 'package:social_media_app_flutter/infastructure/models/groupchat/groupchat_left_user_model.dart';
 import 'package:social_media_app_flutter/infastructure/models/groupchat/groupchat_model.dart';
+import 'package:social_media_app_flutter/infastructure/models/groupchat/groupchat_user_model.dart';
 
 class ChatRepositoryImpl implements ChatRepository {
   final GraphQlDatasource graphQlDatasource;
@@ -58,7 +62,7 @@ class ChatRepositoryImpl implements ChatRepository {
               userId
               createdAt
               updatedAt
-              leftGroupchatTo
+              groupchatTo
             }
             createdBy
             createdAt
@@ -104,7 +108,7 @@ class ChatRepositoryImpl implements ChatRepository {
               userId
               createdAt
               updatedAt
-              leftGroupchatTo
+              groupchatTo
             }
             messages {
               _id
@@ -156,6 +160,8 @@ class ChatRepositoryImpl implements ChatRepository {
             messages {
               _id
               message
+              messageToReactTo
+              fileLink
               groupchatTo
               createdBy
               createdAt
@@ -187,7 +193,7 @@ class ChatRepositoryImpl implements ChatRepository {
   }
 
   @override
-  Future<Either<Failure, GroupchatEntity>> addUserToGroupchatViaApi({
+  Future<Either<Failure, GroupchatUserEntity>> addUserToGroupchatViaApi({
     required CreateGroupchatUserDto createGroupchatUserDto,
   }) async {
     try {
@@ -196,22 +202,12 @@ class ChatRepositoryImpl implements ChatRepository {
         mutation AddUserToGroupchat(\$input: CreateGroupchatUserInput!) {
           addUserToGroupchat(createGroupchatUserInput: \$input) {
             _id
-            users {
-              _id
-              admin
-              userId
-              groupchatTo
-              usernameForChat
-              createdAt
-              updatedAt
-            }
-            leftUsers {
-              _id
-              userId
-              createdAt
-              updatedAt
-              leftGroupchatTo
-            }
+            admin
+            userId
+            groupchatTo
+            usernameForChat
+            createdAt
+            updatedAt 
           }
         }
         """,
@@ -225,7 +221,7 @@ class ChatRepositoryImpl implements ChatRepository {
       }
 
       return Right(
-        GroupchatModel.fromJson(response.data!["addUserToGroupchat"]),
+        GroupchatUserModel.fromJson(response.data!["addUserToGroupchat"]),
       );
     } catch (e) {
       return Left(ServerFailure());
@@ -233,7 +229,8 @@ class ChatRepositoryImpl implements ChatRepository {
   }
 
   @override
-  Future<Either<Failure, GroupchatEntity>> deleteUserFromGroupchatViaApi({
+  Future<Either<Failure, GroupchatLeftUserEntity>>
+      deleteUserFromGroupchatViaApi({
     required CreateGroupchatLeftUserDto createGroupchatLeftUserDto,
   }) async {
     try {
@@ -242,22 +239,10 @@ class ChatRepositoryImpl implements ChatRepository {
         mutation DeleteUserFromGroupchat(\$input: CreateGroupchatLeftUserInput!) {
           deleteUserFromGroupchat(createGroupchatLeftUserInput: \$input) {
             _id
-            users {
-              _id
-              admin
-              userId
-              groupchatTo
-              usernameForChat
-              createdAt
-              updatedAt
-            }
-            leftUsers {
-              _id
-              userId
-              createdAt
-              updatedAt
-              leftGroupchatTo
-            }
+            userId
+            createdAt
+            updatedAt
+            groupchatTo
           }
         }
         """,
@@ -265,20 +250,18 @@ class ChatRepositoryImpl implements ChatRepository {
       );
 
       if (response.hasException) {
+        print(response.exception);
         return Left(GeneralFailure());
       }
 
       return Right(
-        GroupchatModel.fromJson(response.data!["deleteUserFromGroupchat"]),
+        GroupchatLeftUserModel.fromJson(
+          response.data!["deleteUserFromGroupchat"],
+        ),
       );
     } catch (e) {
+      print(e);
       return Left(ServerFailure());
     }
-  }
-
-  @override
-  Future<Either<Failure, void>> deleteGroupchatViaApi() async {
-    // TODO: implement deleteGroupchatViaApi
-    throw UnimplementedError();
   }
 }

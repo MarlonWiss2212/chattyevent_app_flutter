@@ -6,13 +6,13 @@ class GroupchatLeftUserModel extends GroupchatLeftUserEntity {
     String? userId,
     DateTime? createdAt,
     DateTime? updatedAt,
-    String? leftGroupchatTo,
+    String? groupchatTo,
   }) : super(
           id: id,
           userId: userId,
           createdAt: createdAt,
           updatedAt: updatedAt,
-          leftGroupchatTo: leftGroupchatTo,
+          groupchatTo: groupchatTo,
         );
 
   factory GroupchatLeftUserModel.fromJson(Map<String, dynamic> json) {
@@ -26,7 +26,7 @@ class GroupchatLeftUserModel extends GroupchatLeftUserEntity {
     return GroupchatLeftUserModel(
       id: json["_id"],
       userId: json['userId'],
-      leftGroupchatTo: json['leftGroupchatTo'],
+      groupchatTo: json['groupchatTo'],
       createdAt: createdAt,
       updatedAt: updatedAt,
     );

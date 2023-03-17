@@ -7,6 +7,8 @@ import 'package:social_media_app_flutter/core/filter/limit_filter.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:social_media_app_flutter/core/failures/failures.dart';
 import 'package:social_media_app_flutter/core/filter/get_one_groupchat_filter.dart';
+import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_left_user_entity.dart';
+import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
 import 'package:social_media_app_flutter/domain/repositories/chat_repository.dart';
 
 class ChatUseCases {
@@ -37,7 +39,7 @@ class ChatUseCases {
     return await chatRepository.createGroupchatViaApi(createGroupchatDto);
   }
 
-  Future<Either<Failure, GroupchatEntity>> addUserToGroupchatViaApi({
+  Future<Either<Failure, GroupchatUserEntity>> addUserToGroupchatViaApi({
     required CreateGroupchatUserDto createGroupchatUserDto,
   }) async {
     return await chatRepository.addUserToGroupchatViaApi(
@@ -45,7 +47,8 @@ class ChatUseCases {
     );
   }
 
-  Future<Either<Failure, GroupchatEntity>> deleteUserFromGroupchatViaApi({
+  Future<Either<Failure, GroupchatLeftUserEntity>>
+      deleteUserFromGroupchatViaApi({
     required CreateGroupchatLeftUserDto createGroupchatLeftUserDto,
   }) async {
     return await chatRepository.deleteUserFromGroupchatViaApi(

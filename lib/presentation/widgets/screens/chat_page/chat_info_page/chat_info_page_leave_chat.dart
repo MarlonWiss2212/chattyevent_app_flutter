@@ -32,7 +32,7 @@ class ChatInfoPageLeaveChat extends StatelessWidget {
                 PlatformTextButton(
                   onPressed: () async {
                     await BlocProvider.of<CurrentChatCubit>(context)
-                        .deleteUserFromChatEvent(
+                        .deleteUserFromChat(
                       userId: BlocProvider.of<AuthCubit>(context)
                           .state
                           .currentUser

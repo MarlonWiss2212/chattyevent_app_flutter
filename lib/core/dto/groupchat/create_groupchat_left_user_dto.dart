@@ -1,15 +1,15 @@
 class CreateGroupchatLeftUserDto {
   String userId;
-  String leftGroupchatTo;
+  String groupchatTo;
 
   CreateGroupchatLeftUserDto({
     required this.userId,
-    required this.leftGroupchatTo,
+    required this.groupchatTo,
   });
 
   Map<dynamic, dynamic> toMap() {
     Map<dynamic, dynamic> variables = {
-      'leftGroupchatTo': leftGroupchatTo,
+      'groupchatTo': groupchatTo,
       'userId': userId,
     };
     return variables;

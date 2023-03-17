@@ -10,6 +10,8 @@ import 'package:social_media_app_flutter/core/filter/get_messages_filter.dart';
 import 'package:social_media_app_flutter/core/filter/limit_filter.dart';
 import 'package:social_media_app_flutter/domain/entities/error_with_title_and_message.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
+import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_left_user_entity.dart';
+import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/user_with_groupchat_user_data.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/user_with_left_groupchat_user_data.dart';
 import 'package:social_media_app_flutter/domain/entities/message/message_entity.dart';
@@ -116,7 +118,7 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
   Future addUserToChat({required String userId}) async {
     emitState(loadingChat: true);
 
-    final Either<Failure, GroupchatEntity> groupchatOrFailure =
+    final Either<Failure, GroupchatUserEntity> groupchatOrFailure =
         await chatUseCases.addUserToGroupchatViaApi(
       createGroupchatUserDto: CreateGroupchatUserDto(
         userId: userId,
@@ -135,22 +137,35 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
           loadingChat: false,
         );
       },
-      (groupchat) {
-        final mergedChat = chatCubit.mergeOrAdd(groupchat: groupchat);
+      (groupchatUser) {
+        final mergedChat = chatCubit.mergeOrAdd(
+          groupchat: GroupchatEntity.merge(
+            newEntity: GroupchatEntity(
+              id: state.currentChat.id,
+              leftUsers: List.from(state.currentChat.leftUsers ?? [])
+                ..removeWhere(
+                  (element) => element.userId == groupchatUser.userId,
+                ),
+              users: List.from(state.currentChat.users ?? [])
+                ..add(groupchatUser),
+            ),
+            oldEntity: state.currentChat,
+          ),
+        );
         emitState(loadingChat: false, currentChat: mergedChat);
         setGroupchatUsers();
       },
     );
   }
 
-  Future deleteUserFromChatEvent({required String userId}) async {
+  Future deleteUserFromChat({required String userId}) async {
     emitState(loadingChat: true);
 
-    final Either<Failure, GroupchatEntity> groupchatOrFailure =
+    final Either<Failure, GroupchatLeftUserEntity> groupchatOrFailure =
         await chatUseCases.deleteUserFromGroupchatViaApi(
       createGroupchatLeftUserDto: CreateGroupchatLeftUserDto(
         userId: userId,
-        leftGroupchatTo: state.currentChat.id,
+        groupchatTo: state.currentChat.id,
       ),
     );
 
@@ -165,12 +180,25 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
           loadingChat: false,
         );
       },
-      (groupchat) {
+      (groupchatLeftUser) {
         if (userId == authCubit.state.currentUser.id) {
           chatCubit.delete(groupchatId: state.currentChat.id);
           emitState(loadingChat: false, currentUserLeftChat: true);
         } else {
-          final mergedChat = chatCubit.mergeOrAdd(groupchat: groupchat);
+          final mergedChat = chatCubit.mergeOrAdd(
+            groupchat: GroupchatEntity.merge(
+              newEntity: GroupchatEntity(
+                id: state.currentChat.id,
+                users: List.from(state.currentChat.users ?? [])
+                  ..removeWhere(
+                    (element) => element.userId == groupchatLeftUser.userId,
+                  ),
+                leftUsers: List.from(state.currentChat.leftUsers ?? [])
+                  ..add(groupchatLeftUser),
+              ),
+              oldEntity: state.currentChat,
+            ),
+          );
           emitState(loadingChat: false, currentChat: mergedChat);
           setGroupchatUsers();
         }

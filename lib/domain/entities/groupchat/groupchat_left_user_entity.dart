@@ -1,14 +1,14 @@
 class GroupchatLeftUserEntity {
   final String id;
   final String? userId;
-  final String? leftGroupchatTo;
+  final String? groupchatTo;
   final DateTime? createdAt;
   final DateTime? updatedAt;
 
   GroupchatLeftUserEntity({
     required this.id,
     this.createdAt,
-    this.leftGroupchatTo,
+    this.groupchatTo,
     this.updatedAt,
     this.userId,
   });
@@ -20,7 +20,7 @@ class GroupchatLeftUserEntity {
     return GroupchatLeftUserEntity(
       userId: newEntity.userId,
       id: newEntity.id,
-      leftGroupchatTo: newEntity.leftGroupchatTo ?? oldEntity.leftGroupchatTo,
+      groupchatTo: newEntity.groupchatTo ?? oldEntity.groupchatTo,
       updatedAt: newEntity.updatedAt ?? oldEntity.updatedAt,
       createdAt: newEntity.createdAt ?? oldEntity.createdAt,
     );
