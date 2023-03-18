@@ -6,14 +6,14 @@ class CreatePrivateEventDto {
   String title;
   String? description;
   File coverImage;
-  String connectedGroupchat;
+  String? groupchatTo;
   DateTime eventDate;
   CreatePrivateEventLocationDto? eventLocation;
 
   CreatePrivateEventDto({
     required this.title,
     required this.coverImage,
-    required this.connectedGroupchat,
+    required this.groupchatTo,
     required this.eventDate,
     this.eventLocation,
   });
@@ -21,9 +21,11 @@ class CreatePrivateEventDto {
   Map<dynamic, dynamic> toMap() {
     Map<dynamic, dynamic> map = {
       "title": title,
-      "connectedGroupchat": connectedGroupchat,
       "eventDate": eventDate.toIso8601String(),
     };
+    if (groupchatTo != null) {
+      map.addAll({"groupchatTo": groupchatTo});
+    }
     if (eventLocation != null) {
       map.addAll({"eventLocation": eventLocation!.toMap()});
     }

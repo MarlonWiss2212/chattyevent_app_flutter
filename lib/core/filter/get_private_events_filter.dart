@@ -1,9 +1,9 @@
 class GetPrivateEventsFilter {
-  String connectedGroupchat;
+  String groupchatTo;
 
-  GetPrivateEventsFilter({required this.connectedGroupchat});
+  GetPrivateEventsFilter({required this.groupchatTo});
 
   Map<dynamic, dynamic> toMap() {
-    return {"connectedGroupchat": connectedGroupchat};
+    return {"groupchatTo": groupchatTo};
   }
 }

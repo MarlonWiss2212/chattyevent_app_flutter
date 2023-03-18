@@ -49,12 +49,18 @@ class ChatPageMessageContainer extends StatelessWidget {
     UserEntity? user;
     final foundUser = usersWithGroupchatUserData.firstWhere(
       (element) => element.id == message.createdBy,
-      orElse: () => UserWithGroupchatUserData(id: "", authId: ""),
+      orElse: () => UserWithGroupchatUserData(
+        id: message.createdBy ?? "",
+        authId: "",
+      ),
     );
     if (foundUser.id == "") {
       final foundLeftUser = usersWithLeftGroupchatUserData.firstWhere(
         (element) => element.id == message.createdBy,
-        orElse: () => UserWithLeftGroupchatUserData(id: "", authId: ""),
+        orElse: () => UserWithLeftGroupchatUserData(
+          id: message.createdBy ?? "",
+          authId: "",
+        ),
       );
 
       if (foundLeftUser.id != "") {

@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:social_media_app_flutter/core/dto/private_event/create_private_event_dto.dart';
+import 'package:social_media_app_flutter/core/dto/private_event/create_private_event_user_dto.dart';
 import 'package:social_media_app_flutter/core/dto/private_event/update_private_event_user_dto.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_user_entity.dart';
@@ -19,9 +20,12 @@ abstract class PrivateEventRepository {
   });
   Future<Either<Failure, PrivateEventEntity>> updatePrivateEventViaApi();
 
+  Future<Either<Failure, PrivateEventUserEntity>> createPrivateEventUserViaApi({
+    required CreatePrivateEventUserDto createPrivateEventUserDto,
+  });
+
   Future<Either<Failure, PrivateEventUserEntity>> updatePrivateEventUser({
     required UpdatePrivateEventUserDto updatePrivateEventUserDto,
-    required String privateEventId,
   });
 
   Future<Either<Failure, void>> deletePrivateEventViaApi();

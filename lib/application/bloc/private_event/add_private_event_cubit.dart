@@ -24,10 +24,8 @@ class AddPrivateEventCubit extends Cubit<AddPrivateEventState> {
   }) : super(AddPrivateEventState());
 
   Future createPrivateEventViaApi() async {
-    emitState(status: AddPrivateEventStateStatus.loading);
     if (state.coverImage == null ||
         state.title == null ||
-        state.selectedGroupchat == null ||
         state.eventDate == null) {
       return emitState(
         status: AddPrivateEventStateStatus.error,
@@ -37,12 +35,15 @@ class AddPrivateEventCubit extends Cubit<AddPrivateEventState> {
         ),
       );
     }
+
+    emitState(status: AddPrivateEventStateStatus.loading);
+
     final Either<Failure, PrivateEventEntity> privateEventOrFailure =
         await privateEventUseCases.createPrivateEventViaApi(
       CreatePrivateEventDto(
         title: state.title!,
         coverImage: state.coverImage!,
-        connectedGroupchat: state.selectedGroupchat!.id,
+        groupchatTo: state.selectedGroupchat?.id,
         eventDate: state.eventDate!,
         eventLocation: state.city != null &&
                 state.zip != null &&

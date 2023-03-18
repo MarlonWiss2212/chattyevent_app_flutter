@@ -11,8 +11,6 @@ import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
 import 'package:social_media_app_flutter/core/injection.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
-import 'package:social_media_app_flutter/core/filter/get_one_groupchat_filter.dart';
-import 'package:social_media_app_flutter/core/filter/get_one_private_event_filter.dart';
 import 'package:social_media_app_flutter/presentation/widgets/dialog/buttons/ok_button.dart';
 
 class PrivateEventWrapperPage extends StatelessWidget {
@@ -34,7 +32,6 @@ class PrivateEventWrapperPage extends StatelessWidget {
       CurrentPrivateEventState(
         privateEventUsers: const [],
         privateEvent: privateEventToSet ?? PrivateEventEntity(id: ""),
-        groupchat: GroupchatEntity(id: ""),
         loadingGroupchat: false,
         loadingPrivateEvent: false,
       ),
@@ -69,27 +66,13 @@ class PrivateEventWrapperPage extends StatelessWidget {
               .getPrivateEventUsersViaApi();
 
           if (privateEventToSet != null &&
-              privateEventToSet!.connectedGroupchat == null &&
+              privateEventToSet!.groupchatTo == null &&
               !loadPrivateEventFromApiToo) {
             BlocProvider.of<CurrentPrivateEventCubit>(context)
-                .getCurrentChatViaApi(
-              getOneGroupchatFilter: GetOneGroupchatFilter(
-                id: privateEventToSet!.connectedGroupchat!,
-              ),
-            );
+                .getCurrentChatViaApi();
           } else {
             BlocProvider.of<CurrentPrivateEventCubit>(context)
-                .getPrivateEventAndGroupchatFromApi(
-              getOnePrivateEventFilter: GetOnePrivateEventFilter(
-                id: privateEventId,
-              ),
-              getOneGroupchatFilter: privateEventToSet != null &&
-                      privateEventToSet!.connectedGroupchat != null
-                  ? GetOneGroupchatFilter(
-                      id: privateEventToSet!.connectedGroupchat!,
-                    )
-                  : null,
-            );
+                .getPrivateEventAndGroupchatFromApi();
           }
           return BlocListener<CurrentPrivateEventCubit,
               CurrentPrivateEventState>(

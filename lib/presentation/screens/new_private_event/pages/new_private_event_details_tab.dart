@@ -48,6 +48,17 @@ class NewPrivateEventDetailsTab extends StatelessWidget {
                 hintText: 'Name*',
               ),
               const SizedBox(height: 8),
+              PlatformTextFormField(
+                controller: TextEditingController(
+                  text: state.description,
+                ),
+                onChanged: (value) =>
+                    BlocProvider.of<AddPrivateEventCubit>(context).emitState(
+                  description: value,
+                ),
+                hintText: 'Beschreibung',
+              ),
+              const SizedBox(height: 8),
               SizedBox(
                 width: double.infinity,
                 child: PlatformElevatedButton(

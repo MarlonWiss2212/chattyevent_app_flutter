@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:collection/collection.dart';
 import 'package:dartz/dartz.dart';
 import 'package:meta/meta.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
@@ -53,7 +54,10 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
       for (final groupchatUser in state.currentChat.users!) {
         final foundUser = userCubit.state.users.firstWhere(
           (element) => element.id == groupchatUser.userId,
-          orElse: () => UserEntity(id: "", authId: ""),
+          orElse: () => UserEntity(
+            id: groupchatUser.userId ?? "",
+            authId: "",
+          ),
         );
         usersToEmit.add(
           UserWithGroupchatUserData.fromUserEntity(
@@ -68,7 +72,10 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
       for (final groupchatLeftUser in state.currentChat.leftUsers!) {
         final foundUser = userCubit.state.users.firstWhere(
           (element) => element.id == groupchatLeftUser.userId,
-          orElse: () => UserEntity(id: "", authId: ""),
+          orElse: () => UserEntity(
+            id: groupchatLeftUser.userId ?? "",
+            authId: "",
+          ),
         );
         leftUsersToEmit.add(
           UserWithLeftGroupchatUserData.fromUserEntity(

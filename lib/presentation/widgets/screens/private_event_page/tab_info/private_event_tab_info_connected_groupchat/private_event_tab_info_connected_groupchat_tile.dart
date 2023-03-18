@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 
-class PrivateEventTabInfoConnectedGroupchatTile extends StatelessWidget {
+class PrivateEventTabInfogroupchatToTile extends StatelessWidget {
   final GroupchatEntity groupchat;
-  const PrivateEventTabInfoConnectedGroupchatTile({
+  const PrivateEventTabInfogroupchatToTile({
     super.key,
     required this.groupchat,
   });

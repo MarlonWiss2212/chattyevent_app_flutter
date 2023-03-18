@@ -7,7 +7,7 @@ class PrivateEventEntity {
   final String? coverImageLink;
   final List<PrivateEventUserEntity>? users;
   final DateTime? eventDate;
-  final String? connectedGroupchat;
+  final String? groupchatTo;
   final String? createdBy;
   final DateTime? createdAt;
   final DateTime? updatedAt;
@@ -19,7 +19,7 @@ class PrivateEventEntity {
     this.coverImageLink,
     this.users,
     this.eventDate,
-    this.connectedGroupchat,
+    this.groupchatTo,
     this.createdBy,
     this.createdAt,
     this.eventLocation,
@@ -60,8 +60,7 @@ class PrivateEventEntity {
       coverImageLink: newEntity.coverImageLink ?? oldEntity.coverImageLink,
       users: users,
       eventDate: newEntity.eventDate ?? oldEntity.eventDate,
-      connectedGroupchat:
-          newEntity.connectedGroupchat ?? oldEntity.connectedGroupchat,
+      groupchatTo: newEntity.groupchatTo ?? oldEntity.groupchatTo,
       eventLocation: PrivateEventLocationEntity.merge(
         newEntity: newEntity.eventLocation ?? PrivateEventLocationEntity(),
         oldEntity: oldEntity.eventLocation ?? PrivateEventLocationEntity(),

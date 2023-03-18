@@ -7,10 +7,12 @@ class PrivateEventUserModel extends PrivateEventUserEntity {
     String? privateEventTo,
     DateTime? createdAt,
     DateTime? updatedAt,
+    bool? organizer,
     String? status,
   }) : super(
           id: id,
           userId: userId,
+          organizer: organizer,
           privateEventTo: privateEventTo,
           updatedAt: updatedAt,
           createdAt: createdAt,
@@ -32,6 +34,7 @@ class PrivateEventUserModel extends PrivateEventUserEntity {
       privateEventTo: json['privateEventTo'],
       createdAt: createdAt,
       updatedAt: updatedAt,
+      organizer: json["organizer"],
       status: json["status"],
     );
   }

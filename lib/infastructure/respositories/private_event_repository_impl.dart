@@ -1,6 +1,7 @@
 import 'package:http/http.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:social_media_app_flutter/core/dto/private_event/create_private_event_dto.dart';
+import 'package:social_media_app_flutter/core/dto/private_event/create_private_event_user_dto.dart';
 import 'package:social_media_app_flutter/core/dto/private_event/update_private_event_user_dto.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_user_entity.dart';
 import 'package:social_media_app_flutter/core/failures/failures.dart';
@@ -44,9 +45,10 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
               status
               createdAt
               updatedAt
+              organizer
             }
             eventDate
-            connectedGroupchat
+            groupchatTo
             eventLocation {
               latitude
               longitude
@@ -68,6 +70,7 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
       );
 
       if (response.hasException) {
+        print(response.exception);
         return Left(GeneralFailure());
       }
 
@@ -75,6 +78,8 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
         PrivateEventModel.fromJson(response.data!['createPrivateEvent']),
       );
     } catch (e) {
+      print(e);
+
       return Left(ServerFailure());
     }
   }
@@ -98,6 +103,7 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
               status
               createdAt
               updatedAt
+              organizer
             }
             eventLocation {
               latitude
@@ -109,7 +115,7 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
               housenumber
             }
             eventDate
-            connectedGroupchat
+            groupchatTo
             createdBy
             createdAt
           }
@@ -141,7 +147,7 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
           findPrivateEvents(filter: \$input) {
             _id
             title
-            connectedGroupchat
+            groupchatTo
             eventDate
             eventLocation {
               latitude
@@ -175,34 +181,60 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
   }
 
   @override
-  Future<Either<Failure, void>> deletePrivateEventViaApi() {
-    // TODO: implement deletePrivateEventViaApi
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<Either<Failure, PrivateEventUserEntity>> updatePrivateEventUser({
-    required UpdatePrivateEventUserDto updatePrivateEventUserDto,
-    required String privateEventId,
+  Future<Either<Failure, PrivateEventUserEntity>> createPrivateEventUserViaApi({
+    required CreatePrivateEventUserDto createPrivateEventUserDto,
   }) async {
     try {
       final response = await graphQlDatasource.mutation(
         """
-          mutation UpdatePrivateEventUser(\$privateEventId: String!, \$input: UpdatePrivateEventUserInput!) {
-            updatePrivateEventUser(privateEventId: \$privateEventId, updatePrivateEventUserInput: \$input) {
+          mutation CreatePrivateEventUser(\$input: CreatePrivateEventUserInput!) {
+            createPrivateEventUser(createPrivateEventUserInput: \$input) {
               _id
               privateEventTo
               userId
               status
               createdAt
               updatedAt
+              organizer
             }
           }
         """,
-        variables: {
-          "privateEventId": privateEventId,
-          "input": updatePrivateEventUserDto.toMap()
-        },
+        variables: {"input": createPrivateEventUserDto.toMap()},
+      );
+
+      if (response.hasException) {
+        return Left(GeneralFailure());
+      }
+      return Right(
+        PrivateEventUserModel.fromJson(
+          response.data!["createPrivateEventUser"],
+        ),
+      );
+    } catch (e) {
+      return Left(ServerFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, PrivateEventUserEntity>> updatePrivateEventUser({
+    required UpdatePrivateEventUserDto updatePrivateEventUserDto,
+  }) async {
+    try {
+      final response = await graphQlDatasource.mutation(
+        """
+          mutation UpdatePrivateEventUser(\$input: UpdatePrivateEventUserInput!) {
+            updatePrivateEventUser(updatePrivateEventUserInput: \$input) {
+              _id
+              privateEventTo
+              userId
+              status
+              createdAt
+              updatedAt
+              organizer
+            }
+          }
+        """,
+        variables: {"input": updatePrivateEventUserDto.toMap()},
       );
 
       if (response.hasException) {
@@ -216,5 +248,11 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
     } catch (e) {
       return Left(ServerFailure());
     }
+  }
+
+  @override
+  Future<Either<Failure, void>> deletePrivateEventViaApi() {
+    // TODO: implement deletePrivateEventViaApi
+    throw UnimplementedError();
   }
 }

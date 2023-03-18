@@ -2,7 +2,6 @@ import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
-import 'package:social_media_app_flutter/core/filter/get_one_private_event_filter.dart';
 import 'package:social_media_app_flutter/presentation/widgets/divider.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/private_event_page/tab_info/private_event_tab_info_connected_groupchat/private_event_tab_info_connected_groupchat.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/private_event_page/tab_info/private_event_tab_info_cover_image.dart';
@@ -21,18 +20,15 @@ class PrivateEventTabInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     return RefreshIndicator(
       onRefresh: () => BlocProvider.of<CurrentPrivateEventCubit>(context)
-          .getPrivateEventAndGroupchatFromApi(
-        getOnePrivateEventFilter: GetOnePrivateEventFilter(
-          id: privateEventId,
-        ),
-      ),
+          .getPrivateEventAndGroupchatFromApi(),
       child: SingleChildScrollView(
         child: Column(
           children: const [
             SizedBox(height: 8),
             PrivateEventTabInfoCoverImage(),
             SizedBox(height: 20),
-            PrivateEventTabInfoConnectedGroupchat(), // custom divider is returned in <- widget
+            PrivateEventTabInfoGroupchatTo(),
+            CustomDivider(),
             PrivateEventTabInfoUserList(),
             CustomDivider(),
             PrivateEventTabInfoLocation(), // custom divider is returned in <- widget

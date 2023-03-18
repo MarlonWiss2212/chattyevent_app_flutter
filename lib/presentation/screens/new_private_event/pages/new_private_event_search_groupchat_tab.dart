@@ -26,6 +26,10 @@ class _NewPrivateEventSearchGroupchatTabState
       child: Column(
         children: [
           const SizedBox(height: 8),
+          const Text(
+            "Den Gruppenchat kannst du freiwillig auswählen. Er ist dazu da damit die User die im Gruppenchat sind zugriff auf das Event haben. Wenn du keinen auswählst kannst du die User später einladen",
+          ),
+          const SizedBox(height: 8),
           BlocBuilder<AddPrivateEventCubit, AddPrivateEventState>(
             buildWhen: (previous, current) =>
                 previous.selectedGroupchat?.id != current.selectedGroupchat?.id,

@@ -19,8 +19,7 @@ class ChatInfoPagePrivateEventList extends StatelessWidget {
           builder: (context, state) {
             List<PrivateEventEntity> filteredEvents = state.privateEvents
                 .where(
-                  (element) =>
-                      element.connectedGroupchat == chatState.currentChat.id,
+                  (element) => element.groupchatTo == chatState.currentChat.id,
                 )
                 .toList();
 

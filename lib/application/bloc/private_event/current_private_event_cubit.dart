@@ -2,6 +2,7 @@ import 'dart:collection';
 import 'dart:math';
 
 import 'package:bloc/bloc.dart';
+import 'package:collection/collection.dart';
 import 'package:dartz/dartz.dart';
 import 'package:meta/meta.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
@@ -52,22 +53,9 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
     setPrivateEventUsers();
   }
 
-  Future getPrivateEventAndGroupchatFromApi({
-    required GetOnePrivateEventFilter getOnePrivateEventFilter,
-    GetOneGroupchatFilter? getOneGroupchatFilter,
-  }) async {
-    await getCurrentPrivateEvent(
-      getOnePrivateEventFilter: getOnePrivateEventFilter,
-    );
-    if (getOneGroupchatFilter != null ||
-        state.privateEvent.connectedGroupchat != null) {
-      await getCurrentChatViaApi(
-        getOneGroupchatFilter: getOneGroupchatFilter ??
-            GetOneGroupchatFilter(
-              id: state.privateEvent.connectedGroupchat!,
-            ),
-      );
-    }
+  Future getPrivateEventAndGroupchatFromApi() async {
+    await getCurrentPrivateEvent();
+    await getCurrentChatViaApi();
   }
 
   void setPrivateEventUsers() {
@@ -77,44 +65,49 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
       for (final privateEventUser in state.privateEvent.users!) {
         final foundUser = userCubit.state.users.firstWhere(
           (element) => element.id == privateEventUser.userId,
-          orElse: () => UserEntity(id: "", authId: ""),
-        );
-        final foundGroupchatUser = state.groupchat.users?.firstWhere(
-          (element) => element.userId == privateEventUser.userId,
-          orElse: () => GroupchatUserEntity(id: ""),
-        );
-        usersToEmit.add(
-          UserWithPrivateEventUserData(
-            user: foundUser,
-            groupchatUser: foundGroupchatUser,
-            privateEventUser: privateEventUser,
+          orElse: () => UserEntity(
+            id: privateEventUser.userId ?? "",
+            authId: "",
           ),
         );
+        GroupchatUserEntity? foundGroupchatUser;
+        if (state.groupchat != null) {
+          foundGroupchatUser = state.groupchat!.users?.firstWhere(
+            (element) => element.userId == privateEventUser.userId,
+            orElse: () => GroupchatUserEntity(id: ""),
+          );
+        }
+
+        usersToEmit.add(UserWithPrivateEventUserData(
+          user: foundUser,
+          groupchatUser: foundGroupchatUser,
+          privateEventUser: privateEventUser,
+        ));
       }
     }
 
     emitState(privateEventUsers: usersToEmit);
   }
 
-  void setCurrentChatFromChatCubit({
-    bool? loadingCurrentChatFromApi,
-  }) {
+  void setCurrentChatFromChatCubit() {
     emitState(
-      groupchat: chatCubit.state.chats.firstWhere(
-        (element) => element.id == state.privateEvent.connectedGroupchat,
-        orElse: () => state.groupchat,
+      groupchat: chatCubit.state.chats.firstWhereOrNull(
+        (element) => element.id == state.privateEvent.groupchatTo,
       ),
-      loadingGroupchat: loadingCurrentChatFromApi,
     );
   }
 
-  Future getCurrentChatViaApi({
-    required GetOneGroupchatFilter getOneGroupchatFilter,
-  }) async {
+  Future getCurrentChatViaApi() async {
+    if (state.privateEvent.groupchatTo == null) {
+      return;
+    }
     emitState(loadingGroupchat: true);
+
     final Either<Failure, GroupchatEntity> groupchatOrFailure =
         await chatUseCases.getGroupchatViaApi(
-      getOneGroupchatFilter: getOneGroupchatFilter,
+      getOneGroupchatFilter: GetOneGroupchatFilter(
+        id: state.privateEvent.groupchatTo!,
+      ),
     );
 
     await groupchatOrFailure.fold(
@@ -136,14 +129,14 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
     );
   }
 
-  Future getCurrentPrivateEvent({
-    required GetOnePrivateEventFilter getOnePrivateEventFilter,
-  }) async {
+  Future getCurrentPrivateEvent() async {
     emitState(loadingPrivateEvent: true);
 
     final Either<Failure, PrivateEventEntity> privateEventOrFailure =
         await privateEventUseCases.getPrivateEventViaApi(
-      getOnePrivateEventFilter: getOnePrivateEventFilter,
+      getOnePrivateEventFilter: GetOnePrivateEventFilter(
+        id: state.privateEvent.id,
+      ),
     );
 
     privateEventOrFailure.fold(
@@ -171,14 +164,20 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
   }
 
   Future updatePrivateEventUser({
-    required UpdatePrivateEventUserDto updatePrivateEventUserDto,
+    String? status,
+    bool? organizer,
+    required String userId,
   }) async {
     emitState(loadingPrivateEvent: true);
 
     final Either<Failure, PrivateEventUserEntity> privateEventOrFailure =
         await privateEventUseCases.updatePrivateEventUser(
-      privateEventId: state.privateEvent.id,
-      updatePrivateEventUserDto: updatePrivateEventUserDto,
+      updatePrivateEventUserDto: UpdatePrivateEventUserDto(
+        userId: userId,
+        privateEventTo: state.privateEvent.id,
+        status: status,
+        organizer: organizer,
+      ),
     );
 
     privateEventOrFailure.fold(
