@@ -81,7 +81,8 @@ class PrivateEventTabInfoUserListItem extends StatelessWidget {
       items: [
         if (currentPrivatEventUser != null &&
             currentPrivatEventUser!.privateEventUser.organizer == true &&
-            privateEventUser.privateEventUser.organizer != null) ...{
+            privateEventUser.privateEventUser.organizer != null &&
+            currentPrivatEventUser?.user.id != privateEventUser.user.id) ...{
           PopupMenuItem<void Function(void)>(
             child: privateEventUser.privateEventUser.organizer == true
                 ? const Text("Organisator status entfernen")

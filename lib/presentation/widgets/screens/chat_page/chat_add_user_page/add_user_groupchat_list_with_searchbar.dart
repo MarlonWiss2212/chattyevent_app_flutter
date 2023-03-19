@@ -8,11 +8,7 @@ import 'package:social_media_app_flutter/core/filter/get_users_filter.dart';
 import 'package:social_media_app_flutter/presentation/widgets/user_list/user_grid_list.dart';
 
 class AddUserGroupchatListWithSearchbar extends StatelessWidget {
-  final String groupchatId;
-  const AddUserGroupchatListWithSearchbar({
-    super.key,
-    required this.groupchatId,
-  });
+  const AddUserGroupchatListWithSearchbar({super.key});
 
   @override
   Widget build(BuildContext context) {

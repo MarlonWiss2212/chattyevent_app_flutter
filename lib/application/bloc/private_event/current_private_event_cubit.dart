@@ -9,6 +9,7 @@ import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/shopping_list/shopping_list_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
+import 'package:social_media_app_flutter/core/dto/private_event/create_private_event_user_dto.dart';
 import 'package:social_media_app_flutter/core/dto/private_event/update_private_event_user_dto.dart';
 import 'package:social_media_app_flutter/domain/entities/error_with_title_and_message.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
@@ -163,6 +164,42 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
     );
   }
 
+  Future createPrivateEventUser({required String userId}) async {
+    emitState(loadingPrivateEvent: true);
+
+    Either<Failure, PrivateEventUserEntity> privateEventUserOrFailure =
+        await privateEventUseCases.createPrivateEventUserViaApi(
+      createPrivateEventUserDto: CreatePrivateEventUserDto(
+        userId: userId,
+        privateEventTo: state.privateEvent.id,
+      ),
+    );
+
+    privateEventUserOrFailure.fold(
+      (error) => emitState(
+        error: ErrorWithTitleAndMessage(
+          title: "Create Event User Failure",
+          message: mapFailureToMessage(error),
+        ),
+        loadingPrivateEvent: false,
+      ),
+      (privateEventUser) {
+        emitState(
+          loadingPrivateEvent: false,
+          privateEvent: PrivateEventEntity.merge(
+            newEntity: PrivateEventEntity(
+              id: state.privateEvent.id,
+              users: List.from(state.privateEvent.users ?? [])
+                ..add(privateEventUser),
+            ),
+            oldEntity: state.privateEvent,
+          ),
+        );
+        setPrivateEventUsers();
+      },
+    );
+  }
+
   Future updatePrivateEventUser({
     String? status,
     bool? organizer,
@@ -195,7 +232,9 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
         final newPrivateEvent = PrivateEventEntity.merge(
           setUsersFromOldEntity: true,
           newEntity: PrivateEventEntity(
-              id: state.privateEvent.id, users: [privateEventUser]),
+            id: state.privateEvent.id,
+            users: [privateEventUser],
+          ),
           oldEntity: state.privateEvent,
         );
 

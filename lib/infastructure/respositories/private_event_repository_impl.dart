@@ -203,6 +203,7 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
       );
 
       if (response.hasException) {
+        print(response.exception);
         return Left(GeneralFailure());
       }
       return Right(
@@ -211,6 +212,7 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
         ),
       );
     } catch (e) {
+      print(e);
       return Left(ServerFailure());
     }
   }
@@ -238,6 +240,7 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
       );
 
       if (response.hasException) {
+        print(response.exception);
         return Left(GeneralFailure());
       }
       return Right(

@@ -33,10 +33,8 @@ class ChatAddUserPage extends StatelessWidget {
               return const SizedBox();
             },
           ),
-          Expanded(
-            child: AddUserGroupchatListWithSearchbar(
-              groupchatId: groupchatId,
-            ),
+          const Expanded(
+            child: AddUserGroupchatListWithSearchbar(),
           ),
         ],
       ),

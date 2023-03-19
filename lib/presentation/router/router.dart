@@ -21,6 +21,7 @@ import 'package:social_media_app_flutter/presentation/screens/new_private_event/
 import 'package:social_media_app_flutter/presentation/screens/new_private_event/pages/new_private_event_search_groupchat_tab.dart';
 import 'package:social_media_app_flutter/presentation/screens/private_event_page/private_event_create_shopping_list_item_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/private_event_page/private_event_current_shopping_list_item_page.dart';
+import 'package:social_media_app_flutter/presentation/screens/private_event_page/private_event_invite_user_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/private_event_page/private_event_wrapper_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/private_event_page/tab_page/pages/private_event_tab_info.dart';
 import 'package:social_media_app_flutter/presentation/screens/private_event_page/tab_page/pages/private_event_tab_shopping_list.dart';
@@ -205,6 +206,12 @@ import 'package:social_media_app_flutter/presentation/screens/verify_email_page.
               guards: [AuthGuard],
             )
           ],
+        ),
+        AutoRoute(
+          page: PrivateEventInviteUserPage,
+          initial: true,
+          path: 'invite',
+          guards: [AuthGuard],
         ),
         AutoRoute(
           page: PrivateEventCreateShoppingListItemPage,
