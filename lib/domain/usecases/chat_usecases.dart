@@ -3,7 +3,7 @@ import 'package:social_media_app_flutter/core/dto/groupchat/create_groupchat_dto
 import 'package:social_media_app_flutter/core/dto/groupchat/create_groupchat_left_user_dto.dart';
 import 'package:social_media_app_flutter/core/dto/groupchat/create_groupchat_user_dto.dart';
 import 'package:social_media_app_flutter/core/filter/get_messages_filter.dart';
-import 'package:social_media_app_flutter/core/filter/limit_filter.dart';
+import 'package:social_media_app_flutter/core/filter/limit_offset_filter/limit_offset_filter.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:social_media_app_flutter/core/failures/failures.dart';
 import 'package:social_media_app_flutter/core/filter/get_one_groupchat_filter.dart';
@@ -16,10 +16,10 @@ class ChatUseCases {
   ChatUseCases({required this.chatRepository});
 
   Future<Either<Failure, List<GroupchatEntity>>> getGroupchatsViaApi({
-    LimitFilter? messagesLimitFilter,
+    LimitOffsetFilterOptional? limitOffsetFilter,
   }) async {
     return await chatRepository.getGroupchatsViaApi(
-      messagesLimitFilter: messagesLimitFilter,
+      limitOffsetFilter: limitOffsetFilter,
     );
   }
 

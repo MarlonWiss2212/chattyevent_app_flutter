@@ -17,8 +17,8 @@ class ProfileFollowedTabListView extends StatelessWidget {
         return UserListTile(
           user: followed[index],
           trailing: SizedBox(
-            height: 90,
-            width: 40,
+            width: 90,
+            height: 40,
             child: FollowButton(
               user: followed[index],
               onTap: () {

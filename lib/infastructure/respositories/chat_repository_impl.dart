@@ -5,7 +5,7 @@ import 'package:social_media_app_flutter/core/dto/groupchat/create_groupchat_lef
 import 'package:social_media_app_flutter/core/dto/groupchat/create_groupchat_user_dto.dart';
 import 'package:social_media_app_flutter/core/failures/failures.dart';
 import 'package:social_media_app_flutter/core/filter/get_messages_filter.dart';
-import 'package:social_media_app_flutter/core/filter/limit_filter.dart';
+import 'package:social_media_app_flutter/core/filter/limit_offset_filter/limit_offset_filter.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:dartz/dartz.dart';
 import 'package:social_media_app_flutter/core/filter/get_one_groupchat_filter.dart';
@@ -142,12 +142,12 @@ class ChatRepositoryImpl implements ChatRepository {
 
   @override
   Future<Either<Failure, List<GroupchatEntity>>> getGroupchatsViaApi({
-    LimitFilter? messagesLimitFilter,
+    LimitOffsetFilterOptional? limitOffsetFilter,
   }) async {
     try {
       final response = await graphQlDatasource.query(
         """
-        query FindGroupchats(\$input: LimitFilterInput!) {
+        query FindGroupchats(\$input: LimitOffsetFilterOptionalInput) {
           findGroupchats(messageFilterForEveryGroupchat: \$input) {
             _id
             profileImageLink
@@ -169,7 +169,7 @@ class ChatRepositoryImpl implements ChatRepository {
           }
         }
         """,
-        variables: {"input": messagesLimitFilter?.toMap()},
+        variables: {"input": limitOffsetFilter?.toMap()},
       );
 
       if (response.hasException) {

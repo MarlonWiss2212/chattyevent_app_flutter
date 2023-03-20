@@ -8,7 +8,7 @@ import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
 import 'package:social_media_app_flutter/core/dto/groupchat/create_groupchat_left_user_dto.dart';
 import 'package:social_media_app_flutter/core/dto/groupchat/create_groupchat_user_dto.dart';
 import 'package:social_media_app_flutter/core/filter/get_messages_filter.dart';
-import 'package:social_media_app_flutter/core/filter/limit_filter.dart';
+import 'package:social_media_app_flutter/core/filter/limit_offset_filter/limit_offset_filter.dart';
 import 'package:social_media_app_flutter/domain/entities/error_with_title_and_message.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_left_user_entity.dart';
@@ -220,7 +220,7 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
         await messageUseCases.getMessagesViaApi(
       getMessagesFilter: GetMessagesFilter(
         groupchatTo: state.currentChat.id,
-        limitFilter: LimitFilter(
+        limitOffsetFilter: LimitOffsetFilterOptional(
           limit: 20,
           offset: state.currentChat.messages != null
               ? state.currentChat.messages!.length

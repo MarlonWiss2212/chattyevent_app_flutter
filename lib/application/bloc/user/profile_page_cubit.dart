@@ -3,7 +3,7 @@ import 'package:dartz/dartz.dart';
 import 'package:meta/meta.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
-import 'package:social_media_app_flutter/core/filter/limit_filter.dart';
+import 'package:social_media_app_flutter/core/filter/limit_offset_filter/limit_offset_filter.dart';
 import 'package:social_media_app_flutter/core/filter/user_relation/find_one_user_relation_filter.dart';
 import 'package:social_media_app_flutter/core/filter/user_relation/target_user_id_filter.dart';
 import 'package:social_media_app_flutter/domain/entities/error_with_title_and_message.dart';
@@ -72,7 +72,7 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
     final Either<Failure, List<UserEntity>> userOrFailure =
         await userRelationUseCases.getFollowersViaApi(
       targetUserIdFilter: TargetUserIdFilter(targetUserId: state.user.id),
-      limitFilter: LimitFilter(
+      limitOffsetFilter: LimitOffsetFilter(
         limit: limit,
         offset: state.followers?.length ?? 0,
       ),
@@ -116,7 +116,7 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
 
     final Either<Failure, List<UserEntity>> userOrFailure =
         await userRelationUseCases.getFollowerRequestsViaApi(
-      limitFilter: LimitFilter(
+      limitOffsetFilter: LimitOffsetFilter(
         limit: limit,
         offset: state.followRequests?.length ?? 0,
       ),
@@ -149,7 +149,7 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
     final Either<Failure, List<UserEntity>> userOrFailure =
         await userRelationUseCases.getFollowedViaApi(
       requestUserIdFilter: RequestUserIdFilter(requesterUserId: state.user.id),
-      limitFilter: LimitFilter(
+      limitOffsetFilter: LimitOffsetFilter(
         limit: limit,
         offset: state.followed?.length ?? 0,
       ),

@@ -1,5 +1,5 @@
 import 'package:social_media_app_flutter/core/filter/user_relation/target_user_id_filter.dart';
-import 'package:social_media_app_flutter/core/filter/limit_filter.dart';
+import 'package:social_media_app_flutter/core/filter/limit_offset_filter/limit_offset_filter.dart';
 import 'package:social_media_app_flutter/domain/entities/user-relation/user_relation_entity.dart';
 import 'package:social_media_app_flutter/core/filter/user_relation/request_user_id_filter.dart';
 import 'package:social_media_app_flutter/core/filter/user_relation/find_one_user_relation_filter.dart';
@@ -94,14 +94,14 @@ class UserRelationRepositoryImpl extends UserRelationRepository {
 
   @override
   Future<Either<Failure, List<UserEntity>>> getFollowersViaApi({
-    required LimitFilter limitFilter,
+    required LimitOffsetFilter limitOffsetFilter,
     required TargetUserIdFilter targetUserIdFilter,
   }) async {
     try {
       final response = await graphQlDatasource.query(
         """
-        query FindFollowers(\$limitFilter: LimitFilterInput!, \$targetUserIdInput: TargetUserIdInput!) {
-          findFollowers(limitFilterInput: \$limitFilter, targetUserIdInput: \$targetUserIdInput) {
+        query FindFollowers(\$limitOffsetFilter: LimitOffsetFilterInput!, \$targetUserIdInput: TargetUserIdInput!) {
+          findFollowers(limitOffsetFilterInput: \$limitOffsetFilter, targetUserIdInput: \$targetUserIdInput) {
             _id
             authId
             username
@@ -119,12 +119,11 @@ class UserRelationRepositoryImpl extends UserRelationRepository {
         """,
         variables: {
           "targetUserIdInput": targetUserIdFilter.toMap(),
-          "limitFilter": limitFilter.toMap(),
+          "limitOffsetFilter": limitOffsetFilter.toMap(),
         },
       );
 
       if (response.hasException) {
-        print(response.exception);
         return Left(GeneralFailure());
       }
       final List<UserEntity> users = [];
@@ -134,21 +133,19 @@ class UserRelationRepositoryImpl extends UserRelationRepository {
 
       return Right(users);
     } catch (e) {
-      print(e);
-
       return Left(ServerFailure());
     }
   }
 
   @override
   Future<Either<Failure, List<UserEntity>>> getFollowerRequestsViaApi({
-    required LimitFilter limitFilter,
+    required LimitOffsetFilter limitOffsetFilter,
   }) async {
     try {
       final response = await graphQlDatasource.query(
         """
-        query FindFollowRequests(\$limitFilter: LimitFilterInput!) {
-          findFollowRequests(limitFilterInput: \$limitFilter) {
+        query FindFollowRequests(\$limitOffsetFilter: LimitOffsetFilterInput!) {
+          findFollowRequests(limitOffsetFilterInput: \$limitOffsetFilter) {
             _id
             authId
             username
@@ -165,7 +162,7 @@ class UserRelationRepositoryImpl extends UserRelationRepository {
         }
         """,
         variables: {
-          "limitFilter": limitFilter.toMap(),
+          "limitOffsetFilter": limitOffsetFilter.toMap(),
         },
       );
 
@@ -185,14 +182,14 @@ class UserRelationRepositoryImpl extends UserRelationRepository {
 
   @override
   Future<Either<Failure, List<UserEntity>>> getFollowedViaApi({
-    required LimitFilter limitFilter,
+    required LimitOffsetFilter limitOffsetFilter,
     required RequestUserIdFilter requestUserIdFilter,
   }) async {
     try {
       final response = await graphQlDatasource.query(
         """
-        query FindFollowed(\$requestUserIdInput: RequestUserIdInput!, \$limitFilter: LimitFilterInput!) {
-          findFollowed(requestUserIdInput: \$requestUserIdInput, limitFilterInput: \$limitFilter) {
+        query FindFollowed(\$requestUserIdInput: RequestUserIdInput!, \$limitOffsetFilter: LimitOffsetFilterInput!) {
+          findFollowed(requestUserIdInput: \$requestUserIdInput, limitOffsetFilterInput: \$limitOffsetFilter) {
             _id
             authId
             username
@@ -210,7 +207,7 @@ class UserRelationRepositoryImpl extends UserRelationRepository {
         """,
         variables: {
           "requestUserIdInput": requestUserIdFilter.toMap(),
-          "limitFilter": limitFilter.toMap(),
+          "limitOffsetFilter": limitOffsetFilter.toMap(),
         },
       );
 
