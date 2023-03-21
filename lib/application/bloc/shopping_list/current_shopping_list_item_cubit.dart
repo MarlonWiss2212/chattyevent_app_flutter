@@ -28,12 +28,13 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
   });
 
   Future getShoppingListItemViaApi() async {
-    emitState(status: CurrentShoppingListItemStateStatus.loading);
+    emitState(loadingShoppingListItem: true);
 
     final Either<Failure, ShoppingListItemEntity> shoppingListItemOrFailure =
         await shoppingListItemUseCases.getOneShoppingListItemsViaApi(
-      getOneShoppingListItemsFilter:
-          GetOneShoppingListItemsFilter(id: state.shoppingListItem.id),
+      getOneShoppingListItemsFilter: GetOneShoppingListItemsFilter(
+        id: state.shoppingListItem.id,
+      ),
     );
 
     shoppingListItemOrFailure.fold(
@@ -44,14 +45,17 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
             title: "Get Fehler",
             message: mapFailureToMessage(error),
           ),
+          loadingShoppingListItem: false,
         );
       },
       (shoppingListItem) {
-        emitState(
+        final mergedShoppingListItem = shoppingListCubit.mergeOrAdd(
           shoppingListItem: shoppingListItem,
-          status: CurrentShoppingListItemStateStatus.success,
         );
-        shoppingListCubit.mergeOrAdd(shoppingListItem: shoppingListItem);
+        emitState(
+          loadingShoppingListItem: false,
+          shoppingListItem: mergedShoppingListItem,
+        );
       },
     );
   }
@@ -59,8 +63,6 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
   Future updateShoppingListItemViaApi({
     required UpdateShoppingListItemDto updateShoppingListItemDto,
   }) async {
-    emitState(status: CurrentShoppingListItemStateStatus.loading);
-
     final Either<Failure, ShoppingListItemEntity> shoppingListItemOrFailure =
         await shoppingListItemUseCases.updateShoppingListItemsViaApi(
       updateShoppingListItemDto: updateShoppingListItemDto,
@@ -78,18 +80,19 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
         );
       },
       (shoppingListItem) {
-        emitState(
+        final mergedShoppingListItem = shoppingListCubit.mergeOrAdd(
           shoppingListItem: shoppingListItem,
-          status: CurrentShoppingListItemStateStatus.successUpdate,
         );
-        shoppingListCubit.mergeOrAdd(shoppingListItem: shoppingListItem);
+
+        emitState(
+          shoppingListItem: mergedShoppingListItem,
+          status: CurrentShoppingListItemStateStatus.updated,
+        );
       },
     );
   }
 
   Future deleteShoppingListItemViaApi() async {
-    emitState(status: CurrentShoppingListItemStateStatus.loading);
-
     final Either<Failure, bool> deletedOrFailure =
         await shoppingListItemUseCases.deleteShoppingListItemViaApi(
       shoppingListItemId: state.shoppingListItem.id,
@@ -107,7 +110,7 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
       },
       (deleted) {
         if (deleted) {
-          emitState(status: CurrentShoppingListItemStateStatus.sucessDelete);
+          emitState(status: CurrentShoppingListItemStateStatus.deleted);
           shoppingListCubit.delete(
             shoppingListItemId: state.shoppingListItem.id,
           );
@@ -119,8 +122,6 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
   Future addBoughtAmount({
     required double boughtAmount,
   }) async {
-    emitState(status: CurrentShoppingListItemStateStatus.loading);
-
     final Either<Failure, BoughtAmountEntity> boughtAmountOrFailure =
         await boughtAmountUseCases.createBoughtAmountViaApi(
       createBoughtAmountDto: CreateBoughtAmountDto(
@@ -148,11 +149,10 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
           ),
           oldEntity: state.shoppingListItem,
         );
-        emitState(
-          status: CurrentShoppingListItemStateStatus.successBoughtAmountAdd,
+        final mergedShoppingListItem = shoppingListCubit.mergeOrAdd(
           shoppingListItem: newShoppingListItem,
         );
-        shoppingListCubit.mergeOrAdd(shoppingListItem: newShoppingListItem);
+        emitState(shoppingListItem: mergedShoppingListItem);
       },
     );
   }
@@ -161,8 +161,6 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
     required UpdateBoughtAmountDto updateBoughtAmountDto,
     required String boughtAmountId,
   }) async {
-    emitState(status: CurrentShoppingListItemStateStatus.loading);
-
     final Either<Failure, BoughtAmountEntity> boughtAmountOrFailure =
         await boughtAmountUseCases.updateBoughtAmountViaApi(
       updateBoughtAmountDto: updateBoughtAmountDto,
@@ -192,12 +190,10 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
               ),
               oldEntity: state.shoppingListItem,
             );
-            emitState(
-              status:
-                  CurrentShoppingListItemStateStatus.successBoughtAmountUpdate,
+            final mergedShoppingListItem = shoppingListCubit.mergeOrAdd(
               shoppingListItem: newShoppingListItem,
             );
-            shoppingListCubit.mergeOrAdd(shoppingListItem: newShoppingListItem);
+            emitState(shoppingListItem: mergedShoppingListItem);
           } else {
             List<BoughtAmountEntity> newBoughtAmountList =
                 state.shoppingListItem.boughtAmount!;
@@ -212,12 +208,10 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
               oldEntity: state.shoppingListItem,
             );
 
-            emitState(
-              status:
-                  CurrentShoppingListItemStateStatus.successBoughtAmountUpdate,
+            final mergedShoppingListItem = shoppingListCubit.mergeOrAdd(
               shoppingListItem: newShoppingListItem,
             );
-            shoppingListCubit.mergeOrAdd(shoppingListItem: newShoppingListItem);
+            emitState(shoppingListItem: mergedShoppingListItem);
           }
         } else {
           ShoppingListItemEntity newShoppingListItem =
@@ -228,13 +222,10 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
             ),
             oldEntity: state.shoppingListItem,
           );
-
-          emitState(
-            status:
-                CurrentShoppingListItemStateStatus.successBoughtAmountUpdate,
+          final mergedShoppingListItem = shoppingListCubit.mergeOrAdd(
             shoppingListItem: newShoppingListItem,
           );
-          shoppingListCubit.mergeOrAdd(shoppingListItem: newShoppingListItem);
+          emitState(shoppingListItem: mergedShoppingListItem);
         }
       },
     );
@@ -243,8 +234,6 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
   Future deleteBoughtAmount({
     required String boughtAmountId,
   }) async {
-    emitState(status: CurrentShoppingListItemStateStatus.loading);
-
     final Either<Failure, bool> boughtAmountOrFailure =
         await boughtAmountUseCases.deleteBoughtAmountViaApi(
       boughtAmountId: boughtAmountId,
@@ -269,10 +258,7 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
               ),
               oldEntity: state.shoppingListItem,
             );
-            emitState(
-              status: CurrentShoppingListItemStateStatus.successBoughtAmountAdd,
-              shoppingListItem: newShoppingListItem,
-            );
+            emitState(shoppingListItem: newShoppingListItem);
             shoppingListCubit.mergeOrAdd(shoppingListItem: newShoppingListItem);
           } else {
             final ShoppingListItemEntity newShoppingListItem =
@@ -286,10 +272,7 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
               ),
               oldEntity: state.shoppingListItem,
             );
-            emitState(
-              status: CurrentShoppingListItemStateStatus.successBoughtAmountAdd,
-              shoppingListItem: newShoppingListItem,
-            );
+            emitState(shoppingListItem: newShoppingListItem);
             shoppingListCubit.mergeOrAdd(shoppingListItem: newShoppingListItem);
           }
         }
@@ -299,12 +282,15 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
 
   void emitState({
     ShoppingListItemEntity? shoppingListItem,
+    bool? loadingShoppingListItem,
     CurrentShoppingListItemStateStatus? status,
     ErrorWithTitleAndMessage? error,
   }) {
     emit(CurrentShoppingListItemState(
       status: status ?? CurrentShoppingListItemStateStatus.initial,
       shoppingListItem: shoppingListItem ?? state.shoppingListItem,
+      loadingShoppingListItem:
+          loadingShoppingListItem ?? state.loadingShoppingListItem,
       error: error ?? state.error,
     ));
   }

@@ -1,9 +1,13 @@
 class GetShoppingListItemsFilter {
-  String privateEventId;
+  String? privateEventId;
 
-  GetShoppingListItemsFilter({required this.privateEventId});
+  GetShoppingListItemsFilter({this.privateEventId});
 
   Map<dynamic, dynamic> toMap() {
-    return {"privateEventId": privateEventId};
+    Map<dynamic, dynamic> map = {};
+    if (privateEventId != null) {
+      map.addAll({"privateEventId": privateEventId});
+    }
+    return map;
   }
 }

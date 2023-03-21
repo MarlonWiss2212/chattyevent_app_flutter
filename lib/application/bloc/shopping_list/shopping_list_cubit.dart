@@ -76,6 +76,7 @@ class ShoppingListCubit extends Cubit<ShoppingListState> {
     emit(ShoppingListState(
       shoppingList: state.shoppingList,
       loadingForPrivateEventId: getShoppingListItemsFilter?.privateEventId,
+      loading: true,
     ));
 
     final Either<Failure, List<ShoppingListItemEntity>>
@@ -88,6 +89,7 @@ class ShoppingListCubit extends Cubit<ShoppingListState> {
       (error) => emit(
         ShoppingListState(
           shoppingList: state.shoppingList,
+          loading: false,
           error: ErrorWithTitleAndMessage(
             message: mapFailureToMessage(error),
             title: "Lade Fehler",
@@ -95,6 +97,10 @@ class ShoppingListCubit extends Cubit<ShoppingListState> {
         ),
       ),
       (shoppingListItems) {
+        ShoppingListState(
+          shoppingList: state.shoppingList,
+          loading: false,
+        );
         mergeOrAddMultiple(
           shoppingListItems: shoppingListItems,
         );

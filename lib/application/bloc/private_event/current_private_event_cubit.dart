@@ -98,6 +98,14 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
     );
   }
 
+  void setPrivateEventFromPrivateEventCubit() {
+    emitState(
+      privateEvent: privateEventCubit.state.privateEvents.firstWhereOrNull(
+        (element) => element.id == state.privateEvent.id,
+      ),
+    );
+  }
+
   Future getCurrentChatViaApi() async {
     if (state.privateEvent.groupchatTo == null) {
       return;

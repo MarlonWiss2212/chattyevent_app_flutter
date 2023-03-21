@@ -12,6 +12,7 @@ import 'package:social_media_app_flutter/domain/entities/private_event/user_with
 import 'package:social_media_app_flutter/domain/entities/shopping_list_item/shopping_list_item_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
+import 'package:social_media_app_flutter/presentation/screens/shopping_list_item_page/standard_shopping_list_item_page.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/shopping_list_item_page/shopping_list_page/shopping_list_item_tile.dart';
 
 class PrivateEventTabShoppingList extends StatelessWidget {
@@ -94,7 +95,7 @@ class PrivateEventTabShoppingList extends StatelessWidget {
                       userToBuyItem: userToBuyItem,
                       onTap: () {
                         AutoRouter.of(context).push(
-                          PrivateEventCurrentShoppingListItemPageRoute(
+                          StandardShoppingListItemPageRoute(
                             shoppingListItemId: filteredItems[index].id,
                             shoppingListItemToSet: filteredItems[index],
                             loadShoppingListItemFromApiToo: true,

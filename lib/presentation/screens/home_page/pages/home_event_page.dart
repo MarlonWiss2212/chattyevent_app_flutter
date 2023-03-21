@@ -6,7 +6,8 @@ import 'package:skeletons/skeletons.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/private_event_cubit.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 import 'package:social_media_app_flutter/presentation/widgets/dialog/buttons/ok_button.dart';
-import 'package:social_media_app_flutter/presentation/widgets/screens/home_page/pages/home_event_page/private_event_grid_lists.dart';
+import 'package:social_media_app_flutter/presentation/widgets/event_list/event_horizontal_list_item_skeleton.dart';
+import 'package:social_media_app_flutter/presentation/widgets/screens/home_page/pages/home_event_page/home_event_page_details.dart';
 
 class HomeEventPage extends StatelessWidget {
   const HomeEventPage({super.key});
@@ -47,22 +48,10 @@ class HomeEventPage extends StatelessWidget {
 
             if (state.privateEvents.isEmpty &&
                 state.status == PrivateEventStateStatus.loading) {
-              return SkeletonListView(
-                itemBuilder: (p0, p1) {
-                  return SkeletonListTile(
-                    hasSubtitle: true,
-                    titleStyle: const SkeletonLineStyle(width: 100, height: 22),
-                    subtitleStyle: const SkeletonLineStyle(
-                        width: double.infinity, height: 16),
-                    leadingStyle: const SkeletonAvatarStyle(
-                      shape: BoxShape.circle,
-                    ),
-                  );
-                },
-              );
+              return const EventHorizontalListItemSekeleton();
             }
 
-            return PrivateEventGridLists(privateEvents: state.privateEvents);
+            return HomeEventPageDetails(privateEvents: state.privateEvents);
           },
         ),
       ),

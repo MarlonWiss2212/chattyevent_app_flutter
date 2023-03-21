@@ -10,18 +10,20 @@ import 'package:social_media_app_flutter/application/bloc/shopping_list/shopping
 import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
 import 'package:social_media_app_flutter/core/injection.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
+import 'package:social_media_app_flutter/domain/entities/shopping_list_item/shopping_list_item_entity.dart';
+import 'package:social_media_app_flutter/presentation/screens/shopping_list_item_page/standard_shopping_list_item_page.dart';
 import 'package:social_media_app_flutter/presentation/widgets/dialog/buttons/ok_button.dart';
 
-class PrivateEventWrapperPage extends StatelessWidget {
-  final String privateEventId;
-  final PrivateEventEntity? privateEventToSet;
-  final bool loadPrivateEventFromApiToo;
+class ShoppingListItemPage extends StatelessWidget {
+  final String shoppingListItemId;
+  final ShoppingListItemEntity? shoppingListItemToSet;
+  final bool loadShoppingListItemFromApiToo;
 
-  const PrivateEventWrapperPage({
-    @PathParam('id') required this.privateEventId,
-    this.privateEventToSet,
-    this.loadPrivateEventFromApiToo = true,
+  const ShoppingListItemPage({
     super.key,
+    @PathParam('shoppingListItemId') required this.shoppingListItemId,
+    this.shoppingListItemToSet,
+    this.loadShoppingListItemFromApiToo = true,
   });
 
   @override
@@ -30,10 +32,7 @@ class PrivateEventWrapperPage extends StatelessWidget {
         CurrentPrivateEventCubit(
       CurrentPrivateEventState(
         privateEventUsers: const [],
-        privateEvent: privateEventToSet ??
-            PrivateEventEntity(
-              id: privateEventId,
-            ),
+        privateEvent: PrivateEventEntity(id: ""),
         loadingGroupchat: false,
         loadingPrivateEvent: false,
       ),
@@ -58,24 +57,6 @@ class PrivateEventWrapperPage extends StatelessWidget {
       ],
       child: Builder(
         builder: (context) {
-          BlocProvider.of<CurrentPrivateEventCubit>(context)
-              .setCurrentChatFromChatCubit();
-          BlocProvider.of<CurrentPrivateEventCubit>(context)
-              .getPrivateEventUsersViaApi();
-
-          if (privateEventToSet != null &&
-              privateEventToSet!.groupchatTo == null &&
-              !loadPrivateEventFromApiToo) {
-            BlocProvider.of<CurrentPrivateEventCubit>(context)
-                .getCurrentChatViaApi();
-          } else {
-            BlocProvider.of<CurrentPrivateEventCubit>(context)
-                .setPrivateEventFromPrivateEventCubit();
-            BlocProvider.of<CurrentPrivateEventCubit>(context)
-                .getPrivateEventAndGroupchatFromApi();
-          }
-          BlocProvider.of<CurrentPrivateEventCubit>(context)
-              .setPrivateEventUsers();
           return BlocListener<CurrentPrivateEventCubit,
               CurrentPrivateEventState>(
             listener: (context, state) async {
@@ -93,7 +74,12 @@ class PrivateEventWrapperPage extends StatelessWidget {
                 );
               }
             },
-            child: const AutoRouter(),
+            child: StandardShoppingListItemPage(
+              setCurrentPrivateEvent: true,
+              loadShoppingListItemFromApiToo: loadShoppingListItemFromApiToo,
+              shoppingListItemToSet: shoppingListItemToSet,
+              shoppingListItemId: shoppingListItemId,
+            ),
           );
         },
       ),
