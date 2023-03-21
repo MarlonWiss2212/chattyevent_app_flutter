@@ -73,8 +73,8 @@ import '../screens/shopping_list_item_page/shopping_list_item_page.dart'
     as _i10;
 import '../screens/shopping_list_item_page/standard_shopping_list_item_page.dart'
     as _i34;
-import '../screens/verify_email_page.dart' as _i2;
 import '../screens/shopping_list_page/shopping_list_page.dart' as _i9;
+import '../screens/verify_email_page.dart' as _i2;
 import 'auth_guard.dart' as _i44;
 
 class AppRouter extends _i42.RootStackRouter {
@@ -383,6 +383,7 @@ class AppRouter extends _i42.RootStackRouter {
           shoppingListItemId: args.shoppingListItemId,
           shoppingListItemToSet: args.shoppingListItemToSet,
           loadShoppingListItemFromApiToo: args.loadShoppingListItemFromApiToo,
+          setCurrentPrivateEvent: args.setCurrentPrivateEvent,
         ),
       );
     },
@@ -1479,6 +1480,7 @@ class StandardShoppingListItemPageRoute
     required String shoppingListItemId,
     _i46.ShoppingListItemEntity? shoppingListItemToSet,
     bool loadShoppingListItemFromApiToo = true,
+    bool setCurrentPrivateEvent = false,
   }) : super(
           StandardShoppingListItemPageRoute.name,
           path: 'shopping-list/:shoppingListItemId',
@@ -1487,6 +1489,7 @@ class StandardShoppingListItemPageRoute
             shoppingListItemId: shoppingListItemId,
             shoppingListItemToSet: shoppingListItemToSet,
             loadShoppingListItemFromApiToo: loadShoppingListItemFromApiToo,
+            setCurrentPrivateEvent: setCurrentPrivateEvent,
           ),
           rawPathParams: {'shoppingListItemId': shoppingListItemId},
         );
@@ -1500,6 +1503,7 @@ class StandardShoppingListItemPageRouteArgs {
     required this.shoppingListItemId,
     this.shoppingListItemToSet,
     this.loadShoppingListItemFromApiToo = true,
+    this.setCurrentPrivateEvent = false,
   });
 
   final _i43.Key? key;
@@ -1510,9 +1514,11 @@ class StandardShoppingListItemPageRouteArgs {
 
   final bool loadShoppingListItemFromApiToo;
 
+  final bool setCurrentPrivateEvent;
+
   @override
   String toString() {
-    return 'StandardShoppingListItemPageRouteArgs{key: $key, shoppingListItemId: $shoppingListItemId, shoppingListItemToSet: $shoppingListItemToSet, loadShoppingListItemFromApiToo: $loadShoppingListItemFromApiToo}';
+    return 'StandardShoppingListItemPageRouteArgs{key: $key, shoppingListItemId: $shoppingListItemId, shoppingListItemToSet: $shoppingListItemToSet, loadShoppingListItemFromApiToo: $loadShoppingListItemFromApiToo, setCurrentPrivateEvent: $setCurrentPrivateEvent}';
   }
 }
 
