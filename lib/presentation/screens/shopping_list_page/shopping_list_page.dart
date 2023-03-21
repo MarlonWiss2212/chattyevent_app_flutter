@@ -77,7 +77,7 @@ class ShoppingListPage extends StatelessWidget {
                       BlocProvider.of<AuthCubit>(context).state.currentUser;
                   final filteredShoppingList = state.shoppingList
                       .where(
-                        (element) => element.createdBy == currentUser.id,
+                        (element) => element.userToBuyItem == currentUser.id,
                       )
                       .toList();
 
