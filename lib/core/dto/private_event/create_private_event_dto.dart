@@ -8,6 +8,7 @@ class CreatePrivateEventDto {
   File coverImage;
   String? groupchatTo;
   DateTime eventDate;
+  DateTime? eventEndDate;
   CreatePrivateEventLocationDto? eventLocation;
 
   CreatePrivateEventDto({
@@ -15,6 +16,8 @@ class CreatePrivateEventDto {
     required this.coverImage,
     required this.groupchatTo,
     required this.eventDate,
+    this.eventEndDate,
+    this.description,
     this.eventLocation,
   });
 
@@ -31,6 +34,9 @@ class CreatePrivateEventDto {
     }
     if (description != null) {
       map.addAll({'description': description});
+    }
+    if (eventEndDate != null) {
+      map.addAll({'eventEndDate': eventEndDate});
     }
 
     return map;

@@ -19,6 +19,9 @@ class NewPrivateEventDetailsTab extends StatelessWidget {
           if (previous.eventDate != current.eventDate) {
             return true;
           }
+          if (previous.eventEndDate != current.eventEndDate) {
+            return true;
+          }
           if (previous.selectedGroupchat?.id != current.selectedGroupchat?.id) {
             return true;
           }
@@ -86,6 +89,43 @@ class NewPrivateEventDetailsTab extends StatelessWidget {
                     if (newDate == null || newTime == null) return;
                     BlocProvider.of<AddPrivateEventCubit>(context).emitState(
                       eventDate: DateTime(
+                        newDate.year,
+                        newDate.month,
+                        newDate.day,
+                        newTime.hour,
+                        newTime.minute,
+                      ),
+                    );
+                  },
+                ),
+              ),
+              SizedBox(
+                width: double.infinity,
+                child: PlatformElevatedButton(
+                  child: Text("End Datum wählen: ${state.eventEndDate}"),
+                  onPressed: () async {
+                    DateTime currentDate = DateTime.now();
+                    DateTime? newDate = await showDatePicker(
+                      context: context,
+                      initialDate: state.eventEndDate ?? currentDate,
+                      firstDate: currentDate,
+                      lastDate: DateTime(currentDate.year + 10),
+                    );
+                    TimeOfDay? newTime = await showTimePicker(
+                      context: context,
+                      initialTime: TimeOfDay(
+                        hour: state.eventEndDate != null
+                            ? state.eventEndDate!.hour
+                            : currentDate.hour,
+                        minute: state.eventEndDate != null
+                            ? state.eventEndDate!.minute
+                            : currentDate.minute,
+                      ),
+                    );
+
+                    if (newDate == null || newTime == null) return;
+                    BlocProvider.of<AddPrivateEventCubit>(context).emitState(
+                      eventEndDate: DateTime(
                         newDate.year,
                         newDate.month,
                         newDate.day,

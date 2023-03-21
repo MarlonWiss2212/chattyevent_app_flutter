@@ -42,9 +42,11 @@ class AddPrivateEventCubit extends Cubit<AddPrivateEventState> {
         await privateEventUseCases.createPrivateEventViaApi(
       CreatePrivateEventDto(
         title: state.title!,
+        description: state.description,
         coverImage: state.coverImage!,
         groupchatTo: state.selectedGroupchat?.id,
         eventDate: state.eventDate!,
+        eventEndDate: state.eventEndDate,
         eventLocation: state.city != null &&
                 state.zip != null &&
                 state.housenumber != null &&
@@ -91,6 +93,7 @@ class AddPrivateEventCubit extends Cubit<AddPrivateEventState> {
     GroupchatEntity? selectedGroupchat,
     bool resetSelectedGroupchat = false,
     DateTime? eventDate,
+    DateTime? eventEndDate,
     String? country,
     String? zip,
     String? city,
@@ -108,6 +111,7 @@ class AddPrivateEventCubit extends Cubit<AddPrivateEventState> {
           ? null
           : selectedGroupchat ?? state.selectedGroupchat,
       eventDate: eventDate ?? state.eventDate,
+      eventEndDate: eventEndDate ?? state.eventEndDate,
       country: country ?? state.country,
       zip: zip ?? state.zip,
       city: city ?? state.city,

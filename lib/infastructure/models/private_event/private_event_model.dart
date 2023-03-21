@@ -11,6 +11,7 @@ class PrivateEventModel extends PrivateEventEntity {
     String? coverImageLink,
     List<PrivateEventUserEntity>? users,
     DateTime? eventDate,
+    DateTime? eventEndDate,
     String? groupchatTo,
     String? createdBy,
     DateTime? createdAt,
@@ -22,6 +23,7 @@ class PrivateEventModel extends PrivateEventEntity {
           coverImageLink: coverImageLink,
           users: users,
           eventDate: eventDate,
+          eventEndDate: eventEndDate,
           groupchatTo: groupchatTo,
           createdAt: createdAt,
           updatedAt: updatedAt,
@@ -42,6 +44,10 @@ class PrivateEventModel extends PrivateEventEntity {
         ? DateTime.parse(json["eventDate"]).toLocal()
         : null;
 
+    final eventEndDate = json["eventEndDate"] != null
+        ? DateTime.parse(json["eventEndDate"]).toLocal()
+        : null;
+
     List<PrivateEventUserEntity>? users;
     if (json["users"] != null) {
       users = [];
@@ -56,6 +62,7 @@ class PrivateEventModel extends PrivateEventEntity {
       coverImageLink: json['coverImageLink'],
       users: users,
       eventDate: eventDate,
+      eventEndDate: eventEndDate,
       groupchatTo: json["groupchatTo"],
       createdBy: json["createdBy"],
       createdAt: createdAt,

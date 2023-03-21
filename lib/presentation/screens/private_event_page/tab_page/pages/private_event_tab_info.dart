@@ -6,6 +6,7 @@ import 'package:social_media_app_flutter/presentation/widgets/divider.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/private_event_page/tab_info/private_event_tab_info_connected_groupchat/private_event_tab_info_connected_groupchat.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/private_event_page/tab_info/private_event_tab_info_cover_image.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/private_event_page/tab_info/private_event_tab_info_event_date.dart';
+import 'package:social_media_app_flutter/presentation/widgets/screens/private_event_page/tab_info/private_event_tab_info_event_end_date.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/private_event_page/tab_info/private_event_tab_info_location/private_event_tab_info_location.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/private_event_page/tab_info/private_event_tab_info_user_list/private_event_tab_info_user_list.dart';
 
@@ -33,6 +34,7 @@ class PrivateEventTabInfo extends StatelessWidget {
             CustomDivider(),
             PrivateEventTabInfoLocation(), // custom divider is returned in <- widget
             PrivateEventTabInfoEventDate(),
+            PrivateEventTabInfoEventEndDate(),
             SizedBox(height: 8),
           ],
         ),

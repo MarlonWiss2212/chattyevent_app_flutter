@@ -11,6 +11,7 @@ class AddPrivateEventState {
   final String? description;
   final File? coverImage;
   final DateTime? eventDate;
+  final DateTime? eventEndDate;
 
   final GroupchatEntity? selectedGroupchat;
 
@@ -30,6 +31,7 @@ class AddPrivateEventState {
     this.coverImage,
     this.selectedGroupchat,
     this.eventDate,
+    this.eventEndDate,
     this.city,
     this.country,
     this.housenumber,

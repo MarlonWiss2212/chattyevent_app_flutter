@@ -48,6 +48,7 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
               organizer
             }
             eventDate
+            eventEndDate
             groupchatTo
             eventLocation {
               latitude
@@ -115,6 +116,7 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
               housenumber
             }
             eventDate
+            eventEndDate
             groupchatTo
             createdBy
             createdAt
@@ -149,6 +151,7 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
             title
             groupchatTo
             eventDate
+            eventEndDate
             eventLocation {
               latitude
               longitude
