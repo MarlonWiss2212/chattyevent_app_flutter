@@ -40,6 +40,7 @@ class PrivateEventWrapperPage extends StatelessWidget {
       userCubit: BlocProvider.of<UserCubit>(context),
       shoppingListCubit: BlocProvider.of<ShoppingListCubit>(context),
       chatCubit: BlocProvider.of<ChatCubit>(context),
+      locationUseCases: serviceLocator(),
       chatUseCases: serviceLocator(
         param1: BlocProvider.of<AuthCubit>(context).state,
       ),

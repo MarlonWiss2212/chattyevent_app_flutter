@@ -22,6 +22,7 @@ import 'package:social_media_app_flutter/core/failures/failures.dart';
 import 'package:social_media_app_flutter/core/filter/get_one_groupchat_filter.dart';
 import 'package:social_media_app_flutter/core/filter/get_one_private_event_filter.dart';
 import 'package:social_media_app_flutter/domain/usecases/chat_usecases.dart';
+import 'package:social_media_app_flutter/domain/usecases/location_usecases.dart';
 import 'package:social_media_app_flutter/domain/usecases/private_event_usecases.dart';
 import 'package:social_media_app_flutter/domain/usecases/shopping_list_item_usecases.dart';
 
@@ -35,11 +36,13 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
 
   final PrivateEventUseCases privateEventUseCases;
   final ChatUseCases chatUseCases;
+  final LocationUseCases locationUseCases;
   final ShoppingListItemUseCases shoppingListItemUseCases;
 
   CurrentPrivateEventCubit(
     super.initialState, {
     required this.userCubit,
+    required this.locationUseCases,
     required this.shoppingListCubit,
     required this.privateEventCubit,
     required this.chatCubit,
@@ -249,6 +252,25 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
         privateEventCubit.replaceOrAdd(privateEvent: newPrivateEvent);
         setPrivateEventUsers();
       },
+    );
+  }
+
+  Future openMaps() async {
+    final Either<String, Unit> openedOrFailure =
+        await locationUseCases.openMaps(
+      query:
+          "${state.privateEvent.eventLocation!.street} ${state.privateEvent.eventLocation!.housenumber}, ${state.privateEvent.eventLocation!.city}, ${state.privateEvent.eventLocation!.zip}, ${state.privateEvent.eventLocation!.country}",
+    );
+
+    openedOrFailure.fold(
+      (errorMsg) => emitState(
+        error: ErrorWithTitleAndMessage(
+          title: "Google Maps Fehler",
+          message: errorMsg,
+        ),
+        status: CurrentPrivateEventStateStatus.error,
+      ),
+      (_) => null,
     );
   }
 

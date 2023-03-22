@@ -36,6 +36,7 @@ class ShoppingListItemPage extends StatelessWidget {
         loadingGroupchat: false,
         loadingPrivateEvent: false,
       ),
+      locationUseCases: serviceLocator(),
       userCubit: BlocProvider.of<UserCubit>(context),
       shoppingListCubit: BlocProvider.of<ShoppingListCubit>(context),
       chatCubit: BlocProvider.of<ChatCubit>(context),

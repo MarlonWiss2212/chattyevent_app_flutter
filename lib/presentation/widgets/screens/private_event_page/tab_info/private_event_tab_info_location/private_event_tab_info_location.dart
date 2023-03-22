@@ -60,26 +60,9 @@ class PrivateEventTabInfoLocation extends StatelessWidget {
                 ListTile(
                   leading: const Icon(Icons.map),
                   title: const Text("Zur Addresse navigieren"),
-                  onTap: () async {
-                    final String googleMapslocationUrl =
-                        "https://www.google.com/maps/search/?api=1&query=${state.privateEvent.eventLocation!.street} ${state.privateEvent.eventLocation!.housenumber}, ${state.privateEvent.eventLocation!.city}, ${state.privateEvent.eventLocation!.zip}, ${state.privateEvent.eventLocation!.country}";
-
-                    if (await canLaunchUrlString(googleMapslocationUrl)) {
-                      await launchUrlString(googleMapslocationUrl);
-                    } else {
-                      return await showPlatformDialog(
-                        context: context,
-                        builder: (context) {
-                          return PlatformAlertDialog(
-                            title: const Text("Fehler beim öffnen"),
-                            content: Text(
-                              "Konnte den Link zu google maps nicht öffnen",
-                            ),
-                            actions: const [OKButton()],
-                          );
-                        },
-                      );
-                    }
+                  onTap: () {
+                    BlocProvider.of<CurrentPrivateEventCubit>(context)
+                        .openMaps();
                   },
                 ),
               ] else if (state.loadingPrivateEvent) ...[
