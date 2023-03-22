@@ -1,18 +1,27 @@
 import 'package:graphql/client.dart';
 
 abstract class GraphQlDatasource {
-  Future<QueryResult<Object?>> query(String options,
-      {Map<String, dynamic> variables = const {}});
-  Future<QueryResult<Object?>> mutation(String options,
-      {Map<String, dynamic> variables = const {}});
-
-  Stream<QueryResult<Object?>> subscription(String options,
-      {Map<String, dynamic> variables = const {}});
+  Future<QueryResult<Object?>> query(
+    String options, {
+    Map<String, dynamic> variables = const {},
+  });
+  Future<QueryResult<Object?>> mutation(
+    String options, {
+    Map<String, dynamic> variables = const {},
+  });
+  Stream<QueryResult<Object?>> subscription(
+    String options, {
+    Map<String, dynamic> variables = const {},
+  });
 }
 
 class GraphQlDatasourceImpl implements GraphQlDatasource {
   final GraphQLClient client;
-  GraphQlDatasourceImpl({required this.client});
+  final GraphQLClient webSocketClient;
+  GraphQlDatasourceImpl({
+    required this.client,
+    required this.webSocketClient,
+  });
 
   @override
   Future<QueryResult<Object?>> query(String options,
@@ -43,7 +52,7 @@ class GraphQlDatasourceImpl implements GraphQlDatasource {
     String options, {
     Map<String, dynamic> variables = const {},
   }) {
-    return client.subscribe(
+    return webSocketClient.subscribe(
       SubscriptionOptions(
         document: gql(options),
         variables: variables,

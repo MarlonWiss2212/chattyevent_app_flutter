@@ -167,13 +167,22 @@ Future init() async {
   serviceLocator.registerFactoryParam<GraphQlDatasource, AuthState?, void>(
     (param1, param2) {
       GraphQLClient client;
+      GraphQLClient webSocketClient;
       if (param1 != null && param1.token != null) {
         client = getGraphQlClient(token: param1.token);
+        webSocketClient = getGraphQlClient(
+          token: param1.token,
+          websocketEndpoint: true,
+        );
       } else {
         client = getGraphQlClient();
+        webSocketClient = getGraphQlClient(websocketEndpoint: true);
       }
 
-      return GraphQlDatasourceImpl(client: client);
+      return GraphQlDatasourceImpl(
+        client: client,
+        webSocketClient: webSocketClient,
+      );
     },
   );
   serviceLocator.registerLazySingleton<LocationDatasource>(() {
