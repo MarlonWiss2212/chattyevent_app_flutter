@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:meta/meta.dart';
-import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/shopping_list/shopping_list_cubit.dart';
 import 'package:social_media_app_flutter/core/dto/shopping_list_item/create_shopping_list_item_dto.dart';
 import 'package:social_media_app_flutter/domain/entities/error_with_title_and_message.dart';
@@ -61,13 +60,13 @@ class AddShoppingListItemCubit extends Cubit<AddShoppingListItemState> {
         );
       },
       (shoppingListItem) {
-        shoppingListCubit.mergeOrAdd(
-          shoppingListItem: shoppingListItem,
-        );
         emit(AddShoppingListItemState(
           status: AddShoppingListItemStateStatus.success,
           addedShoppingListItem: shoppingListItem,
         ));
+        shoppingListCubit.replaceOrAdd(
+          shoppingListItem: shoppingListItem,
+        );
       },
     );
   }

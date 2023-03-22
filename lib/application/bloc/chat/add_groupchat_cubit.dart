@@ -45,7 +45,7 @@ class AddGroupchatCubit extends Cubit<AddGroupchatState> {
         );
       },
       (groupchat) {
-        chatCubit.mergeOrAdd(groupchat: groupchat);
+        chatCubit.replaceOrAdd(groupchat: groupchat);
         emit(AddGroupchatState(
           addedChat: groupchat,
           status: AddGroupchatStateStatus.success,

@@ -15,7 +15,7 @@ class ChatCubit extends Cubit<ChatState> {
   final ChatUseCases chatUseCases;
   ChatCubit({required this.chatUseCases}) : super(const ChatState(chats: []));
 
-  GroupchatEntity mergeOrAdd({
+  GroupchatEntity replaceOrAdd({
     required GroupchatEntity groupchat,
   }) {
     int foundIndex = state.chats.indexWhere(
@@ -24,13 +24,8 @@ class ChatCubit extends Cubit<ChatState> {
 
     if (foundIndex != -1) {
       List<GroupchatEntity> newGroupchats = state.chats;
-      newGroupchats[foundIndex] = GroupchatEntity.merge(
-        newEntity: groupchat,
-        oldEntity: state.chats[foundIndex],
-      );
-      emit(
-        ChatState(chats: newGroupchats),
-      );
+      newGroupchats[foundIndex] = groupchat;
+      emit(ChatState(chats: newGroupchats));
       return newGroupchats[foundIndex];
     } else {
       emit(
@@ -42,17 +37,13 @@ class ChatCubit extends Cubit<ChatState> {
     return groupchat;
   }
 
-  List<GroupchatEntity> mergeOrAddMultiple({
+  List<GroupchatEntity> replaceOrAddMultiple({
     required List<GroupchatEntity> groupchats,
   }) {
     List<GroupchatEntity> mergedChats = [];
     for (final chat in groupchats) {
-      // state will be changed in mergeOrAdd
-      final mergedChat = mergeOrAdd(groupchat: chat);
+      final mergedChat = replaceOrAdd(groupchat: chat);
       mergedChats.add(mergedChat);
-    }
-    if (groupchats.isEmpty) {
-      emit(const ChatState(chats: []));
     }
     return mergedChats;
   }
@@ -88,7 +79,7 @@ class ChatCubit extends Cubit<ChatState> {
         ),
       ),
       (groupchats) {
-        mergeOrAddMultiple(groupchats: groupchats);
+        replaceOrAddMultiple(groupchats: groupchats);
       },
     );
   }

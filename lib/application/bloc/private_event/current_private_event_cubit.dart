@@ -55,8 +55,10 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
   }
 
   Future getPrivateEventAndGroupchatFromApi() async {
-    await getCurrentPrivateEvent();
-    await getCurrentChatViaApi();
+    await Future.wait([
+      getCurrentPrivateEvent(),
+      getCurrentChatViaApi(),
+    ]);
   }
 
   void setPrivateEventUsers() {
@@ -131,8 +133,8 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
         );
       },
       (groupchat) async {
-        final mergedChat = chatCubit.mergeOrAdd(groupchat: groupchat);
-        emitState(groupchat: mergedChat, loadingGroupchat: false);
+        emitState(groupchat: groupchat, loadingGroupchat: false);
+        chatCubit.replaceOrAdd(groupchat: groupchat);
         setPrivateEventUsers();
       },
     );
@@ -160,13 +162,8 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
         );
       },
       (privateEvent) {
-        final mergedPrivateEvent = privateEventCubit.mergeOrAdd(
-          privateEvent: privateEvent,
-        );
-        emitState(
-          privateEvent: mergedPrivateEvent,
-          loadingPrivateEvent: false,
-        );
+        emitState(privateEvent: privateEvent, loadingPrivateEvent: false);
+        privateEventCubit.replaceOrAdd(privateEvent: privateEvent);
         setPrivateEventUsers();
       },
     );
@@ -241,19 +238,15 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
           setUsersFromOldEntity: true,
           newEntity: PrivateEventEntity(
             id: state.privateEvent.id,
-            users: [privateEventUser],
+            users: [privateEventUser], // sets the user auto from old entity
           ),
           oldEntity: state.privateEvent,
         );
-
-        final mergedPrivateEvent = privateEventCubit.mergeOrAdd(
-          privateEvent: newPrivateEvent,
-        );
-
         emitState(
           loadingPrivateEvent: false,
-          privateEvent: mergedPrivateEvent,
+          privateEvent: newPrivateEvent,
         );
+        privateEventCubit.replaceOrAdd(privateEvent: newPrivateEvent);
         setPrivateEventUsers();
       },
     );

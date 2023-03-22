@@ -77,11 +77,11 @@ class AddPrivateEventCubit extends Cubit<AddPrivateEventState> {
         );
       },
       (privateEvent) {
-        privateEventCubit.mergeOrAdd(privateEvent: privateEvent);
         emit(AddPrivateEventState(
           status: AddPrivateEventStateStatus.success,
           addedPrivateEvent: privateEvent,
         ));
+        privateEventCubit.replaceOrAdd(privateEvent: privateEvent);
       },
     );
   }

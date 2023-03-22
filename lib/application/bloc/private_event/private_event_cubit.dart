@@ -14,20 +14,15 @@ class PrivateEventCubit extends Cubit<PrivateEventState> {
     required this.privateEventUseCases,
   }) : super(const PrivateEventState(privateEvents: []));
 
-  PrivateEventEntity mergeOrAdd({required PrivateEventEntity privateEvent}) {
+  PrivateEventEntity replaceOrAdd({required PrivateEventEntity privateEvent}) {
     int foundIndex = state.privateEvents.indexWhere(
       (element) => element.id == privateEvent.id,
     );
 
     if (foundIndex != -1) {
       List<PrivateEventEntity> newPrivateEvents = state.privateEvents;
-      newPrivateEvents[foundIndex] = PrivateEventEntity.merge(
-        newEntity: privateEvent,
-        oldEntity: state.privateEvents[foundIndex],
-      );
-
+      newPrivateEvents[foundIndex] = privateEvent;
       emitState(privateEvents: newPrivateEvents);
-
       return newPrivateEvents[foundIndex];
     } else {
       emitState(
@@ -37,17 +32,13 @@ class PrivateEventCubit extends Cubit<PrivateEventState> {
     return privateEvent;
   }
 
-  List<PrivateEventEntity> mergeOrAddMultiple({
+  List<PrivateEventEntity> replaceOrAddMultiple({
     required List<PrivateEventEntity> privateEvents,
   }) {
     List<PrivateEventEntity> mergedPrivateEvents = [];
     for (final privateEvent in privateEvents) {
-      // state will be changed in mergeOrAdd
-      final mergedPrivateEvent = mergeOrAdd(privateEvent: privateEvent);
+      final mergedPrivateEvent = replaceOrAdd(privateEvent: privateEvent);
       mergedPrivateEvents.add(mergedPrivateEvent);
-    }
-    if (privateEvents.isEmpty) {
-      emit(const PrivateEventState(privateEvents: []));
     }
     return mergedPrivateEvents;
   }
@@ -79,7 +70,7 @@ class PrivateEventCubit extends Cubit<PrivateEventState> {
         ),
       ),
       (privateEvents) {
-        mergeOrAddMultiple(privateEvents: privateEvents);
+        replaceOrAddMultiple(privateEvents: privateEvents);
       },
     );
   }

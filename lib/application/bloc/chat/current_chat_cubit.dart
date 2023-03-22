@@ -112,11 +112,11 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
         );
       },
       (groupchat) async {
-        final mergedChat = chatCubit.mergeOrAdd(groupchat: groupchat);
         emitState(
           loadingChat: false,
-          currentChat: mergedChat,
+          currentChat: groupchat,
         );
+        chatCubit.replaceOrAdd(groupchat: groupchat);
         setGroupchatUsers();
       },
     );
@@ -145,7 +145,7 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
         );
       },
       (groupchatUser) {
-        final mergedChat = chatCubit.mergeOrAdd(
+        final mergedChat = chatCubit.replaceOrAdd(
           groupchat: GroupchatEntity.merge(
             newEntity: GroupchatEntity(
               id: state.currentChat.id,
@@ -192,7 +192,7 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
           chatCubit.delete(groupchatId: state.currentChat.id);
           emitState(loadingChat: false, currentUserLeftChat: true);
         } else {
-          final mergedChat = chatCubit.mergeOrAdd(
+          final mergedChat = chatCubit.replaceOrAdd(
             groupchat: GroupchatEntity.merge(
               newEntity: GroupchatEntity(
                 id: state.currentChat.id,
@@ -243,10 +243,13 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
       (messages) {
         emitState(
           loadingMessages: false,
-          currentChat: chatCubit.mergeOrAdd(
-            groupchat: GroupchatEntity(
-              id: state.currentChat.id,
-              messages: messages,
+          currentChat: chatCubit.replaceOrAdd(
+            groupchat: GroupchatEntity.merge(
+              newEntity: GroupchatEntity(
+                id: state.currentChat.id,
+                messages: messages,
+              ),
+              oldEntity: state.currentChat,
             ),
           ),
         );
@@ -255,47 +258,23 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
   }
 
   /// the message will automaticly updated in the groupchat cubit as well
-  MessageEntity mergeOrAddMessage({required MessageEntity message}) {
-    if (state.currentChat.messages != null) {
-      int foundIndex = state.currentChat.messages!.indexWhere(
-        (element) => element.id == message.id,
-      );
-
-      if (foundIndex != -1) {
-        List<MessageEntity> newMessages = state.currentChat.messages!;
-        newMessages[foundIndex] = MessageEntity.merge(
-          newEntity: message,
-          oldEntity: state.currentChat.messages![foundIndex],
-        );
-        emitState(
-          currentChat: chatCubit.mergeOrAdd(
-            groupchat: GroupchatEntity(
-              id: state.currentChat.id,
-              messages: newMessages,
-            ),
-          ),
-        );
-        return newMessages[foundIndex];
-      } else {
-        emitState(
-          currentChat: chatCubit.mergeOrAdd(
-            groupchat: GroupchatEntity(
-              id: state.currentChat.id,
-              messages: List.from(state.currentChat.messages!)..add(message),
-            ),
-          ),
-        );
-      }
-    } else {
-      emitState(
-        currentChat: chatCubit.mergeOrAdd(
-          groupchat: GroupchatEntity(
+  MessageEntity addMessage({required MessageEntity message}) {
+    List<MessageEntity> messages = state.currentChat.messages != null
+        ? (List.from(state.currentChat.messages!)..add(message))
+        : [message];
+    emitState(
+      currentChat: chatCubit.replaceOrAdd(
+        groupchat: GroupchatEntity.merge(
+          newEntity: GroupchatEntity(
             id: state.currentChat.id,
-            messages: [message],
+            messages: messages,
           ),
+          oldEntity: state.currentChat,
+          setMessagesFromOldEntity: false,
         ),
-      );
-    }
+      ),
+    );
+
     return message;
   }
 

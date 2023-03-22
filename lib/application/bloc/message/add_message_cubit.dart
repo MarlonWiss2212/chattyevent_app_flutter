@@ -56,14 +56,13 @@ class AddMessageCubit extends Cubit<AddMessageState> {
         );
       },
       (message) {
-        currentChatCubit.mergeOrAddMessage(message: message);
-
         /// to reset everything else
         emit(AddMessageState(
           groupchatTo: state.groupchatTo,
           status: AddMessageStateStatus.success,
           addedMessage: message,
         ));
+        currentChatCubit.addMessage(message: message);
       },
     );
   }

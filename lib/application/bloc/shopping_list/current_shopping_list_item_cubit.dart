@@ -49,13 +49,11 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
         );
       },
       (shoppingListItem) {
-        final mergedShoppingListItem = shoppingListCubit.mergeOrAdd(
-          shoppingListItem: shoppingListItem,
-        );
         emitState(
           loadingShoppingListItem: false,
-          shoppingListItem: mergedShoppingListItem,
+          shoppingListItem: shoppingListItem,
         );
+        shoppingListCubit.replaceOrAdd(shoppingListItem: shoppingListItem);
       },
     );
   }
@@ -80,14 +78,11 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
         );
       },
       (shoppingListItem) {
-        final mergedShoppingListItem = shoppingListCubit.mergeOrAdd(
-          shoppingListItem: shoppingListItem,
-        );
-
         emitState(
-          shoppingListItem: mergedShoppingListItem,
+          shoppingListItem: shoppingListItem,
           status: CurrentShoppingListItemStateStatus.updated,
         );
+        shoppingListCubit.replaceOrAdd(shoppingListItem: shoppingListItem);
       },
     );
   }
@@ -149,10 +144,8 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
           ),
           oldEntity: state.shoppingListItem,
         );
-        final mergedShoppingListItem = shoppingListCubit.mergeOrAdd(
-          shoppingListItem: newShoppingListItem,
-        );
-        emitState(shoppingListItem: mergedShoppingListItem);
+        emitState(shoppingListItem: newShoppingListItem);
+        shoppingListCubit.replaceOrAdd(shoppingListItem: newShoppingListItem);
       },
     );
   }
@@ -190,10 +183,10 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
               ),
               oldEntity: state.shoppingListItem,
             );
-            final mergedShoppingListItem = shoppingListCubit.mergeOrAdd(
+            emitState(shoppingListItem: newShoppingListItem);
+            shoppingListCubit.replaceOrAdd(
               shoppingListItem: newShoppingListItem,
             );
-            emitState(shoppingListItem: mergedShoppingListItem);
           } else {
             List<BoughtAmountEntity> newBoughtAmountList =
                 state.shoppingListItem.boughtAmount!;
@@ -208,10 +201,10 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
               oldEntity: state.shoppingListItem,
             );
 
-            final mergedShoppingListItem = shoppingListCubit.mergeOrAdd(
+            emitState(shoppingListItem: newShoppingListItem);
+            shoppingListCubit.replaceOrAdd(
               shoppingListItem: newShoppingListItem,
             );
-            emitState(shoppingListItem: mergedShoppingListItem);
           }
         } else {
           ShoppingListItemEntity newShoppingListItem =
@@ -222,10 +215,10 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
             ),
             oldEntity: state.shoppingListItem,
           );
-          final mergedShoppingListItem = shoppingListCubit.mergeOrAdd(
+          emitState(shoppingListItem: newShoppingListItem);
+          shoppingListCubit.replaceOrAdd(
             shoppingListItem: newShoppingListItem,
           );
-          emitState(shoppingListItem: mergedShoppingListItem);
         }
       },
     );
@@ -259,7 +252,8 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
               oldEntity: state.shoppingListItem,
             );
             emitState(shoppingListItem: newShoppingListItem);
-            shoppingListCubit.mergeOrAdd(shoppingListItem: newShoppingListItem);
+            shoppingListCubit.replaceOrAdd(
+                shoppingListItem: newShoppingListItem);
           } else {
             final ShoppingListItemEntity newShoppingListItem =
                 ShoppingListItemEntity.merge(
@@ -273,7 +267,9 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
               oldEntity: state.shoppingListItem,
             );
             emitState(shoppingListItem: newShoppingListItem);
-            shoppingListCubit.mergeOrAdd(shoppingListItem: newShoppingListItem);
+            shoppingListCubit.replaceOrAdd(
+              shoppingListItem: newShoppingListItem,
+            );
           }
         }
       },

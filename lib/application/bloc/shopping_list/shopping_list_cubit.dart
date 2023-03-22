@@ -16,7 +16,7 @@ class ShoppingListCubit extends Cubit<ShoppingListState> {
     required this.shoppingListItemUseCases,
   }) : super(const ShoppingListState(shoppingList: []));
 
-  ShoppingListItemEntity mergeOrAdd({
+  ShoppingListItemEntity replaceOrAdd({
     required ShoppingListItemEntity shoppingListItem,
   }) {
     int foundIndex = state.shoppingList.indexWhere(
@@ -41,19 +41,14 @@ class ShoppingListCubit extends Cubit<ShoppingListState> {
     return shoppingListItem;
   }
 
-  List<ShoppingListItemEntity> mergeOrAddMultiple({
+  List<ShoppingListItemEntity> replaceOrAddMultiple({
     required List<ShoppingListItemEntity> shoppingListItems,
   }) {
     List<ShoppingListItemEntity> mergedShoppingList = [];
     for (final shoppingListItem in shoppingListItems) {
-      // state will be changed in mergeOrAdd
-      final mergedShoppingListItem = mergeOrAdd(
-        shoppingListItem: shoppingListItem,
-      );
+      final mergedShoppingListItem =
+          replaceOrAdd(shoppingListItem: shoppingListItem);
       mergedShoppingList.add(mergedShoppingListItem);
-    }
-    if (shoppingListItems.isEmpty) {
-      emit(const ShoppingListState(shoppingList: []));
     }
     return mergedShoppingList;
   }
@@ -97,13 +92,9 @@ class ShoppingListCubit extends Cubit<ShoppingListState> {
         ),
       ),
       (shoppingListItems) {
-        ShoppingListState(
-          shoppingList: state.shoppingList,
-          loading: false,
-        );
-        mergeOrAddMultiple(
-          shoppingListItems: shoppingListItems,
-        );
+        replaceOrAddMultiple(shoppingListItems: shoppingListItems);
+        // too set loading false
+        ShoppingListState(shoppingList: state.shoppingList, loading: false);
       },
     );
   }
