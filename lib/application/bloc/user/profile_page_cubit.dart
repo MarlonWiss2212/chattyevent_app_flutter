@@ -55,11 +55,11 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
         );
       },
       (user) {
-        userCubit.replaceOrAdd(user: user);
+        final replacedUser = userCubit.replaceOrAdd(user: user);
         if (state.user.authId == authCubit.state.currentUser.authId) {
-          authCubit.emitState(currentUser: user);
+          authCubit.emitState(currentUser: replacedUser);
         }
-        emitState(status: ProfilePageStateStatus.success, user: user);
+        emitState(status: ProfilePageStateStatus.success, user: replacedUser);
       },
     );
   }

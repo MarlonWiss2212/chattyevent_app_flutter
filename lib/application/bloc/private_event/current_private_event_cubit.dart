@@ -136,8 +136,8 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
         );
       },
       (groupchat) async {
-        emitState(groupchat: groupchat, loadingGroupchat: false);
-        chatCubit.replaceOrAdd(groupchat: groupchat);
+        final replacedChat = chatCubit.replaceOrAdd(groupchat: groupchat);
+        emitState(groupchat: replacedChat, loadingGroupchat: false);
         setPrivateEventUsers();
       },
     );
@@ -165,8 +165,13 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
         );
       },
       (privateEvent) {
-        emitState(privateEvent: privateEvent, loadingPrivateEvent: false);
-        privateEventCubit.replaceOrAdd(privateEvent: privateEvent);
+        final replacedPrivateEvent = privateEventCubit.replaceOrAdd(
+          privateEvent: privateEvent,
+        );
+        emitState(
+          privateEvent: replacedPrivateEvent,
+          loadingPrivateEvent: false,
+        );
         setPrivateEventUsers();
       },
     );
@@ -245,11 +250,13 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
           ),
           oldEntity: state.privateEvent,
         );
-        emitState(
-          loadingPrivateEvent: false,
+        final replacedPrivateEvent = privateEventCubit.replaceOrAdd(
           privateEvent: newPrivateEvent,
         );
-        privateEventCubit.replaceOrAdd(privateEvent: newPrivateEvent);
+        emitState(
+          loadingPrivateEvent: false,
+          privateEvent: replacedPrivateEvent,
+        );
         setPrivateEventUsers();
       },
     );

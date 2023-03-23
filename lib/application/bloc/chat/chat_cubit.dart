@@ -24,7 +24,13 @@ class ChatCubit extends Cubit<ChatState> {
 
     if (foundIndex != -1) {
       List<GroupchatEntity> newGroupchats = state.chats;
-      newGroupchats[foundIndex] = groupchat;
+      newGroupchats[foundIndex] = GroupchatEntity.merge(
+        newEntity: GroupchatEntity(
+          id: state.chats[foundIndex].id,
+          messages: state.chats[foundIndex].messages,
+        ),
+        oldEntity: groupchat,
+      );
       emit(ChatState(chats: newGroupchats));
       return newGroupchats[foundIndex];
     } else {

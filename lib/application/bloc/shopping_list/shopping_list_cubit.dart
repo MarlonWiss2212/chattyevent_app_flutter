@@ -46,8 +46,9 @@ class ShoppingListCubit extends Cubit<ShoppingListState> {
   }) {
     List<ShoppingListItemEntity> mergedShoppingList = [];
     for (final shoppingListItem in shoppingListItems) {
-      final mergedShoppingListItem =
-          replaceOrAdd(shoppingListItem: shoppingListItem);
+      final mergedShoppingListItem = replaceOrAdd(
+        shoppingListItem: shoppingListItem,
+      );
       mergedShoppingList.add(mergedShoppingListItem);
     }
     return mergedShoppingList;

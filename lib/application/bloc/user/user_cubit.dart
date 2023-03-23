@@ -37,8 +37,8 @@ class UserCubit extends Cubit<UserState> {
     List<UserEntity> mergedUsers = [];
     for (final user in users) {
       // state will be changed in mergeOrAdd
-      final mergedUser = replaceOrAdd(user: user);
-      mergedUsers.add(mergedUser);
+      final replacedUser = replaceOrAdd(user: user);
+      mergedUsers.add(replacedUser);
     }
     if (users.isEmpty) {
       emit(const UserStateLoaded(users: []));

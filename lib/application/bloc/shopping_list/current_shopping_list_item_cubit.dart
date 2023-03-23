@@ -78,11 +78,13 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
         );
       },
       (shoppingListItem) {
-        emitState(
+        final replacedShoppingListItem = shoppingListCubit.replaceOrAdd(
           shoppingListItem: shoppingListItem,
+        );
+        emitState(
+          shoppingListItem: replacedShoppingListItem,
           status: CurrentShoppingListItemStateStatus.updated,
         );
-        shoppingListCubit.replaceOrAdd(shoppingListItem: shoppingListItem);
       },
     );
   }
@@ -144,8 +146,11 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
           ),
           oldEntity: state.shoppingListItem,
         );
-        emitState(shoppingListItem: newShoppingListItem);
-        shoppingListCubit.replaceOrAdd(shoppingListItem: newShoppingListItem);
+
+        final replacedShoppingListItem = shoppingListCubit.replaceOrAdd(
+          shoppingListItem: newShoppingListItem,
+        );
+        emitState(shoppingListItem: replacedShoppingListItem);
       },
     );
   }
@@ -183,10 +188,11 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
               ),
               oldEntity: state.shoppingListItem,
             );
-            emitState(shoppingListItem: newShoppingListItem);
-            shoppingListCubit.replaceOrAdd(
+
+            final replacedShoppingListItem = shoppingListCubit.replaceOrAdd(
               shoppingListItem: newShoppingListItem,
             );
+            emitState(shoppingListItem: replacedShoppingListItem);
           } else {
             List<BoughtAmountEntity> newBoughtAmountList =
                 state.shoppingListItem.boughtAmount!;
@@ -201,10 +207,10 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
               oldEntity: state.shoppingListItem,
             );
 
-            emitState(shoppingListItem: newShoppingListItem);
-            shoppingListCubit.replaceOrAdd(
+            final replacedShoppingListItem = shoppingListCubit.replaceOrAdd(
               shoppingListItem: newShoppingListItem,
             );
+            emitState(shoppingListItem: replacedShoppingListItem);
           }
         } else {
           ShoppingListItemEntity newShoppingListItem =
@@ -215,10 +221,10 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
             ),
             oldEntity: state.shoppingListItem,
           );
-          emitState(shoppingListItem: newShoppingListItem);
-          shoppingListCubit.replaceOrAdd(
+          final replacedShoppingListItem = shoppingListCubit.replaceOrAdd(
             shoppingListItem: newShoppingListItem,
           );
+          emitState(shoppingListItem: replacedShoppingListItem);
         }
       },
     );
@@ -251,9 +257,10 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
               ),
               oldEntity: state.shoppingListItem,
             );
-            emitState(shoppingListItem: newShoppingListItem);
-            shoppingListCubit.replaceOrAdd(
-                shoppingListItem: newShoppingListItem);
+            final replacedShoppingListItem = shoppingListCubit.replaceOrAdd(
+              shoppingListItem: newShoppingListItem,
+            );
+            emitState(shoppingListItem: replacedShoppingListItem);
           } else {
             final ShoppingListItemEntity newShoppingListItem =
                 ShoppingListItemEntity.merge(
@@ -266,10 +273,10 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
               ),
               oldEntity: state.shoppingListItem,
             );
-            emitState(shoppingListItem: newShoppingListItem);
-            shoppingListCubit.replaceOrAdd(
+            final replacedShoppingListItem = shoppingListCubit.replaceOrAdd(
               shoppingListItem: newShoppingListItem,
             );
+            emitState(shoppingListItem: replacedShoppingListItem);
           }
         }
       },

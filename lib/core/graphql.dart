@@ -7,7 +7,7 @@ GraphQLClient getGraphQlClient({
 }) {
   Link link;
 
-  if (websocketEndpoint) {
+  if (websocketEndpoint == false) {
     link = HttpLink(
       "https://${dotenv.get("API_BASE_URL")}",
       defaultHeaders: {
