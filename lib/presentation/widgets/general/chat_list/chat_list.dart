@@ -9,54 +9,55 @@ class ChatList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      shrinkWrap: true,
-      itemBuilder: (context, index) {
-        final message =
-            chats[index].messages != null && chats[index].messages!.isNotEmpty
-                ? chats[index].messages!.first
-                : null;
-        return ListTile(
-          leading: CircleAvatar(
-            backgroundImage: chats[index].profileImageLink != null
-                ? NetworkImage(chats[index].profileImageLink!)
-                : null,
-            backgroundColor: chats[index].profileImageLink == null
-                ? Theme.of(context).colorScheme.secondaryContainer
-                : null,
-          ),
-          title: Hero(
-            tag: "${chats[index].id} title",
-            child: Text(
-              chats[index].title ?? "Kein Titel",
-              style: Theme.of(context).textTheme.titleMedium,
+    return SliverList(
+      delegate: SliverChildBuilderDelegate(
+        (context, index) {
+          final message =
+              chats[index].messages != null && chats[index].messages!.isNotEmpty
+                  ? chats[index].messages!.first
+                  : null;
+          return ListTile(
+            leading: CircleAvatar(
+              backgroundImage: chats[index].profileImageLink != null
+                  ? NetworkImage(chats[index].profileImageLink!)
+                  : null,
+              backgroundColor: chats[index].profileImageLink == null
+                  ? Theme.of(context).colorScheme.secondaryContainer
+                  : null,
             ),
-          ),
-          subtitle: message != null
-              ? Text(
-                  //${message.createdBy}:
-                  "${message.message}",
-                  softWrap: true,
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
-                )
-              : const Text(
-                  "Keine Nachricht",
-                  softWrap: true,
-                  overflow: TextOverflow.ellipsis,
-                ),
-          onTap: () {
-            AutoRouter.of(context).push(
-              ChatPageWrapperRoute(
-                chatToSet: chats[index],
-                loadChatFromApiToo: true,
-                groupchatId: chats[index].id,
+            title: Hero(
+              tag: "${chats[index].id} title",
+              child: Text(
+                chats[index].title ?? "Kein Titel",
+                style: Theme.of(context).textTheme.titleMedium,
               ),
-            );
-          },
-        );
-      },
-      itemCount: chats.length,
+            ),
+            subtitle: message != null
+                ? Text(
+                    //${message.createdBy}:
+                    "${message.message}",
+                    softWrap: true,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                  )
+                : const Text(
+                    "Keine Nachricht",
+                    softWrap: true,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+            onTap: () {
+              AutoRouter.of(context).push(
+                ChatPageWrapperRoute(
+                  chatToSet: chats[index],
+                  loadChatFromApiToo: true,
+                  groupchatId: chats[index].id,
+                ),
+              );
+            },
+          );
+        },
+        childCount: chats.length,
+      ),
     );
   }
 }

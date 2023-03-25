@@ -9,6 +9,7 @@ import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
 import 'package:social_media_app_flutter/core/injection.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 import 'package:social_media_app_flutter/presentation/widgets/dialog/buttons/ok_button.dart';
+import 'package:social_media_app_flutter/presentation/widgets/general/button.dart';
 
 class NewGroupchatWrapperPage extends StatelessWidget {
   const NewGroupchatWrapperPage({super.key});
@@ -86,12 +87,12 @@ class NewGroupchatWrapperPage extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(horizontal: 8.0),
                         child: SizedBox(
                           width: double.infinity,
-                          child: PlatformElevatedButton(
-                            onPressed: () {
+                          child: Button(
+                            onTap: () {
                               BlocProvider.of<AddGroupchatCubit>(context)
                                   .createGroupchatViaApi();
                             },
-                            child: const Text("Speichern"),
+                            text: "Speichern",
                           ),
                         ),
                       ),

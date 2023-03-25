@@ -1,8 +1,9 @@
-import 'package:graphql/client.dart';
+import 'dart:async';
 import 'package:http/http.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:social_media_app_flutter/core/dto/create_message_dto.dart';
 import 'package:social_media_app_flutter/core/failures/failures.dart';
+import 'package:social_media_app_flutter/core/filter/messages/added_message_filter.dart';
 import 'package:social_media_app_flutter/domain/entities/message/message_entity.dart';
 import 'package:dartz/dartz.dart';
 import 'package:social_media_app_flutter/core/filter/get_messages_filter.dart';
@@ -12,6 +13,7 @@ import 'package:social_media_app_flutter/infastructure/models/message/message_mo
 
 class MessageRepositoryImpl implements MessageRepository {
   final GraphQlDatasource graphQlDatasource;
+
   MessageRepositoryImpl({required this.graphQlDatasource});
 
   @override
@@ -106,12 +108,14 @@ class MessageRepositoryImpl implements MessageRepository {
   }
 
   @override
-  Either<Failure, Stream<QueryResult<Object?>>> getMessagesRealtimeViaApi() {
+  Stream<Either<Failure, MessageEntity>> getMessagesRealtimeViaApi({
+    required AddedMessageFilter addedMessageFilter,
+  }) async* {
     try {
       final subscription = graphQlDatasource.subscription(
         """
-        subscription {
-          messageAdded {
+        subscription(\$addedMessageInput: AddedMessageInput!) {
+          messageAdded(addedMessageInput: \$addedMessageInput) {
             _id
             message
             messageToReactTo
@@ -122,11 +126,22 @@ class MessageRepositoryImpl implements MessageRepository {
           }
         }
       """,
+        variables: {
+          "addedMessageInput": addedMessageFilter.toMap(),
+        },
       );
 
-      return Right(subscription);
+      await for (var event in subscription) {
+        if (event.hasException) {
+          yield Left(GeneralFailure());
+        }
+        if (event.data != null) {
+          final message = MessageModel.fromJson(event.data!['messageAdded']);
+          yield Right(message);
+        }
+      }
     } catch (e) {
-      return Left(ServerFailure());
+      yield Left(ServerFailure());
     }
   }
 }

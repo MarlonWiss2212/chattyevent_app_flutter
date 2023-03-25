@@ -130,13 +130,31 @@ class _AppState extends State<App> {
                 title: 'Social Media App',
                 routeInformationParser: widget.appRouter.defaultRouteParser(),
                 routerDelegate: widget.appRouter.delegate(),
+                builder: (context, widget) {
+                  return ScrollConfiguration(
+                    behavior: const ScrollBehaviorModified(),
+                    child: widget!,
+                  );
+                },
                 material: (context, platform) => MaterialAppRouterData(
                   theme: ThemeData(
-                    useMaterial3: true,
+                    appBarTheme: const AppBarTheme(
+                      backgroundColor: Colors.white,
+                    ),
+                    bottomAppBarTheme: const BottomAppBarTheme(
+                      color: Colors.white,
+                    ),
+                    scaffoldBackgroundColor: Colors.white,
                     colorScheme: lightColorScheme,
                   ),
                   darkTheme: ThemeData(
-                    useMaterial3: true,
+                    appBarTheme: const AppBarTheme(
+                      backgroundColor: Colors.black,
+                    ),
+                    bottomAppBarTheme: const BottomAppBarTheme(
+                      color: Colors.black,
+                    ),
+                    scaffoldBackgroundColor: Colors.black,
                     colorScheme: darkColorScheme,
                   ),
                   themeMode: value.autoDarkMode == true
@@ -154,5 +172,13 @@ class _AppState extends State<App> {
         );
       },
     );
+  }
+}
+
+class ScrollBehaviorModified extends ScrollBehavior {
+  const ScrollBehaviorModified();
+  @override
+  ScrollPhysics getScrollPhysics(BuildContext context) {
+    return const BouncingScrollPhysics();
   }
 }

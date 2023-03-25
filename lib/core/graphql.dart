@@ -12,15 +12,17 @@ GraphQLClient getGraphQlClient({
       "https://${dotenv.get("API_BASE_URL")}",
       defaultHeaders: {
         "Apollo-Require-Preflight": "true",
-        "Authorization": "Bearer $token"
+        "authorization": "Bearer $token"
       },
     );
   } else {
     link = WebSocketLink(
-      "ws://${dotenv.get("API_BASE_URL")}",
+      "wss://${dotenv.get("API_BASE_URL")}",
+      subProtocol: GraphQLProtocol.graphqlWs,
       config: SocketClientConfig(
+        inactivityTimeout: const Duration(hours: 1),
         headers: {
-          "Authorization": "Bearer $token",
+          "authorization": "Bearer $token",
         },
       ),
     );

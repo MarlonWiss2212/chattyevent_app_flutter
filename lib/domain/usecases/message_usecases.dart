@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:graphql/client.dart';
 import 'package:social_media_app_flutter/core/dto/create_message_dto.dart';
+import 'package:social_media_app_flutter/core/filter/messages/added_message_filter.dart';
 import 'package:social_media_app_flutter/domain/entities/message/message_entity.dart';
 import 'package:social_media_app_flutter/core/failures/failures.dart';
 import 'package:social_media_app_flutter/core/filter/get_messages_filter.dart';
@@ -25,7 +26,11 @@ class MessageUseCases {
     );
   }
 
-  Either<Failure, Stream<QueryResult<Object?>>> getMessagesRealtimeViaApi() {
-    return messageRepository.getMessagesRealtimeViaApi();
+  Stream<Either<Failure, MessageEntity>> getMessagesRealtimeViaApi({
+    required AddedMessageFilter addedMessageFilter,
+  }) {
+    return messageRepository.getMessagesRealtimeViaApi(
+      addedMessageFilter: addedMessageFilter,
+    );
   }
 }

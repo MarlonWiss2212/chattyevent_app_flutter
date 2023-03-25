@@ -1,5 +1,6 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
-import 'package:collection/collection.dart';
 import 'package:dartz/dartz.dart';
 import 'package:meta/meta.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
@@ -9,6 +10,7 @@ import 'package:social_media_app_flutter/core/dto/groupchat/create_groupchat_lef
 import 'package:social_media_app_flutter/core/dto/groupchat/create_groupchat_user_dto.dart';
 import 'package:social_media_app_flutter/core/filter/get_messages_filter.dart';
 import 'package:social_media_app_flutter/core/filter/limit_offset_filter/limit_offset_filter.dart';
+import 'package:social_media_app_flutter/core/filter/messages/added_message_filter.dart';
 import 'package:social_media_app_flutter/domain/entities/error_with_title_and_message.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_left_user_entity.dart';
@@ -31,6 +33,8 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
   final ChatUseCases chatUseCases;
   final MessageUseCases messageUseCases;
 
+  StreamSubscription<Either<Failure, MessageEntity>>? _subscription;
+
   CurrentChatCubit(
     super.initialState, {
     required this.authCubit,
@@ -39,6 +43,36 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
     required this.userCubit,
     required this.chatUseCases,
   });
+
+  void listenToMessages() {
+    final subscription = messageUseCases.getMessagesRealtimeViaApi(
+      addedMessageFilter: AddedMessageFilter(
+        groupchatTo: state.currentChat.id,
+      ),
+    );
+
+    _subscription = subscription.listen((event) {
+      event.fold(
+        (error) => emitState(
+          error: ErrorWithTitleAndMessage(
+            title: "Nachrichten error",
+            message:
+                "Fehler beim herstellen einer Verbindung um live nachrichten zu erhalten",
+          ),
+          showError: true,
+        ),
+        (message) => addMessage(
+          message: message,
+        ),
+      );
+    });
+  }
+
+  @override
+  Future<void> close() {
+    _subscription?.cancel();
+    return super.close();
+  }
 
   Future getGroupchatUsersViaApi() async {
     /// optimize this

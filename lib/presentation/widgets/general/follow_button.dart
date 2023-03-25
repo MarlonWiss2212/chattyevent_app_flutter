@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/domain/entities/user/user_entity.dart';
+import 'package:social_media_app_flutter/presentation/widgets/general/button.dart';
 
 class FollowButton extends StatelessWidget {
   final UserEntity user;
@@ -13,50 +14,36 @@ class FollowButton extends StatelessWidget {
     if (user.id == BlocProvider.of<AuthCubit>(context).state.currentUser.id) {
       return const SizedBox();
     }
-    return InkWell(
+
+    String text = "";
+    TextStyle? textTheme;
+    Color? color;
+
+    if (user.myUserRelationToOtherUser?.statusOnRelatedUser == "follower") {
+      text = "Follower";
+      color = Colors.black;
+      textTheme = Theme.of(context).textTheme.labelMedium?.apply(
+            color: Colors.white,
+          );
+    } else if (user.myUserRelationToOtherUser?.statusOnRelatedUser ==
+        "requestToFollow") {
+      text = "Angefragt";
+      color = Colors.black;
+      textTheme = Theme.of(context).textTheme.labelMedium?.apply(
+            color: Colors.white,
+          );
+    } else {
+      text = "Folgen";
+      color = Theme.of(context).colorScheme.primaryContainer;
+      textTheme = Theme.of(context).textTheme.labelMedium?.apply(
+            color: Colors.white,
+          );
+    }
+    return Button(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(8),
-      child: Ink(
-        child:
-            user.myUserRelationToOtherUser?.statusOnRelatedUser == "follower" ||
-                    user.myUserRelationToOtherUser?.statusOnRelatedUser ==
-                        "requestToFollow"
-                ? Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      color: Colors.black,
-                    ),
-                    child: Center(
-                      child: Text(
-                        user.myUserRelationToOtherUser?.statusOnRelatedUser ==
-                                "requestToFollow"
-                            ? "Angefragt"
-                            : "gefolgt",
-                        style: Theme.of(context)
-                            .textTheme
-                            .labelMedium
-                            ?.apply(color: Colors.white),
-                      ),
-                    ),
-                  )
-                : Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      color: Theme.of(context).colorScheme.primaryContainer,
-                    ),
-                    child: Center(
-                      child: Text(
-                        "Folgen",
-                        style: Theme.of(context)
-                            .textTheme
-                            .labelMedium
-                            ?.apply(color: Colors.white),
-                      ),
-                    ),
-                  ),
-      ),
+      text: text,
+      textTheme: textTheme,
+      color: color,
     );
   }
 }

@@ -15,54 +15,59 @@ class HomeChatPage extends StatelessWidget {
   Widget build(BuildContext context) {
     BlocProvider.of<ChatCubit>(context).getChatsViaApi();
 
-    return PlatformScaffold(
-      appBar: PlatformAppBar(
-        title: const Text('Social Media App'),
-      ),
-      body: RefreshIndicator(
-        onRefresh: BlocProvider.of<ChatCubit>(context).getChatsViaApi,
-        triggerMode: RefreshIndicatorTriggerMode.anywhere,
-        child: BlocConsumer<ChatCubit, ChatState>(
-          listener: (context, state) async {
-            if (state.status == ChatStateStatus.error && state.error != null) {
-              return await showPlatformDialog(
-                context: context,
-                builder: (context) {
-                  return PlatformAlertDialog(
-                    title: Text(state.error!.title),
-                    content: Text(state.error!.message),
-                    actions: const [OKButton()],
-                  );
-                },
-              );
-            }
-          },
-          builder: (context, state) {
-            if (state.chats.isEmpty &&
-                state.status != ChatStateStatus.loading) {
-              return const Center(child: Text("Keine Chats"));
-            }
-
-            if (state.chats.isEmpty &&
-                state.status == ChatStateStatus.loading) {
-              return const HomeChatPageSkeleton();
-            }
-
-            return ChatList(chats: state.chats);
-          },
-        ),
-      ),
-      material: (context, platform) => MaterialScaffoldData(
-        floatingActionButton: FloatingActionButton.extended(
-          onPressed: () => AutoRouter.of(context).push(
-            const NewGroupchatWrapperPageRoute(),
+    return Scaffold(
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            pinned: true,
+            snap: true,
+            floating: true,
+            expandedHeight: 100,
+            flexibleSpace: const FlexibleSpaceBar(
+              title: Text("Chats"),
+            ),
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.add),
+                onPressed: () => AutoRouter.of(context).push(
+                  const NewGroupchatWrapperPageRoute(),
+                ),
+              ),
+            ],
           ),
-          icon: const Icon(Icons.chat_bubble),
-          label: Text(
-            'Neuer Chat',
-            style: Theme.of(context).textTheme.labelLarge,
+          BlocConsumer<ChatCubit, ChatState>(
+            listener: (context, state) async {
+              if (state.status == ChatStateStatus.error &&
+                  state.error != null) {
+                return await showPlatformDialog(
+                  context: context,
+                  builder: (context) {
+                    return PlatformAlertDialog(
+                      title: Text(state.error!.title),
+                      content: Text(state.error!.message),
+                      actions: const [OKButton()],
+                    );
+                  },
+                );
+              }
+            },
+            builder: (context, state) {
+              if (state.chats.isEmpty &&
+                  state.status != ChatStateStatus.loading) {
+                return const SliverFillRemaining(
+                  child: Center(
+                    child: Text("Keine Chats"),
+                  ),
+                );
+              }
+              if (state.chats.isEmpty &&
+                  state.status == ChatStateStatus.loading) {
+                return const SliverFillRemaining(child: HomeChatPageSkeleton());
+              }
+              return ChatList(chats: state.chats);
+            },
           ),
-        ),
+        ],
       ),
     );
   }

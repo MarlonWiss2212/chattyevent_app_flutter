@@ -17,6 +17,7 @@ class ChatPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     BlocProvider.of<CurrentChatCubit>(context).loadMessages();
+    BlocProvider.of<CurrentChatCubit>(context).listenToMessages();
 
     return PlatformScaffold(
       appBar: PlatformAppBar(

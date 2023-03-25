@@ -23,75 +23,37 @@ class HomePage extends StatelessWidget {
       builder: (context, child, animation) {
         final TabsRouter tabsRouter = AutoTabsRouter.of(context);
 
-        if (!kIsWeb) {
-          if (Platform.isIOS) {
-            return PlatformScaffold(
-              body: child,
-              bottomNavBar: PlatformNavBar(
-                currentIndex: tabsRouter.activeIndex,
-                itemChanged: (value) => tabsRouter.setActiveIndex(value),
-                backgroundColor: Theme.of(context).colorScheme.background,
-                items: const [
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.chat_bubble_outline),
-                    activeIcon: Icon(Icons.chat_bubble),
-                    label: 'Chat',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.celebration_outlined),
-                    activeIcon: Icon(Icons.celebration),
-                    label: 'Party',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.map_outlined),
-                    activeIcon: Icon(Icons.map),
-                    label: 'Map',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.search_outlined),
-                    activeIcon: Icon(Icons.search),
-                    label: 'Entdecken',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: MiniProfileImage(),
-                    activeIcon: MiniProfileImage(),
-                    label: 'Profil',
-                  )
-                ],
-              ),
-            );
-          }
-        }
-
         return Scaffold(
           body: child,
-          bottomNavigationBar: NavigationBar(
-            selectedIndex: tabsRouter.activeIndex,
-            onDestinationSelected: (value) => tabsRouter.setActiveIndex(value),
-            destinations: const [
-              NavigationDestination(
+          bottomNavigationBar: BottomNavigationBar(
+            currentIndex: tabsRouter.activeIndex,
+            type: BottomNavigationBarType.fixed,
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+            onTap: (value) => tabsRouter.setActiveIndex(value),
+            items: const [
+              BottomNavigationBarItem(
                 icon: Icon(Icons.chat_bubble_outline),
-                selectedIcon: Icon(Icons.chat_bubble),
+                activeIcon: Icon(Icons.chat_bubble),
                 label: 'Chat',
               ),
-              NavigationDestination(
+              BottomNavigationBarItem(
                 icon: Icon(Icons.celebration_outlined),
-                selectedIcon: Icon(Icons.celebration),
+                activeIcon: Icon(Icons.celebration),
                 label: 'Party',
               ),
-              NavigationDestination(
+              BottomNavigationBarItem(
                 icon: Icon(Icons.map_outlined),
-                selectedIcon: Icon(Icons.map),
+                activeIcon: Icon(Icons.map),
                 label: 'Map',
               ),
-              NavigationDestination(
+              BottomNavigationBarItem(
                 icon: Icon(Icons.search_outlined),
-                selectedIcon: Icon(Icons.search),
+                activeIcon: Icon(Icons.search),
                 label: 'Entdecken',
               ),
-              NavigationDestination(
+              BottomNavigationBarItem(
                 icon: MiniProfileImage(),
-                selectedIcon: MiniProfileImage(),
+                activeIcon: MiniProfileImage(),
                 label: 'Profil',
               )
             ],
