@@ -33,11 +33,11 @@ class HomeEventPageDetails extends StatelessWidget {
 
     sortPrivateEvents();
 
-    return SingleChildScrollView(
-      child: Column(
-        children: [
+    return SliverList(
+      delegate: SliverChildListDelegate(
+        [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            padding: const EdgeInsets.symmetric(horizontal: 8),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

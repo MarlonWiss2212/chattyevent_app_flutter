@@ -4,18 +4,20 @@ class Button extends StatelessWidget {
   final void Function()? onTap;
   final String text;
   final Color? color;
-  final TextStyle? textTheme;
+  final TextStyle? textStyle;
 
   const Button({
     super.key,
     required this.onTap,
     required this.text,
     this.color,
-    this.textTheme,
+    this.textStyle,
   });
 
   @override
   Widget build(BuildContext context) {
+    const standardTextStyle = TextStyle(fontWeight: FontWeight.w700);
+
     return InkWell(
       borderRadius: BorderRadius.circular(8),
       onTap: onTap,
@@ -30,9 +32,11 @@ class Button extends StatelessWidget {
             child: Center(
               child: Text(
                 text,
-                style: const TextStyle(fontWeight: FontWeight.w700).merge(
-                  textTheme,
-                ),
+                style: textStyle != null
+                    ? textStyle?.merge(
+                        standardTextStyle,
+                      )
+                    : standardTextStyle,
               ),
             ),
           ),

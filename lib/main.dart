@@ -141,9 +141,6 @@ class _AppState extends State<App> {
                     appBarTheme: const AppBarTheme(
                       backgroundColor: Colors.white,
                     ),
-                    bottomAppBarTheme: const BottomAppBarTheme(
-                      color: Colors.white,
-                    ),
                     scaffoldBackgroundColor: Colors.white,
                     colorScheme: lightColorScheme,
                   ),

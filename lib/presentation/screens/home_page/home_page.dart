@@ -30,6 +30,10 @@ class HomePage extends StatelessWidget {
             type: BottomNavigationBarType.fixed,
             backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             onTap: (value) => tabsRouter.setActiveIndex(value),
+            showUnselectedLabels: false,
+            showSelectedLabels: false,
+            selectedItemColor: Theme.of(context).colorScheme.onBackground,
+            unselectedItemColor: Theme.of(context).colorScheme.onBackground,
             items: const [
               BottomNavigationBarItem(
                 icon: Icon(Icons.chat_bubble_outline),

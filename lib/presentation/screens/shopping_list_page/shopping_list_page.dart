@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
@@ -19,40 +20,42 @@ class ShoppingListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     BlocProvider.of<ShoppingListCubit>(context).getShoppingListViaApi();
 
-    return PlatformScaffold(
-      appBar: PlatformAppBar(title: const Text("Einkaufsliste")),
-      body: BlocListener<ShoppingListCubit, ShoppingListState>(
-        listener: (context, state) async {
-          if (state.error != null) {
-            return await showPlatformDialog(
-              context: context,
-              builder: (context) {
-                return PlatformAlertDialog(
-                  title: Text(state.error!.title),
-                  content: Text(state.error!.message),
-                  actions: const [OKButton()],
-                );
-              },
-            );
-          }
-        },
-        child: Column(
-          children: [
-            BlocBuilder<ShoppingListCubit, ShoppingListState>(
-              buildWhen: (previous, current) =>
-                  previous.loading != current.loading,
-              builder: (context, state) {
-                if (state.loading == true) {
-                  return const LinearProgressIndicator();
-                }
-                return const SizedBox();
-              },
+    return Scaffold(
+      body: CustomScrollView(
+        slivers: [
+          const SliverAppBar(
+            pinned: true,
+            snap: true,
+            floating: true,
+            expandedHeight: 100,
+            flexibleSpace: FlexibleSpaceBar(
+              title: Text("Einkaufsliste"),
             ),
-            Expanded(
-              child: BlocBuilder<ShoppingListCubit, ShoppingListState>(
-                builder: (context, state) {
-                  if (state.loading == true && state.shoppingList.isEmpty) {
-                    return SkeletonListView(
+          ),
+          CupertinoSliverRefreshControl(
+            onRefresh: () => BlocProvider.of<ShoppingListCubit>(context)
+                .getShoppingListViaApi(),
+          ),
+          BlocListener<ShoppingListCubit, ShoppingListState>(
+            listener: (context, state) async {
+              if (state.error != null) {
+                return await showPlatformDialog(
+                  context: context,
+                  builder: (context) {
+                    return PlatformAlertDialog(
+                      title: Text(state.error!.title),
+                      content: Text(state.error!.message),
+                      actions: const [OKButton()],
+                    );
+                  },
+                );
+              }
+            },
+            child: BlocBuilder<ShoppingListCubit, ShoppingListState>(
+              builder: (context, state) {
+                if (state.loading == true && state.shoppingList.isEmpty) {
+                  return SliverFillRemaining(
+                    child: SkeletonListView(
                       itemBuilder: (p0, p1) {
                         return SkeletonListTile(
                           hasSubtitle: true,
@@ -67,52 +70,49 @@ class ShoppingListPage extends StatelessWidget {
                           ),
                         );
                       },
-                    );
-                  } else if (state.shoppingList.isEmpty) {
-                    return const Center(
-                      child: Text("Keine Items die gekauft werden müssen"),
-                    );
-                  }
-                  final currentUser =
-                      BlocProvider.of<AuthCubit>(context).state.currentUser;
-                  final filteredShoppingList = state.shoppingList
-                      .where(
-                        (element) => element.userToBuyItem == currentUser.id,
-                      )
-                      .toList();
-
-                  return ListView.builder(
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) {
-                      return ShoppingListItemTile(
-                        shoppingListItem: filteredShoppingList[index],
-                        userToBuyItem: UserWithPrivateEventUserData(
-                          user: currentUser,
-                          groupchatUser:
-                              GroupchatUserEntity(id: currentUser.id),
-                          privateEventUser:
-                              PrivateEventUserEntity(id: currentUser.id),
-                        ),
-                        onTap: () {
-                          AutoRouter.of(context).push(
-                            ShoppingListItemPageRoute(
-                              shoppingListItemId:
-                                  filteredShoppingList[index].id,
-                              shoppingListItemToSet:
-                                  filteredShoppingList[index],
-                              loadShoppingListItemFromApiToo: true,
-                            ),
-                          );
-                        },
-                      );
-                    },
-                    itemCount: filteredShoppingList.length,
+                    ),
                   );
-                },
-              ),
+                } else if (state.shoppingList.isEmpty) {
+                  return const SliverFillRemaining(
+                    child: Center(
+                      child: Text("Keine Items die gekauft werden müssen"),
+                    ),
+                  );
+                }
+                final currentUser =
+                    BlocProvider.of<AuthCubit>(context).state.currentUser;
+                final filteredShoppingList = state.shoppingList
+                    .where(
+                      (element) => element.userToBuyItem == currentUser.id,
+                    )
+                    .toList();
+
+                return SliverList(
+                  delegate: SliverChildBuilderDelegate((context, index) {
+                    return ShoppingListItemTile(
+                      shoppingListItem: filteredShoppingList[index],
+                      userToBuyItem: UserWithPrivateEventUserData(
+                        user: currentUser,
+                        groupchatUser: GroupchatUserEntity(id: currentUser.id),
+                        privateEventUser:
+                            PrivateEventUserEntity(id: currentUser.id),
+                      ),
+                      onTap: () {
+                        AutoRouter.of(context).push(
+                          ShoppingListItemPageRoute(
+                            shoppingListItemId: filteredShoppingList[index].id,
+                            shoppingListItemToSet: filteredShoppingList[index],
+                            loadShoppingListItemFromApiToo: true,
+                          ),
+                        );
+                      },
+                    );
+                  }, childCount: filteredShoppingList.length),
+                );
+              },
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
