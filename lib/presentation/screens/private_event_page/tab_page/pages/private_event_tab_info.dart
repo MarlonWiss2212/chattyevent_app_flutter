@@ -1,4 +1,5 @@
 import 'package:auto_route/annotations.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
@@ -19,26 +20,35 @@ class PrivateEventTabInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RefreshIndicator(
-      onRefresh: () => BlocProvider.of<CurrentPrivateEventCubit>(context)
-          .getPrivateEventAndGroupchatFromApi(),
-      child: SingleChildScrollView(
-        child: Column(
-          children: const [
-            SizedBox(height: 8),
-            PrivateEventTabInfoCoverImage(),
-            SizedBox(height: 20),
-            PrivateEventTabInfoGroupchatTo(),
-            CustomDivider(),
-            PrivateEventTabInfoUserList(),
-            CustomDivider(),
-            PrivateEventTabInfoLocation(), // custom divider is returned in <- widget
-            PrivateEventTabInfoEventDate(),
-            PrivateEventTabInfoEventEndDate(),
-            SizedBox(height: 8),
-          ],
+    return CustomScrollView(slivers: [
+      const SliverAppBar(
+        pinned: true,
+        snap: true,
+        floating: true,
+        expandedHeight: 100,
+        flexibleSpace: FlexibleSpaceBar(
+          title: Text("Detailseite"),
         ),
       ),
-    );
+      CupertinoSliverRefreshControl(
+        onRefresh: () => BlocProvider.of<CurrentPrivateEventCubit>(context)
+            .getPrivateEventAndGroupchatFromApi(),
+      ),
+      SliverList(
+        delegate: SliverChildListDelegate([
+          const SizedBox(height: 8),
+          const PrivateEventTabInfoCoverImage(),
+          const SizedBox(height: 20),
+          const PrivateEventTabInfoGroupchatTo(),
+          const CustomDivider(),
+          const PrivateEventTabInfoUserList(),
+          const CustomDivider(),
+          const PrivateEventTabInfoLocation(), // custom divider is returned in <- widget
+          const PrivateEventTabInfoEventDate(),
+          const PrivateEventTabInfoEventEndDate(),
+          const SizedBox(height: 8),
+        ]),
+      )
+    ]);
   }
 }

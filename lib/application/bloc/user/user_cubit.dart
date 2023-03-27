@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:meta/meta.dart';
+import 'package:social_media_app_flutter/core/filter/limit_offset_filter/limit_offset_filter.dart';
 import 'package:social_media_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:social_media_app_flutter/core/failures/failures.dart';
 import 'package:social_media_app_flutter/core/filter/get_users_filter.dart';
@@ -62,6 +63,10 @@ class UserCubit extends Cubit<UserState> {
     final Either<Failure, List<UserEntity>> userSearchOrFailure =
         await userUseCases.getUsersViaApi(
       getUsersFilter: getUsersFilter ?? GetUsersFilter(),
+      limitOffsetFilter: LimitOffsetFilter(
+        limit: 100,
+        offset: 0,
+      ),
     );
 
     userSearchOrFailure.fold(

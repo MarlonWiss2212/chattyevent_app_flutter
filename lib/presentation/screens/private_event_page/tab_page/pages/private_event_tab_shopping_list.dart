@@ -1,8 +1,7 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:collection/collection.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:skeletons/skeletons.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/shopping_list/shopping_list_cubit.dart';
@@ -12,7 +11,6 @@ import 'package:social_media_app_flutter/domain/entities/private_event/user_with
 import 'package:social_media_app_flutter/domain/entities/shopping_list_item/shopping_list_item_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
-import 'package:social_media_app_flutter/presentation/screens/shopping_list_item_page/standard_shopping_list_item_page.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/shopping_list_item_page/shopping_list_page/shopping_list_item_tile.dart';
 
 class PrivateEventTabShoppingList extends StatelessWidget {
@@ -29,24 +27,45 @@ class PrivateEventTabShoppingList extends StatelessWidget {
       ),
     );
 
-    return PlatformScaffold(
-      body: RefreshIndicator(
+    return CustomScrollView(slivers: [
+      SliverAppBar(
+        pinned: true,
+        snap: true,
+        floating: true,
+        expandedHeight: 100,
+        flexibleSpace: const FlexibleSpaceBar(
+          title: Text("Einkaufsliste"),
+        ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.add),
+            onPressed: () => AutoRouter.of(context).push(
+              PrivateEventCreateShoppingListItemPageRoute(),
+            ),
+          ),
+        ],
+      ),
+      CupertinoSliverRefreshControl(
         onRefresh: () =>
             BlocProvider.of<ShoppingListCubit>(context).getShoppingListViaApi(
           getShoppingListItemsFilter: GetShoppingListItemsFilter(
             privateEventId: privateEventId,
           ),
         ),
-        child: BlocBuilder<ShoppingListCubit, ShoppingListState>(
-          builder: (context, state) {
-            if (state.shoppingList.isEmpty &&
-                state.loadingForPrivateEventId != privateEventId) {
-              return const Center(
+      ),
+      BlocBuilder<ShoppingListCubit, ShoppingListState>(
+        builder: (context, state) {
+          if (state.shoppingList.isEmpty &&
+              state.loadingForPrivateEventId != privateEventId) {
+            return const SliverFillRemaining(
+              child: Center(
                 child: Text("Keine Items die gekauft werden müssen"),
-              );
-            } else if (state.shoppingList.isEmpty &&
-                state.loadingForPrivateEventId == privateEventId) {
-              return SkeletonListView(
+              ),
+            );
+          } else if (state.shoppingList.isEmpty &&
+              state.loadingForPrivateEventId == privateEventId) {
+            return SliverFillRemaining(
+              child: SkeletonListView(
                 itemBuilder: (p0, p1) {
                   return SkeletonListTile(
                     hasSubtitle: true,
@@ -61,21 +80,22 @@ class PrivateEventTabShoppingList extends StatelessWidget {
                     ),
                   );
                 },
-              );
-            }
+              ),
+            );
+          }
 
-            List<ShoppingListItemEntity> filteredItems = state.shoppingList
-                .where(
-                  (element) => element.privateEventId == privateEventId,
-                )
-                .toList();
+          List<ShoppingListItemEntity> filteredItems = state.shoppingList
+              .where(
+                (element) => element.privateEventId == privateEventId,
+              )
+              .toList();
 
-            return BlocBuilder<CurrentPrivateEventCubit,
-                CurrentPrivateEventState>(
-              builder: (context, currentPrivateEventState) {
-                return ListView.builder(
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
+          return BlocBuilder<CurrentPrivateEventCubit,
+              CurrentPrivateEventState>(
+            builder: (context, currentPrivateEventState) {
+              return SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (context, index) {
                     UserWithPrivateEventUserData userToBuyItem =
                         currentPrivateEventState.privateEventUsers.firstWhere(
                       (element) =>
@@ -104,27 +124,13 @@ class PrivateEventTabShoppingList extends StatelessWidget {
                       },
                     );
                   },
-                  itemCount: filteredItems.length,
-                );
-              },
-            );
-          },
-        ),
-      ),
-      material: (context, platform) => MaterialScaffoldData(
-        floatingActionButton: FloatingActionButton.extended(
-          onPressed: () async {
-            AutoRouter.of(context).push(
-              PrivateEventCreateShoppingListItemPageRoute(),
-            );
-          },
-          icon: const Icon(Icons.add),
-          label: Text(
-            'Neues Item',
-            style: Theme.of(context).textTheme.labelLarge,
-          ),
-        ),
-      ),
-    );
+                  childCount: filteredItems.length,
+                ),
+              );
+            },
+          );
+        },
+      )
+    ]);
   }
 }

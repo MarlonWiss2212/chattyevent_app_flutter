@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
+import 'package:social_media_app_flutter/core/filter/limit_offset_filter/limit_offset_filter.dart';
 import 'package:social_media_app_flutter/core/filter/user_relation/find_one_user_relation_filter.dart';
 import 'package:social_media_app_flutter/domain/entities/error_with_title_and_message.dart';
 import 'package:social_media_app_flutter/domain/entities/user-relation/user_relations_count_entity.dart';
@@ -23,6 +24,7 @@ class UserSearchCubit extends Cubit<UserSearchState> {
   }) : super(UserSearchState(users: []));
 
   Future getUsersViaApi({
+    LimitOffsetFilter? limitOffsetFilter,
     GetUsersFilter? getUsersFilter,
   }) async {
     emit(UserSearchState(
@@ -33,6 +35,11 @@ class UserSearchCubit extends Cubit<UserSearchState> {
     final Either<Failure, List<UserEntity>> userSearchOrFailure =
         await userUseCases.getUsersViaApi(
       getUsersFilter: getUsersFilter ?? GetUsersFilter(),
+      limitOffsetFilter: limitOffsetFilter ??
+          LimitOffsetFilter(
+            limit: 10,
+            offset: 0,
+          ),
     );
 
     userSearchOrFailure.fold(

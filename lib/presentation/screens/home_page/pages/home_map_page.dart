@@ -16,9 +16,9 @@ class Location extends StatelessWidget {
     BlocProvider.of<PrivateEventCubit>(context).getPrivateEventsViaApi();
     BlocProvider.of<LocationCubit>(context).getLocationFromDevice();
 
-    return PlatformScaffold(
-      appBar: PlatformAppBar(
-        title: const Text('Social Media App'),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Map'),
       ),
       body: BlocConsumer<LocationCubit, LocationState>(
         listener: (context, state) async {

@@ -22,7 +22,7 @@ class EventHorizontalListSkeleton extends StatelessWidget {
             SkeletonAvatar(
               style: SkeletonAvatarStyle(width: width, height: height),
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             SkeletonAvatar(
               style: SkeletonAvatarStyle(width: width, height: height),
             ),

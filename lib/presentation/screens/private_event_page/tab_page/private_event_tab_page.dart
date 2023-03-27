@@ -1,7 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 
@@ -20,8 +19,8 @@ class PrivateEventTabPage extends StatelessWidget {
         PrivateEventTabShoppingListRoute(),
       ],
       builder: (context, child, tabController) {
-        return PlatformScaffold(
-          appBar: PlatformAppBar(
+        return Scaffold(
+          appBar: AppBar(
             leading: const AutoLeadingButton(),
             title:
                 BlocBuilder<CurrentPrivateEventCubit, CurrentPrivateEventState>(
@@ -37,17 +36,13 @@ class PrivateEventTabPage extends StatelessWidget {
                 );
               },
             ),
-            material: (context, platform) => MaterialAppBarData(
-              bottom: TabBar(
-                controller: tabController,
-                tabs: const [
-                  Tab(text: "Info", icon: Icon(Icons.celebration)),
-                  Tab(
-                    text: "Einkaufsliste",
-                    icon: Icon(Icons.shopping_cart),
-                  ),
-                ],
-              ),
+            bottom: TabBar(
+              indicatorColor: Theme.of(context).colorScheme.primary,
+              controller: tabController,
+              tabs: const [
+                Tab(icon: Icon(Icons.celebration)),
+                Tab(icon: Icon(Icons.shopping_cart)),
+              ],
             ),
           ),
           body: Column(

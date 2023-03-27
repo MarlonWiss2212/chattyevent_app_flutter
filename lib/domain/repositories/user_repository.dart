@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:social_media_app_flutter/core/dto/create_user_dto.dart';
+import 'package:social_media_app_flutter/core/filter/limit_offset_filter/limit_offset_filter.dart';
 import 'package:social_media_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:social_media_app_flutter/core/failures/failures.dart';
 import 'package:social_media_app_flutter/core/filter/get_one_user_filter.dart';
@@ -14,6 +15,7 @@ abstract class UserRepository {
   });
   Future<Either<Failure, List<UserEntity>>> getUsersViaApi({
     required GetUsersFilter getUsersFilter,
+    required LimitOffsetFilter limitOffsetFilter,
   });
   Future<Either<Failure, UserEntity>> updateUserViaApi();
   Future<Either<Failure, UserEntity>> deleteUserViaApi();

@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
@@ -47,6 +48,10 @@ class ProfilePage extends StatelessWidget {
               ProfilePageTrailingFollowRequestIconButton(),
               ProfilePageTrailinSettingsButton(),
             ],
+          ),
+          CupertinoSliverRefreshControl(
+            onRefresh: () => BlocProvider.of<ProfilePageCubit>(context)
+                .getCurrentUserViaApi(),
           ),
           BlocBuilder<ProfilePageCubit, ProfilePageState>(
             buildWhen: (previous, current) => previous.status != current.status,

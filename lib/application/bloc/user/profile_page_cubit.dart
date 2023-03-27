@@ -56,7 +56,7 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
       },
       (user) {
         final replacedUser = userCubit.replaceOrAdd(user: user);
-        if (state.user.authId == authCubit.state.currentUser.authId) {
+        if (state.user.id == authCubit.state.currentUser.id) {
           authCubit.emitState(currentUser: replacedUser);
         }
         emitState(status: ProfilePageStateStatus.success, user: replacedUser);
@@ -108,6 +108,7 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
           message: "Du kannst nicht die Freundschaftsanfragen anderer sehen",
         ),
       );
+      return;
     }
 
     emitState(
@@ -179,7 +180,7 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
   Future acceptFollowRequest({
     required String userId,
   }) async {
-    if (state.user.authId != authCubit.state.currentUser.authId) {
+    if (state.user.id != authCubit.state.currentUser.id) {
       emitState(
         followRequestsStatus: ProfilePageStateFollowRequestsStatus.error,
         followRequestsError: ErrorWithTitleAndMessage(
@@ -188,6 +189,7 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
               "Du kannst keine Freundschaftsanfragen auf anderen Profilen annehmen",
         ),
       );
+      return;
     }
     emitState(
       followRequestsStatus: ProfilePageStateFollowRequestsStatus.loading,
@@ -233,7 +235,7 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
   Future deleteFollowRequest({
     required String userId,
   }) async {
-    if (state.user.authId != authCubit.state.currentUser.authId) {
+    if (state.user.id != authCubit.state.currentUser.id) {
       emitState(
         followRequestsStatus: ProfilePageStateFollowRequestsStatus.error,
         followRequestsError: ErrorWithTitleAndMessage(
@@ -242,6 +244,7 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
               "Du kannst keine Freundschaftsanfragen auf anderen Profilen ablehnen",
         ),
       );
+      return;
     }
     final userRelationOrFailure =
         await userRelationUseCases.deleteUserRelationViaApi(
@@ -296,7 +299,7 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
   Future deleteFollower({
     required String userId,
   }) async {
-    if (state.user.authId != authCubit.state.currentUser.authId) {
+    if (state.user.id != authCubit.state.currentUser.id) {
       emitState(
         followersStatus: ProfilePageStateFollowersStatus.error,
         followersError: ErrorWithTitleAndMessage(
@@ -304,6 +307,7 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
           message: "Du kannst keinen Follower eines anderen Profiles löschen",
         ),
       );
+      return;
     }
 
     final userRelationOrFailure =

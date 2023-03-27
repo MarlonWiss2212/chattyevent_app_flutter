@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:http/http.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:social_media_app_flutter/core/dto/create_user_dto.dart';
+import 'package:social_media_app_flutter/core/filter/limit_offset_filter/limit_offset_filter.dart';
 import 'package:social_media_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:social_media_app_flutter/core/failures/failures.dart';
 import 'package:social_media_app_flutter/core/filter/get_one_user_filter.dart';
@@ -64,12 +65,13 @@ class UserRepositoryImpl implements UserRepository {
   @override
   Future<Either<Failure, List<UserEntity>>> getUsersViaApi({
     required GetUsersFilter getUsersFilter,
+    required LimitOffsetFilter limitOffsetFilter,
   }) async {
     try {
       final response = await graphQlDatasource.query(
         """
-        query FindUsers(\$input: FindUsersInput!) {
-          findUsers(filter: \$input) {
+        query FindUsers(\$input: FindUsersInput!, \$limitOffsetFilterInput: LimitOffsetFilterInput!) {
+          findUsers(filter: \$input, limitOffsetFilterInput: \$limitOffsetFilterInput) {
             _id
             authId
             username
@@ -81,7 +83,10 @@ class UserRepositoryImpl implements UserRepository {
           }
         }
         """,
-        variables: {"input": getUsersFilter.toMap()},
+        variables: {
+          "input": getUsersFilter.toMap(),
+          "limitOffsetFilterInput": limitOffsetFilter.toMap(),
+        },
       );
       if (response.hasException) {
         return Left(GeneralFailure());

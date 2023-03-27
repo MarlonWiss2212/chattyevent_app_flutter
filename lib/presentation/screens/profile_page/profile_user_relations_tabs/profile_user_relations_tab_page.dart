@@ -1,11 +1,9 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/profile_page_cubit.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
-import 'package:social_media_app_flutter/presentation/widgets/dialog/buttons/ok_button.dart';
 
 class ProfileUserRelationsTabPage extends StatelessWidget {
   final String? userId;
@@ -30,8 +28,8 @@ class ProfileUserRelationsTabPage extends StatelessWidget {
             }
           ],
           builder: (context, child, tabController) {
-            return PlatformScaffold(
-              appBar: PlatformAppBar(
+            return Scaffold(
+              appBar: AppBar(
                 title: BlocBuilder<ProfilePageCubit, ProfilePageState>(
                   buildWhen: (previous, current) {
                     return previous.user.username != current.user.username;
@@ -46,22 +44,21 @@ class ProfileUserRelationsTabPage extends StatelessWidget {
                     );
                   },
                 ),
-                material: (context, platform) => MaterialAppBarData(
-                  bottom: TabBar(
-                    controller: tabController,
-                    tabs: [
-                      const Tab(text: "Followers", icon: Icon(Icons.person)),
+                bottom: TabBar(
+                  controller: tabController,
+                  indicatorColor: Theme.of(context).colorScheme.primary,
+                  tabs: [
+                    const Tab(text: "Followers", icon: Icon(Icons.person)),
+                    const Tab(
+                        text: "Gefolgt", icon: Icon(Icons.person_2_outlined)),
+                    if (userId == authState.currentUser.id ||
+                        userId == null) ...{
                       const Tab(
-                          text: "Gefolgt", icon: Icon(Icons.person_2_outlined)),
-                      if (userId == authState.currentUser.id ||
-                          userId == null) ...{
-                        const Tab(
-                          text: "Anfragen",
-                          icon: Icon(Icons.front_hand),
-                        ),
-                      }
-                    ],
-                  ),
+                        text: "Anfragen",
+                        icon: Icon(Icons.front_hand),
+                      ),
+                    }
+                  ],
                 ),
               ),
               body: child,
