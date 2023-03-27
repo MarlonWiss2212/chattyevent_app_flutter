@@ -45,7 +45,12 @@ class AddGroupchatCubit extends Cubit<AddGroupchatState> {
         );
       },
       (groupchat) {
-        chatCubit.replaceOrAdd(groupchat: groupchat);
+        chatCubit.replaceOrAdd(
+          groupchat: groupchat,
+          setLeftUsersFromOldEntity: false,
+          setMessagesFromOldEntity: false,
+          setUsersFromOldEntity: false,
+        );
         emit(AddGroupchatState(
           addedChat: groupchat,
           status: AddGroupchatStateStatus.success,

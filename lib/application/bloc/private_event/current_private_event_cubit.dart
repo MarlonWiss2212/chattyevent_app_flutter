@@ -136,7 +136,12 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
         );
       },
       (groupchat) async {
-        final replacedChat = chatCubit.replaceOrAdd(groupchat: groupchat);
+        final replacedChat = chatCubit.replaceOrAdd(
+          groupchat: groupchat,
+          setMessagesFromOldEntity: true,
+          setLeftUsersFromOldEntity: false,
+          setUsersFromOldEntity: false,
+        );
         emitState(groupchat: replacedChat, loadingGroupchat: false);
         setPrivateEventUsers();
       },
@@ -167,6 +172,7 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
       (privateEvent) {
         final replacedPrivateEvent = privateEventCubit.replaceOrAdd(
           privateEvent: privateEvent,
+          setUsersFromOldEntity: false,
         );
         emitState(
           privateEvent: replacedPrivateEvent,
@@ -197,16 +203,16 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
         loadingPrivateEvent: false,
       ),
       (privateEventUser) {
+        final replacedPrivateEvent = privateEventCubit.replaceOrAdd(
+          privateEvent: PrivateEventEntity(
+            id: state.privateEvent.id,
+            users: [privateEventUser],
+          ),
+          setUsersFromOldEntity: true,
+        );
         emitState(
           loadingPrivateEvent: false,
-          privateEvent: PrivateEventEntity.merge(
-            newEntity: PrivateEventEntity(
-              id: state.privateEvent.id,
-              users: List.from(state.privateEvent.users ?? [])
-                ..add(privateEventUser),
-            ),
-            oldEntity: state.privateEvent,
-          ),
+          privateEvent: replacedPrivateEvent,
         );
         setPrivateEventUsers();
       },
@@ -242,16 +248,12 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
         );
       },
       (privateEventUser) {
-        final newPrivateEvent = PrivateEventEntity.merge(
-          setUsersFromOldEntity: true,
-          newEntity: PrivateEventEntity(
-            id: state.privateEvent.id,
-            users: [privateEventUser], // sets the user auto from old entity
-          ),
-          oldEntity: state.privateEvent,
-        );
         final replacedPrivateEvent = privateEventCubit.replaceOrAdd(
-          privateEvent: newPrivateEvent,
+          privateEvent: PrivateEventEntity(
+            id: state.privateEvent.id,
+            users: [privateEventUser],
+          ),
+          setUsersFromOldEntity: true,
         );
         emitState(
           loadingPrivateEvent: false,

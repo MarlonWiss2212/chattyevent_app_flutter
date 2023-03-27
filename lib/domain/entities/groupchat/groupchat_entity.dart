@@ -30,9 +30,9 @@ class GroupchatEntity {
   factory GroupchatEntity.merge({
     required GroupchatEntity newEntity,
     required GroupchatEntity oldEntity,
-    bool setMessagesFromOldEntity = true,
-    bool setLeftUsersFromOldEntity = true,
-    bool setUsersFromOldEntity = true,
+    bool setMessagesFromOldEntity = false,
+    bool setLeftUsersFromOldEntity = false,
+    bool setUsersFromOldEntity = false,
   }) {
     List<GroupchatUserEntity>? users =
         setUsersFromOldEntity ? oldEntity.users : null;

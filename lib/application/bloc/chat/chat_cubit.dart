@@ -17,6 +17,9 @@ class ChatCubit extends Cubit<ChatState> {
 
   GroupchatEntity replaceOrAdd({
     required GroupchatEntity groupchat,
+    required bool setMessagesFromOldEntity,
+    required bool setLeftUsersFromOldEntity,
+    required bool setUsersFromOldEntity,
   }) {
     int foundIndex = state.chats.indexWhere(
       (element) => element.id == groupchat.id,
@@ -25,11 +28,11 @@ class ChatCubit extends Cubit<ChatState> {
     if (foundIndex != -1) {
       List<GroupchatEntity> newGroupchats = state.chats;
       newGroupchats[foundIndex] = GroupchatEntity.merge(
-        newEntity: GroupchatEntity(
-          id: state.chats[foundIndex].id,
-          messages: state.chats[foundIndex].messages,
-        ),
-        oldEntity: groupchat,
+        setMessagesFromOldEntity: setMessagesFromOldEntity,
+        setLeftUsersFromOldEntity: setLeftUsersFromOldEntity,
+        setUsersFromOldEntity: setUsersFromOldEntity,
+        newEntity: groupchat,
+        oldEntity: state.chats[foundIndex],
       );
       emit(ChatState(chats: newGroupchats));
       return newGroupchats[foundIndex];
@@ -45,10 +48,18 @@ class ChatCubit extends Cubit<ChatState> {
 
   List<GroupchatEntity> replaceOrAddMultiple({
     required List<GroupchatEntity> groupchats,
+    required bool setMessagesFromOldEntity,
+    required bool setLeftUsersFromOldEntity,
+    required bool setUsersFromOldEntity,
   }) {
     List<GroupchatEntity> mergedChats = [];
     for (final chat in groupchats) {
-      final mergedChat = replaceOrAdd(groupchat: chat);
+      final mergedChat = replaceOrAdd(
+        groupchat: chat,
+        setLeftUsersFromOldEntity: setLeftUsersFromOldEntity,
+        setMessagesFromOldEntity: setMessagesFromOldEntity,
+        setUsersFromOldEntity: setUsersFromOldEntity,
+      );
       mergedChats.add(mergedChat);
     }
     return mergedChats;
@@ -85,7 +96,12 @@ class ChatCubit extends Cubit<ChatState> {
         ),
       ),
       (groupchats) {
-        replaceOrAddMultiple(groupchats: groupchats);
+        replaceOrAddMultiple(
+          groupchats: groupchats,
+          setMessagesFromOldEntity: true,
+          setLeftUsersFromOldEntity: false,
+          setUsersFromOldEntity: false,
+        );
       },
     );
   }

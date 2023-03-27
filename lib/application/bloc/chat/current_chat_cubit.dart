@@ -210,7 +210,12 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
         );
       },
       (groupchat) async {
-        final replacedGroupchat = chatCubit.replaceOrAdd(groupchat: groupchat);
+        final replacedGroupchat = chatCubit.replaceOrAdd(
+          groupchat: groupchat,
+          setLeftUsersFromOldEntity: false,
+          setMessagesFromOldEntity: true,
+          setUsersFromOldEntity: false,
+        );
         emitState(
           loadingChat: false,
           currentChat: replacedGroupchat,
@@ -244,18 +249,17 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
       },
       (groupchatUser) {
         final replacedGroupchat = chatCubit.replaceOrAdd(
-          groupchat: GroupchatEntity.merge(
-            newEntity: GroupchatEntity(
-              id: state.currentChat.id,
-              leftUsers: List.from(state.currentChat.leftUsers ?? [])
-                ..removeWhere(
-                  (element) => element.userId == groupchatUser.userId,
-                ),
-              users: List.from(state.currentChat.users ?? [])
-                ..add(groupchatUser),
-            ),
-            oldEntity: state.currentChat,
+          groupchat: GroupchatEntity(
+            id: state.currentChat.id,
+            leftUsers: List.from(state.currentChat.leftUsers ?? [])
+              ..removeWhere(
+                (element) => element.userId == groupchatUser.userId,
+              ),
+            users: [groupchatUser],
           ),
+          setLeftUsersFromOldEntity: false,
+          setUsersFromOldEntity: true,
+          setMessagesFromOldEntity: true,
         );
         emitState(loadingChat: false, currentChat: replacedGroupchat);
         setGroupchatUsers();
@@ -291,18 +295,17 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
           emitState(loadingChat: false, currentUserLeftChat: true);
         } else {
           final replacedGroupchat = chatCubit.replaceOrAdd(
-            groupchat: GroupchatEntity.merge(
-              newEntity: GroupchatEntity(
-                id: state.currentChat.id,
-                users: List.from(state.currentChat.users ?? [])
-                  ..removeWhere(
-                    (element) => element.userId == groupchatLeftUser.userId,
-                  ),
-                leftUsers: List.from(state.currentChat.leftUsers ?? [])
-                  ..add(groupchatLeftUser),
-              ),
-              oldEntity: state.currentChat,
+            groupchat: GroupchatEntity(
+              id: state.currentChat.id,
+              users: List.from(state.currentChat.users ?? [])
+                ..removeWhere(
+                  (element) => element.userId == groupchatLeftUser.userId,
+                ),
+              leftUsers: [groupchatLeftUser],
             ),
+            setLeftUsersFromOldEntity: true,
+            setUsersFromOldEntity: false,
+            setMessagesFromOldEntity: true,
           );
           emitState(loadingChat: false, currentChat: replacedGroupchat);
           setGroupchatUsers();
@@ -342,13 +345,13 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
         emitState(
           loadingMessages: false,
           currentChat: chatCubit.replaceOrAdd(
-            groupchat: GroupchatEntity.merge(
-              newEntity: GroupchatEntity(
-                id: state.currentChat.id,
-                messages: messages,
-              ),
-              oldEntity: state.currentChat,
+            groupchat: GroupchatEntity(
+              id: state.currentChat.id,
+              messages: messages,
             ),
+            setLeftUsersFromOldEntity: true,
+            setUsersFromOldEntity: true,
+            setMessagesFromOldEntity: true,
           ),
         );
       },
@@ -362,14 +365,13 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
         : [message];
     emitState(
       currentChat: chatCubit.replaceOrAdd(
-        groupchat: GroupchatEntity.merge(
-          newEntity: GroupchatEntity(
-            id: state.currentChat.id,
-            messages: messages,
-          ),
-          oldEntity: state.currentChat,
-          setMessagesFromOldEntity: false,
+        groupchat: GroupchatEntity(
+          id: state.currentChat.id,
+          messages: messages,
         ),
+        setMessagesFromOldEntity: false,
+        setLeftUsersFromOldEntity: true,
+        setUsersFromOldEntity: true,
       ),
     );
 
