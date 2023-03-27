@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:social_media_app_flutter/presentation/router/auth_guard.dart';
+import 'package:social_media_app_flutter/presentation/screens/chat_page/chat_future_private_events_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/chat_page/chat_info_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/chat_page/chat_add_user_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/chat_page/chat_page.dart';
@@ -188,6 +189,11 @@ import 'package:social_media_app_flutter/presentation/screens/shopping_list_page
           initial: true,
         ),
         AutoRoute(page: ChatInfoPage, guards: [AuthGuard], path: 'info'),
+        AutoRoute(
+          page: ChatFuturePrivateEventsPage,
+          guards: [AuthGuard],
+          path: 'private-events',
+        ),
         AutoRoute(
           page: ChatAddUserPage,
           guards: [AuthGuard],

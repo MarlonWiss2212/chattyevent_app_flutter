@@ -4,9 +4,9 @@ import 'package:intl/intl.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 
-class ChatInfoPagePrivateEventListItem extends StatelessWidget {
+class PrivateEventListItem extends StatelessWidget {
   final PrivateEventEntity privateEvent;
-  const ChatInfoPagePrivateEventListItem({
+  const PrivateEventListItem({
     super.key,
     required this.privateEvent,
   });

@@ -1,10 +1,10 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletons/skeletons.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/private_event/private_event_cubit.dart';
-import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
-import 'package:social_media_app_flutter/presentation/widgets/screens/chat_page/chat_info_page/chat_info_page_private_event_list/chat_info_page_private_event_list_item.dart';
+import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
+import 'package:social_media_app_flutter/presentation/widgets/event_list/private_event_list_item.dart';
 
 class ChatInfoPagePrivateEventList extends StatelessWidget {
   const ChatInfoPagePrivateEventList({super.key});
@@ -12,54 +12,57 @@ class ChatInfoPagePrivateEventList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CurrentChatCubit, CurrentChatState>(
-      buildWhen: (previous, current) =>
-          previous.currentChat.id != current.currentChat.id,
-      builder: (context, chatState) {
-        return BlocBuilder<PrivateEventCubit, PrivateEventState>(
-          builder: (context, state) {
-            List<PrivateEventEntity> filteredEvents = state.privateEvents
-                .where(
-                  (element) => element.groupchatTo == chatState.currentChat.id,
-                )
-                .toList();
-
-            return Column(
-              children: [
-                Text(
-                  "Private Events: ${filteredEvents.length}",
-                  style: Theme.of(context).textTheme.titleMedium,
+      builder: (context, state) {
+        return Column(
+          children: [
+            Text(
+              "Zukünftige Verbundene Events: ",
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+            if (state.futureConnectedPrivateEvents.isEmpty &&
+                state.loadingPrivateEvents == true) ...[
+              const SizedBox(height: 8),
+              SkeletonListTile(
+                padding: const EdgeInsets.all(8),
+                hasSubtitle: true,
+                titleStyle: const SkeletonLineStyle(width: 100, height: 22),
+                subtitleStyle: const SkeletonLineStyle(
+                  width: double.infinity,
+                  height: 16,
                 ),
-                if (filteredEvents.isEmpty &&
-                    state.status == PrivateEventStateStatus.loading) ...[
-                  const SizedBox(height: 8),
-                  SkeletonListTile(
-                    padding: const EdgeInsets.all(8),
-                    hasSubtitle: true,
-                    titleStyle: const SkeletonLineStyle(width: 100, height: 22),
-                    subtitleStyle: const SkeletonLineStyle(
-                      width: double.infinity,
-                      height: 16,
-                    ),
-                    leadingStyle: const SkeletonAvatarStyle(
-                      shape: BoxShape.circle,
-                    ),
-                  ),
-                ] else if (filteredEvents.isNotEmpty) ...[
-                  const SizedBox(height: 8),
-                  ListView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemBuilder: (context, index) {
-                      return ChatInfoPagePrivateEventListItem(
-                        privateEvent: filteredEvents[index],
-                      );
-                    },
-                    itemCount: filteredEvents.length,
-                  ),
-                ]
-              ],
-            );
-          },
+                leadingStyle: const SkeletonAvatarStyle(
+                  shape: BoxShape.circle,
+                ),
+              ),
+            ] else if (state.futureConnectedPrivateEvents.isNotEmpty) ...[
+              const SizedBox(height: 8),
+              ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemBuilder: (context, index) {
+                  return PrivateEventListItem(
+                    privateEvent: state.futureConnectedPrivateEvents[index],
+                  );
+                },
+                itemCount: state.futureConnectedPrivateEvents.length > 10
+                    ? 10
+                    : state.futureConnectedPrivateEvents.length,
+              ),
+            ],
+            ListTile(
+              title: Text(
+                "Alle Anzeigen",
+                style: Theme.of(context).textTheme.titleMedium,
+                overflow: TextOverflow.ellipsis,
+              ),
+              trailing: const Icon(Icons.arrow_right),
+              onTap: () {
+                AutoRouter.of(context).push(
+                  const ChatFuturePrivateEventsPageRoute(),
+                );
+              },
+            ),
+          ],
         );
       },
     );

@@ -5,6 +5,9 @@ class CurrentChatState {
   final List<UserWithGroupchatUserData> usersWithGroupchatUserData;
   final List<UserWithLeftGroupchatUserData> usersWithLeftGroupchatUserData;
 
+  final List<PrivateEventEntity> futureConnectedPrivateEvents;
+  final bool loadingPrivateEvents;
+
   final bool currentUserLeftChat;
 
   final bool loadingChat;
@@ -17,6 +20,8 @@ class CurrentChatState {
     this.error,
     this.showError = false,
     required this.currentUserLeftChat,
+    required this.loadingPrivateEvents,
+    required this.futureConnectedPrivateEvents,
     required this.loadingMessages,
     required this.currentChat,
     required this.loadingChat,

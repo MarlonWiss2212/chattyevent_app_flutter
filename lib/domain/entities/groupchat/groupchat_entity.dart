@@ -31,50 +31,57 @@ class GroupchatEntity {
     required GroupchatEntity newEntity,
     required GroupchatEntity oldEntity,
     bool setMessagesFromOldEntity = true,
+    bool setLeftUsersFromOldEntity = true,
+    bool setUsersFromOldEntity = true,
   }) {
-    List<GroupchatUserEntity>? users = [];
-    if (newEntity.users != null) {
+    List<GroupchatUserEntity>? users =
+        setUsersFromOldEntity ? oldEntity.users : null;
+    if (newEntity.leftUsers != null) {
       for (final newUser in newEntity.users!) {
-        if (oldEntity.users != null) {
-          final oldUser = oldEntity.users!.firstWhere(
-            (element) => element.id == newUser.id,
-            orElse: () => GroupchatUserEntity(id: ""),
-          );
-          users.add(
-            GroupchatUserEntity.merge(newEntity: newUser, oldEntity: oldUser),
-          );
-        } else {
+        if (users == null) {
+          users ??= [];
           users.add(newUser);
+          continue;
+        }
+        final index = users.indexWhere(
+          (element) => element.id == newUser.id,
+        );
+        if (index == -1) {
+          users.add(newUser);
+        } else {
+          users[index] = GroupchatUserEntity.merge(
+            newEntity: newUser,
+            oldEntity: users[index],
+          );
         }
       }
-    } else {
-      users = oldEntity.users;
     }
 
-    List<GroupchatLeftUserEntity>? leftUsers = [];
+    List<GroupchatLeftUserEntity>? leftUsers =
+        setLeftUsersFromOldEntity ? oldEntity.leftUsers : null;
     if (newEntity.leftUsers != null) {
       for (final newLeftUser in newEntity.leftUsers!) {
-        if (oldEntity.leftUsers != null) {
-          final oldLeftUser = oldEntity.leftUsers!.firstWhere(
-            (element) => element.id == newLeftUser.id,
-            orElse: () => GroupchatLeftUserEntity(id: ""),
-          );
-          leftUsers.add(
-            GroupchatLeftUserEntity.merge(
-              newEntity: newLeftUser,
-              oldEntity: oldLeftUser,
-            ),
-          );
-        } else {
+        if (leftUsers == null) {
+          leftUsers ??= [];
           leftUsers.add(newLeftUser);
+          continue;
+        }
+        final index = leftUsers.indexWhere(
+          (element) => element.id == newLeftUser.id,
+        );
+        if (index == -1) {
+          leftUsers.add(newLeftUser);
+        } else {
+          leftUsers[index] = GroupchatLeftUserEntity.merge(
+            newEntity: newLeftUser,
+            oldEntity: leftUsers[index],
+          );
         }
       }
-    } else {
-      users = oldEntity.users;
     }
 
     List<MessageEntity>? messages =
-        setMessagesFromOldEntity ? oldEntity.messages : [];
+        setMessagesFromOldEntity ? oldEntity.messages : null;
     if (newEntity.messages != null) {
       for (final newMessage in newEntity.messages!) {
         if (messages == null) {

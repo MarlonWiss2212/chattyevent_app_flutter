@@ -25,12 +25,14 @@ class ChatInfoPageDescription extends StatelessWidget {
         }
 
         final String? description = state.currentChat.description;
-        return Text(
-          description != null && description.isNotEmpty
-              ? description
-              : "Keine Beschreibung",
-          style: Theme.of(context).textTheme.titleMedium,
-          overflow: TextOverflow.ellipsis,
+        return Center(
+          child: Text(
+            description != null && description.isNotEmpty
+                ? description
+                : "Keine Beschreibung",
+            style: Theme.of(context).textTheme.titleMedium,
+            overflow: TextOverflow.ellipsis,
+          ),
         );
       },
     );

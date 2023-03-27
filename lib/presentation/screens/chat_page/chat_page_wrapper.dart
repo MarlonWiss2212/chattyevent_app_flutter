@@ -5,6 +5,7 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/private_event/private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
 import 'package:social_media_app_flutter/core/injection.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
@@ -28,7 +29,9 @@ class ChatPageWrapper extends StatelessWidget {
       create: (context) => CurrentChatCubit(
         CurrentChatState(
           currentUserLeftChat: false,
+          loadingPrivateEvents: false,
           loadingMessages: false,
+          futureConnectedPrivateEvents: [],
           usersWithGroupchatUserData: const [],
           usersWithLeftGroupchatUserData: const [],
           currentChat: chatToSet ?? GroupchatEntity(id: groupchatId),
@@ -36,6 +39,9 @@ class ChatPageWrapper extends StatelessWidget {
         ),
         authCubit: BlocProvider.of<AuthCubit>(context),
         messageUseCases: serviceLocator(
+          param1: BlocProvider.of<AuthCubit>(context).state,
+        ),
+        privateEventUseCases: serviceLocator(
           param1: BlocProvider.of<AuthCubit>(context).state,
         ),
         userCubit: BlocProvider.of<UserCubit>(context),

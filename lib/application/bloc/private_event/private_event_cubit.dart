@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:meta/meta.dart';
+import 'package:social_media_app_flutter/core/filter/limit_offset_filter/limit_offset_filter.dart';
 import 'package:social_media_app_flutter/domain/entities/error_with_title_and_message.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
 import 'package:social_media_app_flutter/core/failures/failures.dart';
@@ -58,7 +59,12 @@ class PrivateEventCubit extends Cubit<PrivateEventState> {
     );
 
     final Either<Failure, List<PrivateEventEntity>> privateEventOrFailure =
-        await privateEventUseCases.getPrivateEventsViaApi();
+        await privateEventUseCases.getPrivateEventsViaApi(
+      limitOffsetFilter: LimitOffsetFilter(
+        limit: 10000,
+        offset: 0,
+      ),
+    );
 
     privateEventOrFailure.fold(
       (error) => emitState(

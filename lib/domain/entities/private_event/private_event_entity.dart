@@ -31,7 +31,7 @@ class PrivateEventEntity {
   factory PrivateEventEntity.merge({
     required PrivateEventEntity newEntity,
     required PrivateEventEntity oldEntity,
-    bool setUsersFromOldEntity = false,
+    bool setUsersFromOldEntity = true,
   }) {
     List<PrivateEventUserEntity>? users =
         setUsersFromOldEntity ? oldEntity.users : [];

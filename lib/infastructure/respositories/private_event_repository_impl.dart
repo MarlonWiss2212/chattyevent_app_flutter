@@ -3,6 +3,7 @@ import 'package:http_parser/http_parser.dart';
 import 'package:social_media_app_flutter/core/dto/private_event/create_private_event_dto.dart';
 import 'package:social_media_app_flutter/core/dto/private_event/create_private_event_user_dto.dart';
 import 'package:social_media_app_flutter/core/dto/private_event/update_private_event_user_dto.dart';
+import 'package:social_media_app_flutter/core/filter/limit_offset_filter/limit_offset_filter.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_user_entity.dart';
 import 'package:social_media_app_flutter/core/failures/failures.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
@@ -140,11 +141,12 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
   @override
   Future<Either<Failure, List<PrivateEventEntity>>> getPrivateEventsViaApi({
     GetPrivateEventsFilter? getPrivateEventsFilter,
+    required LimitOffsetFilter limitOffsetFilter,
   }) async {
     try {
       final response = await graphQlDatasource.query("""
-        query FindPrivateEvents(\$input: FindPrivateEventsInput) {
-          findPrivateEvents(filter: \$input) {
+        query FindPrivateEvents(\$input: FindPrivateEventsInput, \$limitOffsetFilterInput: LimitOffsetFilterInput!) {
+          findPrivateEvents(filter: \$input, limitOffsetFilterInput: \$limitOffsetFilterInput) {
             _id
             title
             groupchatTo
@@ -159,6 +161,7 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
         }
       """, variables: {
         "input": getPrivateEventsFilter?.toMap(),
+        "limitOffsetFilterInput": limitOffsetFilter.toMap(),
       });
 
       if (response.hasException) {

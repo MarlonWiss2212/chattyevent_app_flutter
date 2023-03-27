@@ -9,6 +9,7 @@ import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
 import 'package:social_media_app_flutter/core/dto/groupchat/create_groupchat_left_user_dto.dart';
 import 'package:social_media_app_flutter/core/dto/groupchat/create_groupchat_user_dto.dart';
 import 'package:social_media_app_flutter/core/filter/get_messages_filter.dart';
+import 'package:social_media_app_flutter/core/filter/get_private_events_filter.dart';
 import 'package:social_media_app_flutter/core/filter/limit_offset_filter/limit_offset_filter.dart';
 import 'package:social_media_app_flutter/core/filter/messages/added_message_filter.dart';
 import 'package:social_media_app_flutter/domain/entities/error_with_title_and_message.dart';
@@ -18,11 +19,13 @@ import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_use
 import 'package:social_media_app_flutter/domain/entities/groupchat/user_with_groupchat_user_data.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/user_with_left_groupchat_user_data.dart';
 import 'package:social_media_app_flutter/domain/entities/message/message_entity.dart';
+import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:social_media_app_flutter/core/failures/failures.dart';
 import 'package:social_media_app_flutter/core/filter/get_one_groupchat_filter.dart';
 import 'package:social_media_app_flutter/domain/usecases/chat_usecases.dart';
 import 'package:social_media_app_flutter/domain/usecases/message_usecases.dart';
+import 'package:social_media_app_flutter/domain/usecases/private_event_usecases.dart';
 
 part 'current_chat_state.dart';
 
@@ -30,8 +33,10 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
   final AuthCubit authCubit;
   final ChatCubit chatCubit;
   final UserCubit userCubit;
+
   final ChatUseCases chatUseCases;
   final MessageUseCases messageUseCases;
+  final PrivateEventUseCases privateEventUseCases;
 
   StreamSubscription<Either<Failure, MessageEntity>>? _subscription;
 
@@ -39,6 +44,7 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
     super.initialState, {
     required this.authCubit,
     required this.messageUseCases,
+    required this.privateEventUseCases,
     required this.chatCubit,
     required this.userCubit,
     required this.chatUseCases,
@@ -124,6 +130,64 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
       usersWithGroupchatUserData: usersToEmit,
       usersWithLeftGroupchatUserData: leftUsersToEmit,
     );
+  }
+
+  Future getFutureConnectedPrivateEventsFromApi({
+    required LimitOffsetFilter limitOffsetFilter,
+  }) async {
+    emitState(loadingPrivateEvents: true);
+
+    final privateEventsOrFailure =
+        await privateEventUseCases.getPrivateEventsViaApi(
+      limitOffsetFilter: limitOffsetFilter,
+      getPrivateEventsFilter: GetPrivateEventsFilter(
+        onlyFutureEvents: true,
+        sortNewestDateFirst: false,
+        groupchatTo: state.currentChat.id,
+      ),
+    );
+
+    privateEventsOrFailure.fold(
+      (error) => emitState(
+        error: ErrorWithTitleAndMessage(
+          title: "Get Future Private Evnts error",
+          message: mapFailureToMessage(
+            error,
+          ),
+        ),
+        loadingPrivateEvents: false,
+      ),
+      (privateEvents) {
+        emitState(loadingPrivateEvents: false);
+        for (final privateEvent in privateEvents) {
+          replaceOrAddFutureConnectedPrivateEvent(privateEvent: privateEvent);
+        }
+      },
+    );
+  }
+
+  PrivateEventEntity replaceOrAddFutureConnectedPrivateEvent({
+    required PrivateEventEntity privateEvent,
+  }) {
+    int foundIndex = state.futureConnectedPrivateEvents.indexWhere(
+      (element) => element.id == privateEvent.id,
+    );
+
+    if (foundIndex != -1) {
+      List<PrivateEventEntity> newPrivateEvents =
+          state.futureConnectedPrivateEvents;
+      newPrivateEvents[foundIndex] = privateEvent;
+      emitState(futureConnectedPrivateEvents: newPrivateEvents);
+      return newPrivateEvents[foundIndex];
+    } else {
+      List<PrivateEventEntity> newList =
+          List.from(state.futureConnectedPrivateEvents)..add(privateEvent);
+      newList.sort(
+        (a, b) => a.eventDate!.compareTo(b.eventDate!),
+      );
+      emitState(futureConnectedPrivateEvents: newList);
+    }
+    return privateEvent;
   }
 
   Future getCurrentChatViaApi() async {
@@ -314,9 +378,11 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
 
   void emitState({
     GroupchatEntity? currentChat,
+    List<PrivateEventEntity>? futureConnectedPrivateEvents,
     bool? currentUserLeftChat,
     bool? loadingChat,
     bool? loadingMessages,
+    bool? loadingPrivateEvents,
     bool? showError,
     List<UserWithGroupchatUserData>? usersWithGroupchatUserData,
     List<UserWithLeftGroupchatUserData>? usersWithLeftGroupchatUserData,
@@ -325,7 +391,11 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
     emit(
       CurrentChatState(
         currentUserLeftChat: currentUserLeftChat ?? state.currentUserLeftChat,
+        futureConnectedPrivateEvents:
+            futureConnectedPrivateEvents ?? state.futureConnectedPrivateEvents,
         showError: showError ?? false,
+        loadingPrivateEvents:
+            loadingPrivateEvents ?? state.loadingPrivateEvents,
         currentChat: currentChat ?? state.currentChat,
         loadingChat: loadingChat ?? state.loadingChat,
         loadingMessages: loadingMessages ?? state.loadingMessages,
