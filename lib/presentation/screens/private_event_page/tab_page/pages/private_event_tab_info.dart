@@ -9,7 +9,6 @@ import 'package:social_media_app_flutter/presentation/widgets/screens/private_ev
 import 'package:social_media_app_flutter/presentation/widgets/screens/private_event_page/tab_info/private_event_tab_info_event_date.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/private_event_page/tab_info/private_event_tab_info_event_end_date.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/private_event_page/tab_info/private_event_tab_info_location/private_event_tab_info_location.dart';
-import 'package:social_media_app_flutter/presentation/widgets/screens/private_event_page/tab_info/private_event_tab_info_user_list/private_event_tab_info_user_list.dart';
 
 class PrivateEventTabInfo extends StatelessWidget {
   final String privateEventId;
@@ -21,13 +20,14 @@ class PrivateEventTabInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(slivers: [
-      const SliverAppBar(
+      SliverAppBar(
         pinned: true,
         snap: true,
         floating: true,
-        expandedHeight: 100,
-        flexibleSpace: FlexibleSpaceBar(
-          title: Text("Detailseite"),
+        toolbarHeight: 0,
+        expandedHeight: (MediaQuery.of(context).size.width / 4 * 3),
+        flexibleSpace: const FlexibleSpaceBar(
+          background: PrivateEventTabInfoCoverImage(),
         ),
       ),
       CupertinoSliverRefreshControl(
@@ -36,12 +36,8 @@ class PrivateEventTabInfo extends StatelessWidget {
       ),
       SliverList(
         delegate: SliverChildListDelegate([
-          const SizedBox(height: 8),
-          const PrivateEventTabInfoCoverImage(),
           const SizedBox(height: 20),
           const PrivateEventTabInfoGroupchatTo(),
-          const CustomDivider(),
-          const PrivateEventTabInfoUserList(),
           const CustomDivider(),
           const PrivateEventTabInfoLocation(), // custom divider is returned in <- widget
           const PrivateEventTabInfoEventDate(),

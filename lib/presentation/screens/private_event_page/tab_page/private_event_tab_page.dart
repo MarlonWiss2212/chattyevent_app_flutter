@@ -16,6 +16,7 @@ class PrivateEventTabPage extends StatelessWidget {
     return AutoTabsRouter.tabBar(
       routes: [
         PrivateEventTabInfoRoute(),
+        const PrivateEventTabUserListRoute(),
         PrivateEventTabShoppingListRoute(),
       ],
       builder: (context, child, tabController) {
@@ -41,6 +42,7 @@ class PrivateEventTabPage extends StatelessWidget {
               controller: tabController,
               tabs: const [
                 Tab(icon: Icon(Icons.celebration)),
+                Tab(icon: Icon(Icons.person)),
                 Tab(icon: Icon(Icons.shopping_cart)),
               ],
             ),

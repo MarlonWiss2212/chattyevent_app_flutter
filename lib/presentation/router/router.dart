@@ -25,6 +25,7 @@ import 'package:social_media_app_flutter/presentation/screens/private_event_page
 import 'package:social_media_app_flutter/presentation/screens/private_event_page/private_event_wrapper_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/private_event_page/tab_page/pages/private_event_tab_info.dart';
 import 'package:social_media_app_flutter/presentation/screens/private_event_page/tab_page/pages/private_event_tab_shopping_list.dart';
+import 'package:social_media_app_flutter/presentation/screens/private_event_page/tab_page/pages/private_event_tab_user_list.dart';
 import 'package:social_media_app_flutter/presentation/screens/private_event_page/tab_page/private_event_tab_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/profile_page/profile_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/profile_page/profile_user_relations_tabs/profile_follow_requests_tab.dart';
@@ -219,6 +220,12 @@ import 'package:social_media_app_flutter/presentation/screens/shopping_list_page
               page: PrivateEventTabInfo,
               initial: true,
               path: 'info',
+              guards: [AuthGuard],
+            ),
+            AutoRoute(
+              page: PrivateEventTabUserList,
+              initial: false,
+              path: 'users',
               guards: [AuthGuard],
             ),
             AutoRoute(
