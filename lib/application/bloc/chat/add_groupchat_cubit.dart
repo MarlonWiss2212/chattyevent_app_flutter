@@ -19,7 +19,7 @@ class AddGroupchatCubit extends Cubit<AddGroupchatState> {
   AddGroupchatCubit({
     required this.chatCubit,
     required this.chatUseCases,
-  }) : super(AddGroupchatState());
+  }) : super(AddGroupchatState(groupchatUsers: []));
 
   Future createGroupchatViaApi() async {
     emitState(status: AddGroupchatStateStatus.loading);
@@ -52,10 +52,30 @@ class AddGroupchatCubit extends Cubit<AddGroupchatState> {
           setUsersFromOldEntity: false,
         );
         emit(AddGroupchatState(
+          groupchatUsers: [],
           addedChat: groupchat,
           status: AddGroupchatStateStatus.success,
         ));
       },
+    );
+  }
+
+  void addGroupchatUserToList({
+    required CreateGroupchatUserFromCreateGroupchatDtoWithUserEntity
+        groupchatUser,
+  }) {
+    emitState(
+      groupchatUsers: List.from(state.groupchatUsers)..add(groupchatUser),
+    );
+  }
+
+  void removeGroupchatUserUserFromList({
+    required String userId,
+  }) {
+    emitState(
+      groupchatUsers: state.groupchatUsers
+          .where((element) => element.user.id != userId)
+          .toList(),
     );
   }
 

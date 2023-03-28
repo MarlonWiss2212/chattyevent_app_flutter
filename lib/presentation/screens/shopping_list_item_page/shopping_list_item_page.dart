@@ -15,13 +15,13 @@ import 'package:social_media_app_flutter/presentation/widgets/general/dialog/ale
 
 class ShoppingListItemPage extends StatelessWidget {
   final String shoppingListItemId;
-  final ShoppingListItemEntity? shoppingListItemToSet;
+  final ShoppingListItemEntity shoppingListItemToSet;
   final bool loadShoppingListItemFromApiToo;
 
   const ShoppingListItemPage({
     super.key,
     @PathParam('shoppingListItemId') required this.shoppingListItemId,
-    this.shoppingListItemToSet,
+    required this.shoppingListItemToSet,
     this.loadShoppingListItemFromApiToo = true,
   });
 

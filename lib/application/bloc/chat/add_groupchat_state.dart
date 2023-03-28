@@ -10,7 +10,7 @@ class AddGroupchatState {
   final String? title;
   final File? profileImage;
   final String? description;
-  final List<CreateGroupchatUserFromCreateGroupchatDtoWithUserEntity>?
+  final List<CreateGroupchatUserFromCreateGroupchatDtoWithUserEntity>
       groupchatUsers;
 
   AddGroupchatState({
@@ -20,6 +20,6 @@ class AddGroupchatState {
     this.title,
     this.profileImage,
     this.description,
-    this.groupchatUsers,
+    required this.groupchatUsers,
   });
 }

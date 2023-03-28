@@ -39,10 +39,10 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
 
   @override
   Widget build(BuildContext context) {
-    return PlatformScaffold(
-      appBar: PlatformAppBar(
+    return Scaffold(
+      appBar: AppBar(
         title: const Text("Email Bestätigen"),
-        trailingActions: [
+        actions: [
           IconButton(
             onPressed: () {
               BlocProvider.of<AuthCubit>(context).logout();

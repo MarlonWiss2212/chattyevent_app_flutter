@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:social_media_app_flutter/application/bloc/chat/add_groupchat_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/private_event/add_private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_search_cubit.dart';
-import 'package:social_media_app_flutter/core/dto/groupchat/create_groupchat_user_from_create_groupchat_dto.dart';
+import 'package:social_media_app_flutter/core/dto/private_event/create_private_event_user_from_private_event_dto.dart';
 import 'package:social_media_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:social_media_app_flutter/presentation/widgets/general/user_list/selectable_user_grid_list.dart';
 import 'package:social_media_app_flutter/presentation/widgets/general/user_list/selected_user_list.dart';
 
-class NewGroupchatSelectUserTab extends StatelessWidget {
-  const NewGroupchatSelectUserTab({super.key});
+class NewPrivateEventSearchUserTab extends StatelessWidget {
+  const NewPrivateEventSearchUserTab({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,15 +16,17 @@ class NewGroupchatSelectUserTab extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.all(8),
-      child: BlocBuilder<AddGroupchatCubit, AddGroupchatState>(
-        buildWhen: (p, c) => p.groupchatUsers.length != c.groupchatUsers.length,
+      child: BlocBuilder<AddPrivateEventCubit, AddPrivateEventState>(
+        buildWhen: (p, c) =>
+            p.privateEventUsersDto.length != c.privateEventUsersDto.length,
         builder: (context, state) {
           return Column(
             children: [
               SelectedUsersList(
-                users: state.groupchatUsers.map((e) => e.user).toList(),
-                onPress: (user) => BlocProvider.of<AddGroupchatCubit>(context)
-                    .removeGroupchatUserUserFromList(
+                users: state.privateEventUsersDto.map((e) => e.user).toList(),
+                onPress: (user) =>
+                    BlocProvider.of<AddPrivateEventCubit>(context)
+                        .removePrivateEventUserFromList(
                   userId: user.id,
                 ),
               ),
@@ -33,7 +35,7 @@ class NewGroupchatSelectUserTab extends StatelessWidget {
                   List<UserEntity> filteredUsers = [];
 
                   for (final user in users) {
-                    int foundIndex = state.groupchatUsers.indexWhere(
+                    int foundIndex = state.privateEventUsersDto.indexWhere(
                       (groupchatUser) => groupchatUser.user.id == user.id,
                     );
                     if (foundIndex == -1) {
@@ -43,10 +45,10 @@ class NewGroupchatSelectUserTab extends StatelessWidget {
                   return filteredUsers;
                 },
                 onUserPress: (user) {
-                  BlocProvider.of<AddGroupchatCubit>(context)
-                      .addGroupchatUserToList(
-                    groupchatUser:
-                        CreateGroupchatUserFromCreateGroupchatDtoWithUserEntity(
+                  BlocProvider.of<AddPrivateEventCubit>(context)
+                      .addPrivateEventUserToList(
+                    privateEventUserDto:
+                        CreatePrivateEventUserFromPrivateEventDtoWithUserEntity(
                       user: user,
                     ),
                   );

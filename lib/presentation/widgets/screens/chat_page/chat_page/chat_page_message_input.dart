@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:social_media_app_flutter/application/bloc/message/add_message_cubit.dart';
-import 'package:social_media_app_flutter/presentation/widgets/bottom_sheet/image_picker_list.dart';
+import 'package:social_media_app_flutter/presentation/widgets/general/bottom_sheet/image_picker_list.dart';
 import 'package:social_media_app_flutter/presentation/widgets/general/dialog/alert_dialog.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/chat_page/chat_page/chat_page_react_message_container.dart';
 

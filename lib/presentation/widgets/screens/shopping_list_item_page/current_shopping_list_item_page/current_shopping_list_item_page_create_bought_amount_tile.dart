@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:social_media_app_flutter/application/bloc/shopping_list/current_shopping_list_item_cubit.dart';
+import 'package:social_media_app_flutter/presentation/widgets/general/button.dart';
 import 'package:social_media_app_flutter/presentation/widgets/general/dialog/alert_dialog.dart';
 
 class CurrentShoppingListItemPageCreateBoughtAmountTile extends StatefulWidget {
@@ -24,29 +25,33 @@ class _CurrentShoppingListItemPageCreateBoughtAmountTileState
         hintText: "Menge",
         controller: boughtAmountController,
       ),
-      trailing: PlatformElevatedButton(
-        child: const Text("Speichern"),
-        onPressed: () async {
-          double? boughtAmount = double.tryParse(boughtAmountController.text);
+      trailing: SizedBox(
+        width: 100,
+        child: Button(
+          text: "Speichern",
+          onTap: () async {
+            double? boughtAmount = double.tryParse(boughtAmountController.text);
 
-          if (boughtAmount == null) {
-            return await showDialog(
-              context: context,
-              builder: (c) {
-                return CustomAlertDialog(
-                  title: "Gekaufte Menge Fehler",
-                  message: "Die eingegebene gekaufte Menge muss eine Zahl sein",
-                  context: c,
-                );
-              },
+            if (boughtAmount == null) {
+              return await showDialog(
+                context: context,
+                builder: (c) {
+                  return CustomAlertDialog(
+                    title: "Gekaufte Menge Fehler",
+                    message:
+                        "Die eingegebene gekaufte Menge muss eine Zahl sein",
+                    context: c,
+                  );
+                },
+              );
+            }
+
+            BlocProvider.of<CurrentShoppingListItemCubit>(context)
+                .addBoughtAmount(
+              boughtAmount: boughtAmount,
             );
-          }
-
-          BlocProvider.of<CurrentShoppingListItemCubit>(context)
-              .addBoughtAmount(
-            boughtAmount: boughtAmount,
-          );
-        },
+          },
+        ),
       ),
     );
   }

@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/private_event_cubit.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 import 'package:social_media_app_flutter/presentation/widgets/general/dialog/alert_dialog.dart';
-import 'package:social_media_app_flutter/presentation/widgets/event_list/event_horizontal_list_skeleton.dart';
+import 'package:social_media_app_flutter/presentation/widgets/general/event_list/event_horizontal_list_skeleton.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/home_page/pages/home_event_page/home_event_page_details.dart';
 
 class HomeEventPage extends StatelessWidget {

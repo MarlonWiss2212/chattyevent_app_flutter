@@ -119,6 +119,7 @@ class PrivateEventTabShoppingList extends StatelessWidget {
                             shoppingListItemId: filteredItems[index].id,
                             shoppingListItemToSet: filteredItems[index],
                             loadShoppingListItemFromApiToo: true,
+                            setCurrentPrivateEvent: false,
                           ),
                         );
                       },

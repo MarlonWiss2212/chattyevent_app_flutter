@@ -1,7 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/add_groupchat_cubit.dart';
@@ -50,8 +49,8 @@ class NewGroupchatWrapperPage extends StatelessWidget {
                 );
               }
             },
-            child: PlatformScaffold(
-              appBar: PlatformAppBar(
+            child: Scaffold(
+              appBar: AppBar(
                 title: const Text('Neuer Gruppenchat'),
               ),
               body: AutoTabsRouter.pageView(

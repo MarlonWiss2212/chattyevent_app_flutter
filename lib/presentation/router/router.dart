@@ -17,9 +17,12 @@ import 'package:social_media_app_flutter/presentation/screens/new_groupchat/page
 import 'package:social_media_app_flutter/presentation/screens/new_groupchat/pages/new_groupchat_select_user_tab.dart';
 import 'package:social_media_app_flutter/presentation/screens/new_private_event/new_private_event_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/new_groupchat/new_groupchat_wrapper_page.dart';
+import 'package:social_media_app_flutter/presentation/screens/new_private_event/pages/new_private_event_date_tab.dart';
 import 'package:social_media_app_flutter/presentation/screens/new_private_event/pages/new_private_event_details_tab.dart';
 import 'package:social_media_app_flutter/presentation/screens/new_private_event/pages/new_private_event_location_tab.dart';
 import 'package:social_media_app_flutter/presentation/screens/new_private_event/pages/new_private_event_search_groupchat_tab.dart';
+import 'package:social_media_app_flutter/presentation/screens/new_private_event/pages/new_private_event_search_user_tab.dart';
+import 'package:social_media_app_flutter/presentation/screens/new_private_event/pages/new_private_event_type_tab.dart';
 import 'package:social_media_app_flutter/presentation/screens/private_event_page/private_event_create_shopping_list_item_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/private_event_page/private_event_invite_user_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/private_event_page/private_event_wrapper_page.dart';
@@ -293,9 +296,26 @@ import 'package:social_media_app_flutter/presentation/screens/shopping_list_page
           path: '',
         ),
         AutoRoute(
+          page: NewPrivateEventTypeTab,
+          initial: true,
+          guards: [AuthGuard],
+          path: 'type',
+        ),
+        AutoRoute(
+          page: NewPrivateEventSearchUserTab,
+          initial: true,
+          guards: [AuthGuard],
+          path: 'users',
+        ),
+        AutoRoute(
           page: NewPrivateEventSearchGroupchatTab,
           guards: [AuthGuard],
           path: 'groupchat',
+        ),
+        AutoRoute(
+          page: NewPrivateEventDateTab,
+          guards: [AuthGuard],
+          path: 'date',
         ),
         AutoRoute(
           page: NewPrivateEventLocationTab,

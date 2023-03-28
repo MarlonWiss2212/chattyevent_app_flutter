@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/user/profile_page_cubit.dart';
-import 'package:social_media_app_flutter/presentation/widgets/circle_image/cirlce_image.dart';
+import 'package:social_media_app_flutter/presentation/widgets/general/circle_image/cirlce_image.dart';
 
 class ProfilePageCircleImage extends StatelessWidget {
   const ProfilePageCircleImage({super.key});

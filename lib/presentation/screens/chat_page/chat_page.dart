@@ -19,8 +19,8 @@ class ChatPage extends StatelessWidget {
     BlocProvider.of<CurrentChatCubit>(context).loadMessages();
     BlocProvider.of<CurrentChatCubit>(context).listenToMessages();
 
-    return PlatformScaffold(
-      appBar: PlatformAppBar(
+    return Scaffold(
+      appBar: AppBar(
         leading: const AutoLeadingButton(),
         title: BlocBuilder<CurrentChatCubit, CurrentChatState>(
           builder: (context, state) {
@@ -48,7 +48,7 @@ class ChatPage extends StatelessWidget {
             );
           },
         ),
-        trailingActions: [
+        actions: [
           PlatformIconButton(
             icon: const Icon(Icons.info),
             onPressed: () => AutoRouter.of(context).push(

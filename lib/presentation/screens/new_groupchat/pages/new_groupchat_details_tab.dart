@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/add_groupchat_cubit.dart';
-import 'package:social_media_app_flutter/presentation/widgets/circle_image/select_circle_image.dart';
+import 'package:social_media_app_flutter/presentation/widgets/general/circle_image/select_circle_image.dart';
 
 class NewGroupchatDetailsTab extends StatelessWidget {
   const NewGroupchatDetailsTab({super.key});

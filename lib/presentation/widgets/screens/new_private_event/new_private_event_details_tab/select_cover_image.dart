@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:social_media_app_flutter/presentation/widgets/bottom_sheet/image_picker_list.dart';
+import 'package:social_media_app_flutter/presentation/widgets/general/bottom_sheet/image_picker_list.dart';
 
 class SelectCoverImage extends StatelessWidget {
   final void Function(File newImage) imageChanged;

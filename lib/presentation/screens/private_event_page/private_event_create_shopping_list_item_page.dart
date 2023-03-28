@@ -1,11 +1,11 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/shopping_list/shopping_list_cubit.dart';
 import 'package:social_media_app_flutter/core/injection.dart';
+import 'package:social_media_app_flutter/presentation/widgets/general/button.dart';
 import 'package:social_media_app_flutter/presentation/widgets/general/dialog/alert_dialog.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/shopping_list_item_page/create_shopping_list_item_page/create_shopping_list_item_page_detail.dart';
 import '../../../application/bloc/shopping_list/add_shopping_list_item_cubit.dart';
@@ -37,8 +37,8 @@ class PrivateEventCreateShoppingListItemPage extends StatelessWidget {
             buildWhen: (previous, current) =>
                 previous.selectedPrivateEvent != current.selectedPrivateEvent,
             builder: (context, state) {
-              return PlatformScaffold(
-                appBar: PlatformAppBar(
+              return Scaffold(
+                appBar: AppBar(
                   title: Text(
                     "${state.selectedPrivateEvent?.title} neues Item",
                     style: Theme.of(context).textTheme.titleLarge,
@@ -88,13 +88,13 @@ class PrivateEventCreateShoppingListItemPage extends StatelessWidget {
                               const SizedBox(height: 8.0),
                               SizedBox(
                                 width: double.infinity,
-                                child: PlatformElevatedButton(
-                                  onPressed: () async {
+                                child: Button(
+                                  onTap: () async {
                                     BlocProvider.of<AddShoppingListItemCubit>(
                                             context)
                                         .createShoppingListItemViaApi();
                                   },
-                                  child: const Text("Speichern"),
+                                  text: "Speichern",
                                 ),
                               ),
                             ],

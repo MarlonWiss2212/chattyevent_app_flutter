@@ -5,7 +5,7 @@ import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubi
 import 'package:social_media_app_flutter/application/bloc/user/user_search_cubit.dart';
 import 'package:social_media_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:social_media_app_flutter/core/filter/get_users_filter.dart';
-import 'package:social_media_app_flutter/presentation/widgets/user_list/user_grid_list.dart';
+import 'package:social_media_app_flutter/presentation/widgets/general/user_list/user_grid_list.dart';
 
 class AddUserGroupchatListWithSearchbar extends StatelessWidget {
   const AddUserGroupchatListWithSearchbar({super.key});

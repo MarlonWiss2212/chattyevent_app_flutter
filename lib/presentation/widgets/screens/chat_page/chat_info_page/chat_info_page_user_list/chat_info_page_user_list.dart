@@ -16,16 +16,6 @@ class ChatInfoPageUserList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CurrentChatCubit, CurrentChatState>(
-      buildWhen: (previous, current) {
-        if (previous.usersWithGroupchatUserData.length !=
-            current.usersWithGroupchatUserData.length) {
-          return true;
-        }
-        if (previous.loadingChat != current.loadingChat) {
-          return true;
-        }
-        return false;
-      },
       builder: (context, state) {
         UserWithGroupchatUserData currentGroupchatUser =
             state.usersWithGroupchatUserData.firstWhere(

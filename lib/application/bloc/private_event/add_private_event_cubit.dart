@@ -6,6 +6,7 @@ import 'package:meta/meta.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/private_event_cubit.dart';
 import 'package:social_media_app_flutter/core/dto/private_event/create_location_private_event_dto.dart';
 import 'package:social_media_app_flutter/core/dto/private_event/create_private_event_dto.dart';
+import 'package:social_media_app_flutter/core/dto/private_event/create_private_event_user_from_private_event_dto.dart';
 import 'package:social_media_app_flutter/domain/entities/error_with_title_and_message.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
@@ -21,7 +22,10 @@ class AddPrivateEventCubit extends Cubit<AddPrivateEventState> {
   AddPrivateEventCubit({
     required this.privateEventUseCases,
     required this.privateEventCubit,
-  }) : super(AddPrivateEventState());
+  }) : super(AddPrivateEventState(
+          groupchatEvent: false,
+          privateEventUsersDto: [],
+        ));
 
   Future createPrivateEventViaApi() async {
     if (state.coverImage == null ||
@@ -47,6 +51,7 @@ class AddPrivateEventCubit extends Cubit<AddPrivateEventState> {
         groupchatTo: state.selectedGroupchat?.id,
         eventDate: state.eventDate!,
         eventEndDate: state.eventEndDate,
+        privateEventUsers: state.privateEventUsersDto,
         eventLocation: state.city != null &&
                 state.zip != null &&
                 state.housenumber != null &&
@@ -78,6 +83,8 @@ class AddPrivateEventCubit extends Cubit<AddPrivateEventState> {
       },
       (privateEvent) {
         emit(AddPrivateEventState(
+          privateEventUsersDto: [],
+          groupchatEvent: false,
           status: AddPrivateEventStateStatus.success,
           addedPrivateEvent: privateEvent,
         ));
@@ -89,10 +96,34 @@ class AddPrivateEventCubit extends Cubit<AddPrivateEventState> {
     );
   }
 
+  void addPrivateEventUserToList({
+    required CreatePrivateEventUserFromPrivateEventDtoWithUserEntity
+        privateEventUserDto,
+  }) {
+    emitState(
+      privateEventUsersDto: List.from(state.privateEventUsersDto)
+        ..add(privateEventUserDto),
+    );
+  }
+
+  void removePrivateEventUserFromList({
+    required String userId,
+  }) {
+    emitState(
+      privateEventUsersDto: state.privateEventUsersDto
+          .where(
+            (element) => element.userId != userId,
+          )
+          .toList(),
+    );
+  }
+
   void emitState({
     String? title,
     String? description,
     File? coverImage,
+    List<CreatePrivateEventUserFromPrivateEventDtoWithUserEntity>?
+        privateEventUsersDto,
     GroupchatEntity? selectedGroupchat,
     bool resetSelectedGroupchat = false,
     DateTime? eventDate,
@@ -102,11 +133,14 @@ class AddPrivateEventCubit extends Cubit<AddPrivateEventState> {
     String? city,
     String? street,
     String? housenumber,
+    bool? groupchatEvent,
     AddPrivateEventStateStatus? status,
     ErrorWithTitleAndMessage? error,
     PrivateEventEntity? addedPrivateEvent,
   }) {
     emit(AddPrivateEventState(
+      groupchatEvent: groupchatEvent ?? state.groupchatEvent,
+      privateEventUsersDto: privateEventUsersDto ?? state.privateEventUsersDto,
       title: title ?? state.title,
       description: description ?? state.description,
       coverImage: coverImage ?? state.coverImage,
@@ -122,7 +156,7 @@ class AddPrivateEventCubit extends Cubit<AddPrivateEventState> {
       housenumber: housenumber ?? state.housenumber,
       status: status ?? AddPrivateEventStateStatus.initial,
       error: error ?? state.error,
-      addedPrivateEvent: addedPrivateEvent ?? state.addedPrivateEvent,
+      addedPrivateEvent: addedPrivateEvent,
     ));
   }
 }

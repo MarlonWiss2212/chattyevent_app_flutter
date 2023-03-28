@@ -5,6 +5,7 @@ import 'package:social_media_app_flutter/presentation/widgets/general/chat_list/
 
 class ChatGridList extends StatelessWidget {
   final List<GroupchatEntity> groupchats;
+  final List<String>? highlightIds;
   final Function(GroupchatEntity groupchat)? onLongPress;
   final Function(GroupchatEntity groupchat)? onPress;
   final Widget Function(GroupchatEntity groupchat)? button;
@@ -15,13 +16,24 @@ class ChatGridList extends StatelessWidget {
     this.button,
     this.onLongPress,
     this.onPress,
+    this.highlightIds,
   });
 
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
       itemBuilder: (context, index) {
+        bool highlighted = false;
+        if (highlightIds != null) {
+          final foundIndex = highlightIds!.indexWhere(
+            (element) => element == groupchats[index].id,
+          );
+          if (foundIndex != -1) {
+            highlighted = true;
+          }
+        }
         return ChatGridListItem(
+          highlighted: highlighted,
           chat: groupchats[index],
           button: button != null ? button!(groupchats[index]) : null,
           onLongPress: onLongPress == null

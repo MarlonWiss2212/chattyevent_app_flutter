@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:social_media_app_flutter/core/dto/private_event/create_location_private_event_dto.dart';
+import 'package:social_media_app_flutter/core/dto/private_event/create_private_event_user_from_private_event_dto.dart';
 
 class CreatePrivateEventDto {
   String title;
@@ -10,12 +11,14 @@ class CreatePrivateEventDto {
   DateTime eventDate;
   DateTime? eventEndDate;
   CreatePrivateEventLocationDto? eventLocation;
+  List<CreatePrivateEventUserFromPrivateEventDto>? privateEventUsers;
 
   CreatePrivateEventDto({
     required this.title,
     required this.coverImage,
     required this.groupchatTo,
     required this.eventDate,
+    this.privateEventUsers,
     this.eventEndDate,
     this.description,
     this.eventLocation,
@@ -34,6 +37,11 @@ class CreatePrivateEventDto {
     }
     if (description != null) {
       map.addAll({'description': description});
+    }
+    if (privateEventUsers != null) {
+      map.addAll({
+        'privateEventUsers': privateEventUsers!.map((e) => e.toMap()),
+      });
     }
     if (eventEndDate != null) {
       map.addAll({'eventEndDate': eventEndDate});

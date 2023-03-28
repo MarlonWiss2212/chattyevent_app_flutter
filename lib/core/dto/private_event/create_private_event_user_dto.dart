@@ -1,24 +1,19 @@
-class CreatePrivateEventUserDto {
-  String userId;
+import 'package:social_media_app_flutter/core/dto/private_event/create_private_event_user_from_private_event_dto.dart';
+
+class CreatePrivateEventUserDto
+    extends CreatePrivateEventUserFromPrivateEventDto {
   String privateEventTo;
-  bool? organizer;
 
   CreatePrivateEventUserDto({
-    required this.userId,
+    required super.userId,
     required this.privateEventTo,
-    this.organizer,
+    super.organizer,
   });
 
-  Map<dynamic, dynamic> toMap() {
-    Map<dynamic, dynamic> variables = {
-      "userId": userId,
-      "privateEventTo": privateEventTo,
-    };
-
-    if (organizer != null) {
-      variables.addAll({"organizer": organizer});
-    }
-
-    return variables;
+  @override
+  Map toMap() {
+    final map = super.toMap();
+    map.addAll({"privateEventTo": privateEventTo});
+    return map;
   }
 }

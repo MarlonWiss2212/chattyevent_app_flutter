@@ -6,6 +6,7 @@ import 'package:social_media_app_flutter/application/bloc/auth/add_current_user_
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/core/injection.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
+import 'package:social_media_app_flutter/presentation/widgets/general/button.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/create_user_page/create_user_page_birthdate_button.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/create_user_page/create_user_page_profile_image.dart';
 
@@ -22,10 +23,10 @@ class CreateUserPage extends StatelessWidget {
         ),
       ),
       child: Builder(builder: (context) {
-        return PlatformScaffold(
-          appBar: PlatformAppBar(
+        return Scaffold(
+          appBar: AppBar(
             title: const Text("User Erstellen"),
-            trailingActions: [
+            actions: [
               IconButton(
                 onPressed: () {
                   BlocProvider.of<AuthCubit>(context).logout();
@@ -103,12 +104,12 @@ class CreateUserPage extends StatelessWidget {
                         },
                         child: SizedBox(
                           width: double.infinity,
-                          child: PlatformElevatedButton(
-                            onPressed: () {
+                          child: Button(
+                            onTap: () {
                               BlocProvider.of<AddCurrentUserCubit>(context)
                                   .createCurrentUser();
                             },
-                            child: const Text("User Erstellen"),
+                            text: "User Erstellen",
                           ),
                         ),
                       ),

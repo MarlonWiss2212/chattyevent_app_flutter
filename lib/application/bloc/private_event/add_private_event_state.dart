@@ -13,7 +13,13 @@ class AddPrivateEventState {
   final DateTime? eventDate;
   final DateTime? eventEndDate;
 
+  // if event is a normal or groupchat event type
+  final bool groupchatEvent;
+
   final GroupchatEntity? selectedGroupchat;
+
+  final List<CreatePrivateEventUserFromPrivateEventDtoWithUserEntity>
+      privateEventUsersDto;
 
   // create private event location
   final String? country;
@@ -27,6 +33,8 @@ class AddPrivateEventState {
     this.error,
     this.status = AddPrivateEventStateStatus.initial,
     this.title,
+    required this.privateEventUsersDto,
+    required this.groupchatEvent,
     this.description,
     this.coverImage,
     this.selectedGroupchat,

@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
+import 'package:social_media_app_flutter/presentation/widgets/general/button.dart';
 
 class ResetPasswordPage extends StatefulWidget {
   final String? standardEmail;
@@ -24,8 +25,8 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
 
   @override
   Widget build(BuildContext context) {
-    return PlatformScaffold(
-      appBar: PlatformAppBar(
+    return Scaffold(
+      appBar: AppBar(
         title: const Text("Password Zurücksetzen"),
       ),
       body: Center(
@@ -56,14 +57,14 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                 },
                 child: SizedBox(
                   width: double.infinity,
-                  child: PlatformElevatedButton(
-                    onPressed: () {
+                  child: Button(
+                    onTap: () {
                       BlocProvider.of<AuthCubit>(context)
                           .sendResetPasswordEmail(
                         email: emailFieldController.text,
                       );
                     },
-                    child: const Text("Sende Email"),
+                    text: "Sende Email",
                   ),
                 ),
               ),

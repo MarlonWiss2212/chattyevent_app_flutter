@@ -5,7 +5,7 @@ import 'package:social_media_app_flutter/domain/entities/private_event/user_with
 import 'package:social_media_app_flutter/presentation/widgets/screens/private_event_page/tab_user_list/private_event_tab_user_list_item_icon_buttons_my_user_list_tile/accept_invite_icon_button.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/private_event_page/tab_user_list/private_event_tab_user_list_item_icon_buttons_my_user_list_tile/decline_invite_icon_button.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/private_event_page/tab_user_list/private_event_tab_user_list_item_icon_buttons_my_user_list_tile/neutral_invite_icon_button.dart';
-import 'package:social_media_app_flutter/presentation/widgets/user_list/user_list_tile.dart';
+import 'package:social_media_app_flutter/presentation/widgets/general/user_list/user_list_tile.dart';
 
 class PrivateEventTabUserListItem extends StatelessWidget {
   final UserWithPrivateEventUserData privateEventUser;

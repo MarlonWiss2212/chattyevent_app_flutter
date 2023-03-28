@@ -33,8 +33,9 @@ class Button extends StatelessWidget {
               text,
               style: textStyle != null
                   ? textStyle?.merge(
-                      standardTextStyle,
-                    )
+                        standardTextStyle,
+                      ) ??
+                      standardTextStyle
                   : standardTextStyle,
             ),
           ),

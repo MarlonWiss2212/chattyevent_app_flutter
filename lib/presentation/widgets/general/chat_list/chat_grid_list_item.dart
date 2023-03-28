@@ -3,6 +3,7 @@ import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_ent
 
 class ChatGridListItem extends StatelessWidget {
   final GroupchatEntity chat;
+  final bool highlighted;
   final Function? onLongPress;
   final Function? onPress;
   final Widget? button;
@@ -10,6 +11,7 @@ class ChatGridListItem extends StatelessWidget {
   const ChatGridListItem({
     super.key,
     required this.chat,
+    this.highlighted = false,
     this.button,
     this.onLongPress,
     this.onPress,
@@ -26,8 +28,16 @@ class ChatGridListItem extends StatelessWidget {
           children: [
             chat.profileImageLink != null
                 ? Container(
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8.0),
+                      border: highlighted
+                          ? Border.all(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .primaryContainer,
+                              width: 4,
+                            )
+                          : null,
                     ),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(8.0),
@@ -43,7 +53,15 @@ class ChatGridListItem extends StatelessWidget {
                 : Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
-                      color: Theme.of(context).colorScheme.primaryContainer,
+                      border: highlighted
+                          ? Border.all(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .primaryContainer,
+                              width: 4,
+                            )
+                          : null,
+                      color: Theme.of(context).colorScheme.secondaryContainer,
                     ),
                   ),
             Padding(

@@ -7,7 +7,7 @@ import 'package:social_media_app_flutter/application/bloc/user/user_search_cubit
 import 'package:social_media_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 import 'package:social_media_app_flutter/presentation/widgets/general/follow_button.dart';
-import 'package:social_media_app_flutter/presentation/widgets/user_list/user_grid_list_item.dart';
+import 'package:social_media_app_flutter/presentation/widgets/general/user_list/user_grid_list_item.dart';
 
 class UserHorizontalList extends StatelessWidget {
   final List<UserEntity> users;
