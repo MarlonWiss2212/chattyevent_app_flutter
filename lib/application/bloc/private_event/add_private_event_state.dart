@@ -14,7 +14,7 @@ class AddPrivateEventState {
   final DateTime? eventEndDate;
 
   // if event is a normal or groupchat event type
-  final bool groupchatEvent;
+  final bool isGroupchatEvent;
 
   final GroupchatEntity? selectedGroupchat;
 
@@ -34,7 +34,7 @@ class AddPrivateEventState {
     this.status = AddPrivateEventStateStatus.initial,
     this.title,
     required this.privateEventUsersDto,
-    required this.groupchatEvent,
+    required this.isGroupchatEvent,
     this.description,
     this.coverImage,
     this.selectedGroupchat,

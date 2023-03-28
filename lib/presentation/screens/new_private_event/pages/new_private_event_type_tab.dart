@@ -17,7 +17,7 @@ class NewPrivateEventTypeTab extends StatelessWidget {
             Expanded(
               child: InkWell(
                 onTap: () => BlocProvider.of<AddPrivateEventCubit>(context)
-                    .emitState(groupchatEvent: true),
+                    .setIsGroupchatEvent(isGroupchatEvent: true),
                 borderRadius: BorderRadius.circular(8),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -42,7 +42,7 @@ class NewPrivateEventTypeTab extends StatelessWidget {
             Expanded(
               child: InkWell(
                 onTap: () => BlocProvider.of<AddPrivateEventCubit>(context)
-                    .emitState(groupchatEvent: false),
+                    .setIsGroupchatEvent(isGroupchatEvent: false),
                 borderRadius: BorderRadius.circular(8),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),

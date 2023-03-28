@@ -56,13 +56,13 @@ class NewPrivateEventPage extends StatelessWidget {
                 title: const Text('Neues Private Event'),
               ),
               body: BlocBuilder<AddPrivateEventCubit, AddPrivateEventState>(
-                buildWhen: (p, c) => p.groupchatEvent != c.groupchatEvent,
+                buildWhen: (p, c) => p.isGroupchatEvent != c.isGroupchatEvent,
                 builder: (context, state) {
                   return AutoTabsRouter.pageView(
                     routes: [
                       const NewPrivateEventDetailsTabRoute(),
                       const NewPrivateEventTypeTabRoute(),
-                      if (state.groupchatEvent == false) ...{
+                      if (state.isGroupchatEvent == false) ...{
                         const NewPrivateEventSearchUserTabRoute(),
                       } else ...{
                         const NewPrivateEventSearchGroupchatTabRoute(),

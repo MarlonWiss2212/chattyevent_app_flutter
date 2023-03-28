@@ -23,7 +23,7 @@ class AddPrivateEventCubit extends Cubit<AddPrivateEventState> {
     required this.privateEventUseCases,
     required this.privateEventCubit,
   }) : super(AddPrivateEventState(
-          groupchatEvent: false,
+          isGroupchatEvent: false,
           privateEventUsersDto: [],
         ));
 
@@ -84,7 +84,7 @@ class AddPrivateEventCubit extends Cubit<AddPrivateEventState> {
       (privateEvent) {
         emit(AddPrivateEventState(
           privateEventUsersDto: [],
-          groupchatEvent: false,
+          isGroupchatEvent: false,
           status: AddPrivateEventStateStatus.success,
           addedPrivateEvent: privateEvent,
         ));
@@ -118,6 +118,14 @@ class AddPrivateEventCubit extends Cubit<AddPrivateEventState> {
     );
   }
 
+  void setIsGroupchatEvent({required bool isGroupchatEvent}) {
+    emitState(
+      isGroupchatEvent: isGroupchatEvent,
+      privateEventUsersDto: isGroupchatEvent == true ? [] : null,
+      resetSelectedGroupchat: isGroupchatEvent == false ? true : false,
+    );
+  }
+
   void emitState({
     String? title,
     String? description,
@@ -133,13 +141,13 @@ class AddPrivateEventCubit extends Cubit<AddPrivateEventState> {
     String? city,
     String? street,
     String? housenumber,
-    bool? groupchatEvent,
+    bool? isGroupchatEvent,
     AddPrivateEventStateStatus? status,
     ErrorWithTitleAndMessage? error,
     PrivateEventEntity? addedPrivateEvent,
   }) {
     emit(AddPrivateEventState(
-      groupchatEvent: groupchatEvent ?? state.groupchatEvent,
+      isGroupchatEvent: isGroupchatEvent ?? state.isGroupchatEvent,
       privateEventUsersDto: privateEventUsersDto ?? state.privateEventUsersDto,
       title: title ?? state.title,
       description: description ?? state.description,

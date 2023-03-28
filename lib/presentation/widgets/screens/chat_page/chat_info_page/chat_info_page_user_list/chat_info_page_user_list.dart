@@ -35,6 +35,7 @@ class ChatInfoPageUserList extends StatelessWidget {
               style: Theme.of(context).textTheme.titleMedium,
               overflow: TextOverflow.ellipsis,
             ),
+            const SizedBox(height: 8),
             if (currentGroupchatUser.admin != null &&
                 currentGroupchatUser.admin!) ...{
               ListTile(
@@ -55,7 +56,6 @@ class ChatInfoPageUserList extends StatelessWidget {
             },
             if (state.usersWithGroupchatUserData.isEmpty &&
                 state.loadingChat) ...[
-              const SizedBox(height: 8),
               SkeletonListTile(
                 hasSubtitle: true,
                 hasLeading: false,
@@ -69,7 +69,6 @@ class ChatInfoPageUserList extends StatelessWidget {
                 ),
               ),
             ] else if (state.usersWithGroupchatUserData.isNotEmpty) ...{
-              const SizedBox(height: 8),
               ListView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
