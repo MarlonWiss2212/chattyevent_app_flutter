@@ -1,21 +1,14 @@
 class UpdatePrivateEventUserDto {
-  String userId;
-  String privateEventTo;
   String? status;
   bool? organizer;
 
   UpdatePrivateEventUserDto({
-    required this.userId,
-    required this.privateEventTo,
     this.status,
     this.organizer,
   });
 
   Map<dynamic, dynamic> toMap() {
-    Map<dynamic, dynamic> variables = {
-      "userId": userId,
-      "privateEventTo": privateEventTo
-    };
+    Map<dynamic, dynamic> variables = {};
 
     if (status != null) {
       variables.addAll({"status": status});

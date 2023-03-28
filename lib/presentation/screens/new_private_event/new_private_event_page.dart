@@ -8,7 +8,7 @@ import 'package:social_media_app_flutter/application/bloc/private_event/add_priv
 import 'package:social_media_app_flutter/application/bloc/private_event/private_event_cubit.dart';
 import 'package:social_media_app_flutter/core/injection.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
-import 'package:social_media_app_flutter/presentation/widgets/dialog/buttons/ok_button.dart';
+import 'package:social_media_app_flutter/presentation/widgets/general/dialog/alert_dialog.dart';
 
 class NewPrivateEventPage extends StatelessWidget {
   const NewPrivateEventPage({
@@ -39,13 +39,13 @@ class NewPrivateEventPage extends StatelessWidget {
                     );
               } else if (state.status == AddPrivateEventStateStatus.error &&
                   state.error != null) {
-                return await showPlatformDialog(
+                return await showDialog(
                   context: context,
-                  builder: (context) {
-                    return PlatformAlertDialog(
-                      title: Text(state.error!.title),
-                      content: Text(state.error!.message),
-                      actions: const [OKButton()],
+                  builder: (c) {
+                    return CustomAlertDialog(
+                      message: state.error!.message,
+                      title: state.error!.title,
+                      context: c,
                     );
                   },
                 );

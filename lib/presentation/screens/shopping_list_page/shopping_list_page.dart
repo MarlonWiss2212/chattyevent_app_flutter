@@ -2,7 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:skeletons/skeletons.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/shopping_list/shopping_list_cubit.dart';
@@ -10,7 +9,7 @@ import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_use
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/user_with_private_event_user_data.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
-import 'package:social_media_app_flutter/presentation/widgets/dialog/buttons/ok_button.dart';
+import 'package:social_media_app_flutter/presentation/widgets/general/dialog/alert_dialog.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/shopping_list_item_page/shopping_list_page/shopping_list_item_tile.dart';
 
 class ShoppingListPage extends StatelessWidget {
@@ -39,13 +38,13 @@ class ShoppingListPage extends StatelessWidget {
           BlocListener<ShoppingListCubit, ShoppingListState>(
             listener: (context, state) async {
               if (state.error != null) {
-                return await showPlatformDialog(
+                return await showDialog(
                   context: context,
-                  builder: (context) {
-                    return PlatformAlertDialog(
-                      title: Text(state.error!.title),
-                      content: Text(state.error!.message),
-                      actions: const [OKButton()],
+                  builder: (c) {
+                    return CustomAlertDialog(
+                      message: state.error!.message,
+                      title: state.error!.title,
+                      context: c,
                     );
                   },
                 );

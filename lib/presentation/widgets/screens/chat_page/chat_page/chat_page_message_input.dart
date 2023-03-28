@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:social_media_app_flutter/application/bloc/message/add_message_cubit.dart';
 import 'package:social_media_app_flutter/presentation/widgets/bottom_sheet/image_picker_list.dart';
-import 'package:social_media_app_flutter/presentation/widgets/dialog/buttons/ok_button.dart';
+import 'package:social_media_app_flutter/presentation/widgets/general/dialog/alert_dialog.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/chat_page/chat_page/chat_page_react_message_container.dart';
 
 class ChatPageMessageInput extends StatelessWidget {
@@ -16,13 +16,13 @@ class ChatPageMessageInput extends StatelessWidget {
       listener: (context, state) async {
         if (state.status == AddMessageStateStatus.error &&
             state.error != null) {
-          return await showPlatformDialog(
+          return await showDialog(
             context: context,
-            builder: (context) {
-              return PlatformAlertDialog(
-                title: Text(state.error!.title),
-                content: Text(state.error!.message),
-                actions: const [OKButton()],
+            builder: (c) {
+              return CustomAlertDialog(
+                title: state.error!.title,
+                message: state.error!.message,
+                context: c,
               );
             },
           );

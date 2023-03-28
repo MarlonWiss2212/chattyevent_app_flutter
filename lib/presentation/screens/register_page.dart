@@ -1,11 +1,10 @@
-import 'dart:io';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
-import 'package:social_media_app_flutter/presentation/widgets/dialog/buttons/ok_button.dart';
+import 'package:social_media_app_flutter/presentation/widgets/general/dialog/alert_dialog.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -56,13 +55,13 @@ class _RegisterPageState extends State<RegisterPage> {
                       listener: (context, state) async {
                         if (state.status == AuthStateStatus.error &&
                             state.error != null) {
-                          return await showPlatformDialog(
+                          return await showDialog(
                             context: context,
-                            builder: (context) {
-                              return PlatformAlertDialog(
-                                title: Text(state.error!.title),
-                                content: Text(state.error!.message),
-                                actions: const [OKButton()],
+                            builder: (c) {
+                              return CustomAlertDialog(
+                                title: state.error!.title,
+                                message: state.error!.message,
+                                context: c,
                               );
                             },
                           );

@@ -26,18 +26,16 @@ class Button extends StatelessWidget {
           color: color ?? Theme.of(context).colorScheme.primaryContainer,
           borderRadius: BorderRadius.circular(8),
         ),
-        child: Ink(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Center(
-              child: Text(
-                text,
-                style: textStyle != null
-                    ? textStyle?.merge(
-                        standardTextStyle,
-                      )
-                    : standardTextStyle,
-              ),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Center(
+            child: Text(
+              text,
+              style: textStyle != null
+                  ? textStyle?.merge(
+                      standardTextStyle,
+                    )
+                  : standardTextStyle,
             ),
           ),
         ),

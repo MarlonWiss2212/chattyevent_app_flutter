@@ -6,7 +6,7 @@ import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/shopping_list/shopping_list_cubit.dart';
 import 'package:social_media_app_flutter/core/injection.dart';
-import 'package:social_media_app_flutter/presentation/widgets/dialog/buttons/ok_button.dart';
+import 'package:social_media_app_flutter/presentation/widgets/general/dialog/alert_dialog.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/shopping_list_item_page/create_shopping_list_item_page/create_shopping_list_item_page_detail.dart';
 import '../../../application/bloc/shopping_list/add_shopping_list_item_cubit.dart';
 
@@ -49,13 +49,13 @@ class PrivateEventCreateShoppingListItemPage extends StatelessWidget {
                   listener: (context, state) async {
                     if (state.status == AddShoppingListItemStateStatus.error &&
                         state.error != null) {
-                      return await showPlatformDialog(
+                      return await showDialog(
                         context: context,
-                        builder: (context) {
-                          return PlatformAlertDialog(
-                            title: Text(state.error!.title),
-                            content: Text(state.error!.message),
-                            actions: const [OKButton()],
+                        builder: (c) {
+                          return CustomAlertDialog(
+                            title: state.error!.title,
+                            message: state.error!.message,
+                            context: c,
                           );
                         },
                       );

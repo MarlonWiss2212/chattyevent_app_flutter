@@ -5,7 +5,7 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:social_media_app_flutter/application/bloc/location/location_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/private_event_cubit.dart';
-import 'package:social_media_app_flutter/presentation/widgets/dialog/buttons/ok_button.dart';
+import 'package:social_media_app_flutter/presentation/widgets/general/dialog/alert_dialog.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/home_page/pages/home_map_page/private_event_map_marker.dart';
 
 class Location extends StatelessWidget {
@@ -23,13 +23,13 @@ class Location extends StatelessWidget {
       body: BlocConsumer<LocationCubit, LocationState>(
         listener: (context, state) async {
           if (state is LocationError) {
-            return await showPlatformDialog(
+            return await showDialog(
               context: context,
-              builder: (context) {
-                return PlatformAlertDialog(
-                  title: Text(state.title),
-                  content: Text(state.message),
-                  actions: const [OKButton()],
+              builder: (c) {
+                return CustomAlertDialog(
+                  title: state.title,
+                  message: state.message,
+                  context: c,
                 );
               },
             );

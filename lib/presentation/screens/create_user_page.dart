@@ -6,7 +6,6 @@ import 'package:social_media_app_flutter/application/bloc/auth/add_current_user_
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/core/injection.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
-import 'package:social_media_app_flutter/presentation/widgets/dialog/buttons/ok_button.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/create_user_page/create_user_page_birthdate_button.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/create_user_page/create_user_page_profile_image.dart';
 

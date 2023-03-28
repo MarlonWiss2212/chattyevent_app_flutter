@@ -11,6 +11,7 @@ import 'package:social_media_app_flutter/application/bloc/shopping_list/shopping
 import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
 import 'package:social_media_app_flutter/core/dto/private_event/create_private_event_user_dto.dart';
 import 'package:social_media_app_flutter/core/dto/private_event/update_private_event_user_dto.dart';
+import 'package:social_media_app_flutter/core/filter/private_event/private_event_user/get_one_private_event_user_filter.dart';
 import 'package:social_media_app_flutter/domain/entities/error_with_title_and_message.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
@@ -229,10 +230,12 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
     final Either<Failure, PrivateEventUserEntity> privateEventOrFailure =
         await privateEventUseCases.updatePrivateEventUser(
       updatePrivateEventUserDto: UpdatePrivateEventUserDto(
-        userId: userId,
-        privateEventTo: state.privateEvent.id,
         status: status,
         organizer: organizer,
+      ),
+      getOnePrivateEventFilter: GetOnePrivateEventUserFilter(
+        userId: userId,
+        privateEventTo: state.privateEvent.id,
       ),
     );
 

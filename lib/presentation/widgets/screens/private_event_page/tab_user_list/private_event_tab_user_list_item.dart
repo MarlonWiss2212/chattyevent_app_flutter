@@ -96,20 +96,6 @@ class PrivateEventTabUserListItem extends StatelessWidget {
             },
           ),
         },
-        if (currentPrivatEventUser != null &&
-            currentPrivatEventUser!.user.id == privateEventUser.user.id &&
-            privateEventUser.privateEventUser.organizer == true) ...{
-          PopupMenuItem<void Function(void)>(
-            child: const Text("Organisator status entfernen"),
-            onTap: () {
-              BlocProvider.of<CurrentPrivateEventCubit>(context)
-                  .updatePrivateEventUser(
-                userId: privateEventUser.user.id,
-                organizer: false,
-              );
-            },
-          ),
-        }
       ],
     );
   }

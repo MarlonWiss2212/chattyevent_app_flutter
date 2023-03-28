@@ -3,6 +3,7 @@ import 'package:social_media_app_flutter/core/dto/private_event/create_private_e
 import 'package:social_media_app_flutter/core/dto/private_event/create_private_event_user_dto.dart';
 import 'package:social_media_app_flutter/core/dto/private_event/update_private_event_user_dto.dart';
 import 'package:social_media_app_flutter/core/filter/limit_offset_filter/limit_offset_filter.dart';
+import 'package:social_media_app_flutter/core/filter/private_event/private_event_user/get_one_private_event_user_filter.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_user_entity.dart';
 import 'package:social_media_app_flutter/core/failures/failures.dart';
@@ -39,9 +40,11 @@ class PrivateEventUseCases {
 
   Future<Either<Failure, PrivateEventUserEntity>> updatePrivateEventUser({
     required UpdatePrivateEventUserDto updatePrivateEventUserDto,
+    required GetOnePrivateEventUserFilter getOnePrivateEventFilter,
   }) async {
     return await privateEventRepository.updatePrivateEventUser(
       updatePrivateEventUserDto: updatePrivateEventUserDto,
+      getOnePrivateEventUserFilter: getOnePrivateEventFilter,
     );
   }
 

@@ -9,7 +9,7 @@ import 'package:social_media_app_flutter/application/bloc/shopping_list/shopping
 import 'package:social_media_app_flutter/core/injection.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/shopping_list_item/shopping_list_item_entity.dart';
-import 'package:social_media_app_flutter/presentation/widgets/dialog/buttons/ok_button.dart';
+import 'package:social_media_app_flutter/presentation/widgets/general/dialog/alert_dialog.dart';
 import 'package:social_media_app_flutter/presentation/widgets/divider.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/shopping_list_item_page/current_shopping_list_item_page/current_shopping_list_item_page_bought_amount_list.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/shopping_list_item_page/current_shopping_list_item_page/current_shopping_list_item_page_create_bought_amount_tile.dart';
@@ -94,13 +94,13 @@ class StandardShoppingListItemPage extends StatelessWidget {
               }
               if (state.status == CurrentShoppingListItemStateStatus.error &&
                   state.error != null) {
-                return await showPlatformDialog(
+                return await showDialog(
                   context: context,
-                  builder: (context) {
-                    return PlatformAlertDialog(
-                      title: Text(state.error!.title),
-                      content: Text(state.error!.message),
-                      actions: const [OKButton()],
+                  builder: (c) {
+                    return CustomAlertDialog(
+                      message: state.error!.message,
+                      title: state.error!.title,
+                      context: c,
                     );
                   },
                 );

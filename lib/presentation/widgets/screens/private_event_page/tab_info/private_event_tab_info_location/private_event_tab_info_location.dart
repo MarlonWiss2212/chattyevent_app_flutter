@@ -8,7 +8,6 @@ import 'package:latlong2/latlong.dart';
 import 'package:skeletons/skeletons.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
 import 'package:social_media_app_flutter/presentation/widgets/circle_image/cirlce_image.dart';
-import 'package:social_media_app_flutter/presentation/widgets/dialog/buttons/ok_button.dart';
 import 'package:social_media_app_flutter/presentation/widgets/divider.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 

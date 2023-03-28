@@ -20,15 +20,15 @@ class FollowButton extends StatelessWidget {
     Color? color;
 
     if (user.myUserRelationToOtherUser?.statusOnRelatedUser == "follower") {
-      text = "Follower";
-      color = Colors.black;
+      text = "Gefolgt";
+      color = Theme.of(context).colorScheme.secondaryContainer;
       textStyle = Theme.of(context).textTheme.labelMedium?.apply(
             color: Colors.white,
           );
     } else if (user.myUserRelationToOtherUser?.statusOnRelatedUser ==
         "requestToFollow") {
       text = "Angefragt";
-      color = Colors.black;
+      color = Theme.of(context).colorScheme.secondaryContainer;
       textStyle = Theme.of(context).textTheme.labelMedium?.apply(
             color: Colors.white,
           );

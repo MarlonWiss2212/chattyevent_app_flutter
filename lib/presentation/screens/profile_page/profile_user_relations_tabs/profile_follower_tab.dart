@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/profile_page_cubit.dart';
-import 'package:social_media_app_flutter/presentation/widgets/dialog/buttons/ok_button.dart';
+import 'package:social_media_app_flutter/presentation/widgets/general/dialog/alert_dialog.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/profile_page/profile_user_relations_tabs/profile_followers_tab/profile_followers_tab_list_view.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/profile_page/profile_user_relations_tabs/profile_followers_tab/profile_followers_tab_skeleton_list_view.dart';
 
@@ -18,13 +17,13 @@ class ProfileFollowerTab extends StatelessWidget {
       listener: (context, state) async {
         if (state.followersError != null &&
             state.followersStatus == ProfilePageStateFollowersStatus.error) {
-          return await showPlatformDialog(
+          return await showDialog(
             context: context,
-            builder: (context) {
-              return PlatformAlertDialog(
-                title: Text(state.followersError!.title),
-                content: Text(state.followersError!.message),
-                actions: const [OKButton()],
+            builder: (c) {
+              return CustomAlertDialog(
+                title: state.error!.title,
+                message: state.error!.message,
+                context: c,
               );
             },
           );
@@ -42,7 +41,7 @@ class ProfileFollowerTab extends StatelessWidget {
 
         if (state.followers == null ||
             state.followers != null && state.followers!.isEmpty) {
-          return const Center(child: Text("Keiner Folgt dir"));
+          return const Center(child: Text("Keine Follower"));
         }
 
         return ProfileFollowersTabListView(

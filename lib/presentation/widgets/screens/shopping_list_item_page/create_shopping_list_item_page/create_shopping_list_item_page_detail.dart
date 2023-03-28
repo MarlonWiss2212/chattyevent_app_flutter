@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:social_media_app_flutter/application/bloc/shopping_list/add_shopping_list_item_cubit.dart';
-import 'package:social_media_app_flutter/presentation/widgets/dialog/buttons/ok_button.dart';
+import 'package:social_media_app_flutter/presentation/widgets/general/dialog/alert_dialog.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/shopping_list_item_page/create_shopping_list_item_page/create_shopping_list_item_page_select_user_list.dart';
 
 class CreateShoppingListItemPageDetail extends StatelessWidget {
@@ -51,14 +51,14 @@ class CreateShoppingListItemPageDetail extends StatelessWidget {
                           );
 
                           if (amountAsDouble == null) {
-                            return await showPlatformDialog(
+                            return await showDialog(
                               context: context,
-                              builder: (context) {
-                                return PlatformAlertDialog(
-                                  title: const Text("Amount Fehler"),
-                                  content:
-                                      const Text("Amount muss eine Zahl sein"),
-                                  actions: const [OKButton()],
+                              builder: (c) {
+                                return CustomAlertDialog(
+                                  title: "Menge Fehler",
+                                  message:
+                                      "Die eingegebene Menge muss eine Zahl sein",
+                                  context: c,
                                 );
                               },
                             );

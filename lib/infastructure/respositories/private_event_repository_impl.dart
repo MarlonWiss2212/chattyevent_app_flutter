@@ -4,6 +4,7 @@ import 'package:social_media_app_flutter/core/dto/private_event/create_private_e
 import 'package:social_media_app_flutter/core/dto/private_event/create_private_event_user_dto.dart';
 import 'package:social_media_app_flutter/core/dto/private_event/update_private_event_user_dto.dart';
 import 'package:social_media_app_flutter/core/filter/limit_offset_filter/limit_offset_filter.dart';
+import 'package:social_media_app_flutter/core/filter/private_event/private_event_user/get_one_private_event_user_filter.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_user_entity.dart';
 import 'package:social_media_app_flutter/core/failures/failures.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
@@ -222,12 +223,13 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
   @override
   Future<Either<Failure, PrivateEventUserEntity>> updatePrivateEventUser({
     required UpdatePrivateEventUserDto updatePrivateEventUserDto,
+    required GetOnePrivateEventUserFilter getOnePrivateEventUserFilter,
   }) async {
     try {
       final response = await graphQlDatasource.mutation(
         """
-          mutation UpdatePrivateEventUser(\$input: UpdatePrivateEventUserInput!) {
-            updatePrivateEventUser(updatePrivateEventUserInput: \$input) {
+          mutation UpdatePrivateEventUser(\$input: UpdatePrivateEventUserInput!, \$findOnePrivateEventUserInput: FindOnePrivateEventUserInput!) {
+            updatePrivateEventUser(updatePrivateEventUserInput: \$input, findOnePrivateEventUserInput: \$findOnePrivateEventUserInput) {
               _id
               privateEventTo
               userId
@@ -238,7 +240,10 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
             }
           }
         """,
-        variables: {"input": updatePrivateEventUserDto.toMap()},
+        variables: {
+          "input": updatePrivateEventUserDto.toMap(),
+          "findOnePrivateEventUserInput": getOnePrivateEventUserFilter.toMap(),
+        },
       );
 
       if (response.hasException) {
@@ -255,7 +260,9 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
   }
 
   @override
-  Future<Either<Failure, void>> deletePrivateEventViaApi() {
+  Future<Either<Failure, void>> deletePrivateEventViaApi({
+    required GetOnePrivateEventFilter getOnePrivateEventFilter,
+  }) {
     // TODO: implement deletePrivateEventViaApi
     throw UnimplementedError();
   }
