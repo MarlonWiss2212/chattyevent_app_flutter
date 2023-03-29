@@ -26,6 +26,7 @@ class ShoppingListPage extends StatelessWidget {
             pinned: true,
             snap: true,
             floating: true,
+            leading: AutoLeadingButton(),
             expandedHeight: 100,
             flexibleSpace: FlexibleSpaceBar(
               title: Text("Einkaufsliste"),

@@ -84,7 +84,7 @@ class ChatPage extends StatelessWidget {
                       child: ChatPageMessageArea(),
                     ),
                   ),
-                  const Divider(height: 1),
+                  const Divider(height: 2),
                   ChatPageMessageInput(groupchatTo: groupchatId),
                 ],
               ),

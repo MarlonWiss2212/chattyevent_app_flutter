@@ -16,12 +16,12 @@ class ChatPageMessageContainer extends StatelessWidget {
     required this.currentUserId,
     required this.usersWithGroupchatUserData,
     required this.usersWithLeftGroupchatUserData,
-    this.showMessageReactTo = true,
-    this.showImage = true,
+    this.messageIsReactMessage = false,
+    this.isInputMessage = false,
   });
 
-  final bool showMessageReactTo;
-  final bool showImage;
+  final bool messageIsReactMessage;
+  final bool isInputMessage;
 
   final String currentUserId;
   final List<UserWithGroupchatUserData> usersWithGroupchatUserData;
@@ -30,22 +30,6 @@ class ChatPageMessageContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final actionPane = ActionPane(
-      motion: const ScrollMotion(),
-      children: [
-        SlidableAction(
-          backgroundColor: Theme.of(context).colorScheme.background,
-          foregroundColor: Colors.white,
-          onPressed: (context) {
-            BlocProvider.of<AddMessageCubit>(context).emitState(
-              messageToReactTo: message.id,
-            );
-          },
-          icon: Icons.arrow_circle_left_sharp,
-        ),
-      ],
-    );
-
     UserEntity? user;
     final foundUser = usersWithGroupchatUserData.firstWhere(
       (element) => element.id == message.createdBy,
@@ -69,39 +53,53 @@ class ChatPageMessageContainer extends StatelessWidget {
     } else {
       user = foundUser;
     }
+
     return Row(
       mainAxisAlignment: user?.id == currentUserId
           ? MainAxisAlignment.end
           : MainAxisAlignment.start,
       children: [
         Slidable(
-          enabled: showMessageReactTo,
-          startActionPane: user?.id == currentUserId ? null : actionPane,
-          endActionPane: user?.id == currentUserId ? actionPane : null,
+          enabled: messageIsReactMessage == false,
+          startActionPane: ActionPane(
+            motion: const ScrollMotion(),
+            children: [
+              SlidableAction(
+                borderRadius: BorderRadius.circular(8),
+                foregroundColor: Colors.white,
+                onPressed: (context) {
+                  BlocProvider.of<AddMessageCubit>(context).emitState(
+                    messageToReactTo: message.id,
+                  );
+                },
+                icon: Icons.arrow_circle_left_sharp,
+              ),
+            ],
+          ),
           child: Container(
-            constraints: showMessageReactTo
+            constraints: messageIsReactMessage == false
                 ? BoxConstraints(
-                    maxWidth: MediaQuery.of(context).size.width / 1.1,
+                    maxWidth: context.size!.width / 1.1,
                   )
                 : null,
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              borderRadius: showMessageReactTo
+              borderRadius: user?.id == currentUserId
+                  ? const BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      bottomLeft: Radius.circular(20),
+                      bottomRight: Radius.circular(20),
+                    )
+                  : const BorderRadius.only(
+                      bottomLeft: Radius.circular(20),
+                      bottomRight: Radius.circular(20),
+                      topRight: Radius.circular(20),
+                    ),
+              color: messageIsReactMessage == false || isInputMessage
                   ? user?.id == currentUserId
-                      ? const BorderRadius.only(
-                          topLeft: Radius.circular(20),
-                          bottomLeft: Radius.circular(20),
-                          bottomRight: Radius.circular(20),
-                        )
-                      : const BorderRadius.only(
-                          bottomLeft: Radius.circular(20),
-                          bottomRight: Radius.circular(20),
-                          topRight: Radius.circular(20),
-                        )
-                  : null,
-              color: user?.id == currentUserId
-                  ? Theme.of(context).colorScheme.primaryContainer
-                  : Theme.of(context).colorScheme.secondaryContainer,
+                      ? Theme.of(context).colorScheme.primaryContainer
+                      : Theme.of(context).colorScheme.surface
+                  : const Color.fromARGB(40, 0, 0, 0),
             ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -114,33 +112,44 @@ class ChatPageMessageContainer extends StatelessWidget {
                     Text(
                       user != null && user.username != null
                           ? user.username!
-                          : message.createdBy ?? "",
+                          : "",
                     ),
                     const SizedBox(width: 8),
                     Text(message.createdAt != null
                         ? DateFormat.jm().format(message.createdAt!)
-                        : "Fehler"),
+                        : ""),
                   ],
                 ),
-                if (message.fileLink != null && showImage) ...{
+                if (message.fileLink != null &&
+                    messageIsReactMessage == false) ...[
+                  const SizedBox(height: 8),
                   Image.network(message.fileLink!, fit: BoxFit.contain)
-                },
-                if (message.messageToReactTo != null && showMessageReactTo) ...{
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(
-                        color: Theme.of(context).colorScheme.primary,
-                        width: 2,
-                      ),
-                    ),
-                    child: ChatPageReactMessageContainer(
-                      messageToReactTo: message.messageToReactTo!,
-                    ),
+                ] else if (message.fileLink != null &&
+                    messageIsReactMessage) ...[
+                  const SizedBox(height: 8),
+                  Row(
+                    children: const [
+                      Icon(Icons.file_copy),
+                      SizedBox(width: 2),
+                      Text("Datei"),
+                    ],
+                  ),
+                ],
+                if (message.messageToReactTo != null &&
+                    messageIsReactMessage == false) ...{
+                  ChatPageReactMessageContainer(
+                    messageToReactTo: message.messageToReactTo!,
                   ),
                 },
+                if (message.fileLink != null) ...{
+                  const SizedBox(height: 8),
+                },
                 if (message.message != null) ...{
-                  Text(message.message!, overflow: TextOverflow.clip),
+                  Text(
+                    message.message!,
+                    overflow: TextOverflow.clip,
+                    softWrap: true,
+                  ),
                 },
               ],
             ),

@@ -64,6 +64,7 @@ class _ChatPageMessageListState extends State<ChatPageMessageList> {
       },
       elements: widget.messages,
       useStickyGroupSeparators: true,
+      physics: const ClampingScrollPhysics(),
       reverse: true,
       sort: false,
       order: GroupedListOrder.DESC,
@@ -82,12 +83,16 @@ class _ChatPageMessageListState extends State<ChatPageMessageList> {
         return SizedBox(
           height: 40,
           child: Center(
-            child: Card(
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                color: Theme.of(context).colorScheme.surface,
+              ),
               child: Padding(
                 padding: const EdgeInsets.all(8),
                 child: Text(
                   messageEntity.createdAt == null
-                      ? "Kein Datum gefunden"
+                      ? "Kein Datum"
                       : DateFormat.yMMMd().format(messageEntity.createdAt!),
                 ),
               ),

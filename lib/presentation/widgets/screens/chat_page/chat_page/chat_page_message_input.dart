@@ -75,18 +75,10 @@ class ChatPageMessageInput extends StatelessWidget {
                       removeMessageToReactTo: true,
                     ),
                     child: Scrollable(
-                      viewportBuilder: (context, position) => Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(
-                            color: Theme.of(context).colorScheme.primary,
-                            width: 2,
-                          ),
-                        ),
-                        child: ChatPageReactMessageContainer(
-                          showImage: false,
-                          messageToReactTo: state.messageToReactTo!,
-                        ),
+                      viewportBuilder: (context, position) =>
+                          ChatPageReactMessageContainer(
+                        messageToReactTo: state.messageToReactTo!,
+                        isInputMessage: true,
                       ),
                     ),
                   );

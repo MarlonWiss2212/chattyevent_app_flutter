@@ -7,31 +7,37 @@ import 'package:social_media_app_flutter/presentation/widgets/screens/chat_page/
 
 class ChatPageReactMessageContainer extends StatelessWidget {
   final String messageToReactTo;
-  final bool? showImage;
+  final bool isInputMessage;
 
   const ChatPageReactMessageContainer({
     super.key,
     required this.messageToReactTo,
-    this.showImage,
+    this.isInputMessage = false,
   });
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CurrentChatCubit, CurrentChatState>(
       builder: (context, state) {
-        return ChatPageMessageContainer(
-          showImage: showImage ?? true,
-          message: state.currentChat.messages != null
-              ? state.currentChat.messages!.firstWhere(
-                  (element) => element.id == messageToReactTo,
-                  orElse: () => MessageEntity(id: messageToReactTo),
-                )
-              : MessageEntity(id: messageToReactTo),
-          currentUserId:
-              BlocProvider.of<AuthCubit>(context).state.currentUser.id,
-          usersWithGroupchatUserData: state.usersWithGroupchatUserData,
-          usersWithLeftGroupchatUserData: state.usersWithLeftGroupchatUserData,
-          showMessageReactTo: false,
+        return Padding(
+          padding: isInputMessage
+              ? const EdgeInsets.all(0)
+              : const EdgeInsets.all(8),
+          child: ChatPageMessageContainer(
+            isInputMessage: isInputMessage,
+            message: state.currentChat.messages != null
+                ? state.currentChat.messages!.firstWhere(
+                    (element) => element.id == messageToReactTo,
+                    orElse: () => MessageEntity(id: messageToReactTo),
+                  )
+                : MessageEntity(id: messageToReactTo),
+            currentUserId:
+                BlocProvider.of<AuthCubit>(context).state.currentUser.id,
+            usersWithGroupchatUserData: state.usersWithGroupchatUserData,
+            usersWithLeftGroupchatUserData:
+                state.usersWithLeftGroupchatUserData,
+            messageIsReactMessage: true,
+          ),
         );
       },
     );
