@@ -79,7 +79,7 @@ class ChatPageMessageContainer extends StatelessWidget {
           child: Container(
             constraints: messageIsReactMessage == false
                 ? BoxConstraints(
-                    maxWidth: context.size!.width / 1.1,
+                    maxWidth: MediaQuery.of(context).size.width / 1.1,
                   )
                 : null,
             padding: const EdgeInsets.all(8),
@@ -145,11 +145,7 @@ class ChatPageMessageContainer extends StatelessWidget {
                   const SizedBox(height: 8),
                 },
                 if (message.message != null) ...{
-                  Text(
-                    message.message!,
-                    overflow: TextOverflow.clip,
-                    softWrap: true,
-                  ),
+                  Text(message.message!, overflow: TextOverflow.clip),
                 },
               ],
             ),
