@@ -4,11 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletons/skeletons.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/shopping_list/my_shopping_list_cubit.dart';
-import 'package:social_media_app_flutter/core/filter/get_shopping_list_items_filter.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/user_with_private_event_user_data.dart';
-import 'package:social_media_app_flutter/domain/entities/shopping_list_item/shopping_list_item_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/shopping_list_item_page/shopping_list_page/shopping_list_item_tile.dart';
@@ -21,10 +18,9 @@ class PrivateEventTabShoppingList extends StatelessWidget {
   });
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<MyShoppingListCubit>(context).getShoppingListViaApi(
-      getShoppingListItemsFilter: GetShoppingListItemsFilter(
-        privateEventId: privateEventId,
-      ),
+    BlocProvider.of<CurrentPrivateEventCubit>(context)
+        .getShoppingListItemsViaApi(
+      reload: false,
     );
 
     return CustomScrollView(slivers: [
@@ -46,24 +42,22 @@ class PrivateEventTabShoppingList extends StatelessWidget {
         ],
       ),
       CupertinoSliverRefreshControl(
-        onRefresh: () =>
-            BlocProvider.of<MyShoppingListCubit>(context).getShoppingListViaApi(
-          getShoppingListItemsFilter: GetShoppingListItemsFilter(
-            privateEventId: privateEventId,
-          ),
+        onRefresh: () => BlocProvider.of<CurrentPrivateEventCubit>(context)
+            .getShoppingListItemsViaApi(
+          reload: true,
         ),
       ),
-      BlocBuilder<MyShoppingListCubit, MyShoppingListState>(
+      BlocBuilder<CurrentPrivateEventCubit, CurrentPrivateEventState>(
         builder: (context, state) {
-          if (state.shoppingList.isEmpty &&
-              state.loadingForPrivateEventId != privateEventId) {
+          if (state.shoppingListItems.isEmpty &&
+              state.loadingShoppingList == false) {
             return const SliverFillRemaining(
               child: Center(
                 child: Text("Keine Items die gekauft werden müssen"),
               ),
             );
-          } else if (state.shoppingList.isEmpty &&
-              state.loadingForPrivateEventId == privateEventId) {
+          } else if (state.shoppingListItems.isEmpty &&
+              state.loadingShoppingList) {
             return SliverFillRemaining(
               child: SkeletonListView(
                 itemBuilder: (p0, p1) {
@@ -84,12 +78,6 @@ class PrivateEventTabShoppingList extends StatelessWidget {
             );
           }
 
-          List<ShoppingListItemEntity> filteredItems = state.shoppingList
-              .where(
-                (element) => element.privateEventId == privateEventId,
-              )
-              .toList();
-
           return BlocBuilder<CurrentPrivateEventCubit,
               CurrentPrivateEventState>(
             builder: (context, currentPrivateEventState) {
@@ -99,25 +87,31 @@ class PrivateEventTabShoppingList extends StatelessWidget {
                     UserWithPrivateEventUserData userToBuyItem =
                         currentPrivateEventState.privateEventUsers.firstWhere(
                       (element) =>
-                          element.user.id == filteredItems[index].userToBuyItem,
+                          element.user.id ==
+                          state.shoppingListItems[index].userToBuyItem,
                       orElse: () => UserWithPrivateEventUserData(
                         privateEventUser: PrivateEventUserEntity(
-                            id: "", userId: filteredItems[index].userToBuyItem),
+                            id: "",
+                            userId:
+                                state.shoppingListItems[index].userToBuyItem),
                         user: UserEntity(
-                          id: filteredItems[index].userToBuyItem ?? "",
+                          id: state.shoppingListItems[index].userToBuyItem ??
+                              "",
                           authId: "",
                         ),
                       ),
                     );
 
                     return ShoppingListItemTile(
-                      shoppingListItem: filteredItems[index],
+                      shoppingListItem: state.shoppingListItems[index],
                       userToBuyItem: userToBuyItem,
                       onTap: () {
                         AutoRouter.of(context).push(
-                          StandardShoppingListItemPageRoute(
-                            shoppingListItemId: filteredItems[index].id,
-                            shoppingListItemToSet: filteredItems[index],
+                          PrivateEventShoppingListItemPageRoute(
+                            shoppingListItemId:
+                                state.shoppingListItems[index].id,
+                            shoppingListItemToSet:
+                                state.shoppingListItems[index],
                             loadShoppingListItemFromApiToo: true,
                             setCurrentPrivateEvent: false,
                           ),
@@ -125,7 +119,7 @@ class PrivateEventTabShoppingList extends StatelessWidget {
                       },
                     );
                   },
-                  childCount: filteredItems.length,
+                  childCount: state.shoppingListItems.length,
                 ),
               );
             },

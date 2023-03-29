@@ -52,7 +52,7 @@ class ShoppingListPage extends StatelessWidget {
             },
             child: BlocBuilder<MyShoppingListCubit, MyShoppingListState>(
               builder: (context, state) {
-                if (state.loading == true && state.shoppingList.isEmpty) {
+                if (state.loading == true && state.shoppingListItems.isEmpty) {
                   return SliverFillRemaining(
                     child: SkeletonListView(
                       itemBuilder: (p0, p1) {
@@ -71,7 +71,7 @@ class ShoppingListPage extends StatelessWidget {
                       },
                     ),
                   );
-                } else if (state.shoppingList.isEmpty) {
+                } else if (state.shoppingListItems.isEmpty) {
                   return const SliverFillRemaining(
                     child: Center(
                       child: Text("Keine Items die gekauft werden müssen"),
@@ -80,33 +80,39 @@ class ShoppingListPage extends StatelessWidget {
                 }
                 final currentUser =
                     BlocProvider.of<AuthCubit>(context).state.currentUser;
-                final filteredShoppingList = state.shoppingList
+                final filteredShoppingList = state.shoppingListItems
                     .where(
                       (element) => element.userToBuyItem == currentUser.id,
                     )
                     .toList();
 
                 return SliverList(
-                  delegate: SliverChildBuilderDelegate((context, index) {
-                    return ShoppingListItemTile(
-                      shoppingListItem: filteredShoppingList[index],
-                      userToBuyItem: UserWithPrivateEventUserData(
-                        user: currentUser,
-                        groupchatUser: GroupchatUserEntity(id: currentUser.id),
-                        privateEventUser:
-                            PrivateEventUserEntity(id: currentUser.id),
-                      ),
-                      onTap: () {
-                        AutoRouter.of(context).push(
-                          ShoppingListItemPageRoute(
-                            shoppingListItemId: filteredShoppingList[index].id,
-                            shoppingListItemToSet: filteredShoppingList[index],
-                            loadShoppingListItemFromApiToo: true,
-                          ),
-                        );
-                      },
-                    );
-                  }, childCount: filteredShoppingList.length),
+                  delegate: SliverChildBuilderDelegate(
+                    (context, index) {
+                      return ShoppingListItemTile(
+                        shoppingListItem: filteredShoppingList[index],
+                        userToBuyItem: UserWithPrivateEventUserData(
+                          user: currentUser,
+                          groupchatUser:
+                              GroupchatUserEntity(id: currentUser.id),
+                          privateEventUser:
+                              PrivateEventUserEntity(id: currentUser.id),
+                        ),
+                        onTap: () {
+                          AutoRouter.of(context).push(
+                            ShoppingListItemPageRoute(
+                              shoppingListItemId:
+                                  filteredShoppingList[index].id,
+                              shoppingListItemToSet:
+                                  filteredShoppingList[index],
+                              loadShoppingListItemFromApiToo: true,
+                            ),
+                          );
+                        },
+                      );
+                    },
+                    childCount: filteredShoppingList.length,
+                  ),
                 );
               },
             ),

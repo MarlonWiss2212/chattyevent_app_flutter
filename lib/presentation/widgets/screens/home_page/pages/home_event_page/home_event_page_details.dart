@@ -76,7 +76,11 @@ class HomeEventPageDetails extends StatelessWidget {
             leading: const Icon(Icons.shopping_bag),
             title: const Text("Einkaufsliste"),
             onTap: () {
-              AutoRouter.of(context).push(const ShoppingListPageRoute());
+              AutoRouter.of(context).push(
+                const ShoppingListWrapperPageRoute(
+                  children: [ShoppingListPageRoute()],
+                ),
+              );
             },
           ),
         ],

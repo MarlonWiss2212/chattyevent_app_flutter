@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:dartz/dartz.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,7 +25,7 @@ class StandardShoppingListItemPage extends StatelessWidget {
 
   const StandardShoppingListItemPage({
     super.key,
-    @PathParam('shoppingListItemId') required this.shoppingListItemId,
+    required this.shoppingListItemId,
     required this.shoppingListItemToSet,
     this.loadShoppingListItemFromApiToo = true,
     this.setCurrentPrivateEvent = false,
@@ -41,7 +42,9 @@ class StandardShoppingListItemPage extends StatelessWidget {
         boughtAmountUseCases: serviceLocator(
           param1: BlocProvider.of<AuthCubit>(context).state,
         ),
-        shoppingListCubit: BlocProvider.of<MyShoppingListCubit>(context),
+        shoppingListCubitOrPrivateEventCubit: setCurrentPrivateEvent
+            ? Left(BlocProvider.of<MyShoppingListCubit>(context))
+            : Right(BlocProvider.of<CurrentPrivateEventCubit>(context)),
         shoppingListItemUseCases: serviceLocator(
           param1: BlocProvider.of<AuthCubit>(context).state,
         ),
@@ -134,7 +137,7 @@ class StandardShoppingListItemPage extends StatelessWidget {
                     delegate: SliverChildListDelegate(const [
                       CurrentShoppingListItemPageWithProgressBar(),
                       SizedBox(height: 20),
-                      CurrentShopppingListItemPagePrivateEventTile(),
+                      CurrentShoppingListItemPagePrivateEventTile(),
                       CustomDivider(),
                       CurrentShoppingListItemPageCreateBoughtAmountTile(),
                       CurrentShoppingListItemPageBoughtAmountList(),

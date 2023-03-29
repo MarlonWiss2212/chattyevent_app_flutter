@@ -28,6 +28,8 @@ class PrivateEventWrapperPage extends StatelessWidget {
     CurrentPrivateEventCubit currentPrivateEventCubit =
         CurrentPrivateEventCubit(
       CurrentPrivateEventState(
+        shoppingListItems: [],
+        loadingShoppingList: false,
         privateEventUsers: const [],
         privateEvent: privateEventToSet ??
             PrivateEventEntity(
@@ -37,7 +39,6 @@ class PrivateEventWrapperPage extends StatelessWidget {
         loadingPrivateEvent: false,
       ),
       userCubit: BlocProvider.of<UserCubit>(context),
-      shoppingListCubit: BlocProvider.of<MyShoppingListCubit>(context),
       chatCubit: BlocProvider.of<ChatCubit>(context),
       locationUseCases: serviceLocator(),
       chatUseCases: serviceLocator(

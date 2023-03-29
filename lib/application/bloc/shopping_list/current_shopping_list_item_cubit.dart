@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:meta/meta.dart';
+import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/shopping_list/my_shopping_list_cubit.dart';
 import 'package:social_media_app_flutter/core/dto/bought_amount/create_bought_amount_dto.dart';
 import 'package:social_media_app_flutter/core/dto/bought_amount/update_bought_amount_dto.dart';
@@ -16,14 +17,19 @@ import 'package:social_media_app_flutter/domain/usecases/shopping_list_item_usec
 part 'current_shopping_list_item_state.dart';
 
 class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
-  final MyShoppingListCubit shoppingListCubit;
+  /// to replace shopping list items
+  final Either<MyShoppingListCubit, CurrentPrivateEventCubit>
+      shoppingListCubitOrPrivateEventCubit;
+
+  /// in future save current private event in this cubit
+
   final ShoppingListItemUseCases shoppingListItemUseCases;
   final BoughtAmountUseCases boughtAmountUseCases;
 
   CurrentShoppingListItemCubit(
     super.initialState, {
     required this.boughtAmountUseCases,
-    required this.shoppingListCubit,
+    required this.shoppingListCubitOrPrivateEventCubit,
     required this.shoppingListItemUseCases,
   });
 
@@ -53,7 +59,16 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
           loadingShoppingListItem: false,
           shoppingListItem: shoppingListItem,
         );
-        shoppingListCubit.replaceOrAdd(shoppingListItem: shoppingListItem);
+        shoppingListCubitOrPrivateEventCubit.fold(
+          (l) => l.replaceOrAdd(
+            addIfItsNotFound: false,
+            shoppingListItem: shoppingListItem,
+          ),
+          (r) => r.replaceOrAddShoppingListItem(
+            addIfItsNotFound: false,
+            shoppingListItem: shoppingListItem,
+          ),
+        );
       },
     );
   }
@@ -78,8 +93,16 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
         );
       },
       (shoppingListItem) {
-        final replacedShoppingListItem = shoppingListCubit.replaceOrAdd(
-          shoppingListItem: shoppingListItem,
+        final replacedShoppingListItem =
+            shoppingListCubitOrPrivateEventCubit.fold(
+          (l) => l.replaceOrAdd(
+            addIfItsNotFound: false,
+            shoppingListItem: shoppingListItem,
+          ),
+          (r) => r.replaceOrAddShoppingListItem(
+            addIfItsNotFound: false,
+            shoppingListItem: shoppingListItem,
+          ),
         );
         emitState(
           shoppingListItem: replacedShoppingListItem,
@@ -108,8 +131,14 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
       (deleted) {
         if (deleted) {
           emitState(status: CurrentShoppingListItemStateStatus.deleted);
-          shoppingListCubit.delete(
-            shoppingListItemId: state.shoppingListItem.id,
+
+          shoppingListCubitOrPrivateEventCubit.fold(
+            (l) => l.delete(
+              shoppingListItemId: state.shoppingListItem.id,
+            ),
+            (r) => r.deleteShoppingListItem(
+              shoppingListItemId: state.shoppingListItem.id,
+            ),
           );
         }
       },
@@ -147,8 +176,16 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
           oldEntity: state.shoppingListItem,
         );
 
-        final replacedShoppingListItem = shoppingListCubit.replaceOrAdd(
-          shoppingListItem: newShoppingListItem,
+        final replacedShoppingListItem =
+            shoppingListCubitOrPrivateEventCubit.fold(
+          (l) => l.replaceOrAdd(
+            addIfItsNotFound: false,
+            shoppingListItem: newShoppingListItem,
+          ),
+          (r) => r.replaceOrAddShoppingListItem(
+            addIfItsNotFound: false,
+            shoppingListItem: newShoppingListItem,
+          ),
         );
         emitState(shoppingListItem: replacedShoppingListItem);
       },
@@ -189,8 +226,16 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
               oldEntity: state.shoppingListItem,
             );
 
-            final replacedShoppingListItem = shoppingListCubit.replaceOrAdd(
-              shoppingListItem: newShoppingListItem,
+            final replacedShoppingListItem =
+                shoppingListCubitOrPrivateEventCubit.fold(
+              (l) => l.replaceOrAdd(
+                addIfItsNotFound: false,
+                shoppingListItem: newShoppingListItem,
+              ),
+              (r) => r.replaceOrAddShoppingListItem(
+                addIfItsNotFound: false,
+                shoppingListItem: newShoppingListItem,
+              ),
             );
             emitState(shoppingListItem: replacedShoppingListItem);
           } else {
@@ -207,8 +252,16 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
               oldEntity: state.shoppingListItem,
             );
 
-            final replacedShoppingListItem = shoppingListCubit.replaceOrAdd(
-              shoppingListItem: newShoppingListItem,
+            final replacedShoppingListItem =
+                shoppingListCubitOrPrivateEventCubit.fold(
+              (l) => l.replaceOrAdd(
+                addIfItsNotFound: false,
+                shoppingListItem: newShoppingListItem,
+              ),
+              (r) => r.replaceOrAddShoppingListItem(
+                addIfItsNotFound: false,
+                shoppingListItem: newShoppingListItem,
+              ),
             );
             emitState(shoppingListItem: replacedShoppingListItem);
           }
@@ -221,8 +274,16 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
             ),
             oldEntity: state.shoppingListItem,
           );
-          final replacedShoppingListItem = shoppingListCubit.replaceOrAdd(
-            shoppingListItem: newShoppingListItem,
+          final replacedShoppingListItem =
+              shoppingListCubitOrPrivateEventCubit.fold(
+            (l) => l.replaceOrAdd(
+              addIfItsNotFound: false,
+              shoppingListItem: newShoppingListItem,
+            ),
+            (r) => r.replaceOrAddShoppingListItem(
+              addIfItsNotFound: false,
+              shoppingListItem: newShoppingListItem,
+            ),
           );
           emitState(shoppingListItem: replacedShoppingListItem);
         }
@@ -257,8 +318,16 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
               ),
               oldEntity: state.shoppingListItem,
             );
-            final replacedShoppingListItem = shoppingListCubit.replaceOrAdd(
-              shoppingListItem: newShoppingListItem,
+            final replacedShoppingListItem =
+                shoppingListCubitOrPrivateEventCubit.fold(
+              (l) => l.replaceOrAdd(
+                addIfItsNotFound: false,
+                shoppingListItem: newShoppingListItem,
+              ),
+              (r) => r.replaceOrAddShoppingListItem(
+                addIfItsNotFound: false,
+                shoppingListItem: newShoppingListItem,
+              ),
             );
             emitState(shoppingListItem: replacedShoppingListItem);
           } else {
@@ -273,8 +342,16 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
               ),
               oldEntity: state.shoppingListItem,
             );
-            final replacedShoppingListItem = shoppingListCubit.replaceOrAdd(
-              shoppingListItem: newShoppingListItem,
+            final replacedShoppingListItem =
+                shoppingListCubitOrPrivateEventCubit.fold(
+              (l) => l.replaceOrAdd(
+                addIfItsNotFound: false,
+                shoppingListItem: newShoppingListItem,
+              ),
+              (r) => r.replaceOrAddShoppingListItem(
+                addIfItsNotFound: false,
+                shoppingListItem: newShoppingListItem,
+              ),
             );
             emitState(shoppingListItem: replacedShoppingListItem);
           }

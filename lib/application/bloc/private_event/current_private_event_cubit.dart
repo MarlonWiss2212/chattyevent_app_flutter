@@ -1,6 +1,3 @@
-import 'dart:collection';
-import 'dart:math';
-
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
 import 'package:dartz/dartz.dart';
@@ -11,7 +8,9 @@ import 'package:social_media_app_flutter/application/bloc/shopping_list/my_shopp
 import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
 import 'package:social_media_app_flutter/core/dto/private_event/create_private_event_user_dto.dart';
 import 'package:social_media_app_flutter/core/dto/private_event/update_private_event_user_dto.dart';
+import 'package:social_media_app_flutter/core/filter/get_shopping_list_items_filter.dart';
 import 'package:social_media_app_flutter/core/filter/groupchat/get_one_groupchat_filter.dart';
+import 'package:social_media_app_flutter/core/filter/limit_offset_filter/limit_offset_filter.dart';
 import 'package:social_media_app_flutter/core/filter/private_event/private_event_user/get_one_private_event_user_filter.dart';
 import 'package:social_media_app_flutter/domain/entities/error_with_title_and_message.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
@@ -19,6 +18,7 @@ import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_use
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/user_with_private_event_user_data.dart';
+import 'package:social_media_app_flutter/domain/entities/shopping_list_item/shopping_list_item_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:social_media_app_flutter/core/failures/failures.dart';
 import 'package:social_media_app_flutter/core/filter/get_one_private_event_filter.dart';
@@ -32,7 +32,6 @@ part 'current_private_event_state.dart';
 class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
   final PrivateEventCubit privateEventCubit;
   final ChatCubit chatCubit;
-  final MyShoppingListCubit shoppingListCubit;
   final UserCubit userCubit;
 
   final PrivateEventUseCases privateEventUseCases;
@@ -44,7 +43,6 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
     super.initialState, {
     required this.userCubit,
     required this.locationUseCases,
-    required this.shoppingListCubit,
     required this.privateEventCubit,
     required this.chatCubit,
     required this.chatUseCases,
@@ -286,16 +284,117 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
     );
   }
 
+  // shopping list
+
+  ShoppingListItemEntity replaceOrAddShoppingListItem({
+    required bool addIfItsNotFound,
+    required ShoppingListItemEntity shoppingListItem,
+  }) {
+    int foundIndex = state.shoppingListItems.indexWhere(
+      (element) => element.id == shoppingListItem.id,
+    );
+
+    if (foundIndex != -1) {
+      List<ShoppingListItemEntity> newShoppingListItems =
+          state.shoppingListItems;
+      newShoppingListItems[foundIndex] = ShoppingListItemEntity.merge(
+        newEntity: shoppingListItem,
+        oldEntity: state.shoppingListItems[foundIndex],
+      );
+      emitState(shoppingListItems: newShoppingListItems);
+      return newShoppingListItems[foundIndex];
+    } else if (addIfItsNotFound) {
+      emitState(
+        shoppingListItems: List.from(state.shoppingListItems)
+          ..add(
+            shoppingListItem,
+          ),
+      );
+    }
+    return shoppingListItem;
+  }
+
+  List<ShoppingListItemEntity> replaceOrAddMultipleShoppingListItems({
+    required bool addIfItsNotFound,
+    required List<ShoppingListItemEntity> shoppingListItems,
+  }) {
+    List<ShoppingListItemEntity> mergedShoppingList = [];
+    for (final shoppingListItem in shoppingListItems) {
+      final mergedShoppingListItem = replaceOrAddShoppingListItem(
+        addIfItsNotFound: addIfItsNotFound,
+        shoppingListItem: shoppingListItem,
+      );
+      mergedShoppingList.add(mergedShoppingListItem);
+    }
+    return mergedShoppingList;
+  }
+
+  void deleteShoppingListItem({required String shoppingListItemId}) {
+    emitState(
+      shoppingListItems: state.shoppingListItems
+          .where(
+            (element) => element.id != shoppingListItemId,
+          )
+          .toList(),
+    );
+  }
+
+  Future getShoppingListItemsViaApi({
+    bool reload = false,
+  }) async {
+    emitState(loadingShoppingList: true);
+
+    final Either<Failure, List<ShoppingListItemEntity>>
+        shoppingListItemsOrFailure =
+        await shoppingListItemUseCases.getShoppingListItemsViaApi(
+      getShoppingListItemsFilter:
+          GetShoppingListItemsFilter(privateEventId: state.privateEvent.id),
+      limitOffsetFilter: reload
+          ? LimitOffsetFilter(
+              limit: state.shoppingListItems.length > 10
+                  ? 10
+                  : state.shoppingListItems.length,
+              offset: 0,
+            )
+          : LimitOffsetFilter(
+              limit: 20,
+              offset: state.shoppingListItems.length,
+            ),
+    );
+
+    shoppingListItemsOrFailure.fold(
+      (error) => emitState(
+        loadingShoppingList: false,
+        error: ErrorWithTitleAndMessage(
+          message: mapFailureToMessage(error),
+          title: "Lade Fehler",
+        ),
+      ),
+      (shoppingListItems) {
+        replaceOrAddMultipleShoppingListItems(
+          shoppingListItems: shoppingListItems,
+          addIfItsNotFound: true,
+        );
+      },
+    );
+  }
+
+  //
+
   void emitState({
     PrivateEventEntity? privateEvent,
     List<UserWithPrivateEventUserData>? privateEventUsers,
     GroupchatEntity? groupchat,
     bool? loadingPrivateEvent,
     bool? loadingGroupchat,
+    bool? loadingShoppingList,
+    List<ShoppingListItemEntity>? shoppingListItems,
     CurrentPrivateEventStateStatus? status,
     ErrorWithTitleAndMessage? error,
   }) {
     emit(CurrentPrivateEventState(
+      shoppingListItems: shoppingListItems ?? state.shoppingListItems,
+      loadingShoppingList: loadingShoppingList ?? state.loadingShoppingList,
       privateEvent: privateEvent ?? state.privateEvent,
       privateEventUsers: privateEventUsers ?? state.privateEventUsers,
       groupchat: groupchat ?? state.groupchat,

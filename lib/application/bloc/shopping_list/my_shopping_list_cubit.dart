@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:meta/meta.dart';
+import 'package:social_media_app_flutter/core/filter/limit_offset_filter/limit_offset_filter.dart';
 import 'package:social_media_app_flutter/domain/entities/error_with_title_and_message.dart';
 import 'package:social_media_app_flutter/domain/entities/shopping_list_item/shopping_list_item_entity.dart';
 import 'package:social_media_app_flutter/core/failures/failures.dart';
@@ -14,27 +15,29 @@ class MyShoppingListCubit extends Cubit<MyShoppingListState> {
 
   MyShoppingListCubit({
     required this.shoppingListItemUseCases,
-  }) : super(const MyShoppingListState(shoppingList: []));
+  }) : super(const MyShoppingListState(shoppingListItems: []));
 
   ShoppingListItemEntity replaceOrAdd({
+    required bool addIfItsNotFound,
     required ShoppingListItemEntity shoppingListItem,
   }) {
-    int foundIndex = state.shoppingList.indexWhere(
+    int foundIndex = state.shoppingListItems.indexWhere(
       (element) => element.id == shoppingListItem.id,
     );
 
     if (foundIndex != -1) {
-      List<ShoppingListItemEntity> newShoppingList = state.shoppingList;
+      List<ShoppingListItemEntity> newShoppingList = state.shoppingListItems;
       newShoppingList[foundIndex] = ShoppingListItemEntity.merge(
         newEntity: shoppingListItem,
-        oldEntity: state.shoppingList[foundIndex],
+        oldEntity: state.shoppingListItems[foundIndex],
       );
-      emit(MyShoppingListState(shoppingList: newShoppingList));
+      emit(MyShoppingListState(shoppingListItems: newShoppingList));
       return newShoppingList[foundIndex];
-    } else {
+    } else if (addIfItsNotFound) {
       emit(
         MyShoppingListState(
-          shoppingList: List.from(state.shoppingList)..add(shoppingListItem),
+          shoppingListItems: List.from(state.shoppingListItems)
+            ..add(shoppingListItem),
         ),
       );
     }
@@ -42,11 +45,13 @@ class MyShoppingListCubit extends Cubit<MyShoppingListState> {
   }
 
   List<ShoppingListItemEntity> replaceOrAddMultiple({
+    required bool addIfItsNotFound,
     required List<ShoppingListItemEntity> shoppingListItems,
   }) {
     List<ShoppingListItemEntity> mergedShoppingList = [];
     for (final shoppingListItem in shoppingListItems) {
       final mergedShoppingListItem = replaceOrAdd(
+        addIfItsNotFound: addIfItsNotFound,
         shoppingListItem: shoppingListItem,
       );
       mergedShoppingList.add(mergedShoppingListItem);
@@ -57,7 +62,7 @@ class MyShoppingListCubit extends Cubit<MyShoppingListState> {
   void delete({required String shoppingListItemId}) {
     emit(
       MyShoppingListState(
-        shoppingList: state.shoppingList
+        shoppingListItems: state.shoppingListItems
             .where(
               (element) => element.id != shoppingListItemId,
             )
@@ -67,24 +72,34 @@ class MyShoppingListCubit extends Cubit<MyShoppingListState> {
   }
 
   Future getShoppingListViaApi({
-    GetShoppingListItemsFilter? getShoppingListItemsFilter,
+    bool reload = false,
   }) async {
     emit(MyShoppingListState(
-      shoppingList: state.shoppingList,
-      loadingForPrivateEventId: getShoppingListItemsFilter?.privateEventId,
+      shoppingListItems: state.shoppingListItems,
       loading: true,
     ));
 
     final Either<Failure, List<ShoppingListItemEntity>>
         shoppingListItemsOrFailure =
         await shoppingListItemUseCases.getShoppingListItemsViaApi(
-      getShoppingListItemsFilter: getShoppingListItemsFilter,
+      getShoppingListItemsFilter: GetShoppingListItemsFilter(),
+      limitOffsetFilter: reload
+          ? LimitOffsetFilter(
+              limit: state.shoppingListItems.length > 10
+                  ? 10
+                  : state.shoppingListItems.length,
+              offset: 0,
+            )
+          : LimitOffsetFilter(
+              limit: 20,
+              offset: state.shoppingListItems.length,
+            ),
     );
 
     shoppingListItemsOrFailure.fold(
       (error) => emit(
         MyShoppingListState(
-          shoppingList: state.shoppingList,
+          shoppingListItems: state.shoppingListItems,
           loading: false,
           error: ErrorWithTitleAndMessage(
             message: mapFailureToMessage(error),
@@ -93,9 +108,12 @@ class MyShoppingListCubit extends Cubit<MyShoppingListState> {
         ),
       ),
       (shoppingListItems) {
-        replaceOrAddMultiple(shoppingListItems: shoppingListItems);
-        // too set loading false
-        MyShoppingListState(shoppingList: state.shoppingList, loading: false);
+        replaceOrAddMultiple(
+          shoppingListItems: shoppingListItems,
+          addIfItsNotFound: true,
+        );
+        MyShoppingListState(
+            shoppingListItems: state.shoppingListItems, loading: false);
       },
     );
   }
