@@ -36,7 +36,7 @@ class GroupchatEntity {
   }) {
     List<GroupchatUserEntity>? users =
         setUsersFromOldEntity ? oldEntity.users : null;
-    if (newEntity.leftUsers != null) {
+    if (newEntity.users != null) {
       for (final newUser in newEntity.users!) {
         if (users == null) {
           users ??= [];

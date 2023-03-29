@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:meta/meta.dart';
-import 'package:social_media_app_flutter/application/bloc/shopping_list/shopping_list_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/shopping_list/my_shopping_list_cubit.dart';
 import 'package:social_media_app_flutter/core/dto/bought_amount/create_bought_amount_dto.dart';
 import 'package:social_media_app_flutter/core/dto/bought_amount/update_bought_amount_dto.dart';
 import 'package:social_media_app_flutter/core/dto/shopping_list_item/update_shopping_list_item_dto.dart';
@@ -16,7 +16,7 @@ import 'package:social_media_app_flutter/domain/usecases/shopping_list_item_usec
 part 'current_shopping_list_item_state.dart';
 
 class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
-  final ShoppingListCubit shoppingListCubit;
+  final MyShoppingListCubit shoppingListCubit;
   final ShoppingListItemUseCases shoppingListItemUseCases;
   final BoughtAmountUseCases boughtAmountUseCases;
 

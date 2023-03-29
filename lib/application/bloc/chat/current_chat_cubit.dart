@@ -6,12 +6,14 @@ import 'package:meta/meta.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
-import 'package:social_media_app_flutter/core/dto/groupchat/create_groupchat_left_user_dto.dart';
 import 'package:social_media_app_flutter/core/dto/groupchat/create_groupchat_user_dto.dart';
-import 'package:social_media_app_flutter/core/filter/get_messages_filter.dart';
+import 'package:social_media_app_flutter/core/dto/groupchat/update_groupchat_user_dto.dart';
+import 'package:social_media_app_flutter/core/filter/groupchat/added_message_filter.dart';
+import 'package:social_media_app_flutter/core/filter/groupchat/get_messages_filter.dart';
 import 'package:social_media_app_flutter/core/filter/get_private_events_filter.dart';
+import 'package:social_media_app_flutter/core/filter/groupchat/get_one_groupchat_filter.dart';
+import 'package:social_media_app_flutter/core/filter/groupchat/get_one_groupchat_user_filter.dart';
 import 'package:social_media_app_flutter/core/filter/limit_offset_filter/limit_offset_filter.dart';
-import 'package:social_media_app_flutter/core/filter/messages/added_message_filter.dart';
 import 'package:social_media_app_flutter/domain/entities/error_with_title_and_message.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_left_user_entity.dart';
@@ -22,7 +24,6 @@ import 'package:social_media_app_flutter/domain/entities/message/message_entity.
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:social_media_app_flutter/core/failures/failures.dart';
-import 'package:social_media_app_flutter/core/filter/get_one_groupchat_filter.dart';
 import 'package:social_media_app_flutter/domain/usecases/chat_usecases.dart';
 import 'package:social_media_app_flutter/domain/usecases/message_usecases.dart';
 import 'package:social_media_app_flutter/domain/usecases/private_event_usecases.dart';
@@ -267,12 +268,59 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
     );
   }
 
+  Future updateGroupchatUserViaApi({
+    required UpdateGroupchatUserDto updateGroupchatUserDto,
+    required String userId,
+  }) async {
+    final updatedUserOrFailure = await chatUseCases.updateGroupchatUserViaApi(
+      updateGroupchatUserDto: updateGroupchatUserDto,
+      getOneGroupchatUserFilter: GetOneGroupchatUserFilter(
+        userId: userId,
+        groupchatTo: state.currentChat.id,
+      ),
+    );
+
+    updatedUserOrFailure.fold(
+      (error) => emitState(
+        error: ErrorWithTitleAndMessage(
+          title: "Fehler Update User",
+          message: mapFailureToMessage(error),
+        ),
+        showError: true,
+      ),
+      (groupchatUser) {
+        List<GroupchatUserEntity> newGroupchatUsers =
+            state.currentChat.users ?? [];
+
+        int foundIndex = newGroupchatUsers.indexWhere(
+          (element) => element.id == groupchatUser.id,
+        );
+        if (foundIndex != -1) {
+          newGroupchatUsers[foundIndex] = groupchatUser;
+        } else {
+          newGroupchatUsers.add(groupchatUser);
+        }
+        final replacedGroupchat = chatCubit.replaceOrAdd(
+          groupchat: GroupchatEntity(
+            id: state.currentChat.id,
+            users: newGroupchatUsers,
+          ),
+          setLeftUsersFromOldEntity: true,
+          setUsersFromOldEntity: false,
+          setMessagesFromOldEntity: true,
+        );
+        emitState(loadingChat: false, currentChat: replacedGroupchat);
+        setGroupchatUsers();
+      },
+    );
+  }
+
   Future deleteUserFromChat({required String userId}) async {
     emitState(loadingChat: true);
 
     final Either<Failure, GroupchatLeftUserEntity> groupchatOrFailure =
         await chatUseCases.deleteUserFromGroupchatViaApi(
-      createGroupchatLeftUserDto: CreateGroupchatLeftUserDto(
+      getOneGroupchatUserFilter: GetOneGroupchatUserFilter(
         userId: userId,
         groupchatTo: state.currentChat.id,
       ),

@@ -29,13 +29,21 @@ class ChatFuturePrivateEventsPage extends StatelessWidget {
             flexibleSpace: FlexibleSpaceBar(title: Text("Zukünftige Events")),
           ),
           CupertinoSliverRefreshControl(
-            onRefresh: () => BlocProvider.of<CurrentChatCubit>(context)
-                .getFutureConnectedPrivateEventsFromApi(
-              limitOffsetFilter: LimitOffsetFilter(
-                limit: 100,
-                offset: 0,
-              ),
-            ),
+            onRefresh: () {
+              final privateEventLength =
+                  BlocProvider.of<CurrentChatCubit>(context)
+                      .state
+                      .futureConnectedPrivateEvents
+                      .length;
+
+              return BlocProvider.of<CurrentChatCubit>(context)
+                  .getFutureConnectedPrivateEventsFromApi(
+                limitOffsetFilter: LimitOffsetFilter(
+                  limit: privateEventLength > 10 ? privateEventLength : 10,
+                  offset: 0,
+                ),
+              );
+            },
           ),
           BlocBuilder<CurrentChatCubit, CurrentChatState>(
             builder: (context, state) {

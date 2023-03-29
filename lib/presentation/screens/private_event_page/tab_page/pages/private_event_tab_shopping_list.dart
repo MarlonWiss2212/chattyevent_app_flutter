@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletons/skeletons.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/shopping_list/shopping_list_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/shopping_list/my_shopping_list_cubit.dart';
 import 'package:social_media_app_flutter/core/filter/get_shopping_list_items_filter.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/user_with_private_event_user_data.dart';
@@ -21,7 +21,7 @@ class PrivateEventTabShoppingList extends StatelessWidget {
   });
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<ShoppingListCubit>(context).getShoppingListViaApi(
+    BlocProvider.of<MyShoppingListCubit>(context).getShoppingListViaApi(
       getShoppingListItemsFilter: GetShoppingListItemsFilter(
         privateEventId: privateEventId,
       ),
@@ -47,13 +47,13 @@ class PrivateEventTabShoppingList extends StatelessWidget {
       ),
       CupertinoSliverRefreshControl(
         onRefresh: () =>
-            BlocProvider.of<ShoppingListCubit>(context).getShoppingListViaApi(
+            BlocProvider.of<MyShoppingListCubit>(context).getShoppingListViaApi(
           getShoppingListItemsFilter: GetShoppingListItemsFilter(
             privateEventId: privateEventId,
           ),
         ),
       ),
-      BlocBuilder<ShoppingListCubit, ShoppingListState>(
+      BlocBuilder<MyShoppingListCubit, MyShoppingListState>(
         builder: (context, state) {
           if (state.shoppingList.isEmpty &&
               state.loadingForPrivateEventId != privateEventId) {

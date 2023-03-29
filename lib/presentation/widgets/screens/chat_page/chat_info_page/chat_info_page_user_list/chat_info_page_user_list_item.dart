@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart';
+import 'package:social_media_app_flutter/core/dto/groupchat/update_groupchat_user_dto.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/user_with_groupchat_user_data.dart';
-import 'package:social_media_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:social_media_app_flutter/presentation/widgets/general/user_list/user_list_tile.dart';
 
 class ChatInfoPageUserListItem extends StatelessWidget {
@@ -16,9 +16,11 @@ class ChatInfoPageUserListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool userIsAdmin = user.admin != null && user.admin! == true;
+
     return UserListTile(
       user: user,
-      subtitle: user.admin != null && user.admin! == true
+      subtitle: userIsAdmin
           ? Text(
               "Admin",
               style: TextStyle(
@@ -31,19 +33,32 @@ class ChatInfoPageUserListItem extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
             ),
       customTitle: user.usernameForChat != null ? user.usernameForChat! : null,
-      items: currentUser.admin != null &&
-              currentUser.admin == true &&
-              currentUser.id != user.id
-          ? [
-              PopupMenuItem<void Function(UserEntity)>(
-                child: const Text("Kicken"),
-                onTap: () => BlocProvider.of<CurrentChatCubit>(context)
-                    .deleteUserFromChat(
-                  userId: user.id,
-                ),
-              ),
-            ]
-          : null,
+      items: [
+        if (currentUser.admin != null &&
+            currentUser.admin == true &&
+            currentUser.id != user.id) ...{
+          PopupMenuItem(
+            child: const Text("Kicken"),
+            onTap: () =>
+                BlocProvider.of<CurrentChatCubit>(context).deleteUserFromChat(
+              userId: user.id,
+            ),
+          ),
+        },
+        if (currentUser.admin == true) ...{
+          PopupMenuItem(
+            child: userIsAdmin
+                ? const Text("Admin degradieren")
+                : const Text("Zum Admin machen"),
+            onTap: () => BlocProvider.of<CurrentChatCubit>(context)
+                .updateGroupchatUserViaApi(
+              userId: user.id,
+              updateGroupchatUserDto:
+                  UpdateGroupchatUserDto(admin: userIsAdmin ? false : true),
+            ),
+          )
+        }
+      ],
     );
   }
 }

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/shopping_list/shopping_list_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/shopping_list/my_shopping_list_cubit.dart';
 import 'package:social_media_app_flutter/core/injection.dart';
 import 'package:social_media_app_flutter/presentation/widgets/general/button.dart';
 import 'package:social_media_app_flutter/presentation/widgets/general/dialog/alert_dialog.dart';
@@ -25,7 +25,7 @@ class PrivateEventCreateShoppingListItemPage extends StatelessWidget {
     return BlocProvider.value(
       value: AddShoppingListItemCubit(
         AddShoppingListItemState(selectedPrivateEvent: currentPrivateEvent),
-        shoppingListCubit: BlocProvider.of<ShoppingListCubit>(context),
+        shoppingListCubit: BlocProvider.of<MyShoppingListCubit>(context),
         shoppingListItemUseCases: serviceLocator(
           param1: BlocProvider.of<AuthCubit>(context).state,
         ),

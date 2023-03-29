@@ -7,14 +7,14 @@ import 'package:social_media_app_flutter/core/failures/failures.dart';
 import 'package:social_media_app_flutter/core/filter/get_shopping_list_items_filter.dart';
 import 'package:social_media_app_flutter/domain/usecases/shopping_list_item_usecases.dart';
 
-part 'shopping_list_state.dart';
+part 'my_shopping_list_state.dart';
 
-class ShoppingListCubit extends Cubit<ShoppingListState> {
+class MyShoppingListCubit extends Cubit<MyShoppingListState> {
   final ShoppingListItemUseCases shoppingListItemUseCases;
 
-  ShoppingListCubit({
+  MyShoppingListCubit({
     required this.shoppingListItemUseCases,
-  }) : super(const ShoppingListState(shoppingList: []));
+  }) : super(const MyShoppingListState(shoppingList: []));
 
   ShoppingListItemEntity replaceOrAdd({
     required ShoppingListItemEntity shoppingListItem,
@@ -29,11 +29,11 @@ class ShoppingListCubit extends Cubit<ShoppingListState> {
         newEntity: shoppingListItem,
         oldEntity: state.shoppingList[foundIndex],
       );
-      emit(ShoppingListState(shoppingList: newShoppingList));
+      emit(MyShoppingListState(shoppingList: newShoppingList));
       return newShoppingList[foundIndex];
     } else {
       emit(
-        ShoppingListState(
+        MyShoppingListState(
           shoppingList: List.from(state.shoppingList)..add(shoppingListItem),
         ),
       );
@@ -56,7 +56,7 @@ class ShoppingListCubit extends Cubit<ShoppingListState> {
 
   void delete({required String shoppingListItemId}) {
     emit(
-      ShoppingListState(
+      MyShoppingListState(
         shoppingList: state.shoppingList
             .where(
               (element) => element.id != shoppingListItemId,
@@ -69,7 +69,7 @@ class ShoppingListCubit extends Cubit<ShoppingListState> {
   Future getShoppingListViaApi({
     GetShoppingListItemsFilter? getShoppingListItemsFilter,
   }) async {
-    emit(ShoppingListState(
+    emit(MyShoppingListState(
       shoppingList: state.shoppingList,
       loadingForPrivateEventId: getShoppingListItemsFilter?.privateEventId,
       loading: true,
@@ -83,7 +83,7 @@ class ShoppingListCubit extends Cubit<ShoppingListState> {
 
     shoppingListItemsOrFailure.fold(
       (error) => emit(
-        ShoppingListState(
+        MyShoppingListState(
           shoppingList: state.shoppingList,
           loading: false,
           error: ErrorWithTitleAndMessage(
@@ -95,7 +95,7 @@ class ShoppingListCubit extends Cubit<ShoppingListState> {
       (shoppingListItems) {
         replaceOrAddMultiple(shoppingListItems: shoppingListItems);
         // too set loading false
-        ShoppingListState(shoppingList: state.shoppingList, loading: false);
+        MyShoppingListState(shoppingList: state.shoppingList, loading: false);
       },
     );
   }

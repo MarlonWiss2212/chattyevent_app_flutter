@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletons/skeletons.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/shopping_list/shopping_list_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/shopping_list/my_shopping_list_cubit.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/user_with_private_event_user_data.dart';
@@ -17,7 +17,7 @@ class ShoppingListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<ShoppingListCubit>(context).getShoppingListViaApi();
+    BlocProvider.of<MyShoppingListCubit>(context).getShoppingListViaApi();
 
     return Scaffold(
       body: CustomScrollView(
@@ -32,10 +32,10 @@ class ShoppingListPage extends StatelessWidget {
             ),
           ),
           CupertinoSliverRefreshControl(
-            onRefresh: () => BlocProvider.of<ShoppingListCubit>(context)
+            onRefresh: () => BlocProvider.of<MyShoppingListCubit>(context)
                 .getShoppingListViaApi(),
           ),
-          BlocListener<ShoppingListCubit, ShoppingListState>(
+          BlocListener<MyShoppingListCubit, MyShoppingListState>(
             listener: (context, state) async {
               if (state.error != null) {
                 return await showDialog(
@@ -50,7 +50,7 @@ class ShoppingListPage extends StatelessWidget {
                 );
               }
             },
-            child: BlocBuilder<ShoppingListCubit, ShoppingListState>(
+            child: BlocBuilder<MyShoppingListCubit, MyShoppingListState>(
               builder: (context, state) {
                 if (state.loading == true && state.shoppingList.isEmpty) {
                   return SliverFillRemaining(

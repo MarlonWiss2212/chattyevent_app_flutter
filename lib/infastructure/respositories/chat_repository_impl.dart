@@ -1,14 +1,15 @@
 import 'package:http/http.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:social_media_app_flutter/core/dto/groupchat/create_groupchat_dto.dart';
-import 'package:social_media_app_flutter/core/dto/groupchat/create_groupchat_left_user_dto.dart';
 import 'package:social_media_app_flutter/core/dto/groupchat/create_groupchat_user_dto.dart';
+import 'package:social_media_app_flutter/core/dto/groupchat/update_groupchat_user_dto.dart';
 import 'package:social_media_app_flutter/core/failures/failures.dart';
-import 'package:social_media_app_flutter/core/filter/get_messages_filter.dart';
+import 'package:social_media_app_flutter/core/filter/groupchat/get_messages_filter.dart';
+import 'package:social_media_app_flutter/core/filter/groupchat/get_one_groupchat_filter.dart';
+import 'package:social_media_app_flutter/core/filter/groupchat/get_one_groupchat_user_filter.dart';
 import 'package:social_media_app_flutter/core/filter/limit_offset_filter/limit_offset_filter.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:dartz/dartz.dart';
-import 'package:social_media_app_flutter/core/filter/get_one_groupchat_filter.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_left_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
 import 'package:social_media_app_flutter/domain/repositories/chat_repository.dart';
@@ -89,8 +90,8 @@ class ChatRepositoryImpl implements ChatRepository {
     try {
       final response = await graphQlDatasource.query(
         """
-        query FindGroupchat(\$input: FindOneGroupchatInput!, \$messageInput: FindMessagesInput) {
-          findGroupchat(filter: \$input, findMessagesInput: \$messageInput) {
+        query FindGroupchat(\$findOneGroupchatInput: FindOneGroupchatInput!, \$messageInput: FindMessagesInput) {
+          findGroupchat(findOneGroupchatInput: \$findOneGroupchatInput, findMessagesInput: \$messageInput) {
             _id
             title
             description
@@ -126,7 +127,7 @@ class ChatRepositoryImpl implements ChatRepository {
         }
         """,
         variables: {
-          "input": getOneGroupchatFilter.toMap(),
+          "findOneGroupchatInput": getOneGroupchatFilter.toMap(),
           "messageInput": getMessagesFilter?.toMap()
         },
       );
@@ -188,7 +189,9 @@ class ChatRepositoryImpl implements ChatRepository {
   }
 
   @override
-  Future<Either<Failure, GroupchatEntity>> updateGroupchatViaApi() async {
+  Future<Either<Failure, GroupchatEntity>> updateGroupchatViaApi({
+    required GetOneGroupchatFilter getOneGroupchatFilter,
+  }) async {
     // TODO: implement updateGroupchatViaApi
     throw UnimplementedError();
   }
@@ -232,13 +235,13 @@ class ChatRepositoryImpl implements ChatRepository {
   @override
   Future<Either<Failure, GroupchatLeftUserEntity>>
       deleteUserFromGroupchatViaApi({
-    required CreateGroupchatLeftUserDto createGroupchatLeftUserDto,
+    required GetOneGroupchatUserFilter getOneGroupchatUserFilter,
   }) async {
     try {
       final response = await graphQlDatasource.mutation(
         """
-        mutation DeleteUserFromGroupchat(\$input: CreateGroupchatLeftUserInput!) {
-          deleteUserFromGroupchat(createGroupchatLeftUserInput: \$input) {
+        mutation DeleteUserFromGroupchat(\$input: FindOneGroupchatUserInput!) {
+          deleteUserFromGroupchat(findOneGroupchatUserInput: \$input) {
             _id
             userId
             createdAt
@@ -247,7 +250,7 @@ class ChatRepositoryImpl implements ChatRepository {
           }
         }
         """,
-        variables: {"input": createGroupchatLeftUserDto.toMap()},
+        variables: {"input": getOneGroupchatUserFilter.toMap()},
       );
 
       if (response.hasException) {
@@ -260,6 +263,47 @@ class ChatRepositoryImpl implements ChatRepository {
         ),
       );
     } catch (e) {
+      return Left(ServerFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, GroupchatUserEntity>> updateGroupchatUserViaApi({
+    required UpdateGroupchatUserDto updateGroupchatUserDto,
+    required GetOneGroupchatUserFilter getOneGroupchatUserFilter,
+  }) async {
+    try {
+      final response = await graphQlDatasource.mutation(
+        """
+        mutation UpdateGroupchatUser(\$updateGroupchatUserInput: UpdateGroupchatUserInput!, \$findOneGroupchatUserInput: FindOneGroupchatUserInput!) {
+          updateGroupchatUser(updateGroupchatUserInput: \$updateGroupchatUserInput, findOneGroupchatUserInput: \$findOneGroupchatUserInput) {
+            _id
+            admin
+            userId
+            groupchatTo
+            usernameForChat
+            createdAt
+            updatedAt 
+          }
+        }
+        """,
+        variables: {
+          "updateGroupchatUserInput": updateGroupchatUserDto.toMap(),
+          "findOneGroupchatUserInput": getOneGroupchatUserFilter.toMap(),
+        },
+      );
+
+      if (response.hasException) {
+        print(response.exception);
+        return Left(GeneralFailure());
+      }
+
+      return Right(
+        GroupchatUserModel.fromJson(response.data!["updateGroupchatUser"]),
+      );
+    } catch (e) {
+      print(e);
+
       return Left(ServerFailure());
     }
   }
