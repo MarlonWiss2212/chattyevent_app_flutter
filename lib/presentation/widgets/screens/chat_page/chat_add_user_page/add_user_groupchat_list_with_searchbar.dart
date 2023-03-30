@@ -7,6 +7,7 @@ import 'package:social_media_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:social_media_app_flutter/core/filter/get_users_filter.dart';
 import 'package:social_media_app_flutter/presentation/widgets/general/user_list/user_grid_list.dart';
 
+/// replace this with selectable user grid list
 class AddUserGroupchatListWithSearchbar extends StatelessWidget {
   const AddUserGroupchatListWithSearchbar({super.key});
 

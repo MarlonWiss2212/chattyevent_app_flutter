@@ -14,23 +14,12 @@ class CurrentShoppingListItemPageWithProgressBar extends StatelessWidget {
             current.shoppingListItem.amount) {
           return true;
         }
-        if (previous.shoppingListItem.boughtAmount?.length !=
-            current.shoppingListItem.boughtAmount?.length) {
+        if (previous.boughtAmounts.length != current.boughtAmounts.length) {
           return true;
         }
         return false;
       },
       builder: (context, state) {
-        double boughtAmountCount = 0;
-        if (state.shoppingListItem.boughtAmount != null) {
-          for (final singleBoughtAmount
-              in state.shoppingListItem.boughtAmount!) {
-            if (singleBoughtAmount.boughtAmount != null) {
-              boughtAmountCount += singleBoughtAmount.boughtAmount!;
-            }
-          }
-        }
-
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8),
           child: Container(
@@ -38,12 +27,16 @@ class CurrentShoppingListItemPageWithProgressBar extends StatelessWidget {
               borderRadius: BorderRadius.circular(8),
               gradient: LinearGradient(
                 stops: [
-                  (boughtAmountCount / state.shoppingListItem.amount!) - 0.02,
-                  (boughtAmountCount / state.shoppingListItem.amount!) + 0.02
+                  (state.shoppingListItem.boughtAmount ??
+                          0 / state.shoppingListItem.amount!) -
+                      0.02,
+                  (state.shoppingListItem.boughtAmount ??
+                          0 / state.shoppingListItem.amount!) +
+                      0.02
                 ],
                 colors: [
                   Theme.of(context).colorScheme.onPrimary,
-                  Colors.white,
+                  Theme.of(context).colorScheme.surface,
                 ],
               ),
             ),
@@ -51,7 +44,7 @@ class CurrentShoppingListItemPageWithProgressBar extends StatelessWidget {
             width: double.infinity,
             child: Center(
               child: Text(
-                "$boughtAmountCount von ${state.shoppingListItem.amount} gekauft",
+                "${state.shoppingListItem.boughtAmount ?? 0} von ${state.shoppingListItem.amount} gekauft",
                 style: Theme.of(context).textTheme.labelLarge?.apply(
                       color: Theme.of(context).colorScheme.primary,
                     ),

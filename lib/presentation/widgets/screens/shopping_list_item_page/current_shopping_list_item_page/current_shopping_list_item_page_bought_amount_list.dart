@@ -20,27 +20,15 @@ class CurrentShoppingListItemPageBoughtAmountList extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<CurrentShoppingListItemCubit,
         CurrentShoppingListItemState>(
-      buildWhen: (previous, current) {
-        if (previous.status != current.status) {
-          return true;
-        }
-        if (previous.shoppingListItem.boughtAmount?.length !=
-            current.shoppingListItem.boughtAmount?.length) {
-          return true;
-        }
-        return false;
-      },
       builder: (context, state) {
-        if (state.shoppingListItem.boughtAmount == null &&
-            state.shoppingListItem.boughtAmount!.isEmpty) {
+        if (state.loadingBoughtAmounts == false &&
+            state.boughtAmounts.isEmpty) {
           return const Center(
             child: Text("Keine gekauften Elemente gefunden"),
           );
         }
 
-        // optimize this later
-        if (state.shoppingListItem.boughtAmount == null &&
-            state.shoppingListItem.boughtAmount!.isEmpty) {
+        if (state.loadingBoughtAmounts == true && state.boughtAmounts.isEmpty) {
           return SkeletonListTile(
             hasSubtitle: true,
             titleStyle: const SkeletonLineStyle(width: 100, height: 22),
@@ -58,8 +46,7 @@ class CurrentShoppingListItemPageBoughtAmountList extends StatelessWidget {
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               itemBuilder: (context, index) {
-                BoughtAmountEntity boughtAmount =
-                    state.shoppingListItem.boughtAmount![index];
+                BoughtAmountEntity boughtAmount = state.boughtAmounts[index];
 
                 UserWithPrivateEventUserData? user =
                     privateEventState.privateEventUsers.firstWhereOrNull(
@@ -96,7 +83,7 @@ class CurrentShoppingListItemPageBoughtAmountList extends StatelessWidget {
                   ),
                 );
               },
-              itemCount: state.shoppingListItem.boughtAmount!.length,
+              itemCount: state.boughtAmounts.length,
             );
           },
         );

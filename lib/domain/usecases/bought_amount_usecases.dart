@@ -2,8 +2,8 @@ import 'package:dartz/dartz.dart';
 import 'package:social_media_app_flutter/core/dto/bought_amount/create_bought_amount_dto.dart';
 import 'package:social_media_app_flutter/core/dto/bought_amount/update_bought_amount_dto.dart';
 import 'package:social_media_app_flutter/core/failures/failures.dart';
-import 'package:social_media_app_flutter/core/filter/get_bought_amount_filter.dart';
-import 'package:social_media_app_flutter/core/filter/get_shopping_list_items_filter.dart';
+import 'package:social_media_app_flutter/core/filter/get_bought_amounts_filter.dart';
+import 'package:social_media_app_flutter/core/filter/limit_offset_filter/limit_offset_filter.dart';
 import 'package:social_media_app_flutter/domain/entities/bought_amount_entity.dart';
 import 'package:social_media_app_flutter/domain/repositories/bought_amount_repository.dart';
 
@@ -19,11 +19,13 @@ class BoughtAmountUseCases {
     );
   }
 
-  Future<Either<Failure, List<BoughtAmountEntity>>> getBoughtAmountViaApi({
-    required GetBoughtAmountFilter getBoughtAmountFilter,
+  Future<Either<Failure, List<BoughtAmountEntity>>> getBoughtAmountsViaApi({
+    required GetBoughtAmountsFilter getBoughtAmountsFilter,
+    required LimitOffsetFilter limitOffsetFilter,
   }) async {
-    return await boughtAmountRepository.getBoughtAmountViaApi(
-      getBoughtAmountFilter: getBoughtAmountFilter,
+    return await boughtAmountRepository.getBoughtAmountsViaApi(
+      getBoughtAmountsFilter: getBoughtAmountsFilter,
+      limitOffsetFilter: limitOffsetFilter,
     );
   }
 

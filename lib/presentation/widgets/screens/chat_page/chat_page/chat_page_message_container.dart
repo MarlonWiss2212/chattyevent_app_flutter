@@ -66,6 +66,7 @@ class ChatPageMessageContainer extends StatelessWidget {
             children: [
               SlidableAction(
                 borderRadius: BorderRadius.circular(8),
+                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                 foregroundColor: Colors.white,
                 onPressed: (context) {
                   BlocProvider.of<AddMessageCubit>(context).emitState(

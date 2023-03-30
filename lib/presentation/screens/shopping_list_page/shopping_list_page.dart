@@ -53,7 +53,8 @@ class ShoppingListPage extends StatelessWidget {
             },
             child: BlocBuilder<MyShoppingListCubit, MyShoppingListState>(
               builder: (context, state) {
-                if (state.loading == true && state.shoppingListItems.isEmpty) {
+                if (state.loading == true &&
+                    state.shoppingListItemStates.isEmpty) {
                   return SliverFillRemaining(
                     child: SkeletonListView(
                       itemBuilder: (p0, p1) {
@@ -72,7 +73,7 @@ class ShoppingListPage extends StatelessWidget {
                       },
                     ),
                   );
-                } else if (state.shoppingListItems.isEmpty) {
+                } else if (state.shoppingListItemStates.isEmpty) {
                   return const SliverFillRemaining(
                     child: Center(
                       child: Text("Keine Items die gekauft werden müssen"),
@@ -81,9 +82,11 @@ class ShoppingListPage extends StatelessWidget {
                 }
                 final currentUser =
                     BlocProvider.of<AuthCubit>(context).state.currentUser;
-                final filteredShoppingList = state.shoppingListItems
+                final filteredShoppingList = state.shoppingListItemStates
                     .where(
-                      (element) => element.userToBuyItem == currentUser.id,
+                      (element) =>
+                          element.shoppingListItem.userToBuyItem ==
+                          currentUser.id,
                     )
                     .toList();
 
@@ -91,7 +94,8 @@ class ShoppingListPage extends StatelessWidget {
                   delegate: SliverChildBuilderDelegate(
                     (context, index) {
                       return ShoppingListItemTile(
-                        shoppingListItem: filteredShoppingList[index],
+                        shoppingListItem:
+                            filteredShoppingList[index].shoppingListItem,
                         userToBuyItem: UserWithPrivateEventUserData(
                           user: currentUser,
                           groupchatUser:
@@ -102,11 +106,11 @@ class ShoppingListPage extends StatelessWidget {
                         onTap: () {
                           AutoRouter.of(context).push(
                             ShoppingListItemPageRoute(
-                              shoppingListItemId:
-                                  filteredShoppingList[index].id,
-                              shoppingListItemToSet:
+                              shoppingListItemId: filteredShoppingList[index]
+                                  .shoppingListItem
+                                  .id,
+                              currentShoppingListItemStateToSet:
                                   filteredShoppingList[index],
-                              loadShoppingListItemFromApiToo: true,
                             ),
                           );
                         },

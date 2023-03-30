@@ -15,15 +15,6 @@ class ShoppingListItemTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double boughtAmountCount = 0;
-    if (shoppingListItem.boughtAmount != null) {
-      for (final singleBoughtAmount in shoppingListItem.boughtAmount!) {
-        if (singleBoughtAmount.boughtAmount != null) {
-          boughtAmountCount += singleBoughtAmount.boughtAmount!;
-        }
-      }
-    }
-
     return ListTile(
       title: Wrap(
         spacing: 8,
@@ -56,7 +47,7 @@ class ShoppingListItemTile extends StatelessWidget {
       subtitle: Row(
         children: [
           Text(
-            boughtAmountCount.toString(),
+            shoppingListItem.boughtAmount?.toString() ?? "0",
             style: Theme.of(context).textTheme.labelMedium,
             softWrap: true,
             overflow: TextOverflow.ellipsis,
@@ -71,12 +62,16 @@ class ShoppingListItemTile extends StatelessWidget {
                 ),
                 gradient: LinearGradient(
                   stops: [
-                    (boughtAmountCount / shoppingListItem.amount!) - 0.02,
-                    (boughtAmountCount / shoppingListItem.amount!) + 0.02
+                    (shoppingListItem.boughtAmount ??
+                            0 / shoppingListItem.amount!) -
+                        0.02,
+                    (shoppingListItem.boughtAmount ??
+                            0 / shoppingListItem.amount!) +
+                        0.02
                   ],
                   colors: [
                     Theme.of(context).colorScheme.onPrimary,
-                    Colors.white,
+                    Theme.of(context).colorScheme.surface,
                   ],
                 ),
               ),

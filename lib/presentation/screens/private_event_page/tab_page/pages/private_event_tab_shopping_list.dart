@@ -49,14 +49,14 @@ class PrivateEventTabShoppingList extends StatelessWidget {
       ),
       BlocBuilder<CurrentPrivateEventCubit, CurrentPrivateEventState>(
         builder: (context, state) {
-          if (state.shoppingListItems.isEmpty &&
+          if (state.shoppingListItemStates.isEmpty &&
               state.loadingShoppingList == false) {
             return const SliverFillRemaining(
               child: Center(
                 child: Text("Keine Items die gekauft werden müssen"),
               ),
             );
-          } else if (state.shoppingListItems.isEmpty &&
+          } else if (state.shoppingListItemStates.isEmpty &&
               state.loadingShoppingList) {
             return SliverFillRemaining(
               child: SkeletonListView(
@@ -88,14 +88,16 @@ class PrivateEventTabShoppingList extends StatelessWidget {
                         currentPrivateEventState.privateEventUsers.firstWhere(
                       (element) =>
                           element.user.id ==
-                          state.shoppingListItems[index].userToBuyItem,
+                          state.shoppingListItemStates[index].shoppingListItem
+                              .userToBuyItem,
                       orElse: () => UserWithPrivateEventUserData(
                         privateEventUser: PrivateEventUserEntity(
                             id: "",
-                            userId:
-                                state.shoppingListItems[index].userToBuyItem),
+                            userId: state.shoppingListItemStates[index]
+                                .shoppingListItem.userToBuyItem),
                         user: UserEntity(
-                          id: state.shoppingListItems[index].userToBuyItem ??
+                          id: state.shoppingListItemStates[index]
+                                  .shoppingListItem.userToBuyItem ??
                               "",
                           authId: "",
                         ),
@@ -103,15 +105,18 @@ class PrivateEventTabShoppingList extends StatelessWidget {
                     );
 
                     return ShoppingListItemTile(
-                      shoppingListItem: state.shoppingListItems[index],
+                      shoppingListItem:
+                          state.shoppingListItemStates[index].shoppingListItem,
                       userToBuyItem: userToBuyItem,
                       onTap: () {
                         AutoRouter.of(context).push(
                           PrivateEventShoppingListItemPageRoute(
-                            shoppingListItemId:
-                                state.shoppingListItems[index].id,
-                            shoppingListItemToSet:
-                                state.shoppingListItems[index],
+                            shoppingListItemId: state
+                                .shoppingListItemStates[index]
+                                .shoppingListItem
+                                .id,
+                            shoppingListItemStateToSet:
+                                state.shoppingListItemStates[index],
                             loadShoppingListItemFromApiToo: true,
                             setCurrentPrivateEvent: false,
                           ),
@@ -119,7 +124,7 @@ class PrivateEventTabShoppingList extends StatelessWidget {
                       },
                     );
                   },
-                  childCount: state.shoppingListItems.length,
+                  childCount: state.shoppingListItemStates.length,
                 ),
               );
             },

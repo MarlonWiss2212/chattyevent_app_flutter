@@ -1,6 +1,4 @@
-import 'package:social_media_app_flutter/domain/entities/bought_amount_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/shopping_list_item/shopping_list_item_entity.dart';
-import 'package:social_media_app_flutter/infastructure/models/bought_amount_model.dart';
 
 class ShoppingListItemModel extends ShoppingListItemEntity {
   ShoppingListItemModel({
@@ -10,7 +8,7 @@ class ShoppingListItemModel extends ShoppingListItemEntity {
     String? itemName,
     String? unit,
     double? amount,
-    List<BoughtAmountEntity>? boughtAmount,
+    double? boughtAmount,
     String? userToBuyItem,
     String? createdBy,
     String? privateEventId,
@@ -41,13 +39,11 @@ class ShoppingListItemModel extends ShoppingListItemEntity {
             ? json["amount"]
             : double.tryParse(json["amount"].toString());
 
-    List<BoughtAmountEntity>? boughtAmount;
-    if (json["boughtAmount"] != null) {
-      boughtAmount = [];
-      for (final singleBoughtAmount in json["boughtAmount"]) {
-        boughtAmount.add(BoughtAmountModel.fromJson(singleBoughtAmount));
-      }
-    }
+    final boughtAmount = json["boughtAmount"] == null
+        ? null
+        : json["boughtAmount"] is double
+            ? json["boughtAmount"]
+            : double.tryParse(json["boughtAmount"].toString());
 
     return ShoppingListItemModel(
       id: json["_id"],

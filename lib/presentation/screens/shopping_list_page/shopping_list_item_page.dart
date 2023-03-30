@@ -5,24 +5,21 @@ import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/private_event_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/shopping_list/my_shopping_list_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/shopping_list/current_shopping_list_item_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
 import 'package:social_media_app_flutter/core/injection.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
-import 'package:social_media_app_flutter/domain/entities/shopping_list_item/shopping_list_item_entity.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/standard_shopping_list_item_page.dart';
 import 'package:social_media_app_flutter/presentation/widgets/general/dialog/alert_dialog.dart';
 
 class ShoppingListItemPage extends StatelessWidget {
   final String shoppingListItemId;
-  final ShoppingListItemEntity shoppingListItemToSet;
-  final bool loadShoppingListItemFromApiToo;
+  final CurrentShoppingListItemState currentShoppingListItemStateToSet;
 
   const ShoppingListItemPage({
     super.key,
     @PathParam('shoppingListItemId') required this.shoppingListItemId,
-    required this.shoppingListItemToSet,
-    this.loadShoppingListItemFromApiToo = true,
+    required this.currentShoppingListItemStateToSet,
   });
 
   @override
@@ -30,7 +27,7 @@ class ShoppingListItemPage extends StatelessWidget {
     CurrentPrivateEventCubit currentPrivateEventCubit =
         CurrentPrivateEventCubit(
       CurrentPrivateEventState(
-        shoppingListItems: [],
+        shoppingListItemStates: [],
         loadingShoppingList: false,
         privateEventUsers: const [],
         privateEvent: PrivateEventEntity(id: ""),
@@ -77,8 +74,7 @@ class ShoppingListItemPage extends StatelessWidget {
             },
             child: StandardShoppingListItemPage(
               setCurrentPrivateEvent: true,
-              loadShoppingListItemFromApiToo: loadShoppingListItemFromApiToo,
-              shoppingListItemToSet: shoppingListItemToSet,
+              shoppingListItemStateToSet: currentShoppingListItemStateToSet,
               shoppingListItemId: shoppingListItemId,
             ),
           );

@@ -29,14 +29,7 @@ class ShoppingListItemRepositoryImpl implements ShoppingListItemRepository {
             itemName
             unit
             amount
-            boughtAmount {
-              _id
-              boughtAmount
-              shoppingListItemId
-              createdAt
-              updatedAt
-              createdBy
-            }
+            boughtAmount
             userToBuyItem
             privateEventId
             createdBy
@@ -66,12 +59,12 @@ class ShoppingListItemRepositoryImpl implements ShoppingListItemRepository {
   Future<Either<Failure, List<ShoppingListItemEntity>>>
       getShoppingListItemsViaApi({
     required LimitOffsetFilter limitOffsetFilter,
-    GetShoppingListItemsFilter? getShoppingListItemsFilter,
+    required GetShoppingListItemsFilter getShoppingListItemsFilter,
   }) async {
     try {
       final response = await graphQlDatasource.query(
         """
-        query FindShoppingListItems(\$input: FindShoppingListItemsInput, \$limitOffsetFilterInput: LimitOffsetFilterInput!) {
+        query FindShoppingListItems(\$input: FindShoppingListItemsInput!, \$limitOffsetFilterInput: LimitOffsetFilterInput!) {
           findShoppingListItems(findShoppingListItemsInput: \$input, limitOffsetFilterInput: \$limitOffsetFilterInput) {
             _id
             createdAt
@@ -79,14 +72,7 @@ class ShoppingListItemRepositoryImpl implements ShoppingListItemRepository {
             itemName
             unit
             amount
-            boughtAmount {
-              _id
-              boughtAmount
-              shoppingListItemId
-              createdAt
-              updatedAt
-              createdBy
-            }
+            boughtAmount
             userToBuyItem
             privateEventId
             createdBy
@@ -94,14 +80,12 @@ class ShoppingListItemRepositoryImpl implements ShoppingListItemRepository {
         }
       """,
         variables: {
-          "input": getShoppingListItemsFilter?.toMap(),
+          "input": getShoppingListItemsFilter.toMap(),
           "limitOffsetFilterInput": limitOffsetFilter.toMap(),
         },
       );
 
       if (response.hasException) {
-        print(response.exception);
-
         return Left(GeneralFailure());
       }
       final List<ShoppingListItemEntity> shoppingListItems = [];
@@ -110,7 +94,6 @@ class ShoppingListItemRepositoryImpl implements ShoppingListItemRepository {
       }
       return Right(shoppingListItems);
     } catch (e) {
-      print(e);
       return Left(ServerFailure());
     }
   }
@@ -130,14 +113,7 @@ class ShoppingListItemRepositoryImpl implements ShoppingListItemRepository {
             itemName
             unit
             amount
-            boughtAmount {
-              _id
-              boughtAmount
-              shoppingListItemId
-              createdAt
-              updatedAt
-              createdBy
-            }
+            boughtAmount
             userToBuyItem
             privateEventId
             createdBy
@@ -177,14 +153,7 @@ class ShoppingListItemRepositoryImpl implements ShoppingListItemRepository {
             itemName
             unit
             amount
-            boughtAmount {
-              _id
-              boughtAmount
-              shoppingListItemId
-              createdAt
-              updatedAt
-              createdBy
-            }
+            boughtAmount
             userToBuyItem
             privateEventId
             createdBy

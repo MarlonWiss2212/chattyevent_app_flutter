@@ -7,7 +7,9 @@ import 'package:social_media_app_flutter/core/dto/bought_amount/create_bought_am
 import 'package:social_media_app_flutter/core/dto/bought_amount/update_bought_amount_dto.dart';
 import 'package:social_media_app_flutter/core/dto/shopping_list_item/update_shopping_list_item_dto.dart';
 import 'package:social_media_app_flutter/core/failures/failures.dart';
+import 'package:social_media_app_flutter/core/filter/get_bought_amounts_filter.dart';
 import 'package:social_media_app_flutter/core/filter/get_one_shopping_list_item_filter.dart';
+import 'package:social_media_app_flutter/core/filter/limit_offset_filter/limit_offset_filter.dart';
 import 'package:social_media_app_flutter/domain/entities/bought_amount_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/error_with_title_and_message.dart';
 import 'package:social_media_app_flutter/domain/entities/shopping_list_item/shopping_list_item_entity.dart';
@@ -62,11 +64,11 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
         shoppingListCubitOrPrivateEventCubit.fold(
           (l) => l.replaceOrAdd(
             addIfItsNotFound: false,
-            shoppingListItem: shoppingListItem,
+            shoppingListItemState: state,
           ),
           (r) => r.replaceOrAddShoppingListItem(
             addIfItsNotFound: false,
-            shoppingListItem: shoppingListItem,
+            shoppingListItemState: state,
           ),
         );
       },
@@ -93,20 +95,20 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
         );
       },
       (shoppingListItem) {
-        final replacedShoppingListItem =
-            shoppingListCubitOrPrivateEventCubit.fold(
+        emitState(
+          shoppingListItem: shoppingListItem,
+          status: CurrentShoppingListItemStateStatus.updated,
+        );
+
+        shoppingListCubitOrPrivateEventCubit.fold(
           (l) => l.replaceOrAdd(
             addIfItsNotFound: false,
-            shoppingListItem: shoppingListItem,
+            shoppingListItemState: state,
           ),
           (r) => r.replaceOrAddShoppingListItem(
             addIfItsNotFound: false,
-            shoppingListItem: shoppingListItem,
+            shoppingListItemState: state,
           ),
-        );
-        emitState(
-          shoppingListItem: replacedShoppingListItem,
-          status: CurrentShoppingListItemStateStatus.updated,
         );
       },
     );
@@ -145,6 +147,58 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
     );
   }
 
+  Future getBoughtAmounts({
+    bool reload = false,
+  }) async {
+    emitState(loadingBoughtAmounts: true);
+    final Either<Failure, List<BoughtAmountEntity>> boughtAmountOrFailure =
+        await boughtAmountUseCases.getBoughtAmountsViaApi(
+      getBoughtAmountsFilter: GetBoughtAmountsFilter(
+        shoppingListItemIds: [state.shoppingListItem.id],
+      ),
+      limitOffsetFilter: LimitOffsetFilter(
+        limit: reload
+            ? state.boughtAmounts.length > 20
+                ? state.boughtAmounts.length
+                : 20
+            : 20,
+        offset: reload ? 0 : state.boughtAmounts.length,
+      ),
+    );
+
+    boughtAmountOrFailure.fold(
+      (error) => emitState(
+        status: CurrentShoppingListItemStateStatus.error,
+        error: ErrorWithTitleAndMessage(
+          title: "Get Bought Amounts Error",
+          message: mapFailureToMessage(error),
+        ),
+        loadingBoughtAmounts: false,
+      ),
+      (boughtAmounts) {
+        List<BoughtAmountEntity> newBoughtAmounts =
+            reload ? boughtAmounts : List.from(state.boughtAmounts)
+              ..addAll(boughtAmounts);
+
+        emitState(
+          boughtAmounts: newBoughtAmounts,
+          loadingBoughtAmounts: false,
+        );
+
+        shoppingListCubitOrPrivateEventCubit.fold(
+          (l) => l.replaceOrAdd(
+            addIfItsNotFound: false,
+            shoppingListItemState: state,
+          ),
+          (r) => r.replaceOrAddShoppingListItem(
+            addIfItsNotFound: false,
+            shoppingListItemState: state,
+          ),
+        );
+      },
+    );
+  }
+
   Future addBoughtAmount({
     required double boughtAmount,
   }) async {
@@ -165,29 +219,28 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
         ),
       ),
       (boughtAmount) {
-        final newShoppingListItem = ShoppingListItemEntity.merge(
-          newEntity: ShoppingListItemEntity(
-            id: state.shoppingListItem.id,
-            boughtAmount: state.shoppingListItem.boughtAmount != null
-                ? (List.from(state.shoppingListItem.boughtAmount!)
-                  ..add(boughtAmount))
-                : [boughtAmount],
+        emitState(
+          boughtAmounts: List.from([boughtAmount])..addAll(state.boughtAmounts),
+          shoppingListItem: ShoppingListItemEntity.merge(
+            newEntity: ShoppingListItemEntity(
+              id: state.shoppingListItem.id,
+              boughtAmount: state.boughtAmounts
+                  .map((e) => e.boughtAmount!)
+                  .reduce((a, b) => a + b),
+            ),
+            oldEntity: state.shoppingListItem,
           ),
-          oldEntity: state.shoppingListItem,
         );
-
-        final replacedShoppingListItem =
-            shoppingListCubitOrPrivateEventCubit.fold(
+        shoppingListCubitOrPrivateEventCubit.fold(
           (l) => l.replaceOrAdd(
             addIfItsNotFound: false,
-            shoppingListItem: newShoppingListItem,
+            shoppingListItemState: state,
           ),
           (r) => r.replaceOrAddShoppingListItem(
             addIfItsNotFound: false,
-            shoppingListItem: newShoppingListItem,
+            shoppingListItemState: state,
           ),
         );
-        emitState(shoppingListItem: replacedShoppingListItem);
       },
     );
   }
@@ -211,82 +264,23 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
         ),
       ),
       (boughtAmount) {
-        if (state.shoppingListItem.boughtAmount != null) {
-          final foundIndex = state.shoppingListItem.boughtAmount!.indexWhere(
-            (element) => element.id == boughtAmount.id,
-          );
-          if (foundIndex == -1) {
-            ShoppingListItemEntity newShoppingListItem =
-                ShoppingListItemEntity.merge(
-              newEntity: ShoppingListItemEntity(
-                id: state.shoppingListItem.id,
-                boughtAmount: List.from(state.shoppingListItem.boughtAmount!)
-                  ..add(boughtAmount),
-              ),
-              oldEntity: state.shoppingListItem,
-            );
-
-            final replacedShoppingListItem =
-                shoppingListCubitOrPrivateEventCubit.fold(
-              (l) => l.replaceOrAdd(
-                addIfItsNotFound: false,
-                shoppingListItem: newShoppingListItem,
-              ),
-              (r) => r.replaceOrAddShoppingListItem(
-                addIfItsNotFound: false,
-                shoppingListItem: newShoppingListItem,
-              ),
-            );
-            emitState(shoppingListItem: replacedShoppingListItem);
-          } else {
-            List<BoughtAmountEntity> newBoughtAmountList =
-                state.shoppingListItem.boughtAmount!;
-            newBoughtAmountList[foundIndex] = boughtAmount;
-
-            ShoppingListItemEntity newShoppingListItem =
-                ShoppingListItemEntity.merge(
-              newEntity: ShoppingListItemEntity(
-                id: state.shoppingListItem.id,
-                boughtAmount: newBoughtAmountList,
-              ),
-              oldEntity: state.shoppingListItem,
-            );
-
-            final replacedShoppingListItem =
-                shoppingListCubitOrPrivateEventCubit.fold(
-              (l) => l.replaceOrAdd(
-                addIfItsNotFound: false,
-                shoppingListItem: newShoppingListItem,
-              ),
-              (r) => r.replaceOrAddShoppingListItem(
-                addIfItsNotFound: false,
-                shoppingListItem: newShoppingListItem,
-              ),
-            );
-            emitState(shoppingListItem: replacedShoppingListItem);
-          }
-        } else {
-          ShoppingListItemEntity newShoppingListItem =
-              ShoppingListItemEntity.merge(
-            newEntity: ShoppingListItemEntity(
-              id: state.shoppingListItem.id,
-              boughtAmount: [boughtAmount],
-            ),
-            oldEntity: state.shoppingListItem,
-          );
-          final replacedShoppingListItem =
-              shoppingListCubitOrPrivateEventCubit.fold(
-            (l) => l.replaceOrAdd(
-              addIfItsNotFound: false,
-              shoppingListItem: newShoppingListItem,
-            ),
-            (r) => r.replaceOrAddShoppingListItem(
-              addIfItsNotFound: false,
-              shoppingListItem: newShoppingListItem,
-            ),
-          );
-          emitState(shoppingListItem: replacedShoppingListItem);
-        }
+        final newBoughtAmountList = state.boughtAmounts
+            .where((element) => element.id != boughtAmount.id)
+            .toList();
+        newBoughtAmountList.add(boughtAmount);
+        emitState(
+          boughtAmounts: (newBoughtAmountList),
+        );
+        shoppingListCubitOrPrivateEventCubit.fold(
+          (l) => l.replaceOrAdd(
+            addIfItsNotFound: false,
+            shoppingListItemState: state,
+          ),
+          (r) => r.replaceOrAddShoppingListItem(
+            addIfItsNotFound: false,
+            shoppingListItemState: state,
+          ),
+        );
       },
     );
   }
@@ -309,52 +303,21 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
       ),
       (deleted) {
         if (deleted) {
-          if (state.shoppingListItem.boughtAmount == null) {
-            final ShoppingListItemEntity newShoppingListItem =
-                ShoppingListItemEntity.merge(
-              newEntity: ShoppingListItemEntity(
-                id: state.shoppingListItem.id,
-                boughtAmount: [],
-              ),
-              oldEntity: state.shoppingListItem,
-            );
-            final replacedShoppingListItem =
-                shoppingListCubitOrPrivateEventCubit.fold(
-              (l) => l.replaceOrAdd(
-                addIfItsNotFound: false,
-                shoppingListItem: newShoppingListItem,
-              ),
-              (r) => r.replaceOrAddShoppingListItem(
-                addIfItsNotFound: false,
-                shoppingListItem: newShoppingListItem,
-              ),
-            );
-            emitState(shoppingListItem: replacedShoppingListItem);
-          } else {
-            final ShoppingListItemEntity newShoppingListItem =
-                ShoppingListItemEntity.merge(
-              newEntity: ShoppingListItemEntity(
-                id: state.shoppingListItem.id,
-                boughtAmount: List.from(state.shoppingListItem.boughtAmount!)
-                  ..removeWhere(
-                    (element) => element.id == boughtAmountId,
-                  ),
-              ),
-              oldEntity: state.shoppingListItem,
-            );
-            final replacedShoppingListItem =
-                shoppingListCubitOrPrivateEventCubit.fold(
-              (l) => l.replaceOrAdd(
-                addIfItsNotFound: false,
-                shoppingListItem: newShoppingListItem,
-              ),
-              (r) => r.replaceOrAddShoppingListItem(
-                addIfItsNotFound: false,
-                shoppingListItem: newShoppingListItem,
-              ),
-            );
-            emitState(shoppingListItem: replacedShoppingListItem);
-          }
+          emitState(
+            boughtAmounts: state.boughtAmounts
+                .where((element) => element.id != boughtAmountId)
+                .toList(),
+          );
+          shoppingListCubitOrPrivateEventCubit.fold(
+            (l) => l.replaceOrAdd(
+              addIfItsNotFound: false,
+              shoppingListItemState: state,
+            ),
+            (r) => r.replaceOrAddShoppingListItem(
+              addIfItsNotFound: false,
+              shoppingListItemState: state,
+            ),
+          );
         }
       },
     );
@@ -363,12 +326,16 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
   void emitState({
     ShoppingListItemEntity? shoppingListItem,
     bool? loadingShoppingListItem,
+    bool? loadingBoughtAmounts,
     CurrentShoppingListItemStateStatus? status,
     ErrorWithTitleAndMessage? error,
+    List<BoughtAmountEntity>? boughtAmounts,
   }) {
     emit(CurrentShoppingListItemState(
       status: status ?? CurrentShoppingListItemStateStatus.initial,
+      boughtAmounts: boughtAmounts ?? state.boughtAmounts,
       shoppingListItem: shoppingListItem ?? state.shoppingListItem,
+      loadingBoughtAmounts: loadingBoughtAmounts ?? state.loadingBoughtAmounts,
       loadingShoppingListItem:
           loadingShoppingListItem ?? state.loadingShoppingListItem,
       error: error ?? state.error,

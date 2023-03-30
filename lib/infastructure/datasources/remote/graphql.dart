@@ -17,10 +17,8 @@ abstract class GraphQlDatasource {
 
 class GraphQlDatasourceImpl implements GraphQlDatasource {
   final GraphQLClient client;
-  final GraphQLClient webSocketClient;
   GraphQlDatasourceImpl({
     required this.client,
-    required this.webSocketClient,
   });
 
   @override
@@ -54,7 +52,7 @@ class GraphQlDatasourceImpl implements GraphQlDatasource {
     String options, {
     Map<String, dynamic> variables = const {},
   }) {
-    return webSocketClient.subscribe(
+    return client.subscribe(
       SubscriptionOptions(
         document: gql(options),
         variables: variables,

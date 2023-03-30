@@ -28,7 +28,7 @@ class PrivateEventWrapperPage extends StatelessWidget {
     CurrentPrivateEventCubit currentPrivateEventCubit =
         CurrentPrivateEventCubit(
       CurrentPrivateEventState(
-        shoppingListItems: [],
+        shoppingListItemStates: [],
         loadingShoppingList: false,
         privateEventUsers: const [],
         privateEvent: privateEventToSet ??

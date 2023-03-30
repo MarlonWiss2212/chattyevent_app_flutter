@@ -23,7 +23,7 @@ class ShoppingListItemUseCases {
 
   Future<Either<Failure, List<ShoppingListItemEntity>>>
       getShoppingListItemsViaApi({
-    GetShoppingListItemsFilter? getShoppingListItemsFilter,
+    required GetShoppingListItemsFilter getShoppingListItemsFilter,
     required LimitOffsetFilter limitOffsetFilter,
   }) async {
     return await shoppingListItemRepository.getShoppingListItemsViaApi(

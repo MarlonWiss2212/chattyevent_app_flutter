@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:meta/meta.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/shopping_list/current_shopping_list_item_cubit.dart';
 import 'package:social_media_app_flutter/core/dto/shopping_list_item/create_shopping_list_item_dto.dart';
 import 'package:social_media_app_flutter/domain/entities/error_with_title_and_message.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
@@ -60,13 +61,20 @@ class AddShoppingListItemCubit extends Cubit<AddShoppingListItemState> {
         );
       },
       (shoppingListItem) {
-        emit(AddShoppingListItemState(
-          status: AddShoppingListItemStateStatus.success,
-          addedShoppingListItem: shoppingListItem,
-        ));
+        emit(
+          AddShoppingListItemState(
+            status: AddShoppingListItemStateStatus.success,
+            addedShoppingListItem: shoppingListItem,
+          ),
+        );
         currentPrivateEventCubit.replaceOrAddShoppingListItem(
-          addIfItsNotFound: false,
-          shoppingListItem: shoppingListItem,
+          addIfItsNotFound: true,
+          shoppingListItemState: CurrentShoppingListItemState(
+            loadingShoppingListItem: false,
+            loadingBoughtAmounts: false,
+            shoppingListItem: shoppingListItem,
+            boughtAmounts: [],
+          ),
         );
       },
     );
@@ -82,16 +90,19 @@ class AddShoppingListItemCubit extends Cubit<AddShoppingListItemState> {
     ErrorWithTitleAndMessage? error,
     ShoppingListItemEntity? addedShoppingListItem,
   }) {
-    emit(AddShoppingListItemState(
-      itemName: itemName ?? state.itemName,
-      unit: unit ?? state.unit,
-      amount: amount ?? state.amount,
-      userToBuyItemEntity: userToBuyItemEntity ?? state.userToBuyItemEntity,
-      selectedPrivateEvent: selectedPrivateEvent ?? state.selectedPrivateEvent,
-      status: status ?? AddShoppingListItemStateStatus.initial,
-      error: error ?? state.error,
-      addedShoppingListItem:
-          addedShoppingListItem ?? state.addedShoppingListItem,
-    ));
+    emit(
+      AddShoppingListItemState(
+        itemName: itemName ?? state.itemName,
+        unit: unit ?? state.unit,
+        amount: amount ?? state.amount,
+        userToBuyItemEntity: userToBuyItemEntity ?? state.userToBuyItemEntity,
+        selectedPrivateEvent:
+            selectedPrivateEvent ?? state.selectedPrivateEvent,
+        status: status ?? AddShoppingListItemStateStatus.initial,
+        error: error ?? state.error,
+        addedShoppingListItem:
+            addedShoppingListItem ?? state.addedShoppingListItem,
+      ),
+    );
   }
 }

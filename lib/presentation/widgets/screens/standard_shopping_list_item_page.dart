@@ -9,25 +9,23 @@ import 'package:social_media_app_flutter/application/bloc/shopping_list/current_
 import 'package:social_media_app_flutter/application/bloc/shopping_list/my_shopping_list_cubit.dart';
 import 'package:social_media_app_flutter/core/injection.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
-import 'package:social_media_app_flutter/domain/entities/shopping_list_item/shopping_list_item_entity.dart';
 import 'package:social_media_app_flutter/presentation/widgets/general/dialog/alert_dialog.dart';
 import 'package:social_media_app_flutter/presentation/widgets/general/custom_divider.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/shopping_list_item_page/current_shopping_list_item_page/current_shopping_list_item_page_bought_amount_list.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/shopping_list_item_page/current_shopping_list_item_page/current_shopping_list_item_page_create_bought_amount_tile.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/shopping_list_item_page/current_shopping_list_item_page/current_shopping_list_item_page_private_event_tile.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/shopping_list_item_page/current_shopping_list_item_page/current_shopping_list_item_page_progress_bar.dart';
+import 'package:social_media_app_flutter/presentation/widgets/screens/shopping_list_item_page/current_shopping_list_item_page/current_shopping_list_item_page_user_to_buy_item_tile.dart';
 
 class StandardShoppingListItemPage extends StatelessWidget {
   final String shoppingListItemId;
-  final ShoppingListItemEntity shoppingListItemToSet;
-  final bool loadShoppingListItemFromApiToo;
+  final CurrentShoppingListItemState shoppingListItemStateToSet;
   final bool setCurrentPrivateEvent;
 
   const StandardShoppingListItemPage({
     super.key,
     required this.shoppingListItemId,
-    required this.shoppingListItemToSet,
-    this.loadShoppingListItemFromApiToo = true,
+    required this.shoppingListItemStateToSet,
     this.setCurrentPrivateEvent = false,
   });
 
@@ -35,10 +33,7 @@ class StandardShoppingListItemPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider.value(
       value: CurrentShoppingListItemCubit(
-        CurrentShoppingListItemState(
-          loadingShoppingListItem: false,
-          shoppingListItem: shoppingListItemToSet,
-        ),
+        shoppingListItemStateToSet,
         boughtAmountUseCases: serviceLocator(
           param1: BlocProvider.of<AuthCubit>(context).state,
         ),
@@ -51,15 +46,17 @@ class StandardShoppingListItemPage extends StatelessWidget {
       ),
       child: Builder(
         builder: (context) {
-          if (loadShoppingListItemFromApiToo) {
-            BlocProvider.of<CurrentShoppingListItemCubit>(context)
-                .getShoppingListItemViaApi();
-          }
+          BlocProvider.of<CurrentShoppingListItemCubit>(context)
+              .getBoughtAmounts();
+          BlocProvider.of<CurrentShoppingListItemCubit>(context)
+              .getShoppingListItemViaApi();
 
           if (setCurrentPrivateEvent) {
             BlocProvider.of<CurrentPrivateEventCubit>(context).emitState(
               privateEvent: PrivateEventEntity(
-                id: shoppingListItemToSet.privateEventId ?? "",
+                id: shoppingListItemStateToSet
+                        .shoppingListItem.privateEventId ??
+                    "",
               ),
             );
             BlocProvider.of<CurrentPrivateEventCubit>(context)
@@ -127,21 +124,34 @@ class StandardShoppingListItemPage extends StatelessWidget {
                           .setCurrentChatFromChatCubit();
                       BlocProvider.of<CurrentPrivateEventCubit>(context)
                           .setPrivateEventFromPrivateEventCubit();
-                      BlocProvider.of<CurrentPrivateEventCubit>(context)
-                          .getPrivateEventUsersViaApi();
-                      BlocProvider.of<CurrentPrivateEventCubit>(context)
-                          .getPrivateEventAndGroupchatFromApi();
+
+                      await Future.wait([
+                        BlocProvider.of<CurrentPrivateEventCubit>(context)
+                            .getPrivateEventUsersViaApi(),
+                        BlocProvider.of<CurrentPrivateEventCubit>(context)
+                            .getPrivateEventAndGroupchatFromApi(),
+                        BlocProvider.of<CurrentShoppingListItemCubit>(context)
+                            .getBoughtAmounts(
+                          reload: true,
+                        ),
+                        BlocProvider.of<CurrentShoppingListItemCubit>(context)
+                            .getShoppingListItemViaApi()
+                      ]);
                     },
                   ),
                   SliverList(
-                    delegate: SliverChildListDelegate(const [
-                      CurrentShoppingListItemPageWithProgressBar(),
-                      SizedBox(height: 20),
-                      CurrentShoppingListItemPagePrivateEventTile(),
-                      CustomDivider(),
-                      CurrentShoppingListItemPageCreateBoughtAmountTile(),
-                      CurrentShoppingListItemPageBoughtAmountList(),
-                    ]),
+                    delegate: SliverChildListDelegate(
+                      const [
+                        CurrentShoppingListItemPageWithProgressBar(),
+                        SizedBox(height: 20),
+                        CurrentShoppingListItemPagePrivateEventTile(),
+                        CustomDivider(),
+                        CurrentShoppingListItemPageUserToBuyItemTile(),
+                        CustomDivider(),
+                        CurrentShoppingListItemPageCreateBoughtAmountTile(),
+                        CurrentShoppingListItemPageBoughtAmountList(),
+                      ],
+                    ),
                   )
                 ],
               ),

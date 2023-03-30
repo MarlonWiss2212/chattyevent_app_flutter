@@ -15,10 +15,10 @@ import 'package:auto_route/auto_route.dart' as _i48;
 import 'package:flutter/cupertino.dart' as _i51;
 import 'package:flutter/material.dart' as _i49;
 
+import '../../application/bloc/shopping_list/current_shopping_list_item_cubit.dart'
+    as _i55;
 import '../../domain/entities/groupchat/groupchat_entity.dart' as _i53;
 import '../../domain/entities/private_event/private_event_entity.dart' as _i54;
-import '../../domain/entities/shopping_list_item/shopping_list_item_entity.dart'
-    as _i55;
 import '../../domain/entities/user/user_entity.dart' as _i52;
 import '../screens/chat_page/chat_add_user_page.dart' as _i32;
 import '../screens/chat_page/chat_future_private_events_page.dart' as _i31;
@@ -311,8 +311,8 @@ class AppRouter extends _i48.RootStackRouter {
         child: _i28.ShoppingListItemPage(
           key: args.key,
           shoppingListItemId: args.shoppingListItemId,
-          shoppingListItemToSet: args.shoppingListItemToSet,
-          loadShoppingListItemFromApiToo: args.loadShoppingListItemFromApiToo,
+          currentShoppingListItemStateToSet:
+              args.currentShoppingListItemStateToSet,
         ),
       );
     },
@@ -398,7 +398,7 @@ class AppRouter extends _i48.RootStackRouter {
         child: _i36.PrivateEventShoppingListItemPage(
           key: args.key,
           shoppingListItemId: args.shoppingListItemId,
-          shoppingListItemToSet: args.shoppingListItemToSet,
+          shoppingListItemStateToSet: args.shoppingListItemStateToSet,
           loadShoppingListItemFromApiToo: args.loadShoppingListItemFromApiToo,
           setCurrentPrivateEvent: args.setCurrentPrivateEvent,
         ),
@@ -1394,16 +1394,16 @@ class ShoppingListItemPageRoute
   ShoppingListItemPageRoute({
     _i51.Key? key,
     required String shoppingListItemId,
-    required _i55.ShoppingListItemEntity shoppingListItemToSet,
-    bool loadShoppingListItemFromApiToo = true,
+    required _i55.CurrentShoppingListItemState
+        currentShoppingListItemStateToSet,
   }) : super(
           ShoppingListItemPageRoute.name,
           path: ':shoppingListItemId',
           args: ShoppingListItemPageRouteArgs(
             key: key,
             shoppingListItemId: shoppingListItemId,
-            shoppingListItemToSet: shoppingListItemToSet,
-            loadShoppingListItemFromApiToo: loadShoppingListItemFromApiToo,
+            currentShoppingListItemStateToSet:
+                currentShoppingListItemStateToSet,
           ),
           rawPathParams: {'shoppingListItemId': shoppingListItemId},
         );
@@ -1415,21 +1415,18 @@ class ShoppingListItemPageRouteArgs {
   const ShoppingListItemPageRouteArgs({
     this.key,
     required this.shoppingListItemId,
-    required this.shoppingListItemToSet,
-    this.loadShoppingListItemFromApiToo = true,
+    required this.currentShoppingListItemStateToSet,
   });
 
   final _i51.Key? key;
 
   final String shoppingListItemId;
 
-  final _i55.ShoppingListItemEntity shoppingListItemToSet;
-
-  final bool loadShoppingListItemFromApiToo;
+  final _i55.CurrentShoppingListItemState currentShoppingListItemStateToSet;
 
   @override
   String toString() {
-    return 'ShoppingListItemPageRouteArgs{key: $key, shoppingListItemId: $shoppingListItemId, shoppingListItemToSet: $shoppingListItemToSet, loadShoppingListItemFromApiToo: $loadShoppingListItemFromApiToo}';
+    return 'ShoppingListItemPageRouteArgs{key: $key, shoppingListItemId: $shoppingListItemId, currentShoppingListItemStateToSet: $currentShoppingListItemStateToSet}';
   }
 }
 
@@ -1590,7 +1587,7 @@ class PrivateEventShoppingListItemPageRoute
   PrivateEventShoppingListItemPageRoute({
     _i51.Key? key,
     required String shoppingListItemId,
-    required _i55.ShoppingListItemEntity shoppingListItemToSet,
+    required _i55.CurrentShoppingListItemState shoppingListItemStateToSet,
     bool loadShoppingListItemFromApiToo = true,
     bool setCurrentPrivateEvent = false,
   }) : super(
@@ -1599,7 +1596,7 @@ class PrivateEventShoppingListItemPageRoute
           args: PrivateEventShoppingListItemPageRouteArgs(
             key: key,
             shoppingListItemId: shoppingListItemId,
-            shoppingListItemToSet: shoppingListItemToSet,
+            shoppingListItemStateToSet: shoppingListItemStateToSet,
             loadShoppingListItemFromApiToo: loadShoppingListItemFromApiToo,
             setCurrentPrivateEvent: setCurrentPrivateEvent,
           ),
@@ -1613,7 +1610,7 @@ class PrivateEventShoppingListItemPageRouteArgs {
   const PrivateEventShoppingListItemPageRouteArgs({
     this.key,
     required this.shoppingListItemId,
-    required this.shoppingListItemToSet,
+    required this.shoppingListItemStateToSet,
     this.loadShoppingListItemFromApiToo = true,
     this.setCurrentPrivateEvent = false,
   });
@@ -1622,7 +1619,7 @@ class PrivateEventShoppingListItemPageRouteArgs {
 
   final String shoppingListItemId;
 
-  final _i55.ShoppingListItemEntity shoppingListItemToSet;
+  final _i55.CurrentShoppingListItemState shoppingListItemStateToSet;
 
   final bool loadShoppingListItemFromApiToo;
 
@@ -1630,7 +1627,7 @@ class PrivateEventShoppingListItemPageRouteArgs {
 
   @override
   String toString() {
-    return 'PrivateEventShoppingListItemPageRouteArgs{key: $key, shoppingListItemId: $shoppingListItemId, shoppingListItemToSet: $shoppingListItemToSet, loadShoppingListItemFromApiToo: $loadShoppingListItemFromApiToo, setCurrentPrivateEvent: $setCurrentPrivateEvent}';
+    return 'PrivateEventShoppingListItemPageRouteArgs{key: $key, shoppingListItemId: $shoppingListItemId, shoppingListItemStateToSet: $shoppingListItemStateToSet, loadShoppingListItemFromApiToo: $loadShoppingListItemFromApiToo, setCurrentPrivateEvent: $setCurrentPrivateEvent}';
   }
 }
 

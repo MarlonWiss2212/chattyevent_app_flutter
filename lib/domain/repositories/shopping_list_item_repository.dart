@@ -13,7 +13,7 @@ abstract class ShoppingListItemRepository {
   });
   Future<Either<Failure, List<ShoppingListItemEntity>>>
       getShoppingListItemsViaApi({
-    GetShoppingListItemsFilter? getShoppingListItemsFilter,
+    required GetShoppingListItemsFilter getShoppingListItemsFilter,
     required LimitOffsetFilter limitOffsetFilter,
   });
   Future<Either<Failure, ShoppingListItemEntity>> getShoppingListItemViaApi({

@@ -1,5 +1,6 @@
+import 'package:social_media_app_flutter/core/filter/limit_offset_filter/limit_offset_filter.dart';
 import 'package:social_media_app_flutter/domain/entities/bought_amount_entity.dart';
-import 'package:social_media_app_flutter/core/filter/get_bought_amount_filter.dart';
+import 'package:social_media_app_flutter/core/filter/get_bought_amounts_filter.dart';
 import 'package:social_media_app_flutter/core/failures/failures.dart';
 import 'package:social_media_app_flutter/core/dto/bought_amount/update_bought_amount_dto.dart';
 import 'package:social_media_app_flutter/core/dto/bought_amount/create_bought_amount_dto.dart';
@@ -49,14 +50,15 @@ class BoughtAmountRepositoryImpl implements BoughtAmountRepository {
   }
 
   @override
-  Future<Either<Failure, List<BoughtAmountEntity>>> getBoughtAmountViaApi({
-    required GetBoughtAmountFilter getBoughtAmountFilter,
+  Future<Either<Failure, List<BoughtAmountEntity>>> getBoughtAmountsViaApi({
+    required GetBoughtAmountsFilter getBoughtAmountsFilter,
+    required LimitOffsetFilter limitOffsetFilter,
   }) async {
     try {
       final response = await graphQlDatasource.mutation(
         """
-        query FindBoughtAmount(\$input: FindBoughtAmountInput!) {
-          findBoughtAmount(filter: \$input) {
+        query FindBoughtAmounts(\$findBoughtAmountsInput: FindBoughtAmountsInput!, \$limitOffsetFilterInput: LimitOffsetFilterInput!) {
+          findBoughtAmounts(findBoughtAmountsInput: \$findBoughtAmountsInput, limitOffsetFilterInput: \$limitOffsetFilterInput) {
             _id
             boughtAmount
             shoppingListItemId
@@ -67,7 +69,8 @@ class BoughtAmountRepositoryImpl implements BoughtAmountRepository {
         }
       """,
         variables: {
-          "input": getBoughtAmountFilter.toMap(),
+          "findBoughtAmountsInput": getBoughtAmountsFilter.toMap(),
+          "limitOffsetFilterInput": limitOffsetFilter.toMap(),
         },
       );
 
@@ -75,11 +78,11 @@ class BoughtAmountRepositoryImpl implements BoughtAmountRepository {
         return Left(GeneralFailure());
       }
 
-      final List<BoughtAmountEntity> boughtAmount = [];
-      for (final singleBoughtAmount in response.data!["findBoughtAmount"]) {
-        boughtAmount.add(BoughtAmountModel.fromJson(singleBoughtAmount));
+      final List<BoughtAmountEntity> boughtAmounts = [];
+      for (final boughtAmount in response.data!["findBoughtAmounts"]) {
+        boughtAmounts.add(BoughtAmountModel.fromJson(boughtAmount));
       }
-      return Right(boughtAmount);
+      return Right(boughtAmounts);
     } catch (e) {
       return Left(ServerFailure());
     }

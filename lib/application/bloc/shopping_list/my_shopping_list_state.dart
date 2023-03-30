@@ -1,12 +1,12 @@
 part of 'my_shopping_list_cubit.dart';
 
 class MyShoppingListState {
-  final List<ShoppingListItemEntity> shoppingListItems;
+  final List<CurrentShoppingListItemState> shoppingListItemStates;
   final ErrorWithTitleAndMessage? error;
   final bool? loading;
 
   const MyShoppingListState({
-    required this.shoppingListItems,
+    required this.shoppingListItemStates,
     this.error,
     this.loading,
   });

@@ -4,6 +4,7 @@ import 'package:dartz/dartz.dart';
 import 'package:meta/meta.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/private_event_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/shopping_list/current_shopping_list_item_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/shopping_list/my_shopping_list_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
 import 'package:social_media_app_flutter/core/dto/private_event/create_private_event_user_dto.dart';
@@ -286,54 +287,53 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
 
   // shopping list
 
-  ShoppingListItemEntity replaceOrAddShoppingListItem({
+  CurrentShoppingListItemState replaceOrAddShoppingListItem({
     required bool addIfItsNotFound,
-    required ShoppingListItemEntity shoppingListItem,
+    required CurrentShoppingListItemState shoppingListItemState,
   }) {
-    int foundIndex = state.shoppingListItems.indexWhere(
-      (element) => element.id == shoppingListItem.id,
+    int foundIndex = state.shoppingListItemStates.indexWhere(
+      (element) =>
+          element.shoppingListItem.id ==
+          shoppingListItemState.shoppingListItem.id,
     );
 
     if (foundIndex != -1) {
-      List<ShoppingListItemEntity> newShoppingListItems =
-          state.shoppingListItems;
-      newShoppingListItems[foundIndex] = ShoppingListItemEntity.merge(
-        newEntity: shoppingListItem,
-        oldEntity: state.shoppingListItems[foundIndex],
-      );
-      emitState(shoppingListItems: newShoppingListItems);
-      return newShoppingListItems[foundIndex];
+      List<CurrentShoppingListItemState> newShoppingListItemStates =
+          state.shoppingListItemStates;
+      newShoppingListItemStates[foundIndex] = shoppingListItemState;
+      emitState(shoppingListItemStates: newShoppingListItemStates);
+      return newShoppingListItemStates[foundIndex];
     } else if (addIfItsNotFound) {
       emitState(
-        shoppingListItems: List.from(state.shoppingListItems)
+        shoppingListItemStates: List.from(state.shoppingListItemStates)
           ..add(
-            shoppingListItem,
+            shoppingListItemState,
           ),
       );
     }
-    return shoppingListItem;
+    return shoppingListItemState;
   }
 
-  List<ShoppingListItemEntity> replaceOrAddMultipleShoppingListItems({
+  List<CurrentShoppingListItemState> replaceOrAddMultipleShoppingListItems({
     required bool addIfItsNotFound,
-    required List<ShoppingListItemEntity> shoppingListItems,
+    required List<CurrentShoppingListItemState> shoppingListItemStates,
   }) {
-    List<ShoppingListItemEntity> mergedShoppingList = [];
-    for (final shoppingListItem in shoppingListItems) {
-      final mergedShoppingListItem = replaceOrAddShoppingListItem(
+    List<CurrentShoppingListItemState> mergedShoppingListItemStates = [];
+    for (final shoppingListItemState in shoppingListItemStates) {
+      final mergedShoppingListItemState = replaceOrAddShoppingListItem(
         addIfItsNotFound: addIfItsNotFound,
-        shoppingListItem: shoppingListItem,
+        shoppingListItemState: shoppingListItemState,
       );
-      mergedShoppingList.add(mergedShoppingListItem);
+      mergedShoppingListItemStates.add(mergedShoppingListItemState);
     }
-    return mergedShoppingList;
+    return mergedShoppingListItemStates;
   }
 
   void deleteShoppingListItem({required String shoppingListItemId}) {
     emitState(
-      shoppingListItems: state.shoppingListItems
+      shoppingListItemStates: state.shoppingListItemStates
           .where(
-            (element) => element.id != shoppingListItemId,
+            (element) => element.shoppingListItem.id != shoppingListItemId,
           )
           .toList(),
     );
@@ -351,14 +351,14 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
           GetShoppingListItemsFilter(privateEventId: state.privateEvent.id),
       limitOffsetFilter: reload
           ? LimitOffsetFilter(
-              limit: state.shoppingListItems.length > 10
-                  ? 10
-                  : state.shoppingListItems.length,
+              limit: state.shoppingListItemStates.length > 20
+                  ? 20
+                  : state.shoppingListItemStates.length,
               offset: 0,
             )
           : LimitOffsetFilter(
               limit: 20,
-              offset: state.shoppingListItems.length,
+              offset: state.shoppingListItemStates.length,
             ),
     );
 
@@ -372,9 +372,19 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
       ),
       (shoppingListItems) {
         replaceOrAddMultipleShoppingListItems(
-          shoppingListItems: shoppingListItems,
+          shoppingListItemStates: shoppingListItems
+              .map(
+                (e) => CurrentShoppingListItemState(
+                  loadingShoppingListItem: false,
+                  loadingBoughtAmounts: false,
+                  shoppingListItem: e,
+                  boughtAmounts: [],
+                ),
+              )
+              .toList(),
           addIfItsNotFound: true,
         );
+        emitState(loadingShoppingList: false);
       },
     );
   }
@@ -388,12 +398,13 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
     bool? loadingPrivateEvent,
     bool? loadingGroupchat,
     bool? loadingShoppingList,
-    List<ShoppingListItemEntity>? shoppingListItems,
+    List<CurrentShoppingListItemState>? shoppingListItemStates,
     CurrentPrivateEventStateStatus? status,
     ErrorWithTitleAndMessage? error,
   }) {
     emit(CurrentPrivateEventState(
-      shoppingListItems: shoppingListItems ?? state.shoppingListItems,
+      shoppingListItemStates:
+          shoppingListItemStates ?? state.shoppingListItemStates,
       loadingShoppingList: loadingShoppingList ?? state.loadingShoppingList,
       privateEvent: privateEvent ?? state.privateEvent,
       privateEventUsers: privateEventUsers ?? state.privateEventUsers,
