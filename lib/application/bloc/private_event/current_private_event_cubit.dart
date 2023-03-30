@@ -305,9 +305,9 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
       return newShoppingListItemStates[foundIndex];
     } else if (addIfItsNotFound) {
       emitState(
-        shoppingListItemStates: List.from(state.shoppingListItemStates)
-          ..add(
-            shoppingListItemState,
+        shoppingListItemStates: List.from([shoppingListItemState])
+          ..addAll(
+            state.shoppingListItemStates,
           ),
       );
     }
