@@ -58,7 +58,7 @@ class ChatUseCases {
     );
   }
 
-  Future<Either<Failure, GroupchatLeftUserEntity>>
+  Future<Either<Failure, GroupchatLeftUserEntity?>>
       deleteUserFromGroupchatViaApi({
     required GetOneGroupchatUserFilter getOneGroupchatUserFilter,
   }) async {

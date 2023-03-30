@@ -32,7 +32,7 @@ abstract class ChatRepository {
     required UpdateGroupchatUserDto updateGroupchatUserDto,
     required GetOneGroupchatUserFilter getOneGroupchatUserFilter,
   });
-  Future<Either<Failure, GroupchatLeftUserEntity>>
+  Future<Either<Failure, GroupchatLeftUserEntity?>>
       deleteUserFromGroupchatViaApi({
     required GetOneGroupchatUserFilter getOneGroupchatUserFilter,
   });

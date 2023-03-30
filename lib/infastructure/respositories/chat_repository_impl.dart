@@ -233,7 +233,7 @@ class ChatRepositoryImpl implements ChatRepository {
   }
 
   @override
-  Future<Either<Failure, GroupchatLeftUserEntity>>
+  Future<Either<Failure, GroupchatLeftUserEntity?>>
       deleteUserFromGroupchatViaApi({
     required GetOneGroupchatUserFilter getOneGroupchatUserFilter,
   }) async {
@@ -258,9 +258,11 @@ class ChatRepositoryImpl implements ChatRepository {
       }
 
       return Right(
-        GroupchatLeftUserModel.fromJson(
-          response.data!["deleteUserFromGroupchat"],
-        ),
+        response.data != null
+            ? GroupchatLeftUserModel.fromJson(
+                response.data!["deleteUserFromGroupchat"],
+              )
+            : null,
       );
     } catch (e) {
       return Left(ServerFailure());

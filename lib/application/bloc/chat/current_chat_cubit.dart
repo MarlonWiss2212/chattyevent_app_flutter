@@ -318,7 +318,7 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
   Future deleteUserFromChat({required String userId}) async {
     emitState(loadingChat: true);
 
-    final Either<Failure, GroupchatLeftUserEntity> groupchatOrFailure =
+    final Either<Failure, GroupchatLeftUserEntity?> groupchatOrFailure =
         await chatUseCases.deleteUserFromGroupchatViaApi(
       getOneGroupchatUserFilter: GetOneGroupchatUserFilter(
         userId: userId,
@@ -338,7 +338,8 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
         );
       },
       (groupchatLeftUser) {
-        if (userId == authCubit.state.currentUser.id) {
+        if (groupchatLeftUser == null ||
+            userId == authCubit.state.currentUser.id) {
           chatCubit.delete(groupchatId: state.currentChat.id);
           emitState(loadingChat: false, currentUserLeftChat: true);
         } else {
