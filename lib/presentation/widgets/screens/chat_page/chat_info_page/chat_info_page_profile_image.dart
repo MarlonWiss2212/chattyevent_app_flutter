@@ -8,7 +8,7 @@ import 'package:social_media_app_flutter/presentation/widgets/general/dialog/acc
 class ChatInfoPageProfileImage extends StatelessWidget {
   const ChatInfoPageProfileImage({super.key});
 
-  _onTapSetImageFunction(BuildContext context) async {
+  Future<void> _onTapSetImageFunction(BuildContext context) async {
     await showModalBottomSheet(
       context: context,
       builder: (
@@ -54,8 +54,8 @@ class ChatInfoPageProfileImage extends StatelessWidget {
           borderRadius: const BorderRadius.all(
             Radius.circular(8.0),
           ),
-          onTap: state.users[state.currentUserIndex].admin == true
-              ? _onTapSetImageFunction(context)
+          onTap: state.getCurrentGroupchatUser()?.admin == true
+              ? () => _onTapSetImageFunction(context)
               : null,
           child: state.currentChat.profileImageLink == null
               ? const SizedBox()
