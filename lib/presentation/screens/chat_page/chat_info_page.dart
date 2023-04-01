@@ -12,6 +12,7 @@ import 'package:social_media_app_flutter/presentation/widgets/screens/chat_page/
 import 'package:social_media_app_flutter/presentation/widgets/screens/chat_page/chat_info_page/chat_info_page_private_event_list/chat_info_page_private_event_list.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/chat_page/chat_info_page/chat_info_page_left_user_list/chat_info_page_left_user_list.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/chat_page/chat_info_page/chat_info_page_profile_image.dart';
+import 'package:social_media_app_flutter/presentation/widgets/screens/chat_page/chat_info_page/chat_info_page_title.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/chat_page/chat_info_page/chat_info_page_user_list/chat_info_page_user_list.dart';
 
 class ChatInfoPage extends StatelessWidget {
@@ -32,44 +33,14 @@ class ChatInfoPage extends StatelessWidget {
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          SliverAppBar(
+          const SliverAppBar(
             pinned: true,
             snap: true,
             floating: true,
             expandedHeight: 200,
             flexibleSpace: FlexibleSpaceBar(
-              background: const ChatInfoPageProfileImage(),
-              title: BlocBuilder<CurrentChatCubit, CurrentChatState>(
-                buildWhen: (previous, current) =>
-                    previous.currentChat.title != current.currentChat.title,
-                builder: (context, state) {
-                  return Hero(
-                    tag: "$groupchatId title",
-                    child: Padding(
-                      padding: const EdgeInsets.only(right: 8.0),
-                      child: EditInputTextField(
-                        text: state.currentChat.title ?? "",
-                        textStyle: Theme.of(context)
-                            .textTheme
-                            .titleLarge
-                            ?.apply(
-                              color: Theme.of(context).colorScheme.onBackground,
-                            ),
-                        editable:
-                            state.getCurrentGroupchatUser()?.admin == true,
-                        onSaved: (text) {
-                          BlocProvider.of<CurrentChatCubit>(context)
-                              .updateCurrentGroupchatViaApi(
-                            updateGroupchatDto: UpdateGroupchatDto(
-                              title: text,
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  );
-                },
-              ),
+              background: ChatInfoPageProfileImage(),
+              title: ChatInfoPageTitle(),
             ),
           ),
           CupertinoSliverRefreshControl(
