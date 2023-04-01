@@ -1,9 +1,5 @@
-import 'dart:io';
-
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/home_page/mini_profile_image.dart';
 

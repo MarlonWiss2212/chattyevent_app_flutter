@@ -2,7 +2,6 @@ import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:social_media_app_flutter/core/failures/failures.dart';
 import 'package:social_media_app_flutter/domain/repositories/auth_repository.dart';
-import 'package:social_media_app_flutter/presentation/screens/settings_page/pages/update_password_page.dart';
 
 class AuthUseCases {
   final AuthRepository authRepository;

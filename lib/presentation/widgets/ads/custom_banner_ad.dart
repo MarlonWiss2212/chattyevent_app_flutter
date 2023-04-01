@@ -1,20 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
-class BannerAdUserList extends StatefulWidget {
-  const BannerAdUserList({super.key});
+class CustomBannerAd extends StatefulWidget {
+  final String adUnitId;
+  const CustomBannerAd({
+    super.key,
+    required this.adUnitId,
+  });
 
   @override
-  State<BannerAdUserList> createState() => _BannerAdUserListState();
+  State<CustomBannerAd> createState() => _CustomBannerAdState();
 }
 
-class _BannerAdUserListState extends State<BannerAdUserList> {
+class _CustomBannerAdState extends State<CustomBannerAd> {
   BannerAd? _ad;
   @override
   void initState() {
     super.initState();
     BannerAd(
-      adUnitId: "ca-app-pub-3940256099942544/6300978111",
+      adUnitId: widget.adUnitId,
       size: AdSize.banner,
       request: const AdRequest(),
       listener: BannerAdListener(
@@ -45,6 +49,6 @@ class _BannerAdUserListState extends State<BannerAdUserList> {
             height: _ad!.size.height.toDouble(),
             child: AdWidget(ad: _ad!),
           )
-        : Container();
+        : const SizedBox();
   }
 }

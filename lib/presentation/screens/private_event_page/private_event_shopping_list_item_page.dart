@@ -2,7 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:social_media_app_flutter/application/bloc/shopping_list/current_shopping_list_item_cubit.dart';
-import 'package:social_media_app_flutter/domain/entities/shopping_list_item/shopping_list_item_entity.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/standard_shopping_list_item_page.dart';
 
 class PrivateEventShoppingListItemPage extends StatelessWidget {
