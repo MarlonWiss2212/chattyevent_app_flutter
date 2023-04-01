@@ -1,7 +1,9 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:social_media_app_flutter/core/utils/ad_helper.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
+import 'package:social_media_app_flutter/presentation/widgets/ads/custom_banner_ad.dart';
 import 'package:social_media_app_flutter/presentation/widgets/general/event_list/event_horizontal_list.dart';
 
 class HomeEventPageDetails extends StatelessWidget {
@@ -72,6 +74,7 @@ class HomeEventPageDetails extends StatelessWidget {
               ],
             ),
           ),
+          CustomBannerAd(adUnitId: AdHelper.bannerAdUnitId),
           ListTile(
             leading: const Icon(Icons.shopping_bag),
             title: const Text("Einkaufsliste"),

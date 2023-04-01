@@ -73,6 +73,7 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
       );
 
       if (response.hasException) {
+        print(response.exception);
         return Left(GeneralFailure());
       }
 

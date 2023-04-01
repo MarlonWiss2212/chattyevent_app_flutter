@@ -5,6 +5,9 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:social_media_app_flutter/application/bloc/location/location_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/private_event_cubit.dart';
+import 'package:social_media_app_flutter/core/utils/ad_helper.dart';
+import 'package:social_media_app_flutter/presentation/widgets/ads/custom_banner_ad.dart';
+import 'package:social_media_app_flutter/presentation/widgets/general/button.dart';
 import 'package:social_media_app_flutter/presentation/widgets/general/dialog/alert_dialog.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/home_page/pages/home_map_page/private_event_map_marker.dart';
 
@@ -52,60 +55,68 @@ class Location extends StatelessWidget {
             return Center(child: PlatformCircularProgressIndicator());
           }
           return Center(
-            child: Stack(children: [
-              FlutterMap(
-                options: mapOptions,
-                children: [
-                  TileLayer(
-                    urlTemplate:
-                        'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                  ),
-                  BlocBuilder<PrivateEventCubit, PrivateEventState>(
-                    builder: (context, state) {
-                      List<Marker> markers = [];
-                      for (final event in state.privateEvents) {
-                        if (event.eventLocation != null &&
-                            event.eventLocation!.longitude != null &&
-                            event.eventLocation!.latitude != null) {
-                          markers.add(
-                            Marker(
-                              point: LatLng(
-                                event.eventLocation!.latitude!,
-                                event.eventLocation!.longitude!,
-                              ),
-                              height: 50,
-                              width: 100,
-                              builder: (context) {
-                                return PrivateEventMapMarker(
-                                  privateEvent: event,
-                                );
-                              },
-                            ),
-                          );
-                        }
-                      }
-                      return MarkerLayer(
-                        markers: markers,
-                      );
-                    },
-                  )
-                ],
-              ),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: SizedBox(
-                  width: double.infinity,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: PlatformElevatedButton(
-                      onPressed: () => BlocProvider.of<LocationCubit>(context)
-                          .getLocationFromDevice(),
-                      child: const Text("Geradigen Standort setzen"),
+            child: Stack(
+              children: [
+                FlutterMap(
+                  options: mapOptions,
+                  children: [
+                    TileLayer(
+                      urlTemplate:
+                          'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
                     ),
-                  ),
+                    BlocBuilder<PrivateEventCubit, PrivateEventState>(
+                      builder: (context, state) {
+                        List<Marker> markers = [];
+                        for (final event in state.privateEvents) {
+                          if (event.eventLocation != null &&
+                              event.eventLocation!.longitude != null &&
+                              event.eventLocation!.latitude != null) {
+                            markers.add(
+                              Marker(
+                                point: LatLng(
+                                  event.eventLocation!.latitude!,
+                                  event.eventLocation!.longitude!,
+                                ),
+                                height: 50,
+                                width: 100,
+                                builder: (context) {
+                                  return PrivateEventMapMarker(
+                                    privateEvent: event,
+                                  );
+                                },
+                              ),
+                            );
+                          }
+                        }
+                        return MarkerLayer(
+                          markers: markers,
+                        );
+                      },
+                    )
+                  ],
                 ),
-              )
-            ]),
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      CustomBannerAd(adUnitId: AdHelper.bannerAdUnitId),
+                      SizedBox(
+                        width: double.infinity,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8),
+                          child: Button(
+                            onTap: () => BlocProvider.of<LocationCubit>(context)
+                                .getLocationFromDevice(),
+                            text: "Geradigen Standort setzen",
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
           );
         },
       ),

@@ -40,11 +40,11 @@ class CreatePrivateEventDto {
     }
     if (privateEventUsers != null) {
       map.addAll({
-        'privateEventUsers': privateEventUsers!.map((e) => e.toMap()),
+        'privateEventUsers': privateEventUsers!.map((e) => e.toMap()).toList(),
       });
     }
     if (eventEndDate != null) {
-      map.addAll({'eventEndDate': eventEndDate});
+      map.addAll({'eventEndDate': eventEndDate!.toIso8601String()});
     }
 
     return map;
