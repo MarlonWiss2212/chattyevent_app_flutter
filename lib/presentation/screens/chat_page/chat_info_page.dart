@@ -56,7 +56,7 @@ class ChatInfoPage extends StatelessWidget {
                               color: Theme.of(context).colorScheme.onBackground,
                             ),
                         editable:
-                            state.users[state.currentUserIndex].admin == true,
+                            state.getCurrentGroupchatUser()?.admin == true,
                         onSaved: (text) {
                           BlocProvider.of<CurrentChatCubit>(context)
                               .updateCurrentGroupchatViaApi(

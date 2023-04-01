@@ -18,6 +18,12 @@ class CurrentChatState {
   final ErrorWithTitleAndMessage? error;
   final bool showError;
 
+  UserWithGroupchatUserData? getCurrentGroupchatUser() {
+    if (currentUserIndex != -1) {
+      return users[currentUserIndex];
+    }
+  }
+
   const CurrentChatState({
     this.error,
     this.showError = false,

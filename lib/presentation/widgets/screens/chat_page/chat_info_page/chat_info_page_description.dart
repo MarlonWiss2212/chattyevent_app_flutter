@@ -35,7 +35,7 @@ class ChatInfoPageDescription extends StatelessWidget {
                   ? description
                   : "Keine Beschreibung",
               textStyle: Theme.of(context).textTheme.titleMedium,
-              editable: state.users[state.currentUserIndex].admin == true,
+              editable: state.getCurrentGroupchatUser()?.admin == true,
               onSaved: (text) {
                 BlocProvider.of<CurrentChatCubit>(context)
                     .updateCurrentGroupchatViaApi(
