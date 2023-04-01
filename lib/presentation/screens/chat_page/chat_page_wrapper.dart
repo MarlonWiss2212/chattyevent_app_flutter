@@ -27,11 +27,12 @@ class ChatPageWrapper extends StatelessWidget {
       create: (context) => CurrentChatCubit(
         CurrentChatState(
           currentUserLeftChat: false,
+          currentUserIndex: -1,
           loadingPrivateEvents: false,
           loadingMessages: false,
           futureConnectedPrivateEvents: [],
-          usersWithGroupchatUserData: const [],
-          usersWithLeftGroupchatUserData: const [],
+          users: const [],
+          leftUsers: const [],
           currentChat: chatToSet ?? GroupchatEntity(id: groupchatId),
           loadingChat: false,
         ),

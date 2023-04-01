@@ -5,7 +5,6 @@ import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubi
 import 'package:social_media_app_flutter/core/dto/groupchat/update_groupchat_user_dto.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/user_with_groupchat_user_data.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
-import 'package:social_media_app_flutter/presentation/screens/chat_page/chat_change_chat_username_page.dart';
 import 'package:social_media_app_flutter/presentation/widgets/general/user_list/user_list_tile.dart';
 
 class ChatInfoPageUserListItem extends StatelessWidget {

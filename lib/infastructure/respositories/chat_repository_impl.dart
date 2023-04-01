@@ -2,6 +2,7 @@ import 'package:http/http.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:social_media_app_flutter/core/dto/groupchat/create_groupchat_dto.dart';
 import 'package:social_media_app_flutter/core/dto/groupchat/create_groupchat_user_dto.dart';
+import 'package:social_media_app_flutter/core/dto/groupchat/update_groupchat_dto.dart';
 import 'package:social_media_app_flutter/core/dto/groupchat/update_groupchat_user_dto.dart';
 import 'package:social_media_app_flutter/core/failures/failures.dart';
 import 'package:social_media_app_flutter/core/filter/groupchat/get_messages_filter.dart';
@@ -191,9 +192,64 @@ class ChatRepositoryImpl implements ChatRepository {
   @override
   Future<Either<Failure, GroupchatEntity>> updateGroupchatViaApi({
     required GetOneGroupchatFilter getOneGroupchatFilter,
+    required UpdateGroupchatDto updateGroupchatDto,
   }) async {
-    // TODO: implement updateGroupchatViaApi
-    throw UnimplementedError();
+    try {
+      Map<String, dynamic> variables = {
+        "updateGroupchatInput": updateGroupchatDto.toMap(),
+        "findOneGroupchatInput": getOneGroupchatFilter.toMap(),
+      };
+      if (updateGroupchatDto.updateProfileImage != null) {
+        final byteData =
+            updateGroupchatDto.updateProfileImage!.readAsBytesSync();
+        final multipartFile = MultipartFile.fromBytes(
+          'photo',
+          byteData,
+          filename: '${updateGroupchatDto.title}.jpg',
+          contentType: MediaType("image", "jpg"),
+        );
+        variables.addAll({'updateProfileImage': multipartFile});
+      }
+
+      final response = await graphQlDatasource.mutation(
+        """
+        mutation UpdateGroupchat(\$updateGroupchatInput: UpdateGroupchatInput!, \$findOneGroupchatInput: FindOneGroupchatInput!, \$updateProfileImage: Upload) {
+          updateGroupchat(updateGroupchatInput: \$updateGroupchatInput, findOneGroupchatInput: \$findOneGroupchatInput, updateProfileImage: \$updateProfileImage) {
+            _id
+            title
+            description
+            profileImageLink
+            users {
+              _id
+              admin
+              userId
+              usernameForChat
+              groupchatTo
+              createdAt
+              updatedAt
+            }
+            leftUsers {
+              _id
+              userId
+              createdAt
+              updatedAt
+              groupchatTo
+            }
+            createdBy
+            createdAt
+          }
+        }
+      """,
+        variables: variables,
+      );
+
+      if (response.hasException) {
+        return Left(GeneralFailure());
+      }
+      return Right(GroupchatModel.fromJson(response.data!["updateGroupchat"]));
+    } catch (e) {
+      return Left(ServerFailure());
+    }
   }
 
   @override
@@ -296,7 +352,6 @@ class ChatRepositoryImpl implements ChatRepository {
       );
 
       if (response.hasException) {
-        print(response.exception);
         return Left(GeneralFailure());
       }
 
@@ -304,8 +359,6 @@ class ChatRepositoryImpl implements ChatRepository {
         GroupchatUserModel.fromJson(response.data!["updateGroupchatUser"]),
       );
     } catch (e) {
-      print(e);
-
       return Left(ServerFailure());
     }
   }

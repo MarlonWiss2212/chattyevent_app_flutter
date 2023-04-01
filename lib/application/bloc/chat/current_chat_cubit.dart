@@ -6,6 +6,7 @@ import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
 import 'package:social_media_app_flutter/core/dto/groupchat/create_groupchat_user_dto.dart';
+import 'package:social_media_app_flutter/core/dto/groupchat/update_groupchat_dto.dart';
 import 'package:social_media_app_flutter/core/dto/groupchat/update_groupchat_user_dto.dart';
 import 'package:social_media_app_flutter/core/filter/groupchat/added_message_filter.dart';
 import 'package:social_media_app_flutter/core/filter/groupchat/get_messages_filter.dart';
@@ -99,6 +100,7 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
             authId: "",
           ),
         );
+
         usersToEmit.add(
           UserWithGroupchatUserData.fromUserEntity(
             user: foundUser,
@@ -127,8 +129,11 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
     }
 
     emitState(
-      usersWithGroupchatUserData: usersToEmit,
-      usersWithLeftGroupchatUserData: leftUsersToEmit,
+      users: usersToEmit,
+      leftUsers: leftUsersToEmit,
+      currentUserIndex: usersToEmit.indexWhere(
+        (element) => element.authId == authCubit.state.currentUser.authId,
+      ),
     );
   }
 
@@ -215,6 +220,39 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
           setLeftUsersFromOldEntity: false,
           setMessagesFromOldEntity: true,
           setUsersFromOldEntity: false,
+        );
+        emitState(
+          loadingChat: false,
+          currentChat: replacedGroupchat,
+        );
+        setGroupchatUsers();
+      },
+    );
+  }
+
+  Future updateCurrentGroupchatViaApi({
+    required UpdateGroupchatDto updateGroupchatDto,
+  }) async {
+    final Either<Failure, GroupchatEntity> groupchatOrFailure =
+        await chatUseCases.updateGroupchatViaApi(
+      getOneGroupchatFilter: GetOneGroupchatFilter(id: state.currentChat.id),
+      updateGroupchatDto: updateGroupchatDto,
+    );
+
+    groupchatOrFailure.fold(
+      (error) => emitState(
+        showError: true,
+        error: ErrorWithTitleAndMessage(
+          title: "Update Chat Fehler",
+          message: mapFailureToMessage(error),
+        ),
+      ),
+      (groupchat) {
+        final replacedGroupchat = chatCubit.replaceOrAdd(
+          groupchat: groupchat,
+          setLeftUsersFromOldEntity: false,
+          setUsersFromOldEntity: false,
+          setMessagesFromOldEntity: true,
         );
         emitState(
           loadingChat: false,
@@ -434,12 +472,14 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
     bool? loadingMessages,
     bool? loadingPrivateEvents,
     bool? showError,
-    List<UserWithGroupchatUserData>? usersWithGroupchatUserData,
-    List<UserWithLeftGroupchatUserData>? usersWithLeftGroupchatUserData,
+    int? currentUserIndex,
+    List<UserWithGroupchatUserData>? users,
+    List<UserWithLeftGroupchatUserData>? leftUsers,
     ErrorWithTitleAndMessage? error,
   }) {
     emit(
       CurrentChatState(
+        currentUserIndex: currentUserIndex ?? state.currentUserIndex,
         currentUserLeftChat: currentUserLeftChat ?? state.currentUserLeftChat,
         futureConnectedPrivateEvents:
             futureConnectedPrivateEvents ?? state.futureConnectedPrivateEvents,
@@ -449,10 +489,8 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
         currentChat: currentChat ?? state.currentChat,
         loadingChat: loadingChat ?? state.loadingChat,
         loadingMessages: loadingMessages ?? state.loadingMessages,
-        usersWithGroupchatUserData:
-            usersWithGroupchatUserData ?? state.usersWithGroupchatUserData,
-        usersWithLeftGroupchatUserData: usersWithLeftGroupchatUserData ??
-            state.usersWithLeftGroupchatUserData,
+        users: users ?? state.users,
+        leftUsers: leftUsers ?? state.leftUsers,
         error: error ?? state.error,
       ),
     );

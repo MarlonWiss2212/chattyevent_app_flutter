@@ -14,8 +14,8 @@ class ChatPageMessageContainer extends StatelessWidget {
     super.key,
     required this.message,
     required this.currentUserId,
-    required this.usersWithGroupchatUserData,
-    required this.usersWithLeftGroupchatUserData,
+    required this.users,
+    required this.leftUsers,
     this.messageIsReactMessage = false,
     this.isInputMessage = false,
   });
@@ -24,14 +24,14 @@ class ChatPageMessageContainer extends StatelessWidget {
   final bool isInputMessage;
 
   final String currentUserId;
-  final List<UserWithGroupchatUserData> usersWithGroupchatUserData;
-  final List<UserWithLeftGroupchatUserData> usersWithLeftGroupchatUserData;
+  final List<UserWithGroupchatUserData> users;
+  final List<UserWithLeftGroupchatUserData> leftUsers;
   final MessageEntity message;
 
   @override
   Widget build(BuildContext context) {
     UserEntity? user;
-    final foundUser = usersWithGroupchatUserData.firstWhere(
+    final foundUser = users.firstWhere(
       (element) => element.id == message.createdBy,
       orElse: () => UserWithGroupchatUserData(
         id: message.createdBy ?? "",
@@ -39,7 +39,7 @@ class ChatPageMessageContainer extends StatelessWidget {
       ),
     );
     if (foundUser.id == "") {
-      final foundLeftUser = usersWithLeftGroupchatUserData.firstWhere(
+      final foundLeftUser = leftUsers.firstWhere(
         (element) => element.id == message.createdBy,
         orElse: () => UserWithLeftGroupchatUserData(
           id: message.createdBy ?? "",

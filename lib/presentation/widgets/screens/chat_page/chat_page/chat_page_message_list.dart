@@ -11,16 +11,16 @@ import 'package:social_media_app_flutter/presentation/widgets/screens/chat_page/
 
 class ChatPageMessageList extends StatefulWidget {
   final String groupchatTo;
-  final List<UserWithGroupchatUserData> usersWithGroupchatUserData;
-  final List<UserWithLeftGroupchatUserData> usersWithLeftGroupchatUserData;
+  final List<UserWithGroupchatUserData> users;
+  final List<UserWithLeftGroupchatUserData> leftUsers;
   final List<MessageEntity> messages;
 
   const ChatPageMessageList({
     super.key,
     required this.groupchatTo,
     required this.messages,
-    required this.usersWithGroupchatUserData,
-    required this.usersWithLeftGroupchatUserData,
+    required this.users,
+    required this.leftUsers,
   });
 
   @override
@@ -58,8 +58,8 @@ class _ChatPageMessageListState extends State<ChatPageMessageList> {
           currentUserId:
               BlocProvider.of<AuthCubit>(context).state.currentUser.id,
           message: message,
-          usersWithGroupchatUserData: widget.usersWithGroupchatUserData,
-          usersWithLeftGroupchatUserData: widget.usersWithLeftGroupchatUserData,
+          users: widget.users,
+          leftUsers: widget.leftUsers,
         );
       },
       elements: widget.messages,

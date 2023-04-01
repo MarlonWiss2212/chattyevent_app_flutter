@@ -15,8 +15,7 @@ class ChatInfoPageLeftUserList extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<CurrentChatCubit, CurrentChatState>(
       builder: (context, state) {
-        UserWithGroupchatUserData currentGroupchatUser =
-            state.usersWithGroupchatUserData.firstWhere(
+        UserWithGroupchatUserData currentGroupchatUser = state.users.firstWhere(
           (element) =>
               element.id ==
               BlocProvider.of<AuthCubit>(context).state.currentUser.id,
@@ -29,12 +28,11 @@ class ChatInfoPageLeftUserList extends StatelessWidget {
         return Column(
           children: [
             Text(
-              "Frühere Midglieder: ${state.usersWithLeftGroupchatUserData.length}",
+              "Frühere Midglieder: ${state.leftUsers.length}",
               style: Theme.of(context).textTheme.titleMedium,
               overflow: TextOverflow.ellipsis,
             ),
-            if (state.usersWithLeftGroupchatUserData.isEmpty &&
-                state.loadingChat) ...[
+            if (state.leftUsers.isEmpty && state.loadingChat) ...[
               const SizedBox(height: 8),
               SkeletonListTile(
                 hasSubtitle: true,
@@ -48,7 +46,7 @@ class ChatInfoPageLeftUserList extends StatelessWidget {
                   height: 16,
                 ),
               ),
-            ] else if (state.usersWithLeftGroupchatUserData.isNotEmpty) ...{
+            ] else if (state.leftUsers.isNotEmpty) ...{
               const SizedBox(height: 8),
               ListView.builder(
                 shrinkWrap: true,
@@ -56,10 +54,10 @@ class ChatInfoPageLeftUserList extends StatelessWidget {
                 itemBuilder: (context, index) {
                   return ChatInfoPageLeftUserListItem(
                     currentUser: currentGroupchatUser,
-                    user: state.usersWithLeftGroupchatUserData[index],
+                    user: state.leftUsers[index],
                   );
                 },
-                itemCount: state.usersWithLeftGroupchatUserData.length,
+                itemCount: state.leftUsers.length,
               ),
             }
           ],

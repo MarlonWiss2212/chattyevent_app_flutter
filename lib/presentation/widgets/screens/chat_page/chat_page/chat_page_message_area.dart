@@ -18,12 +18,10 @@ class ChatPageMessageArea extends StatelessWidget {
         if (previous.loadingMessages != current.loadingMessages) {
           return true;
         }
-        if (previous.usersWithGroupchatUserData.length !=
-            current.usersWithGroupchatUserData.length) {
+        if (previous.users.length != current.users.length) {
           return true;
         }
-        if (previous.usersWithLeftGroupchatUserData.length !=
-            current.usersWithLeftGroupchatUserData.length) {
+        if (previous.leftUsers.length != current.leftUsers.length) {
           return true;
         }
         return true;
@@ -66,8 +64,8 @@ class ChatPageMessageArea extends StatelessWidget {
 
         return ChatPageMessageList(
           groupchatTo: state.currentChat.id,
-          usersWithGroupchatUserData: state.usersWithGroupchatUserData,
-          usersWithLeftGroupchatUserData: state.usersWithLeftGroupchatUserData,
+          users: state.users,
+          leftUsers: state.leftUsers,
           messages: state.currentChat.messages!,
         );
       },

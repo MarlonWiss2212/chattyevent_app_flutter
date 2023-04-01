@@ -33,9 +33,8 @@ class ChatPageReactMessageContainer extends StatelessWidget {
                 : MessageEntity(id: messageToReactTo),
             currentUserId:
                 BlocProvider.of<AuthCubit>(context).state.currentUser.id,
-            usersWithGroupchatUserData: state.usersWithGroupchatUserData,
-            usersWithLeftGroupchatUserData:
-                state.usersWithLeftGroupchatUserData,
+            users: state.users,
+            leftUsers: state.leftUsers,
             messageIsReactMessage: true,
           ),
         );
