@@ -23,9 +23,6 @@ class ProfileFollowerCounts extends StatelessWidget {
           child: Ink(
             padding: const EdgeInsets.all(8),
             child: BlocBuilder<ProfilePageCubit, ProfilePageState>(
-              buildWhen: (previous, current) =>
-                  previous.user.userRelationCounts?.followerCount !=
-                  current.user.userRelationCounts?.followerCount,
               builder: (context, state) {
                 return Column(
                   children: [
@@ -56,9 +53,6 @@ class ProfileFollowerCounts extends StatelessWidget {
           child: Ink(
             padding: const EdgeInsets.all(8),
             child: BlocBuilder<ProfilePageCubit, ProfilePageState>(
-              buildWhen: (previous, current) =>
-                  previous.user.userRelationCounts?.followedCount !=
-                  current.user.userRelationCounts?.followedCount,
               builder: (context, state) {
                 return Column(
                   children: [

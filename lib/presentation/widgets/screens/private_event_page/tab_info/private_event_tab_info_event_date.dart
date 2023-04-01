@@ -33,7 +33,7 @@ class PrivateEventTabInfoEventDate extends StatelessWidget {
                       ? DateFormat.yMd()
                           .add_jm()
                           .format(state.privateEvent.eventDate!)
-                      : "Fehler",
+                      : "",
                 )
               ],
             ),

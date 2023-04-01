@@ -27,7 +27,7 @@ class CreatePrivateEventDto {
   Map<dynamic, dynamic> toMap() {
     Map<dynamic, dynamic> map = {
       "title": title,
-      "eventDate": eventDate.toIso8601String(),
+      "eventDate": eventDate.toUtc().toIso8601String(),
     };
     if (groupchatTo != null) {
       map.addAll({"groupchatTo": groupchatTo});
@@ -44,7 +44,7 @@ class CreatePrivateEventDto {
       });
     }
     if (eventEndDate != null) {
-      map.addAll({'eventEndDate': eventEndDate!.toIso8601String()});
+      map.addAll({'eventEndDate': eventEndDate!.toUtc().toIso8601String()});
     }
 
     return map;

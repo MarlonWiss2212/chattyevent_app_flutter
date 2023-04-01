@@ -37,7 +37,7 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
         await userUseCases.getUserViaApi(
       getOneUserFilter: GetOneUserFilter(
         id: state.user.id != "" ? state.user.id : null,
-        authId: state.user.id != "" &&
+        authId: state.user.authId != "" &&
                 state.user.authId == authCubit.state.currentUser.authId
             ? authCubit.state.currentUser.authId
             : null,

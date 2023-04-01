@@ -4,11 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:social_media_app_flutter/application/bloc/user/profile_page_cubit.dart';
-import 'package:social_media_app_flutter/presentation/widgets/screens/profile_page/profile_page_circle_image.dart';
-import 'package:social_media_app_flutter/presentation/widgets/screens/profile_page/profile_page_follow_button.dart';
-import 'package:social_media_app_flutter/presentation/widgets/screens/profile_page/profile_page_follower_counts.dart';
-import 'package:social_media_app_flutter/presentation/widgets/screens/profile_page/profile_page_trailing_buttons/profile_page_trailing_follow_request_icon_button.dart';
-import 'package:social_media_app_flutter/presentation/widgets/screens/profile_page/profile_page_trailing_buttons/profile_page_trailing_settings_button.dart';
+import 'package:social_media_app_flutter/presentation/widgets/screens/profile_page/profile_page/profile_page_circle_image.dart';
+import 'package:social_media_app_flutter/presentation/widgets/screens/profile_page/profile_page/profile_page_follow_button.dart';
+import 'package:social_media_app_flutter/presentation/widgets/screens/profile_page/profile_page/profile_page_follower_counts.dart';
+import 'package:social_media_app_flutter/presentation/widgets/screens/profile_page/profile_page/profile_page_title.dart';
+import 'package:social_media_app_flutter/presentation/widgets/screens/profile_page/profile_page/profile_page_trailing_buttons/profile_page_trailing_follow_request_icon_button.dart';
+import 'package:social_media_app_flutter/presentation/widgets/screens/profile_page/profile_page/profile_page_trailing_buttons/profile_page_trailing_settings_button.dart';
 
 class ProfilePage extends StatelessWidget {
   final String? userId;
@@ -26,24 +27,7 @@ class ProfilePage extends StatelessWidget {
             snap: true,
             floating: true,
             expandedHeight: 100,
-            flexibleSpace: FlexibleSpaceBar(
-              title: BlocBuilder<ProfilePageCubit, ProfilePageState>(
-                buildWhen: (previous, current) {
-                  return previous.user.username != current.user.username;
-                },
-                builder: (context, state) {
-                  return Hero(
-                    tag: "${userId ?? state.user.id} username",
-                    child: Text(
-                      state.user.username ?? "Profilseite",
-                      style: Theme.of(context).textTheme.titleLarge?.apply(
-                            color: Theme.of(context).colorScheme.onBackground,
-                          ),
-                    ),
-                  );
-                },
-              ),
-            ),
+            flexibleSpace: const FlexibleSpaceBar(title: ProfilePageTitle()),
             actions: const [
               ProfilePageTrailingFollowRequestIconButton(),
               ProfilePageTrailinSettingsButton(),
