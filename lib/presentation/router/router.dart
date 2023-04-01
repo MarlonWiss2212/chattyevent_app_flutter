@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:social_media_app_flutter/presentation/router/auth_guard.dart';
+import 'package:social_media_app_flutter/presentation/screens/chat_page/chat_change_chat_username_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/chat_page/chat_future_private_events_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/chat_page/chat_info_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/chat_page/chat_add_user_page.dart';
@@ -45,8 +46,6 @@ import 'package:social_media_app_flutter/presentation/screens/settings_page/page
 import 'package:social_media_app_flutter/presentation/screens/settings_page/settings_page_wrapper.dart';
 import 'package:social_media_app_flutter/presentation/screens/shopping_list_page/shopping_list_item_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/shopping_list_page/shopping_list_wrapper_page.dart';
-import 'package:social_media_app_flutter/presentation/widgets/screens/shopping_list_item_page/current_shopping_list_item_page/current_shopping_list_item_page_private_event_tile.dart';
-import 'package:social_media_app_flutter/presentation/widgets/screens/standard_shopping_list_item_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/verify_email_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/shopping_list_page/shopping_list_page.dart';
 
@@ -202,6 +201,12 @@ import 'package:social_media_app_flutter/presentation/screens/shopping_list_page
           initial: true,
         ),
         AutoRoute(page: ChatInfoPage, guards: [AuthGuard], path: 'info'),
+        AutoRoute(
+          page: ChatChangeChatUsernamePage,
+          guards: [AuthGuard],
+          path: 'change-chat-username',
+          fullscreenDialog: true,
+        ),
         AutoRoute(
           page: ChatFuturePrivateEventsPage,
           guards: [AuthGuard],
