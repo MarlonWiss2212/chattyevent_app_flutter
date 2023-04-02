@@ -110,6 +110,7 @@ class GroupchatEntity {
       profileImageLink:
           newEntity.profileImageLink ?? oldEntity.profileImageLink,
       users: users,
+      messages: messages,
       leftUsers: leftUsers,
       description: newEntity.description ?? oldEntity.description,
       createdBy: newEntity.createdBy ?? oldEntity.createdBy,
