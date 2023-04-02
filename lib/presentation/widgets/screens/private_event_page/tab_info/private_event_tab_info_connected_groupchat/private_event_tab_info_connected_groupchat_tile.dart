@@ -1,33 +1,33 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
+import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 
 class PrivateEventTabInfogroupchatToTile extends StatelessWidget {
-  final GroupchatEntity groupchat;
+  final CurrentChatState chatState;
   const PrivateEventTabInfogroupchatToTile({
     super.key,
-    required this.groupchat,
+    required this.chatState,
   });
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
       leading: CircleAvatar(
-        backgroundImage: groupchat.profileImageLink != null
+        backgroundImage: chatState.currentChat.profileImageLink != null
             ? NetworkImage(
-                groupchat.profileImageLink!,
+                chatState.currentChat.profileImageLink!,
               )
             : null,
-        backgroundColor: groupchat.profileImageLink == null
+        backgroundColor: chatState.currentChat.profileImageLink == null
             ? Theme.of(context).colorScheme.secondaryContainer
             : null,
       ),
-      title: groupchat.title != null
+      title: chatState.currentChat.title != null
           ? Hero(
-              tag: "${groupchat.id} title",
+              tag: "${chatState.currentChat.id} title",
               child: Text(
-                groupchat.title!,
+                chatState.currentChat.title!,
                 style: Theme.of(context).textTheme.titleMedium,
               ),
             )
@@ -43,9 +43,9 @@ class PrivateEventTabInfogroupchatToTile extends StatelessWidget {
       onTap: () {
         AutoRouter.of(context).root.push(
               ChatPageWrapperRoute(
-                chatToSet: groupchat,
+                chatStateToSet: chatState,
                 loadChatFromApiToo: true,
-                groupchatId: groupchat.id,
+                groupchatId: chatState.currentChat.id,
               ),
             );
       },

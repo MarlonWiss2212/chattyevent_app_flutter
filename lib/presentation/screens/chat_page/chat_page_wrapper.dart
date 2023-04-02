@@ -6,18 +6,17 @@ import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
 import 'package:social_media_app_flutter/core/injection.dart';
-import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:social_media_app_flutter/presentation/widgets/general/dialog/alert_dialog.dart';
 
 class ChatPageWrapper extends StatelessWidget {
   final String groupchatId;
-  final GroupchatEntity? chatToSet;
+  final CurrentChatState chatStateToSet;
   final bool loadChatFromApiToo;
 
   const ChatPageWrapper({
     super.key,
     @PathParam('id') required this.groupchatId,
-    this.chatToSet,
+    required this.chatStateToSet,
     this.loadChatFromApiToo = true,
   });
 
@@ -25,17 +24,7 @@ class ChatPageWrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => CurrentChatCubit(
-        CurrentChatState(
-          currentUserLeftChat: false,
-          currentUserIndex: -1,
-          loadingPrivateEvents: false,
-          loadingMessages: false,
-          futureConnectedPrivateEvents: [],
-          users: const [],
-          leftUsers: const [],
-          currentChat: chatToSet ?? GroupchatEntity(id: groupchatId),
-          loadingChat: false,
-        ),
+        chatStateToSet,
         authCubit: BlocProvider.of<AuthCubit>(context),
         messageUseCases: serviceLocator(
           param1: BlocProvider.of<AuthCubit>(context).state,
@@ -72,7 +61,7 @@ class ChatPageWrapper extends StatelessWidget {
           // TODO too get the users from the api too but more efficient soon
           BlocProvider.of<CurrentChatCubit>(context).getGroupchatUsersViaApi();
 
-          if (chatToSet == null || loadChatFromApiToo) {
+          if (loadChatFromApiToo) {
             BlocProvider.of<CurrentChatCubit>(context).getCurrentChatViaApi();
           }
 

@@ -78,8 +78,8 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
           ),
         );
         GroupchatUserEntity? foundGroupchatUser;
-        if (state.groupchat != null) {
-          foundGroupchatUser = state.groupchat!.users?.firstWhere(
+        if (state.chatState != null) {
+          foundGroupchatUser = state.chatState!.currentChat.users?.firstWhere(
             (element) => element.userId == privateEventUser.userId,
             orElse: () => GroupchatUserEntity(id: ""),
           );
@@ -98,12 +98,9 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
 
   void setCurrentChatFromChatCubit() {
     emitState(
-      groupchat: chatCubit.state.chatStates
-          .firstWhereOrNull(
-            (element) =>
-                element.currentChat.id == state.privateEvent.groupchatTo,
-          )
-          ?.currentChat,
+      chatState: chatCubit.state.chatStates.firstWhereOrNull(
+        (element) => element.currentChat.id == state.privateEvent.groupchatTo,
+      ),
     );
   }
 
@@ -153,7 +150,23 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
             leftUsers: [],
           ),
         );
-        emitState(groupchat: replacedChat.currentChat, loadingGroupchat: false);
+        emitState(
+            chatState: state.chatState != null
+                ? CurrentChatState.merge(
+                    oldState: state.chatState!,
+                    currentChat: replacedChat.currentChat)
+                : CurrentChatState(
+                    currentUserIndex: -1,
+                    currentUserLeftChat: false,
+                    loadingPrivateEvents: false,
+                    futureConnectedPrivateEvents: [],
+                    loadingMessages: false,
+                    currentChat: groupchat,
+                    loadingChat: false,
+                    users: [],
+                    leftUsers: [],
+                  ),
+            loadingGroupchat: false);
         setPrivateEventUsers();
       },
     );
@@ -405,7 +418,7 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
   void emitState({
     PrivateEventEntity? privateEvent,
     List<UserWithPrivateEventUserData>? privateEventUsers,
-    GroupchatEntity? groupchat,
+    CurrentChatState? chatState,
     bool? loadingPrivateEvent,
     bool? loadingGroupchat,
     bool? loadingShoppingList,
@@ -419,7 +432,7 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
       loadingShoppingList: loadingShoppingList ?? state.loadingShoppingList,
       privateEvent: privateEvent ?? state.privateEvent,
       privateEventUsers: privateEventUsers ?? state.privateEventUsers,
-      groupchat: groupchat ?? state.groupchat,
+      chatState: chatState ?? state.chatState,
       loadingPrivateEvent: loadingPrivateEvent ?? state.loadingPrivateEvent,
       loadingGroupchat: loadingGroupchat ?? state.loadingGroupchat,
       error: error ?? state.error,

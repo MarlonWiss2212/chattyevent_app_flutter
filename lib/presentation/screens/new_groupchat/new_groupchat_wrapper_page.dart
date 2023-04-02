@@ -5,6 +5,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/add_groupchat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart';
 import 'package:social_media_app_flutter/core/injection.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 import 'package:social_media_app_flutter/presentation/widgets/general/dialog/alert_dialog.dart';
@@ -32,7 +33,17 @@ class NewGroupchatWrapperPage extends StatelessWidget {
                       ChatPageWrapperRoute(
                         groupchatId: state.addedChat!.id,
                         loadChatFromApiToo: false,
-                        chatToSet: state.addedChat,
+                        chatStateToSet: CurrentChatState(
+                          currentUserIndex: -1,
+                          currentUserLeftChat: false,
+                          loadingPrivateEvents: false,
+                          futureConnectedPrivateEvents: [],
+                          loadingMessages: false,
+                          currentChat: state.addedChat!,
+                          loadingChat: false,
+                          users: [],
+                          leftUsers: [],
+                        ),
                       ),
                     );
               } else if (state.status == AddGroupchatStateStatus.error &&

@@ -4,7 +4,7 @@ enum CurrentPrivateEventStateStatus { initial, success, error }
 
 class CurrentPrivateEventState {
   final PrivateEventEntity privateEvent;
-  final GroupchatEntity? groupchat;
+  final CurrentChatState? chatState;
   final List<CurrentShoppingListItemState> shoppingListItemStates;
 
   final bool loadingPrivateEvent;
@@ -21,7 +21,7 @@ class CurrentPrivateEventState {
     required this.privateEventUsers,
     required this.shoppingListItemStates,
     required this.loadingShoppingList,
-    this.groupchat,
+    this.chatState,
     required this.loadingPrivateEvent,
     required this.loadingGroupchat,
     this.status = CurrentPrivateEventStateStatus.initial,

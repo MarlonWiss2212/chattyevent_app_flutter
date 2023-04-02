@@ -14,9 +14,9 @@
 import 'package:auto_route/auto_route.dart' as _i49;
 import 'package:flutter/material.dart' as _i50;
 
+import '../../application/bloc/chat/current_chat_cubit.dart' as _i53;
 import '../../application/bloc/shopping_list/current_shopping_list_item_cubit.dart'
     as _i55;
-import '../../domain/entities/groupchat/groupchat_entity.dart' as _i53;
 import '../../domain/entities/private_event/private_event_entity.dart' as _i54;
 import '../../domain/entities/user/user_entity.dart' as _i52;
 import '../screens/chat_page/chat_add_user_page.dart' as _i33;
@@ -166,16 +166,13 @@ class AppRouter extends _i49.RootStackRouter {
       );
     },
     ChatPageWrapperRoute.name: (routeData) {
-      final pathParams = routeData.inheritedPathParams;
-      final args = routeData.argsAs<ChatPageWrapperRouteArgs>(
-          orElse: () => ChatPageWrapperRouteArgs(
-              groupchatId: pathParams.getString('id')));
+      final args = routeData.argsAs<ChatPageWrapperRouteArgs>();
       return _i49.MaterialPageX<dynamic>(
         routeData: routeData,
         child: _i10.ChatPageWrapper(
           key: args.key,
           groupchatId: args.groupchatId,
-          chatToSet: args.chatToSet,
+          chatStateToSet: args.chatStateToSet,
           loadChatFromApiToo: args.loadChatFromApiToo,
         ),
       );
@@ -1088,7 +1085,7 @@ class ChatPageWrapperRoute
   ChatPageWrapperRoute({
     _i50.Key? key,
     required String groupchatId,
-    _i53.GroupchatEntity? chatToSet,
+    required _i53.CurrentChatState chatStateToSet,
     bool loadChatFromApiToo = true,
     List<_i49.PageRouteInfo>? children,
   }) : super(
@@ -1097,7 +1094,7 @@ class ChatPageWrapperRoute
           args: ChatPageWrapperRouteArgs(
             key: key,
             groupchatId: groupchatId,
-            chatToSet: chatToSet,
+            chatStateToSet: chatStateToSet,
             loadChatFromApiToo: loadChatFromApiToo,
           ),
           rawPathParams: {'id': groupchatId},
@@ -1111,7 +1108,7 @@ class ChatPageWrapperRouteArgs {
   const ChatPageWrapperRouteArgs({
     this.key,
     required this.groupchatId,
-    this.chatToSet,
+    required this.chatStateToSet,
     this.loadChatFromApiToo = true,
   });
 
@@ -1119,13 +1116,13 @@ class ChatPageWrapperRouteArgs {
 
   final String groupchatId;
 
-  final _i53.GroupchatEntity? chatToSet;
+  final _i53.CurrentChatState chatStateToSet;
 
   final bool loadChatFromApiToo;
 
   @override
   String toString() {
-    return 'ChatPageWrapperRouteArgs{key: $key, groupchatId: $groupchatId, chatToSet: $chatToSet, loadChatFromApiToo: $loadChatFromApiToo}';
+    return 'ChatPageWrapperRouteArgs{key: $key, groupchatId: $groupchatId, chatStateToSet: $chatStateToSet, loadChatFromApiToo: $loadChatFromApiToo}';
   }
 }
 

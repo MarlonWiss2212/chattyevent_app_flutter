@@ -10,20 +10,8 @@ class PrivateEventTabInfoGroupchatTo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CurrentPrivateEventCubit, CurrentPrivateEventState>(
-      buildWhen: (previous, current) {
-        if (previous.groupchat != current.groupchat) {
-          return true;
-        }
-        if (previous.groupchat?.id != current.groupchat?.id) {
-          return true;
-        }
-        if (previous.loadingGroupchat != current.loadingGroupchat) {
-          return true;
-        }
-        return false;
-      },
       builder: (context, state) {
-        if (state.groupchat != null || state.loadingGroupchat) {
+        if (state.chatState != null || state.loadingGroupchat) {
           return Column(
             children: [
               Text(
@@ -31,9 +19,9 @@ class PrivateEventTabInfoGroupchatTo extends StatelessWidget {
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               const SizedBox(height: 8),
-              if (state.groupchat != null) ...{
+              if (state.chatState != null) ...{
                 PrivateEventTabInfogroupchatToTile(
-                  groupchat: state.groupchat!,
+                  chatState: state.chatState!,
                 )
               } else ...{
                 SkeletonListTile(

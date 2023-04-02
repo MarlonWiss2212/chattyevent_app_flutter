@@ -103,7 +103,7 @@ class _ChatListState extends State<ChatList> {
             onTap: () {
               AutoRouter.of(context).push(
                 ChatPageWrapperRoute(
-                  chatToSet: widget.chatStates[index].currentChat,
+                  chatStateToSet: widget.chatStates[index],
                   loadChatFromApiToo: true,
                   groupchatId: widget.chatStates[index].currentChat.id,
                 ),
