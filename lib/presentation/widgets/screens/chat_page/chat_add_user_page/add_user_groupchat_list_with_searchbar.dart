@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_search_cubit.dart';
+import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:social_media_app_flutter/core/filter/get_users_filter.dart';
 import 'package:social_media_app_flutter/presentation/widgets/general/user_list/user_grid_list.dart';
@@ -27,8 +28,6 @@ class AddUserGroupchatListWithSearchbar extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           BlocBuilder<CurrentChatCubit, CurrentChatState>(
-            buildWhen: (previous, current) =>
-                previous.currentChat.users != current.currentChat.users,
             builder: (context, currentChatState) {
               return BlocBuilder<UserSearchCubit, UserSearchState>(
                 builder: (context, state) {
@@ -44,7 +43,7 @@ class AddUserGroupchatListWithSearchbar extends StatelessWidget {
                   // checks if user is already in chat if not it should be visible
                   for (final user in state.users) {
                     bool pushUser = true;
-                    for (final groupchatUser
+                    for (GroupchatUserEntity groupchatUser
                         in currentChatState.currentChat.users ?? []) {
                       if (groupchatUser.userId == user.id) {
                         pushUser = false;
