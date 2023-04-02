@@ -29,7 +29,8 @@ class _NewPrivateEventSearchGroupchatTabState
                 previous.selectedGroupchat?.id != current.selectedGroupchat?.id,
             builder: (context, state) {
               return ChatGridList(
-                groupchats: chatState.chats,
+                groupchats:
+                    chatState.chatStates.map((e) => e.currentChat).toList(),
                 highlightIds: state.selectedGroupchat != null
                     ? [state.selectedGroupchat!.id]
                     : null,

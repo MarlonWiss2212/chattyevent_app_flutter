@@ -1,14 +1,13 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart';
 import 'package:social_media_app_flutter/core/utils/ad_helper.dart';
-import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
-import 'package:social_media_app_flutter/presentation/widgets/ads/custom_banner_ad.dart';
 
 class ChatList extends StatefulWidget {
-  final List<GroupchatEntity> chats;
-  const ChatList({super.key, required this.chats});
+  final List<CurrentChatState> chatStates;
+  const ChatList({super.key, required this.chatStates});
 
   @override
   State<ChatList> createState() => _ChatListState();
@@ -29,6 +28,9 @@ class _ChatListState extends State<ChatList> {
   @override
   void initState() {
     super.initState();
+    if (widget.chatStates.length <= 3) {
+      return;
+    }
     BannerAd(
       adUnitId: AdHelper.bannerAdUnitId,
       size: AdSize.banner,
@@ -60,23 +62,28 @@ class _ChatListState extends State<ChatList> {
             );
           }
           index = _getDestinationItemIndex(index);
-          final message = widget.chats[index].messages != null &&
-                  widget.chats[index].messages!.isNotEmpty
-              ? widget.chats[index].messages!.first
-              : null;
+          final message =
+              widget.chatStates[index].currentChat.messages != null &&
+                      widget.chatStates[index].currentChat.messages!.isNotEmpty
+                  ? widget.chatStates[index].currentChat.messages!.first
+                  : null;
           return ListTile(
             leading: CircleAvatar(
-              backgroundImage: widget.chats[index].profileImageLink != null
-                  ? NetworkImage(widget.chats[index].profileImageLink!)
+              backgroundImage: widget
+                          .chatStates[index].currentChat.profileImageLink !=
+                      null
+                  ? NetworkImage(
+                      widget.chatStates[index].currentChat.profileImageLink!)
                   : null,
-              backgroundColor: widget.chats[index].profileImageLink == null
-                  ? Theme.of(context).colorScheme.secondaryContainer
-                  : null,
+              backgroundColor:
+                  widget.chatStates[index].currentChat.profileImageLink == null
+                      ? Theme.of(context).colorScheme.secondaryContainer
+                      : null,
             ),
             title: Hero(
-              tag: "${widget.chats[index].id} title",
+              tag: "${widget.chatStates[index]..currentChat.id} title",
               child: Text(
-                widget.chats[index].title ?? "Kein Titel",
+                widget.chatStates[index].currentChat.title ?? "",
                 style: Theme.of(context).textTheme.titleMedium,
               ),
             ),
@@ -96,15 +103,15 @@ class _ChatListState extends State<ChatList> {
             onTap: () {
               AutoRouter.of(context).push(
                 ChatPageWrapperRoute(
-                  chatToSet: widget.chats[index],
+                  chatToSet: widget.chatStates[index].currentChat,
                   loadChatFromApiToo: true,
-                  groupchatId: widget.chats[index].id,
+                  groupchatId: widget.chatStates[index].currentChat.id,
                 ),
               );
             },
           );
         },
-        childCount: widget.chats.length + (_ad != null ? 1 : 0),
+        childCount: widget.chatStates.length + (_ad != null ? 1 : 0),
       ),
     );
   }

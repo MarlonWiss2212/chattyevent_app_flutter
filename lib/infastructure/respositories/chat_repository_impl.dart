@@ -145,13 +145,13 @@ class ChatRepositoryImpl implements ChatRepository {
 
   @override
   Future<Either<Failure, List<GroupchatEntity>>> getGroupchatsViaApi({
-    LimitOffsetFilterOptional? limitOffsetFilter,
+    LimitOffsetFilterOptional? messageFilterForEveryGroupchat,
   }) async {
     try {
       final response = await graphQlDatasource.query(
         """
-        query FindGroupchats(\$input: LimitOffsetFilterOptionalInput) {
-          findGroupchats(messageFilterForEveryGroupchat: \$input) {
+        query FindGroupchats(\$messageFilterForEveryGroupchat: LimitOffsetFilterOptionalInput) {
+          findGroupchats(messageFilterForEveryGroupchat: \$messageFilterForEveryGroupchat) {
             _id
             profileImageLink
             title
@@ -172,7 +172,10 @@ class ChatRepositoryImpl implements ChatRepository {
           }
         }
         """,
-        variables: {"input": limitOffsetFilter?.toMap()},
+        variables: {
+          "messageFilterForEveryGroupchat":
+              messageFilterForEveryGroupchat?.toMap()
+        },
       );
 
       if (response.hasException) {

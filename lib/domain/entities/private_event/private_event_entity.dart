@@ -31,10 +31,10 @@ class PrivateEventEntity {
   factory PrivateEventEntity.merge({
     required PrivateEventEntity newEntity,
     required PrivateEventEntity oldEntity,
-    bool setUsersFromOldEntity = false,
+    bool mergeChatSetUsersFromOldEntity = false,
   }) {
     List<PrivateEventUserEntity>? users =
-        setUsersFromOldEntity ? oldEntity.users : [];
+        mergeChatSetUsersFromOldEntity ? oldEntity.users : [];
     if (newEntity.users != null) {
       for (final newUser in newEntity.users!) {
         if (users == null) {

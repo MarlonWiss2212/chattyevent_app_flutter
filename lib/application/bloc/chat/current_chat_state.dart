@@ -22,6 +22,7 @@ class CurrentChatState {
     if (currentUserIndex != -1) {
       return users[currentUserIndex];
     }
+    return null;
   }
 
   const CurrentChatState({

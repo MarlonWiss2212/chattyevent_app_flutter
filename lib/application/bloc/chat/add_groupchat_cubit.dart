@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:meta/meta.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart';
 import 'package:social_media_app_flutter/core/dto/groupchat/create_groupchat_dto.dart';
 import 'package:social_media_app_flutter/core/dto/groupchat/create_groupchat_user_from_create_groupchat_dto.dart';
 import 'package:social_media_app_flutter/domain/entities/error_with_title_and_message.dart';
@@ -46,10 +47,20 @@ class AddGroupchatCubit extends Cubit<AddGroupchatState> {
       },
       (groupchat) {
         chatCubit.replaceOrAdd(
-          groupchat: groupchat,
-          setLeftUsersFromOldEntity: false,
-          setMessagesFromOldEntity: false,
-          setUsersFromOldEntity: false,
+          chatState: CurrentChatState(
+            currentUserIndex: -1,
+            currentUserLeftChat: false,
+            loadingPrivateEvents: false,
+            futureConnectedPrivateEvents: [],
+            loadingMessages: false,
+            currentChat: groupchat,
+            loadingChat: false,
+            users: [],
+            leftUsers: [],
+          ),
+          mergeChatSetLeftUsersFromOldEntity: false,
+          mergeChatSetMessagesFromOldEntity: false,
+          mergeChatSetUsersFromOldEntity: false,
         );
         emit(AddGroupchatState(
           groupchatUsers: [],

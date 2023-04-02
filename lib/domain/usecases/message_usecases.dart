@@ -14,7 +14,8 @@ class MessageUseCases {
     required CreateMessageDto createMessageDto,
   }) async {
     return await messageRepository.createMessageViaApi(
-        createMessageDto: createMessageDto);
+      createMessageDto: createMessageDto,
+    );
   }
 
   Future<Either<Failure, List<MessageEntity>>> getMessagesViaApi({

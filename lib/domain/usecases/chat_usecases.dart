@@ -18,10 +18,10 @@ class ChatUseCases {
   ChatUseCases({required this.chatRepository});
 
   Future<Either<Failure, List<GroupchatEntity>>> getGroupchatsViaApi({
-    LimitOffsetFilterOptional? limitOffsetFilter,
+    LimitOffsetFilterOptional? messageFilterForEveryGroupchat,
   }) async {
     return await chatRepository.getGroupchatsViaApi(
-      limitOffsetFilter: limitOffsetFilter,
+      messageFilterForEveryGroupchat: messageFilterForEveryGroupchat,
     );
   }
 

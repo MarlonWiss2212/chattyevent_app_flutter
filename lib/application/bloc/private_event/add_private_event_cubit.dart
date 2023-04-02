@@ -90,7 +90,7 @@ class AddPrivateEventCubit extends Cubit<AddPrivateEventState> {
         ));
         privateEventCubit.replaceOrAdd(
           privateEvent: privateEvent,
-          setUsersFromOldEntity: false,
+          mergeChatSetUsersFromOldEntity: false,
         );
       },
     );

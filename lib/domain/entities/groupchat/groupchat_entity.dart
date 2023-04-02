@@ -30,12 +30,12 @@ class GroupchatEntity {
   factory GroupchatEntity.merge({
     required GroupchatEntity newEntity,
     required GroupchatEntity oldEntity,
-    bool setMessagesFromOldEntity = false,
-    bool setLeftUsersFromOldEntity = false,
-    bool setUsersFromOldEntity = false,
+    bool mergeChatSetMessagesFromOldEntity = false,
+    bool mergeChatSetLeftUsersFromOldEntity = false,
+    bool mergeChatSetUsersFromOldEntity = false,
   }) {
     List<GroupchatUserEntity>? users =
-        setUsersFromOldEntity ? oldEntity.users : null;
+        mergeChatSetUsersFromOldEntity ? oldEntity.users : null;
     if (newEntity.users != null) {
       for (final newUser in newEntity.users!) {
         if (users == null) {
@@ -58,7 +58,7 @@ class GroupchatEntity {
     }
 
     List<GroupchatLeftUserEntity>? leftUsers =
-        setLeftUsersFromOldEntity ? oldEntity.leftUsers : null;
+        mergeChatSetLeftUsersFromOldEntity ? oldEntity.leftUsers : null;
     if (newEntity.leftUsers != null) {
       for (final newLeftUser in newEntity.leftUsers!) {
         if (leftUsers == null) {
@@ -81,7 +81,7 @@ class GroupchatEntity {
     }
 
     List<MessageEntity>? messages =
-        setMessagesFromOldEntity ? oldEntity.messages : null;
+        mergeChatSetMessagesFromOldEntity ? oldEntity.messages : null;
     if (newEntity.messages != null) {
       for (final newMessage in newEntity.messages!) {
         if (messages == null) {

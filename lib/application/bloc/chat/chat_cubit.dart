@@ -1,8 +1,7 @@
-import 'dart:math';
-
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:meta/meta.dart';
+import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart';
 import 'package:social_media_app_flutter/core/filter/limit_offset_filter/limit_offset_filter.dart';
 import 'package:social_media_app_flutter/domain/entities/error_with_title_and_message.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
@@ -13,72 +12,88 @@ part 'chat_state.dart';
 
 class ChatCubit extends Cubit<ChatState> {
   final ChatUseCases chatUseCases;
-  ChatCubit({required this.chatUseCases}) : super(const ChatState(chats: []));
+  ChatCubit({required this.chatUseCases})
+      : super(const ChatState(
+          chatStates: [],
+        ));
 
-  GroupchatEntity replaceOrAdd({
-    required GroupchatEntity groupchat,
-    required bool setMessagesFromOldEntity,
-    required bool setLeftUsersFromOldEntity,
-    required bool setUsersFromOldEntity,
+  CurrentChatState replaceOrAdd({
+    required CurrentChatState chatState,
+    required bool mergeChatSetMessagesFromOldEntity,
+    required bool mergeChatSetLeftUsersFromOldEntity,
+    required bool mergeChatSetUsersFromOldEntity,
   }) {
-    int foundIndex = state.chats.indexWhere(
-      (element) => element.id == groupchat.id,
+    int foundIndex = state.chatStates.indexWhere(
+      (element) => element.currentChat.id == chatState.currentChat.id,
     );
 
     if (foundIndex != -1) {
-      List<GroupchatEntity> newGroupchats = state.chats;
-      newGroupchats[foundIndex] = GroupchatEntity.merge(
-        setMessagesFromOldEntity: setMessagesFromOldEntity,
-        setLeftUsersFromOldEntity: setLeftUsersFromOldEntity,
-        setUsersFromOldEntity: setUsersFromOldEntity,
-        newEntity: groupchat,
-        oldEntity: state.chats[foundIndex],
+      List<CurrentChatState> newChatStates = state.chatStates;
+      newChatStates[foundIndex] = CurrentChatState(
+        currentUserIndex: chatState.currentUserIndex,
+        currentUserLeftChat: chatState.currentUserLeftChat,
+        loadingPrivateEvents: chatState.loadingPrivateEvents,
+        futureConnectedPrivateEvents: chatState.futureConnectedPrivateEvents,
+        loadingMessages: false,
+        currentChat: GroupchatEntity.merge(
+          mergeChatSetMessagesFromOldEntity: mergeChatSetMessagesFromOldEntity,
+          mergeChatSetLeftUsersFromOldEntity:
+              mergeChatSetLeftUsersFromOldEntity,
+          mergeChatSetUsersFromOldEntity: mergeChatSetUsersFromOldEntity,
+          newEntity: chatState.currentChat,
+          oldEntity: state.chatStates[foundIndex].currentChat,
+        ),
+        loadingChat: false,
+        users: chatState.users,
+        leftUsers: chatState.leftUsers,
       );
-      emit(ChatState(chats: newGroupchats));
-      return newGroupchats[foundIndex];
+
+      emit(ChatState(chatStates: newChatStates));
+      return newChatStates[foundIndex];
     } else {
       emit(
         ChatState(
-          chats: List.from(state.chats)..add(groupchat),
+          chatStates: List.from(state.chatStates)..add(chatState),
         ),
       );
     }
-    return groupchat;
+    return chatState;
   }
 
-  List<GroupchatEntity> replaceOrAddMultiple({
-    required List<GroupchatEntity> groupchats,
-    required bool setMessagesFromOldEntity,
-    required bool setLeftUsersFromOldEntity,
-    required bool setUsersFromOldEntity,
+  List<CurrentChatState> replaceOrAddMultiple({
+    required List<CurrentChatState> chatStates,
+    required bool mergeChatSetMessagesFromOldEntity,
+    required bool mergeChatSetLeftUsersFromOldEntity,
+    required bool mergeChatSetUsersFromOldEntity,
   }) {
-    List<GroupchatEntity> mergedChats = [];
-    for (final chat in groupchats) {
-      final mergedChat = replaceOrAdd(
-        groupchat: chat,
-        setLeftUsersFromOldEntity: setLeftUsersFromOldEntity,
-        setMessagesFromOldEntity: setMessagesFromOldEntity,
-        setUsersFromOldEntity: setUsersFromOldEntity,
+    List<CurrentChatState> mergedChatStates = [];
+    for (final chatState in chatStates) {
+      final mergedChatState = replaceOrAdd(
+        chatState: chatState,
+        mergeChatSetLeftUsersFromOldEntity: mergeChatSetLeftUsersFromOldEntity,
+        mergeChatSetMessagesFromOldEntity: mergeChatSetMessagesFromOldEntity,
+        mergeChatSetUsersFromOldEntity: mergeChatSetUsersFromOldEntity,
       );
-      mergedChats.add(mergedChat);
+      mergedChatStates.add(mergedChatState);
     }
-    return mergedChats;
+    return mergedChatStates;
   }
 
   void delete({required String groupchatId}) {
-    List<GroupchatEntity> newChats = state.chats;
-    newChats.removeWhere(
-      (element) => element.id == groupchatId,
+    List<CurrentChatState> newChatStates = state.chatStates;
+    newChatStates.removeWhere(
+      (element) => element.currentChat.id == groupchatId,
     );
-    emit(ChatState(chats: newChats));
+    emit(ChatState(chatStates: newChatStates));
   }
 
   Future getChatsViaApi() async {
-    emit(ChatState(chats: state.chats, status: ChatStateStatus.loading));
+    emit(ChatState(
+        chatStates: state.chatStates, status: ChatStateStatus.loading));
 
     final Either<Failure, List<GroupchatEntity>> groupchatsOrFailure =
         await chatUseCases.getGroupchatsViaApi(
-      limitOffsetFilter: LimitOffsetFilterOptional(
+      messageFilterForEveryGroupchat: LimitOffsetFilterOptional(
         limit: 1,
         offset: 0,
       ),
@@ -87,7 +102,7 @@ class ChatCubit extends Cubit<ChatState> {
     groupchatsOrFailure.fold(
       (error) => emit(
         ChatState(
-          chats: state.chats,
+          chatStates: state.chatStates,
           error: ErrorWithTitleAndMessage(
             message: mapFailureToMessage(error),
             title: "Fehler",
@@ -97,10 +112,24 @@ class ChatCubit extends Cubit<ChatState> {
       ),
       (groupchats) {
         replaceOrAddMultiple(
-          groupchats: groupchats,
-          setMessagesFromOldEntity: true,
-          setLeftUsersFromOldEntity: false,
-          setUsersFromOldEntity: false,
+          chatStates: groupchats
+              .map(
+                (e) => CurrentChatState(
+                  currentUserIndex: -1,
+                  currentUserLeftChat: false,
+                  loadingPrivateEvents: false,
+                  futureConnectedPrivateEvents: [],
+                  loadingMessages: false,
+                  currentChat: e,
+                  loadingChat: false,
+                  users: [],
+                  leftUsers: [],
+                ),
+              )
+              .toList(),
+          mergeChatSetMessagesFromOldEntity: true,
+          mergeChatSetLeftUsersFromOldEntity: false,
+          mergeChatSetUsersFromOldEntity: false,
         );
       },
     );

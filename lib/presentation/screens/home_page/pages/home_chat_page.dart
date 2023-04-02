@@ -56,7 +56,7 @@ class HomeChatPage extends StatelessWidget {
               }
             },
             builder: (context, state) {
-              if (state.chats.isEmpty &&
+              if (state.chatStates.isEmpty &&
                   state.status != ChatStateStatus.loading) {
                 return const SliverFillRemaining(
                   child: Center(
@@ -64,11 +64,13 @@ class HomeChatPage extends StatelessWidget {
                   ),
                 );
               }
-              if (state.chats.isEmpty &&
+              if (state.chatStates.isEmpty &&
                   state.status == ChatStateStatus.loading) {
                 return const SliverFillRemaining(child: HomeChatPageSkeleton());
               }
-              return ChatList(chats: state.chats);
+              return ChatList(
+                chatStates: state.chatStates,
+              );
             },
           ),
         ],

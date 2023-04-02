@@ -21,7 +21,7 @@ abstract class ChatRepository {
     GetMessagesFilter? getMessagesFilter,
   });
   Future<Either<Failure, List<GroupchatEntity>>> getGroupchatsViaApi({
-    LimitOffsetFilterOptional? limitOffsetFilter,
+    LimitOffsetFilterOptional? messageFilterForEveryGroupchat,
   });
   Future<Either<Failure, GroupchatEntity>> updateGroupchatViaApi({
     required GetOneGroupchatFilter getOneGroupchatFilter,
