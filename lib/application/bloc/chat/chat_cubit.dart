@@ -19,9 +19,6 @@ class ChatCubit extends Cubit<ChatState> {
 
   CurrentChatState replaceOrAdd({
     required CurrentChatState chatState,
-    required bool mergeChatSetMessagesFromOldEntity,
-    required bool mergeChatSetLeftUsersFromOldEntity,
-    required bool mergeChatSetUsersFromOldEntity,
   }) {
     int foundIndex = state.chatStates.indexWhere(
       (element) => element.currentChat.id == chatState.currentChat.id,
@@ -29,25 +26,7 @@ class ChatCubit extends Cubit<ChatState> {
 
     if (foundIndex != -1) {
       List<CurrentChatState> newChatStates = state.chatStates;
-      newChatStates[foundIndex] = CurrentChatState(
-        currentUserIndex: chatState.currentUserIndex,
-        currentUserLeftChat: chatState.currentUserLeftChat,
-        loadingPrivateEvents: chatState.loadingPrivateEvents,
-        futureConnectedPrivateEvents: chatState.futureConnectedPrivateEvents,
-        loadingMessages: false,
-        currentChat: GroupchatEntity.merge(
-          mergeChatSetMessagesFromOldEntity: mergeChatSetMessagesFromOldEntity,
-          mergeChatSetLeftUsersFromOldEntity:
-              mergeChatSetLeftUsersFromOldEntity,
-          mergeChatSetUsersFromOldEntity: mergeChatSetUsersFromOldEntity,
-          newEntity: chatState.currentChat,
-          oldEntity: state.chatStates[foundIndex].currentChat,
-        ),
-        loadingChat: false,
-        users: chatState.users,
-        leftUsers: chatState.leftUsers,
-      );
-
+      newChatStates[foundIndex] = chatState;
       emit(ChatState(chatStates: newChatStates));
       return newChatStates[foundIndex];
     } else {
@@ -62,17 +41,11 @@ class ChatCubit extends Cubit<ChatState> {
 
   List<CurrentChatState> replaceOrAddMultiple({
     required List<CurrentChatState> chatStates,
-    required bool mergeChatSetMessagesFromOldEntity,
-    required bool mergeChatSetLeftUsersFromOldEntity,
-    required bool mergeChatSetUsersFromOldEntity,
   }) {
     List<CurrentChatState> mergedChatStates = [];
     for (final chatState in chatStates) {
       final mergedChatState = replaceOrAdd(
         chatState: chatState,
-        mergeChatSetLeftUsersFromOldEntity: mergeChatSetLeftUsersFromOldEntity,
-        mergeChatSetMessagesFromOldEntity: mergeChatSetMessagesFromOldEntity,
-        mergeChatSetUsersFromOldEntity: mergeChatSetUsersFromOldEntity,
       );
       mergedChatStates.add(mergedChatState);
     }
@@ -111,25 +84,24 @@ class ChatCubit extends Cubit<ChatState> {
         ),
       ),
       (groupchats) {
-        replaceOrAddMultiple(
-          chatStates: groupchats
-              .map(
-                (e) => CurrentChatState(
-                  currentUserIndex: -1,
-                  currentUserLeftChat: false,
-                  loadingPrivateEvents: false,
-                  futureConnectedPrivateEvents: [],
-                  loadingMessages: false,
-                  currentChat: e,
-                  loadingChat: false,
-                  users: [],
-                  leftUsers: [],
-                ),
-              )
-              .toList(),
-          mergeChatSetMessagesFromOldEntity: true,
-          mergeChatSetLeftUsersFromOldEntity: false,
-          mergeChatSetUsersFromOldEntity: false,
+        emit(
+          ChatState(
+            chatStates: groupchats
+                .map(
+                  (e) => CurrentChatState(
+                    currentUserIndex: -1,
+                    currentUserLeftChat: false,
+                    loadingPrivateEvents: false,
+                    futureConnectedPrivateEvents: [],
+                    loadingMessages: false,
+                    currentChat: e,
+                    loadingChat: false,
+                    users: [],
+                    leftUsers: [],
+                  ),
+                )
+                .toList(),
+          ),
         );
       },
     );

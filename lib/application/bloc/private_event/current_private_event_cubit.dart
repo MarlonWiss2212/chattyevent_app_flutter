@@ -152,9 +152,6 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
             users: [],
             leftUsers: [],
           ),
-          mergeChatSetMessagesFromOldEntity: true,
-          mergeChatSetLeftUsersFromOldEntity: false,
-          mergeChatSetUsersFromOldEntity: false,
         );
         emitState(groupchat: replacedChat.currentChat, loadingGroupchat: false);
         setPrivateEventUsers();

@@ -58,9 +58,6 @@ class AddGroupchatCubit extends Cubit<AddGroupchatState> {
             users: [],
             leftUsers: [],
           ),
-          mergeChatSetLeftUsersFromOldEntity: false,
-          mergeChatSetMessagesFromOldEntity: false,
-          mergeChatSetUsersFromOldEntity: false,
         );
         emit(AddGroupchatState(
           groupchatUsers: [],

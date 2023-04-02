@@ -60,14 +60,15 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
 
     _subscription = subscription.listen((event) {
       event.fold(
-        (error) => emitState(
+        (error) => emit(CurrentChatState.merge(
+          oldState: state,
           error: ErrorWithTitleAndMessage(
             title: "Nachrichten error",
             message:
                 "Fehler beim herstellen einer Verbindung um live nachrichten zu erhalten",
           ),
           showError: true,
-        ),
+        )),
         (message) => addMessage(
           message: message,
         ),
@@ -128,19 +129,20 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
       }
     }
 
-    emitState(
+    emit(CurrentChatState.merge(
+      oldState: state,
       users: usersToEmit,
       leftUsers: leftUsersToEmit,
       currentUserIndex: usersToEmit.indexWhere(
         (element) => element.authId == authCubit.state.currentUser.authId,
       ),
-    );
+    ));
   }
 
   Future getFutureConnectedPrivateEventsFromApi({
     required LimitOffsetFilter limitOffsetFilter,
   }) async {
-    emitState(loadingPrivateEvents: true);
+    emit(CurrentChatState.merge(oldState: state, loadingPrivateEvents: true));
 
     final privateEventsOrFailure =
         await privateEventUseCases.getPrivateEventsViaApi(
@@ -153,7 +155,8 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
     );
 
     privateEventsOrFailure.fold(
-      (error) => emitState(
+      (error) => emit(CurrentChatState.merge(
+        oldState: state,
         error: ErrorWithTitleAndMessage(
           title: "Get Future Private Evnts error",
           message: mapFailureToMessage(
@@ -161,9 +164,13 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
           ),
         ),
         loadingPrivateEvents: false,
-      ),
+        showError: true,
+      )),
       (privateEvents) {
-        emitState(loadingPrivateEvents: false);
+        emit(CurrentChatState.merge(
+          oldState: state,
+          loadingPrivateEvents: false,
+        ));
         for (final privateEvent in privateEvents) {
           replaceOrAddFutureConnectedPrivateEvent(privateEvent: privateEvent);
         }
@@ -183,53 +190,32 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
           state.futureConnectedPrivateEvents;
       newPrivateEvents[foundIndex] = privateEvent;
 
-      final replacedGroupchatState = chatCubit.replaceOrAdd(
-        chatState: CurrentChatState(
-          currentUserIndex: state.currentUserIndex,
-          currentUserLeftChat: state.currentUserLeftChat,
-          loadingPrivateEvents: state.loadingPrivateEvents,
-          futureConnectedPrivateEvents: newPrivateEvents,
-          loadingMessages: state.loadingMessages,
-          currentChat: state.currentChat,
-          loadingChat: state.loadingChat,
-          users: state.users,
-          leftUsers: state.leftUsers,
-        ),
-        mergeChatSetLeftUsersFromOldEntity: false,
-        mergeChatSetUsersFromOldEntity: false,
-        mergeChatSetMessagesFromOldEntity: false,
-      );
-      emit(replacedGroupchatState);
+      emit(CurrentChatState.merge(
+        oldState: state,
+        futureConnectedPrivateEvents: newPrivateEvents,
+      ));
+      chatCubit.replaceOrAdd(chatState: state);
       return newPrivateEvents[foundIndex];
     } else {
-      List<PrivateEventEntity> newList =
+      List<PrivateEventEntity> newPrivateEvents =
           List.from(state.futureConnectedPrivateEvents)..add(privateEvent);
-      newList.sort(
+      newPrivateEvents.sort(
         (a, b) => a.eventDate!.compareTo(b.eventDate!),
       );
-      final replacedGroupchatState = chatCubit.replaceOrAdd(
-        chatState: CurrentChatState(
-          currentUserIndex: state.currentUserIndex,
-          currentUserLeftChat: state.currentUserLeftChat,
-          loadingPrivateEvents: state.loadingPrivateEvents,
-          futureConnectedPrivateEvents: newList,
-          loadingMessages: state.loadingMessages,
-          currentChat: state.currentChat,
-          loadingChat: state.loadingChat,
-          users: state.users,
-          leftUsers: state.leftUsers,
-        ),
-        mergeChatSetLeftUsersFromOldEntity: false,
-        mergeChatSetUsersFromOldEntity: false,
-        mergeChatSetMessagesFromOldEntity: false,
-      );
-      emit(replacedGroupchatState);
+      emit(CurrentChatState.merge(
+        oldState: state,
+        futureConnectedPrivateEvents: newPrivateEvents,
+      ));
+      chatCubit.replaceOrAdd(chatState: state);
     }
     return privateEvent;
   }
 
   Future getCurrentChatViaApi() async {
-    emitState(loadingChat: true);
+    emit(CurrentChatState.merge(
+      oldState: state,
+      loadingChat: true,
+    ));
 
     final Either<Failure, GroupchatEntity> groupchatOrFailure =
         await chatUseCases.getGroupchatViaApi(
@@ -238,33 +224,26 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
 
     groupchatOrFailure.fold(
       (error) {
-        emitState(
+        emit(CurrentChatState.merge(
+          oldState: state,
           error: ErrorWithTitleAndMessage(
-            title: "Fehler",
+            title: "Fehler Get Chat",
             message: mapFailureToMessage(error),
           ),
           showError: true,
           loadingChat: false,
-        );
+        ));
       },
       (groupchat) async {
-        final replacedChatState = chatCubit.replaceOrAdd(
-          chatState: CurrentChatState(
-            currentUserIndex: state.currentUserIndex,
-            currentUserLeftChat: state.currentUserLeftChat,
-            loadingPrivateEvents: state.loadingPrivateEvents,
-            futureConnectedPrivateEvents: state.futureConnectedPrivateEvents,
-            loadingMessages: state.loadingMessages,
-            currentChat: groupchat,
-            loadingChat: false,
-            users: state.users,
-            leftUsers: state.leftUsers,
-          ),
+        emit(CurrentChatState.merge(
+          currentChat: groupchat,
           mergeChatSetLeftUsersFromOldEntity: false,
           mergeChatSetMessagesFromOldEntity: true,
           mergeChatSetUsersFromOldEntity: false,
-        );
-        emit(replacedChatState);
+          loadingChat: false,
+          oldState: state,
+        ));
+        chatCubit.replaceOrAdd(chatState: state);
         setGroupchatUsers();
       },
     );
@@ -280,39 +259,33 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
     );
 
     groupchatOrFailure.fold(
-      (error) => emitState(
+      (error) => emit(CurrentChatState.merge(
+        oldState: state,
         showError: true,
         error: ErrorWithTitleAndMessage(
           title: "Update Chat Fehler",
           message: mapFailureToMessage(error),
         ),
-      ),
+      )),
       (groupchat) {
-        final replacedGroupchatState = chatCubit.replaceOrAdd(
-          chatState: CurrentChatState(
-            currentUserIndex: state.currentUserIndex,
-            currentUserLeftChat: state.currentUserLeftChat,
-            loadingPrivateEvents: state.loadingPrivateEvents,
-            futureConnectedPrivateEvents: state.futureConnectedPrivateEvents,
-            loadingMessages: state.loadingMessages,
-            currentChat: groupchat,
-            loadingChat: state.loadingChat,
-            users: state.users,
-            leftUsers: state.leftUsers,
-          ),
+        emit(CurrentChatState.merge(
+          currentChat: groupchat,
           mergeChatSetLeftUsersFromOldEntity: false,
           mergeChatSetUsersFromOldEntity: false,
           mergeChatSetMessagesFromOldEntity: true,
-        );
-        emit(replacedGroupchatState);
+          oldState: state,
+        ));
+        chatCubit.replaceOrAdd(chatState: state);
         setGroupchatUsers();
       },
     );
   }
 
   Future addUserToChat({required String userId}) async {
-    emitState(loadingChat: true);
-
+    emit(CurrentChatState.merge(
+      oldState: state,
+      loadingChat: true,
+    ));
     final Either<Failure, GroupchatUserEntity> groupchatOrFailure =
         await chatUseCases.addUserToGroupchatViaApi(
       createGroupchatUserDto: CreateGroupchatUserDto(
@@ -323,40 +296,33 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
 
     groupchatOrFailure.fold(
       (error) {
-        emitState(
+        emit(CurrentChatState.merge(
+          oldState: state,
+          loadingChat: false,
           error: ErrorWithTitleAndMessage(
-            title: "Fehler",
+            title: "Fehler User hinzufügen",
             message: mapFailureToMessage(error),
           ),
           showError: true,
-          loadingChat: false,
-        );
+        ));
       },
       (groupchatUser) {
-        final replacedGroupchatState = chatCubit.replaceOrAdd(
-          chatState: CurrentChatState(
-            currentUserIndex: state.currentUserIndex,
-            currentUserLeftChat: state.currentUserLeftChat,
-            loadingPrivateEvents: state.loadingPrivateEvents,
-            futureConnectedPrivateEvents: state.futureConnectedPrivateEvents,
-            loadingMessages: state.loadingMessages,
-            currentChat: GroupchatEntity(
-              id: state.currentChat.id,
-              leftUsers: List.from(state.currentChat.leftUsers ?? [])
-                ..removeWhere(
-                  (element) => element.userId == groupchatUser.userId,
-                ),
-              users: [groupchatUser],
-            ),
-            loadingChat: false,
-            users: state.users,
-            leftUsers: state.leftUsers,
+        emit(CurrentChatState.merge(
+          currentChat: GroupchatEntity(
+            id: state.currentChat.id,
+            leftUsers: List.from(state.currentChat.leftUsers ?? [])
+              ..removeWhere(
+                (element) => element.userId == groupchatUser.userId,
+              ),
+            users: [groupchatUser],
           ),
           mergeChatSetLeftUsersFromOldEntity: false,
           mergeChatSetUsersFromOldEntity: true,
           mergeChatSetMessagesFromOldEntity: true,
-        );
-        emit(replacedGroupchatState);
+          loadingChat: false,
+          oldState: state,
+        ));
+        chatCubit.replaceOrAdd(chatState: state);
         setGroupchatUsers();
       },
     );
@@ -375,13 +341,14 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
     );
 
     updatedUserOrFailure.fold(
-      (error) => emitState(
+      (error) => emit(CurrentChatState.merge(
+        oldState: state,
         error: ErrorWithTitleAndMessage(
           title: "Fehler Update User",
           message: mapFailureToMessage(error),
         ),
         showError: true,
-      ),
+      )),
       (groupchatUser) {
         List<GroupchatUserEntity> newGroupchatUsers =
             state.currentChat.users ?? [];
@@ -394,34 +361,29 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
         } else {
           newGroupchatUsers.add(groupchatUser);
         }
-        final replacedGroupchatState = chatCubit.replaceOrAdd(
-          chatState: CurrentChatState(
-            currentUserIndex: state.currentUserIndex,
-            currentUserLeftChat: state.currentUserLeftChat,
-            loadingPrivateEvents: state.loadingPrivateEvents,
-            futureConnectedPrivateEvents: state.futureConnectedPrivateEvents,
-            loadingMessages: state.loadingMessages,
-            currentChat: GroupchatEntity(
-              id: state.currentChat.id,
-              users: newGroupchatUsers,
-            ),
-            loadingChat: false,
-            users: state.users,
-            leftUsers: state.leftUsers,
+
+        emit(CurrentChatState.merge(
+          currentChat: GroupchatEntity(
+            id: state.currentChat.id,
+            users: newGroupchatUsers,
           ),
           mergeChatSetLeftUsersFromOldEntity: true,
           mergeChatSetUsersFromOldEntity: false,
           mergeChatSetMessagesFromOldEntity: true,
-        );
-        emit(replacedGroupchatState);
+          loadingChat: false,
+          oldState: state,
+        ));
+        chatCubit.replaceOrAdd(chatState: state);
         setGroupchatUsers();
       },
     );
   }
 
   Future deleteUserFromChat({required String userId}) async {
-    emitState(loadingChat: true);
-
+    emit(CurrentChatState.merge(
+      oldState: state,
+      loadingChat: true,
+    ));
     final Either<Failure, GroupchatLeftUserEntity?> groupchatOrFailure =
         await chatUseCases.deleteUserFromGroupchatViaApi(
       getOneGroupchatUserFilter: GetOneGroupchatUserFilter(
@@ -432,45 +394,42 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
 
     groupchatOrFailure.fold(
       (error) {
-        emitState(
-          error: ErrorWithTitleAndMessage(
-            title: "Fehler",
-            message: mapFailureToMessage(error),
-          ),
+        emit(CurrentChatState.merge(
+          oldState: state,
           showError: true,
           loadingChat: false,
-        );
+          error: ErrorWithTitleAndMessage(
+            title: "Fehler User Entfernen",
+            message: mapFailureToMessage(error),
+          ),
+        ));
       },
       (groupchatLeftUser) {
         if (groupchatLeftUser == null ||
             userId == authCubit.state.currentUser.id) {
+          emit(CurrentChatState.merge(
+            currentUserLeftChat: true,
+            loadingChat: false,
+            oldState: state,
+          ));
           chatCubit.delete(groupchatId: state.currentChat.id);
-          emitState(loadingChat: false, currentUserLeftChat: true);
         } else {
-          final replacedGroupchatState = chatCubit.replaceOrAdd(
-            chatState: CurrentChatState(
-              currentUserIndex: state.currentUserIndex,
-              currentUserLeftChat: state.currentUserLeftChat,
-              loadingPrivateEvents: state.loadingPrivateEvents,
-              futureConnectedPrivateEvents: state.futureConnectedPrivateEvents,
-              loadingMessages: state.loadingMessages,
-              currentChat: GroupchatEntity(
-                id: state.currentChat.id,
-                users: List.from(state.currentChat.users ?? [])
-                  ..removeWhere(
-                    (element) => element.userId == groupchatLeftUser.userId,
-                  ),
-                leftUsers: [groupchatLeftUser],
-              ),
-              loadingChat: false,
-              users: state.users,
-              leftUsers: state.leftUsers,
+          emit(CurrentChatState.merge(
+            currentChat: GroupchatEntity(
+              id: state.currentChat.id,
+              users: List.from(state.currentChat.users ?? [])
+                ..removeWhere(
+                  (element) => element.userId == groupchatLeftUser.userId,
+                ),
+              leftUsers: [groupchatLeftUser],
             ),
             mergeChatSetLeftUsersFromOldEntity: true,
             mergeChatSetUsersFromOldEntity: false,
             mergeChatSetMessagesFromOldEntity: true,
-          );
-          emit(replacedGroupchatState);
+            loadingChat: false,
+            oldState: state,
+          ));
+          chatCubit.replaceOrAdd(chatState: state);
           setGroupchatUsers();
         }
       },
@@ -478,8 +437,10 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
   }
 
   Future loadMessages() async {
-    emitState(loadingMessages: true);
-
+    emit(CurrentChatState.merge(
+      oldState: state,
+      loadingMessages: true,
+    ));
     final Either<Failure, List<MessageEntity>> messagesOrFailure =
         await messageUseCases.getMessagesViaApi(
       getMessagesFilter: GetMessagesFilter(
@@ -495,37 +456,29 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
 
     messagesOrFailure.fold(
       (error) {
-        emitState(
+        emit(CurrentChatState.merge(
+          oldState: state,
           showError: true,
           loadingMessages: false,
           error: ErrorWithTitleAndMessage(
-            title: "Fehler",
+            title: "Fehler Nachrichten laden",
             message: mapFailureToMessage(error),
           ),
-        );
+        ));
       },
       (messages) {
-        emit(
-          chatCubit.replaceOrAdd(
-            chatState: CurrentChatState(
-              currentUserIndex: state.currentUserIndex,
-              currentUserLeftChat: state.currentUserLeftChat,
-              loadingPrivateEvents: state.loadingPrivateEvents,
-              futureConnectedPrivateEvents: state.futureConnectedPrivateEvents,
-              loadingMessages: false,
-              currentChat: GroupchatEntity(
-                id: state.currentChat.id,
-                messages: messages,
-              ),
-              loadingChat: state.loadingChat,
-              users: state.users,
-              leftUsers: state.leftUsers,
-            ),
-            mergeChatSetLeftUsersFromOldEntity: true,
-            mergeChatSetUsersFromOldEntity: true,
-            mergeChatSetMessagesFromOldEntity: true,
+        emit(CurrentChatState.merge(
+          currentChat: GroupchatEntity(
+            id: state.currentChat.id,
+            messages: messages,
           ),
-        );
+          mergeChatSetLeftUsersFromOldEntity: true,
+          mergeChatSetUsersFromOldEntity: true,
+          mergeChatSetMessagesFromOldEntity: true,
+          loadingMessages: false,
+          oldState: state,
+        ));
+        chatCubit.replaceOrAdd(chatState: state);
       },
     );
   }
@@ -536,60 +489,17 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
         ? (List.from(state.currentChat.messages!)..add(message))
         : [message];
 
-    emit(
-      chatCubit.replaceOrAdd(
-        chatState: CurrentChatState(
-          currentUserIndex: state.currentUserIndex,
-          currentUserLeftChat: state.currentUserLeftChat,
-          loadingPrivateEvents: state.loadingPrivateEvents,
-          futureConnectedPrivateEvents: state.futureConnectedPrivateEvents,
-          loadingMessages: state.loadingMessages,
-          currentChat: GroupchatEntity(
-            id: state.currentChat.id,
-            messages: messages,
-          ),
-          loadingChat: state.loadingChat,
-          users: state.users,
-          leftUsers: state.leftUsers,
-        ),
-        mergeChatSetMessagesFromOldEntity: false,
-        mergeChatSetLeftUsersFromOldEntity: true,
-        mergeChatSetUsersFromOldEntity: true,
+    emit(CurrentChatState.merge(
+      currentChat: GroupchatEntity(
+        id: state.currentChat.id,
+        messages: messages,
       ),
-    );
-
+      mergeChatSetLeftUsersFromOldEntity: true,
+      mergeChatSetUsersFromOldEntity: true,
+      mergeChatSetMessagesFromOldEntity: false,
+      oldState: state,
+    ));
+    chatCubit.replaceOrAdd(chatState: state);
     return message;
-  }
-
-  void emitState({
-    GroupchatEntity? currentChat,
-    List<PrivateEventEntity>? futureConnectedPrivateEvents,
-    bool? currentUserLeftChat,
-    bool? loadingChat,
-    bool? loadingMessages,
-    bool? loadingPrivateEvents,
-    bool? showError,
-    int? currentUserIndex,
-    List<UserWithGroupchatUserData>? users,
-    List<UserWithLeftGroupchatUserData>? leftUsers,
-    ErrorWithTitleAndMessage? error,
-  }) {
-    emit(
-      CurrentChatState(
-        currentUserIndex: currentUserIndex ?? state.currentUserIndex,
-        currentUserLeftChat: currentUserLeftChat ?? state.currentUserLeftChat,
-        futureConnectedPrivateEvents:
-            futureConnectedPrivateEvents ?? state.futureConnectedPrivateEvents,
-        showError: showError ?? false,
-        loadingPrivateEvents:
-            loadingPrivateEvents ?? state.loadingPrivateEvents,
-        currentChat: currentChat ?? state.currentChat,
-        loadingChat: loadingChat ?? state.loadingChat,
-        loadingMessages: loadingMessages ?? state.loadingMessages,
-        users: users ?? state.users,
-        leftUsers: leftUsers ?? state.leftUsers,
-        error: error ?? state.error,
-      ),
-    );
   }
 }
