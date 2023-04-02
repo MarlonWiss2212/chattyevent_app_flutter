@@ -11,13 +11,8 @@ class ProfilePageTrailingFollowRequestIconButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AuthCubit, AuthState>(
-      buildWhen: (previous, current) =>
-          previous.currentUser.id != current.currentUser.id,
       builder: (context, authState) {
         return BlocBuilder<ProfilePageCubit, ProfilePageState>(
-          buildWhen: (previous, current) =>
-              previous.user.userRelationCounts?.followerCount !=
-              current.user.userRelationCounts?.followerCount,
           builder: (context, state) {
             if (authState.currentUser.id == state.user.id) {
               return IconButton(
