@@ -72,8 +72,7 @@ class CurrentChatState {
                   mergeChatSetLeftUsersFromOldEntity,
               mergeChatSetMessagesFromOldEntity:
                   mergeChatSetMessagesFromOldEntity,
-              mergeChatSetUsersFromOldEntity:
-                  mergeChatSetLeftUsersFromOldEntity,
+              mergeChatSetUsersFromOldEntity: mergeChatSetUsersFromOldEntity,
             )
           : oldState.currentChat,
       loadingChat: loadingChat ?? oldState.loadingChat,
