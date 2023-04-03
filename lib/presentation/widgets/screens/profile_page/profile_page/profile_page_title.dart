@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/profile_page_cubit.dart';
+import 'package:social_media_app_flutter/core/dto/update_user_dto.dart';
 import 'package:social_media_app_flutter/presentation/widgets/general/input_fields/edit_input_text_field.dart';
 
 class ProfilePageTitle extends StatelessWidget {
@@ -30,7 +29,9 @@ class ProfilePageTitle extends StatelessWidget {
                       ),
                   editable: authState.currentUser.id == state.user.id,
                   onSaved: (text) {
-                    print(text);
+                    BlocProvider.of<ProfilePageCubit>(context).updateUser(
+                      updateUserDto: UpdateUserDto(username: text),
+                    );
                   },
                 ),
               ),

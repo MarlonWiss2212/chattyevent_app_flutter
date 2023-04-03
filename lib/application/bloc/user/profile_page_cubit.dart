@@ -3,6 +3,7 @@ import 'package:dartz/dartz.dart';
 import 'package:meta/meta.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
+import 'package:social_media_app_flutter/core/dto/update_user_dto.dart';
 import 'package:social_media_app_flutter/core/filter/limit_offset_filter/limit_offset_filter.dart';
 import 'package:social_media_app_flutter/core/filter/user_relation/find_one_user_relation_filter.dart';
 import 'package:social_media_app_flutter/core/filter/user_relation/target_user_id_filter.dart';
@@ -176,6 +177,43 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
   }
 
   /// this three can only be made if the profile user is the current user
+
+  Future updateUser({
+    required UpdateUserDto updateUserDto,
+  }) async {
+    if (state.user.id != authCubit.state.currentUser.id) {
+      emitState(
+        followRequestsStatus: ProfilePageStateFollowRequestsStatus.error,
+        followRequestsError: ErrorWithTitleAndMessage(
+          title: "Update User Fehler",
+          message: "Du kannst andere User nicht ändern",
+        ),
+      );
+      return;
+    }
+
+    final userOrFailure = await userUseCases.updateUserViaApi(
+      updateUserDto: updateUserDto,
+    );
+
+    userOrFailure.fold(
+      (error) => emitState(
+        status: ProfilePageStateStatus.error,
+        error: ErrorWithTitleAndMessage(
+          title: "Update User Fehler",
+          message: mapFailureToMessage(error),
+        ),
+      ),
+      (user) {
+        final newUser = UserEntity.merge(
+          newEntity: user,
+          oldEntity: state.user,
+        );
+        emitState(user: newUser);
+        authCubit.emitState(currentUser: newUser);
+      },
+    );
+  }
 
   Future acceptFollowRequest({
     required String userId,

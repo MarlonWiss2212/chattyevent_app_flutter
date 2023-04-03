@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:http/http.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:social_media_app_flutter/core/dto/create_user_dto.dart';
+import 'package:social_media_app_flutter/core/dto/update_user_dto.dart';
 import 'package:social_media_app_flutter/core/filter/limit_offset_filter/limit_offset_filter.dart';
 import 'package:social_media_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:social_media_app_flutter/core/failures/failures.dart';
@@ -103,13 +104,50 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future<Either<Failure, UserEntity>> updateUserViaApi() {
-    // TODO: implement updateUserViaApi
-    throw UnimplementedError();
+  Future<Either<Failure, UserEntity>> updateUserViaApi({
+    required UpdateUserDto updateUserDto,
+  }) async {
+    try {
+      Map<String, dynamic> variables = {
+        "updateUserInput": updateUserDto.toMap(),
+      };
+      if (updateUserDto.updateProfileImage != null) {
+        final byteData = updateUserDto.updateProfileImage!.readAsBytesSync();
+        final multipartFile = MultipartFile.fromBytes(
+          'photo',
+          byteData,
+          filename: '${updateUserDto.username}.jpg',
+          contentType: MediaType("image", "jpg"),
+        );
+        variables.addAll({'updateProfileImage': multipartFile});
+      }
+
+      final response = await graphQlDatasource.mutation(
+        """
+        mutation UpdateUser(\$updateUserInput: UpdateUserInput, \$updateProfileImage: Upload) {
+          updateUser(updateUserInput: \$updateUserInput, updateProfileImage: \$updateProfileImage) {
+            _id
+            firstname
+            authId
+            lastname
+            username
+            profileImageLink
+          }
+        }
+        """,
+        variables: variables,
+      );
+      if (response.hasException) {
+        return Left(GeneralFailure());
+      }
+      return Right(UserModel.fromJson(response.data!["updateUser"]));
+    } catch (e) {
+      return Left(ServerFailure());
+    }
   }
 
   @override
-  Future<Either<Failure, UserEntity>> deleteUserViaApi() {
+  Future<Either<Failure, bool>> deleteUserViaApi() {
     // TODO: implement deleteUserViaApi
     throw UnimplementedError();
   }
