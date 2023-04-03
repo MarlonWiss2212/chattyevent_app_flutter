@@ -87,6 +87,7 @@ class PrivateEventCubit extends Cubit<PrivateEventState> {
         ),
       ),
       (privateEvents) {
+        emitState(status: PrivateEventStateStatus.success);
         replaceOrAddMultiple(
           privateEvents: privateEvents,
           mergeChatSetUsersFromOldEntity: false,

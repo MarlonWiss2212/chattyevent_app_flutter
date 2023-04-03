@@ -292,9 +292,16 @@ class AppRouter extends _i50.RootStackRouter {
       );
     },
     HomeProfilePageRoute.name: (routeData) {
+      final pathParams = routeData.inheritedPathParams;
+      final args = routeData.argsAs<HomeProfilePageRouteArgs>(
+          orElse: () =>
+              HomeProfilePageRouteArgs(userId: pathParams.optString('id')));
       return _i50.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i26.HomeProfilePage(),
+        child: _i26.HomeProfilePage(
+          key: args.key,
+          userId: args.userId,
+        ),
       );
     },
     ShoppingListPageRoute.name: (routeData) {
@@ -1381,15 +1388,40 @@ class HomeSearchPageRoute extends _i50.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i26.HomeProfilePage]
-class HomeProfilePageRoute extends _i50.PageRouteInfo<void> {
-  const HomeProfilePageRoute({List<_i50.PageRouteInfo>? children})
-      : super(
+class HomeProfilePageRoute
+    extends _i50.PageRouteInfo<HomeProfilePageRouteArgs> {
+  HomeProfilePageRoute({
+    _i51.Key? key,
+    String? userId,
+    List<_i50.PageRouteInfo>? children,
+  }) : super(
           HomeProfilePageRoute.name,
           path: 'current-profile/:id',
+          args: HomeProfilePageRouteArgs(
+            key: key,
+            userId: userId,
+          ),
+          rawPathParams: {'id': userId},
           initialChildren: children,
         );
 
   static const String name = 'HomeProfilePageRoute';
+}
+
+class HomeProfilePageRouteArgs {
+  const HomeProfilePageRouteArgs({
+    this.key,
+    this.userId,
+  });
+
+  final _i51.Key? key;
+
+  final String? userId;
+
+  @override
+  String toString() {
+    return 'HomeProfilePageRouteArgs{key: $key, userId: $userId}';
+  }
 }
 
 /// generated route for

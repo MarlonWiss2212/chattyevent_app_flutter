@@ -40,10 +40,9 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
 
     final Either<Failure, ShoppingListItemEntity> shoppingListItemOrFailure =
         await shoppingListItemUseCases.getOneShoppingListItemsViaApi(
-      getOneShoppingListItemsFilter: GetOneShoppingListItemsFilter(
-        id: state.shoppingListItem.id,
-      ),
-    );
+            getOneShoppingListItemFilter: GetOneShoppingListItemFilter(
+      id: state.shoppingListItem.id,
+    ));
 
     shoppingListItemOrFailure.fold(
       (error) {
@@ -81,7 +80,9 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
     final Either<Failure, ShoppingListItemEntity> shoppingListItemOrFailure =
         await shoppingListItemUseCases.updateShoppingListItemsViaApi(
       updateShoppingListItemDto: updateShoppingListItemDto,
-      shoppingListItemId: state.shoppingListItem.id,
+      getOneShoppingListItemFilter: GetOneShoppingListItemFilter(
+        id: state.shoppingListItem.id,
+      ),
     );
 
     shoppingListItemOrFailure.fold(

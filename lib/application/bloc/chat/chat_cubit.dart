@@ -86,6 +86,7 @@ class ChatCubit extends Cubit<ChatState> {
       (groupchats) {
         emit(
           ChatState(
+            status: ChatStateStatus.success,
             chatStates: groupchats
                 .map(
                   (e) => CurrentChatState(

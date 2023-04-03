@@ -17,11 +17,11 @@ abstract class ShoppingListItemRepository {
     required LimitOffsetFilter limitOffsetFilter,
   });
   Future<Either<Failure, ShoppingListItemEntity>> getShoppingListItemViaApi({
-    required GetOneShoppingListItemsFilter getOneShoppingListItemsFilter,
+    required GetOneShoppingListItemFilter getOneShoppingListItemFilter,
   });
   Future<Either<Failure, ShoppingListItemEntity>> updateShoppingListItemViaApi({
     required UpdateShoppingListItemDto updateShoppingListItemDto,
-    required String shoppingListItemId,
+    required GetOneShoppingListItemFilter getOneShoppingListItemFilter,
   });
   Future<Either<Failure, bool>> deleteShoppingListItemViaApi({
     required String shoppingListItemId,

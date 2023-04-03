@@ -1,5 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/home_page/mini_profile_image.dart';
 
@@ -9,12 +11,14 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AutoTabsRouter(
-      routes: const [
-        HomeChatPageRoute(),
-        HomeEventPageRoute(),
-        LocationRoute(),
-        HomeSearchPageRoute(),
-        HomeProfilePageRoute(),
+      routes: [
+        const HomeChatPageRoute(),
+        const HomeEventPageRoute(),
+        const LocationRoute(),
+        const HomeSearchPageRoute(),
+        HomeProfilePageRoute(
+          userId: BlocProvider.of<AuthCubit>(context).state.currentUser.id,
+        )
       ],
       builder: (context, child, animation) {
         final TabsRouter tabsRouter = AutoTabsRouter.of(context);

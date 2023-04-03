@@ -8,7 +8,12 @@ import 'package:social_media_app_flutter/core/injection.dart';
 import 'package:social_media_app_flutter/presentation/widgets/general/dialog/alert_dialog.dart';
 
 class HomeProfilePage extends StatelessWidget {
-  const HomeProfilePage({super.key});
+  final String? userId;
+
+  const HomeProfilePage({
+    super.key,
+    @PathParam('id') this.userId,
+  });
 
   @override
   Widget build(BuildContext context) {

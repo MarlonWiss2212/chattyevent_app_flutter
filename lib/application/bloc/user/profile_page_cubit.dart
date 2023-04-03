@@ -65,7 +65,9 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
     );
   }
 
-  Future getFollowers() async {
+  Future getFollowers({
+    bool reload = false,
+  }) async {
     const int limit = 30;
 
     emitState(followersStatus: ProfilePageStateFollowersStatus.loading);
@@ -74,8 +76,8 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
         await userRelationUseCases.getFollowersViaApi(
       targetUserIdFilter: TargetUserIdFilter(targetUserId: state.user.id),
       limitOffsetFilter: LimitOffsetFilter(
-        limit: limit,
-        offset: state.followers?.length ?? 0,
+        limit: reload ? state.followers?.length ?? limit : limit,
+        offset: reload ? 0 : state.followers?.length ?? 0,
       ),
     );
 
@@ -98,7 +100,9 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
     );
   }
 
-  Future getFollowRequests() async {
+  Future getFollowRequests({
+    bool reload = false,
+  }) async {
     const int limit = 30;
 
     if (authCubit.state.currentUser.id != state.user.id) {
@@ -119,8 +123,8 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
     final Either<Failure, List<UserEntity>> userOrFailure =
         await userRelationUseCases.getFollowerRequestsViaApi(
       limitOffsetFilter: LimitOffsetFilter(
-        limit: limit,
-        offset: state.followRequests?.length ?? 0,
+        limit: reload ? state.followers?.length ?? limit : limit,
+        offset: reload ? 0 : state.followers?.length ?? 0,
       ),
     );
 
@@ -143,7 +147,9 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
     );
   }
 
-  Future getFollowed() async {
+  Future getFollowed({
+    bool reload = false,
+  }) async {
     const int limit = 30;
 
     emitState(followedStatus: ProfilePageStateFollowedStatus.loading);
@@ -152,8 +158,8 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
         await userRelationUseCases.getFollowedViaApi(
       requestUserIdFilter: RequestUserIdFilter(requesterUserId: state.user.id),
       limitOffsetFilter: LimitOffsetFilter(
-        limit: limit,
-        offset: state.followed?.length ?? 0,
+        limit: reload ? state.followers?.length ?? limit : limit,
+        offset: reload ? 0 : state.followers?.length ?? 0,
       ),
     );
 

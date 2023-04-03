@@ -201,7 +201,11 @@ import 'package:social_media_app_flutter/presentation/screens/shopping_list_page
           path: '',
           initial: true,
         ),
-        AutoRoute(page: ChatInfoPage, guards: [AuthGuard], path: 'info'),
+        AutoRoute(
+          page: ChatInfoPage,
+          guards: [AuthGuard],
+          path: 'info',
+        ),
         AutoRoute(
           page: ChatChangeChatUsernamePage,
           guards: [AuthGuard],

@@ -34,20 +34,20 @@ class ShoppingListItemUseCases {
 
   Future<Either<Failure, ShoppingListItemEntity>>
       getOneShoppingListItemsViaApi({
-    required GetOneShoppingListItemsFilter getOneShoppingListItemsFilter,
+    required GetOneShoppingListItemFilter getOneShoppingListItemFilter,
   }) async {
     return await shoppingListItemRepository.getShoppingListItemViaApi(
-      getOneShoppingListItemsFilter: getOneShoppingListItemsFilter,
+      getOneShoppingListItemFilter: getOneShoppingListItemFilter,
     );
   }
 
   Future<Either<Failure, ShoppingListItemEntity>>
       updateShoppingListItemsViaApi({
     required UpdateShoppingListItemDto updateShoppingListItemDto,
-    required String shoppingListItemId,
+    required GetOneShoppingListItemFilter getOneShoppingListItemFilter,
   }) async {
     return await shoppingListItemRepository.updateShoppingListItemViaApi(
-      shoppingListItemId: shoppingListItemId,
+      getOneShoppingListItemFilter: getOneShoppingListItemFilter,
       updateShoppingListItemDto: updateShoppingListItemDto,
     );
   }

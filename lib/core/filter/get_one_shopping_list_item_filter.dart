@@ -1,7 +1,7 @@
-class GetOneShoppingListItemsFilter {
+class GetOneShoppingListItemFilter {
   String id;
 
-  GetOneShoppingListItemsFilter({required this.id});
+  GetOneShoppingListItemFilter({required this.id});
 
   Map<dynamic, dynamic> toMap() {
     return {"_id": id};

@@ -13,66 +13,68 @@ class ProfileFollowRequestsTabListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemBuilder: (context, index) {
-        return UserListTile(
-          user: followRequests[index],
-          trailing: Wrap(
-            spacing: 4,
-            children: [
-              InkWell(
-                onTap: () {
-                  BlocProvider.of<ProfilePageCubit>(context)
-                      .acceptFollowRequest(
-                    userId: followRequests[index].id,
-                  );
-                },
-                borderRadius: BorderRadius.circular(8),
-                child: Ink(
-                  child: Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      color: Theme.of(context).colorScheme.primaryContainer,
-                    ),
-                    child: Text(
-                      "Akzeptieren",
-                      style: Theme.of(context).textTheme.labelMedium?.apply(
-                            color: Colors.white,
-                          ),
-                    ),
-                  ),
-                ),
-              ),
-              InkWell(
-                onTap: () {
-                  BlocProvider.of<ProfilePageCubit>(context)
-                      .deleteFollowRequest(
-                    userId: followRequests[index].id,
-                  );
-                },
-                borderRadius: BorderRadius.circular(8),
-                child: Ink(
-                  child: Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      color: Colors.black,
-                    ),
-                    child: Text(
-                      "Ablehnen",
-                      style: Theme.of(context).textTheme.labelMedium?.apply(
-                            color: Colors.white,
-                          ),
+    return SliverList(
+      delegate: SliverChildBuilderDelegate(
+        (context, index) {
+          return UserListTile(
+            user: followRequests[index],
+            trailing: Wrap(
+              spacing: 4,
+              children: [
+                InkWell(
+                  onTap: () {
+                    BlocProvider.of<ProfilePageCubit>(context)
+                        .acceptFollowRequest(
+                      userId: followRequests[index].id,
+                    );
+                  },
+                  borderRadius: BorderRadius.circular(8),
+                  child: Ink(
+                    child: Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        color: Theme.of(context).colorScheme.primaryContainer,
+                      ),
+                      child: Text(
+                        "Akzeptieren",
+                        style: Theme.of(context).textTheme.labelMedium?.apply(
+                              color: Colors.white,
+                            ),
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
-          ),
-        );
-      },
-      itemCount: followRequests.length,
+                InkWell(
+                  onTap: () {
+                    BlocProvider.of<ProfilePageCubit>(context)
+                        .deleteFollowRequest(
+                      userId: followRequests[index].id,
+                    );
+                  },
+                  borderRadius: BorderRadius.circular(8),
+                  child: Ink(
+                    child: Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        color: Colors.black,
+                      ),
+                      child: Text(
+                        "Ablehnen",
+                        style: Theme.of(context).textTheme.labelMedium?.apply(
+                              color: Colors.white,
+                            ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+        childCount: followRequests.length,
+      ),
     );
   }
 }

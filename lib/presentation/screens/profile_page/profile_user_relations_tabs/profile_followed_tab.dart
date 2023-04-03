@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/user/profile_page_cubit.dart';
@@ -12,42 +13,56 @@ class ProfileFollowedTab extends StatelessWidget {
   Widget build(BuildContext context) {
     BlocProvider.of<ProfilePageCubit>(context).getFollowed();
 
-    return BlocConsumer<ProfilePageCubit, ProfilePageState>(
-      listener: (context, state) async {
-        if (state.followedError != null &&
-            state.followedStatus == ProfilePageStateFollowedStatus.error) {
-          return await showDialog(
-            context: context,
-            builder: (c) {
-              return CustomAlertDialog(
-                title: state.error!.title,
-                message: state.error!.message,
-                context: c,
+    return CustomScrollView(
+      slivers: [
+        CupertinoSliverRefreshControl(
+          onRefresh: () =>
+              BlocProvider.of<ProfilePageCubit>(context).getFollowed(
+            reload: true,
+          ),
+        ),
+        BlocConsumer<ProfilePageCubit, ProfilePageState>(
+          listener: (context, state) async {
+            if (state.followedError != null &&
+                state.followedStatus == ProfilePageStateFollowedStatus.error) {
+              return await showDialog(
+                context: context,
+                builder: (c) {
+                  return CustomAlertDialog(
+                    title: state.followedError!.title,
+                    message: state.followedError!.message,
+                    context: c,
+                  );
+                },
               );
-            },
-          );
-        }
-      },
-      //   buildWhen: (previous, current) =>
-      //       previous.userRelations?.length != current.userRelations?.length,
-      builder: (context, state) {
-        if (state.followedStatus == ProfilePageStateFollowedStatus.loading &&
-                state.followed == null ||
-            state.followedStatus == ProfilePageStateFollowedStatus.loading &&
-                state.followed != null &&
-                state.followed!.isEmpty) {
-          return const ProfileFollowedTabSkeletonListView();
-        }
+            }
+          },
+          builder: (context, state) {
+            if (state.followedStatus ==
+                        ProfilePageStateFollowedStatus.loading &&
+                    state.followed == null ||
+                state.followedStatus ==
+                        ProfilePageStateFollowedStatus.loading &&
+                    state.followed != null &&
+                    state.followed!.isEmpty) {
+              return const ProfileFollowedTabSkeletonListView();
+            }
 
-        if (state.followed == null ||
-            state.followed != null && state.followed!.isEmpty) {
-          return const Center(child: Text("Keinem Gefolgt"));
-        }
+            if (state.followed == null ||
+                state.followed != null && state.followed!.isEmpty) {
+              return const SliverFillRemaining(
+                child: Center(
+                  child: Text("Keinem Gefolgt"),
+                ),
+              );
+            }
 
-        return ProfileFollowedTabListView(
-          followed: state.followed ?? [],
-        );
-      },
+            return ProfileFollowedTabListView(
+              followed: state.followed ?? [],
+            );
+          },
+        ),
+      ],
     );
   }
 }

@@ -12,26 +12,28 @@ class ProfileFollowedTabListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemBuilder: (context, index) {
-        return UserListTile(
-          user: followed[index],
-          trailing: SizedBox(
-            width: 90,
-            height: 40,
-            child: FollowButton(
-              user: followed[index],
-              onTap: () {
-                BlocProvider.of<ProfilePageCubit>(context)
-                    .followOrUnfollowUserViaApi(
-                  user: followed[index],
-                );
-              },
+    return SliverList(
+      delegate: SliverChildBuilderDelegate(
+        (context, index) {
+          return UserListTile(
+            user: followed[index],
+            trailing: SizedBox(
+              width: 90,
+              height: 40,
+              child: FollowButton(
+                user: followed[index],
+                onTap: () {
+                  BlocProvider.of<ProfilePageCubit>(context)
+                      .followOrUnfollowUserViaApi(
+                    user: followed[index],
+                  );
+                },
+              ),
             ),
-          ),
-        );
-      },
-      itemCount: followed.length,
+          );
+        },
+        childCount: followed.length,
+      ),
     );
   }
 }

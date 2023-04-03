@@ -66,7 +66,7 @@ class StandardShoppingListItemPage extends StatelessWidget {
             BlocProvider.of<CurrentPrivateEventCubit>(context)
                 .getPrivateEventUsersViaApi();
             BlocProvider.of<CurrentPrivateEventCubit>(context)
-                .getPrivateEventAndGroupchatFromApi();
+                .getCurrentPrivateEvent();
           }
 
           return BlocListener<CurrentShoppingListItemCubit,
@@ -129,7 +129,7 @@ class StandardShoppingListItemPage extends StatelessWidget {
                         BlocProvider.of<CurrentPrivateEventCubit>(context)
                             .getPrivateEventUsersViaApi(),
                         BlocProvider.of<CurrentPrivateEventCubit>(context)
-                            .getPrivateEventAndGroupchatFromApi(),
+                            .getCurrentPrivateEvent(),
                         BlocProvider.of<CurrentShoppingListItemCubit>(context)
                             .getBoughtAmounts(
                           reload: true,

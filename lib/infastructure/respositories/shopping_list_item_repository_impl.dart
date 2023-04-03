@@ -100,7 +100,7 @@ class ShoppingListItemRepositoryImpl implements ShoppingListItemRepository {
 
   @override
   Future<Either<Failure, ShoppingListItemEntity>> getShoppingListItemViaApi({
-    required GetOneShoppingListItemsFilter getOneShoppingListItemsFilter,
+    required GetOneShoppingListItemFilter getOneShoppingListItemFilter,
   }) async {
     try {
       final response = await graphQlDatasource.query(
@@ -121,7 +121,7 @@ class ShoppingListItemRepositoryImpl implements ShoppingListItemRepository {
         }
       """,
         variables: {
-          "input": getOneShoppingListItemsFilter.toMap(),
+          "input": getOneShoppingListItemFilter.toMap(),
         },
       );
 
@@ -140,13 +140,13 @@ class ShoppingListItemRepositoryImpl implements ShoppingListItemRepository {
   @override
   Future<Either<Failure, ShoppingListItemEntity>> updateShoppingListItemViaApi({
     required UpdateShoppingListItemDto updateShoppingListItemDto,
-    required String shoppingListItemId,
+    required GetOneShoppingListItemFilter getOneShoppingListItemFilter,
   }) async {
     try {
       final response = await graphQlDatasource.mutation(
         """
-        mutation UpdateShoppingListItem(\$input: UpdateShoppingListItemInput!, \$shoppingListItemId: String!) {
-          updateShoppingListItem(updateShoppingListItemInput: \$input, shoppingListItemId: \$shoppingListItemId) {
+        mutation UpdateShoppingListItem(\$input: UpdateShoppingListItemInput!, \$filter: FindOneShoppingListItemInput!) {
+          updateShoppingListItem(updateShoppingListItemInput: \$input, filter: \$filter) {
             _id
             createdAt
             updatedAt
@@ -162,7 +162,7 @@ class ShoppingListItemRepositoryImpl implements ShoppingListItemRepository {
       """,
         variables: {
           "input": updateShoppingListItemDto.toMap(),
-          "shoppingListItemId": shoppingListItemId,
+          "filter": getOneShoppingListItemFilter.toMap(),
         },
       );
 

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
@@ -13,43 +14,59 @@ class ProfileFollowerTab extends StatelessWidget {
   Widget build(BuildContext context) {
     BlocProvider.of<ProfilePageCubit>(context).getFollowers();
 
-    return BlocConsumer<ProfilePageCubit, ProfilePageState>(
-      listener: (context, state) async {
-        if (state.followersError != null &&
-            state.followersStatus == ProfilePageStateFollowersStatus.error) {
-          return await showDialog(
-            context: context,
-            builder: (c) {
-              return CustomAlertDialog(
-                title: state.error!.title,
-                message: state.error!.message,
-                context: c,
-              );
-            },
-          );
-        }
-      },
-      builder: (context, state) {
-        if (state.followersStatus == ProfilePageStateFollowersStatus.loading &&
-                state.followers == null ||
-            state.followers != null &&
+    return CustomScrollView(
+      slivers: [
+        CupertinoSliverRefreshControl(
+          onRefresh: () =>
+              BlocProvider.of<ProfilePageCubit>(context).getFollowers(
+            reload: true,
+          ),
+        ),
+        BlocConsumer<ProfilePageCubit, ProfilePageState>(
+          listener: (context, state) async {
+            if (state.followersError != null &&
                 state.followersStatus ==
-                    ProfilePageStateFollowersStatus.loading &&
-                state.followers!.isEmpty) {
-          return const ProfileFollowersTabSkeletonListView();
-        }
+                    ProfilePageStateFollowersStatus.error) {
+              return await showDialog(
+                context: context,
+                builder: (c) {
+                  return CustomAlertDialog(
+                    title: state.followersError!.title,
+                    message: state.followersError!.message,
+                    context: c,
+                  );
+                },
+              );
+            }
+          },
+          builder: (context, state) {
+            if (state.followersStatus ==
+                        ProfilePageStateFollowersStatus.loading &&
+                    state.followers == null ||
+                state.followers != null &&
+                    state.followersStatus ==
+                        ProfilePageStateFollowersStatus.loading &&
+                    state.followers!.isEmpty) {
+              return const ProfileFollowersTabSkeletonListView();
+            }
 
-        if (state.followers == null ||
-            state.followers != null && state.followers!.isEmpty) {
-          return const Center(child: Text("Keine Follower"));
-        }
+            if (state.followers == null ||
+                state.followers != null && state.followers!.isEmpty) {
+              return const SliverFillRemaining(
+                child: Center(
+                  child: Text(
+                    "Keine Follower",
+                  ),
+                ),
+              );
+            }
 
-        return ProfileFollowersTabListView(
-          isCurrentUsersProfilePage: state.user.id ==
-              BlocProvider.of<AuthCubit>(context).state.currentUser.id,
-          followers: state.followers ?? [],
-        );
-      },
+            return ProfileFollowersTabListView(
+              followers: state.followers ?? [],
+            );
+          },
+        ),
+      ],
     );
   }
 }

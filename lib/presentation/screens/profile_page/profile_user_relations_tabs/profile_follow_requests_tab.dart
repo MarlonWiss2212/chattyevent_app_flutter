@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/user/profile_page_cubit.dart';
@@ -12,45 +13,57 @@ class ProfileFollowRequestsTab extends StatelessWidget {
   Widget build(BuildContext context) {
     BlocProvider.of<ProfilePageCubit>(context).getFollowRequests();
 
-    return BlocConsumer<ProfilePageCubit, ProfilePageState>(
-      listener: (context, state) async {
-        if (state.followRequestsError != null &&
-            state.followRequestsStatus ==
-                ProfilePageStateFollowRequestsStatus.error) {
-          return await showDialog(
-            context: context,
-            builder: (c) {
-              return CustomAlertDialog(
-                title: state.error!.title,
-                message: state.error!.message,
-                context: c,
-              );
-            },
-          );
-        }
-      },
-      builder: (context, state) {
-        if (state.followRequests != null &&
+    return CustomScrollView(
+      slivers: [
+        CupertinoSliverRefreshControl(
+          onRefresh: () =>
+              BlocProvider.of<ProfilePageCubit>(context).getFollowRequests(
+            reload: true,
+          ),
+        ),
+        BlocConsumer<ProfilePageCubit, ProfilePageState>(
+          listener: (context, state) async {
+            if (state.followRequestsError != null &&
                 state.followRequestsStatus ==
-                    ProfilePageStateFollowRequestsStatus.loading &&
-                state.followRequests!.isEmpty ||
-            state.followRequestsStatus ==
-                    ProfilePageStateFollowRequestsStatus.loading &&
-                state.followRequests == null) {
-          return const ProfileFollowRequestsTabSkeletonListView();
-        }
+                    ProfilePageStateFollowRequestsStatus.error) {
+              return await showDialog(
+                context: context,
+                builder: (c) {
+                  return CustomAlertDialog(
+                    title: state.followRequestsError!.title,
+                    message: state.followRequestsError!.message,
+                    context: c,
+                  );
+                },
+              );
+            }
+          },
+          builder: (context, state) {
+            if (state.followRequests != null &&
+                    state.followRequestsStatus ==
+                        ProfilePageStateFollowRequestsStatus.loading &&
+                    state.followRequests!.isEmpty ||
+                state.followRequestsStatus ==
+                        ProfilePageStateFollowRequestsStatus.loading &&
+                    state.followRequests == null) {
+              return const ProfileFollowRequestsTabSkeletonListView();
+            }
 
-        if (state.followRequests == null ||
-            state.followRequests != null && state.followRequests!.isEmpty) {
-          return const Center(
-            child: Text("Keine Freundschaftsanfragen"),
-          );
-        }
+            if (state.followRequests == null ||
+                state.followRequests != null && state.followRequests!.isEmpty) {
+              return const SliverFillRemaining(
+                child: Center(
+                  child: Text("Keine Freundschaftsanfragen"),
+                ),
+              );
+            }
 
-        return ProfileFollowRequestsTabListView(
-          followRequests: state.followRequests ?? [],
-        );
-      },
+            return ProfileFollowRequestsTabListView(
+              followRequests: state.followRequests ?? [],
+            );
+          },
+        ),
+      ],
     );
   }
 }
