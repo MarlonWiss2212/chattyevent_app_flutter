@@ -3,7 +3,6 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletons/skeletons.dart';
-import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/private_event_page/tab_user_list/private_event_tab_user_list_item.dart';
@@ -15,12 +14,6 @@ class PrivateEventTabUserListDetail extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<CurrentPrivateEventCubit, CurrentPrivateEventState>(
       builder: (context, state) {
-        final currentPrivatEventUser = state.privateEventUsers.firstWhereOrNull(
-          (element) =>
-              element.user.id ==
-              BlocProvider.of<AuthCubit>(context).state.currentUser.id,
-        );
-
         return SliverList(
           delegate: SliverChildListDelegate(
             [
@@ -31,9 +24,12 @@ class PrivateEventTabUserListDetail extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 8),
-              if (currentPrivatEventUser != null &&
+              if (state.getCurrentPrivateEventUser() != null &&
                   state.privateEvent.groupchatTo == null &&
-                  currentPrivatEventUser.privateEventUser.organizer !=
+                  state
+                          .getCurrentPrivateEventUser()
+                          ?.privateEventUser
+                          .organizer !=
                       false) ...{
                 ListTile(
                   leading: const Icon(
@@ -69,7 +65,8 @@ class PrivateEventTabUserListDetail extends StatelessWidget {
                   physics: const NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
                     return PrivateEventTabUserListItem(
-                      currentPrivatEventUser: currentPrivatEventUser,
+                      currentPrivatEventUser:
+                          state.getCurrentPrivateEventUser(),
                       privateEventUser: state.privateEventUsers[index],
                     );
                   },

@@ -6,9 +6,12 @@ import 'package:social_media_app_flutter/application/bloc/private_event/current_
 import 'package:social_media_app_flutter/presentation/widgets/general/custom_divider.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/private_event_page/tab_info/private_event_tab_info_connected_groupchat/private_event_tab_info_connected_groupchat.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/private_event_page/tab_info/private_event_tab_info_cover_image.dart';
+import 'package:social_media_app_flutter/presentation/widgets/screens/private_event_page/tab_info/private_event_tab_info_delete_button.dart';
+import 'package:social_media_app_flutter/presentation/widgets/screens/private_event_page/tab_info/private_event_tab_info_description.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/private_event_page/tab_info/private_event_tab_info_event_date.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/private_event_page/tab_info/private_event_tab_info_event_end_date.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/private_event_page/tab_info/private_event_tab_info_location/private_event_tab_info_location.dart';
+import 'package:social_media_app_flutter/presentation/widgets/screens/private_event_page/tab_info/private_event_tab_info_status.dart';
 
 class PrivateEventTabInfo extends StatelessWidget {
   final String privateEventId;
@@ -37,11 +40,14 @@ class PrivateEventTabInfo extends StatelessWidget {
       SliverList(
         delegate: SliverChildListDelegate([
           const SizedBox(height: 20),
+          const PrivateEventTabInfoDescription(),
           const PrivateEventTabInfoGroupchatTo(),
           const CustomDivider(),
-          const PrivateEventTabInfoLocation(), // custom divider is returned in <- widget
           const PrivateEventTabInfoEventDate(),
           const PrivateEventTabInfoEventEndDate(),
+          const PrivateEventTabInfoStatus(),
+          const CustomDivider(),
+          const PrivateEventTabInfoLocation(),
           const SizedBox(height: 8),
         ]),
       )

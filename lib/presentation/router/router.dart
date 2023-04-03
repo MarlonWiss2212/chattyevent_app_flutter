@@ -27,6 +27,7 @@ import 'package:social_media_app_flutter/presentation/screens/new_private_event/
 import 'package:social_media_app_flutter/presentation/screens/private_event_page/private_event_create_shopping_list_item_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/private_event_page/private_event_invite_user_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/private_event_page/private_event_shopping_list_item_page.dart';
+import 'package:social_media_app_flutter/presentation/screens/private_event_page/private_event_update_loaction_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/private_event_page/private_event_wrapper_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/private_event_page/tab_page/pages/private_event_tab_info.dart';
 import 'package:social_media_app_flutter/presentation/screens/private_event_page/tab_page/pages/private_event_tab_shopping_list.dart';
@@ -230,7 +231,7 @@ import 'package:social_media_app_flutter/presentation/screens/shopping_list_page
         AutoRoute(
           page: PrivateEventTabPage,
           initial: true,
-          path: 'info',
+          path: '',
           guards: [AuthGuard],
           children: [
             AutoRoute(
@@ -252,6 +253,12 @@ import 'package:social_media_app_flutter/presentation/screens/shopping_list_page
               guards: [AuthGuard],
             )
           ],
+        ),
+        AutoRoute(
+          page: PrivateEventUpdateLocationPage,
+          initial: true,
+          path: 'update-location',
+          guards: [AuthGuard],
         ),
         AutoRoute(
           page: PrivateEventInviteUserPage,

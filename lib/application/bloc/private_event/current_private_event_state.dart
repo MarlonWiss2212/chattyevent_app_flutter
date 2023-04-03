@@ -1,6 +1,12 @@
 part of 'current_private_event_cubit.dart';
 
-enum CurrentPrivateEventStateStatus { initial, success, error }
+enum CurrentPrivateEventStateStatus {
+  initial,
+  success,
+  error,
+  deleted,
+  updated
+}
 
 class CurrentPrivateEventState {
   final PrivateEventEntity privateEvent;
@@ -15,8 +21,17 @@ class CurrentPrivateEventState {
   final ErrorWithTitleAndMessage? error;
 
   final List<UserWithPrivateEventUserData> privateEventUsers;
+  final int currentUserIndex;
+
+  UserWithPrivateEventUserData? getCurrentPrivateEventUser() {
+    if (currentUserIndex != -1) {
+      return privateEventUsers[currentUserIndex];
+    }
+    return null;
+  }
 
   const CurrentPrivateEventState({
+    required this.currentUserIndex,
     required this.privateEvent,
     required this.privateEventUsers,
     required this.shoppingListItemStates,

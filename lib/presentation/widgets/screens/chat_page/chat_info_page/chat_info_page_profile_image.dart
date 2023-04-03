@@ -32,7 +32,7 @@ class ChatInfoPageProfileImage extends StatelessWidget {
                         ),
                       )
                       .then(
-                        (value) => Navigator.of(context).pop(),
+                        (value) => Navigator.of(c).pop(),
                       ),
                 );
               },

@@ -28,6 +28,7 @@ class PrivateEventWrapperPage extends StatelessWidget {
     CurrentPrivateEventCubit currentPrivateEventCubit =
         CurrentPrivateEventCubit(
       CurrentPrivateEventState(
+        currentUserIndex: -1,
         shoppingListItemStates: [],
         loadingShoppingList: false,
         privateEventUsers: const [],
@@ -38,6 +39,7 @@ class PrivateEventWrapperPage extends StatelessWidget {
         loadingGroupchat: false,
         loadingPrivateEvent: false,
       ),
+      authCubit: BlocProvider.of<AuthCubit>(context),
       userCubit: BlocProvider.of<UserCubit>(context),
       chatCubit: BlocProvider.of<ChatCubit>(context),
       locationUseCases: serviceLocator(),
@@ -80,6 +82,9 @@ class PrivateEventWrapperPage extends StatelessWidget {
           return BlocListener<CurrentPrivateEventCubit,
               CurrentPrivateEventState>(
             listener: (context, state) async {
+              if (state.status == CurrentPrivateEventStateStatus.deleted) {
+                AutoRouter.of(context).pop();
+              }
               if (state.status == CurrentPrivateEventStateStatus.error &&
                   state.error != null) {
                 return await showDialog(

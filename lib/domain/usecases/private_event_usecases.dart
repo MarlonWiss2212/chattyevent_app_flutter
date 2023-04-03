@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:social_media_app_flutter/core/dto/private_event/create_private_event_dto.dart';
 import 'package:social_media_app_flutter/core/dto/private_event/create_private_event_user_dto.dart';
+import 'package:social_media_app_flutter/core/dto/private_event/update_private_event_dto.dart';
 import 'package:social_media_app_flutter/core/dto/private_event/update_private_event_user_dto.dart';
 import 'package:social_media_app_flutter/core/filter/limit_offset_filter/limit_offset_filter.dart';
 import 'package:social_media_app_flutter/core/filter/private_event/private_event_user/get_one_private_event_user_filter.dart';
@@ -38,6 +39,16 @@ class PrivateEventUseCases {
     );
   }
 
+  Future<Either<Failure, PrivateEventEntity>> updatePrivateEvent({
+    required UpdatePrivateEventDto updatePrivateEventDto,
+    required GetOnePrivateEventFilter getOnePrivateEventFilter,
+  }) async {
+    return await privateEventRepository.updatePrivateEventViaApi(
+      updatePrivateEventDto: updatePrivateEventDto,
+      getOnePrivateEventFilter: getOnePrivateEventFilter,
+    );
+  }
+
   Future<Either<Failure, PrivateEventUserEntity>> updatePrivateEventUser({
     required UpdatePrivateEventUserDto updatePrivateEventUserDto,
     required GetOnePrivateEventUserFilter getOnePrivateEventFilter,
@@ -55,6 +66,14 @@ class PrivateEventUseCases {
     return await privateEventRepository.getPrivateEventsViaApi(
       getPrivateEventsFilter: getPrivateEventsFilter,
       limitOffsetFilter: limitOffsetFilter,
+    );
+  }
+
+  Future<Either<Failure, bool>> deletePrivateEventViaApi({
+    required GetOnePrivateEventFilter getOnePrivateEventFilter,
+  }) async {
+    return await privateEventRepository.deletePrivateEventViaApi(
+      getOnePrivateEventFilter: getOnePrivateEventFilter,
     );
   }
 }

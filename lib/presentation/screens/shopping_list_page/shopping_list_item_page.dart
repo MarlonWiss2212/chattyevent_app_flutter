@@ -27,6 +27,7 @@ class ShoppingListItemPage extends StatelessWidget {
     CurrentPrivateEventCubit currentPrivateEventCubit =
         CurrentPrivateEventCubit(
       CurrentPrivateEventState(
+        currentUserIndex: -1,
         shoppingListItemStates: [],
         loadingShoppingList: false,
         privateEventUsers: const [],
@@ -34,6 +35,7 @@ class ShoppingListItemPage extends StatelessWidget {
         loadingGroupchat: false,
         loadingPrivateEvent: false,
       ),
+      authCubit: BlocProvider.of<AuthCubit>(context),
       locationUseCases: serviceLocator(),
       userCubit: BlocProvider.of<UserCubit>(context),
       chatCubit: BlocProvider.of<ChatCubit>(context),

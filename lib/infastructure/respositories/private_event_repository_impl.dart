@@ -2,6 +2,7 @@ import 'package:http/http.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:social_media_app_flutter/core/dto/private_event/create_private_event_dto.dart';
 import 'package:social_media_app_flutter/core/dto/private_event/create_private_event_user_dto.dart';
+import 'package:social_media_app_flutter/core/dto/private_event/update_private_event_dto.dart';
 import 'package:social_media_app_flutter/core/dto/private_event/update_private_event_user_dto.dart';
 import 'package:social_media_app_flutter/core/filter/limit_offset_filter/limit_offset_filter.dart';
 import 'package:social_media_app_flutter/core/filter/private_event/private_event_user/get_one_private_event_user_filter.dart';
@@ -39,6 +40,8 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
           createPrivateEvent(createPrivateEventInput: \$input, coverImage: \$coverImage) {
             _id
             title
+            description
+            status
             coverImageLink
             users { 
               _id
@@ -73,7 +76,6 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
       );
 
       if (response.hasException) {
-        print(response.exception);
         return Left(GeneralFailure());
       }
 
@@ -97,7 +99,9 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
           findPrivateEvent(filter: \$input) {
             _id
             title
+            status
             coverImageLink
+            description
             users {
               _id
               privateEventTo
@@ -150,6 +154,7 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
         query FindPrivateEvents(\$input: FindPrivateEventsInput, \$limitOffsetFilterInput: LimitOffsetFilterInput!) {
           findPrivateEvents(filter: \$input, limitOffsetFilterInput: \$limitOffsetFilterInput) {
             _id
+            status
             title
             groupchatTo
             eventDate
@@ -181,9 +186,100 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
   }
 
   @override
-  Future<Either<Failure, PrivateEventEntity>> updatePrivateEventViaApi() {
-    // TODO: implement updatePrivateEventViaApi
-    throw UnimplementedError();
+  Future<Either<Failure, PrivateEventEntity>> updatePrivateEventViaApi({
+    required UpdatePrivateEventDto updatePrivateEventDto,
+    required GetOnePrivateEventFilter getOnePrivateEventFilter,
+  }) async {
+    try {
+      Map<String, dynamic> variables = {
+        "findOnePrivateEventInput": getOnePrivateEventFilter.toMap(),
+        "updatePrivateEventInput": updatePrivateEventDto.toMap(),
+      };
+      if (updatePrivateEventDto.updateCoverImage != null) {
+        final byteData =
+            updatePrivateEventDto.updateCoverImage!.readAsBytesSync();
+        final multipartFile = MultipartFile.fromBytes(
+          'photo',
+          byteData,
+          filename: '${updatePrivateEventDto.title}.jpg',
+          contentType: MediaType("image", "jpg"),
+        );
+        variables.addAll({'updateCoverImage': multipartFile});
+      }
+
+      final response = await graphQlDatasource.mutation(
+        """
+        mutation UpdatePrivateEvent(\$findOnePrivateEventInput: FindOnePrivateEventInput!, \$updatePrivateEventInput: UpdatePrivateEventInput, \$updateCoverImage: Upload) {
+          updatePrivateEvent(findOnePrivateEventInput: \$findOnePrivateEventInput, updatePrivateEventInput: \$updatePrivateEventInput, updateCoverImage: \$updateCoverImage) {
+            _id
+            title
+            status
+            coverImageLink
+            description
+            users {
+              _id
+              privateEventTo
+              userId
+              status
+              createdAt
+              updatedAt
+              organizer
+            }
+            eventLocation {
+              latitude
+              longitude
+              zip
+              city
+              country
+              street
+              housenumber
+            }
+            eventDate
+            eventEndDate
+            groupchatTo
+            createdBy
+            createdAt
+          }
+        }
+      """,
+        variables: variables,
+      );
+
+      if (response.hasException) {
+        return Left(GeneralFailure());
+      }
+      return Right(
+        PrivateEventModel.fromJson(response.data!["updatePrivateEvent"]),
+      );
+    } catch (e) {
+      return Left(ServerFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, bool>> deletePrivateEventViaApi({
+    required GetOnePrivateEventFilter getOnePrivateEventFilter,
+  }) async {
+    try {
+      final response = await graphQlDatasource.mutation(
+        """
+          mutation DeletePrivateEvent(\$findOnePrivateEventInput: FindOnePrivateEventInput!) {
+            deletePrivateEvent(findOnePrivateEventInput: \$findOnePrivateEventInput)
+          }
+        """,
+        variables: {
+          "findOnePrivateEventInput": getOnePrivateEventFilter.toMap(),
+        },
+      );
+
+      if (response.hasException) {
+        return Left(GeneralFailure());
+      }
+
+      return Right(response.data!["deletePrivateEvent"]);
+    } catch (e) {
+      return Left(ServerFailure());
+    }
   }
 
   @override
@@ -258,13 +354,5 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
     } catch (e) {
       return Left(ServerFailure());
     }
-  }
-
-  @override
-  Future<Either<Failure, void>> deletePrivateEventViaApi({
-    required GetOnePrivateEventFilter getOnePrivateEventFilter,
-  }) {
-    // TODO: implement deletePrivateEventViaApi
-    throw UnimplementedError();
   }
 }

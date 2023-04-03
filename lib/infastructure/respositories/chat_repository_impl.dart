@@ -216,7 +216,7 @@ class ChatRepositoryImpl implements ChatRepository {
 
       final response = await graphQlDatasource.mutation(
         """
-        mutation UpdateGroupchat(\$updateGroupchatInput: UpdateGroupchatInput!, \$findOneGroupchatInput: FindOneGroupchatInput!, \$updateProfileImage: Upload) {
+        mutation UpdateGroupchat(\$updateGroupchatInput: UpdateGroupchatInput, \$findOneGroupchatInput: FindOneGroupchatInput!, \$updateProfileImage: Upload) {
           updateGroupchat(updateGroupchatInput: \$updateGroupchatInput, findOneGroupchatInput: \$findOneGroupchatInput, updateProfileImage: \$updateProfileImage) {
             _id
             title

@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:social_media_app_flutter/core/dto/private_event/create_private_event_dto.dart';
 import 'package:social_media_app_flutter/core/dto/private_event/create_private_event_user_dto.dart';
+import 'package:social_media_app_flutter/core/dto/private_event/update_private_event_dto.dart';
 import 'package:social_media_app_flutter/core/dto/private_event/update_private_event_user_dto.dart';
 import 'package:social_media_app_flutter/core/filter/limit_offset_filter/limit_offset_filter.dart';
 import 'package:social_media_app_flutter/core/filter/private_event/private_event_user/get_one_private_event_user_filter.dart';
@@ -21,7 +22,10 @@ abstract class PrivateEventRepository {
     GetPrivateEventsFilter? getPrivateEventsFilter,
     required LimitOffsetFilter limitOffsetFilter,
   });
-  Future<Either<Failure, PrivateEventEntity>> updatePrivateEventViaApi();
+  Future<Either<Failure, PrivateEventEntity>> updatePrivateEventViaApi({
+    required UpdatePrivateEventDto updatePrivateEventDto,
+    required GetOnePrivateEventFilter getOnePrivateEventFilter,
+  });
 
   Future<Either<Failure, PrivateEventUserEntity>> createPrivateEventUserViaApi({
     required CreatePrivateEventUserDto createPrivateEventUserDto,
@@ -32,7 +36,7 @@ abstract class PrivateEventRepository {
     required GetOnePrivateEventUserFilter getOnePrivateEventUserFilter,
   });
 
-  Future<Either<Failure, void>> deletePrivateEventViaApi({
+  Future<Either<Failure, bool>> deletePrivateEventViaApi({
     required GetOnePrivateEventFilter getOnePrivateEventFilter,
   });
 }

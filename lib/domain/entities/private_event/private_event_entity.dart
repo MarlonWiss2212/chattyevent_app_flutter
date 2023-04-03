@@ -4,7 +4,9 @@ import 'package:social_media_app_flutter/domain/entities/private_event/private_e
 class PrivateEventEntity {
   final String id;
   final String? title;
+  final String? description;
   final String? coverImageLink;
+  final String? status;
   final List<PrivateEventUserEntity>? users;
   final DateTime? eventDate;
   final DateTime? eventEndDate;
@@ -17,6 +19,8 @@ class PrivateEventEntity {
   PrivateEventEntity({
     required this.id,
     this.title,
+    this.status,
+    this.description,
     this.coverImageLink,
     this.users,
     this.eventDate,
@@ -64,10 +68,12 @@ class PrivateEventEntity {
       eventDate: newEntity.eventDate ?? oldEntity.eventDate,
       eventEndDate: newEntity.eventEndDate ?? oldEntity.eventEndDate,
       groupchatTo: newEntity.groupchatTo ?? oldEntity.groupchatTo,
+      status: newEntity.status ?? oldEntity.status,
       eventLocation: PrivateEventLocationEntity.merge(
         newEntity: newEntity.eventLocation ?? PrivateEventLocationEntity(),
         oldEntity: oldEntity.eventLocation ?? PrivateEventLocationEntity(),
       ),
+      description: newEntity.description ?? oldEntity.description,
       createdBy: newEntity.createdBy ?? oldEntity.createdBy,
       createdAt: newEntity.createdAt ?? oldEntity.createdAt,
       updatedAt: newEntity.updatedAt ?? oldEntity.updatedAt,
