@@ -1,4 +1,4 @@
-import 'package:social_media_app_flutter/core/dto/private_event/create_private_event_user_from_private_event_dto.dart';
+import 'package:social_media_app_flutter/core/dto/private_event/private_event_user/create_private_event_user_from_private_event_dto.dart';
 
 class CreatePrivateEventUserDto
     extends CreatePrivateEventUserFromPrivateEventDto {

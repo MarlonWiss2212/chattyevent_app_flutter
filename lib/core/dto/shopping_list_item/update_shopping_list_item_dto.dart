@@ -1,8 +1,8 @@
 class UpdateShoppingListItemDto {
-  String? itemName;
-  String? unit;
-  double? amount;
-  String? userToBuyItem;
+  final String? itemName;
+  final String? unit;
+  final double? amount;
+  final String? userToBuyItem;
 
   UpdateShoppingListItemDto({
     this.itemName,

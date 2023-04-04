@@ -220,12 +220,17 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
         ),
       ),
       (boughtAmount) {
+        final List<BoughtAmountEntity> newBoughtAmounts =
+            List.from([boughtAmount])
+              ..addAll(
+                state.boughtAmounts,
+              );
         emitState(
-          boughtAmounts: List.from([boughtAmount])..addAll(state.boughtAmounts),
+          boughtAmounts: newBoughtAmounts,
           shoppingListItem: ShoppingListItemEntity.merge(
             newEntity: ShoppingListItemEntity(
               id: state.shoppingListItem.id,
-              boughtAmount: state.boughtAmounts
+              boughtAmount: newBoughtAmounts
                   .map((e) => e.boughtAmount!)
                   .reduce((a, b) => a + b),
             ),

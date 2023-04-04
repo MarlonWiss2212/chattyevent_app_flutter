@@ -7,11 +7,9 @@ import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/shopping_list/current_shopping_list_item_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/shopping_list/my_shopping_list_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
-import 'package:social_media_app_flutter/core/dto/private_event/create_private_event_user_dto.dart';
+import 'package:social_media_app_flutter/core/dto/private_event/private_event_user/create_private_event_user_dto.dart';
 import 'package:social_media_app_flutter/core/dto/private_event/update_private_event_dto.dart';
-import 'package:social_media_app_flutter/core/dto/private_event/update_private_event_user_dto.dart';
 import 'package:social_media_app_flutter/core/filter/get_shopping_list_items_filter.dart';
 import 'package:social_media_app_flutter/core/filter/groupchat/get_one_groupchat_filter.dart';
 import 'package:social_media_app_flutter/core/filter/limit_offset_filter/limit_offset_filter.dart';
@@ -19,7 +17,6 @@ import 'package:social_media_app_flutter/core/filter/private_event/private_event
 import 'package:social_media_app_flutter/domain/entities/error_with_title_and_message.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
-import 'package:social_media_app_flutter/domain/entities/groupchat/user_with_groupchat_user_data.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/user_with_private_event_user_data.dart';
@@ -31,6 +28,7 @@ import 'package:social_media_app_flutter/domain/usecases/chat_usecases.dart';
 import 'package:social_media_app_flutter/domain/usecases/location_usecases.dart';
 import 'package:social_media_app_flutter/domain/usecases/private_event_usecases.dart';
 import 'package:social_media_app_flutter/domain/usecases/shopping_list_item_usecases.dart';
+import 'package:social_media_app_flutter/core/dto/private_event/private_event_user/update_private_event_user_dto.dart';
 
 part 'current_private_event_state.dart';
 
@@ -280,11 +278,11 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
     );
   }
 
-  Future createPrivateEventUser({required String userId}) async {
+  Future addUserToPrivateEventViaApi({required String userId}) async {
     emitState(loadingPrivateEvent: true);
 
     Either<Failure, PrivateEventUserEntity> privateEventUserOrFailure =
-        await privateEventUseCases.createPrivateEventUserViaApi(
+        await privateEventUseCases.addUserToPrivateEventViaApi(
       createPrivateEventUserDto: CreatePrivateEventUserDto(
         userId: userId,
         privateEventTo: state.privateEvent.id,

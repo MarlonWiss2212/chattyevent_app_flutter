@@ -1,9 +1,9 @@
 import 'package:http/http.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:social_media_app_flutter/core/dto/private_event/create_private_event_dto.dart';
-import 'package:social_media_app_flutter/core/dto/private_event/create_private_event_user_dto.dart';
+import 'package:social_media_app_flutter/core/dto/private_event/private_event_user/create_private_event_user_dto.dart';
 import 'package:social_media_app_flutter/core/dto/private_event/update_private_event_dto.dart';
-import 'package:social_media_app_flutter/core/dto/private_event/update_private_event_user_dto.dart';
+import 'package:social_media_app_flutter/core/dto/private_event/private_event_user/update_private_event_user_dto.dart';
 import 'package:social_media_app_flutter/core/filter/limit_offset_filter/limit_offset_filter.dart';
 import 'package:social_media_app_flutter/core/filter/private_event/private_event_user/get_one_private_event_user_filter.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_user_entity.dart';
@@ -93,7 +93,6 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
   }) async {
     try {
       final response = await graphQlDatasource.query(
-        //coverImageLink
         """
         query FindPrivateEvent(\$input: FindOnePrivateEventInput!) {
           findPrivateEvent(filter: \$input) {
@@ -283,41 +282,6 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
   }
 
   @override
-  Future<Either<Failure, PrivateEventUserEntity>> createPrivateEventUserViaApi({
-    required CreatePrivateEventUserDto createPrivateEventUserDto,
-  }) async {
-    try {
-      final response = await graphQlDatasource.mutation(
-        """
-          mutation CreatePrivateEventUser(\$input: CreatePrivateEventUserInput!) {
-            createPrivateEventUser(createPrivateEventUserInput: \$input) {
-              _id
-              privateEventTo
-              userId
-              status
-              createdAt
-              updatedAt
-              organizer
-            }
-          }
-        """,
-        variables: {"input": createPrivateEventUserDto.toMap()},
-      );
-
-      if (response.hasException) {
-        return Left(GeneralFailure());
-      }
-      return Right(
-        PrivateEventUserModel.fromJson(
-          response.data!["createPrivateEventUser"],
-        ),
-      );
-    } catch (e) {
-      return Left(ServerFailure());
-    }
-  }
-
-  @override
   Future<Either<Failure, PrivateEventUserEntity>> updatePrivateEventUser({
     required UpdatePrivateEventUserDto updatePrivateEventUserDto,
     required GetOnePrivateEventUserFilter getOnePrivateEventUserFilter,
@@ -349,6 +313,41 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
       return Right(
         PrivateEventUserModel.fromJson(
           response.data!["updatePrivateEventUser"],
+        ),
+      );
+    } catch (e) {
+      return Left(ServerFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, PrivateEventUserEntity>> addUserToPrivateEventViaApi({
+    required CreatePrivateEventUserDto createPrivateEventUserDto,
+  }) async {
+    try {
+      final response = await graphQlDatasource.mutation(
+        """
+          mutation AddUserToPrivateEvent(\$input: CreatePrivateEventUserInput!) {
+            addUserToPrivateEvent(createPrivateEventUserInput: \$input) {
+              _id
+              privateEventTo
+              userId
+              status
+              createdAt
+              updatedAt
+              organizer
+            }
+          }
+        """,
+        variables: {"input": createPrivateEventUserDto.toMap()},
+      );
+
+      if (response.hasException) {
+        return Left(GeneralFailure());
+      }
+      return Right(
+        PrivateEventUserModel.fromJson(
+          response.data!["addUserToPrivateEvent"],
         ),
       );
     } catch (e) {

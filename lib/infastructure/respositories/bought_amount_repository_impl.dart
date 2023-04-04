@@ -133,7 +133,7 @@ class BoughtAmountRepositoryImpl implements BoughtAmountRepository {
       final response = await graphQlDatasource.mutation(
         """
         mutation DeleteBoughtAmount(\$boughtAmountId: String!) {
-          deleteBoughtAmount(boughtAmountId: \$input)
+          deleteBoughtAmount(boughtAmountId: \$boughtAmountId)
         }
       """,
         variables: {"boughtAmountId": boughtAmountId},

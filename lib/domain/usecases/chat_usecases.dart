@@ -1,8 +1,8 @@
 import 'package:dartz/dartz.dart';
 import 'package:social_media_app_flutter/core/dto/groupchat/create_groupchat_dto.dart';
-import 'package:social_media_app_flutter/core/dto/groupchat/create_groupchat_user_dto.dart';
+import 'package:social_media_app_flutter/core/dto/groupchat/groupchat_user/create_groupchat_user_dto.dart';
 import 'package:social_media_app_flutter/core/dto/groupchat/update_groupchat_dto.dart';
-import 'package:social_media_app_flutter/core/dto/groupchat/update_groupchat_user_dto.dart';
+import 'package:social_media_app_flutter/core/dto/groupchat/groupchat_user/update_groupchat_user_dto.dart';
 import 'package:social_media_app_flutter/core/filter/groupchat/get_messages_filter.dart';
 import 'package:social_media_app_flutter/core/filter/groupchat/get_one_groupchat_filter.dart';
 import 'package:social_media_app_flutter/core/filter/groupchat/get_one_groupchat_user_filter.dart';

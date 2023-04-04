@@ -1,5 +1,4 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletons/skeletons.dart';
@@ -19,7 +18,7 @@ class PrivateEventTabUserListDetail extends StatelessWidget {
             [
               Center(
                 child: Text(
-                  "Mitglieder die da sein werden: ${state.privateEvent.users?.where((element) => element.status == "accepted").length.toString()}",
+                  "Mitglieder die da sein werden: ${state.privateEvent.users?.where((element) => element.status == "ACCEPTED").length.toString()}",
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
               ),
@@ -68,6 +67,7 @@ class PrivateEventTabUserListDetail extends StatelessWidget {
                       currentPrivatEventUser:
                           state.getCurrentPrivateEventUser(),
                       privateEventUser: state.privateEventUsers[index],
+                      privateEvent: state.privateEvent,
                     );
                   },
                   itemCount: state.privateEventUsers.length,

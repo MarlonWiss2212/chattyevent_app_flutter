@@ -19,7 +19,7 @@ class DeclineInviteIconButton extends StatelessWidget {
       onPressed: () {
         BlocProvider.of<CurrentPrivateEventCubit>(context)
             .updatePrivateEventUser(
-          status: "rejected",
+          status: "REJECTED",
           userId: userId,
         );
       },

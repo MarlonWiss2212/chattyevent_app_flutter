@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
+import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/user_with_private_event_user_data.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/private_event_page/tab_user_list/private_event_tab_user_list_item_icon_buttons_my_user_list_tile/accept_invite_icon_button.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/private_event_page/tab_user_list/private_event_tab_user_list_item_icon_buttons_my_user_list_tile/decline_invite_icon_button.dart';
@@ -10,10 +11,11 @@ import 'package:social_media_app_flutter/presentation/widgets/general/user_list/
 class PrivateEventTabUserListItem extends StatelessWidget {
   final UserWithPrivateEventUserData privateEventUser;
   final UserWithPrivateEventUserData? currentPrivatEventUser;
-
+  final PrivateEventEntity privateEvent;
   const PrivateEventTabUserListItem({
     super.key,
     required this.privateEventUser,
+    required this.privateEvent,
     this.currentPrivatEventUser,
   });
 
@@ -23,7 +25,7 @@ class PrivateEventTabUserListItem extends StatelessWidget {
     String subtitle = "gekicked";
     Color? subititleColor = Colors.red;
 
-    if (privateEventUser.privateEventUser.status == "accepted") {
+    if (privateEventUser.privateEventUser.status == "ACCEPTED") {
       subititleColor = Colors.green;
       subtitle = "Angenommen";
       trailingWidget = currentPrivatEventUser != null &&
@@ -38,7 +40,7 @@ class PrivateEventTabUserListItem extends StatelessWidget {
               ],
             )
           : null;
-    } else if (privateEventUser.privateEventUser.status == "rejected") {
+    } else if (privateEventUser.privateEventUser.status == "REJECTED") {
       subititleColor = Colors.red;
       subtitle = "Abgelehnt";
       trailingWidget = currentPrivatEventUser != null &&
@@ -51,7 +53,7 @@ class PrivateEventTabUserListItem extends StatelessWidget {
               ],
             )
           : null;
-    } else if (privateEventUser.privateEventUser.status == "invited") {
+    } else if (privateEventUser.privateEventUser.status == "INVITED") {
       subititleColor = null;
       subtitle = "Eingeladen";
       trailingWidget = currentPrivatEventUser != null &&
@@ -79,6 +81,23 @@ class PrivateEventTabUserListItem extends StatelessWidget {
       customTitle: privateEventUser.getUsername(),
       trailing: trailingWidget,
       items: [
+        if (currentPrivatEventUser != null &&
+                currentPrivatEventUser!.privateEventUser.organizer == true &&
+                privateEvent.groupchatTo == null ||
+            currentPrivatEventUser != null &&
+                currentPrivatEventUser!.privateEventUser.organizer == true &&
+                privateEvent.groupchatTo == "") ...{
+          PopupMenuItem<void Function(void)>(
+            child: const Text("Kicken"),
+            onTap: () {
+              BlocProvider.of<CurrentPrivateEventCubit>(context)
+                  .updatePrivateEventUser(
+                userId: privateEventUser.user.id,
+                status: "LEFT_EVENT",
+              );
+            },
+          ),
+        },
         if (currentPrivatEventUser != null &&
             currentPrivatEventUser!.privateEventUser.organizer == true &&
             privateEventUser.privateEventUser.organizer != null &&

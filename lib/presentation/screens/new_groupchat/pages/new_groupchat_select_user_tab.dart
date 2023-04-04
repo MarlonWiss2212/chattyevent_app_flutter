@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/add_groupchat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_search_cubit.dart';
-import 'package:social_media_app_flutter/core/dto/groupchat/create_groupchat_user_from_create_groupchat_dto.dart';
+import 'package:social_media_app_flutter/core/dto/groupchat/groupchat_user/create_groupchat_user_from_create_groupchat_dto.dart';
+
 import 'package:social_media_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:social_media_app_flutter/presentation/widgets/general/user_list/selectable_user_grid_list.dart';
 import 'package:social_media_app_flutter/presentation/widgets/general/user_list/selected_user_list.dart';

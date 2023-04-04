@@ -1,8 +1,8 @@
 import 'package:dartz/dartz.dart';
 import 'package:http/http.dart';
 import 'package:http_parser/http_parser.dart';
-import 'package:social_media_app_flutter/core/dto/create_user_dto.dart';
-import 'package:social_media_app_flutter/core/dto/update_user_dto.dart';
+import 'package:social_media_app_flutter/core/dto/user/create_user_dto.dart';
+import 'package:social_media_app_flutter/core/dto/user/update_user_dto.dart';
 import 'package:social_media_app_flutter/core/filter/limit_offset_filter/limit_offset_filter.dart';
 import 'package:social_media_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:social_media_app_flutter/core/failures/failures.dart';

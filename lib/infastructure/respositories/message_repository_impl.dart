@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:http/http.dart';
 import 'package:http_parser/http_parser.dart';
-import 'package:social_media_app_flutter/core/dto/create_message_dto.dart';
+import 'package:social_media_app_flutter/core/dto/groupchat/message/create_message_dto.dart';
 import 'package:social_media_app_flutter/core/failures/failures.dart';
 import 'package:social_media_app_flutter/core/filter/groupchat/added_message_filter.dart';
 import 'package:social_media_app_flutter/domain/entities/message/message_entity.dart';

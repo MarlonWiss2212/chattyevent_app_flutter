@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
 import 'package:skeletons/skeletons.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
@@ -53,33 +54,47 @@ class CurrentShoppingListItemPageBoughtAmountList extends StatelessWidget {
                   (element) => element.user.id == boughtAmount.createdBy,
                 );
 
-                final currentUser =
-                    BlocProvider.of<AuthCubit>(context).state.currentUser;
-                if (user == null && currentUser.id == boughtAmount.createdBy) {
-                  user = UserWithPrivateEventUserData(
-                    user: currentUser,
-                    groupchatUser: GroupchatUserEntity(id: currentUser.id),
-                    privateEventUser:
-                        PrivateEventUserEntity(id: currentUser.id),
-                  );
-                }
-
-                return UserListTile(
-                  user: user?.user ??
-                      UserEntity(
-                        id: boughtAmount.createdBy ?? "",
-                        authId: "",
-                        username: "Fehler",
+                return Slidable(
+                  enabled: user?.privateEventUser.userId ==
+                      privateEventState
+                          .getCurrentPrivateEventUser()
+                          ?.privateEventUser
+                          .userId,
+                  endActionPane: ActionPane(
+                    motion: const ScrollMotion(),
+                    children: [
+                      SlidableAction(
+                        borderRadius: BorderRadius.circular(8),
+                        backgroundColor:
+                            Theme.of(context).scaffoldBackgroundColor,
+                        foregroundColor: Colors.red,
+                        onPressed: (context) {
+                          BlocProvider.of<CurrentShoppingListItemCubit>(context)
+                              .deleteBoughtAmount(
+                            boughtAmountId: boughtAmount.id,
+                          );
+                        },
+                        icon: Icons.delete,
                       ),
-                  customTitle: user?.getUsername(),
-                  trailing: Text(
-                    state.shoppingListItem.createdAt != null
-                        ? DateFormat.jm()
-                            .format(state.shoppingListItem.createdAt!)
-                        : "Kein Datum",
+                    ],
                   ),
-                  subtitle: Text(
-                    "Eigekaufte Menge: ${boughtAmount.boughtAmount.toString()}",
+                  child: UserListTile(
+                    user: user?.user ??
+                        UserEntity(
+                          id: boughtAmount.createdBy ?? "",
+                          authId: "",
+                          username: "Fehler",
+                        ),
+                    customTitle: user?.getUsername(),
+                    trailing: Text(
+                      state.shoppingListItem.createdAt != null
+                          ? DateFormat.jm()
+                              .format(state.shoppingListItem.createdAt!)
+                          : "Kein Datum",
+                    ),
+                    subtitle: Text(
+                      "Eigekaufte Menge: ${boughtAmount.boughtAmount.toString()}",
+                    ),
                   ),
                 );
               },

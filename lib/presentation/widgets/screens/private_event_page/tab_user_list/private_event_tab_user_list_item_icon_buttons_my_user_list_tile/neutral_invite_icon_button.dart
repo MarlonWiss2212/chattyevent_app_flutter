@@ -19,7 +19,7 @@ class NeutralInviteIconButton extends StatelessWidget {
       onPressed: () {
         BlocProvider.of<CurrentPrivateEventCubit>(context)
             .updatePrivateEventUser(
-          status: "invited",
+          status: "INVITED",
           userId: userId,
         );
       },

@@ -10,7 +10,9 @@ class CircleImage extends StatelessWidget {
   final double? height;
   final double? width;
   final Icon? icon;
+  final void Function()? onTap;
   const CircleImage({
+    this.onTap,
     super.key,
     this.image,
     this.icon,
@@ -31,22 +33,26 @@ class CircleImage extends StatelessWidget {
         ? Container(
             height: height,
             width: width,
+            constraints: BoxConstraints(maxWidth: width, maxHeight: height),
             decoration: const BoxDecoration(
               shape: BoxShape.circle,
             ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(width / 2),
-              child: Hero(
-                tag: heroTag ?? "",
-                child: image != null
-                    ? Image.file(
-                        image!,
-                        fit: BoxFit.cover,
-                      )
-                    : Image.network(
-                        imageLink!,
-                        fit: BoxFit.cover,
-                      ),
+            child: InkWell(
+              onTap: onTap,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(width / 2),
+                child: Hero(
+                  tag: heroTag ?? "",
+                  child: image != null
+                      ? Image.file(
+                          image!,
+                          fit: BoxFit.cover,
+                        )
+                      : Image.network(
+                          imageLink!,
+                          fit: BoxFit.cover,
+                        ),
+                ),
               ),
             ),
           )
@@ -57,8 +63,11 @@ class CircleImage extends StatelessWidget {
               shape: BoxShape.circle,
               color: Theme.of(context).colorScheme.primaryContainer,
             ),
-            child: Center(
-              child: icon,
+            child: InkWell(
+              onTap: onTap,
+              child: Center(
+                child: icon,
+              ),
             ),
           );
   }

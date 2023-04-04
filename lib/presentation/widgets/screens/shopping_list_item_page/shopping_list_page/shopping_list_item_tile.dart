@@ -19,13 +19,14 @@ class ShoppingListItemTile extends StatelessWidget {
       title: Wrap(
         spacing: 8,
         children: [
-          if (userToBuyItem.privateEventUser.status == "rejected" ||
-              userToBuyItem.privateEventUser.status == "invited") ...{
+          if (userToBuyItem.privateEventUser.status == "REJECTED" ||
+              userToBuyItem.privateEventUser.status == "LEFT_EVENT" ||
+              userToBuyItem.privateEventUser.status == "INVITED") ...{
             Badge(
               backgroundColor:
-                  userToBuyItem.privateEventUser.status == "rejected"
-                      ? Colors.red
-                      : Colors.yellow,
+                  userToBuyItem.privateEventUser.status == "INVITED"
+                      ? Colors.yellow
+                      : Colors.red,
             ),
           },
           Text(

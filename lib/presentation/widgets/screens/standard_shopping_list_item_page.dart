@@ -7,10 +7,12 @@ import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/shopping_list/current_shopping_list_item_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/shopping_list/my_shopping_list_cubit.dart';
+import 'package:social_media_app_flutter/core/dto/shopping_list_item/update_shopping_list_item_dto.dart';
 import 'package:social_media_app_flutter/core/injection.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
 import 'package:social_media_app_flutter/presentation/widgets/general/dialog/alert_dialog.dart';
 import 'package:social_media_app_flutter/presentation/widgets/general/custom_divider.dart';
+import 'package:social_media_app_flutter/presentation/widgets/general/input_fields/edit_input_text_field.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/shopping_list_item_page/current_shopping_list_item_page/current_shopping_list_item_page_bought_amount_list.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/shopping_list_item_page/current_shopping_list_item_page/current_shopping_list_item_page_create_bought_amount_tile.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/shopping_list_item_page/current_shopping_list_item_page/current_shopping_list_item_page_private_event_tile.dart';
@@ -103,8 +105,18 @@ class StandardShoppingListItemPage extends StatelessWidget {
                         buildWhen: (previous, current) =>
                             previous.shoppingListItem.itemName !=
                             current.shoppingListItem.itemName,
-                        builder: (context, state) => Text(
-                          state.shoppingListItem.itemName ?? "",
+                        builder: (context, state) => EditInputTextField(
+                          text: state.shoppingListItem.itemName ?? "",
+                          onSaved: (text) {
+                            BlocProvider.of<CurrentShoppingListItemCubit>(
+                                    context)
+                                .updateShoppingListItemViaApi(
+                              updateShoppingListItemDto:
+                                  UpdateShoppingListItemDto(
+                                itemName: text,
+                              ),
+                            );
+                          },
                         ),
                       ),
                     ),
