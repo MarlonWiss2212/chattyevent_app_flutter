@@ -124,10 +124,10 @@ class MyShoppingListCubit extends Cubit<MyShoppingListState> {
               .toList(),
           addIfItsNotFound: true,
         );
-        MyShoppingListState(
+        emit(MyShoppingListState(
           shoppingListItemStates: state.shoppingListItemStates,
           loading: false,
-        );
+        ));
       },
     );
   }

@@ -6,7 +6,7 @@ import 'package:social_media_app_flutter/application/bloc/private_event/current_
 import 'package:social_media_app_flutter/core/injection.dart';
 import 'package:social_media_app_flutter/presentation/widgets/general/button.dart';
 import 'package:social_media_app_flutter/presentation/widgets/general/dialog/alert_dialog.dart';
-import 'package:social_media_app_flutter/presentation/widgets/screens/shopping_list_item_page/create_shopping_list_item_page/create_shopping_list_item_page_detail.dart';
+import 'package:social_media_app_flutter/presentation/widgets/screens/private_event_page/create_shopping_list_item_page/create_shopping_list_item_page_detail.dart';
 import '../../../application/bloc/shopping_list/add_shopping_list_item_cubit.dart';
 
 class PrivateEventCreateShoppingListItemPage extends StatelessWidget {

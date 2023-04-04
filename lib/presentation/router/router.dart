@@ -26,9 +26,11 @@ import 'package:social_media_app_flutter/presentation/screens/new_private_event/
 import 'package:social_media_app_flutter/presentation/screens/new_private_event/pages/new_private_event_type_tab.dart';
 import 'package:social_media_app_flutter/presentation/screens/private_event_page/private_event_create_shopping_list_item_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/private_event_page/private_event_invite_user_page.dart';
-import 'package:social_media_app_flutter/presentation/screens/private_event_page/private_event_shopping_list_item_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/private_event_page/private_event_update_loaction_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/private_event_page/private_event_wrapper_page.dart';
+import 'package:social_media_app_flutter/presentation/screens/private_event_page/shopping_list_item_page/private_event_shopping_list_change_user_page.dart';
+import 'package:social_media_app_flutter/presentation/screens/private_event_page/shopping_list_item_page/private_event_shopping_list_item_page.dart';
+import 'package:social_media_app_flutter/presentation/screens/private_event_page/shopping_list_item_page/private_event_shopping_list_item_wrapper_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/private_event_page/tab_page/pages/private_event_tab_info.dart';
 import 'package:social_media_app_flutter/presentation/screens/private_event_page/tab_page/pages/private_event_tab_shopping_list.dart';
 import 'package:social_media_app_flutter/presentation/screens/private_event_page/tab_page/pages/private_event_tab_user_list.dart';
@@ -45,7 +47,9 @@ import 'package:social_media_app_flutter/presentation/screens/settings_page/page
 import 'package:social_media_app_flutter/presentation/screens/settings_page/pages/settings_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/settings_page/pages/update_password_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/settings_page/settings_page_wrapper.dart';
-import 'package:social_media_app_flutter/presentation/screens/shopping_list_page/shopping_list_item_page.dart';
+import 'package:social_media_app_flutter/presentation/screens/shopping_list_page/shopping_list_item_page/shopping_list_item_change_user_page.dart';
+import 'package:social_media_app_flutter/presentation/screens/shopping_list_page/shopping_list_item_page/shopping_list_item_page.dart';
+import 'package:social_media_app_flutter/presentation/screens/shopping_list_page/shopping_list_item_page/shopping_list_item_wrapper_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/shopping_list_page/shopping_list_wrapper_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/verify_email_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/shopping_list_page/shopping_list_page.dart';
@@ -181,9 +185,21 @@ import 'package:social_media_app_flutter/presentation/screens/shopping_list_page
           path: '',
         ),
         AutoRoute(
-          page: ShoppingListItemPage,
+          page: ShoppingListItemWrapperPage,
           guards: [AuthGuard],
           path: ':shoppingListItemId',
+          children: [
+            AutoRoute(
+              page: ShoppingListItemPage,
+              guards: [AuthGuard],
+              path: '',
+            ),
+            AutoRoute(
+              page: ShoppingListItemChangeUserPage,
+              guards: [AuthGuard],
+              path: 'change-user-to-buy-item',
+            ),
+          ],
         ),
         RedirectRoute(path: '*', redirectTo: '')
       ],
@@ -277,10 +293,22 @@ import 'package:social_media_app_flutter/presentation/screens/shopping_list_page
           guards: [AuthGuard],
         ),
         AutoRoute(
-          page: PrivateEventShoppingListItemPage,
-          initial: false,
-          path: 'shopping-list/:shoppingListItemId',
+          page: PrivateEventShoppingListItemWrapperPage,
           guards: [AuthGuard],
+          path: 'shopping-list/:shoppingListItemId',
+          children: [
+            AutoRoute(
+              page: PrivateEventShoppingListItemPage,
+              guards: [AuthGuard],
+              path: '',
+            ),
+            AutoRoute(
+              page: PrivateEventShoppingListItemChangeUserPage,
+              guards: [AuthGuard],
+              path: 'change-user-to-buy-item',
+            ),
+            RedirectRoute(path: '*', redirectTo: ''),
+          ],
         ),
         RedirectRoute(path: '*', redirectTo: 'info'),
       ],

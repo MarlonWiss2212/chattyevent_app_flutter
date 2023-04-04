@@ -105,12 +105,12 @@ class ShoppingListPage extends StatelessWidget {
                         ),
                         onTap: () {
                           AutoRouter.of(context).push(
-                            ShoppingListItemPageRoute(
+                            ShoppingListItemWrapperPageRoute(
+                              currentShoppingListItemStateToSet:
+                                  filteredShoppingList[index],
                               shoppingListItemId: filteredShoppingList[index]
                                   .shoppingListItem
                                   .id,
-                              currentShoppingListItemStateToSet:
-                                  filteredShoppingList[index],
                             ),
                           );
                         },

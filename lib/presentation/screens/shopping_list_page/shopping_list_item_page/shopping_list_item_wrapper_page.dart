@@ -9,14 +9,14 @@ import 'package:social_media_app_flutter/application/bloc/shopping_list/current_
 import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
 import 'package:social_media_app_flutter/core/injection.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
-import 'package:social_media_app_flutter/presentation/widgets/screens/standard_shopping_list_item_page.dart';
 import 'package:social_media_app_flutter/presentation/widgets/general/dialog/alert_dialog.dart';
+import 'package:social_media_app_flutter/presentation/widgets/screens/shopping_list_item_page/standard_shopping_list_item_page/standard_shopping_list_item_wrapper_page.dart';
 
-class ShoppingListItemPage extends StatelessWidget {
+class ShoppingListItemWrapperPage extends StatelessWidget {
   final String shoppingListItemId;
   final CurrentShoppingListItemState currentShoppingListItemStateToSet;
 
-  const ShoppingListItemPage({
+  const ShoppingListItemWrapperPage({
     super.key,
     @PathParam('shoppingListItemId') required this.shoppingListItemId,
     required this.currentShoppingListItemStateToSet,
@@ -74,10 +74,10 @@ class ShoppingListItemPage extends StatelessWidget {
                 );
               }
             },
-            child: StandardShoppingListItemPage(
+            child: StandardShoppingListItemWrapperPage(
+              shoppingListItemId: shoppingListItemId,
               setCurrentPrivateEvent: true,
               shoppingListItemStateToSet: currentShoppingListItemStateToSet,
-              shoppingListItemId: shoppingListItemId,
             ),
           );
         },
