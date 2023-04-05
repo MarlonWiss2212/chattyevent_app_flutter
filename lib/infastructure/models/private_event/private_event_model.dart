@@ -11,7 +11,6 @@ class PrivateEventModel extends PrivateEventEntity {
     String? status,
     String? description,
     String? coverImageLink,
-    List<PrivateEventUserEntity>? users,
     DateTime? eventDate,
     DateTime? eventEndDate,
     String? groupchatTo,
@@ -24,7 +23,6 @@ class PrivateEventModel extends PrivateEventEntity {
           title: title,
           coverImageLink: coverImageLink,
           description: description,
-          users: users,
           eventDate: eventDate,
           eventEndDate: eventEndDate,
           status: status,
@@ -52,19 +50,10 @@ class PrivateEventModel extends PrivateEventEntity {
         ? DateTime.parse(json["eventEndDate"]).toLocal()
         : null;
 
-    List<PrivateEventUserEntity>? users;
-    if (json["users"] != null) {
-      users = [];
-      for (final user in json["users"]) {
-        users.add(PrivateEventUserModel.fromJson(user));
-      }
-    }
-
     return PrivateEventModel(
       id: json['_id'],
       title: json['title'],
       coverImageLink: json['coverImageLink'],
-      users: users,
       eventDate: eventDate,
       description: json["description"],
       eventEndDate: eventEndDate,

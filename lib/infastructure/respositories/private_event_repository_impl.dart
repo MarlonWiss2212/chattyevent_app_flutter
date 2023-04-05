@@ -6,6 +6,8 @@ import 'package:social_media_app_flutter/core/dto/private_event/update_private_e
 import 'package:social_media_app_flutter/core/dto/private_event/private_event_user/update_private_event_user_dto.dart';
 import 'package:social_media_app_flutter/core/filter/limit_offset_filter/limit_offset_filter.dart';
 import 'package:social_media_app_flutter/core/filter/private_event/private_event_user/get_one_private_event_user_filter.dart';
+import 'package:social_media_app_flutter/core/response/get-all-private-events-users-and-left-users.reponse.dart';
+import 'package:social_media_app_flutter/domain/entities/private_event/private_event_left_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_user_entity.dart';
 import 'package:social_media_app_flutter/core/failures/failures.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
@@ -14,6 +16,7 @@ import 'package:social_media_app_flutter/core/filter/get_one_private_event_filte
 import 'package:social_media_app_flutter/core/filter/get_private_events_filter.dart';
 import 'package:social_media_app_flutter/domain/repositories/private_event_repository.dart';
 import 'package:social_media_app_flutter/infastructure/datasources/remote/graphql.dart';
+import 'package:social_media_app_flutter/infastructure/models/private_event/private_event_left_user_model.dart';
 import 'package:social_media_app_flutter/infastructure/models/private_event/private_event_model.dart';
 import 'package:social_media_app_flutter/infastructure/models/private_event/private_event_user_model.dart';
 
@@ -43,15 +46,6 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
             description
             status
             coverImageLink
-            users { 
-              _id
-              privateEventTo
-              userId
-              status
-              createdAt
-              updatedAt
-              organizer
-            }
             eventDate
             eventEndDate
             groupchatTo
@@ -94,22 +88,13 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
     try {
       final response = await graphQlDatasource.query(
         """
-        query FindPrivateEvent(\$input: FindOnePrivateEventInput!) {
-          findPrivateEvent(filter: \$input) {
+        query FindPrivateEvent(\$filter: FindOnePrivateEventInput!) {
+          findPrivateEvent(filter: \$filter) {
             _id
             title
             status
             coverImageLink
             description
-            users {
-              _id
-              privateEventTo
-              userId
-              status
-              createdAt
-              updatedAt
-              organizer
-            }
             eventLocation {
               latitude
               longitude
@@ -128,7 +113,7 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
         }
       """,
         variables: {
-          "input": getOnePrivateEventFilter.toMap(),
+          "filter": getOnePrivateEventFilter.toMap(),
         },
       );
 
@@ -150,8 +135,8 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
   }) async {
     try {
       final response = await graphQlDatasource.query("""
-        query FindPrivateEvents(\$input: FindPrivateEventsInput, \$limitOffsetFilterInput: LimitOffsetFilterInput!) {
-          findPrivateEvents(filter: \$input, limitOffsetFilterInput: \$limitOffsetFilterInput) {
+        query FindPrivateEvents(\$filter: FindPrivateEventsInput, \$limitOffsetInput: LimitOffsetInput!) {
+          findPrivateEvents(filter: \$filter, limitOffsetInput: \$limitOffsetInput) {
             _id
             status
             title
@@ -166,8 +151,8 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
           }
         }
       """, variables: {
-        "input": getPrivateEventsFilter?.toMap(),
-        "limitOffsetFilterInput": limitOffsetFilter.toMap(),
+        "filter": getPrivateEventsFilter?.toMap(),
+        "limitOffsetInput": limitOffsetFilter.toMap(),
       });
 
       if (response.hasException) {
@@ -215,15 +200,6 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
             status
             coverImageLink
             description
-            users {
-              _id
-              privateEventTo
-              userId
-              status
-              createdAt
-              updatedAt
-              organizer
-            }
             eventLocation {
               latitude
               longitude
@@ -262,12 +238,12 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
     try {
       final response = await graphQlDatasource.mutation(
         """
-          mutation DeletePrivateEvent(\$findOnePrivateEventInput: FindOnePrivateEventInput!) {
-            deletePrivateEvent(findOnePrivateEventInput: \$findOnePrivateEventInput)
+          mutation DeletePrivateEvent(\$filter: FindOnePrivateEventInput!) {
+            deletePrivateEvent(filter: \$filter)
           }
         """,
         variables: {
-          "findOnePrivateEventInput": getOnePrivateEventFilter.toMap(),
+          "filter": getOnePrivateEventFilter.toMap(),
         },
       );
 
@@ -351,6 +327,107 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
         ),
       );
     } catch (e) {
+      return Left(ServerFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, PrivateEventLeftUserEntity>>
+      deleteUserFromPrivateEventViaApi({
+    required GetOnePrivateEventUserFilter getOnePrivateEventUserFilter,
+  }) async {
+    try {
+      final response = await graphQlDatasource.mutation(
+        """
+          mutation DeleteUserFromPrivateEvent(\$filter: FindOnePrivateEventUserInput!) {
+            deleteUserFromPrivateEvent(filter: \$filter) {
+              _id
+              privateEventTo
+              userId
+              createdAt
+              updatedAt
+            }
+          }
+        """,
+        variables: {
+          "filter": getOnePrivateEventUserFilter.toMap(),
+        },
+      );
+
+      if (response.hasException) {
+        return Left(GeneralFailure());
+      }
+      return Right(
+        PrivateEventLeftUserModel.fromJson(
+          response.data!["deleteUserFromPrivateEvent"],
+        ),
+      );
+    } catch (e) {
+      return Left(ServerFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, GetAllPrivateEventUsersAndLeftUsers>>
+      getAllPrivateEventUsersAndLeftUsers({
+    required String privateEventId,
+  }) async {
+    try {
+      final response = await graphQlDatasource.query(
+        """
+          query GetAllPrivateEventUsersAndLeftUsers(\$privateEventId: String!, \$limitOffsetInput: LimitOffsetInput!) {   
+            findPrivateEventLeftUsers(privateEventId: \$privateEventId, limitOffsetInput: \$limitOffsetInput) {
+              _id
+              privateEventTo
+              userId
+              createdAt
+              updatedAt
+            }
+
+            findPrivateEventUsers(privateEventId: \$privateEventId, limitOffsetInput: \$limitOffsetInput) {
+              _id
+              privateEventTo
+              userId
+              status
+              createdAt
+              updatedAt
+              organizer
+            }
+          }
+        """,
+        variables: {
+          "privateEventId": privateEventId,
+          "limitOffsetInput": LimitOffsetFilter(limit: 1000, offset: 0).toMap(),
+        },
+      );
+
+      if (response.hasException) {
+        print(response.exception);
+
+        return Left(GeneralFailure());
+      }
+
+      final List<PrivateEventLeftUserEntity> privateEventLeftUsers = [];
+      for (var privateEventLeftUser
+          in response.data!["findPrivateEventLeftUsers"]) {
+        privateEventLeftUsers.add(
+          PrivateEventLeftUserModel.fromJson(privateEventLeftUser),
+        );
+      }
+
+      final List<PrivateEventUserEntity> privateEventUsers = [];
+      for (var privateEventUser in response.data!["findPrivateEventUsers"]) {
+        privateEventUsers.add(PrivateEventUserModel.fromJson(privateEventUser));
+      }
+
+      return Right(
+        GetAllPrivateEventUsersAndLeftUsers(
+          privateEventUsers: privateEventUsers,
+          privateEventLeftUsers: privateEventLeftUsers,
+        ),
+      );
+    } catch (e) {
+      print(e);
       return Left(ServerFailure());
     }
   }

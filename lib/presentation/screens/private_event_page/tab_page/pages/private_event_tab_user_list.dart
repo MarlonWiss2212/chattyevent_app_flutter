@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
-import 'package:social_media_app_flutter/presentation/widgets/screens/private_event_page/tab_user_list/private_event_tab_user_list_detail.dart';
+import 'package:social_media_app_flutter/presentation/widgets/screens/private_event_page/tab_users/private_event_tab_users_details.dart';
 
 class PrivateEventTabUserList extends StatelessWidget {
   const PrivateEventTabUserList({super.key});
@@ -22,9 +22,9 @@ class PrivateEventTabUserList extends StatelessWidget {
         ),
         CupertinoSliverRefreshControl(
           onRefresh: () => BlocProvider.of<CurrentPrivateEventCubit>(context)
-              .getPrivateEventUsersViaApi(),
+              .getPrivateEventUsersAndLeftUsersViaApi(),
         ),
-        const PrivateEventTabUserListDetail()
+        const PrivateEventTabUsersDetails()
       ],
     );
   }

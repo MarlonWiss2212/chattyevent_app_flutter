@@ -71,8 +71,8 @@ class UserRepositoryImpl implements UserRepository {
     try {
       final response = await graphQlDatasource.query(
         """
-        query FindUsers(\$input: FindUsersInput!, \$limitOffsetFilterInput: LimitOffsetFilterInput!) {
-          findUsers(filter: \$input, limitOffsetFilterInput: \$limitOffsetFilterInput) {
+        query FindUsers(\$input: FindUsersInput!, \$limitOffsetInput: LimitOffsetInput!) {
+          findUsers(filter: \$input, limitOffsetInput: \$limitOffsetInput) {
             _id
             authId
             username
@@ -86,7 +86,7 @@ class UserRepositoryImpl implements UserRepository {
         """,
         variables: {
           "input": getUsersFilter.toMap(),
-          "limitOffsetFilterInput": limitOffsetFilter.toMap(),
+          "limitOffsetInput": limitOffsetFilter.toMap(),
         },
       );
       if (response.hasException) {

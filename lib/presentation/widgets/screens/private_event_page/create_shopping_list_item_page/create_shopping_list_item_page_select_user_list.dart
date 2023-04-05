@@ -49,7 +49,7 @@ class CreateShoppingListItemPageSelectUserList extends StatelessWidget {
                 ),
                 onPressed: () =>
                     BlocProvider.of<CurrentPrivateEventCubit>(context)
-                        .setPrivateEventUsers(),
+                        .getPrivateEventUsersAndLeftUsersViaApi(),
               ),
             );
           }

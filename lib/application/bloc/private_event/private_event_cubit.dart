@@ -28,7 +28,6 @@ class PrivateEventCubit extends Cubit<PrivateEventState> {
       newPrivateEvents[foundIndex] = PrivateEventEntity.merge(
         newEntity: privateEvent,
         oldEntity: state.privateEvents[foundIndex],
-        mergeChatSetUsersFromOldEntity: mergeChatSetUsersFromOldEntity,
       );
       emitState(privateEvents: newPrivateEvents);
       return newPrivateEvents[foundIndex];

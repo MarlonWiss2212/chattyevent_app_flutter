@@ -5,7 +5,9 @@ import 'package:social_media_app_flutter/core/dto/private_event/update_private_e
 import 'package:social_media_app_flutter/core/dto/private_event/private_event_user/update_private_event_user_dto.dart';
 import 'package:social_media_app_flutter/core/filter/limit_offset_filter/limit_offset_filter.dart';
 import 'package:social_media_app_flutter/core/filter/private_event/private_event_user/get_one_private_event_user_filter.dart';
+import 'package:social_media_app_flutter/core/response/get-all-private-events-users-and-left-users.reponse.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
+import 'package:social_media_app_flutter/domain/entities/private_event/private_event_left_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_user_entity.dart';
 import 'package:social_media_app_flutter/core/failures/failures.dart';
 import 'package:social_media_app_flutter/core/filter/get_one_private_event_filter.dart';
@@ -27,6 +29,15 @@ abstract class PrivateEventRepository {
     required GetOnePrivateEventFilter getOnePrivateEventFilter,
   });
 
+  Future<Either<Failure, bool>> deletePrivateEventViaApi({
+    required GetOnePrivateEventFilter getOnePrivateEventFilter,
+  });
+
+  Future<Either<Failure, GetAllPrivateEventUsersAndLeftUsers>>
+      getAllPrivateEventUsersAndLeftUsers({
+    required String privateEventId,
+  });
+
   Future<Either<Failure, PrivateEventUserEntity>> addUserToPrivateEventViaApi({
     required CreatePrivateEventUserDto createPrivateEventUserDto,
   });
@@ -36,7 +47,8 @@ abstract class PrivateEventRepository {
     required GetOnePrivateEventUserFilter getOnePrivateEventUserFilter,
   });
 
-  Future<Either<Failure, bool>> deletePrivateEventViaApi({
-    required GetOnePrivateEventFilter getOnePrivateEventFilter,
+  Future<Either<Failure, PrivateEventLeftUserEntity>>
+      deleteUserFromPrivateEventViaApi({
+    required GetOnePrivateEventUserFilter getOnePrivateEventUserFilter,
   });
 }

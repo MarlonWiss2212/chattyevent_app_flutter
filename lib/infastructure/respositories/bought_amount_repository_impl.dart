@@ -57,8 +57,8 @@ class BoughtAmountRepositoryImpl implements BoughtAmountRepository {
     try {
       final response = await graphQlDatasource.mutation(
         """
-        query FindBoughtAmounts(\$findBoughtAmountsInput: FindBoughtAmountsInput!, \$limitOffsetFilterInput: LimitOffsetFilterInput!) {
-          findBoughtAmounts(findBoughtAmountsInput: \$findBoughtAmountsInput, limitOffsetFilterInput: \$limitOffsetFilterInput) {
+        query FindBoughtAmounts(\$findBoughtAmountsInput: FindBoughtAmountsInput!, \$limitOffsetInput: LimitOffsetInput!) {
+          findBoughtAmounts(findBoughtAmountsInput: \$findBoughtAmountsInput, limitOffsetInput: \$limitOffsetInput) {
             _id
             boughtAmount
             shoppingListItemId
@@ -70,7 +70,7 @@ class BoughtAmountRepositoryImpl implements BoughtAmountRepository {
       """,
         variables: {
           "findBoughtAmountsInput": getBoughtAmountsFilter.toMap(),
-          "limitOffsetFilterInput": limitOffsetFilter.toMap(),
+          "limitOffsetInput": limitOffsetFilter.toMap(),
         },
       );
 

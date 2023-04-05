@@ -65,7 +65,7 @@ class StandardShoppingListItemPage extends StatelessWidget {
 
               await Future.wait([
                 BlocProvider.of<CurrentPrivateEventCubit>(context)
-                    .getPrivateEventUsersViaApi(),
+                    .getPrivateEventUsersAndLeftUsersViaApi(),
                 BlocProvider.of<CurrentPrivateEventCubit>(context)
                     .getCurrentPrivateEvent(),
                 BlocProvider.of<CurrentShoppingListItemCubit>(context)

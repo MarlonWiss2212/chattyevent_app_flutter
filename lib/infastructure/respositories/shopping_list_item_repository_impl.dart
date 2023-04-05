@@ -64,8 +64,8 @@ class ShoppingListItemRepositoryImpl implements ShoppingListItemRepository {
     try {
       final response = await graphQlDatasource.query(
         """
-        query FindShoppingListItems(\$input: FindShoppingListItemsInput!, \$limitOffsetFilterInput: LimitOffsetFilterInput!) {
-          findShoppingListItems(findShoppingListItemsInput: \$input, limitOffsetFilterInput: \$limitOffsetFilterInput) {
+        query FindShoppingListItems(\$input: FindShoppingListItemsInput!, \$limitOffsetInput: LimitOffsetInput!) {
+          findShoppingListItems(findShoppingListItemsInput: \$input, limitOffsetInput: \$limitOffsetInput) {
             _id
             createdAt
             updatedAt
@@ -81,7 +81,7 @@ class ShoppingListItemRepositoryImpl implements ShoppingListItemRepository {
       """,
         variables: {
           "input": getShoppingListItemsFilter.toMap(),
-          "limitOffsetFilterInput": limitOffsetFilter.toMap(),
+          "limitOffsetInput": limitOffsetFilter.toMap(),
         },
       );
 

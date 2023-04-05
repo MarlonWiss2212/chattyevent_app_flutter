@@ -100,8 +100,8 @@ class UserRelationRepositoryImpl extends UserRelationRepository {
     try {
       final response = await graphQlDatasource.query(
         """
-        query FindFollowers(\$limitOffsetFilter: LimitOffsetFilterInput!, \$targetUserIdInput: TargetUserIdInput!) {
-          findFollowers(limitOffsetFilterInput: \$limitOffsetFilter, targetUserIdInput: \$targetUserIdInput) {
+        query FindFollowers(\$limitOffsetFilter: LimitOffsetInput!, \$targetUserIdInput: TargetUserIdInput!) {
+          findFollowers(limitOffsetInput: \$limitOffsetFilter, targetUserIdInput: \$targetUserIdInput) {
             _id
             authId
             username
@@ -144,8 +144,8 @@ class UserRelationRepositoryImpl extends UserRelationRepository {
     try {
       final response = await graphQlDatasource.query(
         """
-        query FindFollowRequests(\$limitOffsetFilter: LimitOffsetFilterInput!) {
-          findFollowRequests(limitOffsetFilterInput: \$limitOffsetFilter) {
+        query FindFollowRequests(\$limitOffsetFilter: LimitOffsetInput!) {
+          findFollowRequests(LimitOffsetInput: \$limitOffsetFilter) {
             _id
             authId
             username
@@ -188,8 +188,8 @@ class UserRelationRepositoryImpl extends UserRelationRepository {
     try {
       final response = await graphQlDatasource.query(
         """
-        query FindFollowed(\$requestUserIdInput: RequestUserIdInput!, \$limitOffsetFilter: LimitOffsetFilterInput!) {
-          findFollowed(requestUserIdInput: \$requestUserIdInput, limitOffsetFilterInput: \$limitOffsetFilter) {
+        query FindFollowed(\$requestUserIdInput: RequestUserIdInput!, \$limitOffsetFilter: LimitOffsetInput!) {
+          findFollowed(requestUserIdInput: \$requestUserIdInput, LimitOffsetInput: \$limitOffsetFilter) {
             _id
             authId
             username

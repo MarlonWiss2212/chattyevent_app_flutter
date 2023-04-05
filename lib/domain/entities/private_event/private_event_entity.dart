@@ -1,5 +1,4 @@
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_location_entity.dart';
-import 'package:social_media_app_flutter/domain/entities/private_event/private_event_user_entity.dart';
 
 class PrivateEventEntity {
   final String id;
@@ -7,7 +6,6 @@ class PrivateEventEntity {
   final String? description;
   final String? coverImageLink;
   final String? status;
-  final List<PrivateEventUserEntity>? users;
   final DateTime? eventDate;
   final DateTime? eventEndDate;
   final String? groupchatTo;
@@ -22,7 +20,6 @@ class PrivateEventEntity {
     this.status,
     this.description,
     this.coverImageLink,
-    this.users,
     this.eventDate,
     this.eventEndDate,
     this.groupchatTo,
@@ -35,36 +32,11 @@ class PrivateEventEntity {
   factory PrivateEventEntity.merge({
     required PrivateEventEntity newEntity,
     required PrivateEventEntity oldEntity,
-    bool mergeChatSetUsersFromOldEntity = false,
   }) {
-    List<PrivateEventUserEntity>? users =
-        mergeChatSetUsersFromOldEntity ? oldEntity.users : [];
-    if (newEntity.users != null) {
-      for (final newUser in newEntity.users!) {
-        if (users == null) {
-          users ??= [];
-          users.add(newUser);
-          continue;
-        }
-        final userIndex = users.indexWhere(
-          (element) => element.id == newUser.id,
-        );
-        if (userIndex == -1) {
-          users.add(newUser);
-        } else {
-          users[userIndex] = PrivateEventUserEntity.merge(
-            newEntity: newUser,
-            oldEntity: users[userIndex],
-          );
-        }
-      }
-    }
-
     return PrivateEventEntity(
       id: newEntity.id,
       title: newEntity.title ?? oldEntity.title,
       coverImageLink: newEntity.coverImageLink ?? oldEntity.coverImageLink,
-      users: users,
       eventDate: newEntity.eventDate ?? oldEntity.eventDate,
       eventEndDate: newEntity.eventEndDate ?? oldEntity.eventEndDate,
       groupchatTo: newEntity.groupchatTo ?? oldEntity.groupchatTo,

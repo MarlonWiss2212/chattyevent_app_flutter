@@ -28,6 +28,7 @@ class PrivateEventWrapperPage extends StatelessWidget {
     CurrentPrivateEventCubit currentPrivateEventCubit =
         CurrentPrivateEventCubit(
       CurrentPrivateEventState(
+        privateEventLeftUsers: [],
         currentUserIndex: -1,
         shoppingListItemStates: [],
         loadingShoppingList: false,
@@ -64,7 +65,7 @@ class PrivateEventWrapperPage extends StatelessWidget {
           BlocProvider.of<CurrentPrivateEventCubit>(context)
               .setCurrentChatFromChatCubit();
           BlocProvider.of<CurrentPrivateEventCubit>(context)
-              .getPrivateEventUsersViaApi();
+              .getPrivateEventUsersAndLeftUsersViaApi();
 
           if (privateEventToSet != null &&
               privateEventToSet!.groupchatTo == null &&
@@ -77,8 +78,6 @@ class PrivateEventWrapperPage extends StatelessWidget {
             BlocProvider.of<CurrentPrivateEventCubit>(context)
                 .getPrivateEventAndGroupchatFromApi();
           }
-          BlocProvider.of<CurrentPrivateEventCubit>(context)
-              .setPrivateEventUsers();
           return BlocListener<CurrentPrivateEventCubit,
               CurrentPrivateEventState>(
             listener: (context, state) async {

@@ -28,6 +28,7 @@ class ShoppingListItemWrapperPage extends StatelessWidget {
         CurrentPrivateEventCubit(
       CurrentPrivateEventState(
         currentUserIndex: -1,
+        privateEventLeftUsers: [],
         shoppingListItemStates: [],
         loadingShoppingList: false,
         privateEventUsers: const [],

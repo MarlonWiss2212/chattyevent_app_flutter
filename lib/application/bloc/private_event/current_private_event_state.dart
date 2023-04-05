@@ -21,6 +21,8 @@ class CurrentPrivateEventState {
   final ErrorWithTitleAndMessage? error;
 
   final List<UserWithPrivateEventUserData> privateEventUsers;
+  final List<LeftUserWithPrivateEventUserData> privateEventLeftUsers;
+
   final int currentUserIndex;
 
   UserWithPrivateEventUserData? getCurrentPrivateEventUser() {
@@ -34,6 +36,7 @@ class CurrentPrivateEventState {
     required this.currentUserIndex,
     required this.privateEvent,
     required this.privateEventUsers,
+    required this.privateEventLeftUsers,
     required this.shoppingListItemStates,
     required this.loadingShoppingList,
     this.chatState,
