@@ -91,9 +91,8 @@ class PrivateEventTabUsersUserListItem extends StatelessWidget {
             child: const Text("Kicken"),
             onTap: () {
               BlocProvider.of<CurrentPrivateEventCubit>(context)
-                  .updatePrivateEventUser(
+                  .deleteUserFromPrivateEventViaApi(
                 userId: privateEventUser.user.id,
-                status: "LEFT_EVENT",
               );
             },
           ),
