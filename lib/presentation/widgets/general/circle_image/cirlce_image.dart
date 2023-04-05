@@ -33,7 +33,6 @@ class CircleImage extends StatelessWidget {
         ? Container(
             height: height,
             width: width,
-            constraints: BoxConstraints(maxWidth: width, maxHeight: height),
             decoration: const BoxDecoration(
               shape: BoxShape.circle,
             ),

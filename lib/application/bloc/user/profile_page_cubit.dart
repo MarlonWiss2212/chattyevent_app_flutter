@@ -94,7 +94,8 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
       (users) {
         emitState(
           followersStatus: ProfilePageStateFollowersStatus.success,
-          followers: List.from(state.followers ?? [])..addAll(users),
+          followers: reload ? users : List.from(state.followers ?? [])
+            ..addAll(users),
         );
       },
     );
@@ -141,7 +142,8 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
       (users) {
         emitState(
           followRequestsStatus: ProfilePageStateFollowRequestsStatus.success,
-          followRequests: List.from(state.followRequests ?? [])..addAll(users),
+          followRequests: reload ? users : List.from(state.followRequests ?? [])
+            ..addAll(users),
         );
       },
     );
@@ -176,7 +178,8 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
       (users) {
         emitState(
           followedStatus: ProfilePageStateFollowedStatus.success,
-          followed: List.from(state.followed ?? [])..addAll(users),
+          followed: reload ? users : List.from(state.followed ?? [])
+            ..addAll(users),
         );
       },
     );

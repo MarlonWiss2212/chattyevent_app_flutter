@@ -10,6 +10,7 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:social_media_app_flutter/application/provider/darkMode.dart';
 import 'package:social_media_app_flutter/bloc_init.dart';
 import 'package:social_media_app_flutter/core/colors.dart';
@@ -52,14 +53,21 @@ Future<void> main() async {
   );
 
   runApp(
-    BlocProvider.value(
-      value: AuthCubit(
-        authState,
-        auth: di.serviceLocator(),
-        notificationUseCases: di.serviceLocator(),
-        userUseCases: di.serviceLocator(param1: authState),
-        authUseCases: di.serviceLocator(),
-      ),
+    MultiBlocProvider(
+      providers: [
+        BlocProvider.value(
+          value: AuthCubit(
+            authState,
+            auth: di.serviceLocator(),
+            notificationUseCases: di.serviceLocator(),
+            userUseCases: di.serviceLocator(param1: authState),
+            authUseCases: di.serviceLocator(),
+          ),
+        ),
+        BlocProvider.value(
+          value: NotificationCubit(),
+        ),
+      ],
       child: const BlocInit(),
     ),
   );
@@ -128,6 +136,7 @@ class _AppState extends State<App> {
             builder: (context, value, child) {
               return PlatformApp.router(
                 title: 'Social Media App',
+                routeInformationProvider: widget.appRouter.routeInfoProvider(),
                 routeInformationParser: widget.appRouter.defaultRouteParser(),
                 routerDelegate: widget.appRouter.delegate(),
                 builder: (context, widget) {

@@ -572,20 +572,36 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
         ),
       ),
       (shoppingListItems) {
-        replaceOrAddMultipleShoppingListItems(
-          shoppingListItemStates: shoppingListItems
-              .map(
-                (e) => CurrentShoppingListItemState(
-                  loadingShoppingListItem: false,
-                  loadingBoughtAmounts: false,
-                  shoppingListItem: e,
-                  boughtAmounts: [],
-                ),
-              )
-              .toList(),
-          addIfItsNotFound: true,
-        );
-        emitState(loadingShoppingList: false);
+        if (reload) {
+          emitState(
+            loadingShoppingList: false,
+            shoppingListItemStates: shoppingListItems
+                .map(
+                  (e) => CurrentShoppingListItemState(
+                    loadingShoppingListItem: false,
+                    loadingBoughtAmounts: false,
+                    shoppingListItem: e,
+                    boughtAmounts: [],
+                  ),
+                )
+                .toList(),
+          );
+        } else {
+          replaceOrAddMultipleShoppingListItems(
+            shoppingListItemStates: shoppingListItems
+                .map(
+                  (e) => CurrentShoppingListItemState(
+                    loadingShoppingListItem: false,
+                    loadingBoughtAmounts: false,
+                    shoppingListItem: e,
+                    boughtAmounts: [],
+                  ),
+                )
+                .toList(),
+            addIfItsNotFound: true,
+          );
+          emitState(loadingShoppingList: false);
+        }
       },
     );
   }

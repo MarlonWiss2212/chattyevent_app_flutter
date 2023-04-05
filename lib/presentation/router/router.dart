@@ -54,7 +54,7 @@ import 'package:social_media_app_flutter/presentation/screens/shopping_list_page
 import 'package:social_media_app_flutter/presentation/screens/verify_email_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/shopping_list_page/shopping_list_page.dart';
 
-@MaterialAutoRouter(
+@AdaptiveAutoRouter(
   routes: <AutoRoute>[
     AutoRoute(page: LoginPage, initial: false),
     AutoRoute(page: VerifyEmailPage, initial: false),
@@ -63,42 +63,7 @@ import 'package:social_media_app_flutter/presentation/screens/shopping_list_page
     AutoRoute(page: CreateUserPage, initial: false, guards: [AuthGuard]),
 
     //profile page
-    AutoRoute(
-      page: ProfileWrapperPage,
-      initial: false,
-      guards: [AuthGuard],
-      path: '/profile/:id',
-      children: [
-        AutoRoute(
-          page: ProfilePage,
-          guards: [AuthGuard],
-          path: '',
-        ),
-        AutoRoute(
-          page: ProfileUserRelationsTabPage,
-          guards: [AuthGuard],
-          path: 'user-relations',
-          children: [
-            AutoRoute(
-              page: ProfileFollowerTab,
-              guards: [AuthGuard],
-              path: 'follower',
-            ),
-            AutoRoute(
-              page: ProfileFollowedTab,
-              guards: [AuthGuard],
-              path: 'followed',
-            ),
-            AutoRoute(
-              page: ProfileFollowRequestsTab,
-              guards: [AuthGuard],
-              path: 'follow-requests',
-            ),
-          ],
-        ),
-        RedirectRoute(path: '*', redirectTo: '')
-      ],
-    ),
+    profileRouter,
 
     // settings page
     AutoRoute(
@@ -118,60 +83,7 @@ import 'package:social_media_app_flutter/presentation/screens/shopping_list_page
     ),
 
     // home page
-    AutoRoute(
-      page: HomePage,
-      initial: true,
-      guards: [AuthGuard],
-      path: '/',
-      children: [
-        AutoRoute(
-          page: HomeChatPage,
-          guards: [AuthGuard],
-          path: 'chats',
-          initial: true,
-        ),
-        AutoRoute(page: HomeEventPage, guards: [AuthGuard], path: 'events'),
-        AutoRoute(page: Location, guards: [AuthGuard], path: 'map'),
-        AutoRoute(page: HomeSearchPage, guards: [AuthGuard], path: 'search'),
-        AutoRoute(
-          page: HomeProfilePage,
-          guards: [AuthGuard],
-          path: 'current-profile/:id',
-          children: [
-            AutoRoute(
-              page: ProfilePage,
-              guards: [AuthGuard],
-              path: '',
-            ),
-            AutoRoute(
-              page: ProfileUserRelationsTabPage,
-              guards: [AuthGuard],
-              path: 'user-relations',
-              fullscreenDialog: true,
-              children: [
-                AutoRoute(
-                  page: ProfileFollowerTab,
-                  guards: [AuthGuard],
-                  path: 'follower',
-                ),
-                AutoRoute(
-                  page: ProfileFollowedTab,
-                  guards: [AuthGuard],
-                  path: 'followed',
-                ),
-                AutoRoute(
-                  page: ProfileFollowRequestsTab,
-                  guards: [AuthGuard],
-                  path: 'follow-requests',
-                ),
-              ],
-            ),
-            RedirectRoute(path: '*', redirectTo: '')
-          ],
-        ),
-        RedirectRoute(path: '*', redirectTo: 'chats')
-      ],
-    ),
+    homePageRouter,
 
     //Shopping List page
     AutoRoute(
@@ -383,3 +295,95 @@ import 'package:social_media_app_flutter/presentation/screens/shopping_list_page
   ],
 )
 class $AppRouter {}
+
+const profileRouter = AutoRoute(
+  page: ProfileWrapperPage,
+  initial: false,
+  guards: [AuthGuard],
+  path: '/profile/:id',
+  children: [
+    AutoRoute(
+      page: ProfilePage,
+      guards: [AuthGuard],
+      path: '',
+    ),
+    AutoRoute(
+      page: ProfileUserRelationsTabPage,
+      guards: [AuthGuard],
+      path: 'user-relations',
+      children: [
+        AutoRoute(
+          page: ProfileFollowerTab,
+          guards: [AuthGuard],
+          path: 'follower',
+        ),
+        AutoRoute(
+          page: ProfileFollowedTab,
+          guards: [AuthGuard],
+          path: 'followed',
+        ),
+        AutoRoute(
+          page: ProfileFollowRequestsTab,
+          guards: [AuthGuard],
+          path: 'follow-requests',
+        ),
+      ],
+    ),
+    RedirectRoute(path: '*', redirectTo: '')
+  ],
+);
+
+const homePageRouter = AutoRoute(
+  page: HomePage,
+  initial: true,
+  guards: [AuthGuard],
+  path: '/',
+  children: [
+    AutoRoute(
+      page: HomeChatPage,
+      guards: [AuthGuard],
+      path: 'chats',
+      initial: true,
+    ),
+    AutoRoute(page: HomeEventPage, guards: [AuthGuard], path: 'events'),
+    AutoRoute(page: Location, guards: [AuthGuard], path: 'map'),
+    AutoRoute(page: HomeSearchPage, guards: [AuthGuard], path: 'search'),
+    AutoRoute(
+      page: HomeProfilePage,
+      guards: [AuthGuard],
+      path: 'current-profile/:id',
+      children: [
+        AutoRoute(
+          page: ProfilePage,
+          guards: [AuthGuard],
+          path: '',
+        ),
+        AutoRoute(
+          page: ProfileUserRelationsTabPage,
+          guards: [AuthGuard],
+          path: 'user-relations',
+          fullscreenDialog: true,
+          children: [
+            AutoRoute(
+              page: ProfileFollowerTab,
+              guards: [AuthGuard],
+              path: 'follower',
+            ),
+            AutoRoute(
+              page: ProfileFollowedTab,
+              guards: [AuthGuard],
+              path: 'followed',
+            ),
+            AutoRoute(
+              page: ProfileFollowRequestsTab,
+              guards: [AuthGuard],
+              path: 'follow-requests',
+            ),
+          ],
+        ),
+        RedirectRoute(path: '*', redirectTo: '')
+      ],
+    ),
+    RedirectRoute(path: '*', redirectTo: 'chats')
+  ],
+);

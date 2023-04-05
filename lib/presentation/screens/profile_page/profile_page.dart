@@ -44,7 +44,7 @@ class ProfilePage extends StatelessWidget {
                 return SliverList(
                   delegate: SliverChildListDelegate(
                     const [
-                      ProfilePageCircleImage(),
+                      Center(child: ProfilePageCircleImage()),
                       SizedBox(height: 20),
                       ProfileFollowerCounts(),
                       SizedBox(height: 20),

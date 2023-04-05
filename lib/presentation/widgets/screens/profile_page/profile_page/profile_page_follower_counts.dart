@@ -32,7 +32,7 @@ class ProfileFollowerCounts extends StatelessWidget {
                     } else ...{
                       Text(
                         state.user.userRelationCounts?.followerCount
-                                .toString() ??
+                                ?.toString() ??
                             "0",
                       ),
                     },
@@ -62,7 +62,7 @@ class ProfileFollowerCounts extends StatelessWidget {
                     } else ...{
                       Text(
                         state.user.userRelationCounts?.followedCount
-                                .toString() ??
+                                ?.toString() ??
                             "0",
                       ),
                     },

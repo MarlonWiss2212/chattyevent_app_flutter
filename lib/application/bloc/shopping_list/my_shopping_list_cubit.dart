@@ -111,23 +111,39 @@ class MyShoppingListCubit extends Cubit<MyShoppingListState> {
         ),
       ),
       (shoppingListItems) {
-        replaceOrAddMultiple(
-          shoppingListItemStates: shoppingListItems
-              .map(
-                (e) => CurrentShoppingListItemState(
-                  loadingShoppingListItem: false,
-                  loadingBoughtAmounts: false,
-                  shoppingListItem: e,
-                  boughtAmounts: [],
-                ),
-              )
-              .toList(),
-          addIfItsNotFound: true,
-        );
-        emit(MyShoppingListState(
-          shoppingListItemStates: state.shoppingListItemStates,
-          loading: false,
-        ));
+        if (reload) {
+          emit(MyShoppingListState(
+            shoppingListItemStates: shoppingListItems
+                .map(
+                  (e) => CurrentShoppingListItemState(
+                    loadingShoppingListItem: false,
+                    loadingBoughtAmounts: false,
+                    shoppingListItem: e,
+                    boughtAmounts: [],
+                  ),
+                )
+                .toList(),
+            loading: false,
+          ));
+        } else {
+          replaceOrAddMultiple(
+            shoppingListItemStates: shoppingListItems
+                .map(
+                  (e) => CurrentShoppingListItemState(
+                    loadingShoppingListItem: false,
+                    loadingBoughtAmounts: false,
+                    shoppingListItem: e,
+                    boughtAmounts: [],
+                  ),
+                )
+                .toList(),
+            addIfItsNotFound: true,
+          );
+          emit(MyShoppingListState(
+            shoppingListItemStates: state.shoppingListItemStates,
+            loading: false,
+          ));
+        }
       },
     );
   }

@@ -16,52 +16,57 @@ class ProfileUserRelationsTabPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AuthCubit, AuthState>(
-      buildWhen: (previous, current) =>
-          previous.currentUser.id != current.currentUser.id,
       builder: (context, authState) {
-        return AutoTabsRouter.tabBar(
-          routes: [
-            const ProfileFollowerTabRoute(),
-            const ProfileFollowedTabRoute(),
-            if (userId == authState.currentUser.id || userId == null) ...{
-              const ProfileFollowRequestsTabRoute(),
-            }
-          ],
-          builder: (context, child, tabController) {
-            return Scaffold(
-              appBar: AppBar(
-                title: BlocBuilder<ProfilePageCubit, ProfilePageState>(
-                  buildWhen: (previous, current) {
-                    return previous.user.username != current.user.username;
-                  },
-                  builder: (context, state) {
-                    return Hero(
-                      tag: "${userId ?? state.user.id} username",
-                      child: Text(
-                        state.user.username ?? "Profilseite",
-                        style: Theme.of(context).textTheme.titleLarge,
-                      ),
-                    );
-                  },
-                ),
-                bottom: TabBar(
-                  controller: tabController,
-                  indicatorColor: Theme.of(context).colorScheme.primary,
-                  tabs: [
-                    const Tab(text: "Followers", icon: Icon(Icons.person)),
-                    const Tab(
-                        text: "Gefolgt", icon: Icon(Icons.person_2_outlined)),
-                    if (userId == authState.currentUser.id ||
-                        userId == null) ...{
-                      const Tab(
-                        text: "Anfragen",
-                        icon: Icon(Icons.front_hand),
-                      ),
-                    }
-                  ],
-                ),
-              ),
-              body: child,
+        return BlocBuilder<ProfilePageCubit, ProfilePageState>(
+          buildWhen: (p, c) => p.user.id != c.user.id,
+          builder: (context, state) {
+            return AutoTabsRouter.tabBar(
+              routes: [
+                const ProfileFollowerTabRoute(),
+                const ProfileFollowedTabRoute(),
+                if (state.user.id == authState.currentUser.id ||
+                    userId == null) ...{
+                  const ProfileFollowRequestsTabRoute(),
+                }
+              ],
+              builder: (context, child, tabController) {
+                return Scaffold(
+                  appBar: AppBar(
+                    title: BlocBuilder<ProfilePageCubit, ProfilePageState>(
+                      buildWhen: (previous, current) {
+                        return previous.user.username != current.user.username;
+                      },
+                      builder: (context, state) {
+                        return Hero(
+                          tag: "${userId ?? state.user.id} username",
+                          child: Text(
+                            state.user.username ?? "Profilseite",
+                            style: Theme.of(context).textTheme.titleLarge,
+                          ),
+                        );
+                      },
+                    ),
+                    bottom: TabBar(
+                      controller: tabController,
+                      indicatorColor: Theme.of(context).colorScheme.primary,
+                      tabs: [
+                        const Tab(text: "Followers", icon: Icon(Icons.person)),
+                        const Tab(
+                            text: "Gefolgt",
+                            icon: Icon(Icons.person_2_outlined)),
+                        if (state.user.id == authState.currentUser.id ||
+                            userId == null) ...{
+                          const Tab(
+                            text: "Anfragen",
+                            icon: Icon(Icons.front_hand),
+                          ),
+                        }
+                      ],
+                    ),
+                  ),
+                  body: child,
+                );
+              },
             );
           },
         );
