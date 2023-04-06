@@ -21,23 +21,7 @@ class ProfileFollowRequestsTab extends StatelessWidget {
             reload: true,
           ),
         ),
-        BlocConsumer<ProfilePageCubit, ProfilePageState>(
-          listener: (context, state) async {
-            if (state.followRequestsError != null &&
-                state.followRequestsStatus ==
-                    ProfilePageStateFollowRequestsStatus.error) {
-              return await showDialog(
-                context: context,
-                builder: (c) {
-                  return CustomAlertDialog(
-                    title: state.followRequestsError!.title,
-                    message: state.followRequestsError!.message,
-                    context: c,
-                  );
-                },
-              );
-            }
-          },
+        BlocBuilder<ProfilePageCubit, ProfilePageState>(
           builder: (context, state) {
             if (state.followRequests != null &&
                     state.followRequestsStatus ==

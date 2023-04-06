@@ -31,17 +31,6 @@ class ImagePickerList extends StatelessWidget {
       listener: (context, state) async {
         if (state is ImageLoaded) {
           imageChanged(state.image);
-        } else if (state is ImageError) {
-          return await showDialog(
-            context: context,
-            builder: (c) {
-              return CustomAlertDialog(
-                title: state.title,
-                message: state.message,
-                context: c,
-              );
-            },
-          );
         }
       },
       child: Container(

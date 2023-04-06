@@ -21,22 +21,7 @@ class ProfileFollowedTab extends StatelessWidget {
             reload: true,
           ),
         ),
-        BlocConsumer<ProfilePageCubit, ProfilePageState>(
-          listener: (context, state) async {
-            if (state.followedError != null &&
-                state.followedStatus == ProfilePageStateFollowedStatus.error) {
-              return await showDialog(
-                context: context,
-                builder: (c) {
-                  return CustomAlertDialog(
-                    title: state.followedError!.title,
-                    message: state.followedError!.message,
-                    context: c,
-                  );
-                },
-              );
-            }
-          },
+        BlocBuilder<ProfilePageCubit, ProfilePageState>(
           builder: (context, state) {
             if (state.followedStatus ==
                         ProfilePageStateFollowedStatus.loading &&

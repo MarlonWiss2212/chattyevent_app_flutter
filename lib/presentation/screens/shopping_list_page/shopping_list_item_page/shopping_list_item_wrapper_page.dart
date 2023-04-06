@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/shopping_list/current_shopping_list_item_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
 import 'package:social_media_app_flutter/core/injection.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
-import 'package:social_media_app_flutter/presentation/widgets/general/dialog/alert_dialog.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/shopping_list_item_page/standard_shopping_list_item_page/standard_shopping_list_item_wrapper_page.dart';
 
 class ShoppingListItemWrapperPage extends StatelessWidget {
@@ -43,6 +43,7 @@ class ShoppingListItemWrapperPage extends StatelessWidget {
       chatUseCases: serviceLocator(
         param1: BlocProvider.of<AuthCubit>(context).state,
       ),
+      notificationCubit: BlocProvider.of<NotificationCubit>(context),
       shoppingListItemUseCases: serviceLocator(
         param1: BlocProvider.of<AuthCubit>(context).state,
       ),
@@ -56,32 +57,10 @@ class ShoppingListItemWrapperPage extends StatelessWidget {
       providers: [
         BlocProvider.value(value: currentPrivateEventCubit),
       ],
-      child: Builder(
-        builder: (context) {
-          return BlocListener<CurrentPrivateEventCubit,
-              CurrentPrivateEventState>(
-            listener: (context, state) async {
-              if (state.status == CurrentPrivateEventStateStatus.error &&
-                  state.error != null) {
-                return await showDialog(
-                  context: context,
-                  builder: (c) {
-                    return CustomAlertDialog(
-                      message: state.error!.message,
-                      title: state.error!.title,
-                      context: c,
-                    );
-                  },
-                );
-              }
-            },
-            child: StandardShoppingListItemWrapperPage(
-              shoppingListItemId: shoppingListItemId,
-              setCurrentPrivateEvent: true,
-              shoppingListItemStateToSet: currentShoppingListItemStateToSet,
-            ),
-          );
-        },
+      child: StandardShoppingListItemWrapperPage(
+        shoppingListItemId: shoppingListItemId,
+        setCurrentPrivateEvent: true,
+        shoppingListItemStateToSet: currentShoppingListItemStateToSet,
       ),
     );
   }

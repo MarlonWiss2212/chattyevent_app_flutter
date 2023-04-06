@@ -2,8 +2,8 @@ import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:meta/meta.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:social_media_app_flutter/core/filter/limit_offset_filter/limit_offset_filter.dart';
-import 'package:social_media_app_flutter/domain/entities/error_with_title_and_message.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:social_media_app_flutter/core/failures/failures.dart';
 import 'package:social_media_app_flutter/domain/usecases/chat_usecases.dart';
@@ -12,8 +12,11 @@ part 'chat_state.dart';
 
 class ChatCubit extends Cubit<ChatState> {
   final ChatUseCases chatUseCases;
-  ChatCubit({required this.chatUseCases})
-      : super(const ChatState(
+  final NotificationCubit notificationCubit;
+  ChatCubit({
+    required this.chatUseCases,
+    required this.notificationCubit,
+  }) : super(const ChatState(
           chatStates: [],
         ));
 
@@ -61,8 +64,9 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   Future getChatsViaApi() async {
-    emit(ChatState(
-        chatStates: state.chatStates, status: ChatStateStatus.loading));
+    emit(
+      ChatState(chatStates: state.chatStates, status: ChatStateStatus.loading),
+    );
 
     final Either<Failure, List<GroupchatEntity>> groupchatsOrFailure =
         await chatUseCases.getGroupchatsViaApi(
@@ -73,14 +77,10 @@ class ChatCubit extends Cubit<ChatState> {
     );
 
     groupchatsOrFailure.fold(
-      (error) => emit(
-        ChatState(
-          chatStates: state.chatStates,
-          error: ErrorWithTitleAndMessage(
-            message: mapFailureToMessage(error),
-            title: "Fehler",
-          ),
-          status: ChatStateStatus.error,
+      (error) => notificationCubit.newAlert(
+        notificationAlert: NotificationAlert(
+          title: "Fehler Get Gruppenchats",
+          message: mapFailureToMessage(error),
         ),
       ),
       (groupchats) {

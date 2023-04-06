@@ -2,7 +2,9 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
+import 'package:social_media_app_flutter/presentation/widgets/general/dialog/alert_dialog.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/home_page/mini_profile_image.dart';
 
 class HomePage extends StatelessWidget {
@@ -24,7 +26,23 @@ class HomePage extends StatelessWidget {
         final TabsRouter tabsRouter = AutoTabsRouter.of(context);
 
         return Scaffold(
-          body: child,
+          body: BlocListener<NotificationCubit, NotificationState>(
+            listener: (context, state) async {
+              if (state is NotificationAlert) {
+                return await showDialog(
+                  context: context,
+                  builder: (c) {
+                    return CustomAlertDialog(
+                      title: state.title,
+                      message: state.message,
+                      context: c,
+                    );
+                  },
+                );
+              }
+            },
+            child: child,
+          ),
           bottomNavigationBar: BottomNavigationBar(
             currentIndex: tabsRouter.activeIndex,
             type: BottomNavigationBarType.fixed,

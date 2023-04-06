@@ -1,10 +1,9 @@
 part of 'add_groupchat_cubit.dart';
 
-enum AddGroupchatStateStatus { initial, loading, success, error }
+enum AddGroupchatStateStatus { initial, loading, success }
 
 class AddGroupchatState {
   final GroupchatEntity? addedChat;
-  final ErrorWithTitleAndMessage? error;
   final AddGroupchatStateStatus status;
 
   final String? title;
@@ -15,7 +14,6 @@ class AddGroupchatState {
 
   AddGroupchatState({
     this.addedChat,
-    this.error,
     this.status = AddGroupchatStateStatus.initial,
     this.title,
     this.profileImage,

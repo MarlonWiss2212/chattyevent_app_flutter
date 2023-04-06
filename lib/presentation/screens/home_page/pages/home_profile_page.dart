@@ -6,7 +6,6 @@ import 'package:social_media_app_flutter/application/bloc/notification/notificat
 import 'package:social_media_app_flutter/application/bloc/user/profile_page_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
 import 'package:social_media_app_flutter/core/injection.dart';
-import 'package:social_media_app_flutter/presentation/widgets/general/dialog/alert_dialog.dart';
 
 class HomeProfilePage extends StatelessWidget {
   final String? userId;
@@ -36,31 +35,14 @@ class HomeProfilePage extends StatelessWidget {
         userRelationUseCases: serviceLocator(
           param1: BlocProvider.of<AuthCubit>(context).state,
         ),
+        notificationCubit: BlocProvider.of<NotificationCubit>(context),
         userCubit: BlocProvider.of<UserCubit>(context),
         authCubit: BlocProvider.of<AuthCubit>(context),
       ),
       child: Builder(
         builder: (context) {
           BlocProvider.of<ProfilePageCubit>(context).getCurrentUserViaApi();
-
-          return BlocListener<ProfilePageCubit, ProfilePageState>(
-            listener: (context, state) async {
-              if (state.status == ProfilePageStateStatus.error &&
-                  state.error != null) {
-                return await showDialog(
-                  context: context,
-                  builder: (c) {
-                    return CustomAlertDialog(
-                      message: state.error!.message,
-                      title: state.error!.title,
-                      context: c,
-                    );
-                  },
-                );
-              }
-            },
-            child: const AutoRouter(),
-          );
+          return const AutoRouter();
         },
       ),
     );

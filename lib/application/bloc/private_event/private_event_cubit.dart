@@ -1,8 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:meta/meta.dart';
+import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:social_media_app_flutter/core/filter/limit_offset_filter/limit_offset_filter.dart';
-import 'package:social_media_app_flutter/domain/entities/error_with_title_and_message.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
 import 'package:social_media_app_flutter/core/failures/failures.dart';
 import 'package:social_media_app_flutter/domain/usecases/private_event_usecases.dart';
@@ -11,8 +11,11 @@ part 'private_event_state.dart';
 
 class PrivateEventCubit extends Cubit<PrivateEventState> {
   final PrivateEventUseCases privateEventUseCases;
+  final NotificationCubit notificationCubit;
+
   PrivateEventCubit({
     required this.privateEventUseCases,
+    required this.notificationCubit,
   }) : super(const PrivateEventState(privateEvents: []));
 
   PrivateEventEntity replaceOrAdd({
@@ -77,10 +80,8 @@ class PrivateEventCubit extends Cubit<PrivateEventState> {
     );
 
     privateEventOrFailure.fold(
-      (error) => emitState(
-        privateEvents: state.privateEvents,
-        status: PrivateEventStateStatus.error,
-        error: ErrorWithTitleAndMessage(
+      (error) => notificationCubit.newAlert(
+        notificationAlert: NotificationAlert(
           title: "Fehler",
           message: mapFailureToMessage(error),
         ),
@@ -99,12 +100,10 @@ class PrivateEventCubit extends Cubit<PrivateEventState> {
     List<PrivateEventEntity>? privateEvents,
     PrivateEventStateStatus? status,
     String? loadingForPrivateEventId,
-    ErrorWithTitleAndMessage? error,
   }) {
     emit(
       PrivateEventState(
         privateEvents: privateEvents ?? state.privateEvents,
-        error: error,
         status: status ?? PrivateEventStateStatus.initial,
       ),
     );

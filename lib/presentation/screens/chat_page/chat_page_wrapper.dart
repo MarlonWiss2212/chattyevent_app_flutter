@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
 import 'package:social_media_app_flutter/core/injection.dart';
 import 'package:social_media_app_flutter/presentation/widgets/general/dialog/alert_dialog.dart';
@@ -25,6 +26,7 @@ class ChatPageWrapper extends StatelessWidget {
     return BlocProvider(
       create: (context) => CurrentChatCubit(
         chatStateToSet,
+        notificationCubit: BlocProvider.of<NotificationCubit>(context),
         authCubit: BlocProvider.of<AuthCubit>(context),
         messageUseCases: serviceLocator(
           param1: BlocProvider.of<AuthCubit>(context).state,
@@ -38,35 +40,26 @@ class ChatPageWrapper extends StatelessWidget {
           param1: BlocProvider.of<AuthCubit>(context).state,
         ),
       ),
-      child: BlocListener<CurrentChatCubit, CurrentChatState>(
-        listener: (context, state) async {
-          if (state.currentUserLeftChat == true) {
-            AutoRouter.of(context).root.pop();
-          }
-          if (state.error != null && state.showError) {
-            return await showDialog(
-              context: context,
-              builder: (c) {
-                return CustomAlertDialog(
-                  title: state.error!.title,
-                  message: state.error!.message,
-                  context: c,
-                );
-              },
-            );
-          }
-        },
-        child: Builder(builder: (context) {
+      child: Builder(
+        builder: (context) {
           BlocProvider.of<CurrentChatCubit>(context).setGroupchatUsers();
-          // TODO too get the users from the api too but more efficient soon
           BlocProvider.of<CurrentChatCubit>(context).getGroupchatUsersViaApi();
-
           if (loadChatFromApiToo) {
             BlocProvider.of<CurrentChatCubit>(context).getCurrentChatViaApi();
           }
-
-          return const AutoRouter();
-        }),
+          return MultiBlocListener(
+            listeners: [
+              BlocListener<CurrentChatCubit, CurrentChatState>(
+                listener: (context, state) async {
+                  if (state.currentUserLeftChat == true) {
+                    AutoRouter.of(context).root.pop();
+                  }
+                },
+              ),
+            ],
+            child: const AutoRouter(),
+          );
+        },
       ),
     );
   }

@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:social_media_app_flutter/core/filter/limit_offset_filter/limit_offset_filter.dart';
 import 'package:social_media_app_flutter/core/filter/user_relation/find_one_user_relation_filter.dart';
 import 'package:social_media_app_flutter/domain/entities/error_with_title_and_message.dart';
@@ -13,14 +14,17 @@ import 'package:social_media_app_flutter/domain/usecases/user_usecases.dart';
 part 'user_search_state.dart';
 
 class UserSearchCubit extends Cubit<UserSearchState> {
-  final UserUseCases userUseCases;
   final AuthCubit authCubit;
+  final NotificationCubit notificationCubit;
+
+  final UserUseCases userUseCases;
   final UserRelationUseCases userRelationUseCases;
 
   UserSearchCubit({
     required this.userUseCases,
     required this.userRelationUseCases,
     required this.authCubit,
+    required this.notificationCubit,
   }) : super(UserSearchState(users: []));
 
   Future getUsersViaApi({
@@ -43,14 +47,10 @@ class UserSearchCubit extends Cubit<UserSearchState> {
     );
 
     userSearchOrFailure.fold(
-      (error) => emit(
-        UserSearchState(
-          users: state.users,
-          status: UserSearchStateStatus.error,
-          error: ErrorWithTitleAndMessage(
-            title: "Get Users Fehler",
-            message: mapFailureToMessage(error),
-          ),
+      (error) => notificationCubit.newAlert(
+        notificationAlert: NotificationAlert(
+          title: "Get Users Fehler",
+          message: mapFailureToMessage(error),
         ),
       ),
       (users) => emit(
@@ -70,10 +70,8 @@ class UserSearchCubit extends Cubit<UserSearchState> {
     );
 
     userRelationOrFailure.fold(
-      (error) => UserSearchState(
-        users: state.users,
-        status: UserSearchStateStatus.error,
-        error: ErrorWithTitleAndMessage(
+      (error) => notificationCubit.newAlert(
+        notificationAlert: NotificationAlert(
           title: "Follow Or Unfollow Failure",
           message: mapFailureToMessage(error),
         ),
@@ -104,6 +102,12 @@ class UserSearchCubit extends Cubit<UserSearchState> {
           },
           (boolean) {
             if (boolean == false) {
+              notificationCubit.newAlert(
+                notificationAlert: NotificationAlert(
+                  title: "Follow or Unfollow Fehler",
+                  message: "Fehler beim folgen oder entfolgen eines Users",
+                ),
+              );
               return;
             }
             List<UserEntity>? users = state.users;

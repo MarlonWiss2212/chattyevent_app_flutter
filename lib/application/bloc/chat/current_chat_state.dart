@@ -15,9 +15,6 @@ class CurrentChatState {
   final bool loadingChat;
   final bool loadingMessages;
 
-  final ErrorWithTitleAndMessage? error;
-  final bool showError;
-
   UserWithGroupchatUserData? getCurrentGroupchatUser() {
     if (currentUserIndex != -1) {
       return users[currentUserIndex];
@@ -26,8 +23,6 @@ class CurrentChatState {
   }
 
   const CurrentChatState({
-    this.error,
-    this.showError = false,
     required this.currentUserIndex,
     required this.currentUserLeftChat,
     required this.loadingPrivateEvents,
@@ -53,8 +48,6 @@ class CurrentChatState {
     bool? currentUserLeftChat,
     bool? loadingChat,
     bool? loadingMessages,
-    ErrorWithTitleAndMessage? error,
-    bool showError = false,
   }) {
     return CurrentChatState(
       currentUserIndex: currentUserIndex ?? oldState.currentUserIndex,
@@ -78,8 +71,6 @@ class CurrentChatState {
       loadingChat: loadingChat ?? oldState.loadingChat,
       users: users ?? oldState.users,
       leftUsers: leftUsers ?? oldState.leftUsers,
-      error: error ?? oldState.error,
-      showError: showError,
     );
   }
 }

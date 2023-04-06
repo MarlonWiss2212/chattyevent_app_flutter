@@ -39,22 +39,7 @@ class HomeChatPage extends StatelessWidget {
             onRefresh: () =>
                 BlocProvider.of<ChatCubit>(context).getChatsViaApi(),
           ),
-          BlocConsumer<ChatCubit, ChatState>(
-            listener: (context, state) async {
-              if (state.status == ChatStateStatus.error &&
-                  state.error != null) {
-                return await showDialog(
-                  context: context,
-                  builder: (c) {
-                    return CustomAlertDialog(
-                      message: state.error!.message,
-                      title: state.error!.title,
-                      context: c,
-                    );
-                  },
-                );
-              }
-            },
+          BlocBuilder<ChatCubit, ChatState>(
             builder: (context, state) {
               if (state.chatStates.isEmpty &&
                   state.status != ChatStateStatus.loading) {

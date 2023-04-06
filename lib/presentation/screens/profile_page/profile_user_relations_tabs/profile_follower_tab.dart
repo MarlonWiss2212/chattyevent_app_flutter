@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/profile_page_cubit.dart';
 import 'package:social_media_app_flutter/presentation/widgets/general/dialog/alert_dialog.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/profile_page/profile_user_relations_tabs/profile_followers_tab/profile_followers_tab_list_view.dart';
@@ -22,23 +21,7 @@ class ProfileFollowerTab extends StatelessWidget {
             reload: true,
           ),
         ),
-        BlocConsumer<ProfilePageCubit, ProfilePageState>(
-          listener: (context, state) async {
-            if (state.followersError != null &&
-                state.followersStatus ==
-                    ProfilePageStateFollowersStatus.error) {
-              return await showDialog(
-                context: context,
-                builder: (c) {
-                  return CustomAlertDialog(
-                    title: state.followersError!.title,
-                    message: state.followersError!.message,
-                    context: c,
-                  );
-                },
-              );
-            }
-          },
+        BlocBuilder<ProfilePageCubit, ProfilePageState>(
           builder: (context, state) {
             if (state.followersStatus ==
                         ProfilePageStateFollowersStatus.loading &&

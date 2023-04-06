@@ -7,12 +7,6 @@ class LocationInitial extends LocationState {}
 
 class LocationLoading extends LocationState {}
 
-class LocationError extends LocationState {
-  final String title;
-  final String message;
-  LocationError({required this.message, required this.title});
-}
-
 class LocationLoaded extends LocationState {
   final double lat;
   final double lng;

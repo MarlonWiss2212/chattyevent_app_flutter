@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:social_media_app_flutter/core/failures/location_failures.dart';
 import 'package:social_media_app_flutter/domain/usecases/location_usecases.dart';
 
@@ -7,8 +8,12 @@ part 'location_state.dart';
 
 class LocationCubit extends Cubit<LocationState> {
   final LocationUseCases locationUseCases;
+  final NotificationCubit notificationCubit;
 
-  LocationCubit({required this.locationUseCases}) : super(LocationInitial());
+  LocationCubit({
+    required this.locationUseCases,
+    required this.notificationCubit,
+  }) : super(LocationInitial());
 
   void reset() {
     emit(LocationInitial());
@@ -23,7 +28,12 @@ class LocationCubit extends Cubit<LocationState> {
     locationErrorOrLocation.fold(
       (failure) {
         final error = mapLocationFailureToErrorWithTitleAndMessage(failure);
-        emit(LocationError(message: error.message, title: error.title));
+        notificationCubit.newAlert(
+          notificationAlert: NotificationAlert(
+            title: error.title,
+            message: error.message,
+          ),
+        );
       },
       (location) {
         emit(

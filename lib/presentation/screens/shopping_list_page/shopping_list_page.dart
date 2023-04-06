@@ -36,91 +36,73 @@ class ShoppingListPage extends StatelessWidget {
             onRefresh: () => BlocProvider.of<MyShoppingListCubit>(context)
                 .getShoppingListViaApi(),
           ),
-          BlocListener<MyShoppingListCubit, MyShoppingListState>(
-            listener: (context, state) async {
-              if (state.error != null) {
-                return await showDialog(
-                  context: context,
-                  builder: (c) {
-                    return CustomAlertDialog(
-                      message: state.error!.message,
-                      title: state.error!.title,
-                      context: c,
-                    );
-                  },
+          BlocBuilder<MyShoppingListCubit, MyShoppingListState>(
+            builder: (context, state) {
+              if (state.loading == true &&
+                  state.shoppingListItemStates.isEmpty) {
+                return SliverFillRemaining(
+                  child: SkeletonListView(
+                    itemBuilder: (p0, p1) {
+                      return SkeletonListTile(
+                        hasSubtitle: true,
+                        hasLeading: false,
+                        titleStyle: const SkeletonLineStyle(
+                          width: double.infinity,
+                          height: 22,
+                        ),
+                        subtitleStyle: const SkeletonLineStyle(
+                          width: double.infinity,
+                          height: 16,
+                        ),
+                      );
+                    },
+                  ),
+                );
+              } else if (state.shoppingListItemStates.isEmpty) {
+                return const SliverFillRemaining(
+                  child: Center(
+                    child: Text("Keine Items die gekauft werden müssen"),
+                  ),
                 );
               }
-            },
-            child: BlocBuilder<MyShoppingListCubit, MyShoppingListState>(
-              builder: (context, state) {
-                if (state.loading == true &&
-                    state.shoppingListItemStates.isEmpty) {
-                  return SliverFillRemaining(
-                    child: SkeletonListView(
-                      itemBuilder: (p0, p1) {
-                        return SkeletonListTile(
-                          hasSubtitle: true,
-                          hasLeading: false,
-                          titleStyle: const SkeletonLineStyle(
-                            width: double.infinity,
-                            height: 22,
-                          ),
-                          subtitleStyle: const SkeletonLineStyle(
-                            width: double.infinity,
-                            height: 16,
+              final currentUser =
+                  BlocProvider.of<AuthCubit>(context).state.currentUser;
+              final filteredShoppingList = state.shoppingListItemStates
+                  .where(
+                    (element) =>
+                        element.shoppingListItem.userToBuyItem ==
+                        currentUser.id,
+                  )
+                  .toList();
+
+              return SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (context, index) {
+                    return ShoppingListItemTile(
+                      shoppingListItem:
+                          filteredShoppingList[index].shoppingListItem,
+                      userToBuyItem: UserWithPrivateEventUserData(
+                        user: currentUser,
+                        groupchatUser: GroupchatUserEntity(id: currentUser.id),
+                        privateEventUser:
+                            PrivateEventUserEntity(id: currentUser.id),
+                      ),
+                      onTap: () {
+                        AutoRouter.of(context).push(
+                          ShoppingListItemWrapperPageRoute(
+                            currentShoppingListItemStateToSet:
+                                filteredShoppingList[index],
+                            shoppingListItemId:
+                                filteredShoppingList[index].shoppingListItem.id,
                           ),
                         );
                       },
-                    ),
-                  );
-                } else if (state.shoppingListItemStates.isEmpty) {
-                  return const SliverFillRemaining(
-                    child: Center(
-                      child: Text("Keine Items die gekauft werden müssen"),
-                    ),
-                  );
-                }
-                final currentUser =
-                    BlocProvider.of<AuthCubit>(context).state.currentUser;
-                final filteredShoppingList = state.shoppingListItemStates
-                    .where(
-                      (element) =>
-                          element.shoppingListItem.userToBuyItem ==
-                          currentUser.id,
-                    )
-                    .toList();
-
-                return SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                    (context, index) {
-                      return ShoppingListItemTile(
-                        shoppingListItem:
-                            filteredShoppingList[index].shoppingListItem,
-                        userToBuyItem: UserWithPrivateEventUserData(
-                          user: currentUser,
-                          groupchatUser:
-                              GroupchatUserEntity(id: currentUser.id),
-                          privateEventUser:
-                              PrivateEventUserEntity(id: currentUser.id),
-                        ),
-                        onTap: () {
-                          AutoRouter.of(context).push(
-                            ShoppingListItemWrapperPageRoute(
-                              currentShoppingListItemStateToSet:
-                                  filteredShoppingList[index],
-                              shoppingListItemId: filteredShoppingList[index]
-                                  .shoppingListItem
-                                  .id,
-                            ),
-                          );
-                        },
-                      );
-                    },
-                    childCount: filteredShoppingList.length,
-                  ),
-                );
-              },
-            ),
+                    );
+                  },
+                  childCount: filteredShoppingList.length,
+                ),
+              );
+            },
           ),
         ],
       ),

@@ -6,8 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:social_media_app_flutter/core/injection.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
+import 'package:social_media_app_flutter/presentation/widgets/general/dialog/alert_dialog.dart';
 
 class VerifyEmailPage extends StatefulWidget {
   const VerifyEmailPage({super.key});
@@ -53,24 +55,40 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
           ),
         ],
       ),
-      body: Center(
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.email,
-                size: min(200, MediaQuery.of(context).size.width / 2),
-              ),
-              const SizedBox(height: 20),
-              PlatformElevatedButton(
-                child: const Text("Erneut Senden"),
-                onPressed: () {
-                  BlocProvider.of<AuthCubit>(context).sendEmailVerification();
-                },
-              ),
-            ],
+      body: BlocListener<NotificationCubit, NotificationState>(
+        listener: (context, state) async {
+          if (state is NotificationAlert) {
+            return await showDialog(
+              context: context,
+              builder: (c) {
+                return CustomAlertDialog(
+                  message: state.message,
+                  title: state.title,
+                  context: c,
+                );
+              },
+            );
+          }
+        },
+        child: Center(
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.email,
+                  size: min(200, MediaQuery.of(context).size.width / 2),
+                ),
+                const SizedBox(height: 20),
+                PlatformElevatedButton(
+                  child: const Text("Erneut Senden"),
+                  onPressed: () {
+                    BlocProvider.of<AuthCubit>(context).sendEmailVerification();
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),

@@ -4,6 +4,7 @@ import 'package:dartz/dartz.dart';
 import 'package:meta/meta.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
 import 'package:social_media_app_flutter/core/dto/groupchat/groupchat_user/create_groupchat_user_dto.dart';
 import 'package:social_media_app_flutter/core/dto/groupchat/update_groupchat_dto.dart';
@@ -34,6 +35,7 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
   final AuthCubit authCubit;
   final ChatCubit chatCubit;
   final UserCubit userCubit;
+  final NotificationCubit notificationCubit;
 
   final ChatUseCases chatUseCases;
   final MessageUseCases messageUseCases;
@@ -48,6 +50,7 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
     required this.privateEventUseCases,
     required this.chatCubit,
     required this.userCubit,
+    required this.notificationCubit,
     required this.chatUseCases,
   });
 
@@ -58,22 +61,22 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
       ),
     );
 
-    _subscription = subscription.listen((event) {
-      event.fold(
-        (error) => emit(CurrentChatState.merge(
-          oldState: state,
-          error: ErrorWithTitleAndMessage(
-            title: "Nachrichten error",
-            message:
-                "Fehler beim herstellen einer Verbindung um live nachrichten zu erhalten",
+    _subscription = subscription.listen(
+      (event) {
+        event.fold(
+          (error) => notificationCubit.newAlert(
+            notificationAlert: NotificationAlert(
+              title: "Nachrichten error",
+              message:
+                  "Fehler beim herstellen einer Verbindung um live nachrichten zu erhalten",
+            ),
           ),
-          showError: true,
-        )),
-        (message) => addMessage(
-          message: message,
-        ),
-      );
-    });
+          (message) => addMessage(
+            message: message,
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -155,17 +158,17 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
     );
 
     privateEventsOrFailure.fold(
-      (error) => emit(CurrentChatState.merge(
-        oldState: state,
-        error: ErrorWithTitleAndMessage(
-          title: "Get Future Private Evnts error",
-          message: mapFailureToMessage(
-            error,
+      (error) {
+        notificationCubit.newAlert(
+          notificationAlert: NotificationAlert(
+            title: "Get Future Private Events error",
+            message: mapFailureToMessage(error),
           ),
-        ),
-        loadingPrivateEvents: false,
-        showError: true,
-      )),
+        );
+        emit(
+          CurrentChatState.merge(oldState: state, loadingPrivateEvents: false),
+        );
+      },
       (privateEvents) {
         emit(CurrentChatState.merge(
           oldState: state,
@@ -224,15 +227,15 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
 
     groupchatOrFailure.fold(
       (error) {
-        emit(CurrentChatState.merge(
-          oldState: state,
-          error: ErrorWithTitleAndMessage(
-            title: "Fehler Get Chat",
+        notificationCubit.newAlert(
+          notificationAlert: NotificationAlert(
+            title: "Get Chats error",
             message: mapFailureToMessage(error),
           ),
-          showError: true,
-          loadingChat: false,
-        ));
+        );
+        emit(
+          CurrentChatState.merge(oldState: state, loadingChat: false),
+        );
       },
       (groupchat) async {
         emit(CurrentChatState.merge(
@@ -259,14 +262,14 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
     );
 
     groupchatOrFailure.fold(
-      (error) => emit(CurrentChatState.merge(
-        oldState: state,
-        showError: true,
-        error: ErrorWithTitleAndMessage(
+      (error) => notificationCubit.newAlert(
+        notificationAlert: NotificationAlert(
           title: "Update Chat Fehler",
-          message: mapFailureToMessage(error),
+          message: mapFailureToMessage(
+            error,
+          ),
         ),
-      )),
+      ),
       (groupchat) {
         emit(CurrentChatState.merge(
           currentChat: groupchat,
@@ -296,15 +299,13 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
 
     groupchatOrFailure.fold(
       (error) {
-        emit(CurrentChatState.merge(
-          oldState: state,
-          loadingChat: false,
-          error: ErrorWithTitleAndMessage(
+        notificationCubit.newAlert(
+          notificationAlert: NotificationAlert(
             title: "Fehler User hinzufügen",
             message: mapFailureToMessage(error),
           ),
-          showError: true,
-        ));
+        );
+        emit(CurrentChatState.merge(oldState: state, loadingChat: false));
       },
       (groupchatUser) {
         emit(CurrentChatState.merge(
@@ -341,14 +342,12 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
     );
 
     updatedUserOrFailure.fold(
-      (error) => emit(CurrentChatState.merge(
-        oldState: state,
-        error: ErrorWithTitleAndMessage(
-          title: "Fehler Update User",
+      (error) => notificationCubit.newAlert(
+        notificationAlert: NotificationAlert(
+          title: "Fehler Update Gruppenchat User",
           message: mapFailureToMessage(error),
         ),
-        showError: true,
-      )),
+      ),
       (groupchatUser) {
         List<GroupchatUserEntity> newGroupchatUsers =
             state.currentChat.users ?? [];
@@ -394,15 +393,15 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
 
     groupchatOrFailure.fold(
       (error) {
-        emit(CurrentChatState.merge(
-          oldState: state,
-          showError: true,
-          loadingChat: false,
-          error: ErrorWithTitleAndMessage(
-            title: "Fehler User Entfernen",
+        notificationCubit.newAlert(
+          notificationAlert: NotificationAlert(
+            title: "Fehler User entfernen",
             message: mapFailureToMessage(error),
           ),
-        ));
+        );
+        emit(
+          CurrentChatState.merge(oldState: state, loadingChat: false),
+        );
       },
       (groupchatLeftUser) {
         if (groupchatLeftUser == null ||
@@ -456,15 +455,15 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
 
     messagesOrFailure.fold(
       (error) {
-        emit(CurrentChatState.merge(
-          oldState: state,
-          showError: true,
-          loadingMessages: false,
-          error: ErrorWithTitleAndMessage(
+        notificationCubit.newAlert(
+          notificationAlert: NotificationAlert(
             title: "Fehler Nachrichten laden",
             message: mapFailureToMessage(error),
           ),
-        ));
+        );
+        emit(
+          CurrentChatState.merge(oldState: state, loadingMessages: false),
+        );
       },
       (messages) {
         emit(CurrentChatState.merge(

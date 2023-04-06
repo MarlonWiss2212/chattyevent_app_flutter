@@ -23,21 +23,7 @@ class Location extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Map'),
       ),
-      body: BlocConsumer<LocationCubit, LocationState>(
-        listener: (context, state) async {
-          if (state is LocationError) {
-            return await showDialog(
-              context: context,
-              builder: (c) {
-                return CustomAlertDialog(
-                  title: state.title,
-                  message: state.message,
-                  context: c,
-                );
-              },
-            );
-          }
-        },
+      body: BlocBuilder<LocationCubit, LocationState>(
         builder: (context, state) {
           MapOptions mapOptions = MapOptions(
             interactiveFlags: InteractiveFlag.doubleTapZoom |

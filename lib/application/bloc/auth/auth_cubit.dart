@@ -5,6 +5,7 @@ import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:social_media_app_flutter/core/failures/failures.dart';
 import 'package:social_media_app_flutter/core/filter/get_one_user_filter.dart';
 import 'package:social_media_app_flutter/core/injection.dart';
@@ -21,10 +22,12 @@ class AuthCubit extends Cubit<AuthState> {
   final FirebaseAuth auth;
   final AuthUseCases authUseCases;
   final NotificationUseCases notificationUseCases;
+  final NotificationCubit notificationCubit;
   UserUseCases userUseCases;
 
   AuthCubit(
     super.initialState, {
+    required this.notificationCubit,
     required this.auth,
     required this.authUseCases,
     required this.userUseCases,
@@ -44,12 +47,12 @@ class AuthCubit extends Cubit<AuthState> {
 
     await userOrFailure.fold(
       (error) {
-        emitState(
-          error: ErrorWithTitleAndMessage(
+        emitState(status: AuthStateStatus.createUserPage);
+        notificationCubit.newAlert(
+          notificationAlert: NotificationAlert(
             title: "Fehler Get Current User",
             message: mapFailureToMessage(error),
           ),
-          status: AuthStateStatus.error,
         );
       },
       (user) async {
@@ -72,11 +75,10 @@ class AuthCubit extends Cubit<AuthState> {
     );
 
     authUserOrFailureString.fold(
-      (errorMsg) => emitState(
-        status: AuthStateStatus.error,
-        error: ErrorWithTitleAndMessage(
-          message: errorMsg,
+      (errorMsg) => notificationCubit.newAlert(
+        notificationAlert: NotificationAlert(
           title: "Login Fehler",
+          message: errorMsg,
         ),
       ),
       (authUser) async {
@@ -103,11 +105,10 @@ class AuthCubit extends Cubit<AuthState> {
     );
 
     authUserOrFailureString.fold(
-      (errorMsg) => emitState(
-        status: AuthStateStatus.error,
-        error: ErrorWithTitleAndMessage(
+      (errorMsg) => notificationCubit.newAlert(
+        notificationAlert: NotificationAlert(
+          title: "Fehler Get Current User",
           message: errorMsg,
-          title: "Registrier Fehler",
         ),
       ),
       (authUser) async {
@@ -127,12 +128,11 @@ class AuthCubit extends Cubit<AuthState> {
         await authUseCases.sendEmailVerification();
 
     sendEmailOrFailure.fold(
-      (error) => emitState(
-        error: ErrorWithTitleAndMessage(
-          title: "Fehler Senden der Email",
+      (error) => notificationCubit.newAlert(
+        notificationAlert: NotificationAlert(
+          title: "Fehler senden der E-Mail",
           message: mapFailureToMessage(error),
         ),
-        status: AuthStateStatus.error,
       ),
       (worked) {
         emitState(
@@ -151,12 +151,11 @@ class AuthCubit extends Cubit<AuthState> {
         await authUseCases.sendResetPasswordEmail(email: email);
 
     sendEmailOrFailure.fold(
-      (error) => emitState(
-        error: ErrorWithTitleAndMessage(
-          title: "Fehler Senden der Passwort Email",
+      (error) => notificationCubit.newAlert(
+        notificationAlert: NotificationAlert(
+          title: "Fehler senden der Passwort E-Mail",
           message: mapFailureToMessage(error),
         ),
-        status: AuthStateStatus.error,
       ),
       (worked) {
         emitState(
@@ -177,12 +176,11 @@ class AuthCubit extends Cubit<AuthState> {
         .updatePassword(password: password, verfiyPassword: verifyPassword);
 
     updatedPassowrdOrFailure.fold(
-      (error) => emitState(
-        error: ErrorWithTitleAndMessage(
+      (error) => notificationCubit.newAlert(
+        notificationAlert: NotificationAlert(
           title: "Fehler Update Passwort",
           message: mapFailureToMessage(error),
         ),
-        status: AuthStateStatus.error,
       ),
       (worked) {
         emitState(
@@ -204,14 +202,12 @@ class AuthCubit extends Cubit<AuthState> {
 
   void emitState({
     AuthStateStatus? status,
-    ErrorWithTitleAndMessage? error,
     String? token,
     UserEntity? currentUser,
     bool? sendedResetPasswordEmail,
     bool? sendedVerificationEmail,
   }) {
     emit(AuthState(
-      error: error ?? state.error,
       status: status ?? AuthStateStatus.initial,
       token: token ?? state.token,
       currentUser: currentUser ?? state.currentUser,

@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:meta/meta.dart';
+import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/shopping_list/current_shopping_list_item_cubit.dart';
 import 'package:social_media_app_flutter/core/filter/limit_offset_filter/limit_offset_filter.dart';
 import 'package:social_media_app_flutter/domain/entities/error_with_title_and_message.dart';
@@ -13,9 +14,11 @@ part 'my_shopping_list_state.dart';
 
 class MyShoppingListCubit extends Cubit<MyShoppingListState> {
   final ShoppingListItemUseCases shoppingListItemUseCases;
+  final NotificationCubit notificationCubit;
 
   MyShoppingListCubit({
     required this.shoppingListItemUseCases,
+    required this.notificationCubit,
   }) : super(const MyShoppingListState(shoppingListItemStates: []));
 
   CurrentShoppingListItemState replaceOrAdd({
@@ -100,16 +103,20 @@ class MyShoppingListCubit extends Cubit<MyShoppingListState> {
     );
 
     shoppingListItemsOrFailure.fold(
-      (error) => emit(
-        MyShoppingListState(
-          shoppingListItemStates: state.shoppingListItemStates,
-          loading: false,
-          error: ErrorWithTitleAndMessage(
-            message: mapFailureToMessage(error),
+      (error) {
+        notificationCubit.newAlert(
+          notificationAlert: NotificationAlert(
             title: "Lade Fehler",
+            message: mapFailureToMessage(error),
           ),
-        ),
-      ),
+        );
+        emit(
+          MyShoppingListState(
+            shoppingListItemStates: state.shoppingListItemStates,
+            loading: false,
+          ),
+        );
+      },
       (shoppingListItems) {
         if (reload) {
           emit(MyShoppingListState(

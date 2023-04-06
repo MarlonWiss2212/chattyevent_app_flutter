@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/private_event_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/shopping_list/my_shopping_list_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
 import 'package:social_media_app_flutter/core/injection.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
@@ -43,6 +43,7 @@ class PrivateEventWrapperPage extends StatelessWidget {
       authCubit: BlocProvider.of<AuthCubit>(context),
       userCubit: BlocProvider.of<UserCubit>(context),
       chatCubit: BlocProvider.of<ChatCubit>(context),
+      notificationCubit: BlocProvider.of<NotificationCubit>(context),
       locationUseCases: serviceLocator(),
       chatUseCases: serviceLocator(
         param1: BlocProvider.of<AuthCubit>(context).state,
@@ -78,26 +79,16 @@ class PrivateEventWrapperPage extends StatelessWidget {
             BlocProvider.of<CurrentPrivateEventCubit>(context)
                 .getPrivateEventAndGroupchatFromApi();
           }
-          return BlocListener<CurrentPrivateEventCubit,
-              CurrentPrivateEventState>(
-            listener: (context, state) async {
-              if (state.status == CurrentPrivateEventStateStatus.deleted) {
-                AutoRouter.of(context).pop();
-              }
-              if (state.status == CurrentPrivateEventStateStatus.error &&
-                  state.error != null) {
-                return await showDialog(
-                  context: context,
-                  builder: (c) {
-                    return CustomAlertDialog(
-                      message: state.error!.message,
-                      title: state.error!.title,
-                      context: c,
-                    );
-                  },
-                );
-              }
-            },
+          return MultiBlocListener(
+            listeners: [
+              BlocListener<CurrentPrivateEventCubit, CurrentPrivateEventState>(
+                listener: (context, state) async {
+                  if (state.status == CurrentPrivateEventStateStatus.deleted) {
+                    AutoRouter.of(context).pop();
+                  }
+                },
+              ),
+            ],
             child: const AutoRouter(),
           );
         },

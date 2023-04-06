@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/location/location_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_search_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/private_event_cubit.dart';
@@ -21,8 +22,7 @@ class BlocInit extends StatelessWidget {
 
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
-        if (state.currentUser.id == "" &&
-            state.status == AuthStateStatus.error) {
+        if (state.status == AuthStateStatus.createUserPage) {
           appRouter.replace(const CreateUserPageRoute());
         }
       },
@@ -30,31 +30,46 @@ class BlocInit extends StatelessWidget {
         ..setCurrentUserFromFirebaseViaApi(),
       buildWhen: (previous, current) => previous.token != current.token,
       builder: (context, state) {
+        final notificationCubit = BlocProvider.of<NotificationCubit>(context);
         return MultiBlocProvider(
           providers: [
             BlocProvider.value(
-              value: UserCubit(userUseCases: serviceLocator(param1: state)),
+              value: UserCubit(
+                userUseCases: serviceLocator(param1: state),
+                notificationCubit: notificationCubit,
+              ),
             ),
             BlocProvider.value(
               value: UserSearchCubit(
                 authCubit: BlocProvider.of<AuthCubit>(context),
                 userRelationUseCases: serviceLocator(param1: state),
                 userUseCases: serviceLocator(param1: state),
+                notificationCubit: notificationCubit,
               ),
             ),
             BlocProvider.value(
               value: PrivateEventCubit(
                 privateEventUseCases: serviceLocator(param1: state),
+                notificationCubit: notificationCubit,
               ),
             ),
             BlocProvider.value(
-              value: ChatCubit(chatUseCases: serviceLocator(param1: state)),
+              value: ChatCubit(
+                chatUseCases: serviceLocator(param1: state),
+                notificationCubit: notificationCubit,
+              ),
             ),
             BlocProvider.value(
-              value: LocationCubit(locationUseCases: serviceLocator()),
+              value: LocationCubit(
+                locationUseCases: serviceLocator(),
+                notificationCubit: notificationCubit,
+              ),
             ),
             BlocProvider.value(
-              value: ImageCubit(imagePickerUseCases: serviceLocator()),
+              value: ImageCubit(
+                imagePickerUseCases: serviceLocator(),
+                notificationCubit: notificationCubit,
+              ),
             ),
           ],
           child: App(authState: state, appRouter: appRouter),

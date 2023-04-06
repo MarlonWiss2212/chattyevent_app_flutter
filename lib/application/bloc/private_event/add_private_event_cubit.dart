@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:meta/meta.dart';
+import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/private_event_cubit.dart';
 import 'package:social_media_app_flutter/core/dto/private_event/create_location_private_event_dto.dart';
 import 'package:social_media_app_flutter/core/dto/private_event/create_private_event_dto.dart';
@@ -18,10 +19,12 @@ part 'add_private_event_state.dart';
 class AddPrivateEventCubit extends Cubit<AddPrivateEventState> {
   final PrivateEventCubit privateEventCubit;
   final PrivateEventUseCases privateEventUseCases;
+  final NotificationCubit notificationCubit;
 
   AddPrivateEventCubit({
     required this.privateEventUseCases,
     required this.privateEventCubit,
+    required this.notificationCubit,
   }) : super(AddPrivateEventState(
           isGroupchatEvent: false,
           privateEventUsersDto: [],
@@ -31,9 +34,8 @@ class AddPrivateEventCubit extends Cubit<AddPrivateEventState> {
     if (state.coverImage == null ||
         state.title == null ||
         state.eventDate == null) {
-      return emitState(
-        status: AddPrivateEventStateStatus.error,
-        error: ErrorWithTitleAndMessage(
+      return notificationCubit.newAlert(
+        notificationAlert: NotificationAlert(
           title: "Fehler",
           message: "Bitte fülle alle verpflichtenen Felder aus",
         ),
@@ -72,15 +74,12 @@ class AddPrivateEventCubit extends Cubit<AddPrivateEventState> {
     );
 
     privateEventOrFailure.fold(
-      (error) {
-        emitState(
-          error: ErrorWithTitleAndMessage(
-            title: "Fehler",
-            message: mapFailureToMessage(error),
-          ),
-          status: AddPrivateEventStateStatus.error,
-        );
-      },
+      (error) => notificationCubit.newAlert(
+        notificationAlert: NotificationAlert(
+          title: "Fehler",
+          message: mapFailureToMessage(error),
+        ),
+      ),
       (privateEvent) {
         emit(AddPrivateEventState(
           privateEventUsersDto: [],
@@ -143,7 +142,6 @@ class AddPrivateEventCubit extends Cubit<AddPrivateEventState> {
     String? housenumber,
     bool? isGroupchatEvent,
     AddPrivateEventStateStatus? status,
-    ErrorWithTitleAndMessage? error,
     PrivateEventEntity? addedPrivateEvent,
   }) {
     emit(AddPrivateEventState(
@@ -163,7 +161,6 @@ class AddPrivateEventCubit extends Cubit<AddPrivateEventState> {
       street: street ?? state.street,
       housenumber: housenumber ?? state.housenumber,
       status: status ?? AddPrivateEventStateStatus.initial,
-      error: error ?? state.error,
       addedPrivateEvent: addedPrivateEvent,
     ));
   }

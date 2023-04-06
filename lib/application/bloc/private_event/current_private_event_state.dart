@@ -1,12 +1,6 @@
 part of 'current_private_event_cubit.dart';
 
-enum CurrentPrivateEventStateStatus {
-  initial,
-  success,
-  error,
-  deleted,
-  updated
-}
+enum CurrentPrivateEventStateStatus { initial, success, deleted, updated }
 
 class CurrentPrivateEventState {
   final PrivateEventEntity privateEvent;
@@ -18,7 +12,6 @@ class CurrentPrivateEventState {
   final bool loadingShoppingList;
 
   final CurrentPrivateEventStateStatus status;
-  final ErrorWithTitleAndMessage? error;
 
   final List<UserWithPrivateEventUserData> privateEventUsers;
   final List<LeftUserWithPrivateEventUserData> privateEventLeftUsers;
@@ -43,6 +36,5 @@ class CurrentPrivateEventState {
     required this.loadingPrivateEvent,
     required this.loadingGroupchat,
     this.status = CurrentPrivateEventStateStatus.initial,
-    this.error,
   });
 }

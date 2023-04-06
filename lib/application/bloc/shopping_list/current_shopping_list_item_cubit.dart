@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:meta/meta.dart';
+import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/shopping_list/my_shopping_list_cubit.dart';
 import 'package:social_media_app_flutter/core/dto/bought_amount/create_bought_amount_dto.dart';
@@ -11,7 +12,6 @@ import 'package:social_media_app_flutter/core/filter/get_bought_amounts_filter.d
 import 'package:social_media_app_flutter/core/filter/get_one_shopping_list_item_filter.dart';
 import 'package:social_media_app_flutter/core/filter/limit_offset_filter/limit_offset_filter.dart';
 import 'package:social_media_app_flutter/domain/entities/bought_amount_entity.dart';
-import 'package:social_media_app_flutter/domain/entities/error_with_title_and_message.dart';
 import 'package:social_media_app_flutter/domain/entities/shopping_list_item/shopping_list_item_entity.dart';
 import 'package:social_media_app_flutter/domain/usecases/bought_amount_usecases.dart';
 import 'package:social_media_app_flutter/domain/usecases/shopping_list_item_usecases.dart';
@@ -19,17 +19,16 @@ import 'package:social_media_app_flutter/domain/usecases/shopping_list_item_usec
 part 'current_shopping_list_item_state.dart';
 
 class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
-  /// to replace shopping list items
+  final NotificationCubit notificationCubit;
   final Either<MyShoppingListCubit, CurrentPrivateEventCubit>
       shoppingListCubitOrPrivateEventCubit;
-
-  /// in future save current private event in this cubit
 
   final ShoppingListItemUseCases shoppingListItemUseCases;
   final BoughtAmountUseCases boughtAmountUseCases;
 
   CurrentShoppingListItemCubit(
     super.initialState, {
+    required this.notificationCubit,
     required this.boughtAmountUseCases,
     required this.shoppingListCubitOrPrivateEventCubit,
     required this.shoppingListItemUseCases,
@@ -46,14 +45,13 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
 
     shoppingListItemOrFailure.fold(
       (error) {
-        emitState(
-          status: CurrentShoppingListItemStateStatus.error,
-          error: ErrorWithTitleAndMessage(
+        notificationCubit.newAlert(
+          notificationAlert: NotificationAlert(
             title: "Get Fehler",
             message: mapFailureToMessage(error),
           ),
-          loadingShoppingListItem: false,
         );
+        emitState(loadingShoppingListItem: false);
       },
       (shoppingListItem) {
         emitState(
@@ -86,15 +84,12 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
     );
 
     shoppingListItemOrFailure.fold(
-      (error) {
-        emitState(
-          status: CurrentShoppingListItemStateStatus.error,
-          error: ErrorWithTitleAndMessage(
-            title: "Update Fehler",
-            message: mapFailureToMessage(error),
-          ),
-        );
-      },
+      (error) => notificationCubit.newAlert(
+        notificationAlert: NotificationAlert(
+          title: "Update Fehler",
+          message: mapFailureToMessage(error),
+        ),
+      ),
       (shoppingListItem) {
         emitState(
           shoppingListItem: shoppingListItem,
@@ -122,15 +117,12 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
     );
 
     deletedOrFailure.fold(
-      (error) {
-        emitState(
-          status: CurrentShoppingListItemStateStatus.error,
-          error: ErrorWithTitleAndMessage(
-            title: "Delete Fehler",
-            message: mapFailureToMessage(error),
-          ),
-        );
-      },
+      (error) => notificationCubit.newAlert(
+        notificationAlert: NotificationAlert(
+          title: "Delete Fehler",
+          message: mapFailureToMessage(error),
+        ),
+      ),
       (deleted) {
         if (deleted) {
           emitState(status: CurrentShoppingListItemStateStatus.deleted);
@@ -168,14 +160,15 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
     );
 
     boughtAmountOrFailure.fold(
-      (error) => emitState(
-        status: CurrentShoppingListItemStateStatus.error,
-        error: ErrorWithTitleAndMessage(
-          title: "Get Bought Amounts Error",
-          message: mapFailureToMessage(error),
-        ),
-        loadingBoughtAmounts: false,
-      ),
+      (error) {
+        notificationCubit.newAlert(
+          notificationAlert: NotificationAlert(
+            title: "Get Bought Amounst Fehler",
+            message: mapFailureToMessage(error),
+          ),
+        );
+        emitState(loadingBoughtAmounts: false);
+      },
       (boughtAmounts) {
         List<BoughtAmountEntity> newBoughtAmounts =
             reload ? boughtAmounts : List.from(state.boughtAmounts)
@@ -212,10 +205,9 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
     );
 
     boughtAmountOrFailure.fold(
-      (error) => emitState(
-        status: CurrentShoppingListItemStateStatus.error,
-        error: ErrorWithTitleAndMessage(
-          title: "Create Bought Amount Error",
+      (error) => notificationCubit.newAlert(
+        notificationAlert: NotificationAlert(
+          title: "Create Bought Amount Fehler",
           message: mapFailureToMessage(error),
         ),
       ),
@@ -262,10 +254,9 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
     );
 
     boughtAmountOrFailure.fold(
-      (error) => emitState(
-        status: CurrentShoppingListItemStateStatus.error,
-        error: ErrorWithTitleAndMessage(
-          title: "Update Bought Amount Error",
+      (error) => notificationCubit.newAlert(
+        notificationAlert: NotificationAlert(
+          title: "Update Bought Amount Fehler",
           message: mapFailureToMessage(error),
         ),
       ),
@@ -300,10 +291,9 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
     );
 
     boughtAmountOrFailure.fold(
-      (error) => emitState(
-        status: CurrentShoppingListItemStateStatus.error,
-        error: ErrorWithTitleAndMessage(
-          title: "Delete Bought Amount Error",
+      (error) => notificationCubit.newAlert(
+        notificationAlert: NotificationAlert(
+          title: "Delete Bought Amount Fehler",
           message: mapFailureToMessage(error),
         ),
       ),
@@ -334,7 +324,6 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
     bool? loadingShoppingListItem,
     bool? loadingBoughtAmounts,
     CurrentShoppingListItemStateStatus? status,
-    ErrorWithTitleAndMessage? error,
     List<BoughtAmountEntity>? boughtAmounts,
   }) {
     emit(CurrentShoppingListItemState(
@@ -344,7 +333,6 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
       loadingBoughtAmounts: loadingBoughtAmounts ?? state.loadingBoughtAmounts,
       loadingShoppingListItem:
           loadingShoppingListItem ?? state.loadingShoppingListItem,
-      error: error ?? state.error,
     ));
   }
 }

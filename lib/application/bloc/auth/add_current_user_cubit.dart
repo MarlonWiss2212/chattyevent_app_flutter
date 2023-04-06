@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:meta/meta.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:social_media_app_flutter/core/dto/user/create_user_dto.dart';
 import 'package:social_media_app_flutter/core/failures/failures.dart';
 import 'package:social_media_app_flutter/domain/entities/error_with_title_and_message.dart';
@@ -15,9 +16,11 @@ part 'add_current_user_state.dart';
 class AddCurrentUserCubit extends Cubit<AddCurrentUserState> {
   final UserUseCases userUseCases;
   final AuthCubit authCubit;
+  final NotificationCubit notificationCubit;
 
   AddCurrentUserCubit({
     required this.userUseCases,
+    required this.notificationCubit,
     required this.authCubit,
   }) : super(AddCurrentUserState());
 
@@ -28,12 +31,11 @@ class AddCurrentUserCubit extends Cubit<AddCurrentUserState> {
         state.lastname == null ||
         state.username == null ||
         state.birthdate == null) {
-      emitState(
-        error: ErrorWithTitleAndMessage(
+      notificationCubit.newAlert(
+        notificationAlert: NotificationAlert(
           title: "Ausfüll Fehler",
           message: "Fülle bitte erst alle Felder aus",
         ),
-        status: AddCurrentUserStateStatus.error,
       );
     }
 
@@ -49,12 +51,11 @@ class AddCurrentUserCubit extends Cubit<AddCurrentUserState> {
     );
 
     userOrFailure.fold(
-      (error) => emitState(
-        error: ErrorWithTitleAndMessage(
+      (error) => notificationCubit.newAlert(
+        notificationAlert: NotificationAlert(
           title: "Fehler Create User",
           message: mapFailureToMessage(error),
         ),
-        status: AddCurrentUserStateStatus.error,
       ),
       (user) {
         authCubit.emitState(
@@ -84,7 +85,6 @@ class AddCurrentUserCubit extends Cubit<AddCurrentUserState> {
       lastname: lastname ?? state.lastname,
       username: username ?? state.username,
       birthdate: birthdate ?? state.birthdate,
-      error: error ?? state.error,
       status: status ?? AddCurrentUserStateStatus.initial,
     ));
   }

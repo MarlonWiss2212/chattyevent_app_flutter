@@ -3,12 +3,12 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/shopping_list/current_shopping_list_item_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/shopping_list/my_shopping_list_cubit.dart';
 import 'package:social_media_app_flutter/core/injection.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
-import 'package:social_media_app_flutter/presentation/widgets/general/dialog/alert_dialog.dart';
 
 class StandardShoppingListItemWrapperPage extends StatelessWidget {
   final String shoppingListItemId;
@@ -36,6 +36,7 @@ class StandardShoppingListItemWrapperPage extends StatelessWidget {
         shoppingListItemUseCases: serviceLocator(
           param1: BlocProvider.of<AuthCubit>(context).state,
         ),
+        notificationCubit: BlocProvider.of<NotificationCubit>(context),
       ),
       child: Builder(
         builder: (context) {
@@ -86,20 +87,7 @@ class StandardShoppingListItemWrapperPage extends StatelessWidget {
                 BlocProvider.of<CurrentPrivateEventCubit>(context)
                     .getCurrentPrivateEvent();
               }
-              if (state.status == CurrentShoppingListItemStateStatus.error &&
-                  state.error != null) {
-                return await showDialog(
-                  context: context,
-                  builder: (c) {
-                    return CustomAlertDialog(
-                      message: state.error!.message,
-                      title: state.error!.title,
-                      context: c,
-                    );
-                  },
-                );
-              } else if (state.status ==
-                  CurrentShoppingListItemStateStatus.deleted) {
+              if (state.status == CurrentShoppingListItemStateStatus.deleted) {
                 AutoRouter.of(context).pop();
               }
             },

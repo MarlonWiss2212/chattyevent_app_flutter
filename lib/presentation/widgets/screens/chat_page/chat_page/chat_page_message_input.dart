@@ -12,22 +12,7 @@ class ChatPageMessageInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AddMessageCubit, AddMessageState>(
-      listener: (context, state) async {
-        if (state.status == AddMessageStateStatus.error &&
-            state.error != null) {
-          return await showDialog(
-            context: context,
-            builder: (c) {
-              return CustomAlertDialog(
-                title: state.error!.title,
-                message: state.error!.message,
-                context: c,
-              );
-            },
-          );
-        }
-      },
+    return BlocBuilder<AddMessageCubit, AddMessageState>(
       buildWhen: (previous, current) =>
           current.status == AddMessageStateStatus.success,
       builder: (context, state) {

@@ -2,10 +2,10 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
 import 'package:social_media_app_flutter/core/injection.dart';
 import 'package:social_media_app_flutter/presentation/widgets/general/button.dart';
-import 'package:social_media_app_flutter/presentation/widgets/general/dialog/alert_dialog.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/private_event_page/create_shopping_list_item_page/create_shopping_list_item_page_detail.dart';
 import '../../../application/bloc/shopping_list/add_shopping_list_item_cubit.dart';
 
@@ -30,6 +30,7 @@ class PrivateEventCreateShoppingListItemPage extends StatelessWidget {
         currentPrivateEventCubit: BlocProvider.of<CurrentPrivateEventCubit>(
           context,
         ),
+        notificationCubit: BlocProvider.of<NotificationCubit>(context),
       ),
       child: Builder(
         builder: (context) {
@@ -48,19 +49,7 @@ class PrivateEventCreateShoppingListItemPage extends StatelessWidget {
                 body: BlocListener<AddShoppingListItemCubit,
                     AddShoppingListItemState>(
                   listener: (context, state) async {
-                    if (state.status == AddShoppingListItemStateStatus.error &&
-                        state.error != null) {
-                      return await showDialog(
-                        context: context,
-                        builder: (c) {
-                          return CustomAlertDialog(
-                            title: state.error!.title,
-                            message: state.error!.message,
-                            context: c,
-                          );
-                        },
-                      );
-                    } else if (state.status ==
+                    if (state.status ==
                             AddShoppingListItemStateStatus.success &&
                         state.addedShoppingListItem != null) {
                       AutoRouter.of(context).pop();

@@ -1,10 +1,10 @@
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:meta/meta.dart';
+import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/shopping_list/current_shopping_list_item_cubit.dart';
 import 'package:social_media_app_flutter/core/dto/shopping_list_item/create_shopping_list_item_dto.dart';
-import 'package:social_media_app_flutter/domain/entities/error_with_title_and_message.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/user_with_private_event_user_data.dart';
 import 'package:social_media_app_flutter/domain/entities/shopping_list_item/shopping_list_item_entity.dart';
@@ -16,11 +16,13 @@ part 'add_shopping_list_item_state.dart';
 class AddShoppingListItemCubit extends Cubit<AddShoppingListItemState> {
   final ShoppingListItemUseCases shoppingListItemUseCases;
   final CurrentPrivateEventCubit currentPrivateEventCubit;
+  final NotificationCubit notificationCubit;
 
   AddShoppingListItemCubit(
     super.initialState, {
     required this.shoppingListItemUseCases,
     required this.currentPrivateEventCubit,
+    required this.notificationCubit,
   });
 
   Future createShoppingListItemViaApi() async {
@@ -30,9 +32,8 @@ class AddShoppingListItemCubit extends Cubit<AddShoppingListItemState> {
         state.amount == null ||
         state.userToBuyItemEntity == null ||
         state.selectedPrivateEvent == null) {
-      return emitState(
-        status: AddShoppingListItemStateStatus.error,
-        error: ErrorWithTitleAndMessage(
+      return notificationCubit.newAlert(
+        notificationAlert: NotificationAlert(
           title: "Fehler",
           message: "Bitte fülle alle verpflichtenen Felder aus",
         ),
@@ -52,11 +53,10 @@ class AddShoppingListItemCubit extends Cubit<AddShoppingListItemState> {
 
     shoppingListItemOrFailure.fold(
       (error) {
-        emitState(
-          status: AddShoppingListItemStateStatus.error,
-          error: ErrorWithTitleAndMessage(
-            message: mapFailureToMessage(error),
+        notificationCubit.newAlert(
+          notificationAlert: NotificationAlert(
             title: "Erstell Fehler",
+            message: mapFailureToMessage(error),
           ),
         );
       },
@@ -87,7 +87,6 @@ class AddShoppingListItemCubit extends Cubit<AddShoppingListItemState> {
     UserWithPrivateEventUserData? userToBuyItemEntity,
     PrivateEventEntity? selectedPrivateEvent,
     AddShoppingListItemStateStatus? status,
-    ErrorWithTitleAndMessage? error,
     ShoppingListItemEntity? addedShoppingListItem,
   }) {
     emit(
@@ -99,7 +98,6 @@ class AddShoppingListItemCubit extends Cubit<AddShoppingListItemState> {
         selectedPrivateEvent:
             selectedPrivateEvent ?? state.selectedPrivateEvent,
         status: status ?? AddShoppingListItemStateStatus.initial,
-        error: error ?? state.error,
         addedShoppingListItem:
             addedShoppingListItem ?? state.addedShoppingListItem,
       ),

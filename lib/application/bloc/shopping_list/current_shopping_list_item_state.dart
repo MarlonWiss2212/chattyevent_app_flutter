@@ -4,7 +4,6 @@ enum CurrentShoppingListItemStateStatus {
   initial,
   updated,
   deleted,
-  error,
 }
 
 class CurrentShoppingListItemState {
@@ -16,14 +15,11 @@ class CurrentShoppingListItemState {
   final bool loadingBoughtAmounts;
   final bool loadingShoppingListItem;
 
-  final ErrorWithTitleAndMessage? error;
-
   const CurrentShoppingListItemState({
     this.status = CurrentShoppingListItemStateStatus.initial,
     required this.loadingShoppingListItem,
     required this.loadingBoughtAmounts,
     required this.shoppingListItem,
     required this.boughtAmounts,
-    this.error,
   });
 }

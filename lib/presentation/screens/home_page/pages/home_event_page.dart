@@ -39,22 +39,7 @@ class HomeEventPage extends StatelessWidget {
             onRefresh: BlocProvider.of<PrivateEventCubit>(context)
                 .getPrivateEventsViaApi,
           ),
-          BlocConsumer<PrivateEventCubit, PrivateEventState>(
-            listener: (context, state) async {
-              if (state.status == PrivateEventStateStatus.error &&
-                  state.error != null) {
-                return await showDialog(
-                  context: context,
-                  builder: (c) {
-                    return CustomAlertDialog(
-                      message: state.error!.message,
-                      title: state.error!.title,
-                      context: c,
-                    );
-                  },
-                );
-              }
-            },
+          BlocBuilder<PrivateEventCubit, PrivateEventState>(
             builder: (context, state) {
               if (state.privateEvents.isEmpty &&
                   state.status != PrivateEventStateStatus.loading) {

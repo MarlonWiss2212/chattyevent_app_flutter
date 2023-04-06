@@ -1,10 +1,9 @@
 part of 'add_private_event_cubit.dart';
 
-enum AddPrivateEventStateStatus { initial, loading, success, error }
+enum AddPrivateEventStateStatus { initial, loading, success }
 
 class AddPrivateEventState {
   final PrivateEventEntity? addedPrivateEvent;
-  final ErrorWithTitleAndMessage? error;
   final AddPrivateEventStateStatus status;
 
   final String? title;
@@ -30,7 +29,6 @@ class AddPrivateEventState {
 
   AddPrivateEventState({
     this.addedPrivateEvent,
-    this.error,
     this.status = AddPrivateEventStateStatus.initial,
     this.title,
     required this.privateEventUsersDto,

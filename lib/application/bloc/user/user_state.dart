@@ -15,16 +15,6 @@ class UserStateLoading extends UserState {
   const UserStateLoading({required super.users});
 }
 
-class UserStateError extends UserState {
-  final String title;
-  final String message;
-  const UserStateError({
-    required super.users,
-    required this.title,
-    required this.message,
-  });
-}
-
 class UserStateLoaded extends UserState {
   const UserStateLoaded({required super.users});
 }

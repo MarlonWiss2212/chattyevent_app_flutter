@@ -27,30 +27,32 @@ class HomeSearchPage extends StatelessWidget {
           SliverPadding(
             padding: const EdgeInsets.symmetric(horizontal: 8),
             sliver: SliverList(
-              delegate: SliverChildListDelegate([
-                const SizedBox(height: 8),
-                PlatformTextFormField(
-                  onChanged: (text) {
-                    BlocProvider.of<UserSearchCubit>(context).getUsersViaApi(
-                      getUsersFilter: GetUsersFilter(
-                        search: text,
-                      ),
-                    );
-                  },
-                  hintText: "User Suche:",
-                ),
-                const SizedBox(height: 8),
-                BlocBuilder<UserSearchCubit, UserSearchState>(
-                  builder: (context, state) {
-                    if (state.status == UserSearchStateStatus.loading) {
-                      return Center(
-                        child: PlatformCircularProgressIndicator(),
+              delegate: SliverChildListDelegate(
+                [
+                  const SizedBox(height: 8),
+                  PlatformTextFormField(
+                    onChanged: (text) {
+                      BlocProvider.of<UserSearchCubit>(context).getUsersViaApi(
+                        getUsersFilter: GetUsersFilter(
+                          search: text,
+                        ),
                       );
-                    }
-                    return UserHorizontalList(users: state.users);
-                  },
-                ),
-              ]),
+                    },
+                    hintText: "User Suche:",
+                  ),
+                  const SizedBox(height: 8),
+                  BlocBuilder<UserSearchCubit, UserSearchState>(
+                    builder: (context, state) {
+                      if (state.status == UserSearchStateStatus.loading) {
+                        return Center(
+                          child: PlatformCircularProgressIndicator(),
+                        );
+                      }
+                      return UserHorizontalList(users: state.users);
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
         ],

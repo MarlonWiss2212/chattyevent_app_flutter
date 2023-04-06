@@ -53,22 +53,21 @@ Future<void> main() async {
   );
 
   runApp(
-    MultiBlocProvider(
-      providers: [
-        BlocProvider.value(
+    BlocProvider.value(
+      value: NotificationCubit(),
+      child: Builder(
+        builder: (context) => BlocProvider.value(
           value: AuthCubit(
             authState,
+            notificationCubit: BlocProvider.of<NotificationCubit>(context),
             auth: di.serviceLocator(),
             notificationUseCases: di.serviceLocator(),
             userUseCases: di.serviceLocator(param1: authState),
             authUseCases: di.serviceLocator(),
           ),
+          child: const BlocInit(),
         ),
-        BlocProvider.value(
-          value: NotificationCubit(),
-        ),
-      ],
-      child: const BlocInit(),
+      ),
     ),
   );
 }

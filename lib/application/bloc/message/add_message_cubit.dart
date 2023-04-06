@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:meta/meta.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:social_media_app_flutter/core/dto/groupchat/message/create_message_dto.dart';
 import 'package:social_media_app_flutter/domain/entities/error_with_title_and_message.dart';
 import 'package:social_media_app_flutter/domain/entities/message/message_entity.dart';
@@ -15,20 +16,21 @@ part 'add_message_state.dart';
 class AddMessageCubit extends Cubit<AddMessageState> {
   final CurrentChatCubit currentChatCubit;
   final MessageUseCases messageUseCases;
+  final NotificationCubit notificationCubit;
 
   AddMessageCubit(
     super.initialState, {
     required this.currentChatCubit,
     required this.messageUseCases,
+    required this.notificationCubit,
   });
 
   Future createMessage() async {
     emitState(status: AddMessageStateStatus.loading);
 
     if (state.message == null || state.groupchatTo == null) {
-      emitState(
-        status: AddMessageStateStatus.error,
-        error: ErrorWithTitleAndMessage(
+      notificationCubit.newAlert(
+        notificationAlert: NotificationAlert(
           title: "Ausfüll Fehler",
           message: "Bitte fülle erst alle Felder aus",
         ),
@@ -46,15 +48,12 @@ class AddMessageCubit extends Cubit<AddMessageState> {
     );
 
     messageOrFailure.fold(
-      (error) {
-        emitState(
-          status: AddMessageStateStatus.error,
-          error: ErrorWithTitleAndMessage(
-            title: "Fehler",
-            message: mapFailureToMessage(error),
-          ),
-        );
-      },
+      (error) => notificationCubit.newAlert(
+        notificationAlert: NotificationAlert(
+          title: "Fehler create Message",
+          message: mapFailureToMessage(error),
+        ),
+      ),
       (message) {
         /// to reset everything else
         emit(AddMessageState(
@@ -69,7 +68,6 @@ class AddMessageCubit extends Cubit<AddMessageState> {
 
   void emitState({
     AddMessageStateStatus? status,
-    ErrorWithTitleAndMessage? error,
     MessageEntity? addedMessage,
     File? file,
     bool removeFile = false,
@@ -86,7 +84,6 @@ class AddMessageCubit extends Cubit<AddMessageState> {
       groupchatTo: groupchatTo ?? state.groupchatTo,
       file: removeFile ? null : file ?? state.file,
       status: status ?? AddMessageStateStatus.initial,
-      error: error ?? state.error,
       addedMessage: addedMessage ?? state.addedMessage,
     ));
   }

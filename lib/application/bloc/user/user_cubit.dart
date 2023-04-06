@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:meta/meta.dart';
+import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:social_media_app_flutter/core/filter/limit_offset_filter/limit_offset_filter.dart';
 import 'package:social_media_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:social_media_app_flutter/core/failures/failures.dart';
@@ -11,8 +12,12 @@ part 'user_state.dart';
 
 class UserCubit extends Cubit<UserState> {
   final UserUseCases userUseCases;
+  final NotificationCubit notificationCubit;
 
-  UserCubit({required this.userUseCases}) : super(UserInitial());
+  UserCubit({
+    required this.userUseCases,
+    required this.notificationCubit,
+  }) : super(UserInitial());
 
   UserEntity replaceOrAdd({required UserEntity user}) {
     int foundIndex = state.users.indexWhere((element) => element.id == user.id);
@@ -70,9 +75,8 @@ class UserCubit extends Cubit<UserState> {
     );
 
     userSearchOrFailure.fold(
-      (error) => emit(
-        UserStateError(
-          users: state.users,
+      (error) => notificationCubit.newAlert(
+        notificationAlert: NotificationAlert(
           title: "Fehler",
           message: mapFailureToMessage(error),
         ),

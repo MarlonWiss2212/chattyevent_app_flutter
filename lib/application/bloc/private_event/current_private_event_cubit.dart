@@ -5,6 +5,7 @@ import 'package:meta/meta.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/shopping_list/current_shopping_list_item_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
@@ -40,6 +41,7 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
   final ChatCubit chatCubit;
   final AuthCubit authCubit;
   final UserCubit userCubit;
+  final NotificationCubit notificationCubit;
 
   final PrivateEventUseCases privateEventUseCases;
   final ChatUseCases chatUseCases;
@@ -48,6 +50,7 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
 
   CurrentPrivateEventCubit(
     super.initialState, {
+    required this.notificationCubit,
     required this.authCubit,
     required this.userCubit,
     required this.locationUseCases,
@@ -70,9 +73,9 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
         response[1];
 
     usersOrFailure.fold(
-      (error) => emitState(
-        error: ErrorWithTitleAndMessage(
-          title: "Get Event Users Failure",
+      (error) => notificationCubit.newAlert(
+        notificationAlert: NotificationAlert(
+          title: "Get Event User Fehler",
           message: mapFailureToMessage(error),
         ),
       ),
@@ -208,14 +211,13 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
 
     await groupchatOrFailure.fold(
       (error) {
-        emitState(
-          status: CurrentPrivateEventStateStatus.error,
-          error: ErrorWithTitleAndMessage(
+        notificationCubit.newAlert(
+          notificationAlert: NotificationAlert(
             title: "Get Groupchat Fehler",
             message: mapFailureToMessage(error),
           ),
-          loadingGroupchat: false,
         );
+        emitState(loadingGroupchat: false);
       },
       (groupchat) async {
         final replacedChat = chatCubit.replaceOrAdd(
@@ -265,14 +267,13 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
 
     privateEventOrFailure.fold(
       (error) {
-        emitState(
-          status: CurrentPrivateEventStateStatus.error,
-          loadingPrivateEvent: false,
-          error: ErrorWithTitleAndMessage(
+        notificationCubit.newAlert(
+          notificationAlert: NotificationAlert(
             title: "Fehler Geradiges Event",
             message: mapFailureToMessage(error),
           ),
         );
+        emitState(loadingPrivateEvent: false);
       },
       (privateEvent) {
         final replacedPrivateEvent = privateEventCubit.replaceOrAdd(
@@ -300,14 +301,13 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
 
     privateEventOrFailure.fold(
       (error) {
-        emitState(
-          status: CurrentPrivateEventStateStatus.error,
-          loadingPrivateEvent: false,
-          error: ErrorWithTitleAndMessage(
+        notificationCubit.newAlert(
+          notificationAlert: NotificationAlert(
             title: "Update Event Fehler",
             message: mapFailureToMessage(error),
           ),
         );
+        emitState(loadingPrivateEvent: false);
       },
       (privateEvent) {
         final replacedPrivateEvent = privateEventCubit.replaceOrAdd(
@@ -332,15 +332,12 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
     );
 
     deletedOrFailure.fold(
-      (error) {
-        emitState(
-          status: CurrentPrivateEventStateStatus.error,
-          error: ErrorWithTitleAndMessage(
-            title: "Delete Fehler",
-            message: mapFailureToMessage(error),
-          ),
-        );
-      },
+      (error) => notificationCubit.newAlert(
+        notificationAlert: NotificationAlert(
+          title: "Delete Fehler",
+          message: mapFailureToMessage(error),
+        ),
+      ),
       (deleted) {
         if (deleted) {
           emitState(status: CurrentPrivateEventStateStatus.deleted);
@@ -360,9 +357,9 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
     );
 
     privateEventUserOrFailure.fold(
-      (error) => emitState(
-        error: ErrorWithTitleAndMessage(
-          title: "Create Event User Failure",
+      (error) => notificationCubit.newAlert(
+        notificationAlert: NotificationAlert(
+          title: "Create Event User Fehler",
           message: mapFailureToMessage(error),
         ),
       ),
@@ -403,15 +400,12 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
     );
 
     privateEventOrFailure.fold(
-      (error) {
-        emitState(
-          status: CurrentPrivateEventStateStatus.error,
-          error: ErrorWithTitleAndMessage(
-            title: "Fehler",
-            message: mapFailureToMessage(error),
-          ),
-        );
-      },
+      (error) => notificationCubit.newAlert(
+        notificationAlert: NotificationAlert(
+          title: "Fehler",
+          message: mapFailureToMessage(error),
+        ),
+      ),
       (privateEventUser) {
         List<PrivateEventUserEntity> privateEventUsers =
             state.privateEventUsers.map((e) => e.privateEventUser).toList();
@@ -439,9 +433,9 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
     );
 
     privateEventLeftUserOrFailure.fold(
-      (error) => emitState(
-        error: ErrorWithTitleAndMessage(
-          title: "Delete Event User Failure",
+      (error) => notificationCubit.newAlert(
+        notificationAlert: NotificationAlert(
+          title: "Delete Event User Fehler",
           message: mapFailureToMessage(error),
         ),
       ),
@@ -475,12 +469,11 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
     );
 
     openedOrFailure.fold(
-      (errorMsg) => emitState(
-        error: ErrorWithTitleAndMessage(
+      (errorMsg) => notificationCubit.newAlert(
+        notificationAlert: NotificationAlert(
           title: "Google Maps Fehler",
           message: errorMsg,
         ),
-        status: CurrentPrivateEventStateStatus.error,
       ),
       (_) => null,
     );
@@ -564,13 +557,15 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
     );
 
     shoppingListItemsOrFailure.fold(
-      (error) => emitState(
-        loadingShoppingList: false,
-        error: ErrorWithTitleAndMessage(
-          message: mapFailureToMessage(error),
-          title: "Lade Fehler",
-        ),
-      ),
+      (error) {
+        notificationCubit.newAlert(
+          notificationAlert: NotificationAlert(
+            title: "Lade Fehler",
+            message: mapFailureToMessage(error),
+          ),
+        );
+        emitState(loadingShoppingList: false);
+      },
       (shoppingListItems) {
         if (reload) {
           emitState(
@@ -619,7 +614,6 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
     bool? loadingShoppingList,
     List<CurrentShoppingListItemState>? shoppingListItemStates,
     CurrentPrivateEventStateStatus? status,
-    ErrorWithTitleAndMessage? error,
   }) {
     emit(CurrentPrivateEventState(
       currentUserIndex: currentUserIndex ?? state.currentUserIndex,
@@ -633,7 +627,6 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
       chatState: chatState ?? state.chatState,
       loadingPrivateEvent: loadingPrivateEvent ?? state.loadingPrivateEvent,
       loadingGroupchat: loadingGroupchat ?? state.loadingGroupchat,
-      error: error ?? state.error,
       status: status ?? CurrentPrivateEventStateStatus.initial,
     ));
   }
