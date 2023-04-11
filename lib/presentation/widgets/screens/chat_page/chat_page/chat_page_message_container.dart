@@ -124,7 +124,15 @@ class ChatPageMessageContainer extends StatelessWidget {
                 if (message.fileLink != null &&
                     messageIsReactMessage == false) ...[
                   const SizedBox(height: 8),
-                  Image.network(message.fileLink!, fit: BoxFit.contain)
+                  Container(
+                    constraints: BoxConstraints(
+                      maxHeight: (MediaQuery.of(context).size.height / 2),
+                    ),
+                    child: Image.network(
+                      message.fileLink!,
+                      fit: BoxFit.contain,
+                    ),
+                  ),
                 ] else if (message.fileLink != null &&
                     messageIsReactMessage) ...[
                   const SizedBox(height: 8),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
+import 'package:social_media_app_flutter/presentation/widgets/general/button.dart';
 
 class UpdatePasswordPage extends StatefulWidget {
   const UpdatePasswordPage({super.key});
@@ -52,14 +53,14 @@ class _UpdatePasswordPageState extends State<UpdatePasswordPage> {
                 },
                 child: SizedBox(
                   width: double.infinity,
-                  child: PlatformElevatedButton(
-                    onPressed: () {
+                  child: Button(
+                    onTap: () {
                       BlocProvider.of<AuthCubit>(context).updatePassword(
                         password: passwordFieldController.text,
                         verifyPassword: verifyPasswordFieldController.text,
                       );
                     },
-                    child: const Text("Passwort ändern"),
+                    text: "Passwort ändern",
                   ),
                 ),
               ),

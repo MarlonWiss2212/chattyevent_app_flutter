@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:auto_route/annotations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +8,6 @@ import 'package:social_media_app_flutter/application/bloc/private_event/current_
 import 'package:social_media_app_flutter/presentation/widgets/general/custom_divider.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/private_event_page/tab_info/private_event_tab_info_connected_groupchat/private_event_tab_info_connected_groupchat.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/private_event_page/tab_info/private_event_tab_info_cover_image.dart';
-import 'package:social_media_app_flutter/presentation/widgets/screens/private_event_page/tab_info/private_event_tab_info_delete_button.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/private_event_page/tab_info/private_event_tab_info_description.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/private_event_page/tab_info/private_event_tab_info_event_date.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/private_event_page/tab_info/private_event_tab_info_event_end_date.dart';
@@ -28,7 +29,10 @@ class PrivateEventTabInfo extends StatelessWidget {
         snap: true,
         floating: true,
         toolbarHeight: 0,
-        expandedHeight: (MediaQuery.of(context).size.width / 4 * 3),
+        expandedHeight: min(
+          (MediaQuery.of(context).size.width / 4 * 3),
+          (MediaQuery.of(context).size.height / 2),
+        ),
         flexibleSpace: const FlexibleSpaceBar(
           background: PrivateEventTabInfoCoverImage(),
         ),

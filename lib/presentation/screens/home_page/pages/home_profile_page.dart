@@ -17,13 +17,6 @@ class HomeProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<NotificationCubit>(context).newAlert(
-      notificationAlert: NotificationAlert(
-        title: "title",
-        message: "message",
-      ),
-    );
-
     return BlocProvider(
       create: (context) => ProfilePageCubit(
         ProfilePageState(

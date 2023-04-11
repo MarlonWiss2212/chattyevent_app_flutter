@@ -53,9 +53,7 @@ class HomeChatPage extends StatelessWidget {
                   state.status == ChatStateStatus.loading) {
                 return const SliverFillRemaining(child: HomeChatPageSkeleton());
               }
-              return ChatList(
-                chatStates: state.chatStates,
-              );
+              return ChatList(chatStates: state.chatStates);
             },
           ),
         ],

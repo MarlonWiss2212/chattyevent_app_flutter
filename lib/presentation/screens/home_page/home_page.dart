@@ -41,44 +41,101 @@ class HomePage extends StatelessWidget {
                 );
               }
             },
-            child: child,
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                if (constraints.maxWidth > 600) {
+                  return Row(
+                    children: [
+                      NavigationRail(
+                        backgroundColor:
+                            Theme.of(context).scaffoldBackgroundColor,
+                        selectedIndex: tabsRouter.activeIndex,
+                        selectedIconTheme: IconThemeData(
+                          color: Theme.of(context).colorScheme.onBackground,
+                        ),
+                        onDestinationSelected: (value) =>
+                            tabsRouter.setActiveIndex(value),
+                        destinations: const [
+                          NavigationRailDestination(
+                            icon: Icon(Icons.chat_bubble_outline),
+                            selectedIcon: Icon(Icons.chat_bubble),
+                            label: Text('Chat'),
+                          ),
+                          NavigationRailDestination(
+                            icon: Icon(Icons.celebration_outlined),
+                            selectedIcon: Icon(Icons.celebration),
+                            label: Text('Party'),
+                          ),
+                          NavigationRailDestination(
+                            icon: Icon(Icons.map_outlined),
+                            selectedIcon: Icon(Icons.map),
+                            label: Text('Map'),
+                          ),
+                          NavigationRailDestination(
+                            icon: Icon(Icons.search_outlined),
+                            selectedIcon: Icon(Icons.search),
+                            label: Text('Entdecken'),
+                          ),
+                          NavigationRailDestination(
+                            icon: MiniProfileImage(),
+                            selectedIcon: MiniProfileImage(),
+                            label: Text('Profil'),
+                          )
+                        ],
+                      ),
+                      Expanded(child: child),
+                    ],
+                  );
+                } else {
+                  return child;
+                }
+              },
+            ),
           ),
-          bottomNavigationBar: BottomNavigationBar(
-            currentIndex: tabsRouter.activeIndex,
-            type: BottomNavigationBarType.fixed,
-            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-            onTap: (value) => tabsRouter.setActiveIndex(value),
-            showUnselectedLabels: false,
-            showSelectedLabels: false,
-            selectedItemColor: Theme.of(context).colorScheme.onBackground,
-            unselectedItemColor: Theme.of(context).colorScheme.onBackground,
-            items: const [
-              BottomNavigationBarItem(
-                icon: Icon(Icons.chat_bubble_outline),
-                activeIcon: Icon(Icons.chat_bubble),
-                label: 'Chat',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.celebration_outlined),
-                activeIcon: Icon(Icons.celebration),
-                label: 'Party',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.map_outlined),
-                activeIcon: Icon(Icons.map),
-                label: 'Map',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.search_outlined),
-                activeIcon: Icon(Icons.search),
-                label: 'Entdecken',
-              ),
-              BottomNavigationBarItem(
-                icon: MiniProfileImage(),
-                activeIcon: MiniProfileImage(),
-                label: 'Profil',
-              )
-            ],
+          bottomNavigationBar: LayoutBuilder(
+            builder: (context, constraints) {
+              if (constraints.maxWidth <= 600) {
+                return BottomNavigationBar(
+                  currentIndex: tabsRouter.activeIndex,
+                  type: BottomNavigationBarType.fixed,
+                  backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                  onTap: (value) => tabsRouter.setActiveIndex(value),
+                  showUnselectedLabels: false,
+                  showSelectedLabels: false,
+                  selectedItemColor: Theme.of(context).colorScheme.onBackground,
+                  unselectedItemColor:
+                      Theme.of(context).colorScheme.onBackground,
+                  items: const [
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.chat_bubble_outline),
+                      activeIcon: Icon(Icons.chat_bubble),
+                      label: 'Chat',
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.celebration_outlined),
+                      activeIcon: Icon(Icons.celebration),
+                      label: 'Party',
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.map_outlined),
+                      activeIcon: Icon(Icons.map),
+                      label: 'Map',
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.search_outlined),
+                      activeIcon: Icon(Icons.search),
+                      label: 'Entdecken',
+                    ),
+                    BottomNavigationBarItem(
+                      icon: MiniProfileImage(),
+                      activeIcon: MiniProfileImage(),
+                      label: 'Profil',
+                    ),
+                  ],
+                );
+              }
+              return const SizedBox();
+            },
           ),
         );
       },
