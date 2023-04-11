@@ -1,32 +1,95 @@
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_left_user_entity.dart';
+import 'package:social_media_app_flutter/domain/entities/user-relation/user_relation_entity.dart';
+import 'package:social_media_app_flutter/domain/entities/user-relation/user_relations_count_entity.dart';
+import 'package:social_media_app_flutter/infastructure/models/user_relation/user_relation_count_model.dart';
+import 'package:social_media_app_flutter/infastructure/models/user_relation/user_relation_model.dart';
 
 class GroupchatLeftUserModel extends GroupchatLeftUserEntity {
   GroupchatLeftUserModel({
     required String id,
-    String? userId,
+    required String groupchatUserLeftId,
+    required String authId,
+    String? groupchatTo,
+    bool? admin,
+    DateTime? leftGroupchatAt,
+    String? usernameForChat,
+    String? username,
+    String? email,
+    String? firstname,
+    String? lastname,
+    String? emailVerified,
+    String? profileImageLink,
+    String? birthdate,
+    String? lastTimeOnline,
+    UserRelationsCountEntity? userRelationCounts,
+    UserRelationEntity? myUserRelationToOtherUser,
+    UserRelationEntity? otherUserRelationToMyUser,
     DateTime? createdAt,
     DateTime? updatedAt,
-    String? groupchatTo,
   }) : super(
+          groupchatUserLeftId: groupchatUserLeftId,
+          groupchatTo: groupchatTo,
+          leftGroupchatAt: leftGroupchatAt,
           id: id,
-          userId: userId,
+          authId: authId,
+          username: username,
+          email: email,
+          firstname: firstname,
+          lastname: lastname,
+          emailVerified: emailVerified,
+          profileImageLink: profileImageLink,
+          birthdate: birthdate,
+          lastTimeOnline: lastTimeOnline,
+          userRelationCounts: userRelationCounts,
+          myUserRelationToOtherUser: myUserRelationToOtherUser,
+          otherUserRelationToMyUser: otherUserRelationToMyUser,
           createdAt: createdAt,
           updatedAt: updatedAt,
-          groupchatTo: groupchatTo,
         );
 
   factory GroupchatLeftUserModel.fromJson(Map<String, dynamic> json) {
     final createdAt = json["createdAt"] != null
         ? DateTime.parse(json["createdAt"]).toLocal()
         : null;
+
     final updatedAt = json["updatedAt"] != null
         ? DateTime.parse(json["updatedAt"]).toLocal()
         : null;
+    final leftGroupchatAt = json["leftGroupchatAt"] != null
+        ? DateTime.parse(json["leftGroupchatAt"]).toLocal()
+        : null;
 
     return GroupchatLeftUserModel(
-      id: json["_id"],
-      userId: json['userId'],
-      groupchatTo: json['groupchatTo'],
+      groupchatUserLeftId: json["groupchatUserLeftId"],
+      groupchatTo: json["groupchatTo"],
+      leftGroupchatAt: leftGroupchatAt,
+      admin: json["admin"],
+      usernameForChat: json["usernameForChat"],
+      id: json['_id'],
+      authId: json["authId"],
+      username: json['username'],
+      email: json['email'],
+      profileImageLink: json['profileImageLink'],
+      firstname: json["fistname"],
+      lastname: json["lastname"],
+      emailVerified: json["emailVerified"],
+      birthdate: json["birthdate"],
+      lastTimeOnline: json["lastTimeOnline"],
+      userRelationCounts: json['userRelationCounts'] != null
+          ? UserRelationsCountModel.fromJson(
+              json['userRelationCounts'],
+            )
+          : null,
+      otherUserRelationToMyUser: json['otherUserRelationToMyUser'] != null
+          ? UserRelationModel.fromJson(
+              json['otherUserRelationToMyUser'],
+            )
+          : null,
+      myUserRelationToOtherUser: json['myUserRelationToOtherUser'] != null
+          ? UserRelationModel.fromJson(
+              json['myUserRelationToOtherUser'],
+            )
+          : null,
       createdAt: createdAt,
       updatedAt: updatedAt,
     );

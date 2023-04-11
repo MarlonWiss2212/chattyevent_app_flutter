@@ -6,6 +6,7 @@ import 'package:social_media_app_flutter/core/dto/groupchat/groupchat_user/updat
 import 'package:social_media_app_flutter/core/filter/groupchat/get_messages_filter.dart';
 import 'package:social_media_app_flutter/core/filter/groupchat/get_one_groupchat_user_filter.dart';
 import 'package:social_media_app_flutter/core/filter/limit_offset_filter/limit_offset_filter.dart';
+import 'package:social_media_app_flutter/core/response/get-all-groupchat-users-and-left-users.response.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_left_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
@@ -37,5 +38,9 @@ abstract class ChatRepository {
   Future<Either<Failure, GroupchatLeftUserEntity?>>
       deleteUserFromGroupchatViaApi({
     required GetOneGroupchatUserFilter getOneGroupchatUserFilter,
+  });
+  Future<Either<Failure, GetAllGroupchatUsersAndLeftUsers>>
+      getGroupchatUsersAndLeftUsers({
+    required String groupchatId,
   });
 }

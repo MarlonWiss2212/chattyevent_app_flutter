@@ -9,6 +9,7 @@ import 'package:social_media_app_flutter/core/filter/groupchat/get_messages_filt
 import 'package:social_media_app_flutter/core/filter/groupchat/get_one_groupchat_filter.dart';
 import 'package:social_media_app_flutter/core/filter/groupchat/get_one_groupchat_user_filter.dart';
 import 'package:social_media_app_flutter/core/filter/limit_offset_filter/limit_offset_filter.dart';
+import 'package:social_media_app_flutter/core/response/get-all-groupchat-users-and-left-users.response.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:dartz/dartz.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_left_user_entity.dart';
@@ -43,6 +44,24 @@ class ChatRepositoryImpl implements ChatRepository {
       }
 
       final response = await graphQlDatasource.mutation(
+        /* give the users later back again with a diffrent response type 
+        users {
+          _id
+          admin
+          userId
+          usernameForChat
+          groupchatTo
+          createdAt
+          updatedAt
+        }
+        leftUsers {
+          _id
+          userId
+          createdAt
+          updatedAt
+          groupchatTo
+        }
+        */
         """
         mutation CreateGroupchat(\$input: CreateGroupchatInput!, \$profileImage: Upload) {
           createGroupchat(createGroupchatInput: \$input, profileImage: \$profileImage) {
@@ -50,22 +69,6 @@ class ChatRepositoryImpl implements ChatRepository {
             title
             description
             profileImageLink
-            users {
-              _id
-              admin
-              userId
-              usernameForChat
-              groupchatTo
-              createdAt
-              updatedAt
-            }
-            leftUsers {
-              _id
-              userId
-              createdAt
-              updatedAt
-              groupchatTo
-            }
             createdBy
             createdAt
           }
@@ -97,22 +100,6 @@ class ChatRepositoryImpl implements ChatRepository {
             title
             description
             profileImageLink
-            users {
-              _id
-              admin
-              userId
-              usernameForChat
-              groupchatTo
-              createdAt
-              updatedAt
-            }
-            leftUsers {
-              _id
-              userId
-              createdAt
-              updatedAt
-              groupchatTo
-            }
             messages {
               _id
               message
@@ -155,11 +142,6 @@ class ChatRepositoryImpl implements ChatRepository {
             _id
             profileImageLink
             title
-            users {
-              _id
-              userId
-              usernameForChat
-            }
             messages {
               _id
               message
@@ -222,22 +204,6 @@ class ChatRepositoryImpl implements ChatRepository {
             title
             description
             profileImageLink
-            users {
-              _id
-              admin
-              userId
-              usernameForChat
-              groupchatTo
-              createdAt
-              updatedAt
-            }
-            leftUsers {
-              _id
-              userId
-              createdAt
-              updatedAt
-              groupchatTo
-            }
             createdBy
             createdAt
           }
@@ -364,5 +330,12 @@ class ChatRepositoryImpl implements ChatRepository {
     } catch (e) {
       return Left(ServerFailure());
     }
+  }
+
+  @override
+  Future<Either<Failure, GetAllGroupchatUsersAndLeftUsers>>
+      getGroupchatUsersAndLeftUsers({required String groupchatId}) {
+    // TODO: implement getGroupchatUsersAndLeftUsers
+    throw UnimplementedError();
   }
 }

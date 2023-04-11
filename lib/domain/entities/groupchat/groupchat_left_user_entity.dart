@@ -1,28 +1,61 @@
-class GroupchatLeftUserEntity {
-  final String id;
-  final String? userId;
+import 'package:social_media_app_flutter/domain/entities/user-relation/user_relations_count_entity.dart';
+import 'package:social_media_app_flutter/domain/entities/user/user_entity.dart';
+
+class GroupchatLeftUserEntity extends UserEntity {
+  final String groupchatUserLeftId;
   final String? groupchatTo;
-  final DateTime? createdAt;
-  final DateTime? updatedAt;
+  final DateTime? leftGroupchatAt;
 
   GroupchatLeftUserEntity({
-    required this.id,
-    this.createdAt,
+    required this.groupchatUserLeftId,
+    required super.id,
+    required super.authId,
+    this.leftGroupchatAt,
     this.groupchatTo,
-    this.updatedAt,
-    this.userId,
+    super.birthdate,
+    super.createdAt,
+    super.email,
+    super.emailVerified,
+    super.firstname,
+    super.lastTimeOnline,
+    super.lastname,
+    super.myUserRelationToOtherUser,
+    super.otherUserRelationToMyUser,
+    super.profileImageLink,
+    super.updatedAt,
+    super.userRelationCounts,
+    super.username,
   });
 
   factory GroupchatLeftUserEntity.merge({
+    bool removeMyUserRelation = false,
     required GroupchatLeftUserEntity newEntity,
     required GroupchatLeftUserEntity oldEntity,
   }) {
     return GroupchatLeftUserEntity(
-      userId: newEntity.userId,
-      id: newEntity.id,
+      groupchatUserLeftId: newEntity.groupchatUserLeftId,
       groupchatTo: newEntity.groupchatTo ?? oldEntity.groupchatTo,
-      updatedAt: newEntity.updatedAt ?? oldEntity.updatedAt,
+      leftGroupchatAt: newEntity.leftGroupchatAt ?? oldEntity.leftGroupchatAt,
+      authId: newEntity.authId,
+      id: newEntity.id,
+      username: newEntity.username ?? oldEntity.username,
+      email: newEntity.email ?? oldEntity.email,
+      emailVerified: newEntity.emailVerified ?? oldEntity.emailVerified,
+      myUserRelationToOtherUser:
+          removeMyUserRelation ? null : newEntity.myUserRelationToOtherUser,
+      otherUserRelationToMyUser: newEntity.otherUserRelationToMyUser,
+      profileImageLink:
+          newEntity.profileImageLink ?? oldEntity.profileImageLink,
+      firstname: newEntity.firstname ?? oldEntity.firstname,
+      userRelationCounts: UserRelationsCountEntity.merge(
+        newEntity: newEntity.userRelationCounts ?? UserRelationsCountEntity(),
+        oldEntity: oldEntity.userRelationCounts ?? UserRelationsCountEntity(),
+      ),
+      lastname: newEntity.lastname ?? oldEntity.lastname,
+      birthdate: newEntity.birthdate ?? oldEntity.birthdate,
+      lastTimeOnline: newEntity.lastTimeOnline ?? oldEntity.lastTimeOnline,
       createdAt: newEntity.createdAt ?? oldEntity.createdAt,
+      updatedAt: newEntity.updatedAt ?? oldEntity.updatedAt,
     );
   }
 }
