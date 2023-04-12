@@ -14,10 +14,8 @@ class GroupchatLeftUserModel extends GroupchatLeftUserEntity {
     DateTime? leftGroupchatAt,
     String? usernameForChat,
     String? username,
-    String? email,
     String? firstname,
     String? lastname,
-    String? emailVerified,
     String? profileImageLink,
     String? birthdate,
     String? lastTimeOnline,
@@ -33,10 +31,8 @@ class GroupchatLeftUserModel extends GroupchatLeftUserEntity {
           id: id,
           authId: authId,
           username: username,
-          email: email,
           firstname: firstname,
           lastname: lastname,
-          emailVerified: emailVerified,
           profileImageLink: profileImageLink,
           birthdate: birthdate,
           lastTimeOnline: lastTimeOnline,
@@ -55,8 +51,8 @@ class GroupchatLeftUserModel extends GroupchatLeftUserEntity {
     final updatedAt = json["updatedAt"] != null
         ? DateTime.parse(json["updatedAt"]).toLocal()
         : null;
-    final leftGroupchatAt = json["leftGroupchatAt"] != null
-        ? DateTime.parse(json["leftGroupchatAt"]).toLocal()
+    final leftGroupchatAt = json["leftChatAt"] != null
+        ? DateTime.parse(json["leftChatAt"]).toLocal()
         : null;
 
     return GroupchatLeftUserModel(
@@ -68,11 +64,9 @@ class GroupchatLeftUserModel extends GroupchatLeftUserEntity {
       id: json['_id'],
       authId: json["authId"],
       username: json['username'],
-      email: json['email'],
       profileImageLink: json['profileImageLink'],
       firstname: json["fistname"],
       lastname: json["lastname"],
-      emailVerified: json["emailVerified"],
       birthdate: json["birthdate"],
       lastTimeOnline: json["lastTimeOnline"],
       userRelationCounts: json['userRelationCounts'] != null

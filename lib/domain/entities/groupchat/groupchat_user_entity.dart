@@ -18,8 +18,6 @@ class GroupchatUserEntity extends UserEntity {
     this.usernameForChat,
     super.birthdate,
     super.createdAt,
-    super.email,
-    super.emailVerified,
     super.firstname,
     super.lastTimeOnline,
     super.lastname,
@@ -46,8 +44,6 @@ class GroupchatUserEntity extends UserEntity {
       authId: newEntity.authId,
       id: newEntity.id,
       username: newEntity.username ?? oldEntity.username,
-      email: newEntity.email ?? oldEntity.email,
-      emailVerified: newEntity.emailVerified ?? oldEntity.emailVerified,
       myUserRelationToOtherUser:
           removeMyUserRelation ? null : newEntity.myUserRelationToOtherUser,
       otherUserRelationToMyUser: newEntity.otherUserRelationToMyUser,

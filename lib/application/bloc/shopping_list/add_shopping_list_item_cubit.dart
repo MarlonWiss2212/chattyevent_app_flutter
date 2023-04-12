@@ -45,7 +45,8 @@ class AddShoppingListItemCubit extends Cubit<AddShoppingListItemState> {
       createShoppingListItemDto: CreateShoppingListItemDto(
         itemName: state.itemName!,
         amount: state.amount!,
-        userToBuyItem: state.userToBuyItemEntity!.user.id,
+        // TODO: fix this with updating private event users
+        userToBuyItem: state.userToBuyItemEntity!.groupchatUser?.id ?? "",
         unit: state.unit,
         privateEventId: state.selectedPrivateEvent!.id,
       ),

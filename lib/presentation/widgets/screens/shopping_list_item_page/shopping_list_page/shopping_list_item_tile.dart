@@ -38,10 +38,11 @@ class ShoppingListItemTile extends StatelessWidget {
         ],
       ),
       leading: CircleAvatar(
-        backgroundImage: userToBuyItem.user.profileImageLink != null
-            ? NetworkImage(userToBuyItem.user.profileImageLink!)
+        backgroundImage: userToBuyItem.groupchatUser != null &&
+                userToBuyItem.groupchatUser?.profileImageLink != null
+            ? NetworkImage(userToBuyItem.groupchatUser!.profileImageLink!)
             : null,
-        backgroundColor: userToBuyItem.user.profileImageLink == null
+        backgroundColor: userToBuyItem.groupchatUser?.profileImageLink == null
             ? Theme.of(context).colorScheme.secondaryContainer
             : null,
       ),

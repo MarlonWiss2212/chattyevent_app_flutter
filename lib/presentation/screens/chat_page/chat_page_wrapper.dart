@@ -42,7 +42,6 @@ class ChatPageWrapper extends StatelessWidget {
       ),
       child: Builder(
         builder: (context) {
-          BlocProvider.of<CurrentChatCubit>(context).setGroupchatUsers();
           BlocProvider.of<CurrentChatCubit>(context).getGroupchatUsersViaApi();
           if (loadChatFromApiToo) {
             BlocProvider.of<CurrentChatCubit>(context).getCurrentChatViaApi();

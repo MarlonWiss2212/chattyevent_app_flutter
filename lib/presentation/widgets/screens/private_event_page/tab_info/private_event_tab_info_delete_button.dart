@@ -10,7 +10,7 @@ class PrivateEventTabInfoDeleteButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<CurrentPrivateEventCubit, CurrentPrivateEventState>(
       builder: (context, state) {
-        if (state.getCurrentPrivateEventUser()?.user.id ==
+        if (state.getCurrentPrivateEventUser()?.groupchatUser?.id ==
             state.privateEvent.createdBy) {
           return IconButton(
             onPressed: () async {

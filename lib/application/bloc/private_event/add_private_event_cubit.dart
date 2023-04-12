@@ -8,7 +8,6 @@ import 'package:social_media_app_flutter/application/bloc/private_event/private_
 import 'package:social_media_app_flutter/core/dto/private_event/create_location_private_event_dto.dart';
 import 'package:social_media_app_flutter/core/dto/private_event/create_private_event_dto.dart';
 import 'package:social_media_app_flutter/core/dto/private_event/private_event_user/create_private_event_user_from_private_event_dto.dart';
-import 'package:social_media_app_flutter/domain/entities/error_with_title_and_message.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
 import 'package:social_media_app_flutter/core/failures/failures.dart';

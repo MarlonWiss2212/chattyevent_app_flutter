@@ -7,8 +7,6 @@ class UserEntity {
   final String? username;
   final String? firstname;
   final String? lastname;
-  final String? email;
-  final String? emailVerified;
   final String? profileImageLink;
   final String? birthdate;
   final String? lastTimeOnline;
@@ -25,8 +23,6 @@ class UserEntity {
     this.otherUserRelationToMyUser,
     this.userRelationCounts,
     this.username,
-    this.email,
-    this.emailVerified,
     this.profileImageLink,
     this.firstname,
     this.lastname,
@@ -46,8 +42,6 @@ class UserEntity {
       authId: newEntity.authId,
       id: newEntity.id,
       username: newEntity.username ?? oldEntity.username,
-      email: newEntity.email ?? oldEntity.email,
-      emailVerified: newEntity.emailVerified ?? oldEntity.emailVerified,
       myUserRelationToOtherUser:
           removeMyUserRelation ? null : newEntity.myUserRelationToOtherUser,
       otherUserRelationToMyUser: newEntity.otherUserRelationToMyUser,

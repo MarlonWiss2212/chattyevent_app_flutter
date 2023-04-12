@@ -109,23 +109,14 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
       (users) => usersToEmit = users,
       (privateEventUsers) {
         for (final privateEventUser in privateEventUsers) {
-          final foundUser = userCubit.state.users.firstWhere(
-            (element) => element.id == privateEventUser.userId,
-            orElse: () => UserEntity(
-              id: privateEventUser.userId ?? "",
-              authId: "",
-            ),
-          );
           GroupchatUserEntity? foundGroupchatUser;
           if (state.chatState != null) {
-            foundGroupchatUser = state.chatState!.currentChat.users?.firstWhere(
-              (element) => element.userId == privateEventUser.userId,
-              orElse: () => GroupchatUserEntity(id: ""),
+            foundGroupchatUser = state.chatState!.users.firstWhereOrNull(
+              (element) => element.id == privateEventUser.userId,
             );
           }
 
           final newUser = UserWithPrivateEventUserData(
-            user: foundUser,
             groupchatUser: foundGroupchatUser,
             privateEventUser: privateEventUser,
           );
@@ -174,7 +165,8 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
       privateEventUsers: usersToEmit,
       privateEventLeftUsers: leftUsersToEmit,
       currentUserIndex: usersToEmit.indexWhere(
-        (element) => element.user.authId == authCubit.state.currentUser.authId,
+        (element) =>
+            element.groupchatUser?.authId == authCubit.state.currentUser.authId,
       ),
     );
   }
@@ -448,7 +440,7 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
 
         final List<PrivateEventUserEntity> privateEventUsers = state
             .privateEventUsers
-            .where((element) => element.user.id != userId)
+            .where((element) => element.groupchatUser?.id != userId)
             .map((e) => e.privateEventUser)
             .toList();
 

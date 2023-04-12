@@ -4,12 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
 import 'package:skeletons/skeletons.dart';
-import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/shopping_list/current_shopping_list_item_cubit.dart';
 import 'package:social_media_app_flutter/domain/entities/bought_amount_entity.dart';
-import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
-import 'package:social_media_app_flutter/domain/entities/private_event/private_event_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/user_with_private_event_user_data.dart';
 import 'package:social_media_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:social_media_app_flutter/presentation/widgets/general/user_list/user_list_tile.dart';
@@ -51,7 +48,8 @@ class CurrentShoppingListItemPageBoughtAmountList extends StatelessWidget {
 
                 UserWithPrivateEventUserData? user =
                     privateEventState.privateEventUsers.firstWhereOrNull(
-                  (element) => element.user.id == boughtAmount.createdBy,
+                  (element) =>
+                      element.groupchatUser?.id == boughtAmount.createdBy,
                 );
 
                 return Slidable(
@@ -79,7 +77,7 @@ class CurrentShoppingListItemPageBoughtAmountList extends StatelessWidget {
                     ],
                   ),
                   child: UserListTile(
-                    user: user?.user ??
+                    user: user?.groupchatUser ??
                         UserEntity(
                           id: boughtAmount.createdBy ?? "",
                           authId: "",

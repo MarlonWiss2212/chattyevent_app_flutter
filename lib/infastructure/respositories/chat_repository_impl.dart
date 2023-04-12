@@ -230,13 +230,48 @@ class ChatRepositoryImpl implements ChatRepository {
         """
         mutation AddUserToGroupchat(\$input: CreateGroupchatUserInput!) {
           addUserToGroupchat(createGroupchatUserInput: \$input) {
+            groupchatUserId
             _id
+            authId
             admin
-            userId
+            joinedChatAt
             groupchatTo
             usernameForChat
+            birthdate
             createdAt
-            updatedAt 
+            firstname
+            lastTimeOnline
+            lastname
+            profileImageLink
+            updatedAt
+            userRelationCounts {
+              followerCount
+              followedCount
+              followRequestCount
+            }
+            myUserRelationToOtherUser {
+              _id
+              createdAt
+              updatedAt
+              statusOnRelatedUser
+              followData {
+                canInviteFollowedToPrivateEvent
+                canInviteFollowedToGroupchat
+                followedUserAt
+              }
+            }
+            otherUserRelationToMyUser {
+              _id
+              createdAt
+              updatedAt
+              statusOnRelatedUser
+              followData {
+                canInviteFollowedToPrivateEvent
+                canInviteFollowedToGroupchat
+                followedUserAt
+              }
+            }
+            username
           }
         }
         """,
@@ -267,11 +302,46 @@ class ChatRepositoryImpl implements ChatRepository {
         """
         mutation DeleteUserFromGroupchat(\$input: FindOneGroupchatUserInput!) {
           deleteUserFromGroupchat(findOneGroupchatUserInput: \$input) {
+            groupchatUserLeftId
             _id
-            userId
-            createdAt
-            updatedAt
+            authId
+            leftChatAt
             groupchatTo
+            birthdate
+            createdAt
+            firstname
+            lastTimeOnline
+            lastname
+            profileImageLink
+            updatedAt
+            username
+            userRelationCounts {
+              followerCount
+              followedCount
+              followRequestCount
+            }
+            myUserRelationToOtherUser {
+              _id
+              createdAt
+              updatedAt
+              statusOnRelatedUser
+              followData {
+                canInviteFollowedToPrivateEvent
+                canInviteFollowedToGroupchat
+                followedUserAt
+              }
+            }
+            otherUserRelationToMyUser {
+              _id
+              createdAt
+              updatedAt
+              statusOnRelatedUser
+              followData {
+                canInviteFollowedToPrivateEvent
+                canInviteFollowedToGroupchat
+                followedUserAt
+              }
+            }
           }
         }
         """,
@@ -279,6 +349,8 @@ class ChatRepositoryImpl implements ChatRepository {
       );
 
       if (response.hasException) {
+        print(response.exception);
+
         return Left(GeneralFailure());
       }
 
@@ -290,6 +362,7 @@ class ChatRepositoryImpl implements ChatRepository {
             : null,
       );
     } catch (e) {
+      print(e);
       return Left(ServerFailure());
     }
   }
@@ -304,13 +377,48 @@ class ChatRepositoryImpl implements ChatRepository {
         """
         mutation UpdateGroupchatUser(\$updateGroupchatUserInput: UpdateGroupchatUserInput!, \$findOneGroupchatUserInput: FindOneGroupchatUserInput!) {
           updateGroupchatUser(updateGroupchatUserInput: \$updateGroupchatUserInput, findOneGroupchatUserInput: \$findOneGroupchatUserInput) {
-            _id
-            admin
-            userId
-            groupchatTo
+            groupchatUserId
             usernameForChat
+            admin
+            _id
+            authId
+            joinedChatAt
+            groupchatTo
+            birthdate
             createdAt
-            updatedAt 
+            firstname
+            lastTimeOnline
+            lastname
+            profileImageLink
+            updatedAt
+            username
+            userRelationCounts {
+              followerCount
+              followedCount
+              followRequestCount
+            }
+            myUserRelationToOtherUser {
+              _id
+              createdAt
+              updatedAt
+              statusOnRelatedUser
+              followData {
+                canInviteFollowedToPrivateEvent
+                canInviteFollowedToGroupchat
+                followedUserAt
+              }
+            }
+            otherUserRelationToMyUser {
+              _id
+              createdAt
+              updatedAt
+              statusOnRelatedUser
+              followData {
+                canInviteFollowedToPrivateEvent
+                canInviteFollowedToGroupchat
+                followedUserAt
+              }
+            }
           }
         }
         """,
@@ -321,6 +429,7 @@ class ChatRepositoryImpl implements ChatRepository {
       );
 
       if (response.hasException) {
+        print(response.exception);
         return Left(GeneralFailure());
       }
 
@@ -328,14 +437,142 @@ class ChatRepositoryImpl implements ChatRepository {
         GroupchatUserModel.fromJson(response.data!["updateGroupchatUser"]),
       );
     } catch (e) {
+      print(e);
+
       return Left(ServerFailure());
     }
   }
 
   @override
   Future<Either<Failure, GetAllGroupchatUsersAndLeftUsers>>
-      getGroupchatUsersAndLeftUsers({required String groupchatId}) {
-    // TODO: implement getGroupchatUsersAndLeftUsers
-    throw UnimplementedError();
+      getGroupchatUsersAndLeftUsers({
+    required String groupchatId,
+  }) async {
+    try {
+      final response = await graphQlDatasource.query(
+        """
+          query GetAllGroupchatUsersAndLeftUsers(\$groupchatId: String!, \$limitOffsetInput: LimitOffsetInput!) {   
+            findGroupchatLeftUsers(groupchatId: \$groupchatId, limitOffsetInput: \$limitOffsetInput) {
+              groupchatUserLeftId
+              _id
+              authId
+              leftChatAt
+              groupchatTo
+              birthdate
+              createdAt
+              firstname
+              lastTimeOnline
+              lastname
+              profileImageLink
+              updatedAt
+              username
+              userRelationCounts {
+                followerCount
+                followedCount
+                followRequestCount
+              }
+              myUserRelationToOtherUser {
+                _id
+                createdAt
+                updatedAt
+                statusOnRelatedUser
+                followData {
+                  canInviteFollowedToPrivateEvent
+                  canInviteFollowedToGroupchat
+                  followedUserAt
+                }
+              }
+              otherUserRelationToMyUser {
+                _id
+                createdAt
+                updatedAt
+                statusOnRelatedUser
+                followData {
+                  canInviteFollowedToPrivateEvent
+                  canInviteFollowedToGroupchat
+                  followedUserAt
+                }
+              }
+            }
+
+            findGroupchatUsers(groupchatId: \$groupchatId, limitOffsetInput: \$limitOffsetInput) {
+              groupchatUserId
+              _id
+              authId
+              admin
+              joinedChatAt
+              groupchatTo
+              usernameForChat
+              birthdate
+              createdAt
+              firstname
+              lastTimeOnline
+              lastname
+              profileImageLink
+              updatedAt
+              userRelationCounts {
+                followerCount
+                followedCount
+                followRequestCount
+              }
+              myUserRelationToOtherUser {
+                _id
+                createdAt
+                updatedAt
+                statusOnRelatedUser
+                followData {
+                  canInviteFollowedToPrivateEvent
+                  canInviteFollowedToGroupchat
+                  followedUserAt
+                }
+              }
+              otherUserRelationToMyUser {
+                _id
+                createdAt
+                updatedAt
+                statusOnRelatedUser
+                followData {
+                  canInviteFollowedToPrivateEvent
+                  canInviteFollowedToGroupchat
+                  followedUserAt
+                }
+              }
+              username
+            }
+          }
+        """,
+        variables: {
+          "groupchatId": groupchatId,
+          "limitOffsetInput": LimitOffsetFilter(limit: 1000, offset: 0).toMap(),
+        },
+      );
+
+      if (response.hasException) {
+        print(response.exception);
+        return Left(GeneralFailure());
+      }
+
+      final List<GroupchatUserEntity> groupchatUsers = [];
+      for (var groupchatUser in response.data!["findGroupchatUsers"]) {
+        groupchatUsers.add(GroupchatUserModel.fromJson(groupchatUser));
+      }
+
+      final List<GroupchatLeftUserEntity> groupchatLeftUsers = [];
+      for (var groupchatLeftUser in response.data!["findGroupchatLeftUsers"]) {
+        groupchatLeftUsers.add(
+          GroupchatLeftUserModel.fromJson(groupchatLeftUser),
+        );
+      }
+
+      return Right(
+        GetAllGroupchatUsersAndLeftUsers(
+          groupchatLeftUsers: groupchatLeftUsers,
+          groupchatUsers: groupchatUsers,
+        ),
+      );
+    } catch (e) {
+      print(e);
+      return Left(ServerFailure());
+    }
   }
 }

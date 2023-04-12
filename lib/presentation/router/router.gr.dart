@@ -13,90 +13,122 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:auto_route/auto_route.dart' as _i54;
 import 'package:flutter/material.dart' as _i55;
-
-import '../../application/bloc/chat/current_chat_cubit.dart' as _i58;
-import '../../application/bloc/shopping_list/current_shopping_list_item_cubit.dart'
+import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart'
+    as _i58;
+import 'package:social_media_app_flutter/application/bloc/shopping_list/current_shopping_list_item_cubit.dart'
     as _i60;
-import '../../domain/entities/private_event/private_event_entity.dart' as _i59;
-import '../../domain/entities/user/user_entity.dart' as _i57;
-import '../screens/chat_page/chat_add_user_page.dart' as _i35;
-import '../screens/chat_page/chat_change_chat_username_page.dart' as _i33;
-import '../screens/chat_page/chat_future_private_events_page.dart' as _i34;
-import '../screens/chat_page/chat_info_page.dart' as _i32;
-import '../screens/chat_page/chat_page.dart' as _i31;
-import '../screens/chat_page/chat_page_wrapper.dart' as _i10;
-import '../screens/create_user_page.dart' as _i5;
-import '../screens/home_page/home_page.dart' as _i8;
-import '../screens/home_page/pages/home_chat_page.dart' as _i22;
-import '../screens/home_page/pages/home_event_page.dart' as _i23;
-import '../screens/home_page/pages/home_map_page.dart' as _i24;
-import '../screens/home_page/pages/home_profile_page.dart' as _i26;
-import '../screens/home_page/pages/home_search_page.dart' as _i25;
-import '../screens/login_page.dart' as _i1;
-import '../screens/new_groupchat/new_groupchat_wrapper_page.dart' as _i12;
-import '../screens/new_groupchat/pages/new_groupchat_details_tab.dart' as _i46;
-import '../screens/new_groupchat/pages/new_groupchat_select_user_tab.dart'
+import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart'
+    as _i59;
+import 'package:social_media_app_flutter/domain/entities/user/user_entity.dart'
+    as _i57;
+import 'package:social_media_app_flutter/presentation/router/auth_guard.dart'
+    as _i56;
+import 'package:social_media_app_flutter/presentation/screens/chat_page/chat_add_user_page.dart'
+    as _i35;
+import 'package:social_media_app_flutter/presentation/screens/chat_page/chat_change_chat_username_page.dart'
+    as _i33;
+import 'package:social_media_app_flutter/presentation/screens/chat_page/chat_future_private_events_page.dart'
+    as _i34;
+import 'package:social_media_app_flutter/presentation/screens/chat_page/chat_info_page.dart'
+    as _i32;
+import 'package:social_media_app_flutter/presentation/screens/chat_page/chat_page.dart'
+    as _i31;
+import 'package:social_media_app_flutter/presentation/screens/chat_page/chat_page_wrapper.dart'
+    as _i10;
+import 'package:social_media_app_flutter/presentation/screens/create_user_page.dart'
+    as _i5;
+import 'package:social_media_app_flutter/presentation/screens/home_page/home_page.dart'
+    as _i8;
+import 'package:social_media_app_flutter/presentation/screens/home_page/pages/home_chat_page.dart'
+    as _i22;
+import 'package:social_media_app_flutter/presentation/screens/home_page/pages/home_event_page.dart'
+    as _i23;
+import 'package:social_media_app_flutter/presentation/screens/home_page/pages/home_map_page.dart'
+    as _i24;
+import 'package:social_media_app_flutter/presentation/screens/home_page/pages/home_profile_page.dart'
+    as _i26;
+import 'package:social_media_app_flutter/presentation/screens/home_page/pages/home_search_page.dart'
+    as _i25;
+import 'package:social_media_app_flutter/presentation/screens/login_page.dart'
+    as _i1;
+import 'package:social_media_app_flutter/presentation/screens/new_groupchat/new_groupchat_wrapper_page.dart'
+    as _i12;
+import 'package:social_media_app_flutter/presentation/screens/new_groupchat/pages/new_groupchat_details_tab.dart'
+    as _i46;
+import 'package:social_media_app_flutter/presentation/screens/new_groupchat/pages/new_groupchat_select_user_tab.dart'
     as _i47;
-import '../screens/new_private_event/new_private_event_page.dart' as _i13;
-import '../screens/new_private_event/pages/new_private_event_date_tab.dart'
+import 'package:social_media_app_flutter/presentation/screens/new_private_event/new_private_event_page.dart'
+    as _i13;
+import 'package:social_media_app_flutter/presentation/screens/new_private_event/pages/new_private_event_date_tab.dart'
     as _i52;
-import '../screens/new_private_event/pages/new_private_event_details_tab.dart'
+import 'package:social_media_app_flutter/presentation/screens/new_private_event/pages/new_private_event_details_tab.dart'
     as _i48;
-import '../screens/new_private_event/pages/new_private_event_location_tab.dart'
+import 'package:social_media_app_flutter/presentation/screens/new_private_event/pages/new_private_event_location_tab.dart'
     as _i53;
-import '../screens/new_private_event/pages/new_private_event_search_groupchat_tab.dart'
+import 'package:social_media_app_flutter/presentation/screens/new_private_event/pages/new_private_event_search_groupchat_tab.dart'
     as _i51;
-import '../screens/new_private_event/pages/new_private_event_search_user_tab.dart'
+import 'package:social_media_app_flutter/presentation/screens/new_private_event/pages/new_private_event_search_user_tab.dart'
     as _i50;
-import '../screens/new_private_event/pages/new_private_event_type_tab.dart'
+import 'package:social_media_app_flutter/presentation/screens/new_private_event/pages/new_private_event_type_tab.dart'
     as _i49;
-import '../screens/private_event_page/private_event_create_shopping_list_item_page.dart'
+import 'package:social_media_app_flutter/presentation/screens/private_event_page/private_event_create_shopping_list_item_page.dart'
     as _i39;
-import '../screens/private_event_page/private_event_invite_user_page.dart'
+import 'package:social_media_app_flutter/presentation/screens/private_event_page/private_event_invite_user_page.dart'
     as _i38;
-import '../screens/private_event_page/private_event_update_loaction_page.dart'
+import 'package:social_media_app_flutter/presentation/screens/private_event_page/private_event_update_loaction_page.dart'
     as _i37;
-import '../screens/private_event_page/private_event_wrapper_page.dart' as _i11;
-import '../screens/private_event_page/shopping_list_item_page/private_event_shopping_list_change_user_page.dart'
+import 'package:social_media_app_flutter/presentation/screens/private_event_page/private_event_wrapper_page.dart'
+    as _i11;
+import 'package:social_media_app_flutter/presentation/screens/private_event_page/shopping_list_item_page/private_event_shopping_list_change_user_page.dart'
     as _i45;
-import '../screens/private_event_page/shopping_list_item_page/private_event_shopping_list_item_page.dart'
+import 'package:social_media_app_flutter/presentation/screens/private_event_page/shopping_list_item_page/private_event_shopping_list_item_page.dart'
     as _i44;
-import '../screens/private_event_page/shopping_list_item_page/private_event_shopping_list_item_wrapper_page.dart'
+import 'package:social_media_app_flutter/presentation/screens/private_event_page/shopping_list_item_page/private_event_shopping_list_item_wrapper_page.dart'
     as _i40;
-import '../screens/private_event_page/tab_page/pages/private_event_tab_info.dart'
+import 'package:social_media_app_flutter/presentation/screens/private_event_page/tab_page/pages/private_event_tab_info.dart'
     as _i41;
-import '../screens/private_event_page/tab_page/pages/private_event_tab_shopping_list.dart'
+import 'package:social_media_app_flutter/presentation/screens/private_event_page/tab_page/pages/private_event_tab_shopping_list.dart'
     as _i43;
-import '../screens/private_event_page/tab_page/pages/private_event_tab_user_list.dart'
+import 'package:social_media_app_flutter/presentation/screens/private_event_page/tab_page/pages/private_event_tab_user_list.dart'
     as _i42;
-import '../screens/private_event_page/tab_page/private_event_tab_page.dart'
+import 'package:social_media_app_flutter/presentation/screens/private_event_page/tab_page/private_event_tab_page.dart'
     as _i36;
-import '../screens/profile_page/profile_page.dart' as _i14;
-import '../screens/profile_page/profile_user_relations_tabs/profile_follow_requests_tab.dart'
+import 'package:social_media_app_flutter/presentation/screens/profile_page/profile_page.dart'
+    as _i14;
+import 'package:social_media_app_flutter/presentation/screens/profile_page/profile_user_relations_tabs/profile_follow_requests_tab.dart'
     as _i18;
-import '../screens/profile_page/profile_user_relations_tabs/profile_followed_tab.dart'
+import 'package:social_media_app_flutter/presentation/screens/profile_page/profile_user_relations_tabs/profile_followed_tab.dart'
     as _i17;
-import '../screens/profile_page/profile_user_relations_tabs/profile_follower_tab.dart'
+import 'package:social_media_app_flutter/presentation/screens/profile_page/profile_user_relations_tabs/profile_follower_tab.dart'
     as _i16;
-import '../screens/profile_page/profile_user_relations_tabs/profile_user_relations_tab_page.dart'
+import 'package:social_media_app_flutter/presentation/screens/profile_page/profile_user_relations_tabs/profile_user_relations_tab_page.dart'
     as _i15;
-import '../screens/profile_page/profile_wrapper_page.dart' as _i6;
-import '../screens/register_page.dart' as _i4;
-import '../screens/reset_password_page.dart' as _i3;
-import '../screens/settings_page/pages/settings_page.dart' as _i19;
-import '../screens/settings_page/pages/theme_mode_page.dart' as _i20;
-import '../screens/settings_page/pages/update_password_page.dart' as _i21;
-import '../screens/settings_page/settings_page_wrapper.dart' as _i7;
-import '../screens/shopping_list_page/shopping_list_item_page/shopping_list_item_change_user_page.dart'
+import 'package:social_media_app_flutter/presentation/screens/profile_page/profile_wrapper_page.dart'
+    as _i6;
+import 'package:social_media_app_flutter/presentation/screens/register_page.dart'
+    as _i4;
+import 'package:social_media_app_flutter/presentation/screens/reset_password_page.dart'
+    as _i3;
+import 'package:social_media_app_flutter/presentation/screens/settings_page/pages/settings_page.dart'
+    as _i19;
+import 'package:social_media_app_flutter/presentation/screens/settings_page/pages/theme_mode_page.dart'
+    as _i20;
+import 'package:social_media_app_flutter/presentation/screens/settings_page/pages/update_password_page.dart'
+    as _i21;
+import 'package:social_media_app_flutter/presentation/screens/settings_page/settings_page_wrapper.dart'
+    as _i7;
+import 'package:social_media_app_flutter/presentation/screens/shopping_list_page/shopping_list_item_page/shopping_list_item_change_user_page.dart'
     as _i30;
-import '../screens/shopping_list_page/shopping_list_item_page/shopping_list_item_page.dart'
+import 'package:social_media_app_flutter/presentation/screens/shopping_list_page/shopping_list_item_page/shopping_list_item_page.dart'
     as _i29;
-import '../screens/shopping_list_page/shopping_list_item_page/shopping_list_item_wrapper_page.dart'
+import 'package:social_media_app_flutter/presentation/screens/shopping_list_page/shopping_list_item_page/shopping_list_item_wrapper_page.dart'
     as _i28;
-import '../screens/shopping_list_page/shopping_list_page.dart' as _i27;
-import '../screens/shopping_list_page/shopping_list_wrapper_page.dart' as _i9;
-import '../screens/verify_email_page.dart' as _i2;
-import 'auth_guard.dart' as _i56;
+import 'package:social_media_app_flutter/presentation/screens/shopping_list_page/shopping_list_page.dart'
+    as _i27;
+import 'package:social_media_app_flutter/presentation/screens/shopping_list_page/shopping_list_wrapper_page.dart'
+    as _i9;
+import 'package:social_media_app_flutter/presentation/screens/verify_email_page.dart'
+    as _i2;
 
 class AppRouter extends _i54.RootStackRouter {
   AppRouter({
@@ -109,13 +141,13 @@ class AppRouter extends _i54.RootStackRouter {
   @override
   final Map<String, _i54.PageFactory> pagesMap = {
     LoginPageRoute.name: (routeData) {
-      return _i54.MaterialPageX<dynamic>(
+      return _i54.AdaptivePage<dynamic>(
         routeData: routeData,
         child: const _i1.LoginPage(),
       );
     },
     VerifyEmailPageRoute.name: (routeData) {
-      return _i54.MaterialPageX<dynamic>(
+      return _i54.AdaptivePage<dynamic>(
         routeData: routeData,
         child: const _i2.VerifyEmailPage(),
       );
@@ -123,7 +155,7 @@ class AppRouter extends _i54.RootStackRouter {
     ResetPasswordPageRoute.name: (routeData) {
       final args = routeData.argsAs<ResetPasswordPageRouteArgs>(
           orElse: () => const ResetPasswordPageRouteArgs());
-      return _i54.MaterialPageX<dynamic>(
+      return _i54.AdaptivePage<dynamic>(
         routeData: routeData,
         child: _i3.ResetPasswordPage(
           key: args.key,
@@ -132,13 +164,13 @@ class AppRouter extends _i54.RootStackRouter {
       );
     },
     RegisterPageRoute.name: (routeData) {
-      return _i54.MaterialPageX<dynamic>(
+      return _i54.AdaptivePage<dynamic>(
         routeData: routeData,
         child: const _i4.RegisterPage(),
       );
     },
     CreateUserPageRoute.name: (routeData) {
-      return _i54.MaterialPageX<dynamic>(
+      return _i54.AdaptivePage<dynamic>(
         routeData: routeData,
         child: const _i5.CreateUserPage(),
       );
@@ -148,7 +180,7 @@ class AppRouter extends _i54.RootStackRouter {
       final args = routeData.argsAs<ProfileWrapperPageRouteArgs>(
           orElse: () =>
               ProfileWrapperPageRouteArgs(userId: pathParams.getString('id')));
-      return _i54.MaterialPageX<dynamic>(
+      return _i54.AdaptivePage<dynamic>(
         routeData: routeData,
         child: _i6.ProfileWrapperPage(
           key: args.key,
@@ -159,26 +191,26 @@ class AppRouter extends _i54.RootStackRouter {
       );
     },
     SettingsWrapperPageRoute.name: (routeData) {
-      return _i54.MaterialPageX<dynamic>(
+      return _i54.AdaptivePage<dynamic>(
         routeData: routeData,
         child: const _i7.SettingsWrapperPage(),
       );
     },
     HomePageRoute.name: (routeData) {
-      return _i54.MaterialPageX<dynamic>(
+      return _i54.AdaptivePage<dynamic>(
         routeData: routeData,
         child: const _i8.HomePage(),
       );
     },
     ShoppingListWrapperPageRoute.name: (routeData) {
-      return _i54.MaterialPageX<dynamic>(
+      return _i54.AdaptivePage<dynamic>(
         routeData: routeData,
         child: const _i9.ShoppingListWrapperPage(),
       );
     },
     ChatPageWrapperRoute.name: (routeData) {
       final args = routeData.argsAs<ChatPageWrapperRouteArgs>();
-      return _i54.MaterialPageX<dynamic>(
+      return _i54.AdaptivePage<dynamic>(
         routeData: routeData,
         child: _i10.ChatPageWrapper(
           key: args.key,
@@ -193,7 +225,7 @@ class AppRouter extends _i54.RootStackRouter {
       final args = routeData.argsAs<PrivateEventWrapperPageRouteArgs>(
           orElse: () => PrivateEventWrapperPageRouteArgs(
               privateEventId: pathParams.getString('id')));
-      return _i54.MaterialPageX<dynamic>(
+      return _i54.AdaptivePage<dynamic>(
         routeData: routeData,
         child: _i11.PrivateEventWrapperPage(
           privateEventId: args.privateEventId,
@@ -204,13 +236,13 @@ class AppRouter extends _i54.RootStackRouter {
       );
     },
     NewGroupchatWrapperPageRoute.name: (routeData) {
-      return _i54.MaterialPageX<dynamic>(
+      return _i54.AdaptivePage<dynamic>(
         routeData: routeData,
         child: const _i12.NewGroupchatWrapperPage(),
       );
     },
     NewPrivateEventPageRoute.name: (routeData) {
-      return _i54.MaterialPageX<dynamic>(
+      return _i54.AdaptivePage<dynamic>(
         routeData: routeData,
         child: const _i13.NewPrivateEventPage(),
       );
@@ -219,7 +251,7 @@ class AppRouter extends _i54.RootStackRouter {
       final pathParams = routeData.inheritedPathParams;
       final args = routeData.argsAs<ProfilePageRouteArgs>(
           orElse: () => const ProfilePageRouteArgs());
-      return _i54.MaterialPageX<dynamic>(
+      return _i54.AdaptivePage<dynamic>(
         routeData: routeData,
         child: _i14.ProfilePage(
           key: args.key,
@@ -231,7 +263,7 @@ class AppRouter extends _i54.RootStackRouter {
       final pathParams = routeData.inheritedPathParams;
       final args = routeData.argsAs<ProfileUserRelationsTabPageRouteArgs>(
           orElse: () => const ProfileUserRelationsTabPageRouteArgs());
-      return _i54.MaterialPageX<dynamic>(
+      return _i54.AdaptivePage<dynamic>(
         routeData: routeData,
         child: _i15.ProfileUserRelationsTabPage(
           key: args.key,
@@ -241,61 +273,61 @@ class AppRouter extends _i54.RootStackRouter {
       );
     },
     ProfileFollowerTabRoute.name: (routeData) {
-      return _i54.MaterialPageX<dynamic>(
+      return _i54.AdaptivePage<dynamic>(
         routeData: routeData,
         child: const _i16.ProfileFollowerTab(),
       );
     },
     ProfileFollowedTabRoute.name: (routeData) {
-      return _i54.MaterialPageX<dynamic>(
+      return _i54.AdaptivePage<dynamic>(
         routeData: routeData,
         child: const _i17.ProfileFollowedTab(),
       );
     },
     ProfileFollowRequestsTabRoute.name: (routeData) {
-      return _i54.MaterialPageX<dynamic>(
+      return _i54.AdaptivePage<dynamic>(
         routeData: routeData,
         child: const _i18.ProfileFollowRequestsTab(),
       );
     },
     SettingsPageRoute.name: (routeData) {
-      return _i54.MaterialPageX<dynamic>(
+      return _i54.AdaptivePage<dynamic>(
         routeData: routeData,
         child: const _i19.SettingsPage(),
       );
     },
     ThemeModePageRoute.name: (routeData) {
-      return _i54.MaterialPageX<dynamic>(
+      return _i54.AdaptivePage<dynamic>(
         routeData: routeData,
         child: const _i20.ThemeModePage(),
       );
     },
     UpdatePasswordPageRoute.name: (routeData) {
-      return _i54.MaterialPageX<dynamic>(
+      return _i54.AdaptivePage<dynamic>(
         routeData: routeData,
         child: const _i21.UpdatePasswordPage(),
       );
     },
     HomeChatPageRoute.name: (routeData) {
-      return _i54.MaterialPageX<dynamic>(
+      return _i54.AdaptivePage<dynamic>(
         routeData: routeData,
         child: const _i22.HomeChatPage(),
       );
     },
     HomeEventPageRoute.name: (routeData) {
-      return _i54.MaterialPageX<dynamic>(
+      return _i54.AdaptivePage<dynamic>(
         routeData: routeData,
         child: const _i23.HomeEventPage(),
       );
     },
     LocationRoute.name: (routeData) {
-      return _i54.MaterialPageX<dynamic>(
+      return _i54.AdaptivePage<dynamic>(
         routeData: routeData,
         child: const _i24.Location(),
       );
     },
     HomeSearchPageRoute.name: (routeData) {
-      return _i54.MaterialPageX<dynamic>(
+      return _i54.AdaptivePage<dynamic>(
         routeData: routeData,
         child: const _i25.HomeSearchPage(),
       );
@@ -305,7 +337,7 @@ class AppRouter extends _i54.RootStackRouter {
       final args = routeData.argsAs<HomeProfilePageRouteArgs>(
           orElse: () =>
               HomeProfilePageRouteArgs(userId: pathParams.optString('id')));
-      return _i54.MaterialPageX<dynamic>(
+      return _i54.AdaptivePage<dynamic>(
         routeData: routeData,
         child: _i26.HomeProfilePage(
           key: args.key,
@@ -314,14 +346,14 @@ class AppRouter extends _i54.RootStackRouter {
       );
     },
     ShoppingListPageRoute.name: (routeData) {
-      return _i54.MaterialPageX<dynamic>(
+      return _i54.AdaptivePage<dynamic>(
         routeData: routeData,
         child: const _i27.ShoppingListPage(),
       );
     },
     ShoppingListItemWrapperPageRoute.name: (routeData) {
       final args = routeData.argsAs<ShoppingListItemWrapperPageRouteArgs>();
-      return _i54.MaterialPageX<dynamic>(
+      return _i54.AdaptivePage<dynamic>(
         routeData: routeData,
         child: _i28.ShoppingListItemWrapperPage(
           key: args.key,
@@ -332,13 +364,13 @@ class AppRouter extends _i54.RootStackRouter {
       );
     },
     ShoppingListItemPageRoute.name: (routeData) {
-      return _i54.MaterialPageX<dynamic>(
+      return _i54.AdaptivePage<dynamic>(
         routeData: routeData,
         child: const _i29.ShoppingListItemPage(),
       );
     },
     ShoppingListItemChangeUserPageRoute.name: (routeData) {
-      return _i54.MaterialPageX<dynamic>(
+      return _i54.AdaptivePage<dynamic>(
         routeData: routeData,
         child: const _i30.ShoppingListItemChangeUserPage(),
       );
@@ -347,7 +379,7 @@ class AppRouter extends _i54.RootStackRouter {
       final pathParams = routeData.inheritedPathParams;
       final args = routeData.argsAs<ChatPageRouteArgs>(
           orElse: () => const ChatPageRouteArgs());
-      return _i54.MaterialPageX<dynamic>(
+      return _i54.AdaptivePage<dynamic>(
         routeData: routeData,
         child: _i31.ChatPage(
           groupchatId: pathParams.getString('id'),
@@ -359,7 +391,7 @@ class AppRouter extends _i54.RootStackRouter {
       final pathParams = routeData.inheritedPathParams;
       final args = routeData.argsAs<ChatInfoPageRouteArgs>(
           orElse: () => const ChatInfoPageRouteArgs());
-      return _i54.MaterialPageX<dynamic>(
+      return _i54.AdaptivePage<dynamic>(
         routeData: routeData,
         child: _i32.ChatInfoPage(
           groupchatId: pathParams.getString('id'),
@@ -368,14 +400,14 @@ class AppRouter extends _i54.RootStackRouter {
       );
     },
     ChatChangeChatUsernamePageRoute.name: (routeData) {
-      return _i54.MaterialPageX<dynamic>(
+      return _i54.AdaptivePage<dynamic>(
         routeData: routeData,
         child: const _i33.ChatChangeChatUsernamePage(),
         fullscreenDialog: true,
       );
     },
     ChatFuturePrivateEventsPageRoute.name: (routeData) {
-      return _i54.MaterialPageX<dynamic>(
+      return _i54.AdaptivePage<dynamic>(
         routeData: routeData,
         child: const _i34.ChatFuturePrivateEventsPage(),
       );
@@ -384,7 +416,7 @@ class AppRouter extends _i54.RootStackRouter {
       final pathParams = routeData.inheritedPathParams;
       final args = routeData.argsAs<ChatAddUserPageRouteArgs>(
           orElse: () => const ChatAddUserPageRouteArgs());
-      return _i54.MaterialPageX<dynamic>(
+      return _i54.AdaptivePage<dynamic>(
         routeData: routeData,
         child: _i35.ChatAddUserPage(
           groupchatId: pathParams.getString('id'),
@@ -396,7 +428,7 @@ class AppRouter extends _i54.RootStackRouter {
       final pathParams = routeData.inheritedPathParams;
       final args = routeData.argsAs<PrivateEventTabPageRouteArgs>(
           orElse: () => const PrivateEventTabPageRouteArgs());
-      return _i54.MaterialPageX<dynamic>(
+      return _i54.AdaptivePage<dynamic>(
         routeData: routeData,
         child: _i36.PrivateEventTabPage(
           key: args.key,
@@ -405,13 +437,13 @@ class AppRouter extends _i54.RootStackRouter {
       );
     },
     PrivateEventUpdateLocationPageRoute.name: (routeData) {
-      return _i54.MaterialPageX<dynamic>(
+      return _i54.AdaptivePage<dynamic>(
         routeData: routeData,
         child: const _i37.PrivateEventUpdateLocationPage(),
       );
     },
     PrivateEventInviteUserPageRoute.name: (routeData) {
-      return _i54.MaterialPageX<dynamic>(
+      return _i54.AdaptivePage<dynamic>(
         routeData: routeData,
         child: const _i38.PrivateEventInviteUserPage(),
       );
@@ -422,7 +454,7 @@ class AppRouter extends _i54.RootStackRouter {
           routeData.argsAs<PrivateEventCreateShoppingListItemPageRouteArgs>(
               orElse: () =>
                   const PrivateEventCreateShoppingListItemPageRouteArgs());
-      return _i54.MaterialPageX<dynamic>(
+      return _i54.AdaptivePage<dynamic>(
         routeData: routeData,
         child: _i39.PrivateEventCreateShoppingListItemPage(
           key: args.key,
@@ -433,7 +465,7 @@ class AppRouter extends _i54.RootStackRouter {
     PrivateEventShoppingListItemWrapperPageRoute.name: (routeData) {
       final args =
           routeData.argsAs<PrivateEventShoppingListItemWrapperPageRouteArgs>();
-      return _i54.MaterialPageX<dynamic>(
+      return _i54.AdaptivePage<dynamic>(
         routeData: routeData,
         child: _i40.PrivateEventShoppingListItemWrapperPage(
           key: args.key,
@@ -447,7 +479,7 @@ class AppRouter extends _i54.RootStackRouter {
       final pathParams = routeData.inheritedPathParams;
       final args = routeData.argsAs<PrivateEventTabInfoRouteArgs>(
           orElse: () => const PrivateEventTabInfoRouteArgs());
-      return _i54.MaterialPageX<dynamic>(
+      return _i54.AdaptivePage<dynamic>(
         routeData: routeData,
         child: _i41.PrivateEventTabInfo(
           privateEventId: pathParams.getString('id'),
@@ -456,7 +488,7 @@ class AppRouter extends _i54.RootStackRouter {
       );
     },
     PrivateEventTabUserListRoute.name: (routeData) {
-      return _i54.MaterialPageX<dynamic>(
+      return _i54.AdaptivePage<dynamic>(
         routeData: routeData,
         child: const _i42.PrivateEventTabUserList(),
       );
@@ -465,7 +497,7 @@ class AppRouter extends _i54.RootStackRouter {
       final pathParams = routeData.inheritedPathParams;
       final args = routeData.argsAs<PrivateEventTabShoppingListRouteArgs>(
           orElse: () => const PrivateEventTabShoppingListRouteArgs());
-      return _i54.MaterialPageX<dynamic>(
+      return _i54.AdaptivePage<dynamic>(
         routeData: routeData,
         child: _i43.PrivateEventTabShoppingList(
           privateEventId: pathParams.getString('id'),
@@ -474,61 +506,61 @@ class AppRouter extends _i54.RootStackRouter {
       );
     },
     PrivateEventShoppingListItemPageRoute.name: (routeData) {
-      return _i54.MaterialPageX<dynamic>(
+      return _i54.AdaptivePage<dynamic>(
         routeData: routeData,
         child: const _i44.PrivateEventShoppingListItemPage(),
       );
     },
     PrivateEventShoppingListItemChangeUserPageRoute.name: (routeData) {
-      return _i54.MaterialPageX<dynamic>(
+      return _i54.AdaptivePage<dynamic>(
         routeData: routeData,
         child: const _i45.PrivateEventShoppingListItemChangeUserPage(),
       );
     },
     NewGroupchatDetailsTabRoute.name: (routeData) {
-      return _i54.MaterialPageX<dynamic>(
+      return _i54.AdaptivePage<dynamic>(
         routeData: routeData,
         child: const _i46.NewGroupchatDetailsTab(),
       );
     },
     NewGroupchatSelectUserTabRoute.name: (routeData) {
-      return _i54.MaterialPageX<dynamic>(
+      return _i54.AdaptivePage<dynamic>(
         routeData: routeData,
         child: const _i47.NewGroupchatSelectUserTab(),
       );
     },
     NewPrivateEventDetailsTabRoute.name: (routeData) {
-      return _i54.MaterialPageX<dynamic>(
+      return _i54.AdaptivePage<dynamic>(
         routeData: routeData,
         child: const _i48.NewPrivateEventDetailsTab(),
       );
     },
     NewPrivateEventTypeTabRoute.name: (routeData) {
-      return _i54.MaterialPageX<dynamic>(
+      return _i54.AdaptivePage<dynamic>(
         routeData: routeData,
         child: const _i49.NewPrivateEventTypeTab(),
       );
     },
     NewPrivateEventSearchUserTabRoute.name: (routeData) {
-      return _i54.MaterialPageX<dynamic>(
+      return _i54.AdaptivePage<dynamic>(
         routeData: routeData,
         child: const _i50.NewPrivateEventSearchUserTab(),
       );
     },
     NewPrivateEventSearchGroupchatTabRoute.name: (routeData) {
-      return _i54.MaterialPageX<dynamic>(
+      return _i54.AdaptivePage<dynamic>(
         routeData: routeData,
         child: const _i51.NewPrivateEventSearchGroupchatTab(),
       );
     },
     NewPrivateEventDateTabRoute.name: (routeData) {
-      return _i54.MaterialPageX<dynamic>(
+      return _i54.AdaptivePage<dynamic>(
         routeData: routeData,
         child: const _i52.NewPrivateEventDateTab(),
       );
     },
     NewPrivateEventLocationTabRoute.name: (routeData) {
-      return _i54.MaterialPageX<dynamic>(
+      return _i54.AdaptivePage<dynamic>(
         routeData: routeData,
         child: const _i53.NewPrivateEventLocationTab(),
       );

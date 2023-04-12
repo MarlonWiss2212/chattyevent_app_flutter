@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/shopping_list/current_shopping_list_item_cubit.dart';
 import 'package:social_media_app_flutter/core/dto/shopping_list_item/update_shopping_list_item_dto.dart';
+import 'package:social_media_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:social_media_app_flutter/presentation/widgets/general/user_list/user_grid_list.dart';
 
 class StandardShoppingListItemChangeUserPage extends StatelessWidget {
@@ -18,7 +19,16 @@ class StandardShoppingListItemChangeUserPage extends StatelessWidget {
         child: BlocBuilder<CurrentPrivateEventCubit, CurrentPrivateEventState>(
           builder: (context, state) {
             return UserGridList(
-              users: state.privateEventUsers.map((e) => e.user).toList(),
+              users: state.privateEventUsers
+                  .map(
+                    (e) =>
+                        e.groupchatUser ??
+                        UserEntity(
+                          id: e.privateEventUser.userId ?? "",
+                          authId: "",
+                        ),
+                  )
+                  .toList(),
               onPress: (user) {
                 BlocProvider.of<CurrentShoppingListItemCubit>(context)
                     .updateShoppingListItemViaApi(

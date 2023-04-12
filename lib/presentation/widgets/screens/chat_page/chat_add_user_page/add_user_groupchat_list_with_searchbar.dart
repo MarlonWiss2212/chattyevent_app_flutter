@@ -44,8 +44,8 @@ class AddUserGroupchatListWithSearchbar extends StatelessWidget {
                   for (final user in state.users) {
                     bool pushUser = true;
                     for (GroupchatUserEntity groupchatUser
-                        in currentChatState.currentChat.users ?? []) {
-                      if (groupchatUser.userId == user.id) {
+                        in currentChatState.users) {
+                      if (groupchatUser.id == user.id) {
                         pushUser = false;
                         break;
                       }

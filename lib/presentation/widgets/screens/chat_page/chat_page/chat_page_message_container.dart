@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
 import 'package:social_media_app_flutter/application/bloc/message/add_message_cubit.dart';
-import 'package:social_media_app_flutter/domain/entities/groupchat/user_with_groupchat_user_data.dart';
-import 'package:social_media_app_flutter/domain/entities/groupchat/user_with_left_groupchat_user_data.dart';
+import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_left_user_entity.dart';
+import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/message/message_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/chat_page/chat_page/chat_page_react_message_container.dart';
@@ -24,8 +24,8 @@ class ChatPageMessageContainer extends StatelessWidget {
   final bool isInputMessage;
 
   final String currentUserId;
-  final List<UserWithGroupchatUserData> users;
-  final List<UserWithLeftGroupchatUserData> leftUsers;
+  final List<GroupchatUserEntity> users;
+  final List<GroupchatLeftUserEntity> leftUsers;
   final MessageEntity message;
 
   @override
@@ -33,17 +33,19 @@ class ChatPageMessageContainer extends StatelessWidget {
     UserEntity? user;
     final foundUser = users.firstWhere(
       (element) => element.id == message.createdBy,
-      orElse: () => UserWithGroupchatUserData(
+      orElse: () => GroupchatUserEntity(
         id: message.createdBy ?? "",
         authId: "",
+        groupchatUserId: "",
       ),
     );
     if (foundUser.id == "") {
       final foundLeftUser = leftUsers.firstWhere(
         (element) => element.id == message.createdBy,
-        orElse: () => UserWithLeftGroupchatUserData(
+        orElse: () => GroupchatLeftUserEntity(
           id: message.createdBy ?? "",
           authId: "",
+          groupchatUserLeftId: "",
         ),
       );
 

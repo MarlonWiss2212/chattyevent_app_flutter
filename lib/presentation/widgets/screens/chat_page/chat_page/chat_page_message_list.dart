@@ -4,15 +4,15 @@ import 'package:grouped_list/grouped_list.dart';
 import 'package:intl/intl.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart';
-import 'package:social_media_app_flutter/domain/entities/groupchat/user_with_groupchat_user_data.dart';
-import 'package:social_media_app_flutter/domain/entities/groupchat/user_with_left_groupchat_user_data.dart';
+import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_left_user_entity.dart';
+import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/message/message_entity.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/chat_page/chat_page/chat_page_message_container.dart';
 
 class ChatPageMessageList extends StatefulWidget {
   final String groupchatTo;
-  final List<UserWithGroupchatUserData> users;
-  final List<UserWithLeftGroupchatUserData> leftUsers;
+  final List<GroupchatUserEntity> users;
+  final List<GroupchatLeftUserEntity> leftUsers;
   final List<MessageEntity> messages;
 
   const ChatPageMessageList({
