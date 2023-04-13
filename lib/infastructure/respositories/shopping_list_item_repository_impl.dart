@@ -1,8 +1,9 @@
+import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:social_media_app_flutter/core/dto/shopping_list_item/update_shopping_list_item_dto.dart';
 import 'package:social_media_app_flutter/core/filter/get_one_shopping_list_item_filter.dart';
 import 'package:social_media_app_flutter/core/filter/get_shopping_list_items_filter.dart';
-import 'package:social_media_app_flutter/core/failures/failures.dart';
 import 'package:social_media_app_flutter/core/filter/limit_offset_filter/limit_offset_filter.dart';
+import 'package:social_media_app_flutter/core/utils/failure_helper.dart';
 import 'package:social_media_app_flutter/domain/entities/shopping_list_item/shopping_list_item_entity.dart';
 import 'package:social_media_app_flutter/core/dto/shopping_list_item/create_shopping_list_item_dto.dart';
 import 'package:dartz/dartz.dart';
@@ -15,7 +16,8 @@ class ShoppingListItemRepositoryImpl implements ShoppingListItemRepository {
   ShoppingListItemRepositoryImpl({required this.graphQlDatasource});
 
   @override
-  Future<Either<Failure, ShoppingListItemEntity>> createShoppingListItem({
+  Future<Either<NotificationAlert, ShoppingListItemEntity>>
+      createShoppingListItem({
     required CreateShoppingListItemDto createShoppingListItemDto,
   }) async {
     try {
@@ -42,7 +44,10 @@ class ShoppingListItemRepositoryImpl implements ShoppingListItemRepository {
       );
 
       if (response.hasException) {
-        return Left(GeneralFailure());
+        return Left(FailureHelper.graphqlFailureToNotificationAlert(
+          title: "Erstellen Item Fehler",
+          exception: response.exception!,
+        ));
       }
 
       return Right(
@@ -51,12 +56,12 @@ class ShoppingListItemRepositoryImpl implements ShoppingListItemRepository {
         ),
       );
     } catch (e) {
-      return Left(ServerFailure());
+      return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
     }
   }
 
   @override
-  Future<Either<Failure, List<ShoppingListItemEntity>>>
+  Future<Either<NotificationAlert, List<ShoppingListItemEntity>>>
       getShoppingListItemsViaApi({
     required LimitOffsetFilter limitOffsetFilter,
     required GetShoppingListItemsFilter getShoppingListItemsFilter,
@@ -86,7 +91,10 @@ class ShoppingListItemRepositoryImpl implements ShoppingListItemRepository {
       );
 
       if (response.hasException) {
-        return Left(GeneralFailure());
+        return Left(FailureHelper.graphqlFailureToNotificationAlert(
+          title: "Finden Items Fehler",
+          exception: response.exception!,
+        ));
       }
       final List<ShoppingListItemEntity> shoppingListItems = [];
       for (var shoppingListItem in response.data!["findShoppingListItems"]) {
@@ -94,12 +102,13 @@ class ShoppingListItemRepositoryImpl implements ShoppingListItemRepository {
       }
       return Right(shoppingListItems);
     } catch (e) {
-      return Left(ServerFailure());
+      return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
     }
   }
 
   @override
-  Future<Either<Failure, ShoppingListItemEntity>> getShoppingListItemViaApi({
+  Future<Either<NotificationAlert, ShoppingListItemEntity>>
+      getShoppingListItemViaApi({
     required GetOneShoppingListItemFilter getOneShoppingListItemFilter,
   }) async {
     try {
@@ -126,19 +135,23 @@ class ShoppingListItemRepositoryImpl implements ShoppingListItemRepository {
       );
 
       if (response.hasException) {
-        return Left(GeneralFailure());
+        return Left(FailureHelper.graphqlFailureToNotificationAlert(
+          title: "Finden Item Fehler",
+          exception: response.exception!,
+        ));
       }
 
       return Right(
         ShoppingListItemModel.fromJson(response.data!["findShoppingListItem"]),
       );
     } catch (e) {
-      return Left(ServerFailure());
+      return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
     }
   }
 
   @override
-  Future<Either<Failure, ShoppingListItemEntity>> updateShoppingListItemViaApi({
+  Future<Either<NotificationAlert, ShoppingListItemEntity>>
+      updateShoppingListItemViaApi({
     required UpdateShoppingListItemDto updateShoppingListItemDto,
     required GetOneShoppingListItemFilter getOneShoppingListItemFilter,
   }) async {
@@ -167,7 +180,10 @@ class ShoppingListItemRepositoryImpl implements ShoppingListItemRepository {
       );
 
       if (response.hasException) {
-        return Left(GeneralFailure());
+        return Left(FailureHelper.graphqlFailureToNotificationAlert(
+          title: "Updaten Item Fehler",
+          exception: response.exception!,
+        ));
       }
 
       return Right(
@@ -176,12 +192,12 @@ class ShoppingListItemRepositoryImpl implements ShoppingListItemRepository {
         ),
       );
     } catch (e) {
-      return Left(ServerFailure());
+      return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
     }
   }
 
   @override
-  Future<Either<Failure, bool>> deleteShoppingListItemViaApi({
+  Future<Either<NotificationAlert, bool>> deleteShoppingListItemViaApi({
     required String shoppingListItemId,
   }) async {
     try {
@@ -195,12 +211,15 @@ class ShoppingListItemRepositoryImpl implements ShoppingListItemRepository {
       );
 
       if (response.hasException) {
-        return Left(GeneralFailure());
+        return Left(FailureHelper.graphqlFailureToNotificationAlert(
+          title: "Löschen Item Fehler",
+          exception: response.exception!,
+        ));
       }
 
       return Right(response.data!["deleteShoppingListItem"]);
     } catch (e) {
-      return Left(ServerFailure());
+      return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
     }
   }
 }

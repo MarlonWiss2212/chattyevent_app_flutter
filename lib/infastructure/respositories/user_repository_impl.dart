@@ -1,11 +1,12 @@
 import 'package:dartz/dartz.dart';
 import 'package:http/http.dart';
 import 'package:http_parser/http_parser.dart';
+import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:social_media_app_flutter/core/dto/user/create_user_dto.dart';
 import 'package:social_media_app_flutter/core/dto/user/update_user_dto.dart';
 import 'package:social_media_app_flutter/core/filter/limit_offset_filter/limit_offset_filter.dart';
+import 'package:social_media_app_flutter/core/utils/failure_helper.dart';
 import 'package:social_media_app_flutter/domain/entities/user/user_entity.dart';
-import 'package:social_media_app_flutter/core/failures/failures.dart';
 import 'package:social_media_app_flutter/core/filter/get_one_user_filter.dart';
 import 'package:social_media_app_flutter/core/filter/get_users_filter.dart';
 import 'package:social_media_app_flutter/domain/repositories/user_repository.dart';
@@ -17,7 +18,7 @@ class UserRepositoryImpl implements UserRepository {
   UserRepositoryImpl({required this.graphQlDatasource});
 
   @override
-  Future<Either<Failure, UserEntity>> getUserViaApi({
+  Future<Either<NotificationAlert, UserEntity>> getUserViaApi({
     required GetOneUserFilter getOneUserFilter,
   }) async {
     try {
@@ -54,17 +55,20 @@ class UserRepositoryImpl implements UserRepository {
       );
 
       if (response.hasException) {
-        return Left(GeneralFailure());
+        return Left(FailureHelper.graphqlFailureToNotificationAlert(
+          title: "Finden User Fehler",
+          exception: response.exception!,
+        ));
       }
 
       return Right(UserModel.fromJson(response.data!["findUser"]));
     } catch (e) {
-      return Left(ServerFailure());
+      return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
     }
   }
 
   @override
-  Future<Either<Failure, List<UserEntity>>> getUsersViaApi({
+  Future<Either<NotificationAlert, List<UserEntity>>> getUsersViaApi({
     required GetUsersFilter getUsersFilter,
     required LimitOffsetFilter limitOffsetFilter,
   }) async {
@@ -90,7 +94,10 @@ class UserRepositoryImpl implements UserRepository {
         },
       );
       if (response.hasException) {
-        return Left(GeneralFailure());
+        return Left(FailureHelper.graphqlFailureToNotificationAlert(
+          title: "Finden Users Fehler",
+          exception: response.exception!,
+        ));
       }
       final List<UserEntity> users = [];
       for (final user in response.data!["findUsers"]) {
@@ -99,12 +106,12 @@ class UserRepositoryImpl implements UserRepository {
 
       return Right(users);
     } catch (e) {
-      return Left(ServerFailure());
+      return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
     }
   }
 
   @override
-  Future<Either<Failure, UserEntity>> updateUserViaApi({
+  Future<Either<NotificationAlert, UserEntity>> updateUserViaApi({
     required UpdateUserDto updateUserDto,
   }) async {
     try {
@@ -138,22 +145,25 @@ class UserRepositoryImpl implements UserRepository {
         variables: variables,
       );
       if (response.hasException) {
-        return Left(GeneralFailure());
+        return Left(FailureHelper.graphqlFailureToNotificationAlert(
+          title: "Updaten User Fehler",
+          exception: response.exception!,
+        ));
       }
       return Right(UserModel.fromJson(response.data!["updateUser"]));
     } catch (e) {
-      return Left(ServerFailure());
+      return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
     }
   }
 
   @override
-  Future<Either<Failure, bool>> deleteUserViaApi() {
+  Future<Either<NotificationAlert, bool>> deleteUserViaApi() {
     // TODO: implement deleteUserViaApi
     throw UnimplementedError();
   }
 
   @override
-  Future<Either<Failure, UserEntity>> createUserViaApi({
+  Future<Either<NotificationAlert, UserEntity>> createUserViaApi({
     required CreateUserDto createUserDto,
   }) async {
     try {
@@ -187,12 +197,15 @@ class UserRepositoryImpl implements UserRepository {
       );
 
       if (response.hasException) {
-        return Left(GeneralFailure());
+        return Left(FailureHelper.graphqlFailureToNotificationAlert(
+          title: "Erstellen User Fehler",
+          exception: response.exception!,
+        ));
       }
 
       return Right(UserModel.fromJson(response.data!["createUser"]));
     } catch (e) {
-      return Left(ServerFailure());
+      return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
     }
   }
 }

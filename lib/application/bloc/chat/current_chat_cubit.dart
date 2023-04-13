@@ -21,8 +21,6 @@ import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_lef
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/message/message_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
-import 'package:social_media_app_flutter/domain/entities/user/user_entity.dart';
-import 'package:social_media_app_flutter/core/failures/failures.dart';
 import 'package:social_media_app_flutter/domain/usecases/chat_usecases.dart';
 import 'package:social_media_app_flutter/domain/usecases/message_usecases.dart';
 import 'package:social_media_app_flutter/domain/usecases/private_event_usecases.dart';
@@ -39,7 +37,7 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
   final MessageUseCases messageUseCases;
   final PrivateEventUseCases privateEventUseCases;
 
-  StreamSubscription<Either<Failure, MessageEntity>>? _subscription;
+  StreamSubscription<Either<NotificationAlert, MessageEntity>>? _subscription;
 
   CurrentChatCubit(
     super.initialState, {
@@ -85,18 +83,13 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
 
   Future getGroupchatUsersViaApi() async {
     /// optimize this
-    final Either<Failure, GetAllGroupchatUsersAndLeftUsers>
+    final Either<NotificationAlert, GetAllGroupchatUsersAndLeftUsers>
         groupchatUsersAndLeftUsers =
         await chatUseCases.getGroupchatUsersAndLeftUsers(
       groupchatId: state.currentChat.id,
     );
     groupchatUsersAndLeftUsers.fold(
-      (error) => notificationCubit.newAlert(
-        notificationAlert: NotificationAlert(
-          title: "Fehler beim holen der User",
-          message: mapFailureToMessage(error),
-        ),
-      ),
+      (alert) => notificationCubit.newAlert(notificationAlert: alert),
       (usersAndLeftUsers) {
         emit(
           CurrentChatState.merge(
@@ -128,13 +121,8 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
     );
 
     privateEventsOrFailure.fold(
-      (error) {
-        notificationCubit.newAlert(
-          notificationAlert: NotificationAlert(
-            title: "Get Future Private Events error",
-            message: mapFailureToMessage(error),
-          ),
-        );
+      (alert) {
+        notificationCubit.newAlert(notificationAlert: alert);
         emit(
           CurrentChatState.merge(oldState: state, loadingPrivateEvents: false),
         );
@@ -190,19 +178,14 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
       loadingChat: true,
     ));
 
-    final Either<Failure, GroupchatEntity> groupchatOrFailure =
+    final Either<NotificationAlert, GroupchatEntity> groupchatOrFailure =
         await chatUseCases.getGroupchatViaApi(
       getOneGroupchatFilter: GetOneGroupchatFilter(id: state.currentChat.id),
     );
 
     groupchatOrFailure.fold(
-      (error) {
-        notificationCubit.newAlert(
-          notificationAlert: NotificationAlert(
-            title: "Get Chats error",
-            message: mapFailureToMessage(error),
-          ),
-        );
+      (alert) {
+        notificationCubit.newAlert(notificationAlert: alert);
         emit(
           CurrentChatState.merge(oldState: state, loadingChat: false),
         );
@@ -222,21 +205,14 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
   Future updateCurrentGroupchatViaApi({
     required UpdateGroupchatDto updateGroupchatDto,
   }) async {
-    final Either<Failure, GroupchatEntity> groupchatOrFailure =
+    final Either<NotificationAlert, GroupchatEntity> groupchatOrFailure =
         await chatUseCases.updateGroupchatViaApi(
       getOneGroupchatFilter: GetOneGroupchatFilter(id: state.currentChat.id),
       updateGroupchatDto: updateGroupchatDto,
     );
 
     groupchatOrFailure.fold(
-      (error) => notificationCubit.newAlert(
-        notificationAlert: NotificationAlert(
-          title: "Update Chat Fehler",
-          message: mapFailureToMessage(
-            error,
-          ),
-        ),
-      ),
+      (alert) => notificationCubit.newAlert(notificationAlert: alert),
       (groupchat) {
         emit(CurrentChatState.merge(
           currentChat: groupchat,
@@ -253,7 +229,7 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
       oldState: state,
       loadingChat: true,
     ));
-    final Either<Failure, GroupchatUserEntity> groupchatOrFailure =
+    final Either<NotificationAlert, GroupchatUserEntity> groupchatOrFailure =
         await chatUseCases.addUserToGroupchatViaApi(
       createGroupchatUserDto: CreateGroupchatUserDto(
         userId: userId,
@@ -262,13 +238,8 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
     );
 
     groupchatOrFailure.fold(
-      (error) {
-        notificationCubit.newAlert(
-          notificationAlert: NotificationAlert(
-            title: "Fehler User hinzufügen",
-            message: mapFailureToMessage(error),
-          ),
-        );
+      (alert) {
+        notificationCubit.newAlert(notificationAlert: alert);
         emit(CurrentChatState.merge(oldState: state, loadingChat: false));
       },
       (groupchatUser) {
@@ -298,12 +269,7 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
     );
 
     updatedUserOrFailure.fold(
-      (error) => notificationCubit.newAlert(
-        notificationAlert: NotificationAlert(
-          title: "Fehler Update Gruppenchat User",
-          message: mapFailureToMessage(error),
-        ),
-      ),
+      (alert) => notificationCubit.newAlert(notificationAlert: alert),
       (groupchatUser) {
         List<GroupchatUserEntity> newGroupchatUsers = state.users;
 
@@ -332,8 +298,8 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
       oldState: state,
       loadingChat: true,
     ));
-    final Either<Failure, GroupchatLeftUserEntity?> groupchatOrFailure =
-        await chatUseCases.deleteUserFromGroupchatViaApi(
+    final Either<NotificationAlert, GroupchatLeftUserEntity?>
+        groupchatOrFailure = await chatUseCases.deleteUserFromGroupchatViaApi(
       getOneGroupchatUserFilter: GetOneGroupchatUserFilter(
         userId: userId,
         groupchatTo: state.currentChat.id,
@@ -341,13 +307,8 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
     );
 
     groupchatOrFailure.fold(
-      (error) {
-        notificationCubit.newAlert(
-          notificationAlert: NotificationAlert(
-            title: "Fehler User entfernen",
-            message: mapFailureToMessage(error),
-          ),
-        );
+      (alert) {
+        notificationCubit.newAlert(notificationAlert: alert);
         emit(
           CurrentChatState.merge(oldState: state, loadingChat: false),
         );
@@ -381,7 +342,7 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
       oldState: state,
       loadingMessages: true,
     ));
-    final Either<Failure, List<MessageEntity>> messagesOrFailure =
+    final Either<NotificationAlert, List<MessageEntity>> messagesOrFailure =
         await messageUseCases.getMessagesViaApi(
       getMessagesFilter: GetMessagesFilter(
         groupchatTo: state.currentChat.id,
@@ -395,13 +356,8 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
     );
 
     messagesOrFailure.fold(
-      (error) {
-        notificationCubit.newAlert(
-          notificationAlert: NotificationAlert(
-            title: "Fehler Nachrichten laden",
-            message: mapFailureToMessage(error),
-          ),
-        );
+      (alert) {
+        notificationCubit.newAlert(notificationAlert: alert);
         emit(
           CurrentChatState.merge(oldState: state, loadingMessages: false),
         );

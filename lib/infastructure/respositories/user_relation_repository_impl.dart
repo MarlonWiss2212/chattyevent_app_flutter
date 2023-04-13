@@ -1,9 +1,10 @@
+import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:social_media_app_flutter/core/filter/user_relation/target_user_id_filter.dart';
 import 'package:social_media_app_flutter/core/filter/limit_offset_filter/limit_offset_filter.dart';
+import 'package:social_media_app_flutter/core/utils/failure_helper.dart';
 import 'package:social_media_app_flutter/domain/entities/user-relation/user_relation_entity.dart';
 import 'package:social_media_app_flutter/core/filter/user_relation/request_user_id_filter.dart';
 import 'package:social_media_app_flutter/core/filter/user_relation/find_one_user_relation_filter.dart';
-import 'package:social_media_app_flutter/core/failures/failures.dart';
 import 'package:social_media_app_flutter/core/dto/user_relation/create_user_relation_dto.dart';
 import 'package:dartz/dartz.dart';
 import 'package:social_media_app_flutter/domain/entities/user/user_entity.dart';
@@ -17,7 +18,8 @@ class UserRelationRepositoryImpl extends UserRelationRepository {
   UserRelationRepositoryImpl({required this.graphQlDatasource});
 
   @override
-  Future<Either<Failure, UserRelationEntity>> createUserRelationViaApi({
+  Future<Either<NotificationAlert, UserRelationEntity>>
+      createUserRelationViaApi({
     required CreateUserRelationDto createUserRelationDto,
   }) async {
     try {
@@ -43,19 +45,22 @@ class UserRelationRepositoryImpl extends UserRelationRepository {
       );
 
       if (response.hasException) {
-        return Left(GeneralFailure());
+        return Left(FailureHelper.graphqlFailureToNotificationAlert(
+          title: "Erstellen Anfrage Fehler",
+          exception: response.exception!,
+        ));
       }
 
       return Right(
         UserRelationModel.fromJson(response.data!["createUserRelation"]),
       );
     } catch (e) {
-      return Left(ServerFailure());
+      return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
     }
   }
 
   @override
-  Future<Either<Failure, UserRelationEntity>> getUserRelationViaApi({
+  Future<Either<NotificationAlert, UserRelationEntity>> getUserRelationViaApi({
     required FindOneUserRelationFilter findOneUserRelationFilter,
   }) async {
     try {
@@ -81,19 +86,22 @@ class UserRelationRepositoryImpl extends UserRelationRepository {
       );
 
       if (response.hasException) {
-        return Left(GeneralFailure());
+        return Left(FailureHelper.graphqlFailureToNotificationAlert(
+          title: "Finden User Relation Fehler",
+          exception: response.exception!,
+        ));
       }
 
       return Right(
         UserRelationModel.fromJson(response.data!["findUserRelation"]),
       );
     } catch (e) {
-      return Left(ServerFailure());
+      return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
     }
   }
 
   @override
-  Future<Either<Failure, List<UserEntity>>> getFollowersViaApi({
+  Future<Either<NotificationAlert, List<UserEntity>>> getFollowersViaApi({
     required LimitOffsetFilter limitOffsetFilter,
     required TargetUserIdFilter targetUserIdFilter,
   }) async {
@@ -124,7 +132,10 @@ class UserRelationRepositoryImpl extends UserRelationRepository {
       );
 
       if (response.hasException) {
-        return Left(GeneralFailure());
+        return Left(FailureHelper.graphqlFailureToNotificationAlert(
+          title: "Finden Followers Fehler",
+          exception: response.exception!,
+        ));
       }
       final List<UserEntity> users = [];
       for (var user in response.data!["findFollowers"]) {
@@ -133,12 +144,13 @@ class UserRelationRepositoryImpl extends UserRelationRepository {
 
       return Right(users);
     } catch (e) {
-      return Left(ServerFailure());
+      return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
     }
   }
 
   @override
-  Future<Either<Failure, List<UserEntity>>> getFollowerRequestsViaApi({
+  Future<Either<NotificationAlert, List<UserEntity>>>
+      getFollowerRequestsViaApi({
     required LimitOffsetFilter limitOffsetFilter,
   }) async {
     try {
@@ -167,7 +179,10 @@ class UserRelationRepositoryImpl extends UserRelationRepository {
       );
 
       if (response.hasException) {
-        return Left(GeneralFailure());
+        return Left(FailureHelper.graphqlFailureToNotificationAlert(
+          title: "Finden Follow Requests Fehler",
+          exception: response.exception!,
+        ));
       }
       final List<UserEntity> users = [];
       for (var user in response.data!["findFollowRequests"]) {
@@ -176,12 +191,12 @@ class UserRelationRepositoryImpl extends UserRelationRepository {
 
       return Right(users);
     } catch (e) {
-      return Left(ServerFailure());
+      return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
     }
   }
 
   @override
-  Future<Either<Failure, List<UserEntity>>> getFollowedViaApi({
+  Future<Either<NotificationAlert, List<UserEntity>>> getFollowedViaApi({
     required LimitOffsetFilter limitOffsetFilter,
     required RequestUserIdFilter requestUserIdFilter,
   }) async {
@@ -212,7 +227,10 @@ class UserRelationRepositoryImpl extends UserRelationRepository {
       );
 
       if (response.hasException) {
-        return Left(GeneralFailure());
+        return Left(FailureHelper.graphqlFailureToNotificationAlert(
+          title: "Finden Followed Fehler",
+          exception: response.exception!,
+        ));
       }
       final List<UserEntity> users = [];
       for (var user in response.data!["findFollowed"]) {
@@ -221,12 +239,13 @@ class UserRelationRepositoryImpl extends UserRelationRepository {
 
       return Right(users);
     } catch (e) {
-      return Left(ServerFailure());
+      return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
     }
   }
 
   @override
-  Future<Either<Failure, UserRelationEntity>> acceptFollowRequestViaApi({
+  Future<Either<NotificationAlert, UserRelationEntity>>
+      acceptFollowRequestViaApi({
     required RequestUserIdFilter requestUserIdFilter,
   }) async {
     try {
@@ -252,19 +271,22 @@ class UserRelationRepositoryImpl extends UserRelationRepository {
       );
 
       if (response.hasException) {
-        return Left(GeneralFailure());
+        return Left(FailureHelper.graphqlFailureToNotificationAlert(
+          title: "Akzeptieren Anfrage Fehler",
+          exception: response.exception!,
+        ));
       }
 
       return Right(
         UserRelationModel.fromJson(response.data!["acceptFollowRequest"]),
       );
     } catch (e) {
-      return Left(ServerFailure());
+      return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
     }
   }
 
   @override
-  Future<Either<Failure, bool>> deleteUserRelationViaApi({
+  Future<Either<NotificationAlert, bool>> deleteUserRelationViaApi({
     required FindOneUserRelationFilter findOneUserRelationFilter,
   }) async {
     try {
@@ -278,12 +300,15 @@ class UserRelationRepositoryImpl extends UserRelationRepository {
       );
 
       if (response.hasException) {
-        return Left(GeneralFailure());
+        return Left(FailureHelper.graphqlFailureToNotificationAlert(
+          title: "Löschen User Relation Fehler",
+          exception: response.exception!,
+        ));
       }
 
       return Right(response.data!["deleteUserRelation"]);
     } catch (e) {
-      return Left(ServerFailure());
+      return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
     }
   }
 }

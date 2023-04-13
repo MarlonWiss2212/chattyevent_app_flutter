@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:social_media_app_flutter/core/failures/failures.dart';
 import 'package:dartz/dartz.dart';
+import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
+import 'package:social_media_app_flutter/core/utils/failure_helper.dart';
 import 'package:social_media_app_flutter/domain/repositories/auth_repository.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
@@ -8,7 +9,7 @@ class AuthRepositoryImpl implements AuthRepository {
   AuthRepositoryImpl({required this.auth});
 
   @override
-  Future<Either<String, UserCredential>> loginWithEmailAndPassword({
+  Future<Either<NotificationAlert, UserCredential>> loginWithEmailAndPassword({
     required String email,
     required String password,
   }) async {
@@ -20,19 +21,27 @@ class AuthRepositoryImpl implements AuthRepository {
       return Right(authUser);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
-        return const Left('No user found for that email.');
+        return Left(NotificationAlert(
+          title: "Login Fehler",
+          message: 'Keinen User mit der Email gefunden',
+        ));
       } else if (e.code == 'wrong-password') {
-        return const Left('Wrong password provided for that user.');
+        return Left(NotificationAlert(
+          title: "Login Fehler",
+          message: 'Falches Passwort',
+        ));
       } else {
-        return Left(mapFailureToMessage(GeneralFailure()));
+        return Left(
+            FailureHelper.catchFailureToNotificationAlert(exception: e));
       }
     } catch (e) {
-      return Left(mapFailureToMessage(ServerFailure()));
+      return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
     }
   }
 
   @override
-  Future<Either<String, UserCredential>> registerWithEmailAndPassword({
+  Future<Either<NotificationAlert, UserCredential>>
+      registerWithEmailAndPassword({
     required String email,
     required String password,
   }) async {
@@ -44,54 +53,69 @@ class AuthRepositoryImpl implements AuthRepository {
       return Right(authUser);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
-        return const Left('The password provided is too weak.');
+        return Left(NotificationAlert(
+          title: "Schwaches Passwort",
+          message: 'Das mitgegebene passwort is zu schwach',
+        ));
       } else if (e.code == 'email-already-in-use') {
-        return const Left('The account already exists for that email.');
+        return Left(NotificationAlert(
+          title: "Email bereits verwendet",
+          message:
+              'Die E-Mail addresse wird bereits von einem anderen Konto verwendet',
+        ));
       } else {
-        return Left(mapFailureToMessage(ServerFailure()));
+        return Left(
+            FailureHelper.catchFailureToNotificationAlert(exception: e));
       }
     } catch (e) {
-      return Left(mapFailureToMessage(ServerFailure()));
+      return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
     }
   }
 
   @override
-  Future<Either<Failure, bool>> sendEmailVerification() async {
+  Future<Either<NotificationAlert, bool>> sendEmailVerification() async {
     try {
       if (auth.currentUser == null) {
-        return Left(GeneralFailure());
+        return Left(NotificationAlert(
+          title: "E-Mail sende Fehler",
+          message:
+              "Konnte keine E-Mail an den gerade eingeloggten User versenden",
+        ));
       }
       await auth.currentUser!.sendEmailVerification();
       return const Right(true);
     } catch (e) {
-      return Left(ServerFailure());
+      return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
     }
   }
 
   @override
-  Future<Either<Failure, bool>> sendResetPasswordEmail({
+  Future<Either<NotificationAlert, bool>> sendResetPasswordEmail({
     required String email,
   }) async {
     try {
       await auth.sendPasswordResetEmail(email: email);
       return const Right(true);
     } catch (e) {
-      return Left(ServerFailure());
+      return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
     }
   }
 
   @override
-  Future<Either<Failure, bool>> updatePassword({
+  Future<Either<NotificationAlert, bool>> updatePassword({
     required String newPassword,
   }) async {
     try {
       if (auth.currentUser == null) {
-        return Left(GeneralFailure());
+        return Left(NotificationAlert(
+          title: "Passwort Update Fehler",
+          message: "Konnte das Passwort nicht updaten",
+        ));
       }
       await auth.currentUser!.updatePassword(newPassword);
       return const Right(true);
     } catch (e) {
-      return Left(ServerFailure());
+      return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
     }
   }
 

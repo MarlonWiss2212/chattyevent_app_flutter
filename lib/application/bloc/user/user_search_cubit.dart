@@ -4,10 +4,8 @@ import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:social_media_app_flutter/core/filter/limit_offset_filter/limit_offset_filter.dart';
 import 'package:social_media_app_flutter/core/filter/user_relation/find_one_user_relation_filter.dart';
-import 'package:social_media_app_flutter/domain/entities/error_with_title_and_message.dart';
 import 'package:social_media_app_flutter/domain/entities/user-relation/user_relations_count_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/user/user_entity.dart';
-import 'package:social_media_app_flutter/core/failures/failures.dart';
 import 'package:social_media_app_flutter/core/filter/get_users_filter.dart';
 import 'package:social_media_app_flutter/domain/usecases/user_relation_usecases.dart';
 import 'package:social_media_app_flutter/domain/usecases/user_usecases.dart';
@@ -36,7 +34,7 @@ class UserSearchCubit extends Cubit<UserSearchState> {
       users: state.users,
     ));
 
-    final Either<Failure, List<UserEntity>> userSearchOrFailure =
+    final Either<NotificationAlert, List<UserEntity>> userSearchOrFailure =
         await userUseCases.getUsersViaApi(
       getUsersFilter: getUsersFilter ?? GetUsersFilter(),
       limitOffsetFilter: limitOffsetFilter ??
@@ -47,12 +45,7 @@ class UserSearchCubit extends Cubit<UserSearchState> {
     );
 
     userSearchOrFailure.fold(
-      (error) => notificationCubit.newAlert(
-        notificationAlert: NotificationAlert(
-          title: "Get Users Fehler",
-          message: mapFailureToMessage(error),
-        ),
-      ),
+      (alert) => notificationCubit.newAlert(notificationAlert: alert),
       (users) => emit(
         UserSearchState(users: users),
       ),
@@ -70,12 +63,7 @@ class UserSearchCubit extends Cubit<UserSearchState> {
     );
 
     userRelationOrFailure.fold(
-      (error) => notificationCubit.newAlert(
-        notificationAlert: NotificationAlert(
-          title: "Follow Or Unfollow Failure",
-          message: mapFailureToMessage(error),
-        ),
-      ),
+      (alert) => notificationCubit.newAlert(notificationAlert: alert),
       (booleanOrUserRelation) {
         booleanOrUserRelation.fold(
           (userRelation) {

@@ -10,7 +10,6 @@ import 'package:social_media_app_flutter/core/dto/private_event/create_private_e
 import 'package:social_media_app_flutter/core/dto/private_event/private_event_user/create_private_event_user_from_private_event_dto.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
-import 'package:social_media_app_flutter/core/failures/failures.dart';
 import 'package:social_media_app_flutter/domain/usecases/private_event_usecases.dart';
 
 part 'add_private_event_state.dart';
@@ -43,7 +42,7 @@ class AddPrivateEventCubit extends Cubit<AddPrivateEventState> {
 
     emitState(status: AddPrivateEventStateStatus.loading);
 
-    final Either<Failure, PrivateEventEntity> privateEventOrFailure =
+    final Either<NotificationAlert, PrivateEventEntity> privateEventOrFailure =
         await privateEventUseCases.createPrivateEventViaApi(
       CreatePrivateEventDto(
         title: state.title!,
@@ -73,12 +72,7 @@ class AddPrivateEventCubit extends Cubit<AddPrivateEventState> {
     );
 
     privateEventOrFailure.fold(
-      (error) => notificationCubit.newAlert(
-        notificationAlert: NotificationAlert(
-          title: "Fehler",
-          message: mapFailureToMessage(error),
-        ),
-      ),
+      (alert) => notificationCubit.newAlert(notificationAlert: alert),
       (privateEvent) {
         emit(AddPrivateEventState(
           privateEventUsersDto: [],

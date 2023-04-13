@@ -8,7 +8,6 @@ import 'package:social_media_app_flutter/core/dto/shopping_list_item/create_shop
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/user_with_private_event_user_data.dart';
 import 'package:social_media_app_flutter/domain/entities/shopping_list_item/shopping_list_item_entity.dart';
-import 'package:social_media_app_flutter/core/failures/failures.dart';
 import 'package:social_media_app_flutter/domain/usecases/shopping_list_item_usecases.dart';
 
 part 'add_shopping_list_item_state.dart';
@@ -40,7 +39,8 @@ class AddShoppingListItemCubit extends Cubit<AddShoppingListItemState> {
       );
     }
 
-    final Either<Failure, ShoppingListItemEntity> shoppingListItemOrFailure =
+    final Either<NotificationAlert, ShoppingListItemEntity>
+        shoppingListItemOrFailure =
         await shoppingListItemUseCases.createShoppingListItemsViaApi(
       createShoppingListItemDto: CreateShoppingListItemDto(
         itemName: state.itemName!,
@@ -53,14 +53,7 @@ class AddShoppingListItemCubit extends Cubit<AddShoppingListItemState> {
     );
 
     shoppingListItemOrFailure.fold(
-      (error) {
-        notificationCubit.newAlert(
-          notificationAlert: NotificationAlert(
-            title: "Erstell Fehler",
-            message: mapFailureToMessage(error),
-          ),
-        );
-      },
+      (alert) => notificationCubit.newAlert(notificationAlert: alert),
       (shoppingListItem) {
         emit(
           AddShoppingListItemState(

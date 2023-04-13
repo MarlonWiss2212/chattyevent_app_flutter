@@ -1,13 +1,13 @@
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:social_media_app_flutter/core/failures/failures.dart';
+import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:social_media_app_flutter/domain/repositories/auth_repository.dart';
 
 class AuthUseCases {
   final AuthRepository authRepository;
   AuthUseCases({required this.authRepository});
 
-  Future<Either<String, UserCredential>> loginWithEmailAndPassword({
+  Future<Either<NotificationAlert, UserCredential>> loginWithEmailAndPassword({
     required String email,
     required String password,
   }) async {
@@ -17,40 +17,45 @@ class AuthUseCases {
     );
   }
 
-  Future<Either<String, UserCredential>> registerWithEmailAndPassword({
+  Future<Either<NotificationAlert, UserCredential>>
+      registerWithEmailAndPassword({
     required String email,
     required String password,
   }) async {
-    final userCredOrFailureString =
+    final userCredOrNotificationAlertString =
         await authRepository.registerWithEmailAndPassword(
       email: email,
       password: password,
     );
 
-    await userCredOrFailureString.fold((l) => null, (userCredential) async {
+    await userCredOrNotificationAlertString.fold((l) => null,
+        (userCredential) async {
       if (userCredential.user != null) {
         await authRepository.sendEmailVerification();
       }
     });
-    return userCredOrFailureString;
+    return userCredOrNotificationAlertString;
   }
 
-  Future<Either<Failure, bool>> sendEmailVerification() async {
+  Future<Either<NotificationAlert, bool>> sendEmailVerification() async {
     return await authRepository.sendEmailVerification();
   }
 
-  Future<Either<Failure, bool>> sendResetPasswordEmail({
+  Future<Either<NotificationAlert, bool>> sendResetPasswordEmail({
     required String email,
   }) async {
     return await authRepository.sendResetPasswordEmail(email: email);
   }
 
-  Future<Either<Failure, bool>> updatePassword({
+  Future<Either<NotificationAlert, bool>> updatePassword({
     required String password,
     required String verfiyPassword,
   }) async {
     if (password != verfiyPassword) {
-      return Left(NotTheSamePasswordFailure());
+      return Left(NotificationAlert(
+        title: "Unterschiedliches Passwort",
+        message: "Die Passwörter stimmen nicht überein",
+      ));
     }
     return await authRepository.updatePassword(newPassword: password);
   }

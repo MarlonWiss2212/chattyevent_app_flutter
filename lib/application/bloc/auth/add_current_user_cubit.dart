@@ -6,8 +6,6 @@ import 'package:meta/meta.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:social_media_app_flutter/core/dto/user/create_user_dto.dart';
-import 'package:social_media_app_flutter/core/failures/failures.dart';
-import 'package:social_media_app_flutter/domain/entities/error_with_title_and_message.dart';
 import 'package:social_media_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:social_media_app_flutter/domain/usecases/user_usecases.dart';
 
@@ -39,7 +37,7 @@ class AddCurrentUserCubit extends Cubit<AddCurrentUserState> {
       );
     }
 
-    final Either<Failure, UserEntity> userOrFailure =
+    final Either<NotificationAlert, UserEntity> userOrFailure =
         await userUseCases.createUserViaApi(
       createUserDto: CreateUserDto(
         firstname: state.firstname!,
@@ -51,12 +49,7 @@ class AddCurrentUserCubit extends Cubit<AddCurrentUserState> {
     );
 
     userOrFailure.fold(
-      (error) => notificationCubit.newAlert(
-        notificationAlert: NotificationAlert(
-          title: "Fehler Create User",
-          message: mapFailureToMessage(error),
-        ),
-      ),
+      (alert) => notificationCubit.newAlert(notificationAlert: alert),
       (user) {
         authCubit.emitState(
           currentUser: user,
@@ -77,7 +70,6 @@ class AddCurrentUserCubit extends Cubit<AddCurrentUserState> {
     String? username,
     DateTime? birthdate,
     AddCurrentUserStateStatus? status,
-    ErrorWithTitleAndMessage? error,
   }) {
     emit(AddCurrentUserState(
       profileImage: profileImage ?? state.profileImage,

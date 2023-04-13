@@ -1,7 +1,8 @@
+import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:social_media_app_flutter/core/filter/limit_offset_filter/limit_offset_filter.dart';
+import 'package:social_media_app_flutter/core/utils/failure_helper.dart';
 import 'package:social_media_app_flutter/domain/entities/bought_amount_entity.dart';
 import 'package:social_media_app_flutter/core/filter/get_bought_amounts_filter.dart';
-import 'package:social_media_app_flutter/core/failures/failures.dart';
 import 'package:social_media_app_flutter/core/dto/bought_amount/update_bought_amount_dto.dart';
 import 'package:social_media_app_flutter/core/dto/bought_amount/create_bought_amount_dto.dart';
 import 'package:dartz/dartz.dart';
@@ -15,7 +16,8 @@ class BoughtAmountRepositoryImpl implements BoughtAmountRepository {
   BoughtAmountRepositoryImpl({required this.graphQlDatasource});
 
   @override
-  Future<Either<Failure, BoughtAmountEntity>> createBoughtAmountViaApi({
+  Future<Either<NotificationAlert, BoughtAmountEntity>>
+      createBoughtAmountViaApi({
     required CreateBoughtAmountDto createBoughtAmountDto,
   }) async {
     try {
@@ -38,19 +40,23 @@ class BoughtAmountRepositoryImpl implements BoughtAmountRepository {
       );
 
       if (response.hasException) {
-        return Left(GeneralFailure());
+        return Left(FailureHelper.graphqlFailureToNotificationAlert(
+          title: "Erstellen gekaufte Menge Fehler",
+          exception: response.exception!,
+        ));
       }
 
       return Right(
         BoughtAmountModel.fromJson(response.data!['createBoughtAmount']),
       );
     } catch (e) {
-      return Left(ServerFailure());
+      return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
     }
   }
 
   @override
-  Future<Either<Failure, List<BoughtAmountEntity>>> getBoughtAmountsViaApi({
+  Future<Either<NotificationAlert, List<BoughtAmountEntity>>>
+      getBoughtAmountsViaApi({
     required GetBoughtAmountsFilter getBoughtAmountsFilter,
     required LimitOffsetFilter limitOffsetFilter,
   }) async {
@@ -75,7 +81,10 @@ class BoughtAmountRepositoryImpl implements BoughtAmountRepository {
       );
 
       if (response.hasException) {
-        return Left(GeneralFailure());
+        return Left(FailureHelper.graphqlFailureToNotificationAlert(
+          title: "Holen gekaufte Menge Fehler",
+          exception: response.exception!,
+        ));
       }
 
       final List<BoughtAmountEntity> boughtAmounts = [];
@@ -84,12 +93,13 @@ class BoughtAmountRepositoryImpl implements BoughtAmountRepository {
       }
       return Right(boughtAmounts);
     } catch (e) {
-      return Left(ServerFailure());
+      return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
     }
   }
 
   @override
-  Future<Either<Failure, BoughtAmountEntity>> updateBoughtAmountViaApi({
+  Future<Either<NotificationAlert, BoughtAmountEntity>>
+      updateBoughtAmountViaApi({
     required UpdateBoughtAmountDto updateBoughtAmountDto,
     required String boughtAmountId,
   }) async {
@@ -114,19 +124,22 @@ class BoughtAmountRepositoryImpl implements BoughtAmountRepository {
       );
 
       if (response.hasException) {
-        return Left(GeneralFailure());
+        return Left(FailureHelper.graphqlFailureToNotificationAlert(
+          title: "Updaten gekaufte Menge Fehler",
+          exception: response.exception!,
+        ));
       }
 
       return Right(
         BoughtAmountModel.fromJson(response.data!['createBoughtAmount']),
       );
     } catch (e) {
-      return Left(ServerFailure());
+      return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
     }
   }
 
   @override
-  Future<Either<Failure, bool>> deleteBoughtAmountViaApi({
+  Future<Either<NotificationAlert, bool>> deleteBoughtAmountViaApi({
     required String boughtAmountId,
   }) async {
     try {
@@ -140,12 +153,15 @@ class BoughtAmountRepositoryImpl implements BoughtAmountRepository {
       );
 
       if (response.hasException) {
-        return Left(GeneralFailure());
+        return Left(FailureHelper.graphqlFailureToNotificationAlert(
+          title: "Löschen gekaufte Menge Fehler",
+          exception: response.exception!,
+        ));
       }
 
       return Right(response.data!["deleteBoughtAmount"]);
     } catch (e) {
-      return Left(ServerFailure());
+      return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
     }
   }
 }

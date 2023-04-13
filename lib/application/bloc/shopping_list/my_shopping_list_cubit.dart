@@ -4,9 +4,7 @@ import 'package:meta/meta.dart';
 import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/shopping_list/current_shopping_list_item_cubit.dart';
 import 'package:social_media_app_flutter/core/filter/limit_offset_filter/limit_offset_filter.dart';
-import 'package:social_media_app_flutter/domain/entities/error_with_title_and_message.dart';
 import 'package:social_media_app_flutter/domain/entities/shopping_list_item/shopping_list_item_entity.dart';
-import 'package:social_media_app_flutter/core/failures/failures.dart';
 import 'package:social_media_app_flutter/core/filter/get_shopping_list_items_filter.dart';
 import 'package:social_media_app_flutter/domain/usecases/shopping_list_item_usecases.dart';
 
@@ -85,7 +83,7 @@ class MyShoppingListCubit extends Cubit<MyShoppingListState> {
       loading: true,
     ));
 
-    final Either<Failure, List<ShoppingListItemEntity>>
+    final Either<NotificationAlert, List<ShoppingListItemEntity>>
         shoppingListItemsOrFailure =
         await shoppingListItemUseCases.getShoppingListItemsViaApi(
       getShoppingListItemsFilter: GetShoppingListItemsFilter(),
@@ -103,13 +101,8 @@ class MyShoppingListCubit extends Cubit<MyShoppingListState> {
     );
 
     shoppingListItemsOrFailure.fold(
-      (error) {
-        notificationCubit.newAlert(
-          notificationAlert: NotificationAlert(
-            title: "Lade Fehler",
-            message: mapFailureToMessage(error),
-          ),
-        );
+      (alert) {
+        notificationCubit.newAlert(notificationAlert: alert);
         emit(
           MyShoppingListState(
             shoppingListItemStates: state.shoppingListItemStates,

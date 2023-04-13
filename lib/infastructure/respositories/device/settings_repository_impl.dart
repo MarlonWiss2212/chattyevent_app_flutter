@@ -1,4 +1,4 @@
-import 'package:social_media_app_flutter/core/failures/failures.dart';
+import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:dartz/dartz.dart';
 import 'package:social_media_app_flutter/domain/repositories/device/settings_repository.dart';
 import 'package:social_media_app_flutter/infastructure/datasources/local/sharedPreferences.dart';
@@ -16,7 +16,7 @@ class SettingsRepositoryImpl extends SettingsRepository {
   }
 
   @override
-  Future<Either<Failure, bool>> getAutoDarkModeFromStorage() async {
+  Future<Either<NotificationAlert, bool>> getAutoDarkModeFromStorage() async {
     return await sharedPrefrencesDatasource.getBoolFromStorage("autoDarkMode");
   }
 
@@ -29,7 +29,7 @@ class SettingsRepositoryImpl extends SettingsRepository {
   }
 
   @override
-  Future<Either<Failure, bool>> getDarkModeFromStorage() async {
+  Future<Either<NotificationAlert, bool>> getDarkModeFromStorage() async {
     return await sharedPrefrencesDatasource.getBoolFromStorage("darkMode");
   }
 }

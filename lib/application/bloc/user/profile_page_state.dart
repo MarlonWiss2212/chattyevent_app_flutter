@@ -14,7 +14,6 @@ class ProfilePageState {
 
   final List<UserEntity>? followers;
   final ProfilePageStateFollowersStatus followersStatus;
-  final ErrorWithTitleAndMessage? followersError;
 
   final List<UserEntity>? followRequests;
   final ProfilePageStateFollowRequestsStatus followRequestsStatus;
@@ -27,7 +26,6 @@ class ProfilePageState {
     this.status = ProfilePageStateStatus.initial,
     this.followers,
     this.followersStatus = ProfilePageStateFollowersStatus.initial,
-    this.followersError,
     this.followRequests,
     this.followRequestsStatus = ProfilePageStateFollowRequestsStatus.initial,
     this.followed,

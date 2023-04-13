@@ -6,10 +6,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
-import 'package:social_media_app_flutter/core/failures/failures.dart';
 import 'package:social_media_app_flutter/core/filter/get_one_user_filter.dart';
 import 'package:social_media_app_flutter/core/injection.dart';
-import 'package:social_media_app_flutter/domain/entities/error_with_title_and_message.dart';
 import 'package:social_media_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:social_media_app_flutter/domain/usecases/auth_usecases.dart';
 import 'package:social_media_app_flutter/domain/usecases/notification_usecases.dart';
@@ -40,20 +38,15 @@ class AuthCubit extends Cubit<AuthState> {
     }
     emitState(status: AuthStateStatus.loading);
 
-    final Either<Failure, UserEntity> userOrFailure =
+    final Either<NotificationAlert, UserEntity> userOrFailure =
         await userUseCases.getUserViaApi(
       getOneUserFilter: GetOneUserFilter(authId: auth.currentUser!.uid),
     );
 
     await userOrFailure.fold(
-      (error) {
+      (alert) {
         emitState(status: AuthStateStatus.createUserPage);
-        notificationCubit.newAlert(
-          notificationAlert: NotificationAlert(
-            title: "Fehler Get Current User",
-            message: mapFailureToMessage(error),
-          ),
-        );
+        notificationCubit.newAlert(notificationAlert: alert);
       },
       (user) async {
         emitState(currentUser: user, status: AuthStateStatus.success);
@@ -68,19 +61,14 @@ class AuthCubit extends Cubit<AuthState> {
   }) async {
     emitState(status: AuthStateStatus.loading);
 
-    final Either<String, UserCredential> authUserOrFailureString =
+    final Either<NotificationAlert, UserCredential> authUserOrFailureString =
         await authUseCases.loginWithEmailAndPassword(
       email: email,
       password: password,
     );
 
     authUserOrFailureString.fold(
-      (errorMsg) => notificationCubit.newAlert(
-        notificationAlert: NotificationAlert(
-          title: "Login Fehler",
-          message: errorMsg,
-        ),
-      ),
+      (alert) => notificationCubit.newAlert(notificationAlert: alert),
       (authUser) async {
         emitState(
           status: AuthStateStatus.success,
@@ -98,19 +86,14 @@ class AuthCubit extends Cubit<AuthState> {
   }) async {
     emitState(status: AuthStateStatus.loading);
 
-    final Either<String, UserCredential> authUserOrFailureString =
+    final Either<NotificationAlert, UserCredential> authUserOrFailureString =
         await authUseCases.registerWithEmailAndPassword(
       email: email,
       password: password,
     );
 
     authUserOrFailureString.fold(
-      (errorMsg) => notificationCubit.newAlert(
-        notificationAlert: NotificationAlert(
-          title: "Fehler Get Current User",
-          message: errorMsg,
-        ),
-      ),
+      (alert) => notificationCubit.newAlert(notificationAlert: alert),
       (authUser) async {
         emitState(
           status: AuthStateStatus.success,
@@ -124,16 +107,11 @@ class AuthCubit extends Cubit<AuthState> {
   Future sendEmailVerification() async {
     emitState(status: AuthStateStatus.loading);
 
-    Either<Failure, bool> sendEmailOrFailure =
+    Either<NotificationAlert, bool> sendEmailOrFailure =
         await authUseCases.sendEmailVerification();
 
     sendEmailOrFailure.fold(
-      (error) => notificationCubit.newAlert(
-        notificationAlert: NotificationAlert(
-          title: "Fehler senden der E-Mail",
-          message: mapFailureToMessage(error),
-        ),
-      ),
+      (alert) => notificationCubit.newAlert(notificationAlert: alert),
       (worked) {
         emitState(
           status: AuthStateStatus.success,
@@ -147,16 +125,11 @@ class AuthCubit extends Cubit<AuthState> {
     required String email,
   }) async {
     emitState(status: AuthStateStatus.loading);
-    Either<Failure, bool> sendEmailOrFailure =
+    Either<NotificationAlert, bool> sendEmailOrFailure =
         await authUseCases.sendResetPasswordEmail(email: email);
 
     sendEmailOrFailure.fold(
-      (error) => notificationCubit.newAlert(
-        notificationAlert: NotificationAlert(
-          title: "Fehler senden der Passwort E-Mail",
-          message: mapFailureToMessage(error),
-        ),
-      ),
+      (alert) => notificationCubit.newAlert(notificationAlert: alert),
       (worked) {
         emitState(
           status: AuthStateStatus.success,
@@ -172,16 +145,12 @@ class AuthCubit extends Cubit<AuthState> {
   }) async {
     emitState(status: AuthStateStatus.loading);
 
-    Either<Failure, bool> updatedPassowrdOrFailure = await authUseCases
-        .updatePassword(password: password, verfiyPassword: verifyPassword);
+    Either<NotificationAlert, bool> updatedPassowrdOrFailure =
+        await authUseCases.updatePassword(
+            password: password, verfiyPassword: verifyPassword);
 
     updatedPassowrdOrFailure.fold(
-      (error) => notificationCubit.newAlert(
-        notificationAlert: NotificationAlert(
-          title: "Fehler Update Passwort",
-          message: mapFailureToMessage(error),
-        ),
-      ),
+      (alert) => notificationCubit.newAlert(notificationAlert: alert),
       (worked) {
         emitState(
           status: AuthStateStatus.success,

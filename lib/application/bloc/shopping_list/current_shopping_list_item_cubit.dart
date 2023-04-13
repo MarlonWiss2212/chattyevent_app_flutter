@@ -7,7 +7,6 @@ import 'package:social_media_app_flutter/application/bloc/shopping_list/my_shopp
 import 'package:social_media_app_flutter/core/dto/bought_amount/create_bought_amount_dto.dart';
 import 'package:social_media_app_flutter/core/dto/bought_amount/update_bought_amount_dto.dart';
 import 'package:social_media_app_flutter/core/dto/shopping_list_item/update_shopping_list_item_dto.dart';
-import 'package:social_media_app_flutter/core/failures/failures.dart';
 import 'package:social_media_app_flutter/core/filter/get_bought_amounts_filter.dart';
 import 'package:social_media_app_flutter/core/filter/get_one_shopping_list_item_filter.dart';
 import 'package:social_media_app_flutter/core/filter/limit_offset_filter/limit_offset_filter.dart';
@@ -37,20 +36,16 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
   Future getShoppingListItemViaApi() async {
     emitState(loadingShoppingListItem: true);
 
-    final Either<Failure, ShoppingListItemEntity> shoppingListItemOrFailure =
+    final Either<NotificationAlert, ShoppingListItemEntity>
+        shoppingListItemOrFailure =
         await shoppingListItemUseCases.getOneShoppingListItemsViaApi(
             getOneShoppingListItemFilter: GetOneShoppingListItemFilter(
       id: state.shoppingListItem.id,
     ));
 
     shoppingListItemOrFailure.fold(
-      (error) {
-        notificationCubit.newAlert(
-          notificationAlert: NotificationAlert(
-            title: "Get Fehler",
-            message: mapFailureToMessage(error),
-          ),
-        );
+      (alert) {
+        notificationCubit.newAlert(notificationAlert: alert);
         emitState(loadingShoppingListItem: false);
       },
       (shoppingListItem) {
@@ -75,7 +70,8 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
   Future updateShoppingListItemViaApi({
     required UpdateShoppingListItemDto updateShoppingListItemDto,
   }) async {
-    final Either<Failure, ShoppingListItemEntity> shoppingListItemOrFailure =
+    final Either<NotificationAlert, ShoppingListItemEntity>
+        shoppingListItemOrFailure =
         await shoppingListItemUseCases.updateShoppingListItemsViaApi(
       updateShoppingListItemDto: updateShoppingListItemDto,
       getOneShoppingListItemFilter: GetOneShoppingListItemFilter(
@@ -84,12 +80,7 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
     );
 
     shoppingListItemOrFailure.fold(
-      (error) => notificationCubit.newAlert(
-        notificationAlert: NotificationAlert(
-          title: "Update Fehler",
-          message: mapFailureToMessage(error),
-        ),
-      ),
+      (alert) => notificationCubit.newAlert(notificationAlert: alert),
       (shoppingListItem) {
         emitState(
           shoppingListItem: shoppingListItem,
@@ -111,18 +102,13 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
   }
 
   Future deleteShoppingListItemViaApi() async {
-    final Either<Failure, bool> deletedOrFailure =
+    final Either<NotificationAlert, bool> deletedOrFailure =
         await shoppingListItemUseCases.deleteShoppingListItemViaApi(
       shoppingListItemId: state.shoppingListItem.id,
     );
 
     deletedOrFailure.fold(
-      (error) => notificationCubit.newAlert(
-        notificationAlert: NotificationAlert(
-          title: "Delete Fehler",
-          message: mapFailureToMessage(error),
-        ),
-      ),
+      (alert) => notificationCubit.newAlert(notificationAlert: alert),
       (deleted) {
         if (deleted) {
           emitState(status: CurrentShoppingListItemStateStatus.deleted);
@@ -144,7 +130,8 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
     bool reload = false,
   }) async {
     emitState(loadingBoughtAmounts: true);
-    final Either<Failure, List<BoughtAmountEntity>> boughtAmountOrFailure =
+    final Either<NotificationAlert, List<BoughtAmountEntity>>
+        boughtAmountOrFailure =
         await boughtAmountUseCases.getBoughtAmountsViaApi(
       getBoughtAmountsFilter: GetBoughtAmountsFilter(
         shoppingListItemIds: [state.shoppingListItem.id],
@@ -160,13 +147,8 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
     );
 
     boughtAmountOrFailure.fold(
-      (error) {
-        notificationCubit.newAlert(
-          notificationAlert: NotificationAlert(
-            title: "Get Bought Amounst Fehler",
-            message: mapFailureToMessage(error),
-          ),
-        );
+      (alert) {
+        notificationCubit.newAlert(notificationAlert: alert);
         emitState(loadingBoughtAmounts: false);
       },
       (boughtAmounts) {
@@ -196,7 +178,7 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
   Future addBoughtAmount({
     required double boughtAmount,
   }) async {
-    final Either<Failure, BoughtAmountEntity> boughtAmountOrFailure =
+    final Either<NotificationAlert, BoughtAmountEntity> boughtAmountOrFailure =
         await boughtAmountUseCases.createBoughtAmountViaApi(
       createBoughtAmountDto: CreateBoughtAmountDto(
         shoppingListItemId: state.shoppingListItem.id,
@@ -205,12 +187,7 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
     );
 
     boughtAmountOrFailure.fold(
-      (error) => notificationCubit.newAlert(
-        notificationAlert: NotificationAlert(
-          title: "Create Bought Amount Fehler",
-          message: mapFailureToMessage(error),
-        ),
-      ),
+      (alert) => notificationCubit.newAlert(notificationAlert: alert),
       (boughtAmount) {
         final List<BoughtAmountEntity> newBoughtAmounts =
             List.from([boughtAmount])
@@ -247,19 +224,14 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
     required UpdateBoughtAmountDto updateBoughtAmountDto,
     required String boughtAmountId,
   }) async {
-    final Either<Failure, BoughtAmountEntity> boughtAmountOrFailure =
+    final Either<NotificationAlert, BoughtAmountEntity> boughtAmountOrFailure =
         await boughtAmountUseCases.updateBoughtAmountViaApi(
       updateBoughtAmountDto: updateBoughtAmountDto,
       boughtAmountId: boughtAmountId,
     );
 
     boughtAmountOrFailure.fold(
-      (error) => notificationCubit.newAlert(
-        notificationAlert: NotificationAlert(
-          title: "Update Bought Amount Fehler",
-          message: mapFailureToMessage(error),
-        ),
-      ),
+      (alert) => notificationCubit.newAlert(notificationAlert: alert),
       (boughtAmount) {
         final newBoughtAmountList = state.boughtAmounts
             .where((element) => element.id != boughtAmount.id)
@@ -285,18 +257,13 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
   Future deleteBoughtAmount({
     required String boughtAmountId,
   }) async {
-    final Either<Failure, bool> boughtAmountOrFailure =
+    final Either<NotificationAlert, bool> boughtAmountOrFailure =
         await boughtAmountUseCases.deleteBoughtAmountViaApi(
       boughtAmountId: boughtAmountId,
     );
 
     boughtAmountOrFailure.fold(
-      (error) => notificationCubit.newAlert(
-        notificationAlert: NotificationAlert(
-          title: "Delete Bought Amount Fehler",
-          message: mapFailureToMessage(error),
-        ),
-      ),
+      (alert) => notificationCubit.newAlert(notificationAlert: alert),
       (deleted) {
         if (deleted) {
           emitState(

@@ -9,7 +9,6 @@ import 'package:social_media_app_flutter/application/bloc/notification/notificat
 import 'package:social_media_app_flutter/core/dto/groupchat/create_groupchat_dto.dart';
 import 'package:social_media_app_flutter/core/dto/groupchat/groupchat_user/create_groupchat_user_from_create_groupchat_dto.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
-import 'package:social_media_app_flutter/core/failures/failures.dart';
 import 'package:social_media_app_flutter/domain/usecases/chat_usecases.dart';
 
 part 'add_groupchat_state.dart';
@@ -28,7 +27,7 @@ class AddGroupchatCubit extends Cubit<AddGroupchatState> {
   Future createGroupchatViaApi() async {
     emitState(status: AddGroupchatStateStatus.loading);
 
-    final Either<Failure, GroupchatEntity> groupchatOrFailure =
+    final Either<NotificationAlert, GroupchatEntity> groupchatOrFailure =
         await chatUseCases.createGroupchatViaApi(
       createGroupchatDto: CreateGroupchatDto(
         title: state.title ?? "",
@@ -39,12 +38,7 @@ class AddGroupchatCubit extends Cubit<AddGroupchatState> {
     );
 
     groupchatOrFailure.fold(
-      (error) => notificationCubit.newAlert(
-        notificationAlert: NotificationAlert(
-          title: "Fehler Create Gruppenchat",
-          message: mapFailureToMessage(error),
-        ),
-      ),
+      (alert) => notificationCubit.newAlert(notificationAlert: alert),
       (groupchat) {
         chatCubit.replaceOrAdd(
           chatState: CurrentChatState(

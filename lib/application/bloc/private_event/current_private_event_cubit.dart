@@ -25,7 +25,6 @@ import 'package:social_media_app_flutter/domain/entities/private_event/private_e
 import 'package:social_media_app_flutter/domain/entities/private_event/user_with_private_event_user_data.dart';
 import 'package:social_media_app_flutter/domain/entities/shopping_list_item/shopping_list_item_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/user/user_entity.dart';
-import 'package:social_media_app_flutter/core/failures/failures.dart';
 import 'package:social_media_app_flutter/core/filter/get_one_private_event_filter.dart';
 import 'package:social_media_app_flutter/domain/usecases/chat_usecases.dart';
 import 'package:social_media_app_flutter/domain/usecases/location_usecases.dart';
@@ -68,16 +67,11 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
         privateEventId: state.privateEvent.id,
       ),
     ]);
-    final Either<Failure, GetAllPrivateEventUsersAndLeftUsers> usersOrFailure =
-        response[1];
+    final Either<NotificationAlert, GetAllPrivateEventUsersAndLeftUsers>
+        usersOrFailure = response[1];
 
     usersOrFailure.fold(
-      (error) => notificationCubit.newAlert(
-        notificationAlert: NotificationAlert(
-          title: "Get Event User Fehler",
-          message: mapFailureToMessage(error),
-        ),
-      ),
+      (alert) => notificationCubit.newAlert(notificationAlert: alert),
       (usersAndLeftUsers) {
         setPrivateEventUsers(
           eitherLeftUsers: Right(usersAndLeftUsers.privateEventLeftUsers),
@@ -193,7 +187,7 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
     }
     emitState(loadingGroupchat: true);
 
-    final Either<Failure, GroupchatEntity> groupchatOrFailure =
+    final Either<NotificationAlert, GroupchatEntity> groupchatOrFailure =
         await chatUseCases.getGroupchatViaApi(
       getOneGroupchatFilter: GetOneGroupchatFilter(
         id: state.privateEvent.groupchatTo!,
@@ -201,13 +195,8 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
     );
 
     await groupchatOrFailure.fold(
-      (error) {
-        notificationCubit.newAlert(
-          notificationAlert: NotificationAlert(
-            title: "Get Groupchat Fehler",
-            message: mapFailureToMessage(error),
-          ),
-        );
+      (alert) {
+        notificationCubit.newAlert(notificationAlert: alert);
         emitState(loadingGroupchat: false);
       },
       (groupchat) async {
@@ -249,7 +238,7 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
   Future getCurrentPrivateEvent() async {
     emitState(loadingPrivateEvent: true);
 
-    final Either<Failure, PrivateEventEntity> privateEventOrFailure =
+    final Either<NotificationAlert, PrivateEventEntity> privateEventOrFailure =
         await privateEventUseCases.getPrivateEventViaApi(
       getOnePrivateEventFilter: GetOnePrivateEventFilter(
         id: state.privateEvent.id,
@@ -257,13 +246,8 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
     );
 
     privateEventOrFailure.fold(
-      (error) {
-        notificationCubit.newAlert(
-          notificationAlert: NotificationAlert(
-            title: "Fehler Geradiges Event",
-            message: mapFailureToMessage(error),
-          ),
-        );
+      (alert) {
+        notificationCubit.newAlert(notificationAlert: alert);
         emitState(loadingPrivateEvent: false);
       },
       (privateEvent) {
@@ -282,7 +266,7 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
   Future updateCurrentPrivateEvent({
     required UpdatePrivateEventDto updatePrivateEventDto,
   }) async {
-    final Either<Failure, PrivateEventEntity> privateEventOrFailure =
+    final Either<NotificationAlert, PrivateEventEntity> privateEventOrFailure =
         await privateEventUseCases.updatePrivateEvent(
       getOnePrivateEventFilter: GetOnePrivateEventFilter(
         id: state.privateEvent.id,
@@ -291,13 +275,8 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
     );
 
     privateEventOrFailure.fold(
-      (error) {
-        notificationCubit.newAlert(
-          notificationAlert: NotificationAlert(
-            title: "Update Event Fehler",
-            message: mapFailureToMessage(error),
-          ),
-        );
+      (alert) {
+        notificationCubit.newAlert(notificationAlert: alert);
         emitState(loadingPrivateEvent: false);
       },
       (privateEvent) {
@@ -315,7 +294,7 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
   }
 
   Future deleteCurrentPrivateEventViaApi() async {
-    final Either<Failure, bool> deletedOrFailure =
+    final Either<NotificationAlert, bool> deletedOrFailure =
         await privateEventUseCases.deletePrivateEventViaApi(
       getOnePrivateEventFilter: GetOnePrivateEventFilter(
         id: state.privateEvent.id,
@@ -323,12 +302,7 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
     );
 
     deletedOrFailure.fold(
-      (error) => notificationCubit.newAlert(
-        notificationAlert: NotificationAlert(
-          title: "Delete Fehler",
-          message: mapFailureToMessage(error),
-        ),
-      ),
+      (alert) => notificationCubit.newAlert(notificationAlert: alert),
       (deleted) {
         if (deleted) {
           emitState(status: CurrentPrivateEventStateStatus.deleted);
@@ -339,7 +313,8 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
   }
 
   Future addUserToPrivateEventViaApi({required String userId}) async {
-    Either<Failure, PrivateEventUserEntity> privateEventUserOrFailure =
+    Either<NotificationAlert, PrivateEventUserEntity>
+        privateEventUserOrFailure =
         await privateEventUseCases.addUserToPrivateEventViaApi(
       createPrivateEventUserDto: CreatePrivateEventUserDto(
         userId: userId,
@@ -348,12 +323,7 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
     );
 
     privateEventUserOrFailure.fold(
-      (error) => notificationCubit.newAlert(
-        notificationAlert: NotificationAlert(
-          title: "Create Event User Fehler",
-          message: mapFailureToMessage(error),
-        ),
-      ),
+      (alert) => notificationCubit.newAlert(notificationAlert: alert),
       (privateEventUser) {
         final List<PrivateEventUserEntity> privateEventUsers = List.from(
           state.privateEventUsers.map((e) => e.privateEventUser).toList(),
@@ -378,7 +348,8 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
     bool? organizer,
     required String userId,
   }) async {
-    final Either<Failure, PrivateEventUserEntity> privateEventOrFailure =
+    final Either<NotificationAlert, PrivateEventUserEntity>
+        privateEventOrFailure =
         await privateEventUseCases.updatePrivateEventUser(
       updatePrivateEventUserDto: UpdatePrivateEventUserDto(
         status: status,
@@ -391,12 +362,7 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
     );
 
     privateEventOrFailure.fold(
-      (error) => notificationCubit.newAlert(
-        notificationAlert: NotificationAlert(
-          title: "Fehler",
-          message: mapFailureToMessage(error),
-        ),
-      ),
+      (alert) => notificationCubit.newAlert(notificationAlert: alert),
       (privateEventUser) {
         List<PrivateEventUserEntity> privateEventUsers =
             state.privateEventUsers.map((e) => e.privateEventUser).toList();
@@ -415,7 +381,8 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
   }
 
   Future deleteUserFromPrivateEventViaApi({required String userId}) async {
-    Either<Failure, PrivateEventLeftUserEntity> privateEventLeftUserOrFailure =
+    Either<NotificationAlert, PrivateEventLeftUserEntity>
+        privateEventLeftUserOrFailure =
         await privateEventUseCases.deleteUserFromPrivateEventViaApi(
       getOnePrivateEventUserFilter: GetOnePrivateEventUserFilter(
         userId: userId,
@@ -424,12 +391,7 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
     );
 
     privateEventLeftUserOrFailure.fold(
-      (error) => notificationCubit.newAlert(
-        notificationAlert: NotificationAlert(
-          title: "Delete Event User Fehler",
-          message: mapFailureToMessage(error),
-        ),
-      ),
+      (alert) => notificationCubit.newAlert(notificationAlert: alert),
       (privateEventLeftUser) {
         final List<PrivateEventLeftUserEntity> privateEventLeftUsers =
             List.from(
@@ -529,7 +491,7 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
   }) async {
     emitState(loadingShoppingList: true);
 
-    final Either<Failure, List<ShoppingListItemEntity>>
+    final Either<NotificationAlert, List<ShoppingListItemEntity>>
         shoppingListItemsOrFailure =
         await shoppingListItemUseCases.getShoppingListItemsViaApi(
       getShoppingListItemsFilter:
@@ -548,13 +510,8 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
     );
 
     shoppingListItemsOrFailure.fold(
-      (error) {
-        notificationCubit.newAlert(
-          notificationAlert: NotificationAlert(
-            title: "Lade Fehler",
-            message: mapFailureToMessage(error),
-          ),
-        );
+      (alert) {
+        notificationCubit.newAlert(notificationAlert: alert);
         emitState(loadingShoppingList: false);
       },
       (shoppingListItems) {

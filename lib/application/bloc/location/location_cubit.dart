@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
-import 'package:social_media_app_flutter/core/failures/location_failures.dart';
 import 'package:social_media_app_flutter/domain/usecases/location_usecases.dart';
 
 part 'location_state.dart';
@@ -26,15 +25,7 @@ class LocationCubit extends Cubit<LocationState> {
         await locationUseCases.getCurrentLocationWithPermissions();
 
     locationErrorOrLocation.fold(
-      (failure) {
-        final error = mapLocationFailureToErrorWithTitleAndMessage(failure);
-        notificationCubit.newAlert(
-          notificationAlert: NotificationAlert(
-            title: error.title,
-            message: error.message,
-          ),
-        );
-      },
+      (alert) => notificationCubit.newAlert(notificationAlert: alert),
       (location) {
         emit(
           LocationLoaded(lat: location.latitude, lng: location.longitude),

@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:social_media_app_flutter/core/dto/private_event/create_private_event_dto.dart';
 import 'package:social_media_app_flutter/core/dto/private_event/private_event_user/create_private_event_user_dto.dart';
 import 'package:social_media_app_flutter/core/dto/private_event/update_private_event_dto.dart';
@@ -9,7 +10,6 @@ import 'package:social_media_app_flutter/core/response/get-all-private-events-us
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_left_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_user_entity.dart';
-import 'package:social_media_app_flutter/core/failures/failures.dart';
 import 'package:social_media_app_flutter/core/filter/get_one_private_event_filter.dart';
 import 'package:social_media_app_flutter/core/filter/get_private_events_filter.dart';
 import 'package:social_media_app_flutter/domain/repositories/private_event_repository.dart';
@@ -18,14 +18,15 @@ class PrivateEventUseCases {
   final PrivateEventRepository privateEventRepository;
   PrivateEventUseCases({required this.privateEventRepository});
 
-  Future<Either<Failure, PrivateEventEntity>> createPrivateEventViaApi(
-      CreatePrivateEventDto createPrivateEventDto) async {
+  Future<Either<NotificationAlert, PrivateEventEntity>>
+      createPrivateEventViaApi(
+          CreatePrivateEventDto createPrivateEventDto) async {
     return await privateEventRepository.createPrivateEventViaApi(
       createPrivateEventDto,
     );
   }
 
-  Future<Either<Failure, PrivateEventEntity>> getPrivateEventViaApi({
+  Future<Either<NotificationAlert, PrivateEventEntity>> getPrivateEventViaApi({
     required GetOnePrivateEventFilter getOnePrivateEventFilter,
   }) async {
     return await privateEventRepository.getPrivateEventViaApi(
@@ -33,7 +34,8 @@ class PrivateEventUseCases {
     );
   }
 
-  Future<Either<Failure, List<PrivateEventEntity>>> getPrivateEventsViaApi({
+  Future<Either<NotificationAlert, List<PrivateEventEntity>>>
+      getPrivateEventsViaApi({
     GetPrivateEventsFilter? getPrivateEventsFilter,
     required LimitOffsetFilter limitOffsetFilter,
   }) async {
@@ -43,7 +45,7 @@ class PrivateEventUseCases {
     );
   }
 
-  Future<Either<Failure, PrivateEventEntity>> updatePrivateEvent({
+  Future<Either<NotificationAlert, PrivateEventEntity>> updatePrivateEvent({
     required UpdatePrivateEventDto updatePrivateEventDto,
     required GetOnePrivateEventFilter getOnePrivateEventFilter,
   }) async {
@@ -53,7 +55,7 @@ class PrivateEventUseCases {
     );
   }
 
-  Future<Either<Failure, bool>> deletePrivateEventViaApi({
+  Future<Either<NotificationAlert, bool>> deletePrivateEventViaApi({
     required GetOnePrivateEventFilter getOnePrivateEventFilter,
   }) async {
     return await privateEventRepository.deletePrivateEventViaApi(
@@ -62,7 +64,7 @@ class PrivateEventUseCases {
   }
 
   // private event users
-  Future<Either<Failure, GetAllPrivateEventUsersAndLeftUsers>>
+  Future<Either<NotificationAlert, GetAllPrivateEventUsersAndLeftUsers>>
       getPrivateEventUsersAndLeftUsers({
     required String privateEventId,
   }) async {
@@ -71,7 +73,8 @@ class PrivateEventUseCases {
     );
   }
 
-  Future<Either<Failure, PrivateEventUserEntity>> addUserToPrivateEventViaApi({
+  Future<Either<NotificationAlert, PrivateEventUserEntity>>
+      addUserToPrivateEventViaApi({
     required CreatePrivateEventUserDto createPrivateEventUserDto,
   }) async {
     return await privateEventRepository.addUserToPrivateEventViaApi(
@@ -79,7 +82,7 @@ class PrivateEventUseCases {
     );
   }
 
-  Future<Either<Failure, PrivateEventLeftUserEntity>>
+  Future<Either<NotificationAlert, PrivateEventLeftUserEntity>>
       deleteUserFromPrivateEventViaApi({
     required GetOnePrivateEventUserFilter getOnePrivateEventUserFilter,
   }) async {
@@ -88,7 +91,8 @@ class PrivateEventUseCases {
     );
   }
 
-  Future<Either<Failure, PrivateEventUserEntity>> updatePrivateEventUser({
+  Future<Either<NotificationAlert, PrivateEventUserEntity>>
+      updatePrivateEventUser({
     required UpdatePrivateEventUserDto updatePrivateEventUserDto,
     required GetOnePrivateEventUserFilter getOnePrivateEventFilter,
   }) async {

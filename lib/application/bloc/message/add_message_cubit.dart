@@ -6,9 +6,7 @@ import 'package:meta/meta.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:social_media_app_flutter/core/dto/groupchat/message/create_message_dto.dart';
-import 'package:social_media_app_flutter/domain/entities/error_with_title_and_message.dart';
 import 'package:social_media_app_flutter/domain/entities/message/message_entity.dart';
-import 'package:social_media_app_flutter/core/failures/failures.dart';
 import 'package:social_media_app_flutter/domain/usecases/message_usecases.dart';
 
 part 'add_message_state.dart';
@@ -37,7 +35,7 @@ class AddMessageCubit extends Cubit<AddMessageState> {
       );
     }
 
-    final Either<Failure, MessageEntity> messageOrFailure =
+    final Either<NotificationAlert, MessageEntity> messageOrFailure =
         await messageUseCases.createMessageViaApi(
       createMessageDto: CreateMessageDto(
         message: state.message!,
@@ -48,12 +46,7 @@ class AddMessageCubit extends Cubit<AddMessageState> {
     );
 
     messageOrFailure.fold(
-      (error) => notificationCubit.newAlert(
-        notificationAlert: NotificationAlert(
-          title: "Fehler create Message",
-          message: mapFailureToMessage(error),
-        ),
-      ),
+      (alert) => notificationCubit.newAlert(notificationAlert: alert),
       (message) {
         /// to reset everything else
         emit(AddMessageState(

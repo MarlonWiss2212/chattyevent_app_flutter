@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:social_media_app_flutter/core/dto/private_event/create_private_event_dto.dart';
 import 'package:social_media_app_flutter/core/dto/private_event/private_event_user/create_private_event_user_dto.dart';
 import 'package:social_media_app_flutter/core/dto/private_event/update_private_event_dto.dart';
@@ -9,45 +10,49 @@ import 'package:social_media_app_flutter/core/response/get-all-private-events-us
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_left_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_user_entity.dart';
-import 'package:social_media_app_flutter/core/failures/failures.dart';
 import 'package:social_media_app_flutter/core/filter/get_one_private_event_filter.dart';
 import 'package:social_media_app_flutter/core/filter/get_private_events_filter.dart';
 
 abstract class PrivateEventRepository {
-  Future<Either<Failure, PrivateEventEntity>> createPrivateEventViaApi(
+  Future<Either<NotificationAlert, PrivateEventEntity>>
+      createPrivateEventViaApi(
     CreatePrivateEventDto createPrivateEventDto,
   );
-  Future<Either<Failure, PrivateEventEntity>> getPrivateEventViaApi({
+  Future<Either<NotificationAlert, PrivateEventEntity>> getPrivateEventViaApi({
     required GetOnePrivateEventFilter getOnePrivateEventFilter,
   });
-  Future<Either<Failure, List<PrivateEventEntity>>> getPrivateEventsViaApi({
+  Future<Either<NotificationAlert, List<PrivateEventEntity>>>
+      getPrivateEventsViaApi({
     GetPrivateEventsFilter? getPrivateEventsFilter,
     required LimitOffsetFilter limitOffsetFilter,
   });
-  Future<Either<Failure, PrivateEventEntity>> updatePrivateEventViaApi({
+  Future<Either<NotificationAlert, PrivateEventEntity>>
+      updatePrivateEventViaApi({
     required UpdatePrivateEventDto updatePrivateEventDto,
     required GetOnePrivateEventFilter getOnePrivateEventFilter,
   });
 
-  Future<Either<Failure, bool>> deletePrivateEventViaApi({
+  Future<Either<NotificationAlert, bool>> deletePrivateEventViaApi({
     required GetOnePrivateEventFilter getOnePrivateEventFilter,
   });
 
-  Future<Either<Failure, GetAllPrivateEventUsersAndLeftUsers>>
+  Future<Either<NotificationAlert, GetAllPrivateEventUsersAndLeftUsers>>
       getAllPrivateEventUsersAndLeftUsers({
     required String privateEventId,
   });
 
-  Future<Either<Failure, PrivateEventUserEntity>> addUserToPrivateEventViaApi({
+  Future<Either<NotificationAlert, PrivateEventUserEntity>>
+      addUserToPrivateEventViaApi({
     required CreatePrivateEventUserDto createPrivateEventUserDto,
   });
 
-  Future<Either<Failure, PrivateEventUserEntity>> updatePrivateEventUser({
+  Future<Either<NotificationAlert, PrivateEventUserEntity>>
+      updatePrivateEventUser({
     required UpdatePrivateEventUserDto updatePrivateEventUserDto,
     required GetOnePrivateEventUserFilter getOnePrivateEventUserFilter,
   });
 
-  Future<Either<Failure, PrivateEventLeftUserEntity>>
+  Future<Either<NotificationAlert, PrivateEventLeftUserEntity>>
       deleteUserFromPrivateEventViaApi({
     required GetOnePrivateEventUserFilter getOnePrivateEventUserFilter,
   });

@@ -4,7 +4,6 @@ import 'package:meta/meta.dart';
 import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:social_media_app_flutter/core/filter/limit_offset_filter/limit_offset_filter.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
-import 'package:social_media_app_flutter/core/failures/failures.dart';
 import 'package:social_media_app_flutter/domain/usecases/private_event_usecases.dart';
 
 part 'private_event_state.dart';
@@ -71,7 +70,8 @@ class PrivateEventCubit extends Cubit<PrivateEventState> {
       status: PrivateEventStateStatus.loading,
     );
 
-    final Either<Failure, List<PrivateEventEntity>> privateEventOrFailure =
+    final Either<NotificationAlert, List<PrivateEventEntity>>
+        privateEventOrFailure =
         await privateEventUseCases.getPrivateEventsViaApi(
       limitOffsetFilter: LimitOffsetFilter(
         limit: 10000,
@@ -80,12 +80,7 @@ class PrivateEventCubit extends Cubit<PrivateEventState> {
     );
 
     privateEventOrFailure.fold(
-      (error) => notificationCubit.newAlert(
-        notificationAlert: NotificationAlert(
-          title: "Fehler",
-          message: mapFailureToMessage(error),
-        ),
-      ),
+      (alert) => notificationCubit.newAlert(notificationAlert: alert),
       (privateEvents) {
         emitState(status: PrivateEventStateStatus.success);
         replaceOrAddMultiple(

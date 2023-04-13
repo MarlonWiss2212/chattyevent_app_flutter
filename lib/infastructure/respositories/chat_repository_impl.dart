@@ -1,15 +1,16 @@
 import 'package:http/http.dart';
 import 'package:http_parser/http_parser.dart';
+import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:social_media_app_flutter/core/dto/groupchat/create_groupchat_dto.dart';
 import 'package:social_media_app_flutter/core/dto/groupchat/groupchat_user/create_groupchat_user_dto.dart';
 import 'package:social_media_app_flutter/core/dto/groupchat/update_groupchat_dto.dart';
 import 'package:social_media_app_flutter/core/dto/groupchat/groupchat_user/update_groupchat_user_dto.dart';
-import 'package:social_media_app_flutter/core/failures/failures.dart';
 import 'package:social_media_app_flutter/core/filter/groupchat/get_messages_filter.dart';
 import 'package:social_media_app_flutter/core/filter/groupchat/get_one_groupchat_filter.dart';
 import 'package:social_media_app_flutter/core/filter/groupchat/get_one_groupchat_user_filter.dart';
 import 'package:social_media_app_flutter/core/filter/limit_offset_filter/limit_offset_filter.dart';
 import 'package:social_media_app_flutter/core/response/get-all-groupchat-users-and-left-users.response.dart';
+import 'package:social_media_app_flutter/core/utils/failure_helper.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:dartz/dartz.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_left_user_entity.dart';
@@ -25,7 +26,7 @@ class ChatRepositoryImpl implements ChatRepository {
   ChatRepositoryImpl({required this.graphQlDatasource});
 
   @override
-  Future<Either<Failure, GroupchatEntity>> createGroupchatViaApi(
+  Future<Either<NotificationAlert, GroupchatEntity>> createGroupchatViaApi(
     CreateGroupchatDto createGroupchatDto,
   ) async {
     try {
@@ -44,7 +45,7 @@ class ChatRepositoryImpl implements ChatRepository {
       }
 
       final response = await graphQlDatasource.mutation(
-        /* give the users later back again with a diffrent response type 
+        /* give the users later back again with a diffrent response type for more efficiency
         users {
           _id
           admin
@@ -78,16 +79,19 @@ class ChatRepositoryImpl implements ChatRepository {
       );
 
       if (response.hasException) {
-        return Left(GeneralFailure());
+        return Left(FailureHelper.graphqlFailureToNotificationAlert(
+          title: "Erstellen Chat Fehler",
+          exception: response.exception!,
+        ));
       }
       return Right(GroupchatModel.fromJson(response.data!["createGroupchat"]));
     } catch (e) {
-      return Left(ServerFailure());
+      return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
     }
   }
 
   @override
-  Future<Either<Failure, GroupchatEntity>> getGroupchatViaApi({
+  Future<Either<NotificationAlert, GroupchatEntity>> getGroupchatViaApi({
     required GetOneGroupchatFilter getOneGroupchatFilter,
     GetMessagesFilter? getMessagesFilter,
   }) async {
@@ -121,17 +125,20 @@ class ChatRepositoryImpl implements ChatRepository {
       );
 
       if (response.hasException) {
-        return Left(GeneralFailure());
+        return Left(FailureHelper.graphqlFailureToNotificationAlert(
+          title: "Finden Chat Fehler",
+          exception: response.exception!,
+        ));
       }
 
       return Right(GroupchatModel.fromJson(response.data!["findGroupchat"]));
     } catch (e) {
-      return Left(GeneralFailure());
+      return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
     }
   }
 
   @override
-  Future<Either<Failure, List<GroupchatEntity>>> getGroupchatsViaApi({
+  Future<Either<NotificationAlert, List<GroupchatEntity>>> getGroupchatsViaApi({
     LimitOffsetFilterOptional? messageFilterForEveryGroupchat,
   }) async {
     try {
@@ -161,7 +168,10 @@ class ChatRepositoryImpl implements ChatRepository {
       );
 
       if (response.hasException) {
-        return Left(GeneralFailure());
+        return Left(FailureHelper.graphqlFailureToNotificationAlert(
+          title: "Finden Chats Fehler",
+          exception: response.exception!,
+        ));
       }
 
       final List<GroupchatEntity> groupchats = [];
@@ -170,12 +180,12 @@ class ChatRepositoryImpl implements ChatRepository {
       }
       return Right(groupchats);
     } catch (e) {
-      return Left(ServerFailure());
+      return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
     }
   }
 
   @override
-  Future<Either<Failure, GroupchatEntity>> updateGroupchatViaApi({
+  Future<Either<NotificationAlert, GroupchatEntity>> updateGroupchatViaApi({
     required GetOneGroupchatFilter getOneGroupchatFilter,
     required UpdateGroupchatDto updateGroupchatDto,
   }) async {
@@ -213,16 +223,20 @@ class ChatRepositoryImpl implements ChatRepository {
       );
 
       if (response.hasException) {
-        return Left(GeneralFailure());
+        return Left(FailureHelper.graphqlFailureToNotificationAlert(
+          title: "Updaten Chat Fehler",
+          exception: response.exception!,
+        ));
       }
       return Right(GroupchatModel.fromJson(response.data!["updateGroupchat"]));
     } catch (e) {
-      return Left(ServerFailure());
+      return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
     }
   }
 
   @override
-  Future<Either<Failure, GroupchatUserEntity>> addUserToGroupchatViaApi({
+  Future<Either<NotificationAlert, GroupchatUserEntity>>
+      addUserToGroupchatViaApi({
     required CreateGroupchatUserDto createGroupchatUserDto,
   }) async {
     try {
@@ -281,19 +295,22 @@ class ChatRepositoryImpl implements ChatRepository {
       );
 
       if (response.hasException) {
-        return Left(GeneralFailure());
+        return Left(FailureHelper.graphqlFailureToNotificationAlert(
+          title: "User zum Chat Hinzufügen Fehler",
+          exception: response.exception!,
+        ));
       }
 
       return Right(
         GroupchatUserModel.fromJson(response.data!["addUserToGroupchat"]),
       );
     } catch (e) {
-      return Left(ServerFailure());
+      return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
     }
   }
 
   @override
-  Future<Either<Failure, GroupchatLeftUserEntity?>>
+  Future<Either<NotificationAlert, GroupchatLeftUserEntity?>>
       deleteUserFromGroupchatViaApi({
     required GetOneGroupchatUserFilter getOneGroupchatUserFilter,
   }) async {
@@ -349,9 +366,10 @@ class ChatRepositoryImpl implements ChatRepository {
       );
 
       if (response.hasException) {
-        print(response.exception);
-
-        return Left(GeneralFailure());
+        return Left(FailureHelper.graphqlFailureToNotificationAlert(
+          title: "User vom Chat entfernen Fehler",
+          exception: response.exception!,
+        ));
       }
 
       return Right(
@@ -362,13 +380,13 @@ class ChatRepositoryImpl implements ChatRepository {
             : null,
       );
     } catch (e) {
-      print(e);
-      return Left(ServerFailure());
+      return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
     }
   }
 
   @override
-  Future<Either<Failure, GroupchatUserEntity>> updateGroupchatUserViaApi({
+  Future<Either<NotificationAlert, GroupchatUserEntity>>
+      updateGroupchatUserViaApi({
     required UpdateGroupchatUserDto updateGroupchatUserDto,
     required GetOneGroupchatUserFilter getOneGroupchatUserFilter,
   }) async {
@@ -429,22 +447,22 @@ class ChatRepositoryImpl implements ChatRepository {
       );
 
       if (response.hasException) {
-        print(response.exception);
-        return Left(GeneralFailure());
+        return Left(FailureHelper.graphqlFailureToNotificationAlert(
+          title: "Updaten vom Chat user Fehler",
+          exception: response.exception!,
+        ));
       }
 
       return Right(
         GroupchatUserModel.fromJson(response.data!["updateGroupchatUser"]),
       );
     } catch (e) {
-      print(e);
-
-      return Left(ServerFailure());
+      return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
     }
   }
 
   @override
-  Future<Either<Failure, GetAllGroupchatUsersAndLeftUsers>>
+  Future<Either<NotificationAlert, GetAllGroupchatUsersAndLeftUsers>>
       getGroupchatUsersAndLeftUsers({
     required String groupchatId,
   }) async {
@@ -548,8 +566,10 @@ class ChatRepositoryImpl implements ChatRepository {
       );
 
       if (response.hasException) {
-        print(response.exception);
-        return Left(GeneralFailure());
+        return Left(FailureHelper.graphqlFailureToNotificationAlert(
+          title: "Finden von Chat usern Fehler",
+          exception: response.exception!,
+        ));
       }
 
       final List<GroupchatUserEntity> groupchatUsers = [];
@@ -571,8 +591,7 @@ class ChatRepositoryImpl implements ChatRepository {
         ),
       );
     } catch (e) {
-      print(e);
-      return Left(ServerFailure());
+      return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
     }
   }
 }

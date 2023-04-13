@@ -8,10 +8,8 @@ import 'package:social_media_app_flutter/core/dto/user/update_user_dto.dart';
 import 'package:social_media_app_flutter/core/filter/limit_offset_filter/limit_offset_filter.dart';
 import 'package:social_media_app_flutter/core/filter/user_relation/find_one_user_relation_filter.dart';
 import 'package:social_media_app_flutter/core/filter/user_relation/target_user_id_filter.dart';
-import 'package:social_media_app_flutter/domain/entities/error_with_title_and_message.dart';
 import 'package:social_media_app_flutter/domain/entities/user-relation/user_relations_count_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/user/user_entity.dart';
-import 'package:social_media_app_flutter/core/failures/failures.dart';
 import 'package:social_media_app_flutter/core/filter/get_one_user_filter.dart';
 import 'package:social_media_app_flutter/core/filter/user_relation/request_user_id_filter.dart';
 import 'package:social_media_app_flutter/domain/usecases/user_relation_usecases.dart';
@@ -38,7 +36,7 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
 
   Future getCurrentUserViaApi() async {
     emitState(status: ProfilePageStateStatus.loading);
-    final Either<Failure, UserEntity> userOrFailure =
+    final Either<NotificationAlert, UserEntity> userOrFailure =
         await userUseCases.getUserViaApi(
       getOneUserFilter: GetOneUserFilter(
         id: state.user.id != "" ? state.user.id : null,
@@ -50,12 +48,7 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
     );
 
     userOrFailure.fold(
-      (error) => notificationCubit.newAlert(
-        notificationAlert: NotificationAlert(
-          title: "Get User Fehler",
-          message: mapFailureToMessage(error),
-        ),
-      ),
+      (alert) => notificationCubit.newAlert(notificationAlert: alert),
       (user) {
         final replacedUser = userCubit.replaceOrAdd(user: user);
         if (state.user.id == authCubit.state.currentUser.id) {
@@ -73,7 +66,7 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
 
     emitState(followersStatus: ProfilePageStateFollowersStatus.loading);
 
-    final Either<Failure, List<UserEntity>> userOrFailure =
+    final Either<NotificationAlert, List<UserEntity>> userOrFailure =
         await userRelationUseCases.getFollowersViaApi(
       targetUserIdFilter: TargetUserIdFilter(targetUserId: state.user.id),
       limitOffsetFilter: LimitOffsetFilter(
@@ -83,12 +76,7 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
     );
 
     userOrFailure.fold(
-      (error) => notificationCubit.newAlert(
-        notificationAlert: NotificationAlert(
-          title: "Get Followers Fehler",
-          message: mapFailureToMessage(error),
-        ),
-      ),
+      (alert) => notificationCubit.newAlert(notificationAlert: alert),
       (users) {
         emitState(
           followersStatus: ProfilePageStateFollowersStatus.success,
@@ -118,7 +106,7 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
       followRequestsStatus: ProfilePageStateFollowRequestsStatus.loading,
     );
 
-    final Either<Failure, List<UserEntity>> userOrFailure =
+    final Either<NotificationAlert, List<UserEntity>> userOrFailure =
         await userRelationUseCases.getFollowerRequestsViaApi(
       limitOffsetFilter: LimitOffsetFilter(
         limit: reload ? state.followers?.length ?? limit : limit,
@@ -127,12 +115,7 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
     );
 
     userOrFailure.fold(
-      (error) => notificationCubit.newAlert(
-        notificationAlert: NotificationAlert(
-          title: "Get Follow Request Fehler",
-          message: mapFailureToMessage(error),
-        ),
-      ),
+      (alert) => notificationCubit.newAlert(notificationAlert: alert),
       (users) {
         emitState(
           followRequestsStatus: ProfilePageStateFollowRequestsStatus.success,
@@ -150,7 +133,7 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
 
     emitState(followedStatus: ProfilePageStateFollowedStatus.loading);
 
-    final Either<Failure, List<UserEntity>> userOrFailure =
+    final Either<NotificationAlert, List<UserEntity>> userOrFailure =
         await userRelationUseCases.getFollowedViaApi(
       requestUserIdFilter: RequestUserIdFilter(requesterUserId: state.user.id),
       limitOffsetFilter: LimitOffsetFilter(
@@ -160,12 +143,7 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
     );
 
     userOrFailure.fold(
-      (error) => notificationCubit.newAlert(
-        notificationAlert: NotificationAlert(
-          title: "Get Followed Fehler",
-          message: mapFailureToMessage(error),
-        ),
-      ),
+      (alert) => notificationCubit.newAlert(notificationAlert: alert),
       (users) {
         emitState(
           followedStatus: ProfilePageStateFollowedStatus.success,
@@ -196,12 +174,7 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
     );
 
     userOrFailure.fold(
-      (error) => notificationCubit.newAlert(
-        notificationAlert: NotificationAlert(
-          title: "Update User Fehler",
-          message: mapFailureToMessage(error),
-        ),
-      ),
+      (alert) => notificationCubit.newAlert(notificationAlert: alert),
       (user) {
         final newUser = UserEntity.merge(
           newEntity: user,
@@ -219,7 +192,7 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
     if (state.user.id != authCubit.state.currentUser.id) {
       notificationCubit.newAlert(
         notificationAlert: NotificationAlert(
-          title: "Accept User Relation Failure",
+          title: "Accept User Relation Fehler",
           message:
               "Du kannst keine Freundschaftsanfragen auf anderen Profilen annehmen",
         ),
@@ -236,12 +209,7 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
     );
 
     userRelationOrFailure.fold(
-      (error) => notificationCubit.newAlert(
-        notificationAlert: NotificationAlert(
-          title: "Accept User Relation Failure",
-          message: mapFailureToMessage(error),
-        ),
-      ),
+      (alert) => notificationCubit.newAlert(notificationAlert: alert),
       (userRelation) {
         final user = UserEntity.merge(
           newEntity: UserEntity(
@@ -272,7 +240,7 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
     if (state.user.id != authCubit.state.currentUser.id) {
       notificationCubit.newAlert(
         notificationAlert: NotificationAlert(
-          title: "Accept User Relation Failure",
+          title: "Accept User Relation Fehler",
           message:
               "Du kannst keine Freundschaftsanfragen auf anderen Profilen ablehnen",
         ),
@@ -288,17 +256,12 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
     );
 
     userRelationOrFailure.fold(
-      (error) => notificationCubit.newAlert(
-        notificationAlert: NotificationAlert(
-          title: "Delete User Relation Failure",
-          message: mapFailureToMessage(error),
-        ),
-      ),
+      (alert) => notificationCubit.newAlert(notificationAlert: alert),
       (boolean) {
         if (boolean == false) {
           notificationCubit.newAlert(
             notificationAlert: NotificationAlert(
-              title: "Delete User Relation Failure",
+              title: "Delete User Relation Fehler",
               message: "Fehler beim Löschen der Relation",
             ),
           );
@@ -333,7 +296,7 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
     if (state.user.id != authCubit.state.currentUser.id) {
       notificationCubit.newAlert(
         notificationAlert: NotificationAlert(
-          title: "Delete Follower Failure",
+          title: "Delete Follower NotificationAlert",
           message: "Du kannst keinen Follower eines anderen Profiles löschen",
         ),
       );
@@ -349,17 +312,12 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
     );
 
     userRelationOrFailure.fold(
-      (error) => notificationCubit.newAlert(
-        notificationAlert: NotificationAlert(
-          title: "Delete Follower Failure",
-          message: mapFailureToMessage(error),
-        ),
-      ),
+      (alert) => notificationCubit.newAlert(notificationAlert: alert),
       (boolean) {
         if (boolean == false) {
           notificationCubit.newAlert(
             notificationAlert: NotificationAlert(
-              title: "Delete Follower Failure",
+              title: "Delete Follower NotificationAlert",
               message: "Fehler bein löschen eines Followers",
             ),
           );
@@ -402,12 +360,7 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
     );
 
     userRelationOrFailure.fold(
-      (error) => notificationCubit.newAlert(
-        notificationAlert: NotificationAlert(
-          title: "Follow Or Unfollow Failure",
-          message: mapFailureToMessage(error),
-        ),
-      ),
+      (alert) => notificationCubit.newAlert(notificationAlert: alert),
       (booleanOrUserRelation) {
         booleanOrUserRelation.fold(
           (userRelation) {
@@ -462,12 +415,7 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
     );
 
     userRelationOrFailure.fold(
-      (error) => notificationCubit.newAlert(
-        notificationAlert: NotificationAlert(
-          title: "Follow Or Unfollow Failure",
-          message: mapFailureToMessage(error),
-        ),
-      ),
+      (alert) => notificationCubit.newAlert(notificationAlert: alert),
       (booleanOrUserRelation) {
         booleanOrUserRelation.fold(
           (userRelation) {
@@ -558,7 +506,6 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
                 );
               }
             }
-
             emitState(followed: followed, followers: followers);
           },
         );
@@ -566,12 +513,9 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
     );
   }
 
-  ///
-
   emitState({
     UserEntity? user,
     ProfilePageStateStatus? status,
-    ErrorWithTitleAndMessage? error,
     List<UserEntity>? followers,
     ProfilePageStateFollowersStatus? followersStatus,
     List<UserEntity>? followRequests,

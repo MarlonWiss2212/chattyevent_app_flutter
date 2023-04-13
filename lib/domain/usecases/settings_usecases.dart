@@ -1,5 +1,5 @@
 import 'package:dartz/dartz.dart';
-import 'package:social_media_app_flutter/core/failures/failures.dart';
+import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:social_media_app_flutter/domain/repositories/device/settings_repository.dart';
 
 class SettingsUseCases {
@@ -12,7 +12,7 @@ class SettingsUseCases {
     );
   }
 
-  Future<Either<Failure, bool>> getAutoDarkModeFromStorage() {
+  Future<Either<NotificationAlert, bool>> getAutoDarkModeFromStorage() {
     return settingsRepository.getAutoDarkModeFromStorage();
   }
 
@@ -20,7 +20,7 @@ class SettingsUseCases {
     return settingsRepository.saveDarkModeInStorage(darkMode: darkMode);
   }
 
-  Future<Either<Failure, bool>> getDarkModeFromStorage() {
+  Future<Either<NotificationAlert, bool>> getDarkModeFromStorage() {
     return settingsRepository.getDarkModeFromStorage();
   }
 }

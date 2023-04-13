@@ -1,5 +1,6 @@
 import 'package:http/http.dart';
 import 'package:http_parser/http_parser.dart';
+import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:social_media_app_flutter/core/dto/private_event/create_private_event_dto.dart';
 import 'package:social_media_app_flutter/core/dto/private_event/private_event_user/create_private_event_user_dto.dart';
 import 'package:social_media_app_flutter/core/dto/private_event/update_private_event_dto.dart';
@@ -7,9 +8,9 @@ import 'package:social_media_app_flutter/core/dto/private_event/private_event_us
 import 'package:social_media_app_flutter/core/filter/limit_offset_filter/limit_offset_filter.dart';
 import 'package:social_media_app_flutter/core/filter/private_event/private_event_user/get_one_private_event_user_filter.dart';
 import 'package:social_media_app_flutter/core/response/get-all-private-events-users-and-left-users.reponse.dart';
+import 'package:social_media_app_flutter/core/utils/failure_helper.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_left_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_user_entity.dart';
-import 'package:social_media_app_flutter/core/failures/failures.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
 import 'package:dartz/dartz.dart';
 import 'package:social_media_app_flutter/core/filter/get_one_private_event_filter.dart';
@@ -25,7 +26,8 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
   PrivateEventRepositoryImpl({required this.graphQlDatasource});
 
   @override
-  Future<Either<Failure, PrivateEventEntity>> createPrivateEventViaApi(
+  Future<Either<NotificationAlert, PrivateEventEntity>>
+      createPrivateEventViaApi(
     CreatePrivateEventDto createPrivateEventDto,
   ) async {
     try {
@@ -70,19 +72,22 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
       );
 
       if (response.hasException) {
-        return Left(GeneralFailure());
+        return Left(FailureHelper.graphqlFailureToNotificationAlert(
+          title: "Erstellen Privates Event Fehler",
+          exception: response.exception!,
+        ));
       }
 
       return Right(
         PrivateEventModel.fromJson(response.data!['createPrivateEvent']),
       );
     } catch (e) {
-      return Left(ServerFailure());
+      return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
     }
   }
 
   @override
-  Future<Either<Failure, PrivateEventEntity>> getPrivateEventViaApi({
+  Future<Either<NotificationAlert, PrivateEventEntity>> getPrivateEventViaApi({
     required GetOnePrivateEventFilter getOnePrivateEventFilter,
   }) async {
     try {
@@ -118,18 +123,22 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
       );
 
       if (response.hasException) {
-        return Left(GeneralFailure());
+        return Left(FailureHelper.graphqlFailureToNotificationAlert(
+          title: "Finden Privates Event Fehler",
+          exception: response.exception!,
+        ));
       }
       return Right(
         PrivateEventModel.fromJson(response.data!["findPrivateEvent"]),
       );
     } catch (e) {
-      return Left(ServerFailure());
+      return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
     }
   }
 
   @override
-  Future<Either<Failure, List<PrivateEventEntity>>> getPrivateEventsViaApi({
+  Future<Either<NotificationAlert, List<PrivateEventEntity>>>
+      getPrivateEventsViaApi({
     GetPrivateEventsFilter? getPrivateEventsFilter,
     required LimitOffsetFilter limitOffsetFilter,
   }) async {
@@ -156,7 +165,10 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
       });
 
       if (response.hasException) {
-        return Left(GeneralFailure());
+        return Left(FailureHelper.graphqlFailureToNotificationAlert(
+          title: "Finden Private Events Fehler",
+          exception: response.exception!,
+        ));
       }
 
       final List<PrivateEventEntity> privateEvents = [];
@@ -165,12 +177,13 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
       }
       return Right(privateEvents);
     } catch (e) {
-      return Left(ServerFailure());
+      return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
     }
   }
 
   @override
-  Future<Either<Failure, PrivateEventEntity>> updatePrivateEventViaApi({
+  Future<Either<NotificationAlert, PrivateEventEntity>>
+      updatePrivateEventViaApi({
     required UpdatePrivateEventDto updatePrivateEventDto,
     required GetOnePrivateEventFilter getOnePrivateEventFilter,
   }) async {
@@ -221,18 +234,21 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
       );
 
       if (response.hasException) {
-        return Left(GeneralFailure());
+        return Left(FailureHelper.graphqlFailureToNotificationAlert(
+          title: "Updaten Privates Event Fehler",
+          exception: response.exception!,
+        ));
       }
       return Right(
         PrivateEventModel.fromJson(response.data!["updatePrivateEvent"]),
       );
     } catch (e) {
-      return Left(ServerFailure());
+      return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
     }
   }
 
   @override
-  Future<Either<Failure, bool>> deletePrivateEventViaApi({
+  Future<Either<NotificationAlert, bool>> deletePrivateEventViaApi({
     required GetOnePrivateEventFilter getOnePrivateEventFilter,
   }) async {
     try {
@@ -248,17 +264,21 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
       );
 
       if (response.hasException) {
-        return Left(GeneralFailure());
+        return Left(FailureHelper.graphqlFailureToNotificationAlert(
+          title: "Löschen Privates Event Fehler",
+          exception: response.exception!,
+        ));
       }
 
       return Right(response.data!["deletePrivateEvent"]);
     } catch (e) {
-      return Left(ServerFailure());
+      return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
     }
   }
 
   @override
-  Future<Either<Failure, PrivateEventUserEntity>> updatePrivateEventUser({
+  Future<Either<NotificationAlert, PrivateEventUserEntity>>
+      updatePrivateEventUser({
     required UpdatePrivateEventUserDto updatePrivateEventUserDto,
     required GetOnePrivateEventUserFilter getOnePrivateEventUserFilter,
   }) async {
@@ -284,7 +304,10 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
       );
 
       if (response.hasException) {
-        return Left(GeneralFailure());
+        return Left(FailureHelper.graphqlFailureToNotificationAlert(
+          title: "Updaten Privates Event User Fehler",
+          exception: response.exception!,
+        ));
       }
       return Right(
         PrivateEventUserModel.fromJson(
@@ -292,12 +315,13 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
         ),
       );
     } catch (e) {
-      return Left(ServerFailure());
+      return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
     }
   }
 
   @override
-  Future<Either<Failure, PrivateEventUserEntity>> addUserToPrivateEventViaApi({
+  Future<Either<NotificationAlert, PrivateEventUserEntity>>
+      addUserToPrivateEventViaApi({
     required CreatePrivateEventUserDto createPrivateEventUserDto,
   }) async {
     try {
@@ -319,7 +343,10 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
       );
 
       if (response.hasException) {
-        return Left(GeneralFailure());
+        return Left(FailureHelper.graphqlFailureToNotificationAlert(
+          title: "User zum Privaten Event hinzufügen Fehler",
+          exception: response.exception!,
+        ));
       }
       return Right(
         PrivateEventUserModel.fromJson(
@@ -327,12 +354,12 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
         ),
       );
     } catch (e) {
-      return Left(ServerFailure());
+      return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
     }
   }
 
   @override
-  Future<Either<Failure, PrivateEventLeftUserEntity>>
+  Future<Either<NotificationAlert, PrivateEventLeftUserEntity>>
       deleteUserFromPrivateEventViaApi({
     required GetOnePrivateEventUserFilter getOnePrivateEventUserFilter,
   }) async {
@@ -355,7 +382,10 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
       );
 
       if (response.hasException) {
-        return Left(GeneralFailure());
+        return Left(FailureHelper.graphqlFailureToNotificationAlert(
+          title: "User vom Privaten Event löschen Fehler",
+          exception: response.exception!,
+        ));
       }
       return Right(
         PrivateEventLeftUserModel.fromJson(
@@ -363,12 +393,12 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
         ),
       );
     } catch (e) {
-      return Left(ServerFailure());
+      return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
     }
   }
 
   @override
-  Future<Either<Failure, GetAllPrivateEventUsersAndLeftUsers>>
+  Future<Either<NotificationAlert, GetAllPrivateEventUsersAndLeftUsers>>
       getAllPrivateEventUsersAndLeftUsers({
     required String privateEventId,
   }) async {
@@ -402,9 +432,10 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
       );
 
       if (response.hasException) {
-        print(response.exception);
-
-        return Left(GeneralFailure());
+        return Left(FailureHelper.graphqlFailureToNotificationAlert(
+          title: "Finden Privates Event User Fehler",
+          exception: response.exception!,
+        ));
       }
 
       final List<PrivateEventLeftUserEntity> privateEventLeftUsers = [];
@@ -427,8 +458,7 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
         ),
       );
     } catch (e) {
-      print(e);
-      return Left(ServerFailure());
+      return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
     }
   }
 }

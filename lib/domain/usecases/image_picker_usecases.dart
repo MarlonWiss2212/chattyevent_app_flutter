@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dartz/dartz.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:social_media_app_flutter/core/failures/image_picker_failures.dart';
 import 'package:social_media_app_flutter/domain/repositories/device/image_picker_repository.dart';
 
@@ -26,7 +27,7 @@ class ImagePickerUseCases {
     return await imagePickerRepository.getPhotosPermissionStatus();
   }
 
-  Future<Either<ImagePickerFailure, File>> getImageFromCameraWithPermissions({
+  Future<Either<NotificationAlert, File>> getImageFromCameraWithPermissions({
     CropAspectRatio? cropAspectRatio,
   }) async {
     PermissionStatus permissionStatus = await getCameraPermissionStatus();
@@ -36,13 +37,17 @@ class ImagePickerUseCases {
     }
 
     if (permissionStatus.isPermanentlyDenied || permissionStatus.isDenied) {
-      return Left(NoCameraPermissionFailure());
+      return Left(mapImagePickerFailureToNotificationAlert(
+        NoCameraPermissionFailure(),
+      ));
     }
 
     final image = await imagePickerRepository.getImageFromCamera();
 
     if (image == null) {
-      return Left(NoPhotoTakenFailure());
+      return Left(mapImagePickerFailureToNotificationAlert(
+        NoPhotoTakenFailure(),
+      ));
     }
 
     if (cropAspectRatio != null) {
@@ -55,13 +60,15 @@ class ImagePickerUseCases {
         return Right(File(croppedImage.path));
       }
 
-      return Left(PhotoNotCroppedFailure());
+      return Left(mapImagePickerFailureToNotificationAlert(
+        PhotoNotCroppedFailure(),
+      ));
     }
 
     return Right(File(image.path));
   }
 
-  Future<Either<ImagePickerFailure, File>> getImageFromPhotosWithPermissions({
+  Future<Either<NotificationAlert, File>> getImageFromPhotosWithPermissions({
     CropAspectRatio? cropAspectRatio,
   }) async {
     final permissionStatus = await getPhotosPermissionStatus();
@@ -71,13 +78,17 @@ class ImagePickerUseCases {
     }
 
     if (permissionStatus.isPermanentlyDenied || permissionStatus.isRestricted) {
-      return Left(NoPhotosPermissionFailure());
+      return Left(mapImagePickerFailureToNotificationAlert(
+        NoPhotosPermissionFailure(),
+      ));
     }
 
     final image = await imagePickerRepository.getImageFromGallery();
 
     if (image == null) {
-      return Left(NoPhotoSelectedFailure());
+      return Left(mapImagePickerFailureToNotificationAlert(
+        NoPhotoSelectedFailure(),
+      ));
     }
 
     if (cropAspectRatio != null) {
@@ -90,7 +101,9 @@ class ImagePickerUseCases {
         return Right(File(croppedImage.path));
       }
 
-      return Left(PhotoNotCroppedFailure());
+      return Left(mapImagePickerFailureToNotificationAlert(
+        PhotoNotCroppedFailure(),
+      ));
     }
 
     return Right(File(image.path));

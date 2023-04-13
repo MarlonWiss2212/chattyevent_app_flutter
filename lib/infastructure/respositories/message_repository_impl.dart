@@ -1,9 +1,10 @@
 import 'dart:async';
 import 'package:http/http.dart';
 import 'package:http_parser/http_parser.dart';
+import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:social_media_app_flutter/core/dto/groupchat/message/create_message_dto.dart';
-import 'package:social_media_app_flutter/core/failures/failures.dart';
 import 'package:social_media_app_flutter/core/filter/groupchat/added_message_filter.dart';
+import 'package:social_media_app_flutter/core/utils/failure_helper.dart';
 import 'package:social_media_app_flutter/domain/entities/message/message_entity.dart';
 import 'package:dartz/dartz.dart';
 import 'package:social_media_app_flutter/core/filter/groupchat/get_messages_filter.dart';
@@ -17,7 +18,7 @@ class MessageRepositoryImpl implements MessageRepository {
   MessageRepositoryImpl({required this.graphQlDatasource});
 
   @override
-  Future<Either<Failure, MessageEntity>> createMessageViaApi({
+  Future<Either<NotificationAlert, MessageEntity>> createMessageViaApi({
     required CreateMessageDto createMessageDto,
   }) async {
     try {
@@ -55,22 +56,25 @@ class MessageRepositoryImpl implements MessageRepository {
       );
 
       if (response.hasException) {
-        return Left(GeneralFailure());
+        return Left(FailureHelper.graphqlFailureToNotificationAlert(
+          title: "Erstellen Nachricht Fehler",
+          exception: response.exception!,
+        ));
       }
       return Right(MessageModel.fromJson(response.data!["createMessage"]));
     } catch (e) {
-      return Left(ServerFailure());
+      return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
     }
   }
 
   @override
-  Future<Either<Failure, MessageEntity>> getMessageViaApi() async {
+  Future<Either<NotificationAlert, MessageEntity>> getMessageViaApi() async {
     // TODO: implement getMessageViaApi
     throw UnimplementedError();
   }
 
   @override
-  Future<Either<Failure, List<MessageEntity>>> getMessagesViaApi({
+  Future<Either<NotificationAlert, List<MessageEntity>>> getMessagesViaApi({
     required GetMessagesFilter getMessagesFilter,
   }) async {
     try {
@@ -94,7 +98,10 @@ class MessageRepositoryImpl implements MessageRepository {
       );
 
       if (response.hasException) {
-        return Left(GeneralFailure());
+        return Left(FailureHelper.graphqlFailureToNotificationAlert(
+          title: "Finden Nachrichten Fehler",
+          exception: response.exception!,
+        ));
       }
 
       final List<MessageEntity> messages = [];
@@ -103,12 +110,12 @@ class MessageRepositoryImpl implements MessageRepository {
       }
       return Right(messages);
     } catch (e) {
-      return Left(ServerFailure());
+      return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
     }
   }
 
   @override
-  Stream<Either<Failure, MessageEntity>> getMessagesRealtimeViaApi({
+  Stream<Either<NotificationAlert, MessageEntity>> getMessagesRealtimeViaApi({
     required AddedMessageFilter addedMessageFilter,
   }) async* {
     try {
@@ -133,7 +140,10 @@ class MessageRepositoryImpl implements MessageRepository {
 
       await for (var event in subscription) {
         if (event.hasException) {
-          yield Left(GeneralFailure());
+          yield Left(FailureHelper.graphqlFailureToNotificationAlert(
+            title: "Nachricht Fehler",
+            exception: event.exception!,
+          ));
         }
         if (event.data != null) {
           final message = MessageModel.fromJson(event.data!['messageAdded']);
@@ -141,7 +151,7 @@ class MessageRepositoryImpl implements MessageRepository {
         }
       }
     } catch (e) {
-      yield Left(ServerFailure());
+      yield Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
     }
   }
 }
