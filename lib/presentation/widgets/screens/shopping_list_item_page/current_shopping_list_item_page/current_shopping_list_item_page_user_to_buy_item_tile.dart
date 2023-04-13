@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/shopping_list/current_shopping_list_item_cubit.dart';
+import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/user_with_private_event_user_data.dart';
 import 'package:social_media_app_flutter/domain/entities/user/user_entity.dart';
@@ -22,10 +23,14 @@ class CurrentShoppingListItemPageUserToBuyItemTile extends StatelessWidget {
             final UserWithPrivateEventUserData userToBuyItem =
                 privateEventState.privateEventUsers.firstWhere(
               (element) =>
-                  element.user.id == state.shoppingListItem.userToBuyItem,
+                  element.groupchatUser?.id ==
+                  state.shoppingListItem.userToBuyItem,
               orElse: () => UserWithPrivateEventUserData(
-                user: UserEntity(
-                    id: state.shoppingListItem.userToBuyItem ?? "", authId: ""),
+                groupchatUser: GroupchatUserEntity(
+                  id: state.shoppingListItem.userToBuyItem ?? "",
+                  authId: "",
+                  groupchatUserId: "",
+                ),
                 privateEventUser: PrivateEventUserEntity(
                     id: state.shoppingListItem.userToBuyItem ?? ""),
               ),
@@ -33,7 +38,11 @@ class CurrentShoppingListItemPageUserToBuyItemTile extends StatelessWidget {
 
             return UserListTile(
               customTitle: userToBuyItem.getUsername(),
-              user: userToBuyItem.user,
+              user: userToBuyItem.groupchatUser ??
+                  UserEntity(
+                    id: state.shoppingListItem.userToBuyItem ?? "",
+                    authId: "",
+                  ),
               items: [
                 PopupMenuItem(
                   child: const Text("ändern"),

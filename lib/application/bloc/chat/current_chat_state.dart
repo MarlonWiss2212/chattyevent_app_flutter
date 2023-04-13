@@ -2,10 +2,10 @@ part of 'current_chat_cubit.dart';
 
 class CurrentChatState {
   final GroupchatEntity currentChat;
-  final List<UserWithGroupchatUserData> users;
   final int currentUserIndex;
 
-  final List<UserWithLeftGroupchatUserData> leftUsers;
+  final List<GroupchatUserEntity> users;
+  final List<GroupchatLeftUserEntity> leftUsers;
 
   final List<PrivateEventEntity> futureConnectedPrivateEvents;
   final bool loadingPrivateEvents;
@@ -15,7 +15,7 @@ class CurrentChatState {
   final bool loadingChat;
   final bool loadingMessages;
 
-  UserWithGroupchatUserData? getCurrentGroupchatUser() {
+  GroupchatUserEntity? getCurrentGroupchatUser() {
     if (currentUserIndex != -1) {
       return users[currentUserIndex];
     }
@@ -37,12 +37,10 @@ class CurrentChatState {
   factory CurrentChatState.merge({
     required CurrentChatState oldState,
     bool mergeChatSetMessagesFromOldEntity = false,
-    bool mergeChatSetLeftUsersFromOldEntity = false,
-    bool mergeChatSetUsersFromOldEntity = false,
     GroupchatEntity? currentChat,
-    List<UserWithGroupchatUserData>? users,
+    List<GroupchatUserEntity>? users,
     int? currentUserIndex,
-    List<UserWithLeftGroupchatUserData>? leftUsers,
+    List<GroupchatLeftUserEntity>? leftUsers,
     List<PrivateEventEntity>? futureConnectedPrivateEvents,
     bool? loadingPrivateEvents,
     bool? currentUserLeftChat,
@@ -61,11 +59,8 @@ class CurrentChatState {
           ? GroupchatEntity.merge(
               newEntity: currentChat,
               oldEntity: oldState.currentChat,
-              mergeChatSetLeftUsersFromOldEntity:
-                  mergeChatSetLeftUsersFromOldEntity,
               mergeChatSetMessagesFromOldEntity:
                   mergeChatSetMessagesFromOldEntity,
-              mergeChatSetUsersFromOldEntity: mergeChatSetUsersFromOldEntity,
             )
           : oldState.currentChat,
       loadingChat: loadingChat ?? oldState.loadingChat,

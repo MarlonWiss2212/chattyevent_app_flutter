@@ -16,7 +16,6 @@ import 'package:social_media_app_flutter/core/filter/groupchat/get_one_groupchat
 import 'package:social_media_app_flutter/core/filter/limit_offset_filter/limit_offset_filter.dart';
 import 'package:social_media_app_flutter/core/filter/private_event/private_event_user/get_one_private_event_user_filter.dart';
 import 'package:social_media_app_flutter/core/response/get-all-private-events-users-and-left-users.reponse.dart';
-import 'package:social_media_app_flutter/domain/entities/error_with_title_and_message.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/left_user_with_private_event_user_date.dart';
@@ -110,23 +109,14 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
       (users) => usersToEmit = users,
       (privateEventUsers) {
         for (final privateEventUser in privateEventUsers) {
-          final foundUser = userCubit.state.users.firstWhere(
-            (element) => element.id == privateEventUser.userId,
-            orElse: () => UserEntity(
-              id: privateEventUser.userId ?? "",
-              authId: "",
-            ),
-          );
           GroupchatUserEntity? foundGroupchatUser;
           if (state.chatState != null) {
-            foundGroupchatUser = state.chatState!.currentChat.users?.firstWhere(
-              (element) => element.userId == privateEventUser.userId,
-              orElse: () => GroupchatUserEntity(id: ""),
+            foundGroupchatUser = state.chatState!.users.firstWhereOrNull(
+              (element) => element.id == privateEventUser.userId,
             );
           }
 
           final newUser = UserWithPrivateEventUserData(
-            user: foundUser,
             groupchatUser: foundGroupchatUser,
             privateEventUser: privateEventUser,
           );
@@ -175,7 +165,8 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
       privateEventUsers: usersToEmit,
       privateEventLeftUsers: leftUsersToEmit,
       currentUserIndex: usersToEmit.indexWhere(
-        (element) => element.user.authId == authCubit.state.currentUser.authId,
+        (element) =>
+            element.groupchatUser?.authId == authCubit.state.currentUser.authId,
       ),
     );
   }
@@ -449,7 +440,7 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
 
         final List<PrivateEventUserEntity> privateEventUsers = state
             .privateEventUsers
-            .where((element) => element.user.id != userId)
+            .where((element) => element.groupchatUser?.id != userId)
             .map((e) => e.privateEventUser)
             .toList();
 

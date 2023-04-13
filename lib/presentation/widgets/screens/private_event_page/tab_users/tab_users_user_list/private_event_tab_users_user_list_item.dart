@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
+import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
+import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/user_with_private_event_user_data.dart';
+import 'package:social_media_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:social_media_app_flutter/presentation/widgets/general/user_list/user_list_tile.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/private_event_page/tab_users/tab_users_user_list/private_event_tab_users_icon_buttons_my_user_list_tile/accept_invite_icon_button.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/private_event_page/tab_users/tab_users_user_list/private_event_tab_users_icon_buttons_my_user_list_tile/decline_invite_icon_button.dart';
@@ -29,14 +32,15 @@ class PrivateEventTabUsersUserListItem extends StatelessWidget {
       subititleColor = Colors.green;
       subtitle = "Angenommen";
       trailingWidget = currentPrivatEventUser != null &&
-              privateEventUser.user.id == currentPrivatEventUser!.user.id
+              privateEventUser.groupchatUser?.id ==
+                  currentPrivatEventUser!.groupchatUser?.id
           ? Wrap(
               spacing: 8,
               children: [
                 NeutralInviteIconButton(
-                    userId: currentPrivatEventUser!.user.id),
+                    userId: currentPrivatEventUser!.groupchatUser?.id ?? ""),
                 DeclineInviteIconButton(
-                    userId: currentPrivatEventUser!.user.id),
+                    userId: currentPrivatEventUser!.groupchatUser?.id ?? ""),
               ],
             )
           : null;
@@ -44,12 +48,15 @@ class PrivateEventTabUsersUserListItem extends StatelessWidget {
       subititleColor = Colors.red;
       subtitle = "Abgelehnt";
       trailingWidget = currentPrivatEventUser != null &&
-              privateEventUser.user.id == currentPrivatEventUser!.user.id
+              privateEventUser.groupchatUser?.id ==
+                  currentPrivatEventUser!.groupchatUser?.id
           ? Wrap(
               spacing: 8,
               children: [
-                AcceptInviteIconButton(userId: currentPrivatEventUser!.user.id),
-                NeutralInviteIconButton(userId: currentPrivatEventUser!.user.id)
+                AcceptInviteIconButton(
+                    userId: currentPrivatEventUser!.groupchatUser?.id ?? ""),
+                NeutralInviteIconButton(
+                    userId: currentPrivatEventUser!.groupchatUser?.id ?? "")
               ],
             )
           : null;
@@ -57,12 +64,15 @@ class PrivateEventTabUsersUserListItem extends StatelessWidget {
       subititleColor = null;
       subtitle = "Eingeladen";
       trailingWidget = currentPrivatEventUser != null &&
-              privateEventUser.user.id == currentPrivatEventUser!.user.id
+              privateEventUser.groupchatUser?.id ==
+                  currentPrivatEventUser!.groupchatUser?.id
           ? Wrap(
               spacing: 8,
               children: [
-                AcceptInviteIconButton(userId: currentPrivatEventUser!.user.id),
-                DeclineInviteIconButton(userId: currentPrivatEventUser!.user.id)
+                AcceptInviteIconButton(
+                    userId: currentPrivatEventUser!.groupchatUser?.id ?? ""),
+                DeclineInviteIconButton(
+                    userId: currentPrivatEventUser!.groupchatUser?.id ?? "")
               ],
             )
           : null;
@@ -77,7 +87,11 @@ class PrivateEventTabUsersUserListItem extends StatelessWidget {
         subtitle,
         style: TextStyle(color: subititleColor),
       ),
-      user: privateEventUser.user,
+      user: privateEventUser.groupchatUser ??
+          UserEntity(
+            id: privateEventUser.privateEventUser.userId ?? "",
+            authId: "",
+          ),
       customTitle: privateEventUser.getUsername(),
       trailing: trailingWidget,
       items: [
@@ -92,7 +106,9 @@ class PrivateEventTabUsersUserListItem extends StatelessWidget {
             onTap: () {
               BlocProvider.of<CurrentPrivateEventCubit>(context)
                   .deleteUserFromPrivateEventViaApi(
-                userId: privateEventUser.user.id,
+                userId: privateEventUser.groupchatUser?.id ??
+                    privateEventUser.privateEventUser.userId ??
+                    "",
               );
             },
           ),
@@ -100,7 +116,8 @@ class PrivateEventTabUsersUserListItem extends StatelessWidget {
         if (currentPrivatEventUser != null &&
             currentPrivatEventUser!.privateEventUser.organizer == true &&
             privateEventUser.privateEventUser.organizer != null &&
-            currentPrivatEventUser?.user.id != privateEventUser.user.id) ...{
+            currentPrivatEventUser?.groupchatUser?.id !=
+                privateEventUser.groupchatUser?.id) ...{
           PopupMenuItem<void Function(void)>(
             child: privateEventUser.privateEventUser.organizer == true
                 ? const Text("Organisator status entfernen")
@@ -108,7 +125,9 @@ class PrivateEventTabUsersUserListItem extends StatelessWidget {
             onTap: () {
               BlocProvider.of<CurrentPrivateEventCubit>(context)
                   .updatePrivateEventUser(
-                userId: privateEventUser.user.id,
+                userId: privateEventUser.groupchatUser?.id ??
+                    privateEventUser.privateEventUser.userId ??
+                    "",
                 organizer: !privateEventUser.privateEventUser.organizer!,
               );
             },

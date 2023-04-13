@@ -1,9 +1,5 @@
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
-import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_left_user_entity.dart';
-import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/message/message_entity.dart';
-import 'package:social_media_app_flutter/infastructure/models/groupchat/groupchat_left_user_model.dart';
-import 'package:social_media_app_flutter/infastructure/models/groupchat/groupchat_user_model.dart';
 import 'package:social_media_app_flutter/infastructure/models/message/message_model.dart';
 
 class GroupchatModel extends GroupchatEntity {
@@ -11,8 +7,6 @@ class GroupchatModel extends GroupchatEntity {
     required String id,
     String? title,
     String? profileImageLink,
-    List<GroupchatUserEntity>? users,
-    List<GroupchatLeftUserEntity>? leftUsers,
     List<MessageEntity>? messages,
     String? description,
     String? createdBy,
@@ -22,9 +16,7 @@ class GroupchatModel extends GroupchatEntity {
           id: id,
           title: title,
           profileImageLink: profileImageLink,
-          users: users,
           messages: messages,
-          leftUsers: leftUsers,
           description: description,
           createdAt: createdAt,
           createdBy: createdBy,
@@ -32,22 +24,6 @@ class GroupchatModel extends GroupchatEntity {
         );
 
   factory GroupchatModel.fromJson(Map<String, dynamic> json) {
-    List<GroupchatUserEntity>? users;
-    if (json["users"] != null) {
-      users = [];
-      for (final user in json["users"]) {
-        users.add(GroupchatUserModel.fromJson(user));
-      }
-    }
-
-    List<GroupchatLeftUserEntity>? leftUsers;
-    if (json["leftUsers"] != null) {
-      leftUsers = [];
-      for (final user in json["leftUsers"]) {
-        leftUsers.add(GroupchatLeftUserModel.fromJson(user));
-      }
-    }
-
     List<MessageEntity>? messages;
     if (json["messages"] != null) {
       messages = [];
@@ -68,8 +44,6 @@ class GroupchatModel extends GroupchatEntity {
       id: json['_id'],
       title: json['title'],
       profileImageLink: json['profileImageLink'],
-      users: users,
-      leftUsers: leftUsers,
       messages: messages,
       description: json["description"],
       createdBy: json["createdBy"],

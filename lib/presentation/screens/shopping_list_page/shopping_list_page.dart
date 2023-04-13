@@ -81,9 +81,14 @@ class ShoppingListPage extends StatelessWidget {
                     return ShoppingListItemTile(
                       shoppingListItem:
                           filteredShoppingList[index].shoppingListItem,
-                      userToBuyItem: UserWithPrivateEventUserData(
-                        user: currentUser,
-                        groupchatUser: GroupchatUserEntity(id: currentUser.id),
+                      userToBuyItem:
+                          // TODO: check if this is right
+                          UserWithPrivateEventUserData(
+                        groupchatUser: GroupchatUserEntity(
+                          id: currentUser.id,
+                          authId: currentUser.authId,
+                          groupchatUserId: "",
+                        ),
                         privateEventUser:
                             PrivateEventUserEntity(id: currentUser.id),
                       ),

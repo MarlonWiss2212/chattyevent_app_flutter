@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletons/skeletons.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
+import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/user_with_private_event_user_data.dart';
 import 'package:social_media_app_flutter/domain/entities/user/user_entity.dart';
@@ -87,7 +88,7 @@ class PrivateEventTabShoppingList extends StatelessWidget {
                     UserWithPrivateEventUserData userToBuyItem =
                         currentPrivateEventState.privateEventUsers.firstWhere(
                       (element) =>
-                          element.user.id ==
+                          element.groupchatUser?.id ==
                           state.shoppingListItemStates[index].shoppingListItem
                               .userToBuyItem,
                       orElse: () => UserWithPrivateEventUserData(
@@ -95,11 +96,12 @@ class PrivateEventTabShoppingList extends StatelessWidget {
                             id: "",
                             userId: state.shoppingListItemStates[index]
                                 .shoppingListItem.userToBuyItem),
-                        user: UserEntity(
+                        groupchatUser: GroupchatUserEntity(
                           id: state.shoppingListItemStates[index]
                                   .shoppingListItem.userToBuyItem ??
                               "",
                           authId: "",
+                          groupchatUserId: "",
                         ),
                       ),
                     );

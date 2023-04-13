@@ -2,27 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart';
-import 'package:social_media_app_flutter/domain/entities/groupchat/user_with_groupchat_user_data.dart';
-import 'package:social_media_app_flutter/domain/entities/groupchat/user_with_left_groupchat_user_data.dart';
+import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_left_user_entity.dart';
+import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
 import 'package:social_media_app_flutter/presentation/widgets/general/user_list/user_list_tile.dart';
 
 class ChatInfoPageLeftUserListItem extends StatelessWidget {
-  final UserWithLeftGroupchatUserData user;
-  final UserWithGroupchatUserData currentUser;
+  final GroupchatLeftUserEntity leftUser;
+  final GroupchatUserEntity currentUser;
 
   const ChatInfoPageLeftUserListItem({
     super.key,
-    required this.user,
+    required this.leftUser,
     required this.currentUser,
   });
 
   @override
   Widget build(BuildContext context) {
     return UserListTile(
-      user: user,
-      subtitle: user.leftAt != null
+      user: leftUser,
+      subtitle: leftUser.leftGroupchatAt != null
           ? Text(
-              DateFormat.yMd().add_jm().format(user.leftAt!),
+              DateFormat.yMd().add_jm().format(leftUser.leftGroupchatAt!),
               overflow: TextOverflow.ellipsis,
             )
           : const Text(
@@ -31,13 +31,13 @@ class ChatInfoPageLeftUserListItem extends StatelessWidget {
             ),
       items: currentUser.admin != null &&
               currentUser.admin == true &&
-              currentUser.id != user.id
+              currentUser.id != leftUser.id
           ? [
               PopupMenuItem(
                 child: const Text("Hinzufügen"),
                 onTap: () =>
                     BlocProvider.of<CurrentChatCubit>(context).addUserToChat(
-                  userId: user.id,
+                  userId: leftUser.id,
                 ),
               ),
             ]

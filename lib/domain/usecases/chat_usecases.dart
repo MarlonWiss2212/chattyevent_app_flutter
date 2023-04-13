@@ -7,6 +7,7 @@ import 'package:social_media_app_flutter/core/filter/groupchat/get_messages_filt
 import 'package:social_media_app_flutter/core/filter/groupchat/get_one_groupchat_filter.dart';
 import 'package:social_media_app_flutter/core/filter/groupchat/get_one_groupchat_user_filter.dart';
 import 'package:social_media_app_flutter/core/filter/limit_offset_filter/limit_offset_filter.dart';
+import 'package:social_media_app_flutter/core/response/get-all-groupchat-users-and-left-users.response.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:social_media_app_flutter/core/failures/failures.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_left_user_entity.dart';
@@ -75,6 +76,15 @@ class ChatUseCases {
   }) async {
     return await chatRepository.deleteUserFromGroupchatViaApi(
       getOneGroupchatUserFilter: getOneGroupchatUserFilter,
+    );
+  }
+
+  Future<Either<Failure, GetAllGroupchatUsersAndLeftUsers>>
+      getGroupchatUsersAndLeftUsers({
+    required String groupchatId,
+  }) async {
+    return await chatRepository.getGroupchatUsersAndLeftUsers(
+      groupchatId: groupchatId,
     );
   }
 }
