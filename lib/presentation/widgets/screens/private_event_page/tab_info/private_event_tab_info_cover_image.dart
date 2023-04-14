@@ -50,11 +50,9 @@ class PrivateEventTabInfoCoverImage extends StatelessWidget {
     return BlocBuilder<CurrentPrivateEventCubit, CurrentPrivateEventState>(
       builder: (context, state) {
         return InkWell(
-          onTap:
-              state.getCurrentPrivateEventUser()?.privateEventUser.organizer ==
-                      true
-                  ? () => _onTapSetImageFunction(context)
-                  : null,
+          onTap: state.getCurrentPrivateEventUser()?.organizer == true
+              ? () => _onTapSetImageFunction(context)
+              : null,
           child: Builder(
             builder: (context) {
               if (state.privateEvent.coverImageLink != null) {

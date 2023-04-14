@@ -13,12 +13,12 @@ class CurrentPrivateEventState {
 
   final CurrentPrivateEventStateStatus status;
 
-  final List<UserWithPrivateEventUserData> privateEventUsers;
-  final List<LeftUserWithPrivateEventUserData> privateEventLeftUsers;
+  final List<PrivateEventUserEntity> privateEventUsers;
+  final List<PrivateEventLeftUserEntity> privateEventLeftUsers;
 
   final int currentUserIndex;
 
-  UserWithPrivateEventUserData? getCurrentPrivateEventUser() {
+  PrivateEventUserEntity? getCurrentPrivateEventUser() {
     if (currentUserIndex != -1) {
       return privateEventUsers[currentUserIndex];
     }

@@ -26,11 +26,7 @@ class PrivateEventTabInfoDescription extends StatelessWidget {
                   ? description
                   : "Keine Beschreibung",
               textStyle: Theme.of(context).textTheme.titleMedium,
-              editable: state
-                      .getCurrentPrivateEventUser()
-                      ?.privateEventUser
-                      .organizer ==
-                  true,
+              editable: state.getCurrentPrivateEventUser()?.organizer == true,
               onSaved: (text) {
                 BlocProvider.of<CurrentPrivateEventCubit>(context)
                     .updateCurrentPrivateEvent(

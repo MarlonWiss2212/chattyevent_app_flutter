@@ -1,11 +1,8 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:skeletons/skeletons.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
 import 'package:social_media_app_flutter/core/dto/private_event/update_private_event_dto.dart';
-import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 
 class PrivateEventTabInfoStatus extends StatefulWidget {
   const PrivateEventTabInfoStatus({super.key});
@@ -81,11 +78,9 @@ class _PrivateEventTabInfoStatusState extends State<PrivateEventTabInfoStatus> {
       builder: (context, state) {
         return GestureDetector(
           onTapDown: getPosition,
-          onTap:
-              state.getCurrentPrivateEventUser()?.privateEventUser.organizer ==
-                      true
-                  ? () => _showMenu(context, state)
-                  : null,
+          onTap: state.getCurrentPrivateEventUser()?.organizer == true
+              ? () => _showMenu(context, state)
+              : null,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: state.privateEvent.eventDate == null &&

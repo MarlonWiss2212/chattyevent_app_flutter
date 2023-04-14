@@ -10,7 +10,7 @@ class AddShoppingListItemState {
   String? itemName;
   String? unit;
   double? amount;
-  UserWithPrivateEventUserData? userToBuyItemEntity;
+  PrivateEventUserEntity? userToBuyItemEntity;
   PrivateEventEntity? selectedPrivateEvent;
 
   AddShoppingListItemState({

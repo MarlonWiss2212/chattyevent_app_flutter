@@ -3,10 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/shopping_list/current_shopping_list_item_cubit.dart';
-import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_user_entity.dart';
-import 'package:social_media_app_flutter/domain/entities/private_event/user_with_private_event_user_data.dart';
-import 'package:social_media_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 import 'package:social_media_app_flutter/presentation/widgets/general/user_list/user_list_tile.dart';
 
@@ -20,29 +17,18 @@ class CurrentShoppingListItemPageUserToBuyItemTile extends StatelessWidget {
       builder: (context, state) {
         return BlocBuilder<CurrentPrivateEventCubit, CurrentPrivateEventState>(
           builder: (context, privateEventState) {
-            final UserWithPrivateEventUserData userToBuyItem =
+            final PrivateEventUserEntity userToBuyItem =
                 privateEventState.privateEventUsers.firstWhere(
-              (element) =>
-                  element.groupchatUser?.id ==
-                  state.shoppingListItem.userToBuyItem,
-              orElse: () => UserWithPrivateEventUserData(
-                groupchatUser: GroupchatUserEntity(
-                  id: state.shoppingListItem.userToBuyItem ?? "",
-                  authId: "",
-                  groupchatUserId: "",
-                ),
-                privateEventUser: PrivateEventUserEntity(
-                    id: state.shoppingListItem.userToBuyItem ?? ""),
+              (element) => element.id == state.shoppingListItem.userToBuyItem,
+              orElse: () => PrivateEventUserEntity(
+                authId: "",
+                id: "",
+                privateEventUserId: "",
               ),
             );
 
             return UserListTile(
-              customTitle: userToBuyItem.getUsername(),
-              user: userToBuyItem.groupchatUser ??
-                  UserEntity(
-                    id: state.shoppingListItem.userToBuyItem ?? "",
-                    authId: "",
-                  ),
+              user: userToBuyItem,
               items: [
                 PopupMenuItem(
                   child: const Text("ändern"),

@@ -287,13 +287,48 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
         """
           mutation UpdatePrivateEventUser(\$input: UpdatePrivateEventUserInput!, \$findOnePrivateEventUserInput: FindOnePrivateEventUserInput!) {
             updatePrivateEventUser(updatePrivateEventUserInput: \$input, findOnePrivateEventUserInput: \$findOnePrivateEventUserInput) {
+              privateEventUserId
+              username
               _id
-              privateEventTo
-              userId
+              authId
               status
-              createdAt
-              updatedAt
               organizer
+              joinedEventAt
+              privateEventTo
+              birthdate
+              createdAt
+              firstname
+              lastTimeOnline
+              lastname
+              profileImageLink
+              updatedAt
+              userRelationCounts {
+                followerCount
+                followedCount
+                followRequestCount
+              }
+              myUserRelationToOtherUser {
+                _id
+                createdAt
+                updatedAt
+                statusOnRelatedUser
+                followData {
+                  canInviteFollowedToPrivateEvent
+                  canInviteFollowedToGroupchat
+                  followedUserAt
+                }
+              }
+              otherUserRelationToMyUser {
+                _id
+                createdAt
+                updatedAt
+                statusOnRelatedUser
+                followData {
+                  canInviteFollowedToPrivateEvent
+                  canInviteFollowedToGroupchat
+                  followedUserAt
+                }
+              }
             }
           }
         """,
@@ -329,13 +364,48 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
         """
           mutation AddUserToPrivateEvent(\$input: CreatePrivateEventUserInput!) {
             addUserToPrivateEvent(createPrivateEventUserInput: \$input) {
+              privateEventUserId
+              username
               _id
-              privateEventTo
-              userId
+              authId
               status
-              createdAt
-              updatedAt
               organizer
+              joinedEventAt
+              privateEventTo
+              birthdate
+              createdAt
+              firstname
+              lastTimeOnline
+              lastname
+              profileImageLink
+              updatedAt
+              userRelationCounts {
+                followerCount
+                followedCount
+                followRequestCount
+              }
+              myUserRelationToOtherUser {
+                _id
+                createdAt
+                updatedAt
+                statusOnRelatedUser
+                followData {
+                  canInviteFollowedToPrivateEvent
+                  canInviteFollowedToGroupchat
+                  followedUserAt
+                }
+              }
+              otherUserRelationToMyUser {
+                _id
+                createdAt
+                updatedAt
+                statusOnRelatedUser
+                followData {
+                  canInviteFollowedToPrivateEvent
+                  canInviteFollowedToGroupchat
+                  followedUserAt
+                }
+              }
             }
           }
         """,
@@ -368,11 +438,46 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
         """
           mutation DeleteUserFromPrivateEvent(\$filter: FindOnePrivateEventUserInput!) {
             deleteUserFromPrivateEvent(filter: \$filter) {
+              privateEventUserLeftId
+              username
               _id
+              authId
+              leftEventAt
               privateEventTo
-              userId
+              birthdate
               createdAt
+              firstname
+              lastTimeOnline
+              lastname
+              profileImageLink
               updatedAt
+              userRelationCounts {
+                followerCount
+                followedCount
+                followRequestCount
+              }
+              myUserRelationToOtherUser {
+                _id
+                createdAt
+                updatedAt
+                statusOnRelatedUser
+                followData {
+                  canInviteFollowedToPrivateEvent
+                  canInviteFollowedToGroupchat
+                  followedUserAt
+                }
+              }
+              otherUserRelationToMyUser {
+                _id
+                createdAt
+                updatedAt
+                statusOnRelatedUser
+                followData {
+                  canInviteFollowedToPrivateEvent
+                  canInviteFollowedToGroupchat
+                  followedUserAt
+                }
+              }
             }
           }
         """,
@@ -407,21 +512,91 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
         """
           query GetAllPrivateEventUsersAndLeftUsers(\$privateEventId: String!, \$limitOffsetInput: LimitOffsetInput!) {   
             findPrivateEventLeftUsers(privateEventId: \$privateEventId, limitOffsetInput: \$limitOffsetInput) {
+              privateEventUserLeftId
+              username
               _id
+              authId
+              leftEventAt
               privateEventTo
-              userId
+              birthdate
               createdAt
+              firstname
+              lastTimeOnline
+              lastname
+              profileImageLink
               updatedAt
+              userRelationCounts {
+                followerCount
+                followedCount
+                followRequestCount
+              }
+              myUserRelationToOtherUser {
+                _id
+                createdAt
+                updatedAt
+                statusOnRelatedUser
+                followData {
+                  canInviteFollowedToPrivateEvent
+                  canInviteFollowedToGroupchat
+                  followedUserAt
+                }
+              }
+              otherUserRelationToMyUser {
+                _id
+                createdAt
+                updatedAt
+                statusOnRelatedUser
+                followData {
+                  canInviteFollowedToPrivateEvent
+                  canInviteFollowedToGroupchat
+                  followedUserAt
+                }
+              } 
             }
 
             findPrivateEventUsers(privateEventId: \$privateEventId, limitOffsetInput: \$limitOffsetInput) {
+              privateEventUserId
+              username
               _id
-              privateEventTo
-              userId
+              authId
               status
-              createdAt
-              updatedAt
               organizer
+              joinedEventAt
+              privateEventTo
+              birthdate
+              createdAt
+              firstname
+              lastTimeOnline
+              lastname
+              profileImageLink
+              updatedAt
+              userRelationCounts {
+                followerCount
+                followedCount
+                followRequestCount
+              }
+              myUserRelationToOtherUser {
+                _id
+                createdAt
+                updatedAt
+                statusOnRelatedUser
+                followData {
+                  canInviteFollowedToPrivateEvent
+                  canInviteFollowedToGroupchat
+                  followedUserAt
+                }
+              }
+              otherUserRelationToMyUser {
+                _id
+                createdAt
+                updatedAt
+                statusOnRelatedUser
+                followData {
+                  canInviteFollowedToPrivateEvent
+                  canInviteFollowedToGroupchat
+                  followedUserAt
+                }
+              }
             }
           }
         """,

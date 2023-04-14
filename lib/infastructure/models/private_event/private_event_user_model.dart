@@ -1,22 +1,48 @@
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_user_entity.dart';
+import 'package:social_media_app_flutter/domain/entities/user-relation/user_relation_entity.dart';
+import 'package:social_media_app_flutter/domain/entities/user-relation/user_relations_count_entity.dart';
+import 'package:social_media_app_flutter/infastructure/models/user_relation/user_relation_count_model.dart';
+import 'package:social_media_app_flutter/infastructure/models/user_relation/user_relation_model.dart';
 
 class PrivateEventUserModel extends PrivateEventUserEntity {
   PrivateEventUserModel({
     required String id,
-    String? userId,
+    required String privateEventUserId,
+    required String authId,
     String? privateEventTo,
+    String? status,
+    bool? organizer,
+    DateTime? joinedPrivateEventAt,
+    String? username,
+    String? firstname,
+    String? lastname,
+    String? profileImageLink,
+    String? birthdate,
+    String? lastTimeOnline,
+    UserRelationsCountEntity? userRelationCounts,
+    UserRelationEntity? myUserRelationToOtherUser,
+    UserRelationEntity? otherUserRelationToMyUser,
     DateTime? createdAt,
     DateTime? updatedAt,
-    bool? organizer,
-    String? status,
   }) : super(
-          id: id,
-          userId: userId,
-          organizer: organizer,
+          privateEventUserId: privateEventUserId,
           privateEventTo: privateEventTo,
-          updatedAt: updatedAt,
-          createdAt: createdAt,
+          joinedPrivateEventAt: joinedPrivateEventAt,
           status: status,
+          organizer: organizer,
+          id: id,
+          authId: authId,
+          username: username,
+          firstname: firstname,
+          lastname: lastname,
+          profileImageLink: profileImageLink,
+          birthdate: birthdate,
+          lastTimeOnline: lastTimeOnline,
+          userRelationCounts: userRelationCounts,
+          myUserRelationToOtherUser: myUserRelationToOtherUser,
+          otherUserRelationToMyUser: otherUserRelationToMyUser,
+          createdAt: createdAt,
+          updatedAt: updatedAt,
         );
 
   factory PrivateEventUserModel.fromJson(Map<String, dynamic> json) {
@@ -27,15 +53,41 @@ class PrivateEventUserModel extends PrivateEventUserEntity {
     final updatedAt = json["updatedAt"] != null
         ? DateTime.parse(json["updatedAt"]).toLocal()
         : null;
+    final joinedPrivateEventAt = json["joinedEventAt"] != null
+        ? DateTime.parse(json["joinedEventAt"]).toLocal()
+        : null;
 
     return PrivateEventUserModel(
-      id: json['_id'],
-      userId: json['userId'],
-      privateEventTo: json['privateEventTo'],
-      createdAt: createdAt,
-      updatedAt: updatedAt,
+      privateEventUserId: json["privateEventUserId"],
+      privateEventTo: json["privateEventTo"],
+      joinedPrivateEventAt: joinedPrivateEventAt,
       organizer: json["organizer"],
       status: json["status"],
+      id: json['_id'],
+      authId: json["authId"],
+      username: json['username'],
+      profileImageLink: json['profileImageLink'],
+      firstname: json["fistname"],
+      lastname: json["lastname"],
+      birthdate: json["birthdate"],
+      lastTimeOnline: json["lastTimeOnline"],
+      userRelationCounts: json['userRelationCounts'] != null
+          ? UserRelationsCountModel.fromJson(
+              json['userRelationCounts'],
+            )
+          : null,
+      otherUserRelationToMyUser: json['otherUserRelationToMyUser'] != null
+          ? UserRelationModel.fromJson(
+              json['otherUserRelationToMyUser'],
+            )
+          : null,
+      myUserRelationToOtherUser: json['myUserRelationToOtherUser'] != null
+          ? UserRelationModel.fromJson(
+              json['myUserRelationToOtherUser'],
+            )
+          : null,
+      createdAt: createdAt,
+      updatedAt: updatedAt,
     );
   }
 }

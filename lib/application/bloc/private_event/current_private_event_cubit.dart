@@ -18,11 +18,9 @@ import 'package:social_media_app_flutter/core/filter/private_event/private_event
 import 'package:social_media_app_flutter/core/response/get-all-private-events-users-and-left-users.reponse.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
-import 'package:social_media_app_flutter/domain/entities/private_event/left_user_with_private_event_user_date.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_left_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_user_entity.dart';
-import 'package:social_media_app_flutter/domain/entities/private_event/user_with_private_event_user_data.dart';
 import 'package:social_media_app_flutter/domain/entities/shopping_list_item/shopping_list_item_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:social_media_app_flutter/core/filter/get_one_private_event_filter.dart';
@@ -59,23 +57,22 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
     required this.privateEventUseCases,
   });
 
-  // optimize this later
   Future getPrivateEventUsersAndLeftUsersViaApi() async {
-    final response = await Future.wait([
-      userCubit.getUsersViaApi(),
-      privateEventUseCases.getPrivateEventUsersAndLeftUsers(
-        privateEventId: state.privateEvent.id,
-      ),
-    ]);
     final Either<NotificationAlert, GetAllPrivateEventUsersAndLeftUsers>
-        usersOrFailure = response[1];
+        usersOrFailure =
+        await privateEventUseCases.getPrivateEventUsersAndLeftUsers(
+      privateEventId: state.privateEvent.id,
+    );
 
     usersOrFailure.fold(
       (alert) => notificationCubit.newAlert(notificationAlert: alert),
       (usersAndLeftUsers) {
-        setPrivateEventUsers(
-          eitherLeftUsers: Right(usersAndLeftUsers.privateEventLeftUsers),
-          eitherUsers: Right(usersAndLeftUsers.privateEventUsers),
+        emitState(
+          privateEventUsers: usersAndLeftUsers.privateEventUsers,
+          privateEventLeftUsers: usersAndLeftUsers.privateEventLeftUsers,
+          currentUserIndex: usersAndLeftUsers.privateEventUsers.indexWhere(
+            (element) => element.id == authCubit.state.currentUser.id,
+          ),
         );
       },
     );
@@ -86,83 +83,6 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
       getCurrentPrivateEvent(),
       getCurrentChatViaApi(),
     ]);
-  }
-
-  void setPrivateEventUsers({
-    required Either<List<UserWithPrivateEventUserData>,
-            List<PrivateEventUserEntity>>
-        eitherUsers,
-    required Either<List<LeftUserWithPrivateEventUserData>,
-            List<PrivateEventLeftUserEntity>>
-        eitherLeftUsers,
-  }) {
-    List<UserWithPrivateEventUserData> usersToEmit = [];
-    List<LeftUserWithPrivateEventUserData> leftUsersToEmit = [];
-
-    eitherUsers.fold(
-      (users) => usersToEmit = users,
-      (privateEventUsers) {
-        for (final privateEventUser in privateEventUsers) {
-          GroupchatUserEntity? foundGroupchatUser;
-          if (state.chatState != null) {
-            foundGroupchatUser = state.chatState!.users.firstWhereOrNull(
-              (element) => element.id == privateEventUser.userId,
-            );
-          }
-
-          final newUser = UserWithPrivateEventUserData(
-            groupchatUser: foundGroupchatUser,
-            privateEventUser: privateEventUser,
-          );
-
-          final foundIndex = usersToEmit.indexWhere(
-            (element) => element.privateEventUser.id == privateEventUser.id,
-          );
-
-          foundIndex != -1
-              ? usersToEmit[foundIndex] = newUser
-              : usersToEmit.add(newUser);
-        }
-      },
-    );
-
-    eitherLeftUsers.fold(
-      (leftUsers) => leftUsersToEmit = leftUsers,
-      (privateEventLeftUsers) {
-        for (final privateEventLeftUser in privateEventLeftUsers) {
-          final foundUser = userCubit.state.users.firstWhere(
-            (element) => element.id == privateEventLeftUser.userId,
-            orElse: () => UserEntity(
-              id: privateEventLeftUser.userId ?? "",
-              authId: "",
-            ),
-          );
-
-          final newLeftUser = LeftUserWithPrivateEventUserData(
-            user: foundUser,
-            privateEventLeftUser: privateEventLeftUser,
-          );
-
-          final foundIndex = leftUsersToEmit.indexWhere(
-            (element) =>
-                element.privateEventLeftUser.id == privateEventLeftUser.id,
-          );
-
-          foundIndex != -1
-              ? leftUsersToEmit[foundIndex] = newLeftUser
-              : leftUsersToEmit.add(newLeftUser);
-        }
-      },
-    );
-
-    emitState(
-      privateEventUsers: usersToEmit,
-      privateEventLeftUsers: leftUsersToEmit,
-      currentUserIndex: usersToEmit.indexWhere(
-        (element) =>
-            element.groupchatUser?.authId == authCubit.state.currentUser.authId,
-      ),
-    );
   }
 
   void setCurrentChatFromChatCubit() {
@@ -325,19 +245,14 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
     privateEventUserOrFailure.fold(
       (alert) => notificationCubit.newAlert(notificationAlert: alert),
       (privateEventUser) {
-        final List<PrivateEventUserEntity> privateEventUsers = List.from(
-          state.privateEventUsers.map((e) => e.privateEventUser).toList(),
-        )..add(privateEventUser);
-
-        final List<PrivateEventLeftUserEntity> privateEventLeftUsers = state
-            .privateEventLeftUsers
-            .where((element) => element.user.id != userId)
-            .map((e) => e.privateEventLeftUser)
-            .toList();
-
-        setPrivateEventUsers(
-          eitherLeftUsers: Right(privateEventLeftUsers),
-          eitherUsers: Right(privateEventUsers),
+        emitState(
+          privateEventUsers: List.from(state.privateEventUsers)
+            ..add(privateEventUser),
+          privateEventLeftUsers: state.privateEventLeftUsers
+              .where(
+                (element) => element.id != privateEventUser.id,
+              )
+              .toList(),
         );
       },
     );
@@ -365,16 +280,20 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
       (alert) => notificationCubit.newAlert(notificationAlert: alert),
       (privateEventUser) {
         List<PrivateEventUserEntity> privateEventUsers =
-            state.privateEventUsers.map((e) => e.privateEventUser).toList();
+            state.privateEventUsers;
 
         final index = privateEventUsers.indexWhere(
-          (element) => element.userId == userId,
+          (element) => element.id == userId,
         );
-        privateEventUsers[index] = privateEventUser;
+        if (index == -1) {
+          privateEventUsers.add(privateEventUser);
+        } else {
+          privateEventUsers[index] = privateEventUser;
+        }
 
-        setPrivateEventUsers(
-          eitherUsers: Right(privateEventUsers),
-          eitherLeftUsers: Left(state.privateEventLeftUsers),
+        emitState(
+          privateEventUsers: privateEventUsers,
+          privateEventLeftUsers: state.privateEventLeftUsers,
         );
       },
     );
@@ -393,22 +312,14 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
     privateEventLeftUserOrFailure.fold(
       (alert) => notificationCubit.newAlert(notificationAlert: alert),
       (privateEventLeftUser) {
-        final List<PrivateEventLeftUserEntity> privateEventLeftUsers =
-            List.from(
-          state.privateEventLeftUsers
-              .map((e) => e.privateEventLeftUser)
+        emitState(
+          privateEventUsers: state.privateEventUsers
+              .where(
+                (element) => element.id != userId,
+              )
               .toList(),
-        )..add(privateEventLeftUser);
-
-        final List<PrivateEventUserEntity> privateEventUsers = state
-            .privateEventUsers
-            .where((element) => element.groupchatUser?.id != userId)
-            .map((e) => e.privateEventUser)
-            .toList();
-
-        setPrivateEventUsers(
-          eitherUsers: Right(privateEventUsers),
-          eitherLeftUsers: Right(privateEventLeftUsers),
+          privateEventLeftUsers: List.from(state.privateEventLeftUsers)
+            ..add(privateEventLeftUser),
         );
       },
     );
@@ -486,9 +397,7 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
     );
   }
 
-  Future getShoppingListItemsViaApi({
-    bool reload = false,
-  }) async {
+  Future getShoppingListItemsViaApi({bool reload = false}) async {
     emitState(loadingShoppingList: true);
 
     final Either<NotificationAlert, List<ShoppingListItemEntity>>
@@ -498,7 +407,7 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
           GetShoppingListItemsFilter(privateEventId: state.privateEvent.id),
       limitOffsetFilter: reload
           ? LimitOffsetFilter(
-              limit: state.shoppingListItemStates.length > 20
+              limit: state.shoppingListItemStates.length < 20
                   ? 20
                   : state.shoppingListItemStates.length,
               offset: 0,
@@ -549,12 +458,10 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
     );
   }
 
-  //
-
   void emitState({
     PrivateEventEntity? privateEvent,
-    List<UserWithPrivateEventUserData>? privateEventUsers,
-    List<LeftUserWithPrivateEventUserData>? privateEventLeftUsers,
+    List<PrivateEventUserEntity>? privateEventUsers,
+    List<PrivateEventLeftUserEntity>? privateEventLeftUsers,
     CurrentChatState? chatState,
     int? currentUserIndex,
     bool? loadingPrivateEvent,

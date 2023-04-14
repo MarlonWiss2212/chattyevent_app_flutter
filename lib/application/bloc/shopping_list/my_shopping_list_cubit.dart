@@ -89,7 +89,7 @@ class MyShoppingListCubit extends Cubit<MyShoppingListState> {
       getShoppingListItemsFilter: GetShoppingListItemsFilter(),
       limitOffsetFilter: reload
           ? LimitOffsetFilter(
-              limit: state.shoppingListItemStates.length > 20
+              limit: state.shoppingListItemStates.length < 20
                   ? 20
                   : state.shoppingListItemStates.length,
               offset: 0,

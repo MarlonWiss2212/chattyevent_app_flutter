@@ -94,7 +94,7 @@ class CreateShoppingListItemPageDetail extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    "User der das Item kauft: ${state.userToBuyItemEntity != null ? state.userToBuyItemEntity!.getUsername() : ''}",
+                    "User der das Item kauft: ${state.userToBuyItemEntity != null ? state.userToBuyItemEntity!.username : ''}",
                     softWrap: true,
                     overflow: TextOverflow.ellipsis,
                     style: Theme.of(context).textTheme.titleMedium,

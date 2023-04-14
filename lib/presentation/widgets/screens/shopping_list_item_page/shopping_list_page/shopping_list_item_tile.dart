@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:social_media_app_flutter/domain/entities/private_event/user_with_private_event_user_data.dart';
+import 'package:social_media_app_flutter/domain/entities/private_event/private_event_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/shopping_list_item/shopping_list_item_entity.dart';
 
 class ShoppingListItemTile extends StatelessWidget {
-  final UserWithPrivateEventUserData userToBuyItem;
+  final PrivateEventUserEntity userToBuyItem;
   final ShoppingListItemEntity shoppingListItem;
   final void Function() onTap;
   const ShoppingListItemTile({
@@ -19,14 +19,13 @@ class ShoppingListItemTile extends StatelessWidget {
       title: Wrap(
         spacing: 8,
         children: [
-          if (userToBuyItem.privateEventUser.status == "REJECTED" ||
-              userToBuyItem.privateEventUser.status == "LEFT_EVENT" ||
-              userToBuyItem.privateEventUser.status == "INVITED") ...{
+          if (userToBuyItem.status == "REJECTED" ||
+              userToBuyItem.status == "LEFT_EVENT" ||
+              userToBuyItem.status == "INVITED") ...{
             Badge(
-              backgroundColor:
-                  userToBuyItem.privateEventUser.status == "INVITED"
-                      ? Colors.yellow
-                      : Colors.red,
+              backgroundColor: userToBuyItem.status == "INVITED"
+                  ? Colors.yellow
+                  : Colors.red,
             ),
           },
           Text(
@@ -38,11 +37,10 @@ class ShoppingListItemTile extends StatelessWidget {
         ],
       ),
       leading: CircleAvatar(
-        backgroundImage: userToBuyItem.groupchatUser != null &&
-                userToBuyItem.groupchatUser?.profileImageLink != null
-            ? NetworkImage(userToBuyItem.groupchatUser!.profileImageLink!)
+        backgroundImage: userToBuyItem.profileImageLink != null
+            ? NetworkImage(userToBuyItem.profileImageLink!)
             : null,
-        backgroundColor: userToBuyItem.groupchatUser?.profileImageLink == null
+        backgroundColor: userToBuyItem.profileImageLink == null
             ? Theme.of(context).colorScheme.secondaryContainer
             : null,
       ),

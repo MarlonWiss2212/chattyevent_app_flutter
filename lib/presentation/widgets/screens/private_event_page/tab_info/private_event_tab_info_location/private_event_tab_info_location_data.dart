@@ -13,13 +13,11 @@ class PrivateEventTabInfoLocationData extends StatelessWidget {
     return BlocBuilder<CurrentPrivateEventCubit, CurrentPrivateEventState>(
       builder: (context, state) {
         return InkWell(
-          onTap:
-              state.getCurrentPrivateEventUser()?.privateEventUser.organizer ==
-                      true
-                  ? () => AutoRouter.of(context).push(
-                        const PrivateEventUpdateLocationPageRoute(),
-                      )
-                  : null,
+          onTap: state.getCurrentPrivateEventUser()?.organizer == true
+              ? () => AutoRouter.of(context).push(
+                    const PrivateEventUpdateLocationPageRoute(),
+                  )
+              : null,
           child: Column(
             children: [
               if (state.privateEvent.eventLocation!.city != null &&

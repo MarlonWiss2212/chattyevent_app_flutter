@@ -6,8 +6,6 @@ import 'package:skeletons/skeletons.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_user_entity.dart';
-import 'package:social_media_app_flutter/domain/entities/private_event/user_with_private_event_user_data.dart';
-import 'package:social_media_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/shopping_list_item_page/shopping_list_page/shopping_list_item_tile.dart';
 
@@ -85,24 +83,18 @@ class PrivateEventTabShoppingList extends StatelessWidget {
               return SliverList(
                 delegate: SliverChildBuilderDelegate(
                   (context, index) {
-                    UserWithPrivateEventUserData userToBuyItem =
+                    PrivateEventUserEntity userToBuyItem =
                         currentPrivateEventState.privateEventUsers.firstWhere(
                       (element) =>
-                          element.groupchatUser?.id ==
+                          element.id ==
                           state.shoppingListItemStates[index].shoppingListItem
                               .userToBuyItem,
-                      orElse: () => UserWithPrivateEventUserData(
-                        privateEventUser: PrivateEventUserEntity(
-                            id: "",
-                            userId: state.shoppingListItemStates[index]
-                                .shoppingListItem.userToBuyItem),
-                        groupchatUser: GroupchatUserEntity(
-                          id: state.shoppingListItemStates[index]
-                                  .shoppingListItem.userToBuyItem ??
-                              "",
-                          authId: "",
-                          groupchatUserId: "",
-                        ),
+                      orElse: () => PrivateEventUserEntity(
+                        id: state.shoppingListItemStates[index].shoppingListItem
+                                .userToBuyItem ??
+                            "",
+                        authId: "",
+                        privateEventUserId: "",
                       ),
                     );
 

@@ -17,18 +17,14 @@ class PrivateEventTabUsersUserList extends StatelessWidget {
           children: [
             Center(
               child: Text(
-                "Mitglieder die da sein werden: ${state.privateEventUsers.where((element) => element.privateEventUser.status == "ACCEPTED").length.toString()}",
+                "Mitglieder die da sein werden: ${state.privateEventUsers.where((element) => element.status == "ACCEPTED").length.toString()}",
                 style: Theme.of(context).textTheme.titleMedium,
               ),
             ),
             const SizedBox(height: 8),
             if (state.getCurrentPrivateEventUser() != null &&
                 state.privateEvent.groupchatTo == null &&
-                state
-                        .getCurrentPrivateEventUser()
-                        ?.privateEventUser
-                        .organizer !=
-                    false) ...{
+                state.getCurrentPrivateEventUser()?.organizer != false) ...{
               ListTile(
                 leading: const Icon(
                   Icons.person_add,

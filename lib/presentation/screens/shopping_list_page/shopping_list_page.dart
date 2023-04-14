@@ -5,11 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletons/skeletons.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/shopping_list/my_shopping_list_cubit.dart';
-import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_user_entity.dart';
-import 'package:social_media_app_flutter/domain/entities/private_event/user_with_private_event_user_data.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
-import 'package:social_media_app_flutter/presentation/widgets/general/dialog/alert_dialog.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/shopping_list_item_page/shopping_list_page/shopping_list_item_tile.dart';
 
 class ShoppingListPage extends StatelessWidget {
@@ -81,16 +78,10 @@ class ShoppingListPage extends StatelessWidget {
                     return ShoppingListItemTile(
                       shoppingListItem:
                           filteredShoppingList[index].shoppingListItem,
-                      userToBuyItem:
-                          // TODO: check if this is right
-                          UserWithPrivateEventUserData(
-                        groupchatUser: GroupchatUserEntity(
-                          id: currentUser.id,
-                          authId: currentUser.authId,
-                          groupchatUserId: "",
-                        ),
-                        privateEventUser:
-                            PrivateEventUserEntity(id: currentUser.id),
+                      userToBuyItem: PrivateEventUserEntity(
+                        id: currentUser.id,
+                        authId: currentUser.authId,
+                        privateEventUserId: "",
                       ),
                       onTap: () {
                         AutoRouter.of(context).push(

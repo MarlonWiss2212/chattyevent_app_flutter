@@ -6,7 +6,7 @@ import 'package:social_media_app_flutter/application/bloc/private_event/current_
 import 'package:social_media_app_flutter/application/bloc/shopping_list/current_shopping_list_item_cubit.dart';
 import 'package:social_media_app_flutter/core/dto/shopping_list_item/create_shopping_list_item_dto.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
-import 'package:social_media_app_flutter/domain/entities/private_event/user_with_private_event_user_data.dart';
+import 'package:social_media_app_flutter/domain/entities/private_event/private_event_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/shopping_list_item/shopping_list_item_entity.dart';
 import 'package:social_media_app_flutter/domain/usecases/shopping_list_item_usecases.dart';
 
@@ -45,8 +45,7 @@ class AddShoppingListItemCubit extends Cubit<AddShoppingListItemState> {
       createShoppingListItemDto: CreateShoppingListItemDto(
         itemName: state.itemName!,
         amount: state.amount!,
-        // TODO: fix this with updating private event users
-        userToBuyItem: state.userToBuyItemEntity!.groupchatUser?.id ?? "",
+        userToBuyItem: state.userToBuyItemEntity!.id,
         unit: state.unit,
         privateEventId: state.selectedPrivateEvent!.id,
       ),
@@ -78,7 +77,7 @@ class AddShoppingListItemCubit extends Cubit<AddShoppingListItemState> {
     String? itemName,
     String? unit,
     double? amount,
-    UserWithPrivateEventUserData? userToBuyItemEntity,
+    PrivateEventUserEntity? userToBuyItemEntity,
     PrivateEventEntity? selectedPrivateEvent,
     AddShoppingListItemStateStatus? status,
     ShoppingListItemEntity? addedShoppingListItem,

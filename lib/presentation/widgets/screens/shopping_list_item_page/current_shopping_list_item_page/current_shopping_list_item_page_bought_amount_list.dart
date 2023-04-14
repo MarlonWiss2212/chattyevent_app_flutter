@@ -7,7 +7,7 @@ import 'package:skeletons/skeletons.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/shopping_list/current_shopping_list_item_cubit.dart';
 import 'package:social_media_app_flutter/domain/entities/bought_amount_entity.dart';
-import 'package:social_media_app_flutter/domain/entities/private_event/user_with_private_event_user_data.dart';
+import 'package:social_media_app_flutter/domain/entities/private_event/private_event_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:social_media_app_flutter/presentation/widgets/general/user_list/user_list_tile.dart';
 
@@ -46,18 +46,14 @@ class CurrentShoppingListItemPageBoughtAmountList extends StatelessWidget {
               itemBuilder: (context, index) {
                 BoughtAmountEntity boughtAmount = state.boughtAmounts[index];
 
-                UserWithPrivateEventUserData? user =
+                PrivateEventUserEntity? user =
                     privateEventState.privateEventUsers.firstWhereOrNull(
-                  (element) =>
-                      element.groupchatUser?.id == boughtAmount.createdBy,
+                  (element) => element.id == boughtAmount.createdBy,
                 );
 
                 return Slidable(
-                  enabled: user?.privateEventUser.userId ==
-                      privateEventState
-                          .getCurrentPrivateEventUser()
-                          ?.privateEventUser
-                          .userId,
+                  enabled: user?.id ==
+                      privateEventState.getCurrentPrivateEventUser()?.id,
                   endActionPane: ActionPane(
                     motion: const ScrollMotion(),
                     children: [
@@ -77,13 +73,12 @@ class CurrentShoppingListItemPageBoughtAmountList extends StatelessWidget {
                     ],
                   ),
                   child: UserListTile(
-                    user: user?.groupchatUser ??
+                    user: user ??
                         UserEntity(
                           id: boughtAmount.createdBy ?? "",
                           authId: "",
-                          username: "Fehler",
+                          username: "",
                         ),
-                    customTitle: user?.getUsername(),
                     trailing: Text(
                       state.shoppingListItem.createdAt != null
                           ? DateFormat.jm()

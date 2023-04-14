@@ -33,11 +33,8 @@ class PrivateEventTabPage extends StatelessWidget {
                   tag: "$privateEventId title",
                   child: EditInputTextField(
                     text: state.privateEvent.title ?? "Kein Titel",
-                    editable: state
-                            .getCurrentPrivateEventUser()
-                            ?.privateEventUser
-                            .organizer ==
-                        true,
+                    editable:
+                        state.getCurrentPrivateEventUser()?.organizer == true,
                     textStyle: Theme.of(context).textTheme.titleLarge,
                     onSaved: (text) {
                       BlocProvider.of<CurrentPrivateEventCubit>(context)

@@ -50,11 +50,7 @@ class PrivateEventTabInfoEventDate extends StatelessWidget {
           );
         } else {
           return InkWell(
-            onTap: state
-                        .getCurrentPrivateEventUser()
-                        ?.privateEventUser
-                        .organizer ==
-                    true
+            onTap: state.getCurrentPrivateEventUser()?.organizer == true
                 ? () => _onChangeDatePress(
                       context,
                       state.privateEvent.eventDate ?? DateTime.now(),
