@@ -7,7 +7,6 @@ import 'package:social_media_app_flutter/application/bloc/notification/notificat
 import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/shopping_list/current_shopping_list_item_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
 import 'package:social_media_app_flutter/core/injection.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/shopping_list_item_page/standard_shopping_list_item_page/standard_shopping_list_item_wrapper_page.dart';
@@ -38,7 +37,6 @@ class ShoppingListItemWrapperPage extends StatelessWidget {
       ),
       authCubit: BlocProvider.of<AuthCubit>(context),
       locationUseCases: serviceLocator(),
-      userCubit: BlocProvider.of<UserCubit>(context),
       chatCubit: BlocProvider.of<ChatCubit>(context),
       chatUseCases: serviceLocator(
         param1: BlocProvider.of<AuthCubit>(context).state,

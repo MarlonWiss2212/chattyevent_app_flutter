@@ -6,10 +6,8 @@ import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/private_event_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
 import 'package:social_media_app_flutter/core/injection.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
-import 'package:social_media_app_flutter/presentation/widgets/general/dialog/alert_dialog.dart';
 
 class PrivateEventWrapperPage extends StatelessWidget {
   final String privateEventId;
@@ -41,7 +39,6 @@ class PrivateEventWrapperPage extends StatelessWidget {
         loadingPrivateEvent: false,
       ),
       authCubit: BlocProvider.of<AuthCubit>(context),
-      userCubit: BlocProvider.of<UserCubit>(context),
       chatCubit: BlocProvider.of<ChatCubit>(context),
       notificationCubit: BlocProvider.of<NotificationCubit>(context),
       locationUseCases: serviceLocator(),

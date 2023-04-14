@@ -3,7 +3,6 @@ import 'package:dartz/dartz.dart';
 import 'package:meta/meta.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
 import 'package:social_media_app_flutter/core/dto/user/update_user_dto.dart';
 import 'package:social_media_app_flutter/core/filter/limit_offset_filter/limit_offset_filter.dart';
 import 'package:social_media_app_flutter/core/filter/user_relation/find_one_user_relation_filter.dart';
@@ -20,7 +19,6 @@ part 'profile_page_state.dart';
 class ProfilePageCubit extends Cubit<ProfilePageState> {
   final AuthCubit authCubit;
   final NotificationCubit notificationCubit;
-  final UserCubit userCubit;
 
   final UserRelationUseCases userRelationUseCases;
   final UserUseCases userUseCases;
@@ -31,7 +29,6 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
     required this.notificationCubit,
     required this.userRelationUseCases,
     required this.userUseCases,
-    required this.userCubit,
   });
 
   Future getCurrentUserViaApi() async {
@@ -50,11 +47,10 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
     userOrFailure.fold(
       (alert) => notificationCubit.newAlert(notificationAlert: alert),
       (user) {
-        final replacedUser = userCubit.replaceOrAdd(user: user);
         if (state.user.id == authCubit.state.currentUser.id) {
-          authCubit.emitState(currentUser: replacedUser);
+          authCubit.emitState(currentUser: user);
         }
-        emitState(status: ProfilePageStateStatus.success, user: replacedUser);
+        emitState(status: ProfilePageStateStatus.success, user: user);
       },
     );
   }

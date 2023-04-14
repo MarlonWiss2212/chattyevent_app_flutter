@@ -5,7 +5,6 @@ import 'package:meta/meta.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
 import 'package:social_media_app_flutter/core/dto/groupchat/groupchat_user/create_groupchat_user_dto.dart';
 import 'package:social_media_app_flutter/core/dto/groupchat/update_groupchat_dto.dart';
 import 'package:social_media_app_flutter/core/dto/groupchat/groupchat_user/update_groupchat_user_dto.dart';
@@ -30,7 +29,6 @@ part 'current_chat_state.dart';
 class CurrentChatCubit extends Cubit<CurrentChatState> {
   final AuthCubit authCubit;
   final ChatCubit chatCubit;
-  final UserCubit userCubit;
   final NotificationCubit notificationCubit;
 
   final ChatUseCases chatUseCases;
@@ -45,7 +43,6 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
     required this.messageUseCases,
     required this.privateEventUseCases,
     required this.chatCubit,
-    required this.userCubit,
     required this.notificationCubit,
     required this.chatUseCases,
   });

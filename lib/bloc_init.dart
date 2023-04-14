@@ -5,7 +5,6 @@ import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/location/location_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/user_search_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/image/image_cubit.dart';
 import 'package:social_media_app_flutter/core/injection.dart';
@@ -33,12 +32,6 @@ class BlocInit extends StatelessWidget {
         final notificationCubit = BlocProvider.of<NotificationCubit>(context);
         return MultiBlocProvider(
           providers: [
-            BlocProvider.value(
-              value: UserCubit(
-                userUseCases: serviceLocator(param1: state),
-                notificationCubit: notificationCubit,
-              ),
-            ),
             BlocProvider.value(
               value: UserSearchCubit(
                 authCubit: BlocProvider.of<AuthCubit>(context),

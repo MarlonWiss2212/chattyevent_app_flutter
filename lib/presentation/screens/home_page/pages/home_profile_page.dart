@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user/profile_page_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
 import 'package:social_media_app_flutter/core/injection.dart';
 
 class HomeProfilePage extends StatelessWidget {
@@ -29,7 +28,6 @@ class HomeProfilePage extends StatelessWidget {
           param1: BlocProvider.of<AuthCubit>(context).state,
         ),
         notificationCubit: BlocProvider.of<NotificationCubit>(context),
-        userCubit: BlocProvider.of<UserCubit>(context),
         authCubit: BlocProvider.of<AuthCubit>(context),
       ),
       child: Builder(

@@ -8,7 +8,6 @@ import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubi
 import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/shopping_list/current_shopping_list_item_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/user/user_cubit.dart';
 import 'package:social_media_app_flutter/core/dto/private_event/private_event_user/create_private_event_user_dto.dart';
 import 'package:social_media_app_flutter/core/dto/private_event/update_private_event_dto.dart';
 import 'package:social_media_app_flutter/core/filter/get_shopping_list_items_filter.dart';
@@ -17,12 +16,10 @@ import 'package:social_media_app_flutter/core/filter/limit_offset_filter/limit_o
 import 'package:social_media_app_flutter/core/filter/private_event/private_event_user/get_one_private_event_user_filter.dart';
 import 'package:social_media_app_flutter/core/response/get-all-private-events-users-and-left-users.reponse.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
-import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_left_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/shopping_list_item/shopping_list_item_entity.dart';
-import 'package:social_media_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:social_media_app_flutter/core/filter/get_one_private_event_filter.dart';
 import 'package:social_media_app_flutter/domain/usecases/chat_usecases.dart';
 import 'package:social_media_app_flutter/domain/usecases/location_usecases.dart';
@@ -36,7 +33,6 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
   final PrivateEventCubit privateEventCubit;
   final ChatCubit chatCubit;
   final AuthCubit authCubit;
-  final UserCubit userCubit;
   final NotificationCubit notificationCubit;
 
   final PrivateEventUseCases privateEventUseCases;
@@ -48,7 +44,6 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
     super.initialState, {
     required this.notificationCubit,
     required this.authCubit,
-    required this.userCubit,
     required this.locationUseCases,
     required this.privateEventCubit,
     required this.chatCubit,
