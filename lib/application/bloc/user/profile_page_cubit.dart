@@ -109,8 +109,8 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
     final Either<NotificationAlert, List<UserEntity>> userOrFailure =
         await userRelationUseCases.getFollowerRequestsViaApi(
       limitOffsetFilter: LimitOffsetFilter(
-        limit: reload ? state.followers?.length ?? limit : limit,
-        offset: reload ? 0 : state.followers?.length ?? 0,
+        limit: reload ? state.followRequests?.length ?? limit : limit,
+        offset: reload ? 0 : state.followRequests?.length ?? 0,
       ),
     );
 
@@ -137,8 +137,8 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
         await userRelationUseCases.getFollowedViaApi(
       requestUserIdFilter: RequestUserIdFilter(requesterUserId: state.user.id),
       limitOffsetFilter: LimitOffsetFilter(
-        limit: reload ? state.followers?.length ?? limit : limit,
-        offset: reload ? 0 : state.followers?.length ?? 0,
+        limit: reload ? state.followed?.length ?? limit : limit,
+        offset: reload ? 0 : state.followed?.length ?? 0,
       ),
     );
 
