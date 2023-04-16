@@ -93,35 +93,22 @@ class ChatRepositoryImpl implements ChatRepository {
   @override
   Future<Either<NotificationAlert, GroupchatEntity>> getGroupchatViaApi({
     required GetOneGroupchatFilter getOneGroupchatFilter,
-    GetMessagesFilter? getMessagesFilter,
   }) async {
     try {
       final response = await graphQlDatasource.query(
         """
-        query FindGroupchat(\$findOneGroupchatInput: FindOneGroupchatInput!, \$messageInput: FindMessagesInput) {
-          findGroupchat(findOneGroupchatInput: \$findOneGroupchatInput, findMessagesInput: \$messageInput) {
+        query FindGroupchat(\$findOneGroupchatInput: FindOneGroupchatInput!) {
+          findGroupchat(findOneGroupchatInput: \$findOneGroupchatInput) {
             _id
             title
             description
             profileImageLink
-            messages {
-              _id
-              message
-              messageToReactTo
-              fileLink
-              groupchatTo
-              createdBy
-              createdAt
-            }
             createdBy
             createdAt
           }
         }
         """,
-        variables: {
-          "findOneGroupchatInput": getOneGroupchatFilter.toMap(),
-          "messageInput": getMessagesFilter?.toMap()
-        },
+        variables: {"findOneGroupchatInput": getOneGroupchatFilter.toMap()},
       );
 
       if (response.hasException) {
@@ -138,18 +125,17 @@ class ChatRepositoryImpl implements ChatRepository {
   }
 
   @override
-  Future<Either<NotificationAlert, List<GroupchatEntity>>> getGroupchatsViaApi({
-    LimitOffsetFilterOptional? messageFilterForEveryGroupchat,
-  }) async {
+  Future<Either<NotificationAlert, List<GroupchatEntity>>>
+      getGroupchatsViaApi() async {
     try {
       final response = await graphQlDatasource.query(
         """
-        query FindGroupchats(\$messageFilterForEveryGroupchat: LimitOffsetFilterOptionalInput) {
-          findGroupchats(messageFilterForEveryGroupchat: \$messageFilterForEveryGroupchat) {
+        query FindGroupchats {
+          findGroupchats {
             _id
             profileImageLink
             title
-            messages {
+            latestMessage {
               _id
               message
               messageToReactTo
@@ -161,10 +147,6 @@ class ChatRepositoryImpl implements ChatRepository {
           }
         }
         """,
-        variables: {
-          "messageFilterForEveryGroupchat":
-              messageFilterForEveryGroupchat?.toMap()
-        },
       );
 
       if (response.hasException) {

@@ -4,6 +4,7 @@ import 'package:http_parser/http_parser.dart';
 import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:social_media_app_flutter/core/dto/groupchat/message/create_message_dto.dart';
 import 'package:social_media_app_flutter/core/filter/groupchat/added_message_filter.dart';
+import 'package:social_media_app_flutter/core/filter/limit_offset_filter/limit_offset_filter.dart';
 import 'package:social_media_app_flutter/core/utils/failure_helper.dart';
 import 'package:social_media_app_flutter/domain/entities/message/message_entity.dart';
 import 'package:dartz/dartz.dart';
@@ -76,12 +77,13 @@ class MessageRepositoryImpl implements MessageRepository {
   @override
   Future<Either<NotificationAlert, List<MessageEntity>>> getMessagesViaApi({
     required GetMessagesFilter getMessagesFilter,
+    required LimitOffsetFilter limitOffsetFilter,
   }) async {
     try {
       final response = await graphQlDatasource.query(
         """
-        query FindMessages(\$input: FindMessagesInput!) {
-          findMessages(filter: \$input) {
+        query FindMessages(\$input: FindMessagesInput!, \$limitOffsetFilter: LimitOffsetInput!) {
+          findMessages(filter: \$input, limitOffsetInput: \$limitOffsetFilter) {
             _id
             message
             messageToReactTo
@@ -94,6 +96,7 @@ class MessageRepositoryImpl implements MessageRepository {
       """,
         variables: {
           "input": getMessagesFilter.toMap(),
+          "limitOffsetFilter": limitOffsetFilter.toMap(),
         },
       );
 

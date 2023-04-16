@@ -4,9 +4,7 @@ import 'package:social_media_app_flutter/core/dto/groupchat/create_groupchat_dto
 import 'package:social_media_app_flutter/core/dto/groupchat/groupchat_user/create_groupchat_user_dto.dart';
 import 'package:social_media_app_flutter/core/dto/groupchat/update_groupchat_dto.dart';
 import 'package:social_media_app_flutter/core/dto/groupchat/groupchat_user/update_groupchat_user_dto.dart';
-import 'package:social_media_app_flutter/core/filter/groupchat/get_messages_filter.dart';
 import 'package:social_media_app_flutter/core/filter/groupchat/get_one_groupchat_user_filter.dart';
-import 'package:social_media_app_flutter/core/filter/limit_offset_filter/limit_offset_filter.dart';
 import 'package:social_media_app_flutter/core/response/get-all-groupchat-users-and-left-users.response.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_left_user_entity.dart';
@@ -19,11 +17,9 @@ abstract class ChatRepository {
   );
   Future<Either<NotificationAlert, GroupchatEntity>> getGroupchatViaApi({
     required GetOneGroupchatFilter getOneGroupchatFilter,
-    GetMessagesFilter? getMessagesFilter,
   });
-  Future<Either<NotificationAlert, List<GroupchatEntity>>> getGroupchatsViaApi({
-    LimitOffsetFilterOptional? messageFilterForEveryGroupchat,
-  });
+  Future<Either<NotificationAlert, List<GroupchatEntity>>>
+      getGroupchatsViaApi();
   Future<Either<NotificationAlert, GroupchatEntity>> updateGroupchatViaApi({
     required GetOneGroupchatFilter getOneGroupchatFilter,
     required UpdateGroupchatDto updateGroupchatDto,

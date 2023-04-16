@@ -343,12 +343,12 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
         await messageUseCases.getMessagesViaApi(
       getMessagesFilter: GetMessagesFilter(
         groupchatTo: state.currentChat.id,
-        limitOffsetFilter: LimitOffsetFilterOptional(
-          limit: 20,
-          offset: state.currentChat.messages != null
-              ? state.currentChat.messages!.length
-              : 0,
-        ),
+      ),
+      limitOffsetFilter: LimitOffsetFilter(
+        limit: 20,
+        offset: state.currentChat.messages != null
+            ? state.currentChat.messages!.length
+            : 0,
       ),
     );
 

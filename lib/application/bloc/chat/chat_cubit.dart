@@ -3,7 +3,6 @@ import 'package:dartz/dartz.dart';
 import 'package:meta/meta.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
-import 'package:social_media_app_flutter/core/filter/limit_offset_filter/limit_offset_filter.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:social_media_app_flutter/domain/usecases/chat_usecases.dart';
 
@@ -68,12 +67,7 @@ class ChatCubit extends Cubit<ChatState> {
     );
 
     final Either<NotificationAlert, List<GroupchatEntity>> groupchatsOrFailure =
-        await chatUseCases.getGroupchatsViaApi(
-      messageFilterForEveryGroupchat: LimitOffsetFilterOptional(
-        limit: 1,
-        offset: 0,
-      ),
-    );
+        await chatUseCases.getGroupchatsViaApi();
 
     groupchatsOrFailure.fold(
       (alert) => notificationCubit.newAlert(notificationAlert: alert),

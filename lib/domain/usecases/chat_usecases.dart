@@ -4,10 +4,8 @@ import 'package:social_media_app_flutter/core/dto/groupchat/create_groupchat_dto
 import 'package:social_media_app_flutter/core/dto/groupchat/groupchat_user/create_groupchat_user_dto.dart';
 import 'package:social_media_app_flutter/core/dto/groupchat/update_groupchat_dto.dart';
 import 'package:social_media_app_flutter/core/dto/groupchat/groupchat_user/update_groupchat_user_dto.dart';
-import 'package:social_media_app_flutter/core/filter/groupchat/get_messages_filter.dart';
 import 'package:social_media_app_flutter/core/filter/groupchat/get_one_groupchat_filter.dart';
 import 'package:social_media_app_flutter/core/filter/groupchat/get_one_groupchat_user_filter.dart';
-import 'package:social_media_app_flutter/core/filter/limit_offset_filter/limit_offset_filter.dart';
 import 'package:social_media_app_flutter/core/response/get-all-groupchat-users-and-left-users.response.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_left_user_entity.dart';
@@ -18,21 +16,16 @@ class ChatUseCases {
   final ChatRepository chatRepository;
   ChatUseCases({required this.chatRepository});
 
-  Future<Either<NotificationAlert, List<GroupchatEntity>>> getGroupchatsViaApi({
-    LimitOffsetFilterOptional? messageFilterForEveryGroupchat,
-  }) async {
-    return await chatRepository.getGroupchatsViaApi(
-      messageFilterForEveryGroupchat: messageFilterForEveryGroupchat,
-    );
+  Future<Either<NotificationAlert, List<GroupchatEntity>>>
+      getGroupchatsViaApi() async {
+    return await chatRepository.getGroupchatsViaApi();
   }
 
   Future<Either<NotificationAlert, GroupchatEntity>> getGroupchatViaApi({
     required GetOneGroupchatFilter getOneGroupchatFilter,
-    GetMessagesFilter? getMessagesFilter,
   }) async {
     return await chatRepository.getGroupchatViaApi(
       getOneGroupchatFilter: getOneGroupchatFilter,
-      getMessagesFilter: getMessagesFilter,
     );
   }
 

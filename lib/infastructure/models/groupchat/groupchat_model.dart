@@ -7,7 +7,7 @@ class GroupchatModel extends GroupchatEntity {
     required String id,
     String? title,
     String? profileImageLink,
-    List<MessageEntity>? messages,
+    MessageEntity? latestMessage,
     String? description,
     String? createdBy,
     DateTime? createdAt,
@@ -16,7 +16,7 @@ class GroupchatModel extends GroupchatEntity {
           id: id,
           title: title,
           profileImageLink: profileImageLink,
-          messages: messages,
+          messages: latestMessage != null ? [latestMessage] : [],
           description: description,
           createdAt: createdAt,
           createdBy: createdBy,
@@ -44,7 +44,9 @@ class GroupchatModel extends GroupchatEntity {
       id: json['_id'],
       title: json['title'],
       profileImageLink: json['profileImageLink'],
-      messages: messages,
+      latestMessage: json["latestMessage"] != null
+          ? MessageModel.fromJson(json["latestMessage"])
+          : null,
       description: json["description"],
       createdBy: json["createdBy"],
       createdAt: createdAt,
