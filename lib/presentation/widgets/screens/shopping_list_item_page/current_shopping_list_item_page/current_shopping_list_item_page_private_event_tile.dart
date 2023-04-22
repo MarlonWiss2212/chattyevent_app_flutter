@@ -49,7 +49,6 @@ class CurrentShoppingListItemPagePrivateEventTile extends StatelessWidget {
                   AutoRouter.of(context).root.push(
                         PrivateEventWrapperPageRoute(
                           privateEventId: state.privateEvent.id,
-                          loadPrivateEventFromApiToo: false,
                           privateEventToSet: state.privateEvent,
                         ),
                       );

@@ -216,7 +216,6 @@ class AppRouter extends _i54.RootStackRouter {
           key: args.key,
           groupchatId: args.groupchatId,
           chatStateToSet: args.chatStateToSet,
-          loadChatFromApiToo: args.loadChatFromApiToo,
         ),
       );
     },
@@ -230,7 +229,6 @@ class AppRouter extends _i54.RootStackRouter {
         child: _i11.PrivateEventWrapperPage(
           privateEventId: args.privateEventId,
           privateEventToSet: args.privateEventToSet,
-          loadPrivateEventFromApiToo: args.loadPrivateEventFromApiToo,
           key: args.key,
         ),
       );
@@ -1199,7 +1197,6 @@ class ChatPageWrapperRoute
     _i55.Key? key,
     required String groupchatId,
     required _i58.CurrentChatState chatStateToSet,
-    bool loadChatFromApiToo = true,
     List<_i54.PageRouteInfo>? children,
   }) : super(
           ChatPageWrapperRoute.name,
@@ -1208,7 +1205,6 @@ class ChatPageWrapperRoute
             key: key,
             groupchatId: groupchatId,
             chatStateToSet: chatStateToSet,
-            loadChatFromApiToo: loadChatFromApiToo,
           ),
           rawPathParams: {'id': groupchatId},
           initialChildren: children,
@@ -1222,7 +1218,6 @@ class ChatPageWrapperRouteArgs {
     this.key,
     required this.groupchatId,
     required this.chatStateToSet,
-    this.loadChatFromApiToo = true,
   });
 
   final _i55.Key? key;
@@ -1231,11 +1226,9 @@ class ChatPageWrapperRouteArgs {
 
   final _i58.CurrentChatState chatStateToSet;
 
-  final bool loadChatFromApiToo;
-
   @override
   String toString() {
-    return 'ChatPageWrapperRouteArgs{key: $key, groupchatId: $groupchatId, chatStateToSet: $chatStateToSet, loadChatFromApiToo: $loadChatFromApiToo}';
+    return 'ChatPageWrapperRouteArgs{key: $key, groupchatId: $groupchatId, chatStateToSet: $chatStateToSet}';
   }
 }
 
@@ -1246,7 +1239,6 @@ class PrivateEventWrapperPageRoute
   PrivateEventWrapperPageRoute({
     required String privateEventId,
     _i59.PrivateEventEntity? privateEventToSet,
-    bool loadPrivateEventFromApiToo = true,
     _i55.Key? key,
     List<_i54.PageRouteInfo>? children,
   }) : super(
@@ -1255,7 +1247,6 @@ class PrivateEventWrapperPageRoute
           args: PrivateEventWrapperPageRouteArgs(
             privateEventId: privateEventId,
             privateEventToSet: privateEventToSet,
-            loadPrivateEventFromApiToo: loadPrivateEventFromApiToo,
             key: key,
           ),
           rawPathParams: {'id': privateEventId},
@@ -1269,7 +1260,6 @@ class PrivateEventWrapperPageRouteArgs {
   const PrivateEventWrapperPageRouteArgs({
     required this.privateEventId,
     this.privateEventToSet,
-    this.loadPrivateEventFromApiToo = true,
     this.key,
   });
 
@@ -1277,13 +1267,11 @@ class PrivateEventWrapperPageRouteArgs {
 
   final _i59.PrivateEventEntity? privateEventToSet;
 
-  final bool loadPrivateEventFromApiToo;
-
   final _i55.Key? key;
 
   @override
   String toString() {
-    return 'PrivateEventWrapperPageRouteArgs{privateEventId: $privateEventId, privateEventToSet: $privateEventToSet, loadPrivateEventFromApiToo: $loadPrivateEventFromApiToo, key: $key}';
+    return 'PrivateEventWrapperPageRouteArgs{privateEventId: $privateEventId, privateEventToSet: $privateEventToSet, key: $key}';
   }
 }
 

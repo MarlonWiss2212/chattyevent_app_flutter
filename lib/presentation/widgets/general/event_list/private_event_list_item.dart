@@ -39,7 +39,6 @@ class PrivateEventListItem extends StatelessWidget {
       onTap: () {
         AutoRouter.of(context).push(
           PrivateEventWrapperPageRoute(
-            loadPrivateEventFromApiToo: true,
             privateEventToSet: privateEvent,
             privateEventId: privateEvent.id,
           ),

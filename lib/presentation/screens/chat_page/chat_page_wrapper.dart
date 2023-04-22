@@ -10,13 +10,11 @@ import 'package:social_media_app_flutter/core/injection.dart';
 class ChatPageWrapper extends StatelessWidget {
   final String groupchatId;
   final CurrentChatState chatStateToSet;
-  final bool loadChatFromApiToo;
 
   const ChatPageWrapper({
     super.key,
     @PathParam('id') required this.groupchatId,
     required this.chatStateToSet,
-    this.loadChatFromApiToo = true,
   });
 
   @override
@@ -36,13 +34,9 @@ class ChatPageWrapper extends StatelessWidget {
         chatUseCases: serviceLocator(
           param1: BlocProvider.of<AuthCubit>(context).state,
         ),
-      ),
+      )..reloadGroupchatAndGroupchatUsersViaApi(),
       child: Builder(
         builder: (context) {
-          BlocProvider.of<CurrentChatCubit>(context).getGroupchatUsersViaApi();
-          if (loadChatFromApiToo) {
-            BlocProvider.of<CurrentChatCubit>(context).getCurrentChatViaApi();
-          }
           return MultiBlocListener(
             listeners: [
               BlocListener<CurrentChatCubit, CurrentChatState>(

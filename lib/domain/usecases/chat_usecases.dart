@@ -6,7 +6,9 @@ import 'package:social_media_app_flutter/core/dto/groupchat/update_groupchat_dto
 import 'package:social_media_app_flutter/core/dto/groupchat/groupchat_user/update_groupchat_user_dto.dart';
 import 'package:social_media_app_flutter/core/filter/groupchat/get_one_groupchat_filter.dart';
 import 'package:social_media_app_flutter/core/filter/groupchat/get_one_groupchat_user_filter.dart';
-import 'package:social_media_app_flutter/core/response/get-all-groupchat-users-and-left-users.response.dart';
+import 'package:social_media_app_flutter/core/filter/limit_offset_filter/limit_offset_filter.dart';
+import 'package:social_media_app_flutter/core/response/groupchat/groupchat-data.response.dart';
+import 'package:social_media_app_flutter/core/response/groupchat/groupchat-users-and-left-users.response.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_left_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
@@ -25,6 +27,16 @@ class ChatUseCases {
     required GetOneGroupchatFilter getOneGroupchatFilter,
   }) async {
     return await chatRepository.getGroupchatViaApi(
+      getOneGroupchatFilter: getOneGroupchatFilter,
+    );
+  }
+
+  Future<Either<NotificationAlert, GroupchatAndGroupchatUsersResponse>>
+      getGroupchatDataViaApi({
+    required GetOneGroupchatFilter getOneGroupchatFilter,
+    required LimitOffsetFilter limitOffsetFilterMessages,
+  }) async {
+    return await chatRepository.getGroupchatDataViaApi(
       getOneGroupchatFilter: getOneGroupchatFilter,
     );
   }
@@ -74,7 +86,7 @@ class ChatUseCases {
     );
   }
 
-  Future<Either<NotificationAlert, GetAllGroupchatUsersAndLeftUsers>>
+  Future<Either<NotificationAlert, GroupchatUsersAndLeftUsersResponse>>
       getGroupchatUsersAndLeftUsers({
     required String groupchatId,
   }) async {

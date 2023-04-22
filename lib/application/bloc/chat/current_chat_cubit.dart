@@ -14,7 +14,8 @@ import 'package:social_media_app_flutter/core/filter/get_private_events_filter.d
 import 'package:social_media_app_flutter/core/filter/groupchat/get_one_groupchat_filter.dart';
 import 'package:social_media_app_flutter/core/filter/groupchat/get_one_groupchat_user_filter.dart';
 import 'package:social_media_app_flutter/core/filter/limit_offset_filter/limit_offset_filter.dart';
-import 'package:social_media_app_flutter/core/response/get-all-groupchat-users-and-left-users.response.dart';
+import 'package:social_media_app_flutter/core/response/groupchat/groupchat-data.response.dart';
+import 'package:social_media_app_flutter/core/response/groupchat/groupchat-users-and-left-users.response.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_left_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
@@ -78,9 +79,41 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
     return super.close();
   }
 
+  Future reloadGroupchatAndGroupchatUsersViaApi() async {
+    emit(CurrentChatState.merge(oldState: state, loadingChat: true));
+
+    final Either<NotificationAlert, GroupchatAndGroupchatUsersResponse>
+        response = await chatUseCases.getGroupchatDataViaApi(
+      getOneGroupchatFilter: GetOneGroupchatFilter(id: state.currentChat.id),
+      limitOffsetFilterMessages: LimitOffsetFilter(
+        limit: 20,
+        offset: state.messages.length,
+      ),
+    );
+
+    response.fold(
+      (alert) {
+        notificationCubit.newAlert(notificationAlert: alert);
+        emit(CurrentChatState.merge(oldState: state, loadingChat: false));
+      },
+      (data) {
+        emit(CurrentChatState.merge(
+          currentChat: data.groupchat,
+          users: data.groupchatUsers,
+          currentUserIndex: data.groupchatUsers.indexWhere(
+            (element) => element.id == authCubit.state.currentUser.id,
+          ),
+          leftUsers: data.groupchatLeftUsers,
+          loadingChat: false,
+          oldState: state,
+        ));
+      },
+    );
+  }
+
   Future getGroupchatUsersViaApi() async {
-    /// optimize this
-    final Either<NotificationAlert, GetAllGroupchatUsersAndLeftUsers>
+    /// TODO optimize this
+    final Either<NotificationAlert, GroupchatUsersAndLeftUsersResponse>
         groupchatUsersAndLeftUsers =
         await chatUseCases.getGroupchatUsersAndLeftUsers(
       groupchatId: state.currentChat.id,

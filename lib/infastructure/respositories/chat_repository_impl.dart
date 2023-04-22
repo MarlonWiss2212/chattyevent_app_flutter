@@ -9,17 +9,20 @@ import 'package:social_media_app_flutter/core/filter/groupchat/get_messages_filt
 import 'package:social_media_app_flutter/core/filter/groupchat/get_one_groupchat_filter.dart';
 import 'package:social_media_app_flutter/core/filter/groupchat/get_one_groupchat_user_filter.dart';
 import 'package:social_media_app_flutter/core/filter/limit_offset_filter/limit_offset_filter.dart';
-import 'package:social_media_app_flutter/core/response/get-all-groupchat-users-and-left-users.response.dart';
+import 'package:social_media_app_flutter/core/response/groupchat/groupchat-data.response.dart';
+import 'package:social_media_app_flutter/core/response/groupchat/groupchat-users-and-left-users.response.dart';
 import 'package:social_media_app_flutter/core/utils/failure_helper.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:dartz/dartz.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_left_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
+import 'package:social_media_app_flutter/domain/entities/message/message_entity.dart';
 import 'package:social_media_app_flutter/domain/repositories/chat_repository.dart';
 import 'package:social_media_app_flutter/infastructure/datasources/remote/graphql.dart';
 import 'package:social_media_app_flutter/infastructure/models/groupchat/groupchat_left_user_model.dart';
 import 'package:social_media_app_flutter/infastructure/models/groupchat/groupchat_model.dart';
 import 'package:social_media_app_flutter/infastructure/models/groupchat/groupchat_user_model.dart';
+import 'package:social_media_app_flutter/infastructure/models/message/message_model.dart';
 
 class ChatRepositoryImpl implements ChatRepository {
   final GraphQlDatasource graphQlDatasource;
@@ -119,6 +122,152 @@ class ChatRepositoryImpl implements ChatRepository {
       }
 
       return Right(GroupchatModel.fromJson(response.data!["findGroupchat"]));
+    } catch (e) {
+      return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
+    }
+  }
+
+  @override
+  Future<Either<NotificationAlert, GroupchatAndGroupchatUsersResponse>>
+      getGroupchatDataViaApi({
+    required GetOneGroupchatFilter getOneGroupchatFilter,
+  }) async {
+    try {
+      final response = await graphQlDatasource.query(
+        """
+          query GetGroupchatData(\$groupchatId: String!, \$limitOffsetInput: LimitOffsetInput!, \$findOneGroupchatInput: FindOneGroupchatInput!) {   
+            findGroupchat(findOneGroupchatInput: \$findOneGroupchatInput) {
+              _id
+              title
+              description
+              profileImageLink
+              createdBy
+              createdAt
+            }
+
+            findGroupchatLeftUsers(groupchatId: \$groupchatId, limitOffsetInput: \$limitOffsetInput) {
+              groupchatUserLeftId
+              _id
+              authId
+              leftChatAt
+              groupchatTo
+              birthdate
+              createdAt
+              firstname
+              lastTimeOnline
+              lastname
+              profileImageLink
+              updatedAt
+              username
+              userRelationCounts {
+                followerCount
+                followedCount
+                followRequestCount
+              }
+              myUserRelationToOtherUser {
+                _id
+                createdAt
+                updatedAt
+                statusOnRelatedUser
+                followData {
+                  canInviteFollowedToPrivateEvent
+                  canInviteFollowedToGroupchat
+                  followedUserAt
+                }
+              }
+              otherUserRelationToMyUser {
+                _id
+                createdAt
+                updatedAt
+                statusOnRelatedUser
+                followData {
+                  canInviteFollowedToPrivateEvent
+                  canInviteFollowedToGroupchat
+                  followedUserAt
+                }
+              }
+            }
+
+            findGroupchatUsers(groupchatId: \$groupchatId, limitOffsetInput: \$limitOffsetInput) {
+              groupchatUserId
+              _id
+              authId
+              admin
+              joinedChatAt
+              groupchatTo
+              usernameForChat
+              birthdate
+              createdAt
+              firstname
+              lastTimeOnline
+              lastname
+              profileImageLink
+              updatedAt
+              userRelationCounts {
+                followerCount
+                followedCount
+                followRequestCount
+              }
+              myUserRelationToOtherUser {
+                _id
+                createdAt
+                updatedAt
+                statusOnRelatedUser
+                followData {
+                  canInviteFollowedToPrivateEvent
+                  canInviteFollowedToGroupchat
+                  followedUserAt
+                }
+              }
+              otherUserRelationToMyUser {
+                _id
+                createdAt
+                updatedAt
+                statusOnRelatedUser
+                followData {
+                  canInviteFollowedToPrivateEvent
+                  canInviteFollowedToGroupchat
+                  followedUserAt
+                }
+              }
+              username
+            }
+          }
+        """,
+        variables: {
+          "findOneGroupchatInput": getOneGroupchatFilter.toMap(),
+          "groupchatId": getOneGroupchatFilter.id,
+          "limitOffsetInput": LimitOffsetFilter(
+            limit: 1000,
+            offset: 0,
+          ).toMap(),
+        },
+      );
+
+      if (response.hasException) {
+        return Left(FailureHelper.graphqlFailureToNotificationAlert(
+          title: "Finden von Chat usern Fehler",
+          exception: response.exception!,
+        ));
+      }
+
+      final List<GroupchatUserEntity> groupchatUsers = [];
+      for (var groupchatUser in response.data!["findGroupchatUsers"]) {
+        groupchatUsers.add(GroupchatUserModel.fromJson(groupchatUser));
+      }
+
+      final List<GroupchatLeftUserEntity> groupchatLeftUsers = [];
+      for (var groupchatLeftUser in response.data!["findGroupchatLeftUsers"]) {
+        groupchatLeftUsers.add(
+          GroupchatLeftUserModel.fromJson(groupchatLeftUser),
+        );
+      }
+
+      return Right(GroupchatAndGroupchatUsersResponse(
+        groupchatLeftUsers: groupchatLeftUsers,
+        groupchatUsers: groupchatUsers,
+        groupchat: GroupchatModel.fromJson(response.data!["findGroupchat"]),
+      ));
     } catch (e) {
       return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
     }
@@ -444,7 +593,7 @@ class ChatRepositoryImpl implements ChatRepository {
   }
 
   @override
-  Future<Either<NotificationAlert, GetAllGroupchatUsersAndLeftUsers>>
+  Future<Either<NotificationAlert, GroupchatUsersAndLeftUsersResponse>>
       getGroupchatUsersAndLeftUsers({
     required String groupchatId,
   }) async {
@@ -549,7 +698,7 @@ class ChatRepositoryImpl implements ChatRepository {
 
       if (response.hasException) {
         return Left(FailureHelper.graphqlFailureToNotificationAlert(
-          title: "Finden von Chat usern Fehler",
+          title: "Finden von Chat Usern Fehler",
           exception: response.exception!,
         ));
       }
@@ -566,12 +715,10 @@ class ChatRepositoryImpl implements ChatRepository {
         );
       }
 
-      return Right(
-        GetAllGroupchatUsersAndLeftUsers(
-          groupchatLeftUsers: groupchatLeftUsers,
-          groupchatUsers: groupchatUsers,
-        ),
-      );
+      return Right(GroupchatUsersAndLeftUsersResponse(
+        groupchatLeftUsers: groupchatLeftUsers,
+        groupchatUsers: groupchatUsers,
+      ));
     } catch (e) {
       return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
     }

@@ -12,12 +12,10 @@ import 'package:social_media_app_flutter/domain/entities/private_event/private_e
 class PrivateEventWrapperPage extends StatelessWidget {
   final String privateEventId;
   final PrivateEventEntity? privateEventToSet;
-  final bool loadPrivateEventFromApiToo;
 
   const PrivateEventWrapperPage({
     @PathParam('id') required this.privateEventId,
     this.privateEventToSet,
-    this.loadPrivateEventFromApiToo = true,
     super.key,
   });
 
@@ -52,7 +50,9 @@ class PrivateEventWrapperPage extends StatelessWidget {
       privateEventUseCases: serviceLocator(
         param1: BlocProvider.of<AuthCubit>(context).state,
       ),
-    );
+    )
+          ..setCurrentChatFromChatCubit()
+          ..reloadPrivateEventStandardDataViaApi();
 
     return MultiBlocProvider(
       providers: [
@@ -60,21 +60,9 @@ class PrivateEventWrapperPage extends StatelessWidget {
       ],
       child: Builder(
         builder: (context) {
-          BlocProvider.of<CurrentPrivateEventCubit>(context)
-              .setCurrentChatFromChatCubit();
-          BlocProvider.of<CurrentPrivateEventCubit>(context)
-              .getPrivateEventUsersAndLeftUsersViaApi();
-
-          if (privateEventToSet != null &&
-              privateEventToSet!.groupchatTo == null &&
-              !loadPrivateEventFromApiToo) {
-            BlocProvider.of<CurrentPrivateEventCubit>(context)
-                .getCurrentChatViaApi();
-          } else {
+          if (privateEventToSet == null) {
             BlocProvider.of<CurrentPrivateEventCubit>(context)
                 .setPrivateEventFromPrivateEventCubit();
-            BlocProvider.of<CurrentPrivateEventCubit>(context)
-                .getPrivateEventAndGroupchatFromApi();
           }
           return MultiBlocListener(
             listeners: [

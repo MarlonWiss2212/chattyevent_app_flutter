@@ -35,7 +35,6 @@ class NewGroupchatWrapperPage extends StatelessWidget {
                     AutoRouter.of(context).root.replace(
                           ChatPageWrapperRoute(
                             groupchatId: state.addedChat!.id,
-                            loadChatFromApiToo: false,
                             chatStateToSet: CurrentChatState(
                               currentUserIndex: -1,
                               currentUserLeftChat: false,

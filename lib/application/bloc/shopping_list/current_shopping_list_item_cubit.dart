@@ -10,6 +10,7 @@ import 'package:social_media_app_flutter/core/dto/shopping_list_item/update_shop
 import 'package:social_media_app_flutter/core/filter/get_bought_amounts_filter.dart';
 import 'package:social_media_app_flutter/core/filter/get_one_shopping_list_item_filter.dart';
 import 'package:social_media_app_flutter/core/filter/limit_offset_filter/limit_offset_filter.dart';
+import 'package:social_media_app_flutter/core/response/shopping-list-item-data.response.dart';
 import 'package:social_media_app_flutter/domain/entities/bought_amount_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/shopping_list_item/shopping_list_item_entity.dart';
 import 'package:social_media_app_flutter/domain/usecases/bought_amount_usecases.dart';
@@ -32,6 +33,48 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
     required this.shoppingListCubitOrPrivateEventCubit,
     required this.shoppingListItemUseCases,
   });
+
+  Future reloadShoppingListItemStandardDataViaApi() async {
+    emitState(loadingShoppingListItem: true, loadingBoughtAmounts: true);
+
+    final Either<NotificationAlert, ShoppingListItemDataResponse>
+        dataOrFailure =
+        await shoppingListItemUseCases.getShoppingListItemDataViaApi(
+      getOneShoppingListItemFilter: GetOneShoppingListItemFilter(
+        id: state.shoppingListItem.id,
+      ),
+      limitOffsetFilterBoughtAmounts: LimitOffsetFilter(
+        limit:
+            state.boughtAmounts.length > 20 ? state.boughtAmounts.length : 20,
+        offset: 0,
+      ),
+    );
+
+    dataOrFailure.fold(
+      (alert) {
+        notificationCubit.newAlert(notificationAlert: alert);
+        emitState(loadingShoppingListItem: false);
+      },
+      (data) {
+        emitState(
+          loadingShoppingListItem: false,
+          loadingBoughtAmounts: false,
+          shoppingListItem: data.shoppingListItem,
+          boughtAmounts: data.boughtAmounts,
+        );
+        shoppingListCubitOrPrivateEventCubit.fold(
+          (l) => l.replaceOrAdd(
+            addIfItsNotFound: false,
+            shoppingListItemState: state,
+          ),
+          (r) => r.replaceOrAddShoppingListItem(
+            addIfItsNotFound: false,
+            shoppingListItemState: state,
+          ),
+        );
+      },
+    );
+  }
 
   Future getShoppingListItemViaApi() async {
     emitState(loadingShoppingListItem: true);

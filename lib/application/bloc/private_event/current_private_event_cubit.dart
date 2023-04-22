@@ -14,7 +14,8 @@ import 'package:social_media_app_flutter/core/filter/get_shopping_list_items_fil
 import 'package:social_media_app_flutter/core/filter/groupchat/get_one_groupchat_filter.dart';
 import 'package:social_media_app_flutter/core/filter/limit_offset_filter/limit_offset_filter.dart';
 import 'package:social_media_app_flutter/core/filter/private_event/private_event_user/get_one_private_event_user_filter.dart';
-import 'package:social_media_app_flutter/core/response/get-all-private-events-users-and-left-users.reponse.dart';
+import 'package:social_media_app_flutter/core/response/private-event/private-event-date.response.dart';
+import 'package:social_media_app_flutter/core/response/private-event/private-events-users-and-left-users.reponse.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_left_user_entity.dart';
@@ -52,8 +53,55 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
     required this.privateEventUseCases,
   });
 
+  Future reloadPrivateEventStandardDataViaApi() async {
+    emitState(loadingGroupchat: true, loadingPrivateEvent: true);
+
+    final Either<NotificationAlert, PrivateEventDataResponse>
+        privateEventDataOrFailure =
+        await privateEventUseCases.getPrivateEventDataViaApi(
+      getOnePrivateEventFilter:
+          GetOnePrivateEventFilter(id: state.privateEvent.id),
+      groupchatId: state.privateEvent.groupchatTo,
+    );
+
+    privateEventDataOrFailure.fold(
+      (alert) {
+        emitState(loadingGroupchat: false, loadingPrivateEvent: false);
+        notificationCubit.newAlert(notificationAlert: alert);
+      },
+      (data) {
+        emitState(
+          loadingGroupchat: false,
+          loadingPrivateEvent: false,
+          privateEvent: data.privateEvent,
+          privateEventUsers: data.privateEventUsers,
+          currentUserIndex: data.privateEventUsers.indexWhere(
+            (element) => element.id == authCubit.state.currentUser.id,
+          ),
+          privateEventLeftUsers: data.privateEventLeftUsers,
+          chatState: data.groupchat != null
+              ? CurrentChatState(
+                  currentUserIndex: -1,
+                  currentUserLeftChat: false,
+                  loadingPrivateEvents: false,
+                  futureConnectedPrivateEvents: [],
+                  loadingMessages: false,
+                  currentChat: data.groupchat!,
+                  messages: data.groupchat!.latestMessage != null
+                      ? [data.groupchat!.latestMessage!]
+                      : [],
+                  loadingChat: false,
+                  users: [],
+                  leftUsers: [],
+                )
+              : null,
+        );
+      },
+    );
+  }
+
   Future getPrivateEventUsersAndLeftUsersViaApi() async {
-    final Either<NotificationAlert, GetAllPrivateEventUsersAndLeftUsers>
+    final Either<NotificationAlert, PrivateEventUsersAndLeftUsersResponse>
         usersOrFailure =
         await privateEventUseCases.getPrivateEventUsersAndLeftUsers(
       privateEventId: state.privateEvent.id,
@@ -71,13 +119,6 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
         );
       },
     );
-  }
-
-  Future getPrivateEventAndGroupchatFromApi() async {
-    await Future.wait([
-      getCurrentPrivateEvent(),
-      getCurrentChatViaApi(),
-    ]);
   }
 
   void setCurrentChatFromChatCubit() {

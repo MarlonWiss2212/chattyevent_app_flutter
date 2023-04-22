@@ -37,14 +37,9 @@ class StandardShoppingListItemWrapperPage extends StatelessWidget {
           param1: BlocProvider.of<AuthCubit>(context).state,
         ),
         notificationCubit: BlocProvider.of<NotificationCubit>(context),
-      ),
+      )..reloadShoppingListItemStandardDataViaApi(),
       child: Builder(
         builder: (context) {
-          BlocProvider.of<CurrentShoppingListItemCubit>(context)
-              .getBoughtAmounts();
-          BlocProvider.of<CurrentShoppingListItemCubit>(context)
-              .getShoppingListItemViaApi();
-
           if (setCurrentPrivateEvent) {
             BlocProvider.of<CurrentPrivateEventCubit>(context).emitState(
               privateEvent: PrivateEventEntity(
@@ -58,9 +53,7 @@ class StandardShoppingListItemWrapperPage extends StatelessWidget {
             BlocProvider.of<CurrentPrivateEventCubit>(context)
                 .setPrivateEventFromPrivateEventCubit();
             BlocProvider.of<CurrentPrivateEventCubit>(context)
-                .getPrivateEventUsersAndLeftUsersViaApi();
-            BlocProvider.of<CurrentPrivateEventCubit>(context)
-                .getCurrentPrivateEvent();
+                .reloadPrivateEventStandardDataViaApi();
           }
 
           return BlocListener<CurrentShoppingListItemCubit,
@@ -83,9 +76,7 @@ class StandardShoppingListItemWrapperPage extends StatelessWidget {
                 BlocProvider.of<CurrentPrivateEventCubit>(context)
                     .setPrivateEventFromPrivateEventCubit();
                 BlocProvider.of<CurrentPrivateEventCubit>(context)
-                    .getPrivateEventUsersAndLeftUsersViaApi();
-                BlocProvider.of<CurrentPrivateEventCubit>(context)
-                    .getCurrentPrivateEvent();
+                    .reloadPrivateEventStandardDataViaApi();
               }
               if (state.status == CurrentShoppingListItemStateStatus.deleted) {
                 AutoRouter.of(context).pop();

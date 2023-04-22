@@ -5,9 +5,11 @@ import 'package:social_media_app_flutter/core/dto/private_event/create_private_e
 import 'package:social_media_app_flutter/core/dto/private_event/private_event_user/create_private_event_user_dto.dart';
 import 'package:social_media_app_flutter/core/dto/private_event/update_private_event_dto.dart';
 import 'package:social_media_app_flutter/core/dto/private_event/private_event_user/update_private_event_user_dto.dart';
+import 'package:social_media_app_flutter/core/filter/groupchat/get_one_groupchat_filter.dart';
 import 'package:social_media_app_flutter/core/filter/limit_offset_filter/limit_offset_filter.dart';
 import 'package:social_media_app_flutter/core/filter/private_event/private_event_user/get_one_private_event_user_filter.dart';
-import 'package:social_media_app_flutter/core/response/get-all-private-events-users-and-left-users.reponse.dart';
+import 'package:social_media_app_flutter/core/response/private-event/private-event-date.response.dart';
+import 'package:social_media_app_flutter/core/response/private-event/private-events-users-and-left-users.reponse.dart';
 import 'package:social_media_app_flutter/core/utils/failure_helper.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_left_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_user_entity.dart';
@@ -131,6 +133,180 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
       return Right(
         PrivateEventModel.fromJson(response.data!["findPrivateEvent"]),
       );
+    } catch (e) {
+      return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
+    }
+  }
+
+  @override
+  Future<Either<NotificationAlert, PrivateEventDataResponse>>
+      getPrivateEventDataViaApi({
+    required GetOnePrivateEventFilter getOnePrivateEventFilter,
+    String? groupchatId,
+  }) async {
+    try {
+      final response = await graphQlDatasource.query(
+        """
+        query FindPrivateEventData(\$filter: FindOnePrivateEventInput!, \$privateEventId: String!, \$limitOffsetInput: LimitOffsetInput!, \$findOneGroupchatInput: FindOneGroupchatInput!) {
+          ${groupchatId == null ? '' : '''
+          findGroupchat(findOneGroupchatInput: \$findOneGroupchatInput) {
+            _id
+            title
+            description
+            profileImageLink
+            createdBy
+            createdAt
+          }
+          '''}
+          
+          findPrivateEvent(filter: \$filter) {
+            _id
+            title
+            status
+            coverImageLink
+            description
+            eventLocation {
+              latitude
+              longitude
+              zip
+              city
+              country
+              street
+              housenumber
+            }
+            eventDate
+            eventEndDate
+            groupchatTo
+            createdBy
+            createdAt
+          }
+
+          findPrivateEventLeftUsers(privateEventId: \$privateEventId, limitOffsetInput: \$limitOffsetInput) {
+            privateEventUserLeftId
+            username
+            _id
+            authId
+            leftEventAt
+            privateEventTo
+            birthdate
+            createdAt
+            firstname
+            lastTimeOnline
+            lastname
+            profileImageLink
+            updatedAt
+            userRelationCounts {
+              followerCount
+              followedCount
+              followRequestCount
+            }
+            myUserRelationToOtherUser {
+              _id
+              createdAt
+              updatedAt
+              statusOnRelatedUser
+              followData {
+                canInviteFollowedToPrivateEvent
+                canInviteFollowedToGroupchat
+                followedUserAt
+              }
+            }
+            otherUserRelationToMyUser {
+              _id
+              createdAt
+              updatedAt
+              statusOnRelatedUser
+              followData {
+                canInviteFollowedToPrivateEvent
+                canInviteFollowedToGroupchat
+                followedUserAt
+              }
+            } 
+          }
+
+          findPrivateEventUsers(privateEventId: \$privateEventId, limitOffsetInput: \$limitOffsetInput) {
+            privateEventUserId
+            username
+            _id
+            authId
+            status
+            organizer
+            joinedEventAt
+            privateEventTo
+            birthdate
+            createdAt
+            firstname
+            lastTimeOnline
+            lastname
+            profileImageLink
+            updatedAt
+            userRelationCounts {
+              followerCount
+              followedCount
+              followRequestCount
+            }
+            myUserRelationToOtherUser {
+              _id
+              createdAt
+              updatedAt
+              statusOnRelatedUser
+              followData {
+                canInviteFollowedToPrivateEvent
+                canInviteFollowedToGroupchat
+                followedUserAt
+              }
+            }
+            otherUserRelationToMyUser {
+              _id
+              createdAt
+              updatedAt
+              statusOnRelatedUser
+              followData {
+                canInviteFollowedToPrivateEvent
+                canInviteFollowedToGroupchat
+                followedUserAt
+              }
+            }
+          }
+        }
+      """,
+        variables: {
+          "privateEventId": getOnePrivateEventFilter.id,
+          "findOneGroupchatInput":
+              GetOneGroupchatFilter(id: groupchatId ?? "").toMap(),
+          "limitOffsetInput": LimitOffsetFilter(limit: 1000, offset: 0).toMap(),
+          "filter": getOnePrivateEventFilter.toMap(),
+        },
+      );
+
+      if (response.hasException) {
+        return Left(FailureHelper.graphqlFailureToNotificationAlert(
+          title: "Finden Privates Event Daten Fehler",
+          exception: response.exception!,
+        ));
+      }
+
+      final List<PrivateEventLeftUserEntity> privateEventLeftUsers = [];
+      for (var privateEventLeftUser
+          in response.data!["findPrivateEventLeftUsers"]) {
+        privateEventLeftUsers.add(
+          PrivateEventLeftUserModel.fromJson(privateEventLeftUser),
+        );
+      }
+
+      final List<PrivateEventUserEntity> privateEventUsers = [];
+      for (var privateEventUser in response.data!["findPrivateEventUsers"]) {
+        privateEventUsers.add(PrivateEventUserModel.fromJson(privateEventUser));
+      }
+
+      return Right(PrivateEventDataResponse(
+        privateEvent: PrivateEventModel.fromJson(
+          response.data!["findPrivateEvent"],
+        ),
+        groupchat: null,
+        privateEventLeftUsers: privateEventLeftUsers,
+        privateEventUsers: privateEventUsers,
+      ));
     } catch (e) {
       return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
     }
@@ -503,14 +679,14 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
   }
 
   @override
-  Future<Either<NotificationAlert, GetAllPrivateEventUsersAndLeftUsers>>
-      getAllPrivateEventUsersAndLeftUsers({
+  Future<Either<NotificationAlert, PrivateEventUsersAndLeftUsersResponse>>
+      getPrivateEventUsersAndLeftUsers({
     required String privateEventId,
   }) async {
     try {
       final response = await graphQlDatasource.query(
         """
-          query GetAllPrivateEventUsersAndLeftUsers(\$privateEventId: String!, \$limitOffsetInput: LimitOffsetInput!) {   
+          query PrivateEventUsersAndLeftUsersResponse(\$privateEventId: String!, \$limitOffsetInput: LimitOffsetInput!) {   
             findPrivateEventLeftUsers(privateEventId: \$privateEventId, limitOffsetInput: \$limitOffsetInput) {
               privateEventUserLeftId
               username
@@ -627,7 +803,7 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
       }
 
       return Right(
-        GetAllPrivateEventUsersAndLeftUsers(
+        PrivateEventUsersAndLeftUsersResponse(
           privateEventUsers: privateEventUsers,
           privateEventLeftUsers: privateEventLeftUsers,
         ),

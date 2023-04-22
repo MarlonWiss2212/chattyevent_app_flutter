@@ -19,7 +19,6 @@ class ChatInfoPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // should get the private events for this chat in future for more effeciancy
     BlocProvider.of<CurrentChatCubit>(context)
         .getFutureConnectedPrivateEventsFromApi(
       limitOffsetFilter: LimitOffsetFilter(
@@ -45,7 +44,7 @@ class ChatInfoPage extends StatelessWidget {
             onRefresh: () async {
               await Future.wait([
                 BlocProvider.of<CurrentChatCubit>(context)
-                    .getCurrentChatViaApi(),
+                    .reloadGroupchatAndGroupchatUsersViaApi(),
                 BlocProvider.of<CurrentChatCubit>(context)
                     .getFutureConnectedPrivateEventsFromApi(
                   limitOffsetFilter: LimitOffsetFilter(
@@ -53,8 +52,6 @@ class ChatInfoPage extends StatelessWidget {
                     offset: 0,
                   ),
                 ),
-                BlocProvider.of<CurrentChatCubit>(context)
-                    .getGroupchatUsersViaApi(),
               ]);
             },
           ),

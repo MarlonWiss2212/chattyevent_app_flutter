@@ -39,7 +39,7 @@ class PrivateEventTabInfo extends StatelessWidget {
       ),
       CupertinoSliverRefreshControl(
         onRefresh: () => BlocProvider.of<CurrentPrivateEventCubit>(context)
-            .getPrivateEventAndGroupchatFromApi(),
+            .reloadPrivateEventStandardDataViaApi(),
       ),
       SliverList(
         delegate: SliverChildListDelegate([

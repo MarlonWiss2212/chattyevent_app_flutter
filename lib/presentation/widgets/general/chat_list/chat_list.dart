@@ -102,7 +102,6 @@ class _ChatListState extends State<ChatList> {
               AutoRouter.of(context).push(
                 ChatPageWrapperRoute(
                   chatStateToSet: widget.chatStates[index],
-                  loadChatFromApiToo: true,
                   groupchatId: widget.chatStates[index].currentChat.id,
                 ),
               );

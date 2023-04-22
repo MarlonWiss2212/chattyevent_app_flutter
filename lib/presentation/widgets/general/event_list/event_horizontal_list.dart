@@ -39,7 +39,6 @@ class EventHorizontalList extends StatelessWidget {
               onPress: () {
                 AutoRouter.of(context).push(
                   PrivateEventWrapperPageRoute(
-                    loadPrivateEventFromApiToo: true,
                     privateEventToSet: privateEvents[index],
                     privateEventId: privateEvents[index].id,
                   ),

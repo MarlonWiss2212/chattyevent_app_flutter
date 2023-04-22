@@ -21,7 +21,6 @@ class PrivateEventMapMarker extends StatelessWidget {
             PrivateEventWrapperPageRoute(
               privateEventId: privateEvent.id,
               privateEventToSet: privateEvent,
-              loadPrivateEventFromApiToo: true,
             ),
           ),
           child: Row(
