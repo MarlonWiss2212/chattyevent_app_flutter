@@ -84,6 +84,7 @@ class ChatCubit extends Cubit<ChatState> {
                     futureConnectedPrivateEvents: [],
                     loadingMessages: false,
                     currentChat: e,
+                    messages: e.latestMessage != null ? [e.latestMessage!] : [],
                     loadingChat: false,
                     users: [],
                     leftUsers: [],

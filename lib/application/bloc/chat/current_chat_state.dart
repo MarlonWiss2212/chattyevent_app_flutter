@@ -7,6 +7,8 @@ class CurrentChatState {
   final List<GroupchatUserEntity> users;
   final List<GroupchatLeftUserEntity> leftUsers;
 
+  final List<MessageEntity> messages;
+
   final List<PrivateEventEntity> futureConnectedPrivateEvents;
   final bool loadingPrivateEvents;
 
@@ -28,6 +30,7 @@ class CurrentChatState {
     required this.loadingPrivateEvents,
     required this.futureConnectedPrivateEvents,
     required this.loadingMessages,
+    required this.messages,
     required this.currentChat,
     required this.loadingChat,
     required this.users,
@@ -36,18 +39,23 @@ class CurrentChatState {
 
   factory CurrentChatState.merge({
     required CurrentChatState oldState,
-    bool mergeChatSetMessagesFromOldEntity = false,
     GroupchatEntity? currentChat,
     List<GroupchatUserEntity>? users,
     int? currentUserIndex,
     List<GroupchatLeftUserEntity>? leftUsers,
     List<PrivateEventEntity>? futureConnectedPrivateEvents,
+    List<MessageEntity>? messages,
     bool? loadingPrivateEvents,
     bool? currentUserLeftChat,
     bool? loadingChat,
     bool? loadingMessages,
   }) {
+    /// sort messages
+    final allMessages = messages ?? oldState.messages;
+    allMessages.sort((a, b) => a.createdAt!.compareTo(b.createdAt!));
+
     return CurrentChatState(
+      messages: allMessages,
       currentUserIndex: currentUserIndex ?? oldState.currentUserIndex,
       currentUserLeftChat: currentUserLeftChat ?? oldState.currentUserLeftChat,
       loadingPrivateEvents:
@@ -59,8 +67,6 @@ class CurrentChatState {
           ? GroupchatEntity.merge(
               newEntity: currentChat,
               oldEntity: oldState.currentChat,
-              mergeChatSetMessagesFromOldEntity:
-                  mergeChatSetMessagesFromOldEntity,
             )
           : oldState.currentChat,
       loadingChat: loadingChat ?? oldState.loadingChat,

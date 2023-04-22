@@ -25,12 +25,10 @@ class ChatPageReactMessageContainer extends StatelessWidget {
               : const EdgeInsets.all(8),
           child: ChatPageMessageContainer(
             isInputMessage: isInputMessage,
-            message: state.currentChat.messages != null
-                ? state.currentChat.messages!.firstWhere(
-                    (element) => element.id == messageToReactTo,
-                    orElse: () => MessageEntity(id: messageToReactTo),
-                  )
-                : MessageEntity(id: messageToReactTo),
+            message: state.messages.firstWhere(
+              (element) => element.id == messageToReactTo,
+              orElse: () => MessageEntity(id: messageToReactTo),
+            ),
             currentUserId:
                 BlocProvider.of<AuthCubit>(context).state.currentUser.id,
             users: state.users,

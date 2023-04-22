@@ -42,6 +42,7 @@ class NewGroupchatWrapperPage extends StatelessWidget {
                               loadingPrivateEvents: false,
                               futureConnectedPrivateEvents: [],
                               loadingMessages: false,
+                              messages: [],
                               currentChat: state.addedChat!,
                               loadingChat: false,
                               users: [],

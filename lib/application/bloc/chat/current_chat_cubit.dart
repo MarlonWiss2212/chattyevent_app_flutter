@@ -190,7 +190,6 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
       (groupchat) async {
         emit(CurrentChatState.merge(
           currentChat: groupchat,
-          mergeChatSetMessagesFromOldEntity: true,
           loadingChat: false,
           oldState: state,
         ));
@@ -211,11 +210,7 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
     groupchatOrFailure.fold(
       (alert) => notificationCubit.newAlert(notificationAlert: alert),
       (groupchat) {
-        emit(CurrentChatState.merge(
-          currentChat: groupchat,
-          mergeChatSetMessagesFromOldEntity: true,
-          oldState: state,
-        ));
+        emit(CurrentChatState.merge(currentChat: groupchat, oldState: state));
         chatCubit.replaceOrAdd(chatState: state);
       },
     );
@@ -244,7 +239,6 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
           leftUsers: List.from(state.leftUsers)
             ..removeWhere((element) => element.id == groupchatUser.id),
           users: List.from(state.users)..add(groupchatUser),
-          mergeChatSetMessagesFromOldEntity: true,
           loadingChat: false,
           oldState: state,
         ));
@@ -281,7 +275,6 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
 
         emit(CurrentChatState.merge(
           users: newGroupchatUsers,
-          mergeChatSetMessagesFromOldEntity: true,
           loadingChat: false,
           oldState: state,
         ));
@@ -324,7 +317,6 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
             users: List.from(state.users)
               ..removeWhere((element) => element.id == groupchatLeftUser.id),
             leftUsers: List.from(state.leftUsers)..add(groupchatLeftUser),
-            mergeChatSetMessagesFromOldEntity: true,
             loadingChat: false,
             oldState: state,
           ));
@@ -346,9 +338,7 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
       ),
       limitOffsetFilter: LimitOffsetFilter(
         limit: 20,
-        offset: state.currentChat.messages != null
-            ? state.currentChat.messages!.length
-            : 0,
+        offset: state.messages.length,
       ),
     );
 
@@ -361,11 +351,7 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
       },
       (messages) {
         emit(CurrentChatState.merge(
-          currentChat: GroupchatEntity(
-            id: state.currentChat.id,
-            messages: messages,
-          ),
-          mergeChatSetMessagesFromOldEntity: true,
+          messages: List.from(state.messages)..addAll(messages),
           loadingMessages: false,
           oldState: state,
         ));
@@ -374,18 +360,9 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
     );
   }
 
-  /// the message will automaticly updated in the groupchat cubit as well
   MessageEntity addMessage({required MessageEntity message}) {
-    List<MessageEntity> messages = state.currentChat.messages != null
-        ? (List.from(state.currentChat.messages!)..add(message))
-        : [message];
-
     emit(CurrentChatState.merge(
-      currentChat: GroupchatEntity(
-        id: state.currentChat.id,
-        messages: messages,
-      ),
-      mergeChatSetMessagesFromOldEntity: false,
+      messages: List.from(state.messages)..add(message),
       oldState: state,
     ));
     chatCubit.replaceOrAdd(chatState: state);

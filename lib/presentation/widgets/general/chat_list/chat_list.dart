@@ -62,11 +62,10 @@ class _ChatListState extends State<ChatList> {
             );
           }
           index = _getDestinationItemIndex(index);
-          final message =
-              widget.chatStates[index].currentChat.messages != null &&
-                      widget.chatStates[index].currentChat.messages!.isNotEmpty
-                  ? widget.chatStates[index].currentChat.messages!.first
-                  : null;
+          final message = widget.chatStates[index].messages.isNotEmpty
+              ? widget.chatStates[index].messages.first
+              : null;
+
           return ListTile(
             leading: CircleAvatar(
               backgroundImage: widget
@@ -89,7 +88,6 @@ class _ChatListState extends State<ChatList> {
             ),
             subtitle: message != null
                 ? Text(
-                    //${message.createdBy}:
                     "${message.message}",
                     softWrap: true,
                     overflow: TextOverflow.ellipsis,

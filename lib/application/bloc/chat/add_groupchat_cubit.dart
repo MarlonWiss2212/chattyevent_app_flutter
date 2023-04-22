@@ -45,6 +45,9 @@ class AddGroupchatCubit extends Cubit<AddGroupchatState> {
             currentUserIndex: -1,
             currentUserLeftChat: false,
             loadingPrivateEvents: false,
+            messages: groupchat.latestMessage != null
+                ? [groupchat.latestMessage!]
+                : [],
             futureConnectedPrivateEvents: [],
             loadingMessages: false,
             currentChat: groupchat,

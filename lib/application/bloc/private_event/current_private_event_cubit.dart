@@ -123,6 +123,9 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
             futureConnectedPrivateEvents: [],
             loadingMessages: false,
             currentChat: groupchat,
+            messages: groupchat.latestMessage != null
+                ? [groupchat.latestMessage!]
+                : [],
             loadingChat: false,
             users: [],
             leftUsers: [],
@@ -140,6 +143,9 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
                   futureConnectedPrivateEvents: [],
                   loadingMessages: false,
                   currentChat: groupchat,
+                  messages: groupchat.latestMessage != null
+                      ? [groupchat.latestMessage!]
+                      : [],
                   loadingChat: false,
                   users: [],
                   leftUsers: [],

@@ -16,7 +16,7 @@ class GroupchatModel extends GroupchatEntity {
           id: id,
           title: title,
           profileImageLink: profileImageLink,
-          messages: latestMessage != null ? [latestMessage] : [],
+          latestMessage: latestMessage,
           description: description,
           createdAt: createdAt,
           createdBy: createdBy,

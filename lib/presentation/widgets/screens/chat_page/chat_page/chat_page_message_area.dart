@@ -11,8 +11,7 @@ class ChatPageMessageArea extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<CurrentChatCubit, CurrentChatState>(
       buildWhen: (previous, current) {
-        if (previous.currentChat.messages?.length !=
-            current.currentChat.messages?.length) {
+        if (previous.messages.length != current.messages.length) {
           return true;
         }
         if (previous.loadingMessages != current.loadingMessages) {
@@ -27,23 +26,11 @@ class ChatPageMessageArea extends StatelessWidget {
         return true;
       },
       builder: (context, state) {
-        final messagesAreNotLoaded = state.currentChat.messages == null &&
-                state.loadingMessages == false ||
-            state.currentChat.messages != null &&
-                state.currentChat.messages!.isEmpty &&
-                state.loadingMessages == false;
-
-        const emptyReturn = Center(child: Text("Keine Nachrichten"));
-
-        if (messagesAreNotLoaded) {
-          return emptyReturn;
+        if (state.loadingMessages == false && state.messages.isEmpty) {
+          return const Center(child: Text("Keine Nachrichten"));
         }
 
-        final loadingMessages =
-            state.currentChat.messages == null && state.loadingMessages ||
-                state.currentChat.messages!.isEmpty && state.loadingMessages;
-
-        if (loadingMessages) {
+        if (state.loadingMessages == true && state.messages.isNotEmpty) {
           return SkeletonListView(
             itemBuilder: (p0, p1) {
               return SkeletonListTile(
@@ -66,7 +53,7 @@ class ChatPageMessageArea extends StatelessWidget {
           groupchatTo: state.currentChat.id,
           users: state.users,
           leftUsers: state.leftUsers,
-          messages: state.currentChat.messages!,
+          messages: state.messages,
         );
       },
     );
