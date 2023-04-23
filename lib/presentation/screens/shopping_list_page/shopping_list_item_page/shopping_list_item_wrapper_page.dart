@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/home_page/home_event/home_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/private_event/private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/shopping_list/current_shopping_list_item_cubit.dart';
 import 'package:social_media_app_flutter/core/injection.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
@@ -31,7 +31,7 @@ class ShoppingListItemWrapperPage extends StatelessWidget {
         shoppingListItemStates: [],
         loadingShoppingList: false,
         privateEventUsers: const [],
-        privateEvent: PrivateEventEntity(id: ""),
+        privateEvent: PrivateEventEntity(id: "", eventDate: DateTime.now()),
         loadingGroupchat: false,
         loadingPrivateEvent: false,
       ),
@@ -45,7 +45,7 @@ class ShoppingListItemWrapperPage extends StatelessWidget {
       shoppingListItemUseCases: serviceLocator(
         param1: BlocProvider.of<AuthCubit>(context).state,
       ),
-      privateEventCubit: BlocProvider.of<PrivateEventCubit>(context),
+      homeEventCubit: BlocProvider.of<HomeEventCubit>(context),
       privateEventUseCases: serviceLocator(
         param1: BlocProvider.of<AuthCubit>(context).state,
       ),

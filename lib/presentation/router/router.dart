@@ -7,6 +7,7 @@ import 'package:social_media_app_flutter/presentation/screens/chat_page/chat_add
 import 'package:social_media_app_flutter/presentation/screens/chat_page/chat_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/chat_page/chat_page_wrapper.dart';
 import 'package:social_media_app_flutter/presentation/screens/create_user_page.dart';
+import 'package:social_media_app_flutter/presentation/screens/future_events_page/future_events_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/home_page/home_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/home_page/pages/home_chat_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/home_page/pages/home_event_page.dart';
@@ -24,6 +25,7 @@ import 'package:social_media_app_flutter/presentation/screens/new_private_event/
 import 'package:social_media_app_flutter/presentation/screens/new_private_event/pages/new_private_event_search_groupchat_tab.dart';
 import 'package:social_media_app_flutter/presentation/screens/new_private_event/pages/new_private_event_search_user_tab.dart';
 import 'package:social_media_app_flutter/presentation/screens/new_private_event/pages/new_private_event_type_tab.dart';
+import 'package:social_media_app_flutter/presentation/screens/past_events_page/past_events_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/private_event_page/private_event_create_shopping_list_item_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/private_event_page/private_event_invite_user_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/private_event_page/private_event_update_loaction_page.dart';
@@ -84,6 +86,18 @@ import 'package:social_media_app_flutter/presentation/screens/shopping_list_page
 
     // home page
     homePageRouter,
+
+    // future and past events
+    AutoRoute(
+      page: FutureEventsPage,
+      guards: [AuthGuard],
+      path: '/future-events',
+    ),
+    AutoRoute(
+      page: PastEventsPage,
+      guards: [AuthGuard],
+      path: '/past-events',
+    ),
 
     //Shopping List page
     AutoRoute(

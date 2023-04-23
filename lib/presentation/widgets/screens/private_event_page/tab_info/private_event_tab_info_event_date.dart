@@ -43,7 +43,7 @@ class PrivateEventTabInfoEventDate extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<CurrentPrivateEventCubit, CurrentPrivateEventState>(
       builder: (context, state) {
-        if (state.privateEvent.eventDate == null && state.loadingPrivateEvent) {
+        if (state.loadingPrivateEvent) {
           return const Padding(
             padding: EdgeInsets.symmetric(horizontal: 8.0),
             child: SkeletonLine(),
@@ -53,7 +53,7 @@ class PrivateEventTabInfoEventDate extends StatelessWidget {
             onTap: state.getCurrentPrivateEventUser()?.organizer == true
                 ? () => _onChangeDatePress(
                       context,
-                      state.privateEvent.eventDate ?? DateTime.now(),
+                      state.privateEvent.eventDate,
                     )
                 : null,
             child: Padding(
@@ -68,11 +68,9 @@ class PrivateEventTabInfoEventDate extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    state.privateEvent.eventDate != null
-                        ? DateFormat.yMd()
-                            .add_jm()
-                            .format(state.privateEvent.eventDate!)
-                        : "",
+                    DateFormat.yMd()
+                        .add_jm()
+                        .format(state.privateEvent.eventDate),
                   )
                 ],
               ),

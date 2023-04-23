@@ -1,17 +1,22 @@
 class GetPrivateEventsFilter {
-  String groupchatTo;
-  bool? onlyFutureEvents;
-  bool? onlyPastEvents;
-  bool? sortNewestDateFirst;
+  final String? groupchatTo;
+  final bool? onlyFutureEvents;
+  final bool? onlyPastEvents;
+  final bool? sortNewestDateFirst;
+
   GetPrivateEventsFilter({
-    required this.groupchatTo,
+    this.groupchatTo,
     this.onlyFutureEvents,
     this.onlyPastEvents,
     this.sortNewestDateFirst,
   });
 
   Map<dynamic, dynamic> toMap() {
-    Map<dynamic, dynamic> map = {"groupchatTo": groupchatTo};
+    Map<dynamic, dynamic> map = {};
+
+    if (groupchatTo != null) {
+      map.addAll({"groupchatTo": groupchatTo});
+    }
 
     if (onlyFutureEvents != null) {
       map.addAll({"onlyFutureEvents": onlyFutureEvents});

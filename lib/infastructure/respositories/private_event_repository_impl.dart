@@ -120,7 +120,7 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
         }
       """,
         variables: {
-          "filter": getOnePrivateEventFilter.toMap(),
+          "filter": getOnePrivateEventFilter..toMap(),
         },
       );
 

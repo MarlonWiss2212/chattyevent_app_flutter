@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/home_page/home_event/home_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/add_private_event_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/private_event/private_event_cubit.dart';
 import 'package:social_media_app_flutter/core/injection.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 import 'package:social_media_app_flutter/presentation/widgets/general/button.dart';
@@ -19,7 +19,7 @@ class NewPrivateEventPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider.value(
       value: AddPrivateEventCubit(
-        privateEventCubit: BlocProvider.of<PrivateEventCubit>(context),
+        homeEventCubit: BlocProvider.of<HomeEventCubit>(context),
         notificationCubit: BlocProvider.of<NotificationCubit>(context),
         privateEventUseCases: serviceLocator(
           param1: BlocProvider.of<AuthCubit>(context).state,
@@ -36,7 +36,7 @@ class NewPrivateEventPage extends StatelessWidget {
                     AutoRouter.of(context).root.replace(
                           PrivateEventWrapperPageRoute(
                             privateEventId: state.addedPrivateEvent!.id,
-                            privateEventToSet: state.addedPrivateEvent,
+                            privateEventToSet: state.addedPrivateEvent!,
                           ),
                         );
                   }

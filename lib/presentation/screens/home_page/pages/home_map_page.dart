@@ -3,12 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:social_media_app_flutter/application/bloc/home_page/home_event/home_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/location/location_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/private_event/private_event_cubit.dart';
 import 'package:social_media_app_flutter/core/utils/ad_helper.dart';
 import 'package:social_media_app_flutter/presentation/widgets/ads/custom_banner_ad.dart';
 import 'package:social_media_app_flutter/presentation/widgets/general/button.dart';
-import 'package:social_media_app_flutter/presentation/widgets/general/dialog/alert_dialog.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/home_page/pages/home_map_page/private_event_map_marker.dart';
 
 class Location extends StatelessWidget {
@@ -16,7 +15,7 @@ class Location extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<PrivateEventCubit>(context).getPrivateEventsViaApi();
+    BlocProvider.of<HomeEventCubit>(context).getFuturePrivateEventsViaApi();
     BlocProvider.of<LocationCubit>(context).getLocationFromDevice();
 
     return Scaffold(
@@ -50,7 +49,7 @@ class Location extends StatelessWidget {
                       urlTemplate:
                           'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
                     ),
-                    BlocBuilder<PrivateEventCubit, PrivateEventState>(
+                    BlocBuilder<HomeEventCubit, HomeEventState>(
                       builder: (context, state) {
                         List<Marker> markers = [];
                         for (final event in state.privateEvents) {

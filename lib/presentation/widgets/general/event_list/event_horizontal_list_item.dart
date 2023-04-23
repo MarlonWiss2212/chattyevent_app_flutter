@@ -71,11 +71,7 @@ class EventHorizontalListItem extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      privateEvent.eventDate != null
-                          ? DateFormat.yMd()
-                              .add_jm()
-                              .format(privateEvent.eventDate!)
-                          : "Kein Datum",
+                      DateFormat.yMd().add_jm().format(privateEvent.eventDate),
                       style: Theme.of(context).textTheme.labelSmall?.apply(
                             color: Colors.white,
                           ),

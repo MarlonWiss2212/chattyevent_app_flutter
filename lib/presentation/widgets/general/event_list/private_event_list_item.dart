@@ -30,9 +30,7 @@ class PrivateEventListItem extends StatelessWidget {
         ),
       ),
       subtitle: Text(
-        privateEvent.eventDate != null
-            ? DateFormat.yMd().add_jm().format(privateEvent.eventDate!)
-            : "Kein Datum",
+        DateFormat.yMd().add_jm().format(privateEvent.eventDate),
         softWrap: true,
         overflow: TextOverflow.ellipsis,
       ),

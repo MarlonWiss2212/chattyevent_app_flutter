@@ -1,8 +1,6 @@
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_location_entity.dart';
-import 'package:social_media_app_flutter/domain/entities/private_event/private_event_user_entity.dart';
 import 'package:social_media_app_flutter/infastructure/models/private_event/private_event_location_model.dart';
-import 'package:social_media_app_flutter/infastructure/models/private_event/private_event_user_model.dart';
 
 class PrivateEventModel extends PrivateEventEntity {
   PrivateEventModel({
@@ -11,7 +9,7 @@ class PrivateEventModel extends PrivateEventEntity {
     String? status,
     String? description,
     String? coverImageLink,
-    DateTime? eventDate,
+    required DateTime eventDate,
     DateTime? eventEndDate,
     String? groupchatTo,
     String? createdBy,
@@ -42,9 +40,7 @@ class PrivateEventModel extends PrivateEventEntity {
         ? DateTime.parse(json["updatedAt"]).toLocal()
         : null;
 
-    final eventDate = json["eventDate"] != null
-        ? DateTime.parse(json["eventDate"]).toLocal()
-        : null;
+    final eventDate = DateTime.parse(json["eventDate"]).toLocal();
 
     final eventEndDate = json["eventEndDate"] != null
         ? DateTime.parse(json["eventEndDate"]).toLocal()

@@ -112,7 +112,6 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
   }
 
   Future getGroupchatUsersViaApi() async {
-    /// TODO optimize this
     final Either<NotificationAlert, GroupchatUsersAndLeftUsersResponse>
         groupchatUsersAndLeftUsers =
         await chatUseCases.getGroupchatUsersAndLeftUsers(
@@ -190,9 +189,7 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
     } else {
       List<PrivateEventEntity> newPrivateEvents =
           List.from(state.futureConnectedPrivateEvents)..add(privateEvent);
-      newPrivateEvents.sort(
-        (a, b) => a.eventDate!.compareTo(b.eventDate!),
-      );
+      newPrivateEvents.sort((a, b) => a.eventDate.compareTo(b.eventDate));
       emit(CurrentChatState.merge(
         oldState: state,
         futureConnectedPrivateEvents: newPrivateEvents,

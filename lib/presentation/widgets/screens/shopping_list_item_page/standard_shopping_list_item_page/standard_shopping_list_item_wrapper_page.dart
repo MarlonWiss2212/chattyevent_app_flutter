@@ -46,6 +46,7 @@ class StandardShoppingListItemWrapperPage extends StatelessWidget {
                 id: shoppingListItemStateToSet
                         .shoppingListItem.privateEventId ??
                     "",
+                eventDate: DateTime.now(),
               ),
             );
             BlocProvider.of<CurrentPrivateEventCubit>(context)
@@ -69,6 +70,7 @@ class StandardShoppingListItemWrapperPage extends StatelessWidget {
                     id: shoppingListItemStateToSet
                             .shoppingListItem.privateEventId ??
                         "",
+                    eventDate: DateTime.now(),
                   ),
                 );
                 BlocProvider.of<CurrentPrivateEventCubit>(context)

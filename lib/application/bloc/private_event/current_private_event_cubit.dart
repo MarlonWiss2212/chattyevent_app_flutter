@@ -5,8 +5,8 @@ import 'package:meta/meta.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/home_page/home_event/home_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/private_event/private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/shopping_list/current_shopping_list_item_cubit.dart';
 import 'package:social_media_app_flutter/core/dto/private_event/private_event_user/create_private_event_user_dto.dart';
 import 'package:social_media_app_flutter/core/dto/private_event/update_private_event_dto.dart';
@@ -31,7 +31,7 @@ import 'package:social_media_app_flutter/core/dto/private_event/private_event_us
 part 'current_private_event_state.dart';
 
 class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
-  final PrivateEventCubit privateEventCubit;
+  final HomeEventCubit homeEventCubit;
   final ChatCubit chatCubit;
   final AuthCubit authCubit;
   final NotificationCubit notificationCubit;
@@ -46,7 +46,7 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
     required this.notificationCubit,
     required this.authCubit,
     required this.locationUseCases,
-    required this.privateEventCubit,
+    required this.homeEventCubit,
     required this.chatCubit,
     required this.chatUseCases,
     required this.shoppingListItemUseCases,
@@ -131,7 +131,7 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
 
   void setPrivateEventFromPrivateEventCubit() {
     emitState(
-      privateEvent: privateEventCubit.state.privateEvents.firstWhereOrNull(
+      privateEvent: homeEventCubit.state.privateEvents.firstWhereOrNull(
         (element) => element.id == state.privateEvent.id,
       ),
     );
@@ -213,10 +213,8 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
         emitState(loadingPrivateEvent: false);
       },
       (privateEvent) {
-        final replacedPrivateEvent = privateEventCubit.replaceOrAdd(
-          privateEvent: privateEvent,
-          mergeChatSetUsersFromOldEntity: false,
-        );
+        final replacedPrivateEvent =
+            homeEventCubit.replaceOrAdd(privateEvent: privateEvent);
         emitState(
           privateEvent: replacedPrivateEvent,
           loadingPrivateEvent: false,
@@ -242,10 +240,8 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
         emitState(loadingPrivateEvent: false);
       },
       (privateEvent) {
-        final replacedPrivateEvent = privateEventCubit.replaceOrAdd(
-          privateEvent: privateEvent,
-          mergeChatSetUsersFromOldEntity: false,
-        );
+        final replacedPrivateEvent =
+            homeEventCubit.replaceOrAdd(privateEvent: privateEvent);
         emitState(
           privateEvent: replacedPrivateEvent,
           loadingPrivateEvent: false,
@@ -268,7 +264,7 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
       (deleted) {
         if (deleted) {
           emitState(status: CurrentPrivateEventStateStatus.deleted);
-          privateEventCubit.delete(privateEventId: state.privateEvent.id);
+          homeEventCubit.delete(privateEventId: state.privateEvent.id);
         }
       },
     );

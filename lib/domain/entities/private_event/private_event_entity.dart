@@ -6,7 +6,7 @@ class PrivateEventEntity {
   final String? description;
   final String? coverImageLink;
   final String? status;
-  final DateTime? eventDate;
+  final DateTime eventDate;
   final DateTime? eventEndDate;
   final String? groupchatTo;
   final String? createdBy;
@@ -20,7 +20,7 @@ class PrivateEventEntity {
     this.status,
     this.description,
     this.coverImageLink,
-    this.eventDate,
+    required this.eventDate,
     this.eventEndDate,
     this.groupchatTo,
     this.createdBy,
@@ -37,7 +37,7 @@ class PrivateEventEntity {
       id: newEntity.id,
       title: newEntity.title ?? oldEntity.title,
       coverImageLink: newEntity.coverImageLink ?? oldEntity.coverImageLink,
-      eventDate: newEntity.eventDate ?? oldEntity.eventDate,
+      eventDate: newEntity.eventDate,
       eventEndDate: newEntity.eventEndDate ?? oldEntity.eventEndDate,
       groupchatTo: newEntity.groupchatTo ?? oldEntity.groupchatTo,
       status: newEntity.status ?? oldEntity.status,

@@ -2,9 +2,8 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:social_media_app_flutter/application/bloc/private_event/private_event_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/home_page/home_event/home_event_cubit.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
-import 'package:social_media_app_flutter/presentation/widgets/general/dialog/alert_dialog.dart';
 import 'package:social_media_app_flutter/presentation/widgets/general/event_list/event_horizontal_list_skeleton.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/home_page/pages/home_event_page/home_event_page_details.dart';
 
@@ -13,7 +12,8 @@ class HomeEventPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<PrivateEventCubit>(context).getPrivateEventsViaApi();
+    BlocProvider.of<HomeEventCubit>(context).getFuturePrivateEventsViaApi();
+    BlocProvider.of<HomeEventCubit>(context).getPastPrivateEventsViaApi();
 
     return Scaffold(
       body: CustomScrollView(
@@ -36,26 +36,30 @@ class HomeEventPage extends StatelessWidget {
             ],
           ),
           CupertinoSliverRefreshControl(
-            onRefresh: BlocProvider.of<PrivateEventCubit>(context)
-                .getPrivateEventsViaApi,
+            onRefresh: () async {
+              await Future.wait([
+                BlocProvider.of<HomeEventCubit>(context)
+                    .getFuturePrivateEventsViaApi(reload: true),
+                BlocProvider.of<HomeEventCubit>(context)
+                    .getPastPrivateEventsViaApi(reload: true),
+              ]);
+            },
           ),
-          BlocBuilder<PrivateEventCubit, PrivateEventState>(
+          BlocBuilder<HomeEventCubit, HomeEventState>(
             builder: (context, state) {
               if (state.privateEvents.isEmpty &&
-                  state.status != PrivateEventStateStatus.loading) {
+                  state.status != HomeEventStateStatus.loading) {
                 return const SliverFillRemaining(
                   child: Center(child: Text("Keine Privaten Events")),
                 );
               }
 
               if (state.privateEvents.isEmpty &&
-                  state.status == PrivateEventStateStatus.loading) {
+                  state.status == HomeEventStateStatus.loading) {
                 return const EventHorizontalListSkeleton();
               }
 
-              return HomeEventPageDetails(
-                privateEvents: state.privateEvents,
-              );
+              return const HomeEventPageDetails();
             },
           ),
         ],
