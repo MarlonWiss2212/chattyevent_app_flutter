@@ -52,21 +52,26 @@ class Location extends StatelessWidget {
                     BlocBuilder<HomeEventCubit, HomeEventState>(
                       builder: (context, state) {
                         List<Marker> markers = [];
-                        for (final event in state.privateEvents) {
-                          if (event.eventLocation != null &&
-                              event.eventLocation!.longitude != null &&
-                              event.eventLocation!.latitude != null) {
+                        for (final eventState in state.privateEvents) {
+                          if (eventState.privateEvent.eventLocation != null &&
+                              eventState
+                                      .privateEvent.eventLocation!.longitude !=
+                                  null &&
+                              eventState.privateEvent.eventLocation!.latitude !=
+                                  null) {
                             markers.add(
                               Marker(
                                 point: LatLng(
-                                  event.eventLocation!.latitude!,
-                                  event.eventLocation!.longitude!,
+                                  eventState
+                                      .privateEvent.eventLocation!.latitude!,
+                                  eventState
+                                      .privateEvent.eventLocation!.longitude!,
                                 ),
                                 height: 50,
                                 width: 100,
                                 builder: (context) {
                                   return PrivateEventMapMarker(
-                                    privateEvent: event,
+                                    privateEventState: eventState,
                                   );
                                 },
                               ),

@@ -70,13 +70,10 @@ class _ChatPageMessageListState extends State<ChatPageMessageList> {
       order: GroupedListOrder.DESC,
       floatingHeader: true,
       groupBy: (messageEntity) {
-        if (messageEntity.createdAt == null) {
-          return "Fehler";
-        }
         return DateTime(
-          messageEntity.createdAt!.year,
-          messageEntity.createdAt!.month,
-          messageEntity.createdAt!.day,
+          messageEntity.createdAt.year,
+          messageEntity.createdAt.month,
+          messageEntity.createdAt.day,
         ).toString();
       },
       groupHeaderBuilder: (messageEntity) {
@@ -90,11 +87,7 @@ class _ChatPageMessageListState extends State<ChatPageMessageList> {
               ),
               child: Padding(
                 padding: const EdgeInsets.all(8),
-                child: Text(
-                  messageEntity.createdAt == null
-                      ? "Kein Datum"
-                      : DateFormat.yMMMd().format(messageEntity.createdAt!),
-                ),
+                child: Text(DateFormat.yMMMd().format(messageEntity.createdAt)),
               ),
             ),
           ),

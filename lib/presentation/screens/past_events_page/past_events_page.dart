@@ -59,7 +59,7 @@ class PastEventsPage extends StatelessWidget {
                 delegate: SliverChildBuilderDelegate(
                   (context, index) {
                     return PrivateEventListItem(
-                      privateEvent: pastEvents[index],
+                      privateEventState: pastEvents[index],
                     );
                   },
                   childCount: pastEvents.length,

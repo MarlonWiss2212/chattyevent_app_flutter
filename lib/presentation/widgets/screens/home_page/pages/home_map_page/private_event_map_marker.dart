@@ -1,11 +1,11 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
+import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 
 class PrivateEventMapMarker extends StatelessWidget {
-  final PrivateEventEntity privateEvent;
-  const PrivateEventMapMarker({super.key, required this.privateEvent});
+  final CurrentPrivateEventState privateEventState;
+  const PrivateEventMapMarker({super.key, required this.privateEventState});
 
   @override
   Widget build(BuildContext context) {
@@ -19,13 +19,13 @@ class PrivateEventMapMarker extends StatelessWidget {
         child: InkWell(
           onTap: () => AutoRouter.of(context).push(
             PrivateEventWrapperPageRoute(
-              privateEventId: privateEvent.id,
-              privateEventToSet: privateEvent,
+              privateEventId: privateEventState.privateEvent.id,
+              privateEventStateToSet: privateEventState,
             ),
           ),
           child: Row(
             children: [
-              if (privateEvent.coverImageLink != null) ...{
+              if (privateEventState.privateEvent.coverImageLink != null) ...{
                 Container(
                   height: 66.66667,
                   width: 50,
@@ -35,9 +35,9 @@ class PrivateEventMapMarker extends StatelessWidget {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(8),
                     child: Hero(
-                      tag: "${privateEvent.id} coverImage",
+                      tag: "${privateEventState.privateEvent.id} coverImage",
                       child: Image.network(
-                        privateEvent.coverImageLink!,
+                        privateEventState.privateEvent.coverImageLink!,
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -48,9 +48,9 @@ class PrivateEventMapMarker extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: Center(
                   child: Hero(
-                    tag: "${privateEvent.id} title",
+                    tag: "${privateEventState.privateEvent.id} title",
                     child: Text(
-                      privateEvent.title ?? "Kein Titel",
+                      privateEventState.privateEvent.title ?? "",
                       style: Theme.of(context).textTheme.labelMedium,
                       softWrap: true,
                       overflow: TextOverflow.ellipsis,

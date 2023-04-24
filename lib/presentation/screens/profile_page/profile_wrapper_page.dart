@@ -9,13 +9,11 @@ import 'package:social_media_app_flutter/domain/entities/user/user_entity.dart';
 
 class ProfileWrapperPage extends StatelessWidget {
   final String userId;
-  final UserEntity? userToSet;
-  final bool loadUserFromApiToo;
+  final UserEntity userToSet;
 
   const ProfileWrapperPage({
     super.key,
-    this.loadUserFromApiToo = true,
-    this.userToSet,
+    required this.userToSet,
     @PathParam('id') required this.userId,
   });
 
@@ -23,9 +21,7 @@ class ProfileWrapperPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => ProfilePageCubit(
-        ProfilePageState(
-          user: userToSet ?? UserEntity(id: userId, authId: ""),
-        ),
+        ProfilePageState(user: userToSet),
         userRelationUseCases: serviceLocator(
           param1: BlocProvider.of<AuthCubit>(context).state,
         ),
@@ -34,15 +30,8 @@ class ProfileWrapperPage extends StatelessWidget {
         ),
         authCubit: BlocProvider.of<AuthCubit>(context),
         notificationCubit: BlocProvider.of<NotificationCubit>(context),
-      ),
-      child: Builder(
-        builder: (context) {
-          if (userToSet == null || loadUserFromApiToo) {
-            BlocProvider.of<ProfilePageCubit>(context).getCurrentUserViaApi();
-          }
-          return const AutoRouter();
-        },
-      ),
+      )..getCurrentUserViaApi(),
+      child: const AutoRouter(),
     );
   }
 }

@@ -58,22 +58,11 @@ class StandardShoppingListItemPage extends StatelessWidget {
           ),
           CupertinoSliverRefreshControl(
             onRefresh: () async {
-              BlocProvider.of<CurrentPrivateEventCubit>(context)
-                  .setCurrentChatFromChatCubit();
-              BlocProvider.of<CurrentPrivateEventCubit>(context)
-                  .setPrivateEventFromPrivateEventCubit();
-
               await Future.wait([
                 BlocProvider.of<CurrentPrivateEventCubit>(context)
-                    .getPrivateEventUsersAndLeftUsersViaApi(),
-                BlocProvider.of<CurrentPrivateEventCubit>(context)
-                    .getCurrentPrivateEvent(),
+                    .reloadPrivateEventStandardDataViaApi(),
                 BlocProvider.of<CurrentShoppingListItemCubit>(context)
-                    .getBoughtAmounts(
-                  reload: true,
-                ),
-                BlocProvider.of<CurrentShoppingListItemCubit>(context)
-                    .getShoppingListItemViaApi()
+                    .reloadShoppingListItemStandardDataViaApi()
               ]);
             },
           ),

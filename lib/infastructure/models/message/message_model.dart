@@ -11,7 +11,7 @@ class MessageModel extends MessageEntity {
     String? messageToReactTo,
     List<MessageEmojiReactionEntity>? emojiReactions,
     String? createdBy,
-    DateTime? createdAt,
+    required DateTime createdAt,
     DateTime? updatedAt,
   }) : super(
           id: id,
@@ -36,9 +36,7 @@ class MessageModel extends MessageEntity {
       }
     }
 
-    final createdAt = json["createdAt"] != null
-        ? DateTime.parse(json["createdAt"]).toLocal()
-        : null;
+    final createdAt = DateTime.parse(json["createdAt"]).toLocal();
 
     final updatedAt = json["updatedAt"] != null
         ? DateTime.parse(json["updatedAt"]).toLocal()

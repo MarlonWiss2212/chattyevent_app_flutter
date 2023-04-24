@@ -129,14 +129,6 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
     );
   }
 
-  void setPrivateEventFromPrivateEventCubit() {
-    emitState(
-      privateEvent: homeEventCubit.state.privateEvents.firstWhereOrNull(
-        (element) => element.id == state.privateEvent.id,
-      ),
-    );
-  }
-
   Future getCurrentChatViaApi() async {
     if (state.privateEvent.groupchatTo == null) {
       return;
@@ -213,11 +205,11 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
         emitState(loadingPrivateEvent: false);
       },
       (privateEvent) {
-        final replacedPrivateEvent =
-            homeEventCubit.replaceOrAdd(privateEvent: privateEvent);
-        emitState(
-          privateEvent: replacedPrivateEvent,
-          loadingPrivateEvent: false,
+        emitState(privateEvent: privateEvent, loadingPrivateEvent: false);
+
+        homeEventCubit.replaceOrAdd(
+          privateEventState: state,
+          onlyReplace: true,
         );
       },
     );
@@ -240,12 +232,14 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
         emitState(loadingPrivateEvent: false);
       },
       (privateEvent) {
-        final replacedPrivateEvent =
-            homeEventCubit.replaceOrAdd(privateEvent: privateEvent);
         emitState(
-          privateEvent: replacedPrivateEvent,
+          privateEvent: privateEvent,
           loadingPrivateEvent: false,
           status: CurrentPrivateEventStateStatus.updated,
+        );
+        homeEventCubit.replaceOrAdd(
+          privateEventState: state,
+          onlyReplace: true,
         );
       },
     );

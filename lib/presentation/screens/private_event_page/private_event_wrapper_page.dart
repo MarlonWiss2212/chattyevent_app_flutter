@@ -7,15 +7,14 @@ import 'package:social_media_app_flutter/application/bloc/home_page/home_event/h
 import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
 import 'package:social_media_app_flutter/core/injection.dart';
-import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
 
 class PrivateEventWrapperPage extends StatelessWidget {
   final String privateEventId;
-  final PrivateEventEntity privateEventToSet;
+  final CurrentPrivateEventState privateEventStateToSet;
 
   const PrivateEventWrapperPage({
     @PathParam('id') required this.privateEventId,
-    required this.privateEventToSet,
+    required this.privateEventStateToSet,
     super.key,
   });
 
@@ -23,16 +22,7 @@ class PrivateEventWrapperPage extends StatelessWidget {
   Widget build(BuildContext context) {
     CurrentPrivateEventCubit currentPrivateEventCubit =
         CurrentPrivateEventCubit(
-      CurrentPrivateEventState(
-        privateEventLeftUsers: [],
-        currentUserIndex: -1,
-        shoppingListItemStates: [],
-        loadingShoppingList: false,
-        privateEventUsers: const [],
-        privateEvent: privateEventToSet,
-        loadingGroupchat: false,
-        loadingPrivateEvent: false,
-      ),
+      privateEventStateToSet,
       authCubit: BlocProvider.of<AuthCubit>(context),
       chatCubit: BlocProvider.of<ChatCubit>(context),
       notificationCubit: BlocProvider.of<NotificationCubit>(context),

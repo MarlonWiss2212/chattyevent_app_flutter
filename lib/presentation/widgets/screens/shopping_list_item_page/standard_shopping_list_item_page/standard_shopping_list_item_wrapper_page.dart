@@ -52,8 +52,6 @@ class StandardShoppingListItemWrapperPage extends StatelessWidget {
             BlocProvider.of<CurrentPrivateEventCubit>(context)
                 .setCurrentChatFromChatCubit();
             BlocProvider.of<CurrentPrivateEventCubit>(context)
-                .setPrivateEventFromPrivateEventCubit();
-            BlocProvider.of<CurrentPrivateEventCubit>(context)
                 .reloadPrivateEventStandardDataViaApi();
           }
 
@@ -75,8 +73,6 @@ class StandardShoppingListItemWrapperPage extends StatelessWidget {
                 );
                 BlocProvider.of<CurrentPrivateEventCubit>(context)
                     .setCurrentChatFromChatCubit();
-                BlocProvider.of<CurrentPrivateEventCubit>(context)
-                    .setPrivateEventFromPrivateEventCubit();
                 BlocProvider.of<CurrentPrivateEventCubit>(context)
                     .reloadPrivateEventStandardDataViaApi();
               }

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
 import 'package:social_media_app_flutter/core/filter/limit_offset_filter/limit_offset_filter.dart';
 import 'package:social_media_app_flutter/presentation/widgets/general/event_list/private_event_list_item.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/chat_page/chat_future_private_event_page/chat_future_private_event_page_skeleton_list.dart';
@@ -68,7 +69,16 @@ class ChatFuturePrivateEventsPage extends StatelessWidget {
                 delegate: SliverChildBuilderDelegate(
                   (context, index) {
                     return PrivateEventListItem(
-                      privateEvent: state.futureConnectedPrivateEvents[index],
+                      privateEventState: CurrentPrivateEventState(
+                        privateEvent: state.futureConnectedPrivateEvents[index],
+                        loadingGroupchat: false,
+                        loadingPrivateEvent: false,
+                        loadingShoppingList: false,
+                        currentUserIndex: -1,
+                        privateEventUsers: [],
+                        privateEventLeftUsers: [],
+                        shoppingListItemStates: [],
+                      ),
                     );
                   },
                   childCount: state.futureConnectedPrivateEvents.length,

@@ -3,24 +3,27 @@ part of 'home_event_cubit.dart';
 enum HomeEventStateStatus { initial, loading, success }
 
 class HomeEventState {
-  final List<PrivateEventEntity> privateEvents;
+  final List<CurrentPrivateEventState> privateEvents;
 
   final int futureOffset;
   final int pastOffset;
 
   final HomeEventStateStatus status;
 
-  List<PrivateEventEntity> getFutureEvents() {
+  List<CurrentPrivateEventState> getFutureEvents() {
     return privateEvents
-        .where((element) => element.eventDate.compareTo(DateTime.now()) >= 0)
+        .where((element) =>
+            element.privateEvent.eventDate.compareTo(DateTime.now()) >= 0)
         .toList();
   }
 
-  List<PrivateEventEntity> getPastEvents() {
-    final pastEvents = privateEvents
-        .where((element) => DateTime.now().compareTo(element.eventDate) >= 0)
-        .toList();
-    pastEvents.sort((a, b) => b.eventDate.compareTo(a.eventDate));
+  List<CurrentPrivateEventState> getPastEvents() {
+    final pastEvents = privateEvents.where((element) {
+      return DateTime.now().compareTo(element.privateEvent.eventDate) >= 0;
+    }).toList();
+    pastEvents.sort(
+      (a, b) => b.privateEvent.eventDate.compareTo(a.privateEvent.eventDate),
+    );
     return pastEvents;
   }
 

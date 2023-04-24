@@ -52,7 +52,6 @@ class UserHorizontalList extends StatelessWidget {
                     ProfileWrapperPageRoute(
                       userId: users[index].id,
                       userToSet: users[index],
-                      loadUserFromApiToo: true,
                     ),
                   );
                 },

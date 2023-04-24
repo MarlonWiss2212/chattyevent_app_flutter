@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletons/skeletons.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 import 'package:social_media_app_flutter/presentation/widgets/general/event_list/private_event_list_item.dart';
 
@@ -41,7 +42,16 @@ class ChatInfoPagePrivateEventList extends StatelessWidget {
                 physics: const NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
                   return PrivateEventListItem(
-                    privateEvent: state.futureConnectedPrivateEvents[index],
+                    privateEventState: CurrentPrivateEventState(
+                      currentUserIndex: -1,
+                      privateEventUsers: [],
+                      privateEventLeftUsers: [],
+                      loadingGroupchat: false,
+                      loadingPrivateEvent: false,
+                      loadingShoppingList: false,
+                      shoppingListItemStates: [],
+                      privateEvent: state.futureConnectedPrivateEvents[index],
+                    ),
                   );
                 },
                 itemCount: state.futureConnectedPrivateEvents.length > 10

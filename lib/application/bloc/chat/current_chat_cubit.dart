@@ -218,12 +218,12 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
         );
       },
       (groupchat) async {
+        chatCubit.replaceOrAdd(chatState: state);
         emit(CurrentChatState.merge(
           currentChat: groupchat,
           loadingChat: false,
           oldState: state,
         ));
-        chatCubit.replaceOrAdd(chatState: state);
       },
     );
   }

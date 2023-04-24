@@ -9,17 +9,17 @@ class MessageEntity {
   final List<MessageEmojiReactionEntity>? emojiReactions;
   final String? createdBy;
   final DateTime? updatedAt;
-  final DateTime? createdAt;
+  final DateTime createdAt;
 
   MessageEntity({
     required this.id,
+    required this.createdAt,
     this.message,
     this.fileLink,
     this.groupchatTo,
     this.messageToReactTo,
     this.emojiReactions,
     this.createdBy,
-    this.createdAt,
     this.updatedAt,
   });
 
@@ -36,7 +36,7 @@ class MessageEntity {
           newEntity.messageToReactTo ?? oldEntity.messageToReactTo,
       emojiReactions: newEntity.emojiReactions ?? oldEntity.emojiReactions,
       createdBy: newEntity.createdBy ?? oldEntity.createdBy,
-      createdAt: newEntity.createdAt ?? oldEntity.createdAt,
+      createdAt: newEntity.createdAt,
       updatedAt: newEntity.updatedAt ?? oldEntity.updatedAt,
     );
   }

@@ -2,13 +2,13 @@ import 'dart:math';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
+import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 import 'package:social_media_app_flutter/presentation/widgets/general/event_list/event_horizontal_list_item.dart';
 
 class EventHorizontalList extends StatelessWidget {
-  final List<PrivateEventEntity> privateEvents;
-  const EventHorizontalList({super.key, required this.privateEvents});
+  final List<CurrentPrivateEventState> privateEventStates;
+  const EventHorizontalList({super.key, required this.privateEventStates});
   @override
   Widget build(BuildContext context) {
     double viewportFraction = min(
@@ -34,20 +34,20 @@ class EventHorizontalList extends StatelessWidget {
             alignment: Alignment.centerLeft,
             child: EventHorizontalListItem(
               height: height,
-              width: width, // will be ignored because of page view
-              privateEvent: privateEvents[index],
+              width: width,
+              privateEvent: privateEventStates[index].privateEvent,
               onPress: () {
                 AutoRouter.of(context).push(
                   PrivateEventWrapperPageRoute(
-                    privateEventToSet: privateEvents[index],
-                    privateEventId: privateEvents[index].id,
+                    privateEventStateToSet: privateEventStates[index],
+                    privateEventId: privateEventStates[index].privateEvent.id,
                   ),
                 );
               },
             ),
           );
         },
-        itemCount: privateEvents.length,
+        itemCount: privateEventStates.length,
       ),
     );
   }

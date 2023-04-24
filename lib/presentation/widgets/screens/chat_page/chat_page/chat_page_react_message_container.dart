@@ -27,7 +27,10 @@ class ChatPageReactMessageContainer extends StatelessWidget {
             isInputMessage: isInputMessage,
             message: state.messages.firstWhere(
               (element) => element.id == messageToReactTo,
-              orElse: () => MessageEntity(id: messageToReactTo),
+              orElse: () => MessageEntity(
+                id: messageToReactTo,
+                createdAt: DateTime.now(),
+              ),
             ),
             currentUserId:
                 BlocProvider.of<AuthCubit>(context).state.currentUser.id,

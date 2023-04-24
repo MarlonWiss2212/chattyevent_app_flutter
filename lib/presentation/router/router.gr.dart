@@ -15,10 +15,10 @@ import 'package:auto_route/auto_route.dart' as _i56;
 import 'package:flutter/material.dart' as _i57;
 import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart'
     as _i60;
+import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart'
+    as _i61;
 import 'package:social_media_app_flutter/application/bloc/shopping_list/current_shopping_list_item_cubit.dart'
     as _i62;
-import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart'
-    as _i61;
 import 'package:social_media_app_flutter/domain/entities/user/user_entity.dart'
     as _i59;
 import 'package:social_media_app_flutter/presentation/router/auth_guard.dart'
@@ -180,15 +180,11 @@ class AppRouter extends _i56.RootStackRouter {
       );
     },
     ProfileWrapperPageRoute.name: (routeData) {
-      final pathParams = routeData.inheritedPathParams;
-      final args = routeData.argsAs<ProfileWrapperPageRouteArgs>(
-          orElse: () =>
-              ProfileWrapperPageRouteArgs(userId: pathParams.getString('id')));
+      final args = routeData.argsAs<ProfileWrapperPageRouteArgs>();
       return _i56.AdaptivePage<dynamic>(
         routeData: routeData,
         child: _i6.ProfileWrapperPage(
           key: args.key,
-          loadUserFromApiToo: args.loadUserFromApiToo,
           userToSet: args.userToSet,
           userId: args.userId,
         ),
@@ -241,7 +237,7 @@ class AppRouter extends _i56.RootStackRouter {
         routeData: routeData,
         child: _i13.PrivateEventWrapperPage(
           privateEventId: args.privateEventId,
-          privateEventToSet: args.privateEventToSet,
+          privateEventStateToSet: args.privateEventStateToSet,
           key: args.key,
         ),
       );
@@ -1131,8 +1127,7 @@ class ProfileWrapperPageRoute
     extends _i56.PageRouteInfo<ProfileWrapperPageRouteArgs> {
   ProfileWrapperPageRoute({
     _i57.Key? key,
-    bool loadUserFromApiToo = true,
-    _i59.UserEntity? userToSet,
+    required _i59.UserEntity userToSet,
     required String userId,
     List<_i56.PageRouteInfo>? children,
   }) : super(
@@ -1140,7 +1135,6 @@ class ProfileWrapperPageRoute
           path: '/profile/:id',
           args: ProfileWrapperPageRouteArgs(
             key: key,
-            loadUserFromApiToo: loadUserFromApiToo,
             userToSet: userToSet,
             userId: userId,
           ),
@@ -1154,22 +1148,19 @@ class ProfileWrapperPageRoute
 class ProfileWrapperPageRouteArgs {
   const ProfileWrapperPageRouteArgs({
     this.key,
-    this.loadUserFromApiToo = true,
-    this.userToSet,
+    required this.userToSet,
     required this.userId,
   });
 
   final _i57.Key? key;
 
-  final bool loadUserFromApiToo;
-
-  final _i59.UserEntity? userToSet;
+  final _i59.UserEntity userToSet;
 
   final String userId;
 
   @override
   String toString() {
-    return 'ProfileWrapperPageRouteArgs{key: $key, loadUserFromApiToo: $loadUserFromApiToo, userToSet: $userToSet, userId: $userId}';
+    return 'ProfileWrapperPageRouteArgs{key: $key, userToSet: $userToSet, userId: $userId}';
   }
 }
 
@@ -1285,7 +1276,7 @@ class PrivateEventWrapperPageRoute
     extends _i56.PageRouteInfo<PrivateEventWrapperPageRouteArgs> {
   PrivateEventWrapperPageRoute({
     required String privateEventId,
-    required _i61.PrivateEventEntity privateEventToSet,
+    required _i61.CurrentPrivateEventState privateEventStateToSet,
     _i57.Key? key,
     List<_i56.PageRouteInfo>? children,
   }) : super(
@@ -1293,7 +1284,7 @@ class PrivateEventWrapperPageRoute
           path: '/private-event/:id',
           args: PrivateEventWrapperPageRouteArgs(
             privateEventId: privateEventId,
-            privateEventToSet: privateEventToSet,
+            privateEventStateToSet: privateEventStateToSet,
             key: key,
           ),
           rawPathParams: {'id': privateEventId},
@@ -1306,19 +1297,19 @@ class PrivateEventWrapperPageRoute
 class PrivateEventWrapperPageRouteArgs {
   const PrivateEventWrapperPageRouteArgs({
     required this.privateEventId,
-    required this.privateEventToSet,
+    required this.privateEventStateToSet,
     this.key,
   });
 
   final String privateEventId;
 
-  final _i61.PrivateEventEntity privateEventToSet;
+  final _i61.CurrentPrivateEventState privateEventStateToSet;
 
   final _i57.Key? key;
 
   @override
   String toString() {
-    return 'PrivateEventWrapperPageRouteArgs{privateEventId: $privateEventId, privateEventToSet: $privateEventToSet, key: $key}';
+    return 'PrivateEventWrapperPageRouteArgs{privateEventId: $privateEventId, privateEventStateToSet: $privateEventStateToSet, key: $key}';
   }
 }
 

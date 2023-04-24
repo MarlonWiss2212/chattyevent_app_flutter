@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:meta/meta.dart';
 import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
 import 'package:social_media_app_flutter/core/filter/get_private_events_filter.dart';
 import 'package:social_media_app_flutter/core/filter/limit_offset_filter/limit_offset_filter.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
@@ -22,43 +23,51 @@ class HomeEventCubit extends Cubit<HomeEventState> {
           pastOffset: 0,
         ));
 
-  PrivateEventEntity replaceOrAdd({required PrivateEventEntity privateEvent}) {
+  CurrentPrivateEventState? replaceOrAdd({
+    required CurrentPrivateEventState privateEventState,
+    bool onlyReplace = false,
+  }) {
     int foundIndex = state.privateEvents.indexWhere(
-      (element) => element.id == privateEvent.id,
+      (element) => element.privateEvent.id == privateEventState.privateEvent.id,
     );
 
     if (foundIndex != -1) {
-      List<PrivateEventEntity> newFuturePrivateEvents = state.privateEvents;
-      newFuturePrivateEvents[foundIndex] = PrivateEventEntity.merge(
-        newEntity: privateEvent,
-        oldEntity: state.privateEvents[foundIndex],
-      );
-      emitState(privateEvents: newFuturePrivateEvents);
-      return newFuturePrivateEvents[foundIndex];
-    } else {
+      List<CurrentPrivateEventState> newPrivateEventStates =
+          state.privateEvents;
+      newPrivateEventStates[foundIndex] = privateEventState;
+      emitState(privateEvents: newPrivateEventStates);
+      return newPrivateEventStates[foundIndex];
+    } else if (onlyReplace == false) {
       emitState(
-        privateEvents: List.from(state.privateEvents)..add(privateEvent),
+        privateEvents: List.from(state.privateEvents)..add(privateEventState),
       );
+      return privateEventState;
     }
-    return privateEvent;
+    return null;
   }
 
-  List<PrivateEventEntity> replaceOrAddMultiple({
-    required List<PrivateEventEntity> privateEvents,
+  List<CurrentPrivateEventState> replaceOrAddMultiple({
+    required List<CurrentPrivateEventState> privateEventStates,
+    bool onlyReplace = false,
   }) {
-    List<PrivateEventEntity> mergedPrivateEvents = [];
-    for (final privateEvent in privateEvents) {
-      final mergedPrivateEvent = replaceOrAdd(privateEvent: privateEvent);
-      mergedPrivateEvents.add(mergedPrivateEvent);
+    List<CurrentPrivateEventState> mergedPrivateEventStates = [];
+    for (final privateEventState in privateEventStates) {
+      final mergedPrivateEvent = replaceOrAdd(
+        privateEventState: privateEventState,
+        onlyReplace: onlyReplace,
+      );
+      mergedPrivateEvent != null
+          ? mergedPrivateEventStates.add(mergedPrivateEvent)
+          : null;
     }
-    return mergedPrivateEvents;
+    return mergedPrivateEventStates;
   }
 
   void delete({required String privateEventId}) {
-    List<PrivateEventEntity> newPrivateEvents = state.privateEvents;
+    List<CurrentPrivateEventState> newPrivateEvents = state.privateEvents;
 
     newPrivateEvents.removeWhere(
-      (element) => element.id == privateEventId,
+      (element) => element.privateEvent.id == privateEventId,
     );
     emitState(privateEvents: newPrivateEvents);
   }
@@ -88,7 +97,22 @@ class HomeEventCubit extends Cubit<HomeEventState> {
       (alert) => notificationCubit.newAlert(notificationAlert: alert),
       (privateEvents) {
         emitState(status: HomeEventStateStatus.success);
-        replaceOrAddMultiple(privateEvents: privateEvents);
+        replaceOrAddMultiple(
+          privateEventStates: privateEvents
+              .map(
+                (e) => CurrentPrivateEventState(
+                  privateEvent: e,
+                  loadingGroupchat: false,
+                  loadingPrivateEvent: false,
+                  loadingShoppingList: false,
+                  currentUserIndex: -1,
+                  privateEventUsers: [],
+                  privateEventLeftUsers: [],
+                  shoppingListItemStates: [],
+                ),
+              )
+              .toList(),
+        );
       },
     );
   }
@@ -118,22 +142,39 @@ class HomeEventCubit extends Cubit<HomeEventState> {
       (alert) => notificationCubit.newAlert(notificationAlert: alert),
       (privateEvents) {
         emitState(status: HomeEventStateStatus.success);
-        replaceOrAddMultiple(privateEvents: privateEvents);
+        replaceOrAddMultiple(
+          privateEventStates: privateEvents
+              .map(
+                (e) => CurrentPrivateEventState(
+                  privateEvent: e,
+                  loadingGroupchat: false,
+                  loadingPrivateEvent: false,
+                  loadingShoppingList: false,
+                  currentUserIndex: -1,
+                  privateEventUsers: [],
+                  privateEventLeftUsers: [],
+                  shoppingListItemStates: [],
+                ),
+              )
+              .toList(),
+        );
       },
     );
   }
 
   emitState({
-    List<PrivateEventEntity>? privateEvents,
+    List<CurrentPrivateEventState>? privateEvents,
     HomeEventStateStatus? status,
   }) {
-    privateEvents?.sort((a, b) => a.eventDate.compareTo(b.eventDate));
+    privateEvents?.sort(
+      (a, b) => a.privateEvent.eventDate.compareTo(b.privateEvent.eventDate),
+    );
 
     final currentDate = DateTime.now();
 
-    final futureEventsLength = privateEvents
-        ?.where((element) => element.eventDate.compareTo(currentDate) >= 0)
-        .length;
+    final futureEventsLength = privateEvents?.where((element) {
+      return element.privateEvent.eventDate.compareTo(currentDate) >= 0;
+    }).length;
 
     emit(HomeEventState(
       privateEvents: privateEvents ?? state.privateEvents,

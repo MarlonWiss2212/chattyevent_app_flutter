@@ -118,9 +118,7 @@ class ChatPageMessageContainer extends StatelessWidget {
                           : "",
                     ),
                     const SizedBox(width: 8),
-                    Text(message.createdAt != null
-                        ? DateFormat.jm().format(message.createdAt!)
-                        : ""),
+                    Text(DateFormat.jm().format(message.createdAt)),
                   ],
                 ),
                 if (message.fileLink != null &&

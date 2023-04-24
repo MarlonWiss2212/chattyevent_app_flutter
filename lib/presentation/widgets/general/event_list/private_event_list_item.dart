@@ -1,44 +1,43 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
+import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 
 class PrivateEventListItem extends StatelessWidget {
-  final PrivateEventEntity privateEvent;
-  const PrivateEventListItem({
-    super.key,
-    required this.privateEvent,
-  });
+  final CurrentPrivateEventState privateEventState;
+  const PrivateEventListItem({super.key, required this.privateEventState});
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
       leading: CircleAvatar(
-        backgroundImage: privateEvent.coverImageLink != null
-            ? NetworkImage(privateEvent.coverImageLink!)
+        backgroundImage: privateEventState.privateEvent.coverImageLink != null
+            ? NetworkImage(privateEventState.privateEvent.coverImageLink!)
             : null,
-        backgroundColor: privateEvent.coverImageLink == null
+        backgroundColor: privateEventState.privateEvent.coverImageLink == null
             ? Theme.of(context).colorScheme.secondaryContainer
             : null,
       ),
       title: Hero(
-        tag: "${privateEvent.id} title",
+        tag: "${privateEventState.privateEvent.id} title",
         child: Text(
-          privateEvent.title ?? "Kein Titel",
+          privateEventState.privateEvent.title ?? "",
           style: Theme.of(context).textTheme.titleMedium,
         ),
       ),
       subtitle: Text(
-        DateFormat.yMd().add_jm().format(privateEvent.eventDate),
+        DateFormat.yMd().add_jm().format(
+              privateEventState.privateEvent.eventDate,
+            ),
         softWrap: true,
         overflow: TextOverflow.ellipsis,
       ),
       onTap: () {
         AutoRouter.of(context).push(
           PrivateEventWrapperPageRoute(
-            privateEventToSet: privateEvent,
-            privateEventId: privateEvent.id,
+            privateEventStateToSet: privateEventState,
+            privateEventId: privateEventState.privateEvent.id,
           ),
         );
       },

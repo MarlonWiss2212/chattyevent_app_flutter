@@ -30,7 +30,7 @@ class ChatPageMessageArea extends StatelessWidget {
           return const Center(child: Text("Keine Nachrichten"));
         }
 
-        if (state.loadingMessages == true && state.messages.isNotEmpty) {
+        if (state.loadingMessages == true && state.messages.isEmpty) {
           return SkeletonListView(
             itemBuilder: (p0, p1) {
               return SkeletonListTile(

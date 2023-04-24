@@ -80,7 +80,6 @@ class AddPrivateEventCubit extends Cubit<AddPrivateEventState> {
           status: AddPrivateEventStateStatus.success,
           addedPrivateEvent: privateEvent,
         ));
-        homeEventCubit.replaceOrAdd(privateEvent: privateEvent);
       },
     );
   }
