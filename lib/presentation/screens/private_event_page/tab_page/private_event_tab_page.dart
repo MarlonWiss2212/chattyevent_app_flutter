@@ -50,7 +50,6 @@ class PrivateEventTabPage extends StatelessWidget {
             ),
             actions: const [PrivateEventTabInfoDeleteButton()],
             bottom: TabBar(
-              indicatorColor: Theme.of(context).colorScheme.primary,
               controller: tabController,
               tabs: const [
                 Tab(icon: Icon(Icons.celebration)),

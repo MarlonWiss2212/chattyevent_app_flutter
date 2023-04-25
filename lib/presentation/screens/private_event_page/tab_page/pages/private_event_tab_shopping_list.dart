@@ -28,8 +28,13 @@ class PrivateEventTabShoppingList extends StatelessWidget {
         snap: true,
         floating: true,
         expandedHeight: 100,
-        flexibleSpace: const FlexibleSpaceBar(
-          title: Text("Einkaufsliste"),
+        flexibleSpace: FlexibleSpaceBar(
+          title: Text(
+            "Einkaufsliste",
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onBackground,
+            ),
+          ),
         ),
         actions: [
           IconButton(

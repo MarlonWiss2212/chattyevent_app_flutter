@@ -145,9 +145,22 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
     String? groupchatId,
   }) async {
     try {
+      final variables = {
+        "privateEventId": getOnePrivateEventFilter.id,
+        "limitOffsetInput": LimitOffsetFilter(limit: 1000, offset: 0).toMap(),
+        "filter": getOnePrivateEventFilter.toMap(),
+      };
+
+      if (groupchatId != null) {
+        variables.addAll({
+          "findOneGroupchatInput": GetOneGroupchatFilter(
+            id: groupchatId,
+          ).toMap(),
+        });
+      }
       final response = await graphQlDatasource.query(
         """
-        query FindPrivateEventData(\$filter: FindOnePrivateEventInput!, \$privateEventId: String!, \$limitOffsetInput: LimitOffsetInput!, \$findOneGroupchatInput: FindOneGroupchatInput!) {
+        query FindPrivateEventData(\$filter: FindOnePrivateEventInput!, \$privateEventId: String!, \$limitOffsetInput: LimitOffsetInput!, ${groupchatId == null ? '' : '\$findOneGroupchatInput: FindOneGroupchatInput!'}) {
           ${groupchatId == null ? '' : '''
           findGroupchat(findOneGroupchatInput: \$findOneGroupchatInput) {
             _id
@@ -270,13 +283,7 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
           }
         }
       """,
-        variables: {
-          "privateEventId": getOnePrivateEventFilter.id,
-          "findOneGroupchatInput":
-              GetOneGroupchatFilter(id: groupchatId ?? "").toMap(),
-          "limitOffsetInput": LimitOffsetFilter(limit: 1000, offset: 0).toMap(),
-          "filter": getOnePrivateEventFilter.toMap(),
-        },
+        variables: variables,
       );
 
       if (response.hasException) {

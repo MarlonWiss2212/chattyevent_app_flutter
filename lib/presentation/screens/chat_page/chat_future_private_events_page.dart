@@ -23,12 +23,18 @@ class ChatFuturePrivateEventsPage extends StatelessWidget {
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          const SliverAppBar(
+          SliverAppBar(
             pinned: true,
             snap: true,
             floating: true,
             expandedHeight: 100,
-            flexibleSpace: FlexibleSpaceBar(title: Text("Zukünftige Events")),
+            flexibleSpace: FlexibleSpaceBar(
+                title: Text(
+              "Zukünftige Events",
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onBackground,
+              ),
+            )),
           ),
           CupertinoSliverRefreshControl(
             onRefresh: () {

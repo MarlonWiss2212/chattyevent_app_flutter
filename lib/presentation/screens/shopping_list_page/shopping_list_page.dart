@@ -19,14 +19,19 @@ class ShoppingListPage extends StatelessWidget {
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          const SliverAppBar(
+          SliverAppBar(
             pinned: true,
             snap: true,
             floating: true,
-            leading: AutoLeadingButton(),
+            leading: const AutoLeadingButton(),
             expandedHeight: 100,
             flexibleSpace: FlexibleSpaceBar(
-              title: Text("Einkaufsliste"),
+              title: Text(
+                "Einkaufsliste",
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onBackground,
+                ),
+              ),
             ),
           ),
           CupertinoSliverRefreshControl(

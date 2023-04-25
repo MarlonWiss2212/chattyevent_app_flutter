@@ -15,13 +15,18 @@ class HomeSearchPage extends StatelessWidget {
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          const SliverAppBar(
+          SliverAppBar(
             pinned: true,
             snap: true,
             floating: true,
             expandedHeight: 100,
             flexibleSpace: FlexibleSpaceBar(
-              title: Text("Entdecken"),
+              title: Text(
+                "Entdecken",
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onBackground,
+                ),
+              ),
             ),
           ),
           SliverPadding(

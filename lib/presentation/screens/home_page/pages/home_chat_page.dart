@@ -22,8 +22,13 @@ class HomeChatPage extends StatelessWidget {
             snap: true,
             floating: true,
             expandedHeight: 100,
-            flexibleSpace: const FlexibleSpaceBar(
-              title: Text("Chats"),
+            flexibleSpace: FlexibleSpaceBar(
+              title: Text(
+                "Chats",
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onBackground,
+                ),
+              ),
             ),
             actions: [
               IconButton(

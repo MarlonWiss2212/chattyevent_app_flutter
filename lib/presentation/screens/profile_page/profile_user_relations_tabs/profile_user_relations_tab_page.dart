@@ -48,7 +48,6 @@ class ProfileUserRelationsTabPage extends StatelessWidget {
                     ),
                     bottom: TabBar(
                       controller: tabController,
-                      indicatorColor: Theme.of(context).colorScheme.primary,
                       tabs: [
                         const Tab(text: "Followers", icon: Icon(Icons.person)),
                         const Tab(

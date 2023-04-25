@@ -133,7 +133,7 @@ class _AppState extends State<App> {
           create: (context) => darkModeProvider,
           child: Consumer<DarkModeProvider>(
             builder: (context, value, child) {
-              return PlatformApp.router(
+              return MaterialApp.router(
                 title: 'Social Media App',
                 routeInformationProvider: widget.appRouter.routeInfoProvider(),
                 routeInformationParser: widget.appRouter.defaultRouteParser(),
@@ -144,33 +144,43 @@ class _AppState extends State<App> {
                     child: widget!,
                   );
                 },
-                material: (context, platform) => MaterialAppRouterData(
-                  theme: ThemeData(
-                    appBarTheme: const AppBarTheme(
-                      backgroundColor: Colors.white,
-                    ),
-                    scaffoldBackgroundColor: Colors.white,
-                    colorScheme: lightColorScheme,
+                theme: ThemeData(
+                  appBarTheme: const AppBarTheme(
+                    backgroundColor: Colors.white,
+                    foregroundColor: Colors.black,
+                    shadowColor: Colors.transparent,
                   ),
-                  darkTheme: ThemeData(
-                    appBarTheme: const AppBarTheme(
-                      backgroundColor: Colors.black,
-                    ),
-                    bottomAppBarTheme: const BottomAppBarTheme(
-                      color: Colors.black,
-                    ),
-                    scaffoldBackgroundColor: Colors.black,
-                    colorScheme: darkColorScheme,
+                  tabBarTheme: TabBarTheme(
+                    indicatorColor: darkColorScheme.onPrimary,
+                    labelColor: darkColorScheme.onPrimary,
                   ),
-                  themeMode: value.autoDarkMode == true
-                      ? ThemeMode.system
-                      : value.darkMode == true
-                          ? ThemeMode.dark
-                          : ThemeMode.light,
+                  bottomAppBarTheme: const BottomAppBarTheme(
+                    color: Colors.white,
+                  ),
+                  scaffoldBackgroundColor: Colors.white,
+                  colorScheme: lightColorScheme,
                 ),
-                cupertino: (context, platform) => CupertinoAppRouterData(
-                  theme: const CupertinoThemeData(),
+                darkTheme: ThemeData(
+                  appBarTheme: const AppBarTheme(
+                    backgroundColor: Colors.black,
+                    foregroundColor: Colors.white,
+                    shadowColor: Colors.transparent,
+                  ),
+                  tabBarTheme: TabBarTheme(
+                    indicatorColor: darkColorScheme.onPrimary,
+                    labelColor: darkColorScheme.onPrimary,
+                  ),
+                  bottomAppBarTheme: const BottomAppBarTheme(
+                    color: Colors.black,
+                  ),
+                  scaffoldBackgroundColor: Colors.black,
+                  colorScheme: darkColorScheme,
                 ),
+                themeMode: value.autoDarkMode == true
+                    ? ThemeMode.system
+                    : value.darkMode == true
+                        ? ThemeMode.dark
+                        : ThemeMode.light,
               );
             },
           ),

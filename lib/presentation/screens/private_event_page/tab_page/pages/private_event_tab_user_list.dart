@@ -11,13 +11,18 @@ class PrivateEventTabUserList extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomScrollView(
       slivers: [
-        const SliverAppBar(
+        SliverAppBar(
           pinned: true,
           snap: true,
           floating: true,
           expandedHeight: 100,
           flexibleSpace: FlexibleSpaceBar(
-            title: Text("Event User"),
+            title: Text(
+              "Event User",
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onBackground,
+              ),
+            ),
           ),
         ),
         CupertinoSliverRefreshControl(

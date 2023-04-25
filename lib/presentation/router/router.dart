@@ -64,9 +64,6 @@ import 'package:social_media_app_flutter/presentation/screens/shopping_list_page
     AutoRoute(page: RegisterPage, initial: false),
     AutoRoute(page: CreateUserPage, initial: false, guards: [AuthGuard]),
 
-    //profile page
-    profileRouter,
-
     // settings page
     AutoRoute(
       page: SettingsWrapperPage,
@@ -84,7 +81,6 @@ import 'package:social_media_app_flutter/presentation/screens/shopping_list_page
       ],
     ),
 
-    // home page
     homePageRouter,
 
     // future and past events
@@ -131,114 +127,9 @@ import 'package:social_media_app_flutter/presentation/screens/shopping_list_page
       ],
     ),
 
-    // chat page
-    AutoRoute(
-      page: ChatPageWrapper,
-      guards: [AuthGuard],
-      path: '/chats/:id',
-      children: [
-        AutoRoute(
-          page: ChatPage,
-          guards: [AuthGuard],
-          path: '',
-          initial: true,
-        ),
-        AutoRoute(
-          page: ChatInfoPage,
-          guards: [AuthGuard],
-          path: 'info',
-        ),
-        AutoRoute(
-          page: ChatChangeChatUsernamePage,
-          guards: [AuthGuard],
-          path: 'change-chat-username',
-          fullscreenDialog: true,
-        ),
-        AutoRoute(
-          page: ChatFuturePrivateEventsPage,
-          guards: [AuthGuard],
-          path: 'private-events',
-        ),
-        AutoRoute(
-          page: ChatAddUserPage,
-          guards: [AuthGuard],
-          path: 'add-user',
-        ),
-        RedirectRoute(path: '*', redirectTo: '')
-      ],
-    ),
-
-    // private event page
-    AutoRoute(
-      page: PrivateEventWrapperPage,
-      guards: [AuthGuard],
-      path: '/private-event/:id',
-      children: [
-        AutoRoute(
-          page: PrivateEventTabPage,
-          initial: true,
-          path: '',
-          guards: [AuthGuard],
-          children: [
-            AutoRoute(
-              page: PrivateEventTabInfo,
-              initial: true,
-              path: 'info',
-              guards: [AuthGuard],
-            ),
-            AutoRoute(
-              page: PrivateEventTabUserList,
-              initial: false,
-              path: 'users',
-              guards: [AuthGuard],
-            ),
-            AutoRoute(
-              page: PrivateEventTabShoppingList,
-              initial: false,
-              path: 'shopping-list',
-              guards: [AuthGuard],
-            )
-          ],
-        ),
-        AutoRoute(
-          page: PrivateEventUpdateLocationPage,
-          initial: true,
-          path: 'update-location',
-          guards: [AuthGuard],
-        ),
-        AutoRoute(
-          page: PrivateEventInviteUserPage,
-          initial: true,
-          path: 'invite',
-          guards: [AuthGuard],
-        ),
-        AutoRoute(
-          page: PrivateEventCreateShoppingListItemPage,
-          initial: true,
-          path: 'create-shopping-list-item',
-          guards: [AuthGuard],
-        ),
-        AutoRoute(
-          page: PrivateEventShoppingListItemWrapperPage,
-          guards: [AuthGuard],
-          path: 'shopping-list/:shoppingListItemId',
-          children: [
-            AutoRoute(
-              page: PrivateEventShoppingListItemPage,
-              guards: [AuthGuard],
-              path: '',
-            ),
-            AutoRoute(
-              page: PrivateEventShoppingListItemChangeUserPage,
-              guards: [AuthGuard],
-              path: 'change-user-to-buy-item',
-            ),
-            RedirectRoute(path: '*', redirectTo: ''),
-          ],
-        ),
-        RedirectRoute(path: '*', redirectTo: 'info'),
-      ],
-    ),
+    chatRouter,
+    privateEventRouter,
+    profileRouter,
 
     // new groupchat
     AutoRoute(
@@ -309,6 +200,113 @@ import 'package:social_media_app_flutter/presentation/screens/shopping_list_page
   ],
 )
 class $AppRouter {}
+
+const chatRouter = AutoRoute(
+  page: ChatPageWrapper,
+  guards: [AuthGuard],
+  path: '/chats/:id',
+  children: [
+    AutoRoute(
+      page: ChatPage,
+      guards: [AuthGuard],
+      path: '',
+      initial: true,
+    ),
+    AutoRoute(
+      page: ChatInfoPage,
+      guards: [AuthGuard],
+      path: 'info',
+    ),
+    AutoRoute(
+      page: ChatChangeChatUsernamePage,
+      guards: [AuthGuard],
+      path: 'change-chat-username',
+      fullscreenDialog: true,
+    ),
+    AutoRoute(
+      page: ChatFuturePrivateEventsPage,
+      guards: [AuthGuard],
+      path: 'private-events',
+    ),
+    AutoRoute(
+      page: ChatAddUserPage,
+      guards: [AuthGuard],
+      path: 'add-user',
+    ),
+    RedirectRoute(path: '*', redirectTo: '')
+  ],
+);
+
+const privateEventRouter = AutoRoute(
+  page: PrivateEventWrapperPage,
+  guards: [AuthGuard],
+  path: '/private-event/:id',
+  children: [
+    AutoRoute(
+      page: PrivateEventTabPage,
+      initial: true,
+      path: '',
+      guards: [AuthGuard],
+      children: [
+        AutoRoute(
+          page: PrivateEventTabInfo,
+          initial: true,
+          path: 'info',
+          guards: [AuthGuard],
+        ),
+        AutoRoute(
+          page: PrivateEventTabUserList,
+          initial: false,
+          path: 'users',
+          guards: [AuthGuard],
+        ),
+        AutoRoute(
+          page: PrivateEventTabShoppingList,
+          initial: false,
+          path: 'shopping-list',
+          guards: [AuthGuard],
+        )
+      ],
+    ),
+    AutoRoute(
+      page: PrivateEventUpdateLocationPage,
+      initial: true,
+      path: 'update-location',
+      guards: [AuthGuard],
+    ),
+    AutoRoute(
+      page: PrivateEventInviteUserPage,
+      initial: true,
+      path: 'invite',
+      guards: [AuthGuard],
+    ),
+    AutoRoute(
+      page: PrivateEventCreateShoppingListItemPage,
+      initial: true,
+      path: 'create-shopping-list-item',
+      guards: [AuthGuard],
+    ),
+    AutoRoute(
+      page: PrivateEventShoppingListItemWrapperPage,
+      guards: [AuthGuard],
+      path: 'shopping-list/:shoppingListItemId',
+      children: [
+        AutoRoute(
+          page: PrivateEventShoppingListItemPage,
+          guards: [AuthGuard],
+          path: '',
+        ),
+        AutoRoute(
+          page: PrivateEventShoppingListItemChangeUserPage,
+          guards: [AuthGuard],
+          path: 'change-user-to-buy-item',
+        ),
+        RedirectRoute(path: '*', redirectTo: ''),
+      ],
+    ),
+    RedirectRoute(path: '*', redirectTo: 'info'),
+  ],
+);
 
 const profileRouter = AutoRoute(
   page: ProfileWrapperPage,

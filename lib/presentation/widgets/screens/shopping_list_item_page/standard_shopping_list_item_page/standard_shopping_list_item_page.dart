@@ -35,6 +35,9 @@ class StandardShoppingListItemPage extends StatelessWidget {
                     current.shoppingListItem.itemName,
                 builder: (context, state) => EditInputTextField(
                   text: state.shoppingListItem.itemName ?? "",
+                  textStyle: TextStyle(
+                    color: Theme.of(context).colorScheme.onBackground,
+                  ),
                   onSaved: (text) {
                     BlocProvider.of<CurrentShoppingListItemCubit>(context)
                         .updateShoppingListItemViaApi(
