@@ -18,9 +18,7 @@ class ChatCubit extends Cubit<ChatState> {
           chatStates: [],
         ));
 
-  CurrentChatState replaceOrAdd({
-    required CurrentChatState chatState,
-  }) {
+  CurrentChatState replaceOrAdd({required CurrentChatState chatState}) {
     int foundIndex = state.chatStates.indexWhere(
       (element) => element.currentChat.id == chatState.currentChat.id,
     );

@@ -96,6 +96,10 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
                 )
               : null,
         );
+        homeEventCubit.replaceOrAdd(
+          privateEventState: state,
+          onlyReplace: true,
+        );
       },
     );
   }
@@ -116,6 +120,10 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
           currentUserIndex: usersAndLeftUsers.privateEventUsers.indexWhere(
             (element) => element.id == authCubit.state.currentUser.id,
           ),
+        );
+        homeEventCubit.replaceOrAdd(
+          privateEventState: state,
+          onlyReplace: true,
         );
       },
     );
@@ -184,6 +192,10 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
                   leftUsers: [],
                 ),
           loadingGroupchat: false,
+        );
+        homeEventCubit.replaceOrAdd(
+          privateEventState: state,
+          onlyReplace: true,
         );
       },
     );
