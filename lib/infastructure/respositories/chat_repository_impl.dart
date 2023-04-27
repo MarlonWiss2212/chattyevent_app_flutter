@@ -5,7 +5,6 @@ import 'package:social_media_app_flutter/core/dto/groupchat/create_groupchat_dto
 import 'package:social_media_app_flutter/core/dto/groupchat/groupchat_user/create_groupchat_user_dto.dart';
 import 'package:social_media_app_flutter/core/dto/groupchat/update_groupchat_dto.dart';
 import 'package:social_media_app_flutter/core/dto/groupchat/groupchat_user/update_groupchat_user_dto.dart';
-import 'package:social_media_app_flutter/core/filter/groupchat/get_messages_filter.dart';
 import 'package:social_media_app_flutter/core/filter/groupchat/get_one_groupchat_filter.dart';
 import 'package:social_media_app_flutter/core/filter/groupchat/get_one_groupchat_user_filter.dart';
 import 'package:social_media_app_flutter/core/filter/limit_offset_filter/limit_offset_filter.dart';
@@ -16,13 +15,11 @@ import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_ent
 import 'package:dartz/dartz.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_left_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
-import 'package:social_media_app_flutter/domain/entities/message/message_entity.dart';
 import 'package:social_media_app_flutter/domain/repositories/chat_repository.dart';
 import 'package:social_media_app_flutter/infastructure/datasources/remote/graphql.dart';
 import 'package:social_media_app_flutter/infastructure/models/groupchat/groupchat_left_user_model.dart';
 import 'package:social_media_app_flutter/infastructure/models/groupchat/groupchat_model.dart';
 import 'package:social_media_app_flutter/infastructure/models/groupchat/groupchat_user_model.dart';
-import 'package:social_media_app_flutter/infastructure/models/message/message_model.dart';
 
 class ChatRepositoryImpl implements ChatRepository {
   final GraphQlDatasource graphQlDatasource;
@@ -500,7 +497,7 @@ class ChatRepositoryImpl implements ChatRepository {
       }
 
       return Right(
-        response.data != null
+        response.data!["deleteUserFromGroupchat"] != null
             ? GroupchatLeftUserModel.fromJson(
                 response.data!["deleteUserFromGroupchat"],
               )
