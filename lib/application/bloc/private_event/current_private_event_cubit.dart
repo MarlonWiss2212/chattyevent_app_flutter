@@ -96,10 +96,6 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
                 )
               : null,
         );
-        homeEventCubit.replaceOrAdd(
-          privateEventState: state,
-          onlyReplace: true,
-        );
       },
     );
   }
@@ -120,10 +116,6 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
           currentUserIndex: usersAndLeftUsers.privateEventUsers.indexWhere(
             (element) => element.id == authCubit.state.currentUser.id,
           ),
-        );
-        homeEventCubit.replaceOrAdd(
-          privateEventState: state,
-          onlyReplace: true,
         );
       },
     );
@@ -193,10 +185,6 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
                 ),
           loadingGroupchat: false,
         );
-        homeEventCubit.replaceOrAdd(
-          privateEventState: state,
-          onlyReplace: true,
-        );
       },
     );
   }
@@ -218,11 +206,6 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
       },
       (privateEvent) {
         emitState(privateEvent: privateEvent, loadingPrivateEvent: false);
-
-        homeEventCubit.replaceOrAdd(
-          privateEventState: state,
-          onlyReplace: true,
-        );
       },
     );
   }
@@ -248,10 +231,6 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
           privateEvent: privateEvent,
           loadingPrivateEvent: false,
           status: CurrentPrivateEventStateStatus.updated,
-        );
-        homeEventCubit.replaceOrAdd(
-          privateEventState: state,
-          onlyReplace: true,
         );
       },
     );
@@ -514,7 +493,7 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
     List<CurrentShoppingListItemState>? shoppingListItemStates,
     CurrentPrivateEventStateStatus? status,
   }) {
-    emit(CurrentPrivateEventState(
+    final CurrentPrivateEventState newState = CurrentPrivateEventState(
       currentUserIndex: currentUserIndex ?? state.currentUserIndex,
       shoppingListItemStates:
           shoppingListItemStates ?? state.shoppingListItemStates,
@@ -527,6 +506,12 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
       loadingPrivateEvent: loadingPrivateEvent ?? state.loadingPrivateEvent,
       loadingGroupchat: loadingGroupchat ?? state.loadingGroupchat,
       status: status ?? CurrentPrivateEventStateStatus.initial,
-    ));
+    );
+
+    emit(newState);
+    homeEventCubit.replaceOrAdd(
+      privateEventState: newState,
+      onlyReplace: true,
+    );
   }
 }

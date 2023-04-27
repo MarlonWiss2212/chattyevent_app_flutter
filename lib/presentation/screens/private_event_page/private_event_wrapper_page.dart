@@ -41,10 +41,8 @@ class PrivateEventWrapperPage extends StatelessWidget {
           ..setCurrentChatFromChatCubit()
           ..reloadPrivateEventStandardDataViaApi();
 
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider.value(value: currentPrivateEventCubit),
-      ],
+    return BlocProvider.value(
+      value: currentPrivateEventCubit,
       child: Builder(
         builder: (context) {
           return MultiBlocListener(

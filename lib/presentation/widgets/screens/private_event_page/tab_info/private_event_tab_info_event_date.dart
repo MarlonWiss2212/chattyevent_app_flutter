@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:skeletons/skeletons.dart';
 import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
 import 'package:social_media_app_flutter/core/dto/private_event/update_private_event_dto.dart';
 
@@ -42,42 +41,32 @@ class PrivateEventTabInfoEventDate extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CurrentPrivateEventCubit, CurrentPrivateEventState>(
-      builder: (context, state) {
-        if (state.loadingPrivateEvent) {
-          return const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 8.0),
-            child: SkeletonLine(),
-          );
-        } else {
-          return InkWell(
-            onTap: state.getCurrentPrivateEventUser()?.organizer == true
-                ? () => _onChangeDatePress(
-                      context,
-                      state.privateEvent.eventDate,
-                    )
-                : null,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    "Event Datum: ",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Text(
-                    DateFormat.yMd()
-                        .add_jm()
-                        .format(state.privateEvent.eventDate),
-                  )
-                ],
+        builder: (context, state) {
+      return InkWell(
+        onTap: state.getCurrentPrivateEventUser()?.organizer == true
+            ? () => _onChangeDatePress(
+                  context,
+                  state.privateEvent.eventDate,
+                )
+            : null,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                "Event Datum: ",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-          );
-        }
-      },
-    );
+              Text(
+                DateFormat.yMd().add_jm().format(state.privateEvent.eventDate),
+              )
+            ],
+          ),
+        ),
+      );
+    });
   }
 }
