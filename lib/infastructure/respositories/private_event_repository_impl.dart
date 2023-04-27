@@ -204,7 +204,6 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
             birthdate
             createdAt
             firstname
-            lastTimeOnline
             lastname
             profileImageLink
             updatedAt
@@ -249,7 +248,6 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
             birthdate
             createdAt
             firstname
-            lastTimeOnline
             lastname
             profileImageLink
             updatedAt
@@ -481,7 +479,6 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
               birthdate
               createdAt
               firstname
-              lastTimeOnline
               lastname
               profileImageLink
               updatedAt
@@ -558,7 +555,6 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
               birthdate
               createdAt
               firstname
-              lastTimeOnline
               lastname
               profileImageLink
               updatedAt
@@ -630,7 +626,6 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
               birthdate
               createdAt
               firstname
-              lastTimeOnline
               lastname
               profileImageLink
               updatedAt
@@ -704,7 +699,6 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
               birthdate
               createdAt
               firstname
-              lastTimeOnline
               lastname
               profileImageLink
               updatedAt
@@ -749,7 +743,6 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
               birthdate
               createdAt
               firstname
-              lastTimeOnline
               lastname
               profileImageLink
               updatedAt

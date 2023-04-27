@@ -19,7 +19,6 @@ class PrivateEventUserEntity extends UserEntity {
     super.birthdate,
     super.createdAt,
     super.firstname,
-    super.lastTimeOnline,
     super.lastname,
     super.myUserRelationToOtherUser,
     super.otherUserRelationToMyUser,
@@ -56,7 +55,6 @@ class PrivateEventUserEntity extends UserEntity {
       ),
       lastname: newEntity.lastname ?? oldEntity.lastname,
       birthdate: newEntity.birthdate ?? oldEntity.birthdate,
-      lastTimeOnline: newEntity.lastTimeOnline ?? oldEntity.lastTimeOnline,
       createdAt: newEntity.createdAt ?? oldEntity.createdAt,
       updatedAt: newEntity.updatedAt ?? oldEntity.updatedAt,
     );

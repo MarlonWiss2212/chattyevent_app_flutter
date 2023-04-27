@@ -154,7 +154,6 @@ class ChatRepositoryImpl implements ChatRepository {
               birthdate
               createdAt
               firstname
-              lastTimeOnline
               lastname
               profileImageLink
               updatedAt
@@ -199,7 +198,6 @@ class ChatRepositoryImpl implements ChatRepository {
               birthdate
               createdAt
               firstname
-              lastTimeOnline
               lastname
               profileImageLink
               updatedAt
@@ -385,7 +383,6 @@ class ChatRepositoryImpl implements ChatRepository {
             birthdate
             createdAt
             firstname
-            lastTimeOnline
             lastname
             profileImageLink
             updatedAt
@@ -458,7 +455,6 @@ class ChatRepositoryImpl implements ChatRepository {
             birthdate
             createdAt
             firstname
-            lastTimeOnline
             lastname
             profileImageLink
             updatedAt
@@ -536,7 +532,6 @@ class ChatRepositoryImpl implements ChatRepository {
             birthdate
             createdAt
             firstname
-            lastTimeOnline
             lastname
             profileImageLink
             updatedAt
@@ -610,7 +605,6 @@ class ChatRepositoryImpl implements ChatRepository {
               birthdate
               createdAt
               firstname
-              lastTimeOnline
               lastname
               profileImageLink
               updatedAt
@@ -655,7 +649,6 @@ class ChatRepositoryImpl implements ChatRepository {
               birthdate
               createdAt
               firstname
-              lastTimeOnline
               lastname
               profileImageLink
               updatedAt

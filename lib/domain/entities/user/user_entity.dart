@@ -9,7 +9,6 @@ class UserEntity {
   final String? lastname;
   final String? profileImageLink;
   final String? birthdate;
-  final String? lastTimeOnline;
   final UserRelationsCountEntity? userRelationCounts;
   final UserRelationEntity? myUserRelationToOtherUser;
   final UserRelationEntity? otherUserRelationToMyUser;
@@ -27,7 +26,6 @@ class UserEntity {
     this.firstname,
     this.lastname,
     this.birthdate,
-    this.lastTimeOnline,
     this.createdAt,
     this.updatedAt,
   });
@@ -54,7 +52,6 @@ class UserEntity {
       ),
       lastname: newEntity.lastname ?? oldEntity.lastname,
       birthdate: newEntity.birthdate ?? oldEntity.birthdate,
-      lastTimeOnline: newEntity.lastTimeOnline ?? oldEntity.lastTimeOnline,
       createdAt: newEntity.createdAt ?? oldEntity.createdAt,
       updatedAt: newEntity.updatedAt ?? oldEntity.updatedAt,
     );
