@@ -9,7 +9,6 @@ import 'package:social_media_app_flutter/core/dto/groupchat/groupchat_user/creat
 import 'package:social_media_app_flutter/core/dto/groupchat/update_groupchat_dto.dart';
 import 'package:social_media_app_flutter/core/dto/groupchat/groupchat_user/update_groupchat_user_dto.dart';
 import 'package:social_media_app_flutter/core/filter/groupchat/added_message_filter.dart';
-import 'package:social_media_app_flutter/core/filter/groupchat/get_messages_filter.dart';
 import 'package:social_media_app_flutter/core/filter/get_private_events_filter.dart';
 import 'package:social_media_app_flutter/core/filter/groupchat/get_one_groupchat_filter.dart';
 import 'package:social_media_app_flutter/core/filter/groupchat/get_one_groupchat_user_filter.dart';
@@ -363,8 +362,8 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
     ));
     final Either<NotificationAlert, List<MessageEntity>> messagesOrFailure =
         await messageUseCases.getMessagesViaApi(
-      getMessagesFilter: GetMessagesFilter(
-        groupchatTo: state.currentChat.id,
+      getOneGroupchatFilter: GetOneGroupchatFilter(
+        id: state.currentChat.id,
       ),
       limitOffsetFilter: LimitOffsetFilter(
         limit: 20,

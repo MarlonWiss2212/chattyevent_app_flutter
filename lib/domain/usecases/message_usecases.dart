@@ -2,9 +2,9 @@ import 'package:dartz/dartz.dart';
 import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:social_media_app_flutter/core/dto/groupchat/message/create_message_dto.dart';
 import 'package:social_media_app_flutter/core/filter/groupchat/added_message_filter.dart';
+import 'package:social_media_app_flutter/core/filter/groupchat/get_one_groupchat_filter.dart';
 import 'package:social_media_app_flutter/core/filter/limit_offset_filter/limit_offset_filter.dart';
 import 'package:social_media_app_flutter/domain/entities/message/message_entity.dart';
-import 'package:social_media_app_flutter/core/filter/groupchat/get_messages_filter.dart';
 import 'package:social_media_app_flutter/domain/repositories/message_repository.dart';
 
 class MessageUseCases {
@@ -20,11 +20,11 @@ class MessageUseCases {
   }
 
   Future<Either<NotificationAlert, List<MessageEntity>>> getMessagesViaApi({
-    required GetMessagesFilter getMessagesFilter,
+    required GetOneGroupchatFilter getOneGroupchatFilter,
     required LimitOffsetFilter limitOffsetFilter,
   }) async {
     return await messageRepository.getMessagesViaApi(
-      getMessagesFilter: getMessagesFilter,
+      getOneGroupchatFilter: getOneGroupchatFilter,
       limitOffsetFilter: limitOffsetFilter,
     );
   }
