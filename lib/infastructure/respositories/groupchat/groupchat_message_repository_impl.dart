@@ -43,7 +43,7 @@ class GroupchatMessageRepositoryImpl implements GroupchatMessageRepository {
       final response = await graphQlDatasource.mutation(
         """
         mutation createGroupchatMessage(\$input: CreateGroupchatMessageInput!, \$file: Upload) {
-          createGroupchatMessage(createMessageInput: \$input, file: \$file) {
+          createGroupchatMessage(createGroupchatMessageInput: \$input, file: \$file) {
             _id
             message
             messageToReactTo
@@ -63,7 +63,8 @@ class GroupchatMessageRepositoryImpl implements GroupchatMessageRepository {
           exception: response.exception!,
         ));
       }
-      return Right(MessageModel.fromJson(response.data!["createMessage"]));
+      return Right(
+          MessageModel.fromJson(response.data!["createGroupchatMessage"]));
     } catch (e) {
       return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
     }

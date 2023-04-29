@@ -46,7 +46,10 @@ class AddGroupchatMessageCubit extends Cubit<AddGroupchatMessageState> {
     );
 
     messageOrFailure.fold(
-      (alert) => notificationCubit.newAlert(notificationAlert: alert),
+      (alert) {
+        notificationCubit.newAlert(notificationAlert: alert);
+        emitState(status: AddGroupchatMessageStateStatus.initial);
+      },
       (message) {
         emit(AddGroupchatMessageState(
           groupchatTo: state.groupchatTo,
