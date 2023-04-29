@@ -13,9 +13,9 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:auto_route/auto_route.dart' as _i56;
 import 'package:flutter/material.dart' as _i57;
-import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart'
+import 'package:social_media_app_flutter/application/bloc/current_groupchat/current_chat_cubit.dart'
     as _i59;
-import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart'
+import 'package:social_media_app_flutter/application/bloc/current_private_event/current_private_event_cubit.dart'
     as _i60;
 import 'package:social_media_app_flutter/application/bloc/shopping_list/current_shopping_list_item_cubit.dart'
     as _i62;

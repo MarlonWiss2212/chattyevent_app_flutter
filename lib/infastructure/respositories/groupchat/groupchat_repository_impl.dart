@@ -15,15 +15,15 @@ import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_ent
 import 'package:dartz/dartz.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_left_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
-import 'package:social_media_app_flutter/domain/repositories/chat_repository.dart';
+import 'package:social_media_app_flutter/domain/repositories/groupchat/groupchat_repository.dart';
 import 'package:social_media_app_flutter/infastructure/datasources/remote/graphql.dart';
 import 'package:social_media_app_flutter/infastructure/models/groupchat/groupchat_left_user_model.dart';
 import 'package:social_media_app_flutter/infastructure/models/groupchat/groupchat_model.dart';
 import 'package:social_media_app_flutter/infastructure/models/groupchat/groupchat_user_model.dart';
 
-class ChatRepositoryImpl implements ChatRepository {
+class GroupchatRepositoryImpl implements GroupchatRepository {
   final GraphQlDatasource graphQlDatasource;
-  ChatRepositoryImpl({required this.graphQlDatasource});
+  GroupchatRepositoryImpl({required this.graphQlDatasource});
 
   @override
   Future<Either<NotificationAlert, GroupchatEntity>> createGroupchatViaApi(
@@ -45,24 +45,6 @@ class ChatRepositoryImpl implements ChatRepository {
       }
 
       final response = await graphQlDatasource.mutation(
-        /* give the users later back again with a diffrent response type for more efficiency
-        users {
-          _id
-          admin
-          userId
-          usernameForChat
-          groupchatTo
-          createdAt
-          updatedAt
-        }
-        leftUsers {
-          _id
-          userId
-          createdAt
-          updatedAt
-          groupchatTo
-        }
-        */
         """
         mutation CreateGroupchat(\$input: CreateGroupchatInput!, \$profileImage: Upload) {
           createGroupchat(createGroupchatInput: \$input, profileImage: \$profileImage) {

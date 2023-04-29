@@ -12,7 +12,7 @@ import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_lef
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
 import 'package:social_media_app_flutter/core/filter/groupchat/get_one_groupchat_filter.dart';
 
-abstract class ChatRepository {
+abstract class GroupchatRepository {
   Future<Either<NotificationAlert, GroupchatEntity>> createGroupchatViaApi(
     CreateGroupchatDto createGroupchatDto,
   );

@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'package:social_media_app_flutter/application/bloc/user/profile_page_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/profile_page/profile_page_cubit.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/profile_page/profile_page/profile_page_circle_image.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/profile_page/profile_page/profile_page_follow_button.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/profile_page/profile_page/profile_page_follower_counts.dart';

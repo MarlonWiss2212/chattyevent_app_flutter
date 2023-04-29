@@ -4,7 +4,7 @@ import 'package:dartz/dartz.dart';
 import 'package:meta/meta.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/current_groupchat/current_chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/home_page/home_event/home_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/shopping_list/current_shopping_list_item_cubit.dart';
@@ -22,7 +22,7 @@ import 'package:social_media_app_flutter/domain/entities/private_event/private_e
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/shopping_list_item/shopping_list_item_entity.dart';
 import 'package:social_media_app_flutter/core/filter/get_one_private_event_filter.dart';
-import 'package:social_media_app_flutter/domain/usecases/chat_usecases.dart';
+import 'package:social_media_app_flutter/domain/usecases/groupchat/groupchat_usecases.dart';
 import 'package:social_media_app_flutter/domain/usecases/location_usecases.dart';
 import 'package:social_media_app_flutter/domain/usecases/private_event_usecases.dart';
 import 'package:social_media_app_flutter/domain/usecases/shopping_list_item_usecases.dart';
@@ -37,7 +37,7 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
   final NotificationCubit notificationCubit;
 
   final PrivateEventUseCases privateEventUseCases;
-  final ChatUseCases chatUseCases;
+  final GroupchatUseCases groupchatUseCases;
   final LocationUseCases locationUseCases;
   final ShoppingListItemUseCases shoppingListItemUseCases;
 
@@ -48,7 +48,7 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
     required this.locationUseCases,
     required this.homeEventCubit,
     required this.chatCubit,
-    required this.chatUseCases,
+    required this.groupchatUseCases,
     required this.shoppingListItemUseCases,
     required this.privateEventUseCases,
   });
@@ -136,7 +136,7 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
     emitState(loadingGroupchat: true);
 
     final Either<NotificationAlert, GroupchatEntity> groupchatOrFailure =
-        await chatUseCases.getGroupchatViaApi(
+        await groupchatUseCases.getGroupchatViaApi(
       getOneGroupchatFilter: GetOneGroupchatFilter(
         id: state.privateEvent.groupchatTo!,
       ),

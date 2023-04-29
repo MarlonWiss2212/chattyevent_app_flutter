@@ -1,18 +1,18 @@
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:meta/meta.dart';
-import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/current_groupchat/current_chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
-import 'package:social_media_app_flutter/domain/usecases/chat_usecases.dart';
+import 'package:social_media_app_flutter/domain/usecases/groupchat/groupchat_usecases.dart';
 
 part 'chat_state.dart';
 
 class ChatCubit extends Cubit<ChatState> {
-  final ChatUseCases chatUseCases;
+  final GroupchatUseCases groupchatUseCases;
   final NotificationCubit notificationCubit;
   ChatCubit({
-    required this.chatUseCases,
+    required this.groupchatUseCases,
     required this.notificationCubit,
   }) : super(const ChatState(
           chatStates: [],
@@ -65,7 +65,7 @@ class ChatCubit extends Cubit<ChatState> {
     );
 
     final Either<NotificationAlert, List<GroupchatEntity>> groupchatsOrFailure =
-        await chatUseCases.getGroupchatsViaApi();
+        await groupchatUseCases.getGroupchatsViaApi();
 
     groupchatsOrFailure.fold(
       (alert) => notificationCubit.newAlert(notificationAlert: alert),

@@ -6,22 +6,22 @@ import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/core/graphql.dart';
 import 'package:social_media_app_flutter/domain/repositories/auth_repository.dart';
 import 'package:social_media_app_flutter/domain/repositories/bought_amount_repository.dart';
-import 'package:social_media_app_flutter/domain/repositories/chat_repository.dart';
 import 'package:social_media_app_flutter/domain/repositories/device/image_picker_repository.dart';
 import 'package:social_media_app_flutter/domain/repositories/device/location_repository.dart';
 import 'package:social_media_app_flutter/domain/repositories/device/notification_repository.dart';
 import 'package:social_media_app_flutter/domain/repositories/device/settings_repository.dart';
-import 'package:social_media_app_flutter/domain/repositories/message_repository.dart';
+import 'package:social_media_app_flutter/domain/repositories/groupchat/groupchat_message_repository.dart';
+import 'package:social_media_app_flutter/domain/repositories/groupchat/groupchat_repository.dart';
 import 'package:social_media_app_flutter/domain/repositories/private_event_repository.dart';
 import 'package:social_media_app_flutter/domain/repositories/shopping_list_item_repository.dart';
 import 'package:social_media_app_flutter/domain/repositories/user_relation_repository.dart';
 import 'package:social_media_app_flutter/domain/repositories/user_repository.dart';
 import 'package:social_media_app_flutter/domain/usecases/auth_usecases.dart';
 import 'package:social_media_app_flutter/domain/usecases/bought_amount_usecases.dart';
-import 'package:social_media_app_flutter/domain/usecases/chat_usecases.dart';
+import 'package:social_media_app_flutter/domain/usecases/groupchat/groupchat_message_usecases.dart';
+import 'package:social_media_app_flutter/domain/usecases/groupchat/groupchat_usecases.dart';
 import 'package:social_media_app_flutter/domain/usecases/image_picker_usecases.dart';
 import 'package:social_media_app_flutter/domain/usecases/location_usecases.dart';
-import 'package:social_media_app_flutter/domain/usecases/message_usecases.dart';
 import 'package:social_media_app_flutter/domain/usecases/notification_usecases.dart';
 import 'package:social_media_app_flutter/domain/usecases/private_event_usecases.dart';
 import 'package:social_media_app_flutter/domain/usecases/settings_usecases.dart';
@@ -35,12 +35,12 @@ import 'package:social_media_app_flutter/infastructure/datasources/local/sharedP
 import 'package:social_media_app_flutter/infastructure/datasources/remote/graphql.dart';
 import 'package:social_media_app_flutter/infastructure/respositories/auth_repository_impl.dart';
 import 'package:social_media_app_flutter/infastructure/respositories/bought_amount_repository_impl.dart';
-import 'package:social_media_app_flutter/infastructure/respositories/chat_repository_impl.dart';
 import 'package:social_media_app_flutter/infastructure/respositories/device/image_picker_repository_impl.dart';
 import 'package:social_media_app_flutter/infastructure/respositories/device/location_repository_impl.dart';
 import 'package:social_media_app_flutter/infastructure/respositories/device/notification_repository_impl.dart';
 import 'package:social_media_app_flutter/infastructure/respositories/device/settings_repository_impl.dart';
-import 'package:social_media_app_flutter/infastructure/respositories/message_repository_impl.dart';
+import 'package:social_media_app_flutter/infastructure/respositories/groupchat/groupchat_message_repository_impl.dart';
+import 'package:social_media_app_flutter/infastructure/respositories/groupchat/groupchat_repository_impl.dart';
 import 'package:social_media_app_flutter/infastructure/respositories/private_event_repository_impl.dart';
 import 'package:social_media_app_flutter/infastructure/respositories/shopping_list_item_repository_impl.dart';
 import 'package:social_media_app_flutter/infastructure/respositories/user_relation_repository_impl.dart';
@@ -67,9 +67,9 @@ Future init() async {
   serviceLocator.registerLazySingleton<AuthUseCases>(
     () => AuthUseCases(authRepository: serviceLocator()),
   );
-  serviceLocator.registerFactoryParam<ChatUseCases, AuthState?, void>(
-    (param1, param2) => ChatUseCases(
-      chatRepository: serviceLocator(param1: param1),
+  serviceLocator.registerFactoryParam<GroupchatUseCases, AuthState?, void>(
+    (param1, param2) => GroupchatUseCases(
+      groupchatRepository: serviceLocator(param1: param1),
     ),
   );
   serviceLocator.registerFactoryParam<BoughtAmountUseCases, AuthState?, void>(
@@ -77,9 +77,10 @@ Future init() async {
       boughtAmountRepository: serviceLocator(param1: param1),
     ),
   );
-  serviceLocator.registerFactoryParam<MessageUseCases, AuthState?, void>(
-    (param1, param2) => MessageUseCases(
-      messageRepository: serviceLocator(param1: param1),
+  serviceLocator
+      .registerFactoryParam<GroupchatMessageUseCases, AuthState?, void>(
+    (param1, param2) => GroupchatMessageUseCases(
+      groupchatMessageRepository: serviceLocator(param1: param1),
     ),
   );
   serviceLocator.registerFactoryParam<PrivateEventUseCases, AuthState?, void>(
@@ -120,13 +121,14 @@ Future init() async {
   serviceLocator.registerLazySingleton<AuthRepository>(
     () => AuthRepositoryImpl(auth: serviceLocator()),
   );
-  serviceLocator.registerFactoryParam<MessageRepository, AuthState?, void>(
-    (param1, param2) => MessageRepositoryImpl(
+  serviceLocator
+      .registerFactoryParam<GroupchatMessageRepository, AuthState?, void>(
+    (param1, param2) => GroupchatMessageRepositoryImpl(
       graphQlDatasource: serviceLocator(param1: param1),
     ),
   );
-  serviceLocator.registerFactoryParam<ChatRepository, AuthState?, void>(
-    (param1, param2) => ChatRepositoryImpl(
+  serviceLocator.registerFactoryParam<GroupchatRepository, AuthState?, void>(
+    (param1, param2) => GroupchatRepositoryImpl(
       graphQlDatasource: serviceLocator(param1: param1),
     ),
   );

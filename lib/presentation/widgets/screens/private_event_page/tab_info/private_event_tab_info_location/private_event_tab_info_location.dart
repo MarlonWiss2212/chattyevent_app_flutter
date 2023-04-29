@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:skeletons/skeletons.dart';
-import 'package:social_media_app_flutter/application/bloc/private_event/current_private_event_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/current_private_event/current_private_event_cubit.dart';
 import 'package:social_media_app_flutter/presentation/widgets/general/circle_image/cirlce_image.dart';
 import 'package:social_media_app_flutter/presentation/widgets/general/custom_divider.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/private_event_page/tab_info/private_event_tab_info_location/private_event_tab_info_location_data.dart';

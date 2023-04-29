@@ -1,12 +1,12 @@
 import 'dart:io';
 
-class CreateMessageDto {
+class CreateGroupchatMessageDto {
   String message;
   String groupchatTo;
   String? messageToReactTo;
   File? file;
 
-  CreateMessageDto({
+  CreateGroupchatMessageDto({
     required this.message,
     required this.groupchatTo,
     this.file,

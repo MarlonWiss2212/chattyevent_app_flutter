@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/current_groupchat/current_chat_cubit.dart';
 import 'package:social_media_app_flutter/core/utils/ad_helper.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
-import 'package:social_media_app_flutter/application/bloc/message/add_message_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/current_groupchat/add_groupchat_message_cubit.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_left_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/message/message_entity.dart';
@@ -71,7 +71,7 @@ class ChatPageMessageContainer extends StatelessWidget {
                 backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                 foregroundColor: Colors.white,
                 onPressed: (context) {
-                  BlocProvider.of<AddMessageCubit>(context).emitState(
+                  BlocProvider.of<AddGroupchatMessageCubit>(context).emitState(
                     messageToReactTo: message.id,
                   );
                 },

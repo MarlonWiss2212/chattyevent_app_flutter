@@ -5,8 +5,8 @@ import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/home_page/home_event/home_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/location/location_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/user/user_search_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/image/image_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/user_search/user_search_cubit.dart';
 import 'package:social_media_app_flutter/core/injection.dart';
 import 'package:social_media_app_flutter/main.dart';
 import 'package:social_media_app_flutter/presentation/router/auth_guard.dart';
@@ -48,7 +48,7 @@ class BlocInit extends StatelessWidget {
             ),
             BlocProvider.value(
               value: ChatCubit(
-                chatUseCases: serviceLocator(param1: state),
+                groupchatUseCases: serviceLocator(param1: state),
                 notificationCubit: notificationCubit,
               ),
             ),

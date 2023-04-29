@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/chat/current_chat_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/message/add_message_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/current_groupchat/add_groupchat_message_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/current_groupchat/current_chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:social_media_app_flutter/core/injection.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
@@ -70,11 +70,11 @@ class ChatPage extends StatelessWidget {
           ),
           Expanded(
             child: BlocProvider.value(
-              value: AddMessageCubit(
-                AddMessageState(groupchatTo: groupchatId),
+              value: AddGroupchatMessageCubit(
+                AddGroupchatMessageState(groupchatTo: groupchatId),
                 notificationCubit: BlocProvider.of<NotificationCubit>(context),
                 currentChatCubit: BlocProvider.of<CurrentChatCubit>(context),
-                messageUseCases: serviceLocator(
+                groupchatMessageUseCases: serviceLocator(
                   param1: BlocProvider.of<AuthCubit>(context).state,
                 ),
               ),

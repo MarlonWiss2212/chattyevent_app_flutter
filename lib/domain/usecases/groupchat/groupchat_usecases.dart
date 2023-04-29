@@ -12,21 +12,21 @@ import 'package:social_media_app_flutter/core/response/groupchat/groupchat-users
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_left_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
-import 'package:social_media_app_flutter/domain/repositories/chat_repository.dart';
+import 'package:social_media_app_flutter/domain/repositories/groupchat/groupchat_repository.dart';
 
-class ChatUseCases {
-  final ChatRepository chatRepository;
-  ChatUseCases({required this.chatRepository});
+class GroupchatUseCases {
+  final GroupchatRepository groupchatRepository;
+  GroupchatUseCases({required this.groupchatRepository});
 
   Future<Either<NotificationAlert, List<GroupchatEntity>>>
       getGroupchatsViaApi() async {
-    return await chatRepository.getGroupchatsViaApi();
+    return await groupchatRepository.getGroupchatsViaApi();
   }
 
   Future<Either<NotificationAlert, GroupchatEntity>> getGroupchatViaApi({
     required GetOneGroupchatFilter getOneGroupchatFilter,
   }) async {
-    return await chatRepository.getGroupchatViaApi(
+    return await groupchatRepository.getGroupchatViaApi(
       getOneGroupchatFilter: getOneGroupchatFilter,
     );
   }
@@ -36,7 +36,7 @@ class ChatUseCases {
     required GetOneGroupchatFilter getOneGroupchatFilter,
     required LimitOffsetFilter limitOffsetFilterMessages,
   }) async {
-    return await chatRepository.getGroupchatDataViaApi(
+    return await groupchatRepository.getGroupchatDataViaApi(
       getOneGroupchatFilter: getOneGroupchatFilter,
     );
   }
@@ -44,14 +44,14 @@ class ChatUseCases {
   Future<Either<NotificationAlert, GroupchatEntity>> createGroupchatViaApi({
     required CreateGroupchatDto createGroupchatDto,
   }) async {
-    return await chatRepository.createGroupchatViaApi(createGroupchatDto);
+    return await groupchatRepository.createGroupchatViaApi(createGroupchatDto);
   }
 
   Future<Either<NotificationAlert, GroupchatUserEntity>>
       addUserToGroupchatViaApi({
     required CreateGroupchatUserDto createGroupchatUserDto,
   }) async {
-    return await chatRepository.addUserToGroupchatViaApi(
+    return await groupchatRepository.addUserToGroupchatViaApi(
       createGroupchatUserDto: createGroupchatUserDto,
     );
   }
@@ -60,7 +60,7 @@ class ChatUseCases {
     required UpdateGroupchatDto updateGroupchatDto,
     required GetOneGroupchatFilter getOneGroupchatFilter,
   }) async {
-    return await chatRepository.updateGroupchatViaApi(
+    return await groupchatRepository.updateGroupchatViaApi(
       updateGroupchatDto: updateGroupchatDto,
       getOneGroupchatFilter: getOneGroupchatFilter,
     );
@@ -71,7 +71,7 @@ class ChatUseCases {
     required UpdateGroupchatUserDto updateGroupchatUserDto,
     required GetOneGroupchatUserFilter getOneGroupchatUserFilter,
   }) async {
-    return await chatRepository.updateGroupchatUserViaApi(
+    return await groupchatRepository.updateGroupchatUserViaApi(
       updateGroupchatUserDto: updateGroupchatUserDto,
       getOneGroupchatUserFilter: getOneGroupchatUserFilter,
     );
@@ -81,7 +81,7 @@ class ChatUseCases {
       deleteUserFromGroupchatViaApi({
     required GetOneGroupchatUserFilter getOneGroupchatUserFilter,
   }) async {
-    return await chatRepository.deleteUserFromGroupchatViaApi(
+    return await groupchatRepository.deleteUserFromGroupchatViaApi(
       getOneGroupchatUserFilter: getOneGroupchatUserFilter,
     );
   }
@@ -90,7 +90,7 @@ class ChatUseCases {
       getGroupchatUsersAndLeftUsers({
     required String groupchatId,
   }) async {
-    return await chatRepository.getGroupchatUsersAndLeftUsers(
+    return await groupchatRepository.getGroupchatUsersAndLeftUsers(
       groupchatId: groupchatId,
     );
   }

@@ -1,8 +1,8 @@
-class AddedMessageFilter {
+class AddedGroupchatMessageFilter {
   final String groupchatTo;
   final bool? returnMyAddedMessageToo;
 
-  AddedMessageFilter({
+  AddedGroupchatMessageFilter({
     required this.groupchatTo,
     this.returnMyAddedMessageToo,
   });

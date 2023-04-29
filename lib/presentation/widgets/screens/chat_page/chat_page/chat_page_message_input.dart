@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'package:social_media_app_flutter/application/bloc/message/add_message_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/current_groupchat/add_groupchat_message_cubit.dart';
 import 'package:social_media_app_flutter/presentation/widgets/general/bottom_sheet/image_picker_list.dart';
-import 'package:social_media_app_flutter/presentation/widgets/general/dialog/alert_dialog.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/chat_page/chat_page/chat_page_react_message_container.dart';
 
 class ChatPageMessageInput extends StatelessWidget {
@@ -12,24 +11,24 @@ class ChatPageMessageInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AddMessageCubit, AddMessageState>(
+    return BlocBuilder<AddGroupchatMessageCubit, AddGroupchatMessageState>(
       buildWhen: (previous, current) =>
-          current.status == AddMessageStateStatus.success,
+          current.status == AddGroupchatMessageStateStatus.success,
       builder: (context, state) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            BlocBuilder<AddMessageCubit, AddMessageState>(
+            BlocBuilder<AddGroupchatMessageCubit, AddGroupchatMessageState>(
               buildWhen: (previous, current) =>
                   previous.status != current.status,
               builder: (context, state) {
-                if (state.status == AddMessageStateStatus.loading) {
+                if (state.status == AddGroupchatMessageStateStatus.loading) {
                   return const LinearProgressIndicator();
                 }
                 return Container();
               },
             ),
-            BlocBuilder<AddMessageCubit, AddMessageState>(
+            BlocBuilder<AddGroupchatMessageCubit, AddGroupchatMessageState>(
               buildWhen: (previous, current) => previous.file != current.file,
               builder: (context, state) {
                 if (state.file != null) {
@@ -37,12 +36,15 @@ class ChatPageMessageInput extends StatelessWidget {
                     height: 100,
                     child: InkWell(
                       onTap: () {
-                        BlocProvider.of<AddMessageCubit>(context).emitState(
+                        BlocProvider.of<AddGroupchatMessageCubit>(context)
+                            .emitState(
                           removeFile: true,
                         );
                       },
                       child: Image.file(
-                        BlocProvider.of<AddMessageCubit>(context).state.file!,
+                        BlocProvider.of<AddGroupchatMessageCubit>(context)
+                            .state
+                            .file!,
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -51,12 +53,13 @@ class ChatPageMessageInput extends StatelessWidget {
                 return Container();
               },
             ),
-            BlocBuilder<AddMessageCubit, AddMessageState>(
+            BlocBuilder<AddGroupchatMessageCubit, AddGroupchatMessageState>(
               builder: (context, state) {
                 if (state.messageToReactTo != null) {
                   return InkWell(
                     onTap: () =>
-                        BlocProvider.of<AddMessageCubit>(context).emitState(
+                        BlocProvider.of<AddGroupchatMessageCubit>(context)
+                            .emitState(
                       removeMessageToReactTo: true,
                     ),
                     child: Scrollable(
@@ -93,7 +96,7 @@ class ChatPageMessageInput extends StatelessWidget {
                               ),
                             ),
                             onChanged: (p0) {
-                              BlocProvider.of<AddMessageCubit>(context)
+                              BlocProvider.of<AddGroupchatMessageCubit>(context)
                                   .emitState(message: p0);
                             },
                             hintText: 'Nachricht',
@@ -106,7 +109,8 @@ class ChatPageMessageInput extends StatelessWidget {
                               builder: (modalContext) {
                                 return ImagePickerList(
                                   imageChanged: (newImage) {
-                                    BlocProvider.of<AddMessageCubit>(context)
+                                    BlocProvider.of<AddGroupchatMessageCubit>(
+                                            context)
                                         .emitState(file: newImage);
                                     Navigator.of(modalContext).pop();
                                   },
@@ -123,7 +127,8 @@ class ChatPageMessageInput extends StatelessWidget {
                 // send button
                 IconButton(
                   onPressed: () {
-                    BlocProvider.of<AddMessageCubit>(context).createMessage();
+                    BlocProvider.of<AddGroupchatMessageCubit>(context)
+                        .createMessage();
                   },
                   icon: const Icon(Icons.send),
                 )
