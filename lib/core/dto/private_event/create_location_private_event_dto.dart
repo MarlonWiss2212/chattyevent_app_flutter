@@ -1,9 +1,9 @@
 class CreatePrivateEventLocationDto {
-  String country;
-  String zip;
-  String city;
-  String street;
-  String housenumber;
+  final String country;
+  final String zip;
+  final String city;
+  final String street;
+  final String housenumber;
 
   CreatePrivateEventLocationDto({
     required this.city,
@@ -14,7 +14,7 @@ class CreatePrivateEventLocationDto {
   });
 
   Map<dynamic, dynamic> toMap() {
-    Map<dynamic, dynamic> variables = {
+    Map<dynamic, dynamic> map = {
       'city': city,
       'country': country,
       'housenumber': housenumber,
@@ -22,6 +22,6 @@ class CreatePrivateEventLocationDto {
       'zip': zip,
     };
 
-    return variables;
+    return map;
   }
 }

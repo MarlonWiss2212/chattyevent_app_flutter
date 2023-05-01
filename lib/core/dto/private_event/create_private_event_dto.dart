@@ -4,14 +4,14 @@ import 'package:social_media_app_flutter/core/dto/private_event/create_location_
 import 'package:social_media_app_flutter/core/dto/private_event/private_event_user/create_private_event_user_from_private_event_dto.dart';
 
 class CreatePrivateEventDto {
-  String title;
-  String? description;
-  File coverImage;
-  String? groupchatTo;
-  DateTime eventDate;
-  DateTime? eventEndDate;
-  CreatePrivateEventLocationDto? eventLocation;
-  List<CreatePrivateEventUserFromPrivateEventDto>? privateEventUsers;
+  final String title;
+  final String? description;
+  final File coverImage;
+  final String? groupchatTo;
+  final DateTime eventDate;
+  final DateTime? eventEndDate;
+  final CreatePrivateEventLocationDto? eventLocation;
+  final List<CreatePrivateEventUserFromPrivateEventDto>? privateEventUsers;
 
   CreatePrivateEventDto({
     required this.title,

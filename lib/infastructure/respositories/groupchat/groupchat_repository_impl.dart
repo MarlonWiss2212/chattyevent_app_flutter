@@ -11,7 +11,7 @@ import 'package:social_media_app_flutter/core/filter/groupchat/find_one_groupcha
 import 'package:social_media_app_flutter/core/filter/groupchat/groupchat_left_user/find_groupchat_left_users_filter.dart';
 import 'package:social_media_app_flutter/core/filter/groupchat/groupchat_user/find_groupchat_users_filter.dart';
 import 'package:social_media_app_flutter/core/filter/groupchat/groupchat_user/find_one_groupchat_user_filter.dart';
-import 'package:social_media_app_flutter/core/filter/limit_offset_filter/limit_offset_filter.dart';
+import 'package:social_media_app_flutter/core/filter/limit_offset_filter.dart';
 import 'package:social_media_app_flutter/core/response/groupchat/groupchat-data.response.dart';
 import 'package:social_media_app_flutter/core/response/groupchat/groupchat-users-and-left-users.response.dart';
 import 'package:social_media_app_flutter/core/utils/failure_helper.dart';

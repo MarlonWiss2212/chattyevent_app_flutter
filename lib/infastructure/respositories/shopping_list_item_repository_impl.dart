@@ -3,7 +3,7 @@ import 'package:social_media_app_flutter/core/dto/shopping_list_item/update_shop
 import 'package:social_media_app_flutter/core/filter/get_bought_amounts_filter.dart';
 import 'package:social_media_app_flutter/core/filter/get_one_shopping_list_item_filter.dart';
 import 'package:social_media_app_flutter/core/filter/get_shopping_list_items_filter.dart';
-import 'package:social_media_app_flutter/core/filter/limit_offset_filter/limit_offset_filter.dart';
+import 'package:social_media_app_flutter/core/filter/limit_offset_filter.dart';
 import 'package:social_media_app_flutter/core/response/shopping-list-item-data.response.dart';
 import 'package:social_media_app_flutter/core/utils/failure_helper.dart';
 import 'package:social_media_app_flutter/domain/entities/bought_amount_entity.dart';

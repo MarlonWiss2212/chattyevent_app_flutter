@@ -1,6 +1,6 @@
 class UpdatePrivateEventUserDto {
-  String? status;
-  bool? organizer;
+  final String? status;
+  final bool? organizer;
 
   UpdatePrivateEventUserDto({
     this.status,

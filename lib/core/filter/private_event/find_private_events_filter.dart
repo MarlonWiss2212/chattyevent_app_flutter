@@ -1,10 +1,10 @@
-class GetPrivateEventsFilter {
+class FindPrivateEventsFilter {
   final String? groupchatTo;
   final bool? onlyFutureEvents;
   final bool? onlyPastEvents;
   final bool? sortNewestDateFirst;
 
-  GetPrivateEventsFilter({
+  FindPrivateEventsFilter({
     this.groupchatTo,
     this.onlyFutureEvents,
     this.onlyPastEvents,

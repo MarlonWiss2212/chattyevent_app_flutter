@@ -3,7 +3,7 @@ import 'package:social_media_app_flutter/application/bloc/notification/notificat
 import 'package:social_media_app_flutter/core/dto/bought_amount/create_bought_amount_dto.dart';
 import 'package:social_media_app_flutter/core/dto/bought_amount/update_bought_amount_dto.dart';
 import 'package:social_media_app_flutter/core/filter/get_bought_amounts_filter.dart';
-import 'package:social_media_app_flutter/core/filter/limit_offset_filter/limit_offset_filter.dart';
+import 'package:social_media_app_flutter/core/filter/limit_offset_filter.dart';
 import 'package:social_media_app_flutter/domain/entities/bought_amount_entity.dart';
 import 'package:social_media_app_flutter/domain/repositories/bought_amount_repository.dart';
 

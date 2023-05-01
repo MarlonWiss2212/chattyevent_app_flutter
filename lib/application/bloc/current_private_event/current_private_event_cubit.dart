@@ -8,12 +8,14 @@ import 'package:social_media_app_flutter/application/bloc/current_groupchat/curr
 import 'package:social_media_app_flutter/application/bloc/home_page/home_event/home_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/shopping_list/current_shopping_list_item_cubit.dart';
+import 'package:social_media_app_flutter/core/dto/private_event/private_event_left_user/create_private_event_left_user_dto.dart';
 import 'package:social_media_app_flutter/core/dto/private_event/private_event_user/create_private_event_user_dto.dart';
 import 'package:social_media_app_flutter/core/dto/private_event/update_private_event_dto.dart';
 import 'package:social_media_app_flutter/core/filter/get_shopping_list_items_filter.dart';
 import 'package:social_media_app_flutter/core/filter/groupchat/find_one_groupchat_filter.dart';
-import 'package:social_media_app_flutter/core/filter/limit_offset_filter/limit_offset_filter.dart';
-import 'package:social_media_app_flutter/core/filter/private_event/private_event_user/get_one_private_event_user_filter.dart';
+import 'package:social_media_app_flutter/core/filter/limit_offset_filter.dart';
+import 'package:social_media_app_flutter/core/filter/private_event/find_one_private_event_to_filter.dart';
+import 'package:social_media_app_flutter/core/filter/private_event/private_event_user/find_one_private_event_user_filter.dart';
 import 'package:social_media_app_flutter/core/response/private-event/private-event-date.response.dart';
 import 'package:social_media_app_flutter/core/response/private-event/private-events-users-and-left-users.reponse.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
@@ -21,7 +23,7 @@ import 'package:social_media_app_flutter/domain/entities/private_event/private_e
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_left_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/shopping_list_item/shopping_list_item_entity.dart';
-import 'package:social_media_app_flutter/core/filter/get_one_private_event_filter.dart';
+import 'package:social_media_app_flutter/core/filter/private_event/find_one_private_event_filter.dart';
 import 'package:social_media_app_flutter/domain/usecases/groupchat/groupchat_usecases.dart';
 import 'package:social_media_app_flutter/domain/usecases/location_usecases.dart';
 import 'package:social_media_app_flutter/domain/usecases/private_event_usecases.dart';
@@ -59,8 +61,9 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
     final Either<NotificationAlert, PrivateEventDataResponse>
         privateEventDataOrFailure =
         await privateEventUseCases.getPrivateEventDataViaApi(
-      getOnePrivateEventFilter:
-          GetOnePrivateEventFilter(id: state.privateEvent.id),
+      findOnePrivateEventFilter: FindOnePrivateEventFilter(
+        privateEventId: state.privateEvent.id,
+      ),
       groupchatId: state.privateEvent.groupchatTo,
     );
 
@@ -104,7 +107,9 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
     final Either<NotificationAlert, PrivateEventUsersAndLeftUsersResponse>
         usersOrFailure =
         await privateEventUseCases.getPrivateEventUsersAndLeftUsers(
-      privateEventId: state.privateEvent.id,
+      findOnePrivateEventToFilter: FindOnePrivateEventToFilter(
+        privateEventTo: state.privateEvent.id,
+      ),
     );
 
     usersOrFailure.fold(
@@ -194,8 +199,8 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
 
     final Either<NotificationAlert, PrivateEventEntity> privateEventOrFailure =
         await privateEventUseCases.getPrivateEventViaApi(
-      getOnePrivateEventFilter: GetOnePrivateEventFilter(
-        id: state.privateEvent.id,
+      findOnePrivateEventFilter: FindOnePrivateEventFilter(
+        privateEventId: state.privateEvent.id,
       ),
     );
 
@@ -215,8 +220,8 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
   }) async {
     final Either<NotificationAlert, PrivateEventEntity> privateEventOrFailure =
         await privateEventUseCases.updatePrivateEvent(
-      getOnePrivateEventFilter: GetOnePrivateEventFilter(
-        id: state.privateEvent.id,
+      findOnePrivateEventFilter: FindOnePrivateEventFilter(
+        privateEventId: state.privateEvent.id,
       ),
       updatePrivateEventDto: updatePrivateEventDto,
     );
@@ -239,8 +244,8 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
   Future deleteCurrentPrivateEventViaApi() async {
     final Either<NotificationAlert, bool> deletedOrFailure =
         await privateEventUseCases.deletePrivateEventViaApi(
-      getOnePrivateEventFilter: GetOnePrivateEventFilter(
-        id: state.privateEvent.id,
+      findOnePrivateEventFilter: FindOnePrivateEventFilter(
+        privateEventId: state.privateEvent.id,
       ),
     );
 
@@ -293,7 +298,7 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
         status: status,
         organizer: organizer,
       ),
-      getOnePrivateEventFilter: GetOnePrivateEventUserFilter(
+      findOnePrivateEventUserFilter: FindOnePrivateEventUserFilter(
         userId: userId,
         privateEventTo: state.privateEvent.id,
       ),
@@ -326,7 +331,7 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
     Either<NotificationAlert, PrivateEventLeftUserEntity>
         privateEventLeftUserOrFailure =
         await privateEventUseCases.deleteUserFromPrivateEventViaApi(
-      getOnePrivateEventUserFilter: GetOnePrivateEventUserFilter(
+      createPrivateEventLeftUserDto: CreatePrivateEventLeftUserDto(
         userId: userId,
         privateEventTo: state.privateEvent.id,
       ),

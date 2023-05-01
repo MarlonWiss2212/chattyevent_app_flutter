@@ -8,7 +8,7 @@ import 'package:social_media_app_flutter/core/dto/groupchat/groupchat_user/updat
 import 'package:social_media_app_flutter/core/filter/groupchat/find_one_groupchat_filter.dart';
 import 'package:social_media_app_flutter/core/filter/groupchat/find_one_groupchat_to_filter.dart';
 import 'package:social_media_app_flutter/core/filter/groupchat/groupchat_user/find_one_groupchat_user_filter.dart';
-import 'package:social_media_app_flutter/core/filter/limit_offset_filter/limit_offset_filter.dart';
+import 'package:social_media_app_flutter/core/filter/limit_offset_filter.dart';
 import 'package:social_media_app_flutter/core/response/groupchat/groupchat-data.response.dart';
 import 'package:social_media_app_flutter/core/response/groupchat/groupchat-users-and-left-users.response.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';

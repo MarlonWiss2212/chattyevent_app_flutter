@@ -8,15 +8,15 @@ class UpdateGroupchatUserDto {
   });
 
   Map<dynamic, dynamic> toMap() {
-    Map<dynamic, dynamic> variables = {};
+    Map<dynamic, dynamic> map = {};
 
     if (admin != null) {
-      variables.addAll({'admin': admin});
+      map.addAll({'admin': admin});
     }
     if (usernameForChat != null) {
-      variables.addAll({'usernameForChat': usernameForChat});
+      map.addAll({'usernameForChat': usernameForChat});
     }
 
-    return variables;
+    return map;
   }
 }

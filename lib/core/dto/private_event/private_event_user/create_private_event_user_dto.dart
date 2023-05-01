@@ -2,7 +2,7 @@ import 'package:social_media_app_flutter/core/dto/private_event/private_event_us
 
 class CreatePrivateEventUserDto
     extends CreatePrivateEventUserFromPrivateEventDto {
-  String privateEventTo;
+  final String privateEventTo;
 
   CreatePrivateEventUserDto({
     required super.userId,

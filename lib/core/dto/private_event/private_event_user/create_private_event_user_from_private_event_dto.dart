@@ -1,8 +1,8 @@
 import 'package:social_media_app_flutter/domain/entities/user/user_entity.dart';
 
 class CreatePrivateEventUserFromPrivateEventDto {
-  String userId;
-  bool? organizer;
+  final String userId;
+  final bool? organizer;
 
   CreatePrivateEventUserFromPrivateEventDto({
     required this.userId,
@@ -25,7 +25,7 @@ class CreatePrivateEventUserFromPrivateEventDto {
 /// use this for lists to get the username
 class CreatePrivateEventUserFromPrivateEventDtoWithUserEntity
     extends CreatePrivateEventUserFromPrivateEventDto {
-  UserEntity user;
+  final UserEntity user;
 
   CreatePrivateEventUserFromPrivateEventDtoWithUserEntity({
     required this.user,

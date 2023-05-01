@@ -12,15 +12,15 @@ class UpdateGroupchatDto {
   });
 
   Map<dynamic, dynamic> toMap() {
-    Map<dynamic, dynamic> variables = {};
+    Map<dynamic, dynamic> map = {};
 
     if (title != null) {
-      variables.addAll({'title': title!});
+      map.addAll({'title': title!});
     }
     if (description != null) {
-      variables.addAll({'description': description!});
+      map.addAll({'description': description!});
     }
 
-    return variables;
+    return map;
   }
 }

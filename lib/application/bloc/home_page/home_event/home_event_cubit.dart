@@ -3,8 +3,8 @@ import 'package:dartz/dartz.dart';
 import 'package:meta/meta.dart';
 import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/current_private_event/current_private_event_cubit.dart';
-import 'package:social_media_app_flutter/core/filter/get_private_events_filter.dart';
-import 'package:social_media_app_flutter/core/filter/limit_offset_filter/limit_offset_filter.dart';
+import 'package:social_media_app_flutter/core/filter/limit_offset_filter.dart';
+import 'package:social_media_app_flutter/core/filter/private_event/find_private_events_filter.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
 import 'package:social_media_app_flutter/domain/usecases/private_event_usecases.dart';
 
@@ -82,7 +82,7 @@ class HomeEventCubit extends Cubit<HomeEventState> {
     final Either<NotificationAlert, List<PrivateEventEntity>>
         privateEventOrFailure =
         await privateEventUseCases.getPrivateEventsViaApi(
-      getPrivateEventsFilter: GetPrivateEventsFilter(onlyFutureEvents: true),
+      findPrivateEventsFilter: FindPrivateEventsFilter(onlyFutureEvents: true),
       limitOffsetFilter: LimitOffsetFilter(
         limit: reload
             ? futureEventsLength! > 20
@@ -127,7 +127,7 @@ class HomeEventCubit extends Cubit<HomeEventState> {
     final Either<NotificationAlert, List<PrivateEventEntity>>
         privateEventOrFailure =
         await privateEventUseCases.getPrivateEventsViaApi(
-      getPrivateEventsFilter: GetPrivateEventsFilter(onlyPastEvents: true),
+      findPrivateEventsFilter: FindPrivateEventsFilter(onlyPastEvents: true),
       limitOffsetFilter: LimitOffsetFilter(
         limit: reload
             ? pastEventsLength! > 20

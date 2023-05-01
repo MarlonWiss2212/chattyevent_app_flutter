@@ -12,10 +12,10 @@ import 'package:social_media_app_flutter/core/dto/groupchat/groupchat_user/updat
 import 'package:social_media_app_flutter/core/filter/groupchat/find_one_groupchat_filter.dart';
 import 'package:social_media_app_flutter/core/filter/groupchat/find_one_groupchat_to_filter.dart';
 import 'package:social_media_app_flutter/core/filter/groupchat/groupchat_message/added_groupchat_message_filter.dart';
-import 'package:social_media_app_flutter/core/filter/get_private_events_filter.dart';
+import 'package:social_media_app_flutter/core/filter/private_event/find_private_events_filter.dart';
 import 'package:social_media_app_flutter/core/filter/groupchat/groupchat_message/find_groupchat_messages_filter.dart';
 import 'package:social_media_app_flutter/core/filter/groupchat/groupchat_user/find_one_groupchat_user_filter.dart';
-import 'package:social_media_app_flutter/core/filter/limit_offset_filter/limit_offset_filter.dart';
+import 'package:social_media_app_flutter/core/filter/limit_offset_filter.dart';
 import 'package:social_media_app_flutter/core/response/groupchat/groupchat-data.response.dart';
 import 'package:social_media_app_flutter/core/response/groupchat/groupchat-users-and-left-users.response.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
@@ -149,7 +149,7 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
     final privateEventsOrFailure =
         await privateEventUseCases.getPrivateEventsViaApi(
       limitOffsetFilter: limitOffsetFilter,
-      getPrivateEventsFilter: GetPrivateEventsFilter(
+      findPrivateEventsFilter: FindPrivateEventsFilter(
         onlyFutureEvents: true,
         sortNewestDateFirst: false,
         groupchatTo: state.currentChat.id,

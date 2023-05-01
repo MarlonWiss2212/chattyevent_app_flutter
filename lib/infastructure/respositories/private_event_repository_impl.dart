@@ -2,12 +2,18 @@ import 'package:http/http.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:social_media_app_flutter/core/dto/private_event/create_private_event_dto.dart';
+import 'package:social_media_app_flutter/core/dto/private_event/private_event_left_user/create_private_event_left_user_dto.dart';
 import 'package:social_media_app_flutter/core/dto/private_event/private_event_user/create_private_event_user_dto.dart';
 import 'package:social_media_app_flutter/core/dto/private_event/update_private_event_dto.dart';
 import 'package:social_media_app_flutter/core/dto/private_event/private_event_user/update_private_event_user_dto.dart';
 import 'package:social_media_app_flutter/core/filter/groupchat/find_one_groupchat_filter.dart';
-import 'package:social_media_app_flutter/core/filter/limit_offset_filter/limit_offset_filter.dart';
-import 'package:social_media_app_flutter/core/filter/private_event/private_event_user/get_one_private_event_user_filter.dart';
+import 'package:social_media_app_flutter/core/filter/limit_offset_filter.dart';
+import 'package:social_media_app_flutter/core/filter/private_event/find_one_private_event_filter.dart';
+import 'package:social_media_app_flutter/core/filter/private_event/find_one_private_event_to_filter.dart';
+import 'package:social_media_app_flutter/core/filter/private_event/find_private_events_filter.dart';
+import 'package:social_media_app_flutter/core/filter/private_event/private_event_left_user/find_private_event_left_users_filter.dart';
+import 'package:social_media_app_flutter/core/filter/private_event/private_event_user/find_one_private_event_user_filter.dart';
+import 'package:social_media_app_flutter/core/filter/private_event/private_event_user/find_private_event_users_filter.dart';
 import 'package:social_media_app_flutter/core/response/private-event/private-event-date.response.dart';
 import 'package:social_media_app_flutter/core/response/private-event/private-events-users-and-left-users.reponse.dart';
 import 'package:social_media_app_flutter/core/utils/failure_helper.dart';
@@ -15,8 +21,6 @@ import 'package:social_media_app_flutter/domain/entities/private_event/private_e
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
 import 'package:dartz/dartz.dart';
-import 'package:social_media_app_flutter/core/filter/get_one_private_event_filter.dart';
-import 'package:social_media_app_flutter/core/filter/get_private_events_filter.dart';
 import 'package:social_media_app_flutter/domain/repositories/private_event_repository.dart';
 import 'package:social_media_app_flutter/infastructure/datasources/remote/graphql.dart';
 import 'package:social_media_app_flutter/infastructure/models/private_event/private_event_left_user_model.dart';
@@ -90,7 +94,7 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
 
   @override
   Future<Either<NotificationAlert, PrivateEventEntity>> getPrivateEventViaApi({
-    required GetOnePrivateEventFilter getOnePrivateEventFilter,
+    required FindOnePrivateEventFilter findOnePrivateEventFilter,
   }) async {
     try {
       final response = await graphQlDatasource.query(
@@ -120,7 +124,7 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
         }
       """,
         variables: {
-          "filter": getOnePrivateEventFilter..toMap(),
+          "filter": findOnePrivateEventFilter.toMap(),
         },
       );
 
@@ -141,14 +145,19 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
   @override
   Future<Either<NotificationAlert, PrivateEventDataResponse>>
       getPrivateEventDataViaApi({
-    required GetOnePrivateEventFilter getOnePrivateEventFilter,
+    required FindOnePrivateEventFilter findOnePrivateEventFilter,
     String? groupchatId,
   }) async {
     try {
       final variables = {
-        "privateEventId": getOnePrivateEventFilter.id,
+        "findPrivateEventLeftUsersInput": FindPrivateEventUsersFilter(
+          privateEventTo: findOnePrivateEventFilter.privateEventId,
+        ),
+        "findPrivateEventUsersInput": FindPrivateEventLeftUsersFilter(
+          privateEventTo: findOnePrivateEventFilter.privateEventId,
+        ),
         "limitOffsetInput": LimitOffsetFilter(limit: 1000, offset: 0).toMap(),
-        "filter": getOnePrivateEventFilter.toMap(),
+        "filter": findOnePrivateEventFilter.toMap(),
       };
 
       if (groupchatId != null) {
@@ -160,7 +169,7 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
       }
       final response = await graphQlDatasource.query(
         """
-        query FindPrivateEventData(\$filter: FindOnePrivateEventInput!, \$privateEventId: String!, \$limitOffsetInput: LimitOffsetInput!, ${groupchatId == null ? '' : '\$findOneGroupchatInput: FindOneGroupchatInput!'}) {
+        query FindPrivateEventData(\$filter: FindOnePrivateEventInput!, \$findPrivateEventLeftUsersInput: FindPrivateEventLeftUsersInput!, \$findPrivateEventUsersInput: FindPrivateEventUsersInput!, \$limitOffsetInput: LimitOffsetInput!, ${groupchatId == null ? '' : '\$findOneGroupchatInput: FindOneGroupchatInput!'}) {
           ${groupchatId == null ? '' : '''
           findGroupchat(findOneGroupchatInput: \$findOneGroupchatInput) {
             _id
@@ -194,7 +203,7 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
             createdAt
           }
 
-          findPrivateEventLeftUsers(privateEventId: \$privateEventId, limitOffsetInput: \$limitOffsetInput) {
+          findPrivateEventLeftUsers(filter: \$findPrivateEventLeftUsersInput, limitOffsetInput: \$limitOffsetInput) {
             privateEventUserLeftId
             username
             _id
@@ -236,7 +245,7 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
             } 
           }
 
-          findPrivateEventUsers(privateEventId: \$privateEventId, limitOffsetInput: \$limitOffsetInput) {
+          findPrivateEventUsers(filter: \$findPrivateEventUsersInput, limitOffsetInput: \$limitOffsetInput) {
             privateEventUserId
             username
             _id
@@ -320,7 +329,7 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
   @override
   Future<Either<NotificationAlert, List<PrivateEventEntity>>>
       getPrivateEventsViaApi({
-    GetPrivateEventsFilter? getPrivateEventsFilter,
+    FindPrivateEventsFilter? findPrivateEventsFilter,
     required LimitOffsetFilter limitOffsetFilter,
   }) async {
     try {
@@ -341,7 +350,7 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
           }
         }
       """, variables: {
-        "filter": getPrivateEventsFilter?.toMap(),
+        "filter": findPrivateEventsFilter?.toMap(),
         "limitOffsetInput": limitOffsetFilter.toMap(),
       });
 
@@ -366,11 +375,11 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
   Future<Either<NotificationAlert, PrivateEventEntity>>
       updatePrivateEventViaApi({
     required UpdatePrivateEventDto updatePrivateEventDto,
-    required GetOnePrivateEventFilter getOnePrivateEventFilter,
+    required FindOnePrivateEventFilter findOnePrivateEventFilter,
   }) async {
     try {
       Map<String, dynamic> variables = {
-        "findOnePrivateEventInput": getOnePrivateEventFilter.toMap(),
+        "filter": findOnePrivateEventFilter.toMap(),
         "updatePrivateEventInput": updatePrivateEventDto.toMap(),
       };
       if (updatePrivateEventDto.updateCoverImage != null) {
@@ -387,8 +396,8 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
 
       final response = await graphQlDatasource.mutation(
         """
-        mutation UpdatePrivateEvent(\$findOnePrivateEventInput: FindOnePrivateEventInput!, \$updatePrivateEventInput: UpdatePrivateEventInput, \$updateCoverImage: Upload) {
-          updatePrivateEvent(findOnePrivateEventInput: \$findOnePrivateEventInput, updatePrivateEventInput: \$updatePrivateEventInput, updateCoverImage: \$updateCoverImage) {
+        mutation UpdatePrivateEvent(\$filter: FindOnePrivateEventInput!, \$updatePrivateEventInput: UpdatePrivateEventInput, \$updateCoverImage: Upload) {
+          updatePrivateEvent(filter: \$filter, updatePrivateEventInput: \$updatePrivateEventInput, updateCoverImage: \$updateCoverImage) {
             _id
             title
             status
@@ -430,7 +439,7 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
 
   @override
   Future<Either<NotificationAlert, bool>> deletePrivateEventViaApi({
-    required GetOnePrivateEventFilter getOnePrivateEventFilter,
+    required FindOnePrivateEventFilter findOnePrivateEventFilter,
   }) async {
     try {
       final response = await graphQlDatasource.mutation(
@@ -440,7 +449,7 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
           }
         """,
         variables: {
-          "filter": getOnePrivateEventFilter.toMap(),
+          "filter": findOnePrivateEventFilter.toMap(),
         },
       );
 
@@ -461,13 +470,13 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
   Future<Either<NotificationAlert, PrivateEventUserEntity>>
       updatePrivateEventUser({
     required UpdatePrivateEventUserDto updatePrivateEventUserDto,
-    required GetOnePrivateEventUserFilter getOnePrivateEventUserFilter,
+    required FindOnePrivateEventUserFilter findOnePrivateEventUserFilter,
   }) async {
     try {
       final response = await graphQlDatasource.mutation(
         """
-          mutation UpdatePrivateEventUser(\$input: UpdatePrivateEventUserInput!, \$findOnePrivateEventUserInput: FindOnePrivateEventUserInput!) {
-            updatePrivateEventUser(updatePrivateEventUserInput: \$input, findOnePrivateEventUserInput: \$findOnePrivateEventUserInput) {
+          mutation UpdatePrivateEventUser(\$input: UpdatePrivateEventUserInput!, \$filter: FindOnePrivateEventUserInput!) {
+            updatePrivateEventUser(updatePrivateEventUserInput: \$input, filter: \$filter) {
               privateEventUserId
               username
               _id
@@ -514,7 +523,7 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
         """,
         variables: {
           "input": updatePrivateEventUserDto.toMap(),
-          "findOnePrivateEventUserInput": getOnePrivateEventUserFilter.toMap(),
+          "filter": findOnePrivateEventUserFilter.toMap(),
         },
       );
 
@@ -610,13 +619,13 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
   @override
   Future<Either<NotificationAlert, PrivateEventLeftUserEntity>>
       deleteUserFromPrivateEventViaApi({
-    required GetOnePrivateEventUserFilter getOnePrivateEventUserFilter,
+    required CreatePrivateEventLeftUserDto createPrivateEventLeftUserDto,
   }) async {
     try {
       final response = await graphQlDatasource.mutation(
         """
-          mutation DeleteUserFromPrivateEvent(\$filter: FindOnePrivateEventUserInput!) {
-            deleteUserFromPrivateEvent(filter: \$filter) {
+          mutation DeleteUserFromPrivateEvent(\$createPrivateEventLeftUserInput: CreatePrivateEventLeftUserInput!) {
+            deleteUserFromPrivateEvent(createPrivateEventLeftUserInput: \$createPrivateEventLeftUserInput) {
               privateEventUserLeftId
               username
               _id
@@ -660,7 +669,8 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
           }
         """,
         variables: {
-          "filter": getOnePrivateEventUserFilter.toMap(),
+          "createPrivateEventLeftUserInput":
+              createPrivateEventLeftUserDto.toMap(),
         },
       );
 
@@ -683,13 +693,13 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
   @override
   Future<Either<NotificationAlert, PrivateEventUsersAndLeftUsersResponse>>
       getPrivateEventUsersAndLeftUsers({
-    required String privateEventId,
+    required FindOnePrivateEventToFilter findOnePrivateEventToFilter,
   }) async {
     try {
       final response = await graphQlDatasource.query(
         """
-          query PrivateEventUsersAndLeftUsersResponse(\$privateEventId: String!, \$limitOffsetInput: LimitOffsetInput!) {   
-            findPrivateEventLeftUsers(privateEventId: \$privateEventId, limitOffsetInput: \$limitOffsetInput) {
+          query PrivateEventUsersAndLeftUsersResponse(\$findPrivateEventLeftUsersInput: FindPrivateEventLeftUsersInput!, \$findPrivateEventUsersInput: FindPrivateEventUsersInput!, \$limitOffsetInput: LimitOffsetInput!) {   
+            findPrivateEventLeftUsers(findPrivateEventLeftUsersInput: \$findPrivateEventLeftUsersInput, findPrivateEventUsersInput: \$findPrivateEventUsersInput, limitOffsetInput: \$limitOffsetInput) {
               privateEventUserLeftId
               username
               _id
@@ -777,7 +787,12 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
           }
         """,
         variables: {
-          "privateEventId": privateEventId,
+          "findPrivateEventLeftUsersInput": FindPrivateEventUsersFilter(
+            privateEventTo: findOnePrivateEventToFilter.privateEventTo,
+          ),
+          "findPrivateEventUsersInput": FindPrivateEventLeftUsersFilter(
+            privateEventTo: findOnePrivateEventToFilter.privateEventTo,
+          ),
           "limitOffsetInput": LimitOffsetFilter(limit: 1000, offset: 0).toMap(),
         },
       );
