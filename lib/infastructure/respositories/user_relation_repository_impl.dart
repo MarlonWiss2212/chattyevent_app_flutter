@@ -1,9 +1,9 @@
 import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
-import 'package:social_media_app_flutter/core/filter/user_relation/target_user_id_filter.dart';
 import 'package:social_media_app_flutter/core/filter/limit_offset_filter.dart';
+import 'package:social_media_app_flutter/core/filter/user_relation/find_followed_filter.dart';
+import 'package:social_media_app_flutter/core/filter/user_relation/find_followers_filter.dart';
 import 'package:social_media_app_flutter/core/utils/failure_helper.dart';
 import 'package:social_media_app_flutter/domain/entities/user-relation/user_relation_entity.dart';
-import 'package:social_media_app_flutter/core/filter/user_relation/request_user_id_filter.dart';
 import 'package:social_media_app_flutter/core/filter/user_relation/find_one_user_relation_filter.dart';
 import 'package:social_media_app_flutter/core/dto/user_relation/create_user_relation_dto.dart';
 import 'package:dartz/dartz.dart';
@@ -34,8 +34,8 @@ class UserRelationRepositoryImpl extends UserRelationRepository {
             requesterUserId
             statusOnRelatedUser
             followData {
-              canInviteFollowedToPrivateEvent
-              canInviteFollowedToGroupchat
+              followedToPrivateEventPermission
+              followedToGroupchatPermission
               followedUserAt
             }
           }
@@ -75,8 +75,8 @@ class UserRelationRepositoryImpl extends UserRelationRepository {
             requesterUserId
             statusOnRelatedUser
             followData {
-              canInviteFollowedToPrivateEvent
-              canInviteFollowedToGroupchat
+              followedToPrivateEventPermission
+              followedToGroupchatPermission
               followedUserAt
             }
           }
@@ -103,30 +103,54 @@ class UserRelationRepositoryImpl extends UserRelationRepository {
   @override
   Future<Either<NotificationAlert, List<UserEntity>>> getFollowersViaApi({
     required LimitOffsetFilter limitOffsetFilter,
-    required TargetUserIdFilter targetUserIdFilter,
+    required FindFollowersFilter findFollowersFilter,
   }) async {
     try {
       final response = await graphQlDatasource.query(
         """
-        query FindFollowers(\$limitOffsetFilter: LimitOffsetInput!, \$targetUserIdInput: TargetUserIdInput!) {
-          findFollowers(limitOffsetInput: \$limitOffsetFilter, targetUserIdInput: \$targetUserIdInput) {
+        query FindFollowers(\$limitOffsetFilter: LimitOffsetInput!, \$filter: FindFollowersInput!) {
+          findFollowers(limitOffsetInput: \$limitOffsetFilter, filter: \$filter) {
+            username
             _id
             authId
-            username
+            birthdate
+            createdAt
+            firstname
+            lastname
             profileImageLink
+            updatedAt
+            userRelationCounts {
+              followerCount
+              followedCount
+              followRequestCount
+            }
             myUserRelationToOtherUser {
               _id
+              createdAt
+              updatedAt
               statusOnRelatedUser
+              followData {
+                followedToPrivateEventPermission
+                followedToGroupchatPermission
+                followedUserAt
+              }
             }
             otherUserRelationToMyUser {
               _id
+              createdAt
+              updatedAt
               statusOnRelatedUser
+              followData {
+                followedToPrivateEventPermission
+                followedToGroupchatPermission
+                followedUserAt
+              }
             }
           }
         }
         """,
         variables: {
-          "targetUserIdInput": targetUserIdFilter.toMap(),
+          "filter": findFollowersFilter.toMap(),
           "limitOffsetFilter": limitOffsetFilter.toMap(),
         },
       );
@@ -158,17 +182,41 @@ class UserRelationRepositoryImpl extends UserRelationRepository {
         """
         query FindFollowRequests(\$limitOffsetFilter: LimitOffsetInput!) {
           findFollowRequests(limitOffsetInput: \$limitOffsetFilter) {
+            username
             _id
             authId
-            username
+            birthdate
+            createdAt
+            firstname
+            lastname
             profileImageLink
+            updatedAt
+            userRelationCounts {
+              followerCount
+              followedCount
+              followRequestCount
+            }
             myUserRelationToOtherUser {
               _id
+              createdAt
+              updatedAt
               statusOnRelatedUser
+              followData {
+                followedToPrivateEventPermission
+                followedToGroupchatPermission
+                followedUserAt
+              }
             }
             otherUserRelationToMyUser {
               _id
+              createdAt
+              updatedAt
               statusOnRelatedUser
+              followData {
+                followedToPrivateEventPermission
+                followedToGroupchatPermission
+                followedUserAt
+              }
             }
           }
         }
@@ -198,30 +246,54 @@ class UserRelationRepositoryImpl extends UserRelationRepository {
   @override
   Future<Either<NotificationAlert, List<UserEntity>>> getFollowedViaApi({
     required LimitOffsetFilter limitOffsetFilter,
-    required RequestUserIdFilter requestUserIdFilter,
+    required FindFollowedFilter findFollowedFilter,
   }) async {
     try {
       final response = await graphQlDatasource.query(
         """
-        query FindFollowed(\$requestUserIdInput: RequestUserIdInput!, \$limitOffsetFilter: LimitOffsetInput!) {
-          findFollowed(requestUserIdInput: \$requestUserIdInput, limitOffsetInput: \$limitOffsetFilter) {
+        query FindFollowed(\$filter: FindFollowedInput!, \$limitOffsetFilter: LimitOffsetInput!) {
+          findFollowed(filter: \$filter, limitOffsetInput: \$limitOffsetFilter) {
+            username
             _id
             authId
-            username
+            birthdate
+            createdAt
+            firstname
+            lastname
             profileImageLink
+            updatedAt
+            userRelationCounts {
+              followerCount
+              followedCount
+              followRequestCount
+            }
             myUserRelationToOtherUser {
               _id
+              createdAt
+              updatedAt
               statusOnRelatedUser
+              followData {
+                followedToPrivateEventPermission
+                followedToGroupchatPermission
+                followedUserAt
+              }
             }
             otherUserRelationToMyUser {
               _id
+              createdAt
+              updatedAt
               statusOnRelatedUser
+              followData {
+                followedToPrivateEventPermission
+                followedToGroupchatPermission
+                followedUserAt
+              }
             }
           }
         }
         """,
         variables: {
-          "requestUserIdInput": requestUserIdFilter.toMap(),
+          "filter": findFollowedFilter.toMap(),
           "limitOffsetFilter": limitOffsetFilter.toMap(),
         },
       );
@@ -246,28 +318,53 @@ class UserRelationRepositoryImpl extends UserRelationRepository {
   @override
   Future<Either<NotificationAlert, UserRelationEntity>>
       acceptFollowRequestViaApi({
-    required RequestUserIdFilter requestUserIdFilter,
+    required String requesterUserId,
   }) async {
     try {
       final response = await graphQlDatasource.query(
         """
-        mutation AcceptFollowRequest(\$input: RequestUserIdInput!) {
-          acceptFollowRequest(requestUserIdInput: \$input) {
+        mutation AcceptFollowRequest(\$input: String!) {
+          acceptFollowRequest(requestUserId: \$input) {
+            username
             _id
+            authId
+            birthdate
             createdAt
+            firstname
+            lastname
+            profileImageLink
             updatedAt
-            targetUserId
-            requesterUserId
-            statusOnRelatedUser
-            followData {
-              canInviteFollowedToPrivateEvent
-              canInviteFollowedToGroupchat
-              followedUserAt
+            userRelationCounts {
+              followerCount
+              followedCount
+              followRequestCount
+            }
+            myUserRelationToOtherUser {
+              _id
+              createdAt
+              updatedAt
+              statusOnRelatedUser
+              followData {
+                followedToPrivateEventPermission
+                followedToGroupchatPermission
+                followedUserAt
+              }
+            }
+            otherUserRelationToMyUser {
+              _id
+              createdAt
+              updatedAt
+              statusOnRelatedUser
+              followData {
+                followedToPrivateEventPermission
+                followedToGroupchatPermission
+                followedUserAt
+              }
             }
           }
         }
         """,
-        variables: {"input": requestUserIdFilter.toMap()},
+        variables: {"input": requesterUserId},
       );
 
       if (response.hasException) {

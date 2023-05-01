@@ -684,7 +684,7 @@ class AppRouter extends _i56.RootStackRouter {
                   children: [
                     _i56.RouteConfig(
                       ProfileFollowerTabRoute.name,
-                      path: 'follower',
+                      path: 'FOLLOWER',
                       parent: ProfileUserRelationsTabPageRoute.name,
                       guards: [authGuard],
                     ),
@@ -925,7 +925,7 @@ class AppRouter extends _i56.RootStackRouter {
               children: [
                 _i56.RouteConfig(
                   ProfileFollowerTabRoute.name,
-                  path: 'follower',
+                  path: 'FOLLOWER',
                   parent: ProfileUserRelationsTabPageRoute.name,
                   guards: [authGuard],
                 ),
@@ -1518,7 +1518,7 @@ class ProfileFollowerTabRoute extends _i56.PageRouteInfo<void> {
   const ProfileFollowerTabRoute()
       : super(
           ProfileFollowerTabRoute.name,
-          path: 'follower',
+          path: 'FOLLOWER',
         );
 
   static const String name = 'ProfileFollowerTabRoute';

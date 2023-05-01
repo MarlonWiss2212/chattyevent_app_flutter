@@ -2,9 +2,9 @@ import 'package:dartz/dartz.dart';
 import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:social_media_app_flutter/core/dto/user_relation/create_user_relation_dto.dart';
 import 'package:social_media_app_flutter/core/filter/limit_offset_filter.dart';
+import 'package:social_media_app_flutter/core/filter/user_relation/find_followed_filter.dart';
 import 'package:social_media_app_flutter/core/filter/user_relation/find_one_user_relation_filter.dart';
-import 'package:social_media_app_flutter/core/filter/user_relation/request_user_id_filter.dart';
-import 'package:social_media_app_flutter/core/filter/user_relation/target_user_id_filter.dart';
+import 'package:social_media_app_flutter/core/filter/user_relation/find_followers_filter.dart';
 import 'package:social_media_app_flutter/domain/entities/user-relation/user_relation_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:social_media_app_flutter/domain/repositories/user_relation_repository.dart';
@@ -32,11 +32,11 @@ class UserRelationUseCases {
 
   Future<Either<NotificationAlert, List<UserEntity>>> getFollowersViaApi({
     required LimitOffsetFilter limitOffsetFilter,
-    required TargetUserIdFilter targetUserIdFilter,
+    required FindFollowersFilter findFollowersFilter,
   }) async {
     return await userRelationRepository.getFollowersViaApi(
       limitOffsetFilter: limitOffsetFilter,
-      targetUserIdFilter: targetUserIdFilter,
+      findFollowersFilter: findFollowersFilter,
     );
   }
 
@@ -51,20 +51,20 @@ class UserRelationUseCases {
 
   Future<Either<NotificationAlert, List<UserEntity>>> getFollowedViaApi({
     required LimitOffsetFilter limitOffsetFilter,
-    required RequestUserIdFilter requestUserIdFilter,
+    required FindFollowedFilter findFollowedFilter,
   }) async {
     return await userRelationRepository.getFollowedViaApi(
       limitOffsetFilter: limitOffsetFilter,
-      requestUserIdFilter: requestUserIdFilter,
+      findFollowedFilter: findFollowedFilter,
     );
   }
 
   Future<Either<NotificationAlert, UserRelationEntity>>
       acceptFollowRequestViaApi({
-    required RequestUserIdFilter requestUserIdFilter,
+    required String requesterUserId,
   }) async {
     return await userRelationRepository.acceptFollowRequestViaApi(
-      requestUserIdFilter: requestUserIdFilter,
+      requesterUserId: requesterUserId,
     );
   }
 
@@ -81,8 +81,8 @@ class UserRelationUseCases {
     required FindOneUserRelationFilter findOneUserRelationFilter,
     required UserRelationEntity? myUserRelationToOtherUser,
   }) async {
-    if (myUserRelationToOtherUser?.statusOnRelatedUser != "follower" &&
-        myUserRelationToOtherUser?.statusOnRelatedUser != "requestToFollow") {
+    if (myUserRelationToOtherUser?.statusOnRelatedUser != "FOLLOWER" &&
+        myUserRelationToOtherUser?.statusOnRelatedUser != "REQUESTTOFOLLOW") {
       final userRelationOrNotificationAlert =
           await userRelationRepository.createUserRelationViaApi(
               createUserRelationDto: CreateUserRelationDto(

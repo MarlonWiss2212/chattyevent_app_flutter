@@ -1,11 +1,11 @@
 import 'dart:io';
 
 class CreateUserDto {
-  File? profileImage;
-  String firstname;
-  String lastname;
-  String username;
-  DateTime birthdate;
+  final File? profileImage;
+  final String firstname;
+  final String lastname;
+  final String username;
+  final DateTime birthdate;
 
   CreateUserDto({
     this.profileImage,

@@ -5,12 +5,12 @@ import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:social_media_app_flutter/core/dto/user/update_user_dto.dart';
 import 'package:social_media_app_flutter/core/filter/limit_offset_filter.dart';
+import 'package:social_media_app_flutter/core/filter/user/find_one_user_filter.dart';
+import 'package:social_media_app_flutter/core/filter/user_relation/find_followed_filter.dart';
+import 'package:social_media_app_flutter/core/filter/user_relation/find_followers_filter.dart';
 import 'package:social_media_app_flutter/core/filter/user_relation/find_one_user_relation_filter.dart';
-import 'package:social_media_app_flutter/core/filter/user_relation/target_user_id_filter.dart';
 import 'package:social_media_app_flutter/domain/entities/user-relation/user_relations_count_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/user/user_entity.dart';
-import 'package:social_media_app_flutter/core/filter/get_one_user_filter.dart';
-import 'package:social_media_app_flutter/core/filter/user_relation/request_user_id_filter.dart';
 import 'package:social_media_app_flutter/domain/usecases/user_relation_usecases.dart';
 import 'package:social_media_app_flutter/domain/usecases/user_usecases.dart';
 
@@ -35,7 +35,7 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
     emitState(status: ProfilePageStateStatus.loading);
     final Either<NotificationAlert, UserEntity> userOrFailure =
         await userUseCases.getUserViaApi(
-      getOneUserFilter: GetOneUserFilter(
+      findOneUserFilter: FindOneUserFilter(
         id: state.user.id != "" ? state.user.id : null,
         authId: state.user.authId != "" &&
                 state.user.authId == authCubit.state.currentUser.authId
@@ -64,7 +64,7 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
 
     final Either<NotificationAlert, List<UserEntity>> userOrFailure =
         await userRelationUseCases.getFollowersViaApi(
-      targetUserIdFilter: TargetUserIdFilter(targetUserId: state.user.id),
+      findFollowersFilter: FindFollowersFilter(targetUserId: state.user.id),
       limitOffsetFilter: LimitOffsetFilter(
         limit: reload ? state.followers?.length ?? limit : limit,
         offset: reload ? 0 : state.followers?.length ?? 0,
@@ -131,7 +131,7 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
 
     final Either<NotificationAlert, List<UserEntity>> userOrFailure =
         await userRelationUseCases.getFollowedViaApi(
-      requestUserIdFilter: RequestUserIdFilter(requesterUserId: state.user.id),
+      findFollowedFilter: FindFollowedFilter(requesterUserId: state.user.id),
       limitOffsetFilter: LimitOffsetFilter(
         limit: reload ? state.followed?.length ?? limit : limit,
         offset: reload ? 0 : state.followed?.length ?? 0,
@@ -199,10 +199,8 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
       followRequestsStatus: ProfilePageStateFollowRequestsStatus.loading,
     );
 
-    final userRelationOrFailure =
-        await userRelationUseCases.acceptFollowRequestViaApi(
-      requestUserIdFilter: RequestUserIdFilter(requesterUserId: userId),
-    );
+    final userRelationOrFailure = await userRelationUseCases
+        .acceptFollowRequestViaApi(requesterUserId: userId);
 
     userRelationOrFailure.fold(
       (alert) => notificationCubit.newAlert(notificationAlert: alert),

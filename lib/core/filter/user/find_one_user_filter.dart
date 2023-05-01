@@ -1,8 +1,8 @@
-class GetOneUserFilter {
-  String? id;
-  String? authId;
+class FindOneUserFilter {
+  final String? id;
+  final String? authId;
 
-  GetOneUserFilter({this.id, this.authId});
+  FindOneUserFilter({this.id, this.authId});
 
   Map<dynamic, dynamic> toMap() {
     Map<dynamic, dynamic> map = {};

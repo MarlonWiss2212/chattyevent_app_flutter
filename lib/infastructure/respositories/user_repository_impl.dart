@@ -5,10 +5,10 @@ import 'package:social_media_app_flutter/application/bloc/notification/notificat
 import 'package:social_media_app_flutter/core/dto/user/create_user_dto.dart';
 import 'package:social_media_app_flutter/core/dto/user/update_user_dto.dart';
 import 'package:social_media_app_flutter/core/filter/limit_offset_filter.dart';
+import 'package:social_media_app_flutter/core/filter/user/find_one_user_filter.dart';
+import 'package:social_media_app_flutter/core/filter/user/find_users_filter.dart';
 import 'package:social_media_app_flutter/core/utils/failure_helper.dart';
 import 'package:social_media_app_flutter/domain/entities/user/user_entity.dart';
-import 'package:social_media_app_flutter/core/filter/get_one_user_filter.dart';
-import 'package:social_media_app_flutter/core/filter/get_users_filter.dart';
 import 'package:social_media_app_flutter/domain/repositories/user_repository.dart';
 import 'package:social_media_app_flutter/infastructure/datasources/remote/graphql.dart';
 import 'package:social_media_app_flutter/infastructure/models/user/user_model.dart';
@@ -19,19 +19,22 @@ class UserRepositoryImpl implements UserRepository {
 
   @override
   Future<Either<NotificationAlert, UserEntity>> getUserViaApi({
-    required GetOneUserFilter getOneUserFilter,
+    required FindOneUserFilter findOneUserFilter,
   }) async {
     try {
       final response = await graphQlDatasource.query(
         """
-        query FindUser(\$input: FindOneUserInput!) {
-          findUser(filter: \$input) {
-            _id
-            firstname
-            authId
-            lastname
+        query FindUser(\$filter: FindOneUserInput!) {
+          findUser(filter: \$filter) {
             username
+            _id
+            authId
+            birthdate
+            createdAt
+            firstname
+            lastname
             profileImageLink
+            updatedAt
             userRelationCounts {
               followerCount
               followedCount
@@ -43,15 +46,26 @@ class UserRepositoryImpl implements UserRepository {
               updatedAt
               statusOnRelatedUser
               followData {
-                canInviteFollowedToPrivateEvent
-                canInviteFollowedToGroupchat
+                followedToPrivateEventPermission
+                followedToGroupchatPermission
+                followedUserAt
+              }
+            }
+            otherUserRelationToMyUser {
+              _id
+              createdAt
+              updatedAt
+              statusOnRelatedUser
+              followData {
+                followedToPrivateEventPermission
+                followedToGroupchatPermission
                 followedUserAt
               }
             }
           }
         }
         """,
-        variables: {"input": getOneUserFilter.toMap()},
+        variables: {"filter": findOneUserFilter.toMap()},
       );
 
       if (response.hasException) {
@@ -69,14 +83,14 @@ class UserRepositoryImpl implements UserRepository {
 
   @override
   Future<Either<NotificationAlert, List<UserEntity>>> getUsersViaApi({
-    required GetUsersFilter getUsersFilter,
+    required FindUsersFilter findUsersFilter,
     required LimitOffsetFilter limitOffsetFilter,
   }) async {
     try {
       final response = await graphQlDatasource.query(
         """
-        query FindUsers(\$input: FindUsersInput!, \$limitOffsetInput: LimitOffsetInput!) {
-          findUsers(filter: \$input, limitOffsetInput: \$limitOffsetInput) {
+        query FindUsers(\$filter: FindUsersInput!, \$limitOffsetInput: LimitOffsetInput!) {
+          findUsers(filter: \$filter, limitOffsetInput: \$limitOffsetInput) {
             _id
             authId
             username
@@ -89,7 +103,7 @@ class UserRepositoryImpl implements UserRepository {
         }
         """,
         variables: {
-          "input": getUsersFilter.toMap(),
+          "filter": findUsersFilter.toMap(),
           "limitOffsetInput": limitOffsetFilter.toMap(),
         },
       );

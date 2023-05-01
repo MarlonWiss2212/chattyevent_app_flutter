@@ -227,8 +227,8 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
               updatedAt
               statusOnRelatedUser
               followData {
-                canInviteFollowedToPrivateEvent
-                canInviteFollowedToGroupchat
+                followedToPrivateEventPermission
+                followedToGroupchatPermission
                 followedUserAt
               }
             }
@@ -238,8 +238,8 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
               updatedAt
               statusOnRelatedUser
               followData {
-                canInviteFollowedToPrivateEvent
-                canInviteFollowedToGroupchat
+                followedToPrivateEventPermission
+                followedToGroupchatPermission
                 followedUserAt
               }
             } 
@@ -271,8 +271,8 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
               updatedAt
               statusOnRelatedUser
               followData {
-                canInviteFollowedToPrivateEvent
-                canInviteFollowedToGroupchat
+                followedToPrivateEventPermission
+                followedToGroupchatPermission
                 followedUserAt
               }
             }
@@ -282,8 +282,8 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
               updatedAt
               statusOnRelatedUser
               followData {
-                canInviteFollowedToPrivateEvent
-                canInviteFollowedToGroupchat
+                followedToPrivateEventPermission
+                followedToGroupchatPermission
                 followedUserAt
               }
             }
@@ -502,8 +502,8 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
                 updatedAt
                 statusOnRelatedUser
                 followData {
-                  canInviteFollowedToPrivateEvent
-                  canInviteFollowedToGroupchat
+                  followedToPrivateEventPermission
+                  followedToGroupchatPermission
                   followedUserAt
                 }
               }
@@ -513,8 +513,8 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
                 updatedAt
                 statusOnRelatedUser
                 followData {
-                  canInviteFollowedToPrivateEvent
-                  canInviteFollowedToGroupchat
+                  followedToPrivateEventPermission
+                  followedToGroupchatPermission
                   followedUserAt
                 }
               }
@@ -578,8 +578,8 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
                 updatedAt
                 statusOnRelatedUser
                 followData {
-                  canInviteFollowedToPrivateEvent
-                  canInviteFollowedToGroupchat
+                  followedToPrivateEventPermission
+                  followedToGroupchatPermission
                   followedUserAt
                 }
               }
@@ -589,8 +589,8 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
                 updatedAt
                 statusOnRelatedUser
                 followData {
-                  canInviteFollowedToPrivateEvent
-                  canInviteFollowedToGroupchat
+                  followedToPrivateEventPermission
+                  followedToGroupchatPermission
                   followedUserAt
                 }
               }
@@ -649,8 +649,8 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
                 updatedAt
                 statusOnRelatedUser
                 followData {
-                  canInviteFollowedToPrivateEvent
-                  canInviteFollowedToGroupchat
+                  followedToPrivateEventPermission
+                  followedToGroupchatPermission
                   followedUserAt
                 }
               }
@@ -660,8 +660,8 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
                 updatedAt
                 statusOnRelatedUser
                 followData {
-                  canInviteFollowedToPrivateEvent
-                  canInviteFollowedToGroupchat
+                  followedToPrivateEventPermission
+                  followedToGroupchatPermission
                   followedUserAt
                 }
               }
@@ -723,8 +723,8 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
                 updatedAt
                 statusOnRelatedUser
                 followData {
-                  canInviteFollowedToPrivateEvent
-                  canInviteFollowedToGroupchat
+                  followedToPrivateEventPermission
+                  followedToGroupchatPermission
                   followedUserAt
                 }
               }
@@ -734,8 +734,8 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
                 updatedAt
                 statusOnRelatedUser
                 followData {
-                  canInviteFollowedToPrivateEvent
-                  canInviteFollowedToGroupchat
+                  followedToPrivateEventPermission
+                  followedToGroupchatPermission
                   followedUserAt
                 }
               } 
@@ -767,8 +767,8 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
                 updatedAt
                 statusOnRelatedUser
                 followData {
-                  canInviteFollowedToPrivateEvent
-                  canInviteFollowedToGroupchat
+                  followedToPrivateEventPermission
+                  followedToGroupchatPermission
                   followedUserAt
                 }
               }
@@ -778,8 +778,8 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
                 updatedAt
                 statusOnRelatedUser
                 followData {
-                  canInviteFollowedToPrivateEvent
-                  canInviteFollowedToGroupchat
+                  followedToPrivateEventPermission
+                  followedToGroupchatPermission
                   followedUserAt
                 }
               }

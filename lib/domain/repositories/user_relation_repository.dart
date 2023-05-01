@@ -2,9 +2,9 @@ import 'package:dartz/dartz.dart';
 import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:social_media_app_flutter/core/dto/user_relation/create_user_relation_dto.dart';
 import 'package:social_media_app_flutter/core/filter/limit_offset_filter.dart';
+import 'package:social_media_app_flutter/core/filter/user_relation/find_followed_filter.dart';
+import 'package:social_media_app_flutter/core/filter/user_relation/find_followers_filter.dart';
 import 'package:social_media_app_flutter/core/filter/user_relation/find_one_user_relation_filter.dart';
-import 'package:social_media_app_flutter/core/filter/user_relation/request_user_id_filter.dart';
-import 'package:social_media_app_flutter/core/filter/user_relation/target_user_id_filter.dart';
 import 'package:social_media_app_flutter/domain/entities/user-relation/user_relation_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/user/user_entity.dart';
 
@@ -18,7 +18,7 @@ abstract class UserRelationRepository {
   });
   Future<Either<NotificationAlert, List<UserEntity>>> getFollowersViaApi({
     required LimitOffsetFilter limitOffsetFilter,
-    required TargetUserIdFilter targetUserIdFilter,
+    required FindFollowersFilter findFollowersFilter,
   });
   Future<Either<NotificationAlert, List<UserEntity>>>
       getFollowerRequestsViaApi({
@@ -26,11 +26,11 @@ abstract class UserRelationRepository {
   });
   Future<Either<NotificationAlert, List<UserEntity>>> getFollowedViaApi({
     required LimitOffsetFilter limitOffsetFilter,
-    required RequestUserIdFilter requestUserIdFilter,
+    required FindFollowedFilter findFollowedFilter,
   });
   Future<Either<NotificationAlert, UserRelationEntity>>
       acceptFollowRequestViaApi({
-    required RequestUserIdFilter requestUserIdFilter,
+    required String requesterUserId,
   });
   Future<Either<NotificationAlert, bool>> deleteUserRelationViaApi({
     required FindOneUserRelationFilter findOneUserRelationFilter,

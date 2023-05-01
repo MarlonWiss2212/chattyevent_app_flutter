@@ -6,7 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
-import 'package:social_media_app_flutter/core/filter/get_one_user_filter.dart';
+import 'package:social_media_app_flutter/core/filter/user/find_one_user_filter.dart';
 import 'package:social_media_app_flutter/core/injection.dart';
 import 'package:social_media_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:social_media_app_flutter/domain/usecases/auth_usecases.dart';
@@ -40,7 +40,7 @@ class AuthCubit extends Cubit<AuthState> {
 
     final Either<NotificationAlert, UserEntity> userOrFailure =
         await userUseCases.getUserViaApi(
-      getOneUserFilter: GetOneUserFilter(authId: auth.currentUser!.uid),
+      findOneUserFilter: FindOneUserFilter(authId: auth.currentUser!.uid),
     );
 
     await userOrFailure.fold(

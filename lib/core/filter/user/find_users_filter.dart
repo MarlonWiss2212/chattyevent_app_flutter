@@ -1,8 +1,8 @@
-class GetUsersFilter {
-  String? search;
-  List<String>? userIds;
+class FindUsersFilter {
+  final String? search;
+  final List<String>? userIds;
 
-  GetUsersFilter({
+  FindUsersFilter({
     this.search,
     this.userIds,
   });

@@ -327,7 +327,7 @@ const profileRouter = AutoRoute(
         AutoRoute(
           page: ProfileFollowerTab,
           guards: [AuthGuard],
-          path: 'follower',
+          path: 'FOLLOWER',
         ),
         AutoRoute(
           page: ProfileFollowedTab,
@@ -379,7 +379,7 @@ const homePageRouter = AutoRoute(
             AutoRoute(
               page: ProfileFollowerTab,
               guards: [AuthGuard],
-              path: 'follower',
+              path: 'FOLLOWER',
             ),
             AutoRoute(
               page: ProfileFollowedTab,

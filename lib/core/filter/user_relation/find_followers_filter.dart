@@ -1,14 +1,16 @@
-class UpdateUserRelationFollowDataDto {
+class FindFollowersFilter {
+  final String targetUserId;
   final String? followedToPrivateEventPermission;
   final String? followedToGroupchatPermission;
 
-  UpdateUserRelationFollowDataDto({
-    this.followedToPrivateEventPermission,
+  FindFollowersFilter({
+    required this.targetUserId,
     this.followedToGroupchatPermission,
+    this.followedToPrivateEventPermission,
   });
 
   Map<dynamic, dynamic> toMap() {
-    Map<dynamic, dynamic> map = {};
+    Map<dynamic, dynamic> map = {"targetUserId": targetUserId};
 
     if (followedToPrivateEventPermission != null) {
       map.addAll({

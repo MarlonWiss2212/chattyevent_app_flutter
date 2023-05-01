@@ -3,10 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:social_media_app_flutter/core/filter/limit_offset_filter.dart';
+import 'package:social_media_app_flutter/core/filter/user/find_users_filter.dart';
 import 'package:social_media_app_flutter/core/filter/user_relation/find_one_user_relation_filter.dart';
 import 'package:social_media_app_flutter/domain/entities/user-relation/user_relations_count_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/user/user_entity.dart';
-import 'package:social_media_app_flutter/core/filter/get_users_filter.dart';
 import 'package:social_media_app_flutter/domain/usecases/user_relation_usecases.dart';
 import 'package:social_media_app_flutter/domain/usecases/user_usecases.dart';
 part 'user_search_state.dart';
@@ -27,7 +27,7 @@ class UserSearchCubit extends Cubit<UserSearchState> {
 
   Future getUsersViaApi({
     LimitOffsetFilter? limitOffsetFilter,
-    GetUsersFilter? getUsersFilter,
+    FindUsersFilter? findUsersFilter,
   }) async {
     emit(UserSearchState(
       status: UserSearchStateStatus.loading,
@@ -36,7 +36,7 @@ class UserSearchCubit extends Cubit<UserSearchState> {
 
     final Either<NotificationAlert, List<UserEntity>> userSearchOrFailure =
         await userUseCases.getUsersViaApi(
-      getUsersFilter: getUsersFilter ?? GetUsersFilter(),
+      findUsersFilter: findUsersFilter ?? FindUsersFilter(),
       limitOffsetFilter: limitOffsetFilter ??
           LimitOffsetFilter(
             limit: 10,

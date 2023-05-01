@@ -2,19 +2,20 @@ import 'package:social_media_app_flutter/domain/entities/user-relation/user_rela
 
 class UserRelationFollowDataModel extends UserRelationFollowDataEntity {
   UserRelationFollowDataModel({
-    bool? canInviteFollowedToPrivateEvent,
-    bool? canInviteFollowedToGroupchat,
+    String? followedToGroupchatPermission,
+    String? followedToPrivateEventPermission,
     DateTime? followedUserAt,
   }) : super(
-          canInviteFollowedToPrivateEvent: canInviteFollowedToPrivateEvent,
-          canInviteFollowedToGroupchat: canInviteFollowedToGroupchat,
+          followedToGroupchatPermission: followedToGroupchatPermission,
+          followedToPrivateEventPermission: followedToPrivateEventPermission,
           followedUserAt: followedUserAt,
         );
 
   factory UserRelationFollowDataModel.fromJson(Map<String, dynamic> json) {
     return UserRelationFollowDataModel(
-      canInviteFollowedToPrivateEvent: json['canInviteFollowedToPrivateEvent'],
-      canInviteFollowedToGroupchat: json['canInviteFollowedToGroupchat'],
+      followedToGroupchatPermission: json['followedToGroupchatPermission'],
+      followedToPrivateEventPermission:
+          json['followedToPrivateEventPermission'],
       followedUserAt: json['followedUserAt'] != null
           ? DateTime.parse(json['followedUserAt'])
           : null,
