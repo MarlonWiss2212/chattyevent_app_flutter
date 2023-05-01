@@ -1,15 +1,16 @@
-class AddedGroupchatMessageFilter {
-  final String groupchatTo;
+import 'package:social_media_app_flutter/core/filter/groupchat/find_one_groupchat_to_filter.dart';
+
+class AddedGroupchatMessageFilter extends FindOneGroupchatToFilter {
   final bool? returnMyAddedMessageToo;
 
   AddedGroupchatMessageFilter({
-    required this.groupchatTo,
+    required super.groupchatTo,
     this.returnMyAddedMessageToo,
   });
 
+  @override
   Map<dynamic, dynamic> toMap() {
-    Map<dynamic, dynamic> map = {"groupchatTo": groupchatTo};
-
+    final Map<dynamic, dynamic> map = super.toMap();
     if (returnMyAddedMessageToo != null) {
       map.addAll({"returnMyAddedMessageToo": returnMyAddedMessageToo});
     }

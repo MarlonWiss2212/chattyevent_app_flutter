@@ -2,10 +2,10 @@ import 'dart:io';
 import 'package:social_media_app_flutter/core/dto/groupchat/groupchat_user/create_groupchat_user_from_create_groupchat_dto.dart';
 
 class CreateGroupchatDto {
-  String title;
-  File? profileImage;
-  String? description;
-  List<CreateGroupchatUserFromCreateGroupchatDto>? groupchatUsers;
+  final String title;
+  final File? profileImage;
+  final String? description;
+  final List<CreateGroupchatUserFromCreateGroupchatDto>? groupchatUsers;
 
   CreateGroupchatDto({
     required this.title,
@@ -15,10 +15,10 @@ class CreateGroupchatDto {
   });
 
   Map<dynamic, dynamic> toMap() {
-    Map<dynamic, dynamic> variables = {'title': title};
+    Map<dynamic, dynamic> map = {'title': title};
 
     if (description != null) {
-      variables.addAll({'description': description!});
+      map.addAll({'description': description!});
     }
 
     if (groupchatUsers != null && groupchatUsers!.isNotEmpty) {
@@ -27,9 +27,9 @@ class CreateGroupchatDto {
         mappedUsers.add(user.toMap());
       }
 
-      variables.addAll({'groupchatUsers': mappedUsers});
+      map.addAll({'groupchatUsers': mappedUsers});
     }
 
-    return variables;
+    return map;
   }
 }

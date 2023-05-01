@@ -3,12 +3,12 @@ import 'package:http/http.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:social_media_app_flutter/core/dto/groupchat/groupchat_message/create_groupchat_message_dto.dart';
-import 'package:social_media_app_flutter/core/filter/groupchat/added_groupchat_message_filter.dart';
+import 'package:social_media_app_flutter/core/filter/groupchat/groupchat_message/added_groupchat_message_filter.dart';
+import 'package:social_media_app_flutter/core/filter/groupchat/groupchat_message/find_groupchat_messages_filter.dart';
 import 'package:social_media_app_flutter/core/filter/limit_offset_filter/limit_offset_filter.dart';
 import 'package:social_media_app_flutter/core/utils/failure_helper.dart';
 import 'package:social_media_app_flutter/domain/entities/message/message_entity.dart';
 import 'package:dartz/dartz.dart';
-import 'package:social_media_app_flutter/core/filter/groupchat/get_one_groupchat_filter.dart';
 import 'package:social_media_app_flutter/domain/repositories/groupchat/groupchat_message_repository.dart';
 import 'package:social_media_app_flutter/infastructure/datasources/remote/graphql.dart';
 import 'package:social_media_app_flutter/infastructure/models/message/message_model.dart';
@@ -73,13 +73,13 @@ class GroupchatMessageRepositoryImpl implements GroupchatMessageRepository {
   @override
   Future<Either<NotificationAlert, List<MessageEntity>>>
       getGroupchatMessagesViaApi({
-    required GetOneGroupchatFilter getOneGroupchatFilter,
+    required FindGroupchatMessagesFilter findGroupchatMessagesFilter,
     required LimitOffsetFilter limitOffsetFilter,
   }) async {
     try {
       final response = await graphQlDatasource.query(
         """
-        query FindGroupchatMessages(\$input: FindOneGroupchatInput!, \$limitOffsetFilter: LimitOffsetInput!) {
+        query FindGroupchatMessages(\$input: FindGroupchatMessagesInput!, \$limitOffsetFilter: LimitOffsetInput!) {
           findGroupchatMessages(filter: \$input, limitOffsetInput: \$limitOffsetFilter) {
             _id
             message
@@ -92,7 +92,7 @@ class GroupchatMessageRepositoryImpl implements GroupchatMessageRepository {
         }
       """,
         variables: {
-          "input": getOneGroupchatFilter.toMap(),
+          "input": findGroupchatMessagesFilter.toMap(),
           "limitOffsetFilter": limitOffsetFilter.toMap(),
         },
       );

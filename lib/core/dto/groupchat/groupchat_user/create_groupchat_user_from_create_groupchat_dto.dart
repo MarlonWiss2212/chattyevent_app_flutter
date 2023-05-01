@@ -1,9 +1,9 @@
 import 'package:social_media_app_flutter/domain/entities/user/user_entity.dart';
 
 class CreateGroupchatUserFromCreateGroupchatDto {
-  String userId;
-  bool? admin;
-  String? usernameForChat;
+  final String userId;
+  final bool? admin;
+  final String? usernameForChat;
 
   CreateGroupchatUserFromCreateGroupchatDto({
     required this.userId,
@@ -27,10 +27,9 @@ class CreateGroupchatUserFromCreateGroupchatDto {
   }
 }
 
-/// use this for lists to get the username
 class CreateGroupchatUserFromCreateGroupchatDtoWithUserEntity
     extends CreateGroupchatUserFromCreateGroupchatDto {
-  UserEntity user;
+  final UserEntity user;
 
   CreateGroupchatUserFromCreateGroupchatDtoWithUserEntity({
     required this.user,

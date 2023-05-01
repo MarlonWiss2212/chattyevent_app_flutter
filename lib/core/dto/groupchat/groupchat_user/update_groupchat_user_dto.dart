@@ -1,6 +1,6 @@
 class UpdateGroupchatUserDto {
-  bool? admin;
-  String? usernameForChat;
+  final bool? admin;
+  final String? usernameForChat;
 
   UpdateGroupchatUserDto({
     this.admin,

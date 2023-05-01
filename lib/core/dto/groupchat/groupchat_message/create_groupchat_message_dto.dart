@@ -1,23 +1,26 @@
 import 'dart:io';
 
-class CreateGroupchatMessageDto {
-  String message;
-  String groupchatTo;
-  String? messageToReactTo;
-  File? file;
+import 'package:social_media_app_flutter/core/filter/groupchat/find_one_groupchat_to_filter.dart';
+
+class CreateGroupchatMessageDto extends FindOneGroupchatToFilter {
+  final String message;
+  final String? messageToReactTo;
+  final File? file;
 
   CreateGroupchatMessageDto({
     required this.message,
-    required this.groupchatTo,
+    required super.groupchatTo,
     this.file,
     this.messageToReactTo,
   });
 
-  Map<dynamic, dynamic> toMap() {
-    Map<dynamic, dynamic> map = {
+  @override
+  Map toMap() {
+    Map<dynamic, dynamic> map = super.toMap();
+    map.addAll({
       'message': message,
       'groupchatTo': groupchatTo,
-    };
+    });
 
     if (messageToReactTo != null) {
       map.addAll({'messageToReactTo': messageToReactTo});

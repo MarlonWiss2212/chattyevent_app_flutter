@@ -5,13 +5,16 @@ import 'package:meta/meta.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
+import 'package:social_media_app_flutter/core/dto/groupchat/groupchat_left_user/create_groupchat_left_user_dto.dart';
 import 'package:social_media_app_flutter/core/dto/groupchat/groupchat_user/create_groupchat_user_dto.dart';
 import 'package:social_media_app_flutter/core/dto/groupchat/update_groupchat_dto.dart';
 import 'package:social_media_app_flutter/core/dto/groupchat/groupchat_user/update_groupchat_user_dto.dart';
-import 'package:social_media_app_flutter/core/filter/groupchat/added_groupchat_message_filter.dart';
+import 'package:social_media_app_flutter/core/filter/groupchat/find_one_groupchat_filter.dart';
+import 'package:social_media_app_flutter/core/filter/groupchat/find_one_groupchat_to_filter.dart';
+import 'package:social_media_app_flutter/core/filter/groupchat/groupchat_message/added_groupchat_message_filter.dart';
 import 'package:social_media_app_flutter/core/filter/get_private_events_filter.dart';
-import 'package:social_media_app_flutter/core/filter/groupchat/get_one_groupchat_filter.dart';
-import 'package:social_media_app_flutter/core/filter/groupchat/get_one_groupchat_user_filter.dart';
+import 'package:social_media_app_flutter/core/filter/groupchat/groupchat_message/find_groupchat_messages_filter.dart';
+import 'package:social_media_app_flutter/core/filter/groupchat/groupchat_user/find_one_groupchat_user_filter.dart';
 import 'package:social_media_app_flutter/core/filter/limit_offset_filter/limit_offset_filter.dart';
 import 'package:social_media_app_flutter/core/response/groupchat/groupchat-data.response.dart';
 import 'package:social_media_app_flutter/core/response/groupchat/groupchat-users-and-left-users.response.dart';
@@ -84,7 +87,9 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
 
     final Either<NotificationAlert, GroupchatAndGroupchatUsersResponse>
         response = await groupchatUseCases.getGroupchatDataViaApi(
-      getOneGroupchatFilter: GetOneGroupchatFilter(id: state.currentChat.id),
+      findOneGroupchatFilter: FindOneGroupchatFilter(
+        groupchatId: state.currentChat.id,
+      ),
       limitOffsetFilterMessages: LimitOffsetFilter(
         limit: 20,
         offset: state.messages.length,
@@ -115,7 +120,9 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
     final Either<NotificationAlert, GroupchatUsersAndLeftUsersResponse>
         groupchatUsersAndLeftUsers =
         await groupchatUseCases.getGroupchatUsersAndLeftUsers(
-      groupchatId: state.currentChat.id,
+      findOneGroupchatToFilter: FindOneGroupchatToFilter(
+        groupchatTo: state.currentChat.id,
+      ),
     );
     groupchatUsersAndLeftUsers.fold(
       (alert) => notificationCubit.newAlert(notificationAlert: alert),
@@ -207,7 +214,9 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
 
     final Either<NotificationAlert, GroupchatEntity> groupchatOrFailure =
         await groupchatUseCases.getGroupchatViaApi(
-      getOneGroupchatFilter: GetOneGroupchatFilter(id: state.currentChat.id),
+      findOneGroupchatFilter: FindOneGroupchatFilter(
+        groupchatId: state.currentChat.id,
+      ),
     );
 
     groupchatOrFailure.fold(
@@ -233,7 +242,9 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
   }) async {
     final Either<NotificationAlert, GroupchatEntity> groupchatOrFailure =
         await groupchatUseCases.updateGroupchatViaApi(
-      getOneGroupchatFilter: GetOneGroupchatFilter(id: state.currentChat.id),
+      findOneGroupchatFilter: FindOneGroupchatFilter(
+        groupchatId: state.currentChat.id,
+      ),
       updateGroupchatDto: updateGroupchatDto,
     );
 
@@ -284,7 +295,7 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
     final updatedUserOrFailure =
         await groupchatUseCases.updateGroupchatUserViaApi(
       updateGroupchatUserDto: updateGroupchatUserDto,
-      getOneGroupchatUserFilter: GetOneGroupchatUserFilter(
+      findOneGroupchatUserFilter: FindOneGroupchatUserFilter(
         userId: userId,
         groupchatTo: state.currentChat.id,
       ),
@@ -322,7 +333,7 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
     final Either<NotificationAlert, GroupchatLeftUserEntity?>
         groupchatOrFailure =
         await groupchatUseCases.deleteUserFromGroupchatViaApi(
-      getOneGroupchatUserFilter: GetOneGroupchatUserFilter(
+      createGroupchatLeftUserDto: CreateGroupchatLeftUserDto(
         userId: userId,
         groupchatTo: state.currentChat.id,
       ),
@@ -365,8 +376,8 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
     ));
     final Either<NotificationAlert, List<MessageEntity>> messagesOrFailure =
         await groupchatMessageUseCases.getGroupchatMessagesViaApi(
-      getOneGroupchatFilter: GetOneGroupchatFilter(
-        id: state.currentChat.id,
+      findGroupchatMessagesFilter: FindGroupchatMessagesFilter(
+        groupchatTo: state.currentChat.id,
       ),
       limitOffsetFilter: LimitOffsetFilter(
         limit: 20,

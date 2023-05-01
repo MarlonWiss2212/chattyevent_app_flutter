@@ -2,11 +2,15 @@ import 'package:http/http.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:social_media_app_flutter/core/dto/groupchat/create_groupchat_dto.dart';
+import 'package:social_media_app_flutter/core/dto/groupchat/groupchat_left_user/create_groupchat_left_user_dto.dart';
 import 'package:social_media_app_flutter/core/dto/groupchat/groupchat_user/create_groupchat_user_dto.dart';
 import 'package:social_media_app_flutter/core/dto/groupchat/update_groupchat_dto.dart';
 import 'package:social_media_app_flutter/core/dto/groupchat/groupchat_user/update_groupchat_user_dto.dart';
-import 'package:social_media_app_flutter/core/filter/groupchat/get_one_groupchat_filter.dart';
-import 'package:social_media_app_flutter/core/filter/groupchat/get_one_groupchat_user_filter.dart';
+import 'package:social_media_app_flutter/core/filter/groupchat/find_one_groupchat_filter.dart';
+import 'package:social_media_app_flutter/core/filter/groupchat/find_one_groupchat_to_filter.dart';
+import 'package:social_media_app_flutter/core/filter/groupchat/groupchat_left_user/find_groupchat_left_users_filter.dart';
+import 'package:social_media_app_flutter/core/filter/groupchat/groupchat_user/find_groupchat_users_filter.dart';
+import 'package:social_media_app_flutter/core/filter/groupchat/groupchat_user/find_one_groupchat_user_filter.dart';
 import 'package:social_media_app_flutter/core/filter/limit_offset_filter/limit_offset_filter.dart';
 import 'package:social_media_app_flutter/core/response/groupchat/groupchat-data.response.dart';
 import 'package:social_media_app_flutter/core/response/groupchat/groupchat-users-and-left-users.response.dart';
@@ -74,13 +78,13 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
 
   @override
   Future<Either<NotificationAlert, GroupchatEntity>> getGroupchatViaApi({
-    required GetOneGroupchatFilter getOneGroupchatFilter,
+    required FindOneGroupchatFilter findOneGroupchatFilter,
   }) async {
     try {
       final response = await graphQlDatasource.query(
         """
-        query FindGroupchat(\$findOneGroupchatInput: FindOneGroupchatInput!) {
-          findGroupchat(findOneGroupchatInput: \$findOneGroupchatInput) {
+        query FindGroupchat(\$filter: FindOneGroupchatInput!) {
+          findGroupchat(filter: \$filter) {
             _id
             title
             description
@@ -90,7 +94,7 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
           }
         }
         """,
-        variables: {"findOneGroupchatInput": getOneGroupchatFilter.toMap()},
+        variables: {"filter": findOneGroupchatFilter.toMap()},
       );
 
       if (response.hasException) {
@@ -109,13 +113,13 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
   @override
   Future<Either<NotificationAlert, GroupchatAndGroupchatUsersResponse>>
       getGroupchatDataViaApi({
-    required GetOneGroupchatFilter getOneGroupchatFilter,
+    required FindOneGroupchatFilter findOneGroupchatFilter,
   }) async {
     try {
       final response = await graphQlDatasource.query(
         """
-          query GetGroupchatData(\$groupchatId: String!, \$limitOffsetInput: LimitOffsetInput!, \$findOneGroupchatInput: FindOneGroupchatInput!) {   
-            findGroupchat(findOneGroupchatInput: \$findOneGroupchatInput) {
+          query GetGroupchatData(\$findGroupchatLeftUsersInput: FindGroupchatLeftUsersInput!, \$findGroupchaUsersInput: FindGroupchaUsersInput!, \$limitOffsetInput: LimitOffsetInput!, \$findOneGroupchatInput: FindOneGroupchatInput!) {   
+            findGroupchat(filter: \$findOneGroupchatInput) {
               _id
               title
               description
@@ -124,7 +128,7 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
               createdAt
             }
 
-            findGroupchatLeftUsers(groupchatId: \$groupchatId, limitOffsetInput: \$limitOffsetInput) {
+            findGroupchatLeftUsers(filter: \$findGroupchatLeftUsersInput, limitOffsetInput: \$limitOffsetInput) {
               groupchatUserLeftId
               _id
               authId
@@ -166,7 +170,7 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
               }
             }
 
-            findGroupchatUsers(groupchatId: \$groupchatId, limitOffsetInput: \$limitOffsetInput) {
+            findGroupchatUsers(filter: \$findGroupchatUsersInput, limitOffsetInput: \$limitOffsetInput) {
               groupchatUserId
               _id
               authId
@@ -212,8 +216,13 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
           }
         """,
         variables: {
-          "findOneGroupchatInput": getOneGroupchatFilter.toMap(),
-          "groupchatId": getOneGroupchatFilter.id,
+          "findOneGroupchatInput": findOneGroupchatFilter.toMap(),
+          "findGroupchatUsersInput": FindGroupchatUsersFilter(
+            groupchatTo: findOneGroupchatFilter.groupchatId,
+          ),
+          "findGroupchatLeftUsersInput": FindGroupchatLeftUsersFilter(
+            groupchatTo: findOneGroupchatFilter.groupchatId,
+          ),
           "limitOffsetInput": LimitOffsetFilter(
             limit: 1000,
             offset: 0,
@@ -223,7 +232,7 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
 
       if (response.hasException) {
         return Left(FailureHelper.graphqlFailureToNotificationAlert(
-          title: "Finden von Chat usern Fehler",
+          title: "Finden von Chat Daten Fehler",
           exception: response.exception!,
         ));
       }
@@ -294,13 +303,13 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
 
   @override
   Future<Either<NotificationAlert, GroupchatEntity>> updateGroupchatViaApi({
-    required GetOneGroupchatFilter getOneGroupchatFilter,
+    required FindOneGroupchatFilter findOneGroupchatFilter,
     required UpdateGroupchatDto updateGroupchatDto,
   }) async {
     try {
       Map<String, dynamic> variables = {
         "updateGroupchatInput": updateGroupchatDto.toMap(),
-        "findOneGroupchatInput": getOneGroupchatFilter.toMap(),
+        "filter": findOneGroupchatFilter.toMap(),
       };
       if (updateGroupchatDto.updateProfileImage != null) {
         final byteData =
@@ -316,8 +325,8 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
 
       final response = await graphQlDatasource.mutation(
         """
-        mutation UpdateGroupchat(\$updateGroupchatInput: UpdateGroupchatInput, \$findOneGroupchatInput: FindOneGroupchatInput!, \$updateProfileImage: Upload) {
-          updateGroupchat(updateGroupchatInput: \$updateGroupchatInput, findOneGroupchatInput: \$findOneGroupchatInput, updateProfileImage: \$updateProfileImage) {
+        mutation UpdateGroupchat(\$updateGroupchatInput: UpdateGroupchatInput, \$filter: FindOneGroupchatInput!, \$updateProfileImage: Upload) {
+          updateGroupchat(updateGroupchatInput: \$updateGroupchatInput, filter: \$filter, updateProfileImage: \$updateProfileImage) {
             _id
             title
             description
@@ -419,13 +428,13 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
   @override
   Future<Either<NotificationAlert, GroupchatLeftUserEntity?>>
       deleteUserFromGroupchatViaApi({
-    required GetOneGroupchatUserFilter getOneGroupchatUserFilter,
+    required CreateGroupchatLeftUserDto createGroupchatLeftUserDto,
   }) async {
     try {
       final response = await graphQlDatasource.mutation(
         """
-        mutation DeleteUserFromGroupchat(\$input: FindOneGroupchatUserInput!) {
-          deleteUserFromGroupchat(findOneGroupchatUserInput: \$input) {
+        mutation DeleteUserFromGroupchat(\$input: CreateGroupchatLeftUserInput!) {
+          deleteUserFromGroupchat(createGroupchatLeftUserInput: \$input) {
             groupchatUserLeftId
             _id
             authId
@@ -468,7 +477,7 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
           }
         }
         """,
-        variables: {"input": getOneGroupchatUserFilter.toMap()},
+        variables: {"input": createGroupchatLeftUserDto.toMap()},
       );
 
       if (response.hasException) {
@@ -494,13 +503,13 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
   Future<Either<NotificationAlert, GroupchatUserEntity>>
       updateGroupchatUserViaApi({
     required UpdateGroupchatUserDto updateGroupchatUserDto,
-    required GetOneGroupchatUserFilter getOneGroupchatUserFilter,
+    required FindOneGroupchatUserFilter findOneGroupchatUserFilter,
   }) async {
     try {
       final response = await graphQlDatasource.mutation(
         """
-        mutation UpdateGroupchatUser(\$updateGroupchatUserInput: UpdateGroupchatUserInput!, \$findOneGroupchatUserInput: FindOneGroupchatUserInput!) {
-          updateGroupchatUser(updateGroupchatUserInput: \$updateGroupchatUserInput, findOneGroupchatUserInput: \$findOneGroupchatUserInput) {
+        mutation UpdateGroupchatUser(\$updateGroupchatUserInput: UpdateGroupchatUserInput!, \$filter: FindOneGroupchatUserInput!) {
+          updateGroupchatUser(updateGroupchatUserInput: \$updateGroupchatUserInput, filter: \$filter) {
             groupchatUserId
             usernameForChat
             admin
@@ -547,7 +556,7 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
         """,
         variables: {
           "updateGroupchatUserInput": updateGroupchatUserDto.toMap(),
-          "findOneGroupchatUserInput": getOneGroupchatUserFilter.toMap(),
+          "filter": findOneGroupchatUserFilter.toMap(),
         },
       );
 
@@ -569,13 +578,13 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
   @override
   Future<Either<NotificationAlert, GroupchatUsersAndLeftUsersResponse>>
       getGroupchatUsersAndLeftUsers({
-    required String groupchatId,
+    required FindOneGroupchatToFilter findOneGroupchatToFilter,
   }) async {
     try {
       final response = await graphQlDatasource.query(
         """
-          query GetAllGroupchatUsersAndLeftUsers(\$groupchatId: String!, \$limitOffsetInput: LimitOffsetInput!) {   
-            findGroupchatLeftUsers(groupchatId: \$groupchatId, limitOffsetInput: \$limitOffsetInput) {
+          query GetAllGroupchatUsersAndLeftUsers(\$findGroupchatLeftUsersInput: FindGroupchatLeftUsersInput!, \$findGroupchatUsersInput: FindGroupchatUsersInput!, \$limitOffsetInput: LimitOffsetInput!) {   
+            findGroupchatLeftUsers(filter: \$findGroupchatLeftUsersInput, limitOffsetInput: \$limitOffsetInput) {
               groupchatUserLeftId
               _id
               authId
@@ -617,7 +626,7 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
               }
             }
 
-            findGroupchatUsers(groupchatId: \$groupchatId, limitOffsetInput: \$limitOffsetInput) {
+            findGroupchatUsers(filter: \$findGroupchatUsersInput, limitOffsetInput: \$limitOffsetInput) {
               groupchatUserId
               _id
               authId
@@ -663,7 +672,12 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
           }
         """,
         variables: {
-          "groupchatId": groupchatId,
+          "findGroupchatUsersInput": FindGroupchatUsersFilter(
+            groupchatTo: findOneGroupchatToFilter.groupchatTo,
+          ),
+          "findGroupchatLeftUsersInput": FindGroupchatLeftUsersFilter(
+            groupchatTo: findOneGroupchatToFilter.groupchatTo,
+          ),
           "limitOffsetInput": LimitOffsetFilter(limit: 1000, offset: 0).toMap(),
         },
       );

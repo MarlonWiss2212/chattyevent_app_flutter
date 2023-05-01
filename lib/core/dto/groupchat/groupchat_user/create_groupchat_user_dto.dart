@@ -1,7 +1,7 @@
 import 'package:social_media_app_flutter/core/dto/groupchat/groupchat_user/create_groupchat_user_from_create_groupchat_dto.dart';
 
 class CreateGroupchatUserDto extends CreateGroupchatUserFromCreateGroupchatDto {
-  String groupchatTo;
+  final String groupchatTo;
 
   CreateGroupchatUserDto({
     required super.userId,
