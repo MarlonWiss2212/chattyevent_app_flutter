@@ -74,6 +74,7 @@ class AddPrivateEventCubit extends Cubit<AddPrivateEventState> {
     privateEventOrFailure.fold(
       (alert) => notificationCubit.newAlert(notificationAlert: alert),
       (privateEvent) {
+        homeEventCubit.getFuturePrivateEventsViaApi(reload: true);
         emit(AddPrivateEventState(
           privateEventUsersDto: [],
           isGroupchatEvent: false,

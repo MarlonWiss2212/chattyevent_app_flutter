@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:social_media_app_flutter/core/dto/user_relation/create_user_relation_dto.dart';
+import 'package:social_media_app_flutter/core/dto/user_relation/update_user_relation_follow_data_dto.dart';
 import 'package:social_media_app_flutter/core/filter/limit_offset_filter.dart';
 import 'package:social_media_app_flutter/core/filter/user_relation/find_followed_filter.dart';
 import 'package:social_media_app_flutter/core/filter/user_relation/find_one_user_relation_filter.dart';
@@ -73,6 +74,16 @@ class UserRelationUseCases {
   }) async {
     return await userRelationRepository.deleteUserRelationViaApi(
       findOneUserRelationFilter: findOneUserRelationFilter,
+    );
+  }
+
+  Future<Either<NotificationAlert, UserRelationEntity>> updateFollowData({
+    required UpdateUserRelationFollowDataDto updateUserRelationFollowDataDto,
+    required String requesterUserId,
+  }) async {
+    return await userRelationRepository.updateFollowData(
+      updateUserRelationFollowDataDto: updateUserRelationFollowDataDto,
+      requesterUserId: requesterUserId,
     );
   }
 

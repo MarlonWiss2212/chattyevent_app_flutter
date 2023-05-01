@@ -1,4 +1,5 @@
 import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
+import 'package:social_media_app_flutter/core/dto/user_relation/update_user_relation_follow_data_dto.dart';
 import 'package:social_media_app_flutter/core/filter/limit_offset_filter.dart';
 import 'package:social_media_app_flutter/core/filter/user_relation/find_followed_filter.dart';
 import 'package:social_media_app_flutter/core/filter/user_relation/find_followers_filter.dart';
@@ -376,6 +377,40 @@ class UserRelationRepositoryImpl extends UserRelationRepository {
 
       return Right(
         UserRelationModel.fromJson(response.data!["acceptFollowRequest"]),
+      );
+    } catch (e) {
+      return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
+    }
+  }
+
+  @override
+  Future<Either<NotificationAlert, UserRelationEntity>> updateFollowData({
+    required UpdateUserRelationFollowDataDto updateUserRelationFollowDataDto,
+    required String requesterUserId,
+  }) async {
+    try {
+      final response = await graphQlDatasource.query(
+        """
+        mutation UpdateFollowData(\$requesterUserId: String!, \$updateUserRelationFollowDataInput: UpdateUserRelationFollowDataInput!) {
+          updateFollowData(requesterUserId: \$requesterUserId, updateUserRelationFollowDataInput: \$updateUserRelationFollowDataInput)
+        }
+        """,
+        variables: {
+          "requesterUserId": requesterUserId,
+          "updateUserRelationFollowDataInput":
+              updateUserRelationFollowDataDto.toMap(),
+        },
+      );
+
+      if (response.hasException) {
+        return Left(FailureHelper.graphqlFailureToNotificationAlert(
+          title: "Updaten User Relation Fehler",
+          exception: response.exception!,
+        ));
+      }
+
+      return Right(
+        UserRelationModel.fromJson(response.data!["updateFollowData"]),
       );
     } catch (e) {
       return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:social_media_app_flutter/application/bloc/private_event/add_private_event_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/add_private_event/add_private_event_cubit.dart';
 import 'package:social_media_app_flutter/presentation/widgets/general/custom_divider.dart';
 
 class NewPrivateEventTypeTab extends StatelessWidget {

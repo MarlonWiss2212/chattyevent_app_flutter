@@ -162,7 +162,7 @@ class ShoppingListItemRepositoryImpl implements ShoppingListItemRepository {
     try {
       final response = await graphQlDatasource.query(
         """
-        query FindShoppingListItem(\$filter: FindOneShoppingListItemInput!, \$findBoughtAmountsInput: FindBoughtAmountsInput!, \$limitOffsetInputBoughtAmounts: LimitOffsetInput!) {
+        query FindShoppingListItem(\$filter: FindOneShoppingListItemInput!, \$findBoughtAmountsInput: FindBoughtAmountsInput!, \$limitOffsetInput: LimitOffsetInput!) {
           findShoppingListItem(filter: \$filter) {
             _id
             createdAt
@@ -176,7 +176,7 @@ class ShoppingListItemRepositoryImpl implements ShoppingListItemRepository {
             createdBy
           }
           
-          findBoughtAmounts(findBoughtAmountsInput: \$findBoughtAmountsInput, limitOffsetInput: \$limitOffsetInputBoughtAmounts) {
+          findBoughtAmounts(filter: \$findBoughtAmountsInput, limitOffsetInput: \$limitOffsetInput) {
             _id
             boughtAmount
             shoppingListItemId
@@ -192,8 +192,7 @@ class ShoppingListItemRepositoryImpl implements ShoppingListItemRepository {
             shoppingListItemId:
                 findOneShoppingListItemFilter.shoppingListItemId,
           ).toMap(),
-          "limitOffsetInputBoughtAmounts":
-              limitOffsetFilterBoughtAmounts.toMap(),
+          "limitOffsetInput": limitOffsetFilterBoughtAmounts.toMap(),
         },
       );
 

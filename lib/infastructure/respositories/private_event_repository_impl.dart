@@ -152,10 +152,10 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
       final variables = {
         "findPrivateEventLeftUsersInput": FindPrivateEventUsersFilter(
           privateEventTo: findOnePrivateEventFilter.privateEventId,
-        ),
+        ).toMap(),
         "findPrivateEventUsersInput": FindPrivateEventLeftUsersFilter(
           privateEventTo: findOnePrivateEventFilter.privateEventId,
-        ),
+        ).toMap(),
         "limitOffsetInput": LimitOffsetFilter(limit: 1000, offset: 0).toMap(),
         "filter": findOnePrivateEventFilter.toMap(),
       };
@@ -789,10 +789,10 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
         variables: {
           "findPrivateEventLeftUsersInput": FindPrivateEventUsersFilter(
             privateEventTo: findOnePrivateEventToFilter.privateEventTo,
-          ),
+          ).toMap(),
           "findPrivateEventUsersInput": FindPrivateEventLeftUsersFilter(
             privateEventTo: findOnePrivateEventToFilter.privateEventTo,
-          ),
+          ).toMap(),
           "limitOffsetInput": LimitOffsetFilter(limit: 1000, offset: 0).toMap(),
         },
       );

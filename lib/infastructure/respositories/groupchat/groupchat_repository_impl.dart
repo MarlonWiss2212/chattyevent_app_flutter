@@ -118,7 +118,7 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
     try {
       final response = await graphQlDatasource.query(
         """
-          query GetGroupchatData(\$findGroupchatLeftUsersInput: FindGroupchatLeftUsersInput!, \$findGroupchaUsersInput: FindGroupchaUsersInput!, \$limitOffsetInput: LimitOffsetInput!, \$findOneGroupchatInput: FindOneGroupchatInput!) {   
+          query GetGroupchatData(\$findGroupchatLeftUsersInput: FindGroupchatLeftUsersInput!, \$findGroupchatUsersInput: FindGroupchatUsersInput!, \$limitOffsetInput: LimitOffsetInput!, \$findOneGroupchatInput: FindOneGroupchatInput!) {   
             findGroupchat(filter: \$findOneGroupchatInput) {
               _id
               title
@@ -219,10 +219,10 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
           "findOneGroupchatInput": findOneGroupchatFilter.toMap(),
           "findGroupchatUsersInput": FindGroupchatUsersFilter(
             groupchatTo: findOneGroupchatFilter.groupchatId,
-          ),
+          ).toMap(),
           "findGroupchatLeftUsersInput": FindGroupchatLeftUsersFilter(
             groupchatTo: findOneGroupchatFilter.groupchatId,
-          ),
+          ).toMap(),
           "limitOffsetInput": LimitOffsetFilter(
             limit: 1000,
             offset: 0,
@@ -674,10 +674,10 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
         variables: {
           "findGroupchatUsersInput": FindGroupchatUsersFilter(
             groupchatTo: findOneGroupchatToFilter.groupchatTo,
-          ),
+          ).toMap(),
           "findGroupchatLeftUsersInput": FindGroupchatLeftUsersFilter(
             groupchatTo: findOneGroupchatToFilter.groupchatTo,
-          ),
+          ).toMap(),
           "limitOffsetInput": LimitOffsetFilter(limit: 1000, offset: 0).toMap(),
         },
       );
