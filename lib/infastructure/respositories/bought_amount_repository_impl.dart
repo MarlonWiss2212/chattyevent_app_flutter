@@ -1,10 +1,11 @@
 import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:social_media_app_flutter/core/filter/limit_offset_filter.dart';
+import 'package:social_media_app_flutter/core/filter/shopping_list_item/bought_amount/find_bought_amounts_filter.dart';
+import 'package:social_media_app_flutter/core/filter/shopping_list_item/bought_amount/find_one_bought_amount_filter.dart';
 import 'package:social_media_app_flutter/core/utils/failure_helper.dart';
 import 'package:social_media_app_flutter/domain/entities/bought_amount_entity.dart';
-import 'package:social_media_app_flutter/core/filter/get_bought_amounts_filter.dart';
-import 'package:social_media_app_flutter/core/dto/bought_amount/update_bought_amount_dto.dart';
-import 'package:social_media_app_flutter/core/dto/bought_amount/create_bought_amount_dto.dart';
+import 'package:social_media_app_flutter/core/dto/shopping_list_item/bought_amount/update_bought_amount_dto.dart';
+import 'package:social_media_app_flutter/core/dto/shopping_list_item/bought_amount/create_bought_amount_dto.dart';
 import 'package:dartz/dartz.dart';
 import 'package:social_media_app_flutter/domain/repositories/bought_amount_repository.dart';
 import 'package:social_media_app_flutter/infastructure/datasources/remote/graphql.dart';
@@ -57,14 +58,14 @@ class BoughtAmountRepositoryImpl implements BoughtAmountRepository {
   @override
   Future<Either<NotificationAlert, List<BoughtAmountEntity>>>
       getBoughtAmountsViaApi({
-    required GetBoughtAmountsFilter getBoughtAmountsFilter,
+    required FindBoughtAmountsFilter findBoughtAmountsFilter,
     required LimitOffsetFilter limitOffsetFilter,
   }) async {
     try {
       final response = await graphQlDatasource.mutation(
         """
-        query FindBoughtAmounts(\$findBoughtAmountsInput: FindBoughtAmountsInput!, \$limitOffsetInput: LimitOffsetInput!) {
-          findBoughtAmounts(findBoughtAmountsInput: \$findBoughtAmountsInput, limitOffsetInput: \$limitOffsetInput) {
+        query FindBoughtAmounts(\$filter: FindBoughtAmountsInput!, \$limitOffsetInput: LimitOffsetInput!) {
+          findBoughtAmounts(filter: \$filter, limitOffsetInput: \$limitOffsetInput) {
             _id
             boughtAmount
             shoppingListItemId
@@ -75,7 +76,7 @@ class BoughtAmountRepositoryImpl implements BoughtAmountRepository {
         }
       """,
         variables: {
-          "findBoughtAmountsInput": getBoughtAmountsFilter.toMap(),
+          "filter": findBoughtAmountsFilter.toMap(),
           "limitOffsetInput": limitOffsetFilter.toMap(),
         },
       );
@@ -101,13 +102,13 @@ class BoughtAmountRepositoryImpl implements BoughtAmountRepository {
   Future<Either<NotificationAlert, BoughtAmountEntity>>
       updateBoughtAmountViaApi({
     required UpdateBoughtAmountDto updateBoughtAmountDto,
-    required String boughtAmountId,
+    required FindOneBoughtAmountFilter findOneBoughtAmountFilter,
   }) async {
     try {
       final response = await graphQlDatasource.mutation(
         """
-        mutation UpdateBoughtAmount(\$input: UpdateBoughtAmountInput!, \$boughtAmountId: String!) {
-          updateBoughtAmount(updateBoughtAmountInput: \$input) {
+        mutation UpdateBoughtAmount(\$input: UpdateBoughtAmountInput!, \$filter: FindOneBoughtAmountInput!) {
+          updateBoughtAmount(updateBoughtAmountInput: \$input, filter: filter) {
             _id
             boughtAmount
             shoppingListItemId
@@ -119,7 +120,7 @@ class BoughtAmountRepositoryImpl implements BoughtAmountRepository {
       """,
         variables: {
           "input": updateBoughtAmountDto.toMap(),
-          "boughtAmountId": boughtAmountId,
+          "filter": findOneBoughtAmountFilter,
         },
       );
 
@@ -140,16 +141,16 @@ class BoughtAmountRepositoryImpl implements BoughtAmountRepository {
 
   @override
   Future<Either<NotificationAlert, bool>> deleteBoughtAmountViaApi({
-    required String boughtAmountId,
+    required FindOneBoughtAmountFilter findOneBoughtAmountFilter,
   }) async {
     try {
       final response = await graphQlDatasource.mutation(
         """
-        mutation DeleteBoughtAmount(\$boughtAmountId: String!) {
-          deleteBoughtAmount(boughtAmountId: \$boughtAmountId)
+        mutation DeleteBoughtAmount(\$filter: FindOneBoughtAmountInput!) {
+          deleteBoughtAmount(filter: \$filter)
         }
       """,
-        variables: {"boughtAmountId": boughtAmountId},
+        variables: {"filter": findOneBoughtAmountFilter},
       );
 
       if (response.hasException) {

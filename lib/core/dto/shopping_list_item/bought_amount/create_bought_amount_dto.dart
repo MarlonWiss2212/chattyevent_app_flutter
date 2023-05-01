@@ -1,6 +1,6 @@
 class CreateBoughtAmountDto {
-  double boughtAmount;
-  String shoppingListItemId;
+  final double boughtAmount;
+  final String shoppingListItemId;
 
   CreateBoughtAmountDto({
     required this.shoppingListItemId,

@@ -1,9 +1,10 @@
 import 'package:dartz/dartz.dart';
 import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
-import 'package:social_media_app_flutter/core/dto/bought_amount/create_bought_amount_dto.dart';
-import 'package:social_media_app_flutter/core/dto/bought_amount/update_bought_amount_dto.dart';
-import 'package:social_media_app_flutter/core/filter/get_bought_amounts_filter.dart';
+import 'package:social_media_app_flutter/core/dto/shopping_list_item/bought_amount/create_bought_amount_dto.dart';
+import 'package:social_media_app_flutter/core/dto/shopping_list_item/bought_amount/update_bought_amount_dto.dart';
 import 'package:social_media_app_flutter/core/filter/limit_offset_filter.dart';
+import 'package:social_media_app_flutter/core/filter/shopping_list_item/bought_amount/find_bought_amounts_filter.dart';
+import 'package:social_media_app_flutter/core/filter/shopping_list_item/bought_amount/find_one_bought_amount_filter.dart';
 import 'package:social_media_app_flutter/domain/entities/bought_amount_entity.dart';
 import 'package:social_media_app_flutter/domain/repositories/bought_amount_repository.dart';
 
@@ -22,11 +23,11 @@ class BoughtAmountUseCases {
 
   Future<Either<NotificationAlert, List<BoughtAmountEntity>>>
       getBoughtAmountsViaApi({
-    required GetBoughtAmountsFilter getBoughtAmountsFilter,
+    required FindBoughtAmountsFilter findBoughtAmountsFilter,
     required LimitOffsetFilter limitOffsetFilter,
   }) async {
     return await boughtAmountRepository.getBoughtAmountsViaApi(
-      getBoughtAmountsFilter: getBoughtAmountsFilter,
+      findBoughtAmountsFilter: findBoughtAmountsFilter,
       limitOffsetFilter: limitOffsetFilter,
     );
   }
@@ -34,19 +35,19 @@ class BoughtAmountUseCases {
   Future<Either<NotificationAlert, BoughtAmountEntity>>
       updateBoughtAmountViaApi({
     required UpdateBoughtAmountDto updateBoughtAmountDto,
-    required String boughtAmountId,
+    required FindOneBoughtAmountFilter findOneBoughtAmountFilter,
   }) async {
     return await boughtAmountRepository.updateBoughtAmountViaApi(
       updateBoughtAmountDto: updateBoughtAmountDto,
-      boughtAmountId: boughtAmountId,
+      findOneBoughtAmountFilter: findOneBoughtAmountFilter,
     );
   }
 
   Future<Either<NotificationAlert, bool>> deleteBoughtAmountViaApi({
-    required String boughtAmountId,
+    required FindOneBoughtAmountFilter findOneBoughtAmountFilter,
   }) async {
     return await boughtAmountRepository.deleteBoughtAmountViaApi(
-      boughtAmountId: boughtAmountId,
+      findOneBoughtAmountFilter: findOneBoughtAmountFilter,
     );
   }
 }

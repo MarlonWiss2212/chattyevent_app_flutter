@@ -1,9 +1,9 @@
 import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:social_media_app_flutter/core/dto/shopping_list_item/update_shopping_list_item_dto.dart';
-import 'package:social_media_app_flutter/core/filter/get_bought_amounts_filter.dart';
-import 'package:social_media_app_flutter/core/filter/get_one_shopping_list_item_filter.dart';
-import 'package:social_media_app_flutter/core/filter/get_shopping_list_items_filter.dart';
 import 'package:social_media_app_flutter/core/filter/limit_offset_filter.dart';
+import 'package:social_media_app_flutter/core/filter/shopping_list_item/bought_amount/find_bought_amounts_filter.dart';
+import 'package:social_media_app_flutter/core/filter/shopping_list_item/find_one_shopping_list_item_filter.dart';
+import 'package:social_media_app_flutter/core/filter/shopping_list_item/find_shopping_list_items_filter.dart';
 import 'package:social_media_app_flutter/core/response/shopping-list-item-data.response.dart';
 import 'package:social_media_app_flutter/core/utils/failure_helper.dart';
 import 'package:social_media_app_flutter/domain/entities/bought_amount_entity.dart';
@@ -68,13 +68,13 @@ class ShoppingListItemRepositoryImpl implements ShoppingListItemRepository {
   Future<Either<NotificationAlert, List<ShoppingListItemEntity>>>
       getShoppingListItemsViaApi({
     required LimitOffsetFilter limitOffsetFilter,
-    required GetShoppingListItemsFilter getShoppingListItemsFilter,
+    required FindShoppingListItemsFilter findShoppingListItemsFilter,
   }) async {
     try {
       final response = await graphQlDatasource.query(
         """
-        query FindShoppingListItems(\$input: FindShoppingListItemsInput!, \$limitOffsetInput: LimitOffsetInput!) {
-          findShoppingListItems(findShoppingListItemsInput: \$input, limitOffsetInput: \$limitOffsetInput) {
+        query FindShoppingListItems(\$filter: FindShoppingListItemsInput!, \$limitOffsetInput: LimitOffsetInput!) {
+          findShoppingListItems(filter: \$filter, limitOffsetInput: \$limitOffsetInput) {
             _id
             createdAt
             updatedAt
@@ -89,7 +89,7 @@ class ShoppingListItemRepositoryImpl implements ShoppingListItemRepository {
         }
       """,
         variables: {
-          "input": getShoppingListItemsFilter.toMap(),
+          "filter": findShoppingListItemsFilter.toMap(),
           "limitOffsetInput": limitOffsetFilter.toMap(),
         },
       );
@@ -113,13 +113,13 @@ class ShoppingListItemRepositoryImpl implements ShoppingListItemRepository {
   @override
   Future<Either<NotificationAlert, ShoppingListItemEntity>>
       getShoppingListItemViaApi({
-    required GetOneShoppingListItemFilter getOneShoppingListItemFilter,
+    required FindOneShoppingListItemFilter findOneShoppingListItemFilter,
   }) async {
     try {
       final response = await graphQlDatasource.query(
         """
-        query FindShoppingListItem(\$input: FindOneShoppingListItemInput!) {
-          findShoppingListItem(filter: \$input) {
+        query FindShoppingListItem(\$filter: FindOneShoppingListItemInput!) {
+          findShoppingListItem(filter: \$filter) {
             _id
             createdAt
             updatedAt
@@ -134,7 +134,7 @@ class ShoppingListItemRepositoryImpl implements ShoppingListItemRepository {
         }
       """,
         variables: {
-          "input": getOneShoppingListItemFilter.toMap(),
+          "filter": findOneShoppingListItemFilter.toMap(),
         },
       );
 
@@ -156,14 +156,14 @@ class ShoppingListItemRepositoryImpl implements ShoppingListItemRepository {
   @override
   Future<Either<NotificationAlert, ShoppingListItemDataResponse>>
       getShoppingListItemDataViaApi({
-    required GetOneShoppingListItemFilter getOneShoppingListItemFilter,
+    required FindOneShoppingListItemFilter findOneShoppingListItemFilter,
     required LimitOffsetFilter limitOffsetFilterBoughtAmounts,
   }) async {
     try {
       final response = await graphQlDatasource.query(
         """
-        query FindShoppingListItem(\$input: FindOneShoppingListItemInput!, \$findBoughtAmountsInput: FindBoughtAmountsInput!, \$limitOffsetInputBoughtAmounts: LimitOffsetInput!) {
-          findShoppingListItem(filter: \$input) {
+        query FindShoppingListItem(\$filter: FindOneShoppingListItemInput!, \$findBoughtAmountsInput: FindBoughtAmountsInput!, \$limitOffsetInputBoughtAmounts: LimitOffsetInput!) {
+          findShoppingListItem(filter: \$filter) {
             _id
             createdAt
             updatedAt
@@ -187,9 +187,10 @@ class ShoppingListItemRepositoryImpl implements ShoppingListItemRepository {
         }
       """,
         variables: {
-          "input": getOneShoppingListItemFilter.toMap(),
-          "findBoughtAmountsInput": GetBoughtAmountsFilter(
-            shoppingListItemIds: [getOneShoppingListItemFilter.id],
+          "filter": findOneShoppingListItemFilter.toMap(),
+          "findBoughtAmountsInput": FindBoughtAmountsFilter(
+            shoppingListItemId:
+                findOneShoppingListItemFilter.shoppingListItemId,
           ).toMap(),
           "limitOffsetInputBoughtAmounts":
               limitOffsetFilterBoughtAmounts.toMap(),
@@ -223,13 +224,13 @@ class ShoppingListItemRepositoryImpl implements ShoppingListItemRepository {
   Future<Either<NotificationAlert, ShoppingListItemEntity>>
       updateShoppingListItemViaApi({
     required UpdateShoppingListItemDto updateShoppingListItemDto,
-    required GetOneShoppingListItemFilter getOneShoppingListItemFilter,
+    required FindOneShoppingListItemFilter findOneShoppingListItemFilter,
   }) async {
     try {
       final response = await graphQlDatasource.mutation(
         """
-        mutation UpdateShoppingListItem(\$input: UpdateShoppingListItemInput!, \$filter: FindOneShoppingListItemInput!) {
-          updateShoppingListItem(updateShoppingListItemInput: \$input, filter: \$filter) {
+        mutation UpdateShoppingListItem(\$updateShoppingListItemInput: UpdateShoppingListItemInput!, \$filter: FindOneShoppingListItemInput!) {
+          updateShoppingListItem(updateShoppingListItemInput: \$updateShoppingListItemInput, filter: \$filter) {
             _id
             createdAt
             updatedAt
@@ -244,8 +245,8 @@ class ShoppingListItemRepositoryImpl implements ShoppingListItemRepository {
         }
       """,
         variables: {
-          "input": updateShoppingListItemDto.toMap(),
-          "filter": getOneShoppingListItemFilter.toMap(),
+          "updateShoppingListItemInput": updateShoppingListItemDto.toMap(),
+          "filter": findOneShoppingListItemFilter.toMap(),
         },
       );
 
@@ -268,16 +269,16 @@ class ShoppingListItemRepositoryImpl implements ShoppingListItemRepository {
 
   @override
   Future<Either<NotificationAlert, bool>> deleteShoppingListItemViaApi({
-    required String shoppingListItemId,
+    required FindOneShoppingListItemFilter findOneShoppingListItemFilter,
   }) async {
     try {
       final response = await graphQlDatasource.mutation(
         """
-          mutation DeleteShoppingListItem(\$shoppingListItemId: String!) {
-            deleteShoppingListItem(shoppingListItemId: \$shoppingListItemId)
+          mutation DeleteShoppingListItem(\$filter: FindOneShoppingListItemInput!) {
+            deleteShoppingListItem(filter: \$filter)
           }
         """,
-        variables: {"shoppingListItemId": shoppingListItemId},
+        variables: {"filter": findOneShoppingListItemFilter},
       );
 
       if (response.hasException) {

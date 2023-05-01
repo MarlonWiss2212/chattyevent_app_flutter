@@ -11,7 +11,7 @@ import 'package:social_media_app_flutter/application/bloc/shopping_list/current_
 import 'package:social_media_app_flutter/core/dto/private_event/private_event_left_user/create_private_event_left_user_dto.dart';
 import 'package:social_media_app_flutter/core/dto/private_event/private_event_user/create_private_event_user_dto.dart';
 import 'package:social_media_app_flutter/core/dto/private_event/update_private_event_dto.dart';
-import 'package:social_media_app_flutter/core/filter/get_shopping_list_items_filter.dart';
+import 'package:social_media_app_flutter/core/filter/shopping_list_item/find_shopping_list_items_filter.dart';
 import 'package:social_media_app_flutter/core/filter/groupchat/find_one_groupchat_filter.dart';
 import 'package:social_media_app_flutter/core/filter/limit_offset_filter.dart';
 import 'package:social_media_app_flutter/core/filter/private_event/find_one_private_event_to_filter.dart';
@@ -431,8 +431,9 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
     final Either<NotificationAlert, List<ShoppingListItemEntity>>
         shoppingListItemsOrFailure =
         await shoppingListItemUseCases.getShoppingListItemsViaApi(
-      getShoppingListItemsFilter:
-          GetShoppingListItemsFilter(privateEventId: state.privateEvent.id),
+      findShoppingListItemsFilter: FindShoppingListItemsFilter(
+        privateEventId: state.privateEvent.id,
+      ),
       limitOffsetFilter: reload
           ? LimitOffsetFilter(
               limit: state.shoppingListItemStates.length < 20

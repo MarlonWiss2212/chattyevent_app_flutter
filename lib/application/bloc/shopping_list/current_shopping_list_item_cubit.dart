@@ -4,12 +4,13 @@ import 'package:meta/meta.dart';
 import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/current_private_event/current_private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/shopping_list/my_shopping_list_cubit.dart';
-import 'package:social_media_app_flutter/core/dto/bought_amount/create_bought_amount_dto.dart';
-import 'package:social_media_app_flutter/core/dto/bought_amount/update_bought_amount_dto.dart';
+import 'package:social_media_app_flutter/core/dto/shopping_list_item/bought_amount/create_bought_amount_dto.dart';
+import 'package:social_media_app_flutter/core/dto/shopping_list_item/bought_amount/update_bought_amount_dto.dart';
 import 'package:social_media_app_flutter/core/dto/shopping_list_item/update_shopping_list_item_dto.dart';
-import 'package:social_media_app_flutter/core/filter/get_bought_amounts_filter.dart';
-import 'package:social_media_app_flutter/core/filter/get_one_shopping_list_item_filter.dart';
 import 'package:social_media_app_flutter/core/filter/limit_offset_filter.dart';
+import 'package:social_media_app_flutter/core/filter/shopping_list_item/bought_amount/find_bought_amounts_filter.dart';
+import 'package:social_media_app_flutter/core/filter/shopping_list_item/bought_amount/find_one_bought_amount_filter.dart';
+import 'package:social_media_app_flutter/core/filter/shopping_list_item/find_one_shopping_list_item_filter.dart';
 import 'package:social_media_app_flutter/core/response/shopping-list-item-data.response.dart';
 import 'package:social_media_app_flutter/domain/entities/bought_amount_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/shopping_list_item/shopping_list_item_entity.dart';
@@ -40,8 +41,8 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
     final Either<NotificationAlert, ShoppingListItemDataResponse>
         dataOrFailure =
         await shoppingListItemUseCases.getShoppingListItemDataViaApi(
-      getOneShoppingListItemFilter: GetOneShoppingListItemFilter(
-        id: state.shoppingListItem.id,
+      findOneShoppingListItemFilter: FindOneShoppingListItemFilter(
+        shoppingListItemId: state.shoppingListItem.id,
       ),
       limitOffsetFilterBoughtAmounts: LimitOffsetFilter(
         limit:
@@ -82,8 +83,8 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
     final Either<NotificationAlert, ShoppingListItemEntity>
         shoppingListItemOrFailure =
         await shoppingListItemUseCases.getOneShoppingListItemsViaApi(
-            getOneShoppingListItemFilter: GetOneShoppingListItemFilter(
-      id: state.shoppingListItem.id,
+            findOneShoppingListItemFilter: FindOneShoppingListItemFilter(
+      shoppingListItemId: state.shoppingListItem.id,
     ));
 
     shoppingListItemOrFailure.fold(
@@ -117,8 +118,8 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
         shoppingListItemOrFailure =
         await shoppingListItemUseCases.updateShoppingListItemsViaApi(
       updateShoppingListItemDto: updateShoppingListItemDto,
-      getOneShoppingListItemFilter: GetOneShoppingListItemFilter(
-        id: state.shoppingListItem.id,
+      findOneShoppingListItemFilter: FindOneShoppingListItemFilter(
+        shoppingListItemId: state.shoppingListItem.id,
       ),
     );
 
@@ -147,7 +148,9 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
   Future deleteShoppingListItemViaApi() async {
     final Either<NotificationAlert, bool> deletedOrFailure =
         await shoppingListItemUseCases.deleteShoppingListItemViaApi(
-      shoppingListItemId: state.shoppingListItem.id,
+      findOneShoppingListItemFilter: FindOneShoppingListItemFilter(
+        shoppingListItemId: state.shoppingListItem.id,
+      ),
     );
 
     deletedOrFailure.fold(
@@ -176,8 +179,8 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
     final Either<NotificationAlert, List<BoughtAmountEntity>>
         boughtAmountOrFailure =
         await boughtAmountUseCases.getBoughtAmountsViaApi(
-      getBoughtAmountsFilter: GetBoughtAmountsFilter(
-        shoppingListItemIds: [state.shoppingListItem.id],
+      findBoughtAmountsFilter: FindBoughtAmountsFilter(
+        shoppingListItemId: state.shoppingListItem.id,
       ),
       limitOffsetFilter: LimitOffsetFilter(
         limit: reload
@@ -270,7 +273,9 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
     final Either<NotificationAlert, BoughtAmountEntity> boughtAmountOrFailure =
         await boughtAmountUseCases.updateBoughtAmountViaApi(
       updateBoughtAmountDto: updateBoughtAmountDto,
-      boughtAmountId: boughtAmountId,
+      findOneBoughtAmountFilter: FindOneBoughtAmountFilter(
+        boughtAmountId: boughtAmountId,
+      ),
     );
 
     boughtAmountOrFailure.fold(
@@ -302,7 +307,9 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
   }) async {
     final Either<NotificationAlert, bool> boughtAmountOrFailure =
         await boughtAmountUseCases.deleteBoughtAmountViaApi(
-      boughtAmountId: boughtAmountId,
+      findOneBoughtAmountFilter: FindOneBoughtAmountFilter(
+        boughtAmountId: boughtAmountId,
+      ),
     );
 
     boughtAmountOrFailure.fold(

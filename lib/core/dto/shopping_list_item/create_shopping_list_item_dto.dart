@@ -1,9 +1,9 @@
 class CreateShoppingListItemDto {
-  String itemName;
-  String? unit;
-  double amount;
-  String userToBuyItem;
-  String privateEventId;
+  final String itemName;
+  final String? unit;
+  final double amount;
+  final String userToBuyItem;
+  final String privateEventId;
 
   CreateShoppingListItemDto({
     required this.itemName,

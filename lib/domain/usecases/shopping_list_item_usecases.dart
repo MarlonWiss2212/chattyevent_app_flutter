@@ -2,11 +2,11 @@ import 'package:dartz/dartz.dart';
 import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:social_media_app_flutter/core/dto/shopping_list_item/create_shopping_list_item_dto.dart';
 import 'package:social_media_app_flutter/core/dto/shopping_list_item/update_shopping_list_item_dto.dart';
-import 'package:social_media_app_flutter/core/filter/get_one_shopping_list_item_filter.dart';
 import 'package:social_media_app_flutter/core/filter/limit_offset_filter.dart';
+import 'package:social_media_app_flutter/core/filter/shopping_list_item/find_one_shopping_list_item_filter.dart';
+import 'package:social_media_app_flutter/core/filter/shopping_list_item/find_shopping_list_items_filter.dart';
 import 'package:social_media_app_flutter/core/response/shopping-list-item-data.response.dart';
 import 'package:social_media_app_flutter/domain/entities/shopping_list_item/shopping_list_item_entity.dart';
-import 'package:social_media_app_flutter/core/filter/get_shopping_list_items_filter.dart';
 import 'package:social_media_app_flutter/domain/repositories/shopping_list_item_repository.dart';
 
 class ShoppingListItemUseCases {
@@ -24,31 +24,31 @@ class ShoppingListItemUseCases {
 
   Future<Either<NotificationAlert, List<ShoppingListItemEntity>>>
       getShoppingListItemsViaApi({
-    required GetShoppingListItemsFilter getShoppingListItemsFilter,
+    required FindShoppingListItemsFilter findShoppingListItemsFilter,
     required LimitOffsetFilter limitOffsetFilter,
   }) async {
     return await shoppingListItemRepository.getShoppingListItemsViaApi(
-      getShoppingListItemsFilter: getShoppingListItemsFilter,
+      findShoppingListItemsFilter: findShoppingListItemsFilter,
       limitOffsetFilter: limitOffsetFilter,
     );
   }
 
   Future<Either<NotificationAlert, ShoppingListItemEntity>>
       getOneShoppingListItemsViaApi({
-    required GetOneShoppingListItemFilter getOneShoppingListItemFilter,
+    required FindOneShoppingListItemFilter findOneShoppingListItemFilter,
   }) async {
     return await shoppingListItemRepository.getShoppingListItemViaApi(
-      getOneShoppingListItemFilter: getOneShoppingListItemFilter,
+      findOneShoppingListItemFilter: findOneShoppingListItemFilter,
     );
   }
 
   Future<Either<NotificationAlert, ShoppingListItemDataResponse>>
       getShoppingListItemDataViaApi({
-    required GetOneShoppingListItemFilter getOneShoppingListItemFilter,
+    required FindOneShoppingListItemFilter findOneShoppingListItemFilter,
     required LimitOffsetFilter limitOffsetFilterBoughtAmounts,
   }) async {
     return await shoppingListItemRepository.getShoppingListItemDataViaApi(
-      getOneShoppingListItemFilter: getOneShoppingListItemFilter,
+      findOneShoppingListItemFilter: findOneShoppingListItemFilter,
       limitOffsetFilterBoughtAmounts: limitOffsetFilterBoughtAmounts,
     );
   }
@@ -56,19 +56,19 @@ class ShoppingListItemUseCases {
   Future<Either<NotificationAlert, ShoppingListItemEntity>>
       updateShoppingListItemsViaApi({
     required UpdateShoppingListItemDto updateShoppingListItemDto,
-    required GetOneShoppingListItemFilter getOneShoppingListItemFilter,
+    required FindOneShoppingListItemFilter findOneShoppingListItemFilter,
   }) async {
     return await shoppingListItemRepository.updateShoppingListItemViaApi(
-      getOneShoppingListItemFilter: getOneShoppingListItemFilter,
+      findOneShoppingListItemFilter: findOneShoppingListItemFilter,
       updateShoppingListItemDto: updateShoppingListItemDto,
     );
   }
 
   Future<Either<NotificationAlert, bool>> deleteShoppingListItemViaApi({
-    required String shoppingListItemId,
+    required FindOneShoppingListItemFilter findOneShoppingListItemFilter,
   }) async {
     return await shoppingListItemRepository.deleteShoppingListItemViaApi(
-      shoppingListItemId: shoppingListItemId,
+      findOneShoppingListItemFilter: findOneShoppingListItemFilter,
     );
   }
 }
