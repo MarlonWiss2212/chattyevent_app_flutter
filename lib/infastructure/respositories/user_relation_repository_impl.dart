@@ -424,11 +424,11 @@ class UserRelationRepositoryImpl extends UserRelationRepository {
     try {
       final response = await graphQlDatasource.query(
         """
-        mutation DeleteUserRelation(\$input: FindOneUserRelationInput!) {
-          deleteUserRelation(findOneUserRelationInput: \$input)
+        mutation DeleteUserRelation(\$filter: FindOneUserRelationInput!) {
+          deleteUserRelation(filter: \$filter)
         }
         """,
-        variables: {"input": findOneUserRelationFilter.toMap()},
+        variables: {"filter": findOneUserRelationFilter.toMap()},
       );
 
       if (response.hasException) {
