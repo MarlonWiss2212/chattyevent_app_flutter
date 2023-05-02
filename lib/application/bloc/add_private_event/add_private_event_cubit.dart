@@ -72,7 +72,10 @@ class AddPrivateEventCubit extends Cubit<AddPrivateEventState> {
     );
 
     privateEventOrFailure.fold(
-      (alert) => notificationCubit.newAlert(notificationAlert: alert),
+      (alert) {
+        notificationCubit.newAlert(notificationAlert: alert);
+        emitState(status: AddPrivateEventStateStatus.initial);
+      },
       (privateEvent) {
         homeEventCubit.getFuturePrivateEventsViaApi(reload: true);
         emit(AddPrivateEventState(
