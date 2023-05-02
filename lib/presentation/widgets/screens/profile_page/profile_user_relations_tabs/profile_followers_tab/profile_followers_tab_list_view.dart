@@ -54,7 +54,7 @@ class ProfileFollowersTabListView extends StatelessWidget {
                       IconButton(
                         onPressed: () {
                           AutoRouter.of(context).push(
-                            ProfileUserSettingsPageRoute(
+                            ProfileFollowerUserSettingsPageRoute(
                               followerIndexString: index.toString(),
                             ),
                           );

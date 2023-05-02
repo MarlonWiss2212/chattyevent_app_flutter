@@ -37,12 +37,13 @@ import 'package:social_media_app_flutter/presentation/screens/private_event_page
 import 'package:social_media_app_flutter/presentation/screens/private_event_page/tab_page/pages/private_event_tab_shopping_list.dart';
 import 'package:social_media_app_flutter/presentation/screens/private_event_page/tab_page/pages/private_event_tab_user_list.dart';
 import 'package:social_media_app_flutter/presentation/screens/private_event_page/tab_page/private_event_tab_page.dart';
-import 'package:social_media_app_flutter/presentation/screens/profile_page/profile_user_settings_page.dart';
+import 'package:social_media_app_flutter/presentation/screens/profile_page/profile_follower_user_settings_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/profile_page/profile_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/profile_page/profile_user_relations_tabs/profile_follow_requests_tab.dart';
 import 'package:social_media_app_flutter/presentation/screens/profile_page/profile_user_relations_tabs/profile_user_relations_tab_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/profile_page/profile_user_relations_tabs/profile_followed_tab.dart';
 import 'package:social_media_app_flutter/presentation/screens/profile_page/profile_user_relations_tabs/profile_follower_tab.dart';
+import 'package:social_media_app_flutter/presentation/screens/profile_page/profile_user_settings_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/profile_page/profile_wrapper_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/register_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/reset_password_page.dart';
@@ -321,9 +322,14 @@ const profileRouter = AutoRoute(
       path: '',
     ),
     AutoRoute(
-      page: ProfileUserSettingsPage,
+      page: ProfileFollowerUserSettingsPage,
       guards: [AuthGuard],
       path: ':followerIndexString/settings',
+    ),
+    AutoRoute(
+      page: ProfileUserSettingsPage,
+      guards: [AuthGuard],
+      path: 'settings',
     ),
     AutoRoute(
       page: ProfileUserRelationsTabPage,
@@ -377,10 +383,11 @@ const homePageRouter = AutoRoute(
           path: '',
         ),
         AutoRoute(
-          page: ProfileUserSettingsPage,
+          page: ProfileFollowerUserSettingsPage,
           guards: [AuthGuard],
           path: ':followerIndexString/settings',
         ),
+        //Doesnt need settings page because current user hasnt relation to change
         AutoRoute(
           page: ProfileUserRelationsTabPage,
           guards: [AuthGuard],

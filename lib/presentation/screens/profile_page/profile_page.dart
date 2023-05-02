@@ -30,7 +30,7 @@ class ProfilePage extends StatelessWidget {
             flexibleSpace: const FlexibleSpaceBar(title: ProfilePageTitle()),
             actions: const [
               ProfilePageTrailingFollowRequestIconButton(),
-              ProfilePageTrailinSettingsButton(),
+              ProfilePageTrailingSettingsButton(),
             ],
           ),
           CupertinoSliverRefreshControl(

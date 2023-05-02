@@ -6,8 +6,8 @@ import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/profile_page/profile_page_cubit.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 
-class ProfilePageTrailinSettingsButton extends StatelessWidget {
-  const ProfilePageTrailinSettingsButton({super.key});
+class ProfilePageTrailingSettingsButton extends StatelessWidget {
+  const ProfilePageTrailingSettingsButton({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +19,15 @@ class ProfilePageTrailinSettingsButton extends StatelessWidget {
               return IconButton(
                 onPressed: () => AutoRouter.of(context).push(
                   const SettingsWrapperPageRoute(),
+                ),
+                icon: Icon(PlatformIcons(context).settings),
+              );
+            } else if (state.user.otherUserRelationToMyUser != null &&
+                state.user.otherUserRelationToMyUser!.statusOnRelatedUser ==
+                    "FOLLOWER") {
+              return IconButton(
+                onPressed: () => AutoRouter.of(context).push(
+                  const ProfileUserSettingsPageRoute(),
                 ),
                 icon: Icon(PlatformIcons(context).settings),
               );

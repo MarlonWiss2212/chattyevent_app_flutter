@@ -4,11 +4,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/profile_page/profile_page_cubit.dart';
 import 'package:social_media_app_flutter/core/dto/user_relation/update_user_relation_follow_data_dto.dart';
 
-class ProfileUserSettingsPage extends StatelessWidget {
-  const ProfileUserSettingsPage({super.key});
+class ProfileFollowerUserSettingsPage extends StatelessWidget {
+  final String followerIndexString;
+
+  const ProfileFollowerUserSettingsPage({
+    super.key,
+    @PathParam('followerIndexString') required this.followerIndexString,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final int followerIndex = int.parse(followerIndexString);
     return Scaffold(
       body: CustomScrollView(
         slivers: [
@@ -22,7 +28,7 @@ class ProfileUserSettingsPage extends StatelessWidget {
               title: BlocBuilder<ProfilePageCubit, ProfilePageState>(
                 builder: (context, state) {
                   return Text(
-                    "Berechtigungen",
+                    "${state.followers?[followerIndex].username} Berechtigungen",
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.onBackground,
                     ),
@@ -37,12 +43,16 @@ class ProfileUserSettingsPage extends StatelessWidget {
                 builder: (context, state) {
                   return SwitchListTile.adaptive(
                     title: const Text("Darf dich in Gruppenchats adden"),
-                    value: state.user.otherUserRelationToMyUser?.followData
+                    value: state
+                            .followers?[followerIndex]
+                            .otherUserRelationToMyUser
+                            ?.followData
                             ?.followedToGroupchatPermission ==
                         "ADD",
                     onChanged: (value) {
                       BlocProvider.of<ProfilePageCubit>(context)
-                          .updateFollowDataCurrentProfileUserViaApi(
+                          .updateFollowDataForFollowerViaApi(
+                        followerIndex: followerIndex,
                         updateUserRelationFollowDataDto:
                             UpdateUserRelationFollowDataDto(
                           followedToGroupchatPermission: value ? "ADD" : "NONE",
@@ -56,12 +66,16 @@ class ProfileUserSettingsPage extends StatelessWidget {
                 builder: (context, state) {
                   return SwitchListTile.adaptive(
                     title: const Text("Darf dich in Events adden"),
-                    value: state.user.otherUserRelationToMyUser?.followData
+                    value: state
+                            .followers?[followerIndex]
+                            .otherUserRelationToMyUser
+                            ?.followData
                             ?.followedToPrivateEventPermission ==
                         "ADD",
                     onChanged: (value) {
                       BlocProvider.of<ProfilePageCubit>(context)
-                          .updateFollowDataCurrentProfileUserViaApi(
+                          .updateFollowDataForFollowerViaApi(
+                        followerIndex: followerIndex,
                         updateUserRelationFollowDataDto:
                             UpdateUserRelationFollowDataDto(
                           followedToPrivateEventPermission:
