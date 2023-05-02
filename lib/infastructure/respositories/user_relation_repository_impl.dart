@@ -325,43 +325,16 @@ class UserRelationRepositoryImpl extends UserRelationRepository {
       final response = await graphQlDatasource.query(
         """
         mutation AcceptFollowRequest(\$input: String!) {
-          acceptFollowRequest(requestUserId: \$input) {
-            username
+          acceptFollowRequest(requesterUserId: \$input) {  
             _id
-            authId
-            birthdate
             createdAt
-            firstname
-            lastname
-            profileImageLink
-            updatedAt
-            userRelationCounts {
-              followerCount
-              followedCount
-              followRequestCount
-            }
-            myUserRelationToOtherUser {
-              _id
-              createdAt
-              updatedAt
-              statusOnRelatedUser
-              followData {
-                followedToPrivateEventPermission
-                followedToGroupchatPermission
-                followedUserAt
-              }
-            }
-            otherUserRelationToMyUser {
-              _id
-              createdAt
-              updatedAt
-              statusOnRelatedUser
-              followData {
-                followedToPrivateEventPermission
-                followedToGroupchatPermission
-                followedUserAt
-              }
-            }
+            updatedAt            
+            statusOnRelatedUser
+            followData {
+              followedToPrivateEventPermission
+              followedToGroupchatPermission
+              followedUserAt
+            }                
           }
         }
         """,
@@ -392,7 +365,17 @@ class UserRelationRepositoryImpl extends UserRelationRepository {
       final response = await graphQlDatasource.query(
         """
         mutation UpdateFollowData(\$requesterUserId: String!, \$updateUserRelationFollowDataInput: UpdateUserRelationFollowDataInput!) {
-          updateFollowData(requesterUserId: \$requesterUserId, updateUserRelationFollowDataInput: \$updateUserRelationFollowDataInput)
+          updateFollowData(requesterUserId: \$requesterUserId, updateUserRelationFollowDataInput: \$updateUserRelationFollowDataInput) {
+            _id
+            createdAt
+            updatedAt            
+            statusOnRelatedUser
+            followData {
+              followedToPrivateEventPermission
+              followedToGroupchatPermission
+              followedUserAt
+            } 
+          }
         }
         """,
         variables: {

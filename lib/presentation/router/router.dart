@@ -37,6 +37,7 @@ import 'package:social_media_app_flutter/presentation/screens/private_event_page
 import 'package:social_media_app_flutter/presentation/screens/private_event_page/tab_page/pages/private_event_tab_shopping_list.dart';
 import 'package:social_media_app_flutter/presentation/screens/private_event_page/tab_page/pages/private_event_tab_user_list.dart';
 import 'package:social_media_app_flutter/presentation/screens/private_event_page/tab_page/private_event_tab_page.dart';
+import 'package:social_media_app_flutter/presentation/screens/profile_page/profile_user_settings_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/profile_page/profile_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/profile_page/profile_user_relations_tabs/profile_follow_requests_tab.dart';
 import 'package:social_media_app_flutter/presentation/screens/profile_page/profile_user_relations_tabs/profile_user_relations_tab_page.dart';
@@ -320,6 +321,11 @@ const profileRouter = AutoRoute(
       path: '',
     ),
     AutoRoute(
+      page: ProfileUserSettingsPage,
+      guards: [AuthGuard],
+      path: ':followerIndexString/settings',
+    ),
+    AutoRoute(
       page: ProfileUserRelationsTabPage,
       guards: [AuthGuard],
       path: 'user-relations',
@@ -327,7 +333,7 @@ const profileRouter = AutoRoute(
         AutoRoute(
           page: ProfileFollowerTab,
           guards: [AuthGuard],
-          path: 'FOLLOWER',
+          path: 'follower',
         ),
         AutoRoute(
           page: ProfileFollowedTab,
@@ -371,6 +377,11 @@ const homePageRouter = AutoRoute(
           path: '',
         ),
         AutoRoute(
+          page: ProfileUserSettingsPage,
+          guards: [AuthGuard],
+          path: ':followerIndexString/settings',
+        ),
+        AutoRoute(
           page: ProfileUserRelationsTabPage,
           guards: [AuthGuard],
           path: 'user-relations',
@@ -379,7 +390,7 @@ const homePageRouter = AutoRoute(
             AutoRoute(
               page: ProfileFollowerTab,
               guards: [AuthGuard],
-              path: 'FOLLOWER',
+              path: 'follower',
             ),
             AutoRoute(
               page: ProfileFollowedTab,
