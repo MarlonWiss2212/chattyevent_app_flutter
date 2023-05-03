@@ -49,7 +49,7 @@ class _SelectableUserGridListState extends State<SelectableUserGridList> {
               width: double.infinity,
               child: Button(
                 text: "Neu Laden",
-                onTap: widget.reloadRequest,
+                onTap: () => widget.reloadRequest(),
               ),
             ),
           ],

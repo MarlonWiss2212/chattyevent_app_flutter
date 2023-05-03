@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:social_media_app_flutter/application/bloc/current_private_event/current_private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user_search/user_search_cubit.dart';
-import 'package:social_media_app_flutter/core/filter/user/find_users_filter.dart';
 import 'package:social_media_app_flutter/domain/entities/private_event/private_event_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:social_media_app_flutter/presentation/widgets/general/user_list/selectable_user_grid_list.dart';
@@ -24,15 +23,18 @@ class PrivateEventInviteUserPage extends StatelessWidget {
         child: BlocBuilder<CurrentPrivateEventCubit, CurrentPrivateEventState>(
           builder: (context, state) {
             return SelectableUserGridList(
+              showTextSearch: false,
               reloadRequest: ({String? text}) {
-                BlocProvider.of<UserSearchCubit>(context).getUsersViaApi(
-                  findUsersFilter: FindUsersFilter(search: text),
+                BlocProvider.of<UserSearchCubit>(context)
+                    .getUsersByPermissionViaApi(
+                  followedToPrivateEventPermission: "ADD",
                 );
               },
               loadMoreRequest: ({String? text}) {
-                BlocProvider.of<UserSearchCubit>(context).getUsersViaApi(
+                BlocProvider.of<UserSearchCubit>(context)
+                    .getUsersByPermissionViaApi(
                   loadMore: true,
-                  findUsersFilter: FindUsersFilter(search: text),
+                  followedToPrivateEventPermission: "ADD",
                 );
               },
               userButton: (user) => PlatformElevatedButton(
