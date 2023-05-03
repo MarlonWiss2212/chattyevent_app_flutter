@@ -68,7 +68,13 @@ class ChatCubit extends Cubit<ChatState> {
         await groupchatUseCases.getGroupchatsViaApi();
 
     groupchatsOrFailure.fold(
-      (alert) => notificationCubit.newAlert(notificationAlert: alert),
+      (alert) {
+        ChatState(
+          chatStates: state.chatStates,
+          status: ChatStateStatus.initial,
+        );
+        notificationCubit.newAlert(notificationAlert: alert);
+      },
       (groupchats) {
         emit(
           ChatState(

@@ -7,13 +7,22 @@ import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 import 'package:social_media_app_flutter/presentation/widgets/general/chat_list/chat_list.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/home_page/pages/home_chat_page/home_chat_page_skeleton.dart';
 
-class HomeChatPage extends StatelessWidget {
+class HomeChatPage extends StatefulWidget {
   const HomeChatPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    BlocProvider.of<ChatCubit>(context).getChatsViaApi();
+  State<HomeChatPage> createState() => _HomeChatPageState();
+}
 
+class _HomeChatPageState extends State<HomeChatPage> {
+  @override
+  void initState() {
+    BlocProvider.of<ChatCubit>(context).getChatsViaApi();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       body: CustomScrollView(
         slivers: [

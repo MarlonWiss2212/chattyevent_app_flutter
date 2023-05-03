@@ -11,15 +11,24 @@ import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/chat_page/chat_page/chat_page_message_area.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/chat_page/chat_page/chat_page_message_input.dart';
 
-class ChatPage extends StatelessWidget {
+class ChatPage extends StatefulWidget {
   const ChatPage({@PathParam('id') required this.groupchatId, super.key});
   final String groupchatId;
 
   @override
-  Widget build(BuildContext context) {
+  State<ChatPage> createState() => _ChatPageState();
+}
+
+class _ChatPageState extends State<ChatPage> {
+  @override
+  void initState() {
     BlocProvider.of<CurrentChatCubit>(context).loadMessages();
     BlocProvider.of<CurrentChatCubit>(context).listenToMessages();
+    super.initState();
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: const AutoLeadingButton(),
@@ -37,7 +46,7 @@ class ChatPage extends StatelessWidget {
                 ),
                 const SizedBox(width: 8),
                 Hero(
-                  tag: "$groupchatId title",
+                  tag: "${widget.groupchatId} title",
                   child: Text(
                     state.currentChat.title != null
                         ? state.currentChat.title!
@@ -71,7 +80,7 @@ class ChatPage extends StatelessWidget {
           Expanded(
             child: BlocProvider.value(
               value: AddGroupchatMessageCubit(
-                AddGroupchatMessageState(groupchatTo: groupchatId),
+                AddGroupchatMessageState(groupchatTo: widget.groupchatId),
                 notificationCubit: BlocProvider.of<NotificationCubit>(context),
                 currentChatCubit: BlocProvider.of<CurrentChatCubit>(context),
                 groupchatMessageUseCases: serviceLocator(
@@ -87,7 +96,7 @@ class ChatPage extends StatelessWidget {
                     ),
                   ),
                   const Divider(height: 2),
-                  ChatPageMessageInput(groupchatTo: groupchatId),
+                  ChatPageMessageInput(groupchatTo: widget.groupchatId),
                 ],
               ),
             ),

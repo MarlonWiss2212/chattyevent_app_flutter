@@ -49,7 +49,10 @@ class AddCurrentUserCubit extends Cubit<AddCurrentUserState> {
     );
 
     userOrFailure.fold(
-      (alert) => notificationCubit.newAlert(notificationAlert: alert),
+      (alert) {
+        notificationCubit.newAlert(notificationAlert: alert);
+        emitState(status: AddCurrentUserStateStatus.initial);
+      },
       (user) {
         authCubit.emitState(
           currentUser: user,

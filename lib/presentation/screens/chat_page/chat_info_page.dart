@@ -13,12 +13,17 @@ import 'package:social_media_app_flutter/presentation/widgets/screens/chat_page/
 import 'package:social_media_app_flutter/presentation/widgets/screens/chat_page/chat_info_page/chat_info_page_title.dart';
 import 'package:social_media_app_flutter/presentation/widgets/screens/chat_page/chat_info_page/chat_info_page_user_list/chat_info_page_user_list.dart';
 
-class ChatInfoPage extends StatelessWidget {
+class ChatInfoPage extends StatefulWidget {
   const ChatInfoPage({@PathParam('id') required this.groupchatId, super.key});
   final String groupchatId;
 
   @override
-  Widget build(BuildContext context) {
+  State<ChatInfoPage> createState() => _ChatInfoPageState();
+}
+
+class _ChatInfoPageState extends State<ChatInfoPage> {
+  @override
+  void initState() {
     BlocProvider.of<CurrentChatCubit>(context)
         .getFutureConnectedPrivateEventsFromApi(
       limitOffsetFilter: LimitOffsetFilter(
@@ -26,7 +31,11 @@ class ChatInfoPage extends StatelessWidget {
         offset: 0,
       ),
     );
+    super.initState();
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       body: CustomScrollView(
         slivers: [

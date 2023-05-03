@@ -68,7 +68,10 @@ class AuthCubit extends Cubit<AuthState> {
     );
 
     authUserOrFailureString.fold(
-      (alert) => notificationCubit.newAlert(notificationAlert: alert),
+      (alert) {
+        notificationCubit.newAlert(notificationAlert: alert);
+        emitState(status: AuthStateStatus.initial);
+      },
       (authUser) async {
         emitState(
           status: AuthStateStatus.success,
@@ -93,7 +96,10 @@ class AuthCubit extends Cubit<AuthState> {
     );
 
     authUserOrFailureString.fold(
-      (alert) => notificationCubit.newAlert(notificationAlert: alert),
+      (alert) {
+        emitState(status: AuthStateStatus.initial);
+        notificationCubit.newAlert(notificationAlert: alert);
+      },
       (authUser) async {
         emitState(
           status: AuthStateStatus.success,
@@ -111,7 +117,10 @@ class AuthCubit extends Cubit<AuthState> {
         await authUseCases.sendEmailVerification();
 
     sendEmailOrFailure.fold(
-      (alert) => notificationCubit.newAlert(notificationAlert: alert),
+      (alert) {
+        emitState(status: AuthStateStatus.initial);
+        notificationCubit.newAlert(notificationAlert: alert);
+      },
       (worked) {
         emitState(
           status: AuthStateStatus.success,
@@ -129,7 +138,10 @@ class AuthCubit extends Cubit<AuthState> {
         await authUseCases.sendResetPasswordEmail(email: email);
 
     sendEmailOrFailure.fold(
-      (alert) => notificationCubit.newAlert(notificationAlert: alert),
+      (alert) {
+        emitState(status: AuthStateStatus.initial);
+        notificationCubit.newAlert(notificationAlert: alert);
+      },
       (worked) {
         emitState(
           status: AuthStateStatus.success,
@@ -150,7 +162,10 @@ class AuthCubit extends Cubit<AuthState> {
             password: password, verfiyPassword: verifyPassword);
 
     updatedPassowrdOrFailure.fold(
-      (alert) => notificationCubit.newAlert(notificationAlert: alert),
+      (alert) {
+        emitState(status: AuthStateStatus.initial);
+        notificationCubit.newAlert(notificationAlert: alert);
+      },
       (worked) {
         emitState(
           status: AuthStateStatus.success,
