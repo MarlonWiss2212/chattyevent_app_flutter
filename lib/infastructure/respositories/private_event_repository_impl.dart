@@ -171,7 +171,7 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
         """
         query FindPrivateEventData(\$filter: FindOnePrivateEventInput!, \$findPrivateEventLeftUsersInput: FindPrivateEventLeftUsersInput!, \$findPrivateEventUsersInput: FindPrivateEventUsersInput!, \$limitOffsetInput: LimitOffsetInput!, ${groupchatId == null ? '' : '\$findOneGroupchatInput: FindOneGroupchatInput!'}) {
           ${groupchatId == null ? '' : '''
-          findGroupchat(findOneGroupchatInput: \$findOneGroupchatInput) {
+          findGroupchat(filter: \$findOneGroupchatInput) {
             _id
             title
             description
@@ -699,7 +699,7 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
       final response = await graphQlDatasource.query(
         """
           query PrivateEventUsersAndLeftUsersResponse(\$findPrivateEventLeftUsersInput: FindPrivateEventLeftUsersInput!, \$findPrivateEventUsersInput: FindPrivateEventUsersInput!, \$limitOffsetInput: LimitOffsetInput!) {   
-            findPrivateEventLeftUsers(findPrivateEventLeftUsersInput: \$findPrivateEventLeftUsersInput, findPrivateEventUsersInput: \$findPrivateEventUsersInput, limitOffsetInput: \$limitOffsetInput) {
+            findPrivateEventLeftUsers(filter: \$findPrivateEventLeftUsersInput, limitOffsetInput: \$limitOffsetInput) {
               privateEventUserLeftId
               username
               _id
@@ -741,7 +741,7 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
               } 
             }
 
-            findPrivateEventUsers(privateEventId: \$privateEventId, limitOffsetInput: \$limitOffsetInput) {
+            findPrivateEventUsers(filter: \$findPrivateEventUsersInput, limitOffsetInput: \$limitOffsetInput) {
               privateEventUserId
               username
               _id

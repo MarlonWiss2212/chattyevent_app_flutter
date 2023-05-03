@@ -52,14 +52,15 @@ class AddShoppingListItemCubit extends Cubit<AddShoppingListItemState> {
     );
 
     shoppingListItemOrFailure.fold(
-      (alert) => notificationCubit.newAlert(notificationAlert: alert),
+      (alert) {
+        notificationCubit.newAlert(notificationAlert: alert);
+        emitState(status: AddShoppingListItemStateStatus.initial);
+      },
       (shoppingListItem) {
-        emit(
-          AddShoppingListItemState(
-            status: AddShoppingListItemStateStatus.success,
-            addedShoppingListItem: shoppingListItem,
-          ),
-        );
+        emit(AddShoppingListItemState(
+          status: AddShoppingListItemStateStatus.success,
+          addedShoppingListItem: shoppingListItem,
+        ));
         currentPrivateEventCubit.replaceOrAddShoppingListItem(
           addIfItsNotFound: true,
           shoppingListItemState: CurrentShoppingListItemState(

@@ -40,6 +40,9 @@ class CreateShoppingListItemPageDetail extends StatelessWidget {
                     Flexible(
                       flex: 1,
                       child: PlatformTextFormField(
+                        keyboardType: const TextInputType.numberWithOptions(
+                          decimal: true,
+                        ),
                         controller: TextEditingController(
                           text: state.amount != null
                               ? state.amount.toString()
