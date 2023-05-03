@@ -7,6 +7,7 @@ import 'package:social_media_app_flutter/application/bloc/home_page/home_event/h
 import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/add_private_event/add_private_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/current_private_event/current_private_event_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/user_search/user_search_cubit.dart';
 import 'package:social_media_app_flutter/core/injection.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 import 'package:social_media_app_flutter/presentation/widgets/general/button.dart';
@@ -18,14 +19,30 @@ class NewPrivateEventPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider.value(
-      value: AddPrivateEventCubit(
-        homeEventCubit: BlocProvider.of<HomeEventCubit>(context),
-        notificationCubit: BlocProvider.of<NotificationCubit>(context),
-        privateEventUseCases: serviceLocator(
-          param1: BlocProvider.of<AuthCubit>(context).state,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider.value(
+          value: AddPrivateEventCubit(
+            homeEventCubit: BlocProvider.of<HomeEventCubit>(context),
+            notificationCubit: BlocProvider.of<NotificationCubit>(context),
+            privateEventUseCases: serviceLocator(
+              param1: BlocProvider.of<AuthCubit>(context).state,
+            ),
+          ),
         ),
-      ),
+        BlocProvider.value(
+          value: UserSearchCubit(
+            authCubit: BlocProvider.of<AuthCubit>(context),
+            userRelationUseCases: serviceLocator(
+              param1: BlocProvider.of<AuthCubit>(context).state,
+            ),
+            userUseCases: serviceLocator(
+              param1: BlocProvider.of<AuthCubit>(context).state,
+            ),
+            notificationCubit: BlocProvider.of<NotificationCubit>(context),
+          ),
+        ),
+      ],
       child: Builder(
         builder: (context) {
           return MultiBlocListener(

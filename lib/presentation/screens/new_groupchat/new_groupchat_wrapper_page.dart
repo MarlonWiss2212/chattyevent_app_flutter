@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/chat/add_groupchat_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/add_groupchat/add_groupchat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/current_groupchat/current_chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/user_search/user_search_cubit.dart';
 import 'package:social_media_app_flutter/core/injection.dart';
 import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 import 'package:social_media_app_flutter/presentation/widgets/general/button.dart';
@@ -16,14 +17,30 @@ class NewGroupchatWrapperPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider.value(
-      value: AddGroupchatCubit(
-        notificationCubit: BlocProvider.of<NotificationCubit>(context),
-        chatCubit: BlocProvider.of<ChatCubit>(context),
-        groupchatUseCases: serviceLocator(
-          param1: BlocProvider.of<AuthCubit>(context).state,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider.value(
+          value: AddGroupchatCubit(
+            notificationCubit: BlocProvider.of<NotificationCubit>(context),
+            chatCubit: BlocProvider.of<ChatCubit>(context),
+            groupchatUseCases: serviceLocator(
+              param1: BlocProvider.of<AuthCubit>(context).state,
+            ),
+          ),
         ),
-      ),
+        BlocProvider.value(
+          value: UserSearchCubit(
+            authCubit: BlocProvider.of<AuthCubit>(context),
+            userRelationUseCases: serviceLocator(
+              param1: BlocProvider.of<AuthCubit>(context).state,
+            ),
+            userUseCases: serviceLocator(
+              param1: BlocProvider.of<AuthCubit>(context).state,
+            ),
+            notificationCubit: BlocProvider.of<NotificationCubit>(context),
+          ),
+        ),
+      ],
       child: Builder(
         builder: (context) {
           return MultiBlocListener(

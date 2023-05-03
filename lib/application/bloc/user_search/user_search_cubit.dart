@@ -4,6 +4,7 @@ import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:social_media_app_flutter/core/filter/limit_offset_filter.dart';
 import 'package:social_media_app_flutter/core/filter/user/find_users_filter.dart';
+import 'package:social_media_app_flutter/core/filter/user_relation/find_followed_filter.dart';
 import 'package:social_media_app_flutter/core/filter/user_relation/find_one_user_relation_filter.dart';
 import 'package:social_media_app_flutter/domain/entities/user-relation/user_relations_count_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/user/user_entity.dart';
@@ -26,7 +27,7 @@ class UserSearchCubit extends Cubit<UserSearchState> {
   }) : super(UserSearchState(users: []));
 
   Future getUsersViaApi({
-    LimitOffsetFilter? limitOffsetFilter,
+    bool loadMore = false,
     FindUsersFilter? findUsersFilter,
   }) async {
     emit(UserSearchState(
@@ -37,18 +38,64 @@ class UserSearchCubit extends Cubit<UserSearchState> {
     final Either<NotificationAlert, List<UserEntity>> userSearchOrFailure =
         await userUseCases.getUsersViaApi(
       findUsersFilter: findUsersFilter ?? FindUsersFilter(),
-      limitOffsetFilter: limitOffsetFilter ??
-          LimitOffsetFilter(
-            limit: 10,
-            offset: 0,
-          ),
+      limitOffsetFilter: LimitOffsetFilter(
+        limit: 20,
+        offset: loadMore ? state.users.length : 0,
+      ),
     );
 
     userSearchOrFailure.fold(
-      (alert) => notificationCubit.newAlert(notificationAlert: alert),
+      (alert) {
+        notificationCubit.newAlert(notificationAlert: alert);
+        emit(UserSearchState(
+          users: state.users,
+          status: UserSearchStateStatus.initial,
+        ));
+      },
       (users) => emit(
-        UserSearchState(users: users),
+        UserSearchState(
+          users: loadMore ? (List.from(state.users)..addAll(users)) : users,
+          status: UserSearchStateStatus.success,
+        ),
       ),
+    );
+  }
+
+  Future getUsersByPermissionViaApi({
+    bool loadMore = false,
+    String? followedToGroupchatPermission,
+    String? followedToPrivateEventPermission,
+  }) async {
+    emit(UserSearchState(
+      status: UserSearchStateStatus.loading,
+      users: state.users,
+    ));
+
+    final Either<NotificationAlert, List<UserEntity>> userSearchOrFailure =
+        await userRelationUseCases.getFollowedViaApi(
+      findFollowedFilter: FindFollowedFilter(
+        requesterUserId: authCubit.state.currentUser.id,
+        followedToGroupchatPermission: followedToGroupchatPermission,
+        followedToPrivateEventPermission: followedToPrivateEventPermission,
+      ),
+      limitOffsetFilter: LimitOffsetFilter(
+        limit: 20,
+        offset: loadMore ? state.users.length : 0,
+      ),
+    );
+
+    userSearchOrFailure.fold(
+      (alert) {
+        notificationCubit.newAlert(notificationAlert: alert);
+        emit(UserSearchState(
+          users: state.users,
+          status: UserSearchStateStatus.initial,
+        ));
+      },
+      (users) => emit(UserSearchState(
+        users: loadMore ? (List.from(state.users)..addAll(users)) : users,
+        status: UserSearchStateStatus.success,
+      )),
     );
   }
 

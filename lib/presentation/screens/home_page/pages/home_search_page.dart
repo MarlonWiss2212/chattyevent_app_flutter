@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user_search/user_search_cubit.dart';
 import 'package:social_media_app_flutter/core/filter/user/find_users_filter.dart';
+import 'package:social_media_app_flutter/core/injection.dart';
 import '../../../widgets/screens/home_page/pages/home_search_page/user_horizontal_list.dart';
 
 class HomeSearchPage extends StatelessWidget {
@@ -10,56 +13,69 @@ class HomeSearchPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<UserSearchCubit>(context).getUsersViaApi();
-
-    return Scaffold(
-      body: CustomScrollView(
-        slivers: [
-          SliverAppBar(
-            pinned: true,
-            snap: true,
-            floating: true,
-            expandedHeight: 100,
-            flexibleSpace: FlexibleSpaceBar(
-              title: Text(
-                "Entdecken",
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.onBackground,
+    return BlocProvider.value(
+      value: UserSearchCubit(
+        authCubit: BlocProvider.of<AuthCubit>(context),
+        userRelationUseCases: serviceLocator(
+          param1: BlocProvider.of<AuthCubit>(context).state,
+        ),
+        userUseCases: serviceLocator(
+          param1: BlocProvider.of<AuthCubit>(context).state,
+        ),
+        notificationCubit: BlocProvider.of<NotificationCubit>(context),
+      )..getUsersViaApi(),
+      child: Builder(builder: (context) {
+        return Scaffold(
+          body: CustomScrollView(
+            slivers: [
+              SliverAppBar(
+                pinned: true,
+                snap: true,
+                floating: true,
+                expandedHeight: 100,
+                flexibleSpace: FlexibleSpaceBar(
+                  title: Text(
+                    "Entdecken",
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onBackground,
+                    ),
+                  ),
                 ),
               ),
-            ),
-          ),
-          SliverPadding(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
-            sliver: SliverList(
-              delegate: SliverChildListDelegate(
-                [
-                  const SizedBox(height: 8),
-                  PlatformTextFormField(
-                    onChanged: (text) {
-                      BlocProvider.of<UserSearchCubit>(context).getUsersViaApi(
-                        findUsersFilter: FindUsersFilter(search: text),
-                      );
-                    },
-                    hintText: "User Suche:",
+              SliverPadding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                sliver: SliverList(
+                  delegate: SliverChildListDelegate(
+                    [
+                      const SizedBox(height: 8),
+                      PlatformTextFormField(
+                        onChanged: (text) {
+                          BlocProvider.of<UserSearchCubit>(context)
+                              .getUsersViaApi(
+                            findUsersFilter: FindUsersFilter(search: text),
+                          );
+                        },
+                        hintText: "User Suche:",
+                      ),
+                      const SizedBox(height: 8),
+                      BlocBuilder<UserSearchCubit, UserSearchState>(
+                        builder: (context, state) {
+                          if (state.status == UserSearchStateStatus.loading) {
+                            return Center(
+                              child: PlatformCircularProgressIndicator(),
+                            );
+                          }
+                          return UserHorizontalList(users: state.users);
+                        },
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 8),
-                  BlocBuilder<UserSearchCubit, UserSearchState>(
-                    builder: (context, state) {
-                      if (state.status == UserSearchStateStatus.loading) {
-                        return Center(
-                          child: PlatformCircularProgressIndicator(),
-                        );
-                      }
-                      return UserHorizontalList(users: state.users);
-                    },
-                  ),
-                ],
+                ),
               ),
-            ),
+            ],
           ),
-        ],
-      ),
+        );
+      }),
     );
   }
 }

@@ -12,7 +12,9 @@ class NewPrivateEventSearchUserTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<UserSearchCubit>(context).getUsersViaApi();
+    BlocProvider.of<UserSearchCubit>(context).getUsersByPermissionViaApi(
+      followedToPrivateEventPermission: "ADD",
+    );
 
     return Padding(
       padding: const EdgeInsets.all(8),
@@ -44,6 +46,20 @@ class NewPrivateEventSearchUserTab extends StatelessWidget {
                   }
                   return filteredUsers;
                 },
+                reloadRequest: ({String? text}) {
+                  BlocProvider.of<UserSearchCubit>(context)
+                      .getUsersByPermissionViaApi(
+                    followedToPrivateEventPermission: "ADD",
+                  );
+                },
+                loadMoreRequest: ({String? text}) {
+                  BlocProvider.of<UserSearchCubit>(context)
+                      .getUsersByPermissionViaApi(
+                    loadMore: true,
+                    followedToPrivateEventPermission: "ADD",
+                  );
+                },
+                showTextSearch: false,
                 onUserPress: (user) {
                   BlocProvider.of<AddPrivateEventCubit>(context)
                       .addPrivateEventUserToList(

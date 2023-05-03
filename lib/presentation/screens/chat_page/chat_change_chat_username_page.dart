@@ -7,6 +7,7 @@ import 'package:social_media_app_flutter/application/bloc/current_groupchat/curr
 import 'package:social_media_app_flutter/core/dto/groupchat/groupchat_user/update_groupchat_user_dto.dart';
 import 'package:social_media_app_flutter/presentation/widgets/general/button.dart';
 
+//TODO: optimize this page and add deleting groupchat name
 class ChatChangeChatUsernamePage extends StatefulWidget {
   const ChatChangeChatUsernamePage({super.key});
 

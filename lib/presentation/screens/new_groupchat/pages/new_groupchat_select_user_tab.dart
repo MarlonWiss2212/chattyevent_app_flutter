@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:social_media_app_flutter/application/bloc/chat/add_groupchat_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/add_groupchat/add_groupchat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/user_search/user_search_cubit.dart';
 import 'package:social_media_app_flutter/core/dto/groupchat/groupchat_user/create_groupchat_user_from_create_groupchat_dto.dart';
-
 import 'package:social_media_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:social_media_app_flutter/presentation/widgets/general/user_list/selectable_user_grid_list.dart';
 import 'package:social_media_app_flutter/presentation/widgets/general/user_list/selected_user_list.dart';
@@ -13,7 +12,9 @@ class NewGroupchatSelectUserTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<UserSearchCubit>(context).getUsersViaApi();
+    BlocProvider.of<UserSearchCubit>(context).getUsersByPermissionViaApi(
+      followedToGroupchatPermission: "ADD",
+    );
 
     return Padding(
       padding: const EdgeInsets.all(8),
@@ -30,6 +31,7 @@ class NewGroupchatSelectUserTab extends StatelessWidget {
                 ),
               ),
               SelectableUserGridList(
+                //TODO: in future over api
                 filterUsers: (users) {
                   List<UserEntity> filteredUsers = [];
 
@@ -43,6 +45,20 @@ class NewGroupchatSelectUserTab extends StatelessWidget {
                   }
                   return filteredUsers;
                 },
+                reloadRequest: ({String? text}) {
+                  BlocProvider.of<UserSearchCubit>(context)
+                      .getUsersByPermissionViaApi(
+                    followedToGroupchatPermission: "ADD",
+                  );
+                },
+                loadMoreRequest: ({String? text}) {
+                  BlocProvider.of<UserSearchCubit>(context)
+                      .getUsersByPermissionViaApi(
+                    loadMore: true,
+                    followedToGroupchatPermission: "ADD",
+                  );
+                },
+                showTextSearch: false,
                 onUserPress: (user) {
                   BlocProvider.of<AddGroupchatCubit>(context)
                       .addGroupchatUserToList(

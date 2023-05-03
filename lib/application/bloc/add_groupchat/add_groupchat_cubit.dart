@@ -25,12 +25,21 @@ class AddGroupchatCubit extends Cubit<AddGroupchatState> {
   }) : super(AddGroupchatState(groupchatUsers: []));
 
   Future createGroupchatViaApi() async {
+    if (state.title == null) {
+      notificationCubit.newAlert(
+          notificationAlert: NotificationAlert(
+        title: "Fehler",
+        message: "Bitte fülle alle verpflichtenen Felder aus",
+      ));
+      return;
+    }
+
     emitState(status: AddGroupchatStateStatus.loading);
 
     final Either<NotificationAlert, GroupchatEntity> groupchatOrFailure =
         await groupchatUseCases.createGroupchatViaApi(
       createGroupchatDto: CreateGroupchatDto(
-        title: state.title ?? "",
+        title: state.title!,
         profileImage: state.profileImage,
         description: state.description,
         groupchatUsers: state.groupchatUsers,

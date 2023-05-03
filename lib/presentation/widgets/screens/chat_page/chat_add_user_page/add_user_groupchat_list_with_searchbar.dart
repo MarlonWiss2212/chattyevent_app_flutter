@@ -6,7 +6,7 @@ import 'package:social_media_app_flutter/application/bloc/user_search/user_searc
 import 'package:social_media_app_flutter/core/filter/user/find_users_filter.dart';
 import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
 import 'package:social_media_app_flutter/domain/entities/user/user_entity.dart';
-import 'package:social_media_app_flutter/presentation/widgets/general/user_list/user_grid_list.dart';
+import 'package:social_media_app_flutter/presentation/widgets/general/user_list/selectable_user_grid_list.dart';
 
 /// replace this with selectable user grid list
 class AddUserGroupchatListWithSearchbar extends StatelessWidget {
@@ -16,66 +16,51 @@ class AddUserGroupchatListWithSearchbar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Column(
-        children: [
-          PlatformTextFormField(
-            onChanged: (text) {
+      child: BlocBuilder<CurrentChatCubit, CurrentChatState>(
+        builder: (context, state) {
+          return SelectableUserGridList(
+            reloadRequest: ({String? text}) {
               BlocProvider.of<UserSearchCubit>(context).getUsersViaApi(
                 findUsersFilter: FindUsersFilter(search: text),
               );
             },
-            hintText: "User Suche: ",
-          ),
-          const SizedBox(height: 8),
-          BlocBuilder<CurrentChatCubit, CurrentChatState>(
-            builder: (context, currentChatState) {
-              return BlocBuilder<UserSearchCubit, UserSearchState>(
-                builder: (context, state) {
-                  if (state.status == UserSearchStateStatus.loading) {
-                    return Expanded(
-                      child: Center(
-                        child: PlatformCircularProgressIndicator(),
-                      ),
-                    );
-                  }
-                  List<UserEntity> filteredUsers = [];
-
-                  // checks if user is already in chat if not it should be visible
-                  for (final user in state.users) {
-                    bool pushUser = true;
-                    for (GroupchatUserEntity groupchatUser
-                        in currentChatState.users) {
-                      if (groupchatUser.id == user.id) {
-                        pushUser = false;
-                        break;
-                      }
-                    }
-                    if (pushUser) {
-                      filteredUsers.add(user);
-                    }
-                  }
-
-                  return Expanded(
-                    child: UserGridList(
-                      users: filteredUsers,
-                      button: (user) => PlatformElevatedButton(
-                        color: Theme.of(context).colorScheme.primaryContainer,
-                        onPressed: () {
-                          BlocProvider.of<CurrentChatCubit>(context)
-                              .addUserToChat(userId: user.id);
-                        },
-                        child: Text(
-                          "Hinzufügen",
-                          style: Theme.of(context).textTheme.labelMedium,
-                        ),
-                      ),
-                    ),
-                  );
-                },
+            loadMoreRequest: ({String? text}) {
+              BlocProvider.of<UserSearchCubit>(context).getUsersViaApi(
+                loadMore: true,
+                findUsersFilter: FindUsersFilter(search: text),
               );
             },
-          ),
-        ],
+            userButton: (user) => PlatformElevatedButton(
+              color: Theme.of(context).colorScheme.primaryContainer,
+              onPressed: () {
+                BlocProvider.of<CurrentChatCubit>(context)
+                    .addUserToChat(userId: user.id);
+              },
+              child: Text(
+                "Hinzufügen",
+                style: Theme.of(context).textTheme.labelMedium,
+              ),
+            ),
+            filterUsers: (users) {
+              List<UserEntity> filteredUsers = [];
+
+              // checks if user is already in chat if not it should be visible
+              for (final user in users) {
+                bool pushUser = true;
+                for (GroupchatUserEntity groupchatUser in state.users) {
+                  if (groupchatUser.id == user.id) {
+                    pushUser = false;
+                    break;
+                  }
+                }
+                if (pushUser) {
+                  filteredUsers.add(user);
+                }
+              }
+              return filteredUsers;
+            },
+          );
+        },
       ),
     );
   }

@@ -214,6 +214,10 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
                       state.user.userRelationCounts!.followedCount != null
                   ? state.user.userRelationCounts!.followedCount! + 1
                   : 1,
+              followRequestCount: state.user.userRelationCounts != null &&
+                      state.user.userRelationCounts!.followRequestCount != null
+                  ? state.user.userRelationCounts!.followRequestCount! - 1
+                  : null,
             ),
           ),
           oldEntity: state.user,
