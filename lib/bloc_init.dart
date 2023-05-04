@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
@@ -20,13 +22,11 @@ class BlocInit extends StatelessWidget {
 
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
-        if (state.status == AuthStateStatus.createUserPage) {
+        if (state.goOnCreateUserPage) {
           appRouter.replace(const CreateUserPageRoute());
         }
       },
-      bloc: BlocProvider.of<AuthCubit>(context)
-        ..setCurrentUserFromFirebaseViaApi(),
-      buildWhen: (previous, current) => previous.token != current.token,
+      buildWhen: (p, c) => p.currentUser.authId != c.currentUser.authId,
       builder: (context, state) {
         final notificationCubit = BlocProvider.of<NotificationCubit>(context);
         return MultiBlocProvider(

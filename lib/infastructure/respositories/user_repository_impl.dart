@@ -171,9 +171,25 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future<Either<NotificationAlert, bool>> deleteUserViaApi() {
-    // TODO: implement deleteUserViaApi
-    throw UnimplementedError();
+  Future<Either<NotificationAlert, bool>> deleteUserViaApi() async {
+    try {
+      final response = await graphQlDatasource.mutation(
+        """
+        mutation DeleteUser {
+          deleteUser
+        }
+        """,
+      );
+      if (response.hasException) {
+        return Left(FailureHelper.graphqlFailureToNotificationAlert(
+          title: "Delete User Fehler",
+          exception: response.exception!,
+        ));
+      }
+      return Right(response.data!["updateUser"]);
+    } catch (e) {
+      return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
+    }
   }
 
   @override

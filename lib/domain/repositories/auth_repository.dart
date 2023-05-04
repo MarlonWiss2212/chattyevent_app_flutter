@@ -12,12 +12,16 @@ abstract class AuthRepository {
     required String email,
     required String password,
   });
-  Future<void> reloadUser();
   Future<Either<NotificationAlert, bool>> sendEmailVerification();
-  Future<Either<NotificationAlert, bool>> updatePassword(
-      {required String newPassword});
+  Future<Either<NotificationAlert, bool>> updatePassword({
+    required String newPassword,
+  });
   Future<Either<NotificationAlert, bool>> sendResetPasswordEmail({
     required String email,
   });
   Future<void> logout();
+  Future<Either<NotificationAlert, Unit>> refreshUser();
+  Future<Either<NotificationAlert, String>> refreshToken();
+
+  Future<Either<NotificationAlert, Unit>> deleteUser();
 }

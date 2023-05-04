@@ -4,7 +4,6 @@ enum AuthStateStatus {
   initial,
   loading,
   success,
-  createUserPage,
 }
 
 class AuthState {
@@ -15,6 +14,7 @@ class AuthState {
 
   final bool sendedResetPasswordEmail;
   final bool sendedVerificationEmail;
+  final bool goOnCreateUserPage;
 
   AuthState({
     required this.currentUser,
@@ -22,5 +22,6 @@ class AuthState {
     this.status = AuthStateStatus.initial,
     this.sendedResetPasswordEmail = false,
     this.sendedVerificationEmail = false,
+    this.goOnCreateUserPage = false,
   });
 }

@@ -62,7 +62,7 @@ Future<void> main() async {
             notificationUseCases: di.serviceLocator(),
             userUseCases: di.serviceLocator(param1: authState),
             authUseCases: di.serviceLocator(),
-          ),
+          )..setCurrentUserFromFirebaseViaApi(),
           child: const BlocInit(),
         ),
       ),
@@ -133,7 +133,6 @@ class _AppState extends State<App> {
             builder: (context, value, child) {
               return MaterialApp.router(
                 title: 'Social Media App',
-                routeInformationProvider: widget.appRouter.routeInfoProvider(),
                 routeInformationParser: widget.appRouter.defaultRouteParser(),
                 routerDelegate: widget.appRouter.delegate(),
                 builder: (context, widget) {

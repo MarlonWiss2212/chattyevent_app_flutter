@@ -23,13 +23,11 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
 
   @override
   void initState() {
-    timer = Timer.periodic(const Duration(seconds: 3), (timer) {
-      BlocProvider.of<AuthCubit>(context).reloadUser();
-      final currentUser = serviceLocator<FirebaseAuth>().currentUser;
-      if (currentUser != null && currentUser.emailVerified) {
-        AutoRouter.of(context).replace(const CreateUserPageRoute());
-      }
-    });
+    timer = Timer.periodic(
+      const Duration(seconds: 3),
+      (timer) => BlocProvider.of<AuthCubit>(context)
+          .checkIfEmailVerfiedIfSoCreateUserPage(),
+    );
     super.initState();
   }
 

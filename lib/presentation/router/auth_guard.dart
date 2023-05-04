@@ -7,6 +7,7 @@ class AuthGuard extends AutoRouteGuard {
   @override
   void onNavigation(NavigationResolver resolver, StackRouter router) {
     final currentUser = serviceLocator<FirebaseAuth>().currentUser;
+
     if (currentUser != null && currentUser.emailVerified) {
       resolver.next(true);
     } else if (currentUser != null && currentUser.emailVerified == false) {

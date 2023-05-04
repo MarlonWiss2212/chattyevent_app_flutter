@@ -60,11 +60,19 @@ class AuthUseCases {
     return await authRepository.updatePassword(newPassword: password);
   }
 
-  Future<void> reloadUser() async {
-    return await authRepository.reloadUser();
+  Future<Either<NotificationAlert, Unit>> refreshUser() async {
+    return await authRepository.refreshUser();
+  }
+
+  Future<Either<NotificationAlert, String>> refreshToken() async {
+    return await authRepository.refreshToken();
   }
 
   Future<void> logout() async {
     await authRepository.logout();
+  }
+
+  Future<Either<NotificationAlert, Unit>> deleteUser() async {
+    return await authRepository.deleteUser();
   }
 }

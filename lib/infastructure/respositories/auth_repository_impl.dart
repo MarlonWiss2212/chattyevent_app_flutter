@@ -125,7 +125,44 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<void> reloadUser() async {
-    return await auth.currentUser?.reload();
+  Future<Either<NotificationAlert, Unit>> refreshUser() async {
+    if (auth.currentUser == null) {
+      return Left(
+        NotificationAlert(
+          title: "Fehler User Neu Laden",
+          message: "Fehler beim Identifizierens des gerdigen Users",
+        ),
+      );
+    }
+    await auth.currentUser!.reload();
+    return const Right(unit);
+  }
+
+  @override
+  Future<Either<NotificationAlert, String>> refreshToken() async {
+    if (auth.currentUser == null) {
+      return Left(
+        NotificationAlert(
+          title: "Fehler Refresh Auth",
+          message: "Fehler beim aktualisieren der Authentifizierungsdaten",
+        ),
+      );
+    }
+    final String token = await auth.currentUser!.getIdToken();
+    return Right(token);
+  }
+
+  @override
+  Future<Either<NotificationAlert, Unit>> deleteUser() async {
+    if (auth.currentUser == null) {
+      return Left(
+        NotificationAlert(
+          title: "Fehler User Löschen",
+          message: "Fehler beim Identifizierens des gerdigen Users",
+        ),
+      );
+    }
+    await auth.currentUser?.delete();
+    return const Right(unit);
   }
 }

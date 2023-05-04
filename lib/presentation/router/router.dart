@@ -47,8 +47,9 @@ import 'package:social_media_app_flutter/presentation/screens/profile_page/profi
 import 'package:social_media_app_flutter/presentation/screens/profile_page/profile_wrapper_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/register_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/reset_password_page.dart';
+import 'package:social_media_app_flutter/presentation/screens/settings_page/pages/privacy_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/settings_page/pages/theme_mode_page.dart';
-import 'package:social_media_app_flutter/presentation/screens/settings_page/pages/settings_page.dart';
+import 'package:social_media_app_flutter/presentation/screens/settings_page/settings_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/settings_page/pages/update_password_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/settings_page/settings_page_wrapper.dart';
 import 'package:social_media_app_flutter/presentation/screens/shopping_list_page/shopping_list_item_page/shopping_list_item_change_user_page.dart';
@@ -73,11 +74,16 @@ import 'package:social_media_app_flutter/presentation/screens/shopping_list_page
       path: "/settings",
       children: [
         AutoRoute(page: SettingsPage, guards: [AuthGuard], path: ''),
-        AutoRoute(page: ThemeModePage, guards: [AuthGuard], path: 'theme-mode'),
+        AutoRoute(page: ThemeModePage, guards: [AuthGuard], path: 'theme'),
         AutoRoute(
           page: UpdatePasswordPage,
           guards: [AuthGuard],
           path: 'update-password',
+        ),
+        AutoRoute(
+          page: PrivacyPage,
+          guards: [AuthGuard],
+          path: 'privacy',
         ),
         RedirectRoute(path: '*', redirectTo: '')
       ],
