@@ -6,6 +6,7 @@ import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/home_page/home_event/home_event_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:social_media_app_flutter/application/bloc/current_private_event/current_private_event_cubit.dart';
+import 'package:social_media_app_flutter/application/bloc/user_search/user_search_cubit.dart';
 import 'package:social_media_app_flutter/core/injection.dart';
 
 class PrivateEventWrapperPage extends StatelessWidget {
@@ -41,8 +42,24 @@ class PrivateEventWrapperPage extends StatelessWidget {
           ..setCurrentChatFromChatCubit()
           ..reloadPrivateEventStandardDataViaApi();
 
-    return BlocProvider.value(
-      value: currentPrivateEventCubit,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider.value(
+          value: currentPrivateEventCubit,
+        ),
+        BlocProvider.value(
+          value: UserSearchCubit(
+            authCubit: BlocProvider.of<AuthCubit>(context),
+            userRelationUseCases: serviceLocator(
+              param1: BlocProvider.of<AuthCubit>(context).state,
+            ),
+            userUseCases: serviceLocator(
+              param1: BlocProvider.of<AuthCubit>(context).state,
+            ),
+            notificationCubit: BlocProvider.of<NotificationCubit>(context),
+          ),
+        ),
+      ],
       child: Builder(
         builder: (context) {
           return MultiBlocListener(

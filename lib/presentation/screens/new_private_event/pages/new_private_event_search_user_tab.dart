@@ -32,43 +32,45 @@ class NewPrivateEventSearchUserTab extends StatelessWidget {
                   userId: user.id,
                 ),
               ),
-              SelectableUserGridList(
-                filterUsers: (users) {
-                  List<UserEntity> filteredUsers = [];
+              Expanded(
+                child: SelectableUserGridList(
+                  filterUsers: (users) {
+                    List<UserEntity> filteredUsers = [];
 
-                  for (final user in users) {
-                    int foundIndex = state.privateEventUsersDto.indexWhere(
-                      (groupchatUser) => groupchatUser.user.id == user.id,
-                    );
-                    if (foundIndex == -1) {
-                      filteredUsers.add(user);
+                    for (final user in users) {
+                      int foundIndex = state.privateEventUsersDto.indexWhere(
+                        (groupchatUser) => groupchatUser.user.id == user.id,
+                      );
+                      if (foundIndex == -1) {
+                        filteredUsers.add(user);
+                      }
                     }
-                  }
-                  return filteredUsers;
-                },
-                reloadRequest: ({String? text}) {
-                  BlocProvider.of<UserSearchCubit>(context)
-                      .getUsersByPermissionViaApi(
-                    followedToPrivateEventPermission: "ADD",
-                  );
-                },
-                loadMoreRequest: ({String? text}) {
-                  BlocProvider.of<UserSearchCubit>(context)
-                      .getUsersByPermissionViaApi(
-                    loadMore: true,
-                    followedToPrivateEventPermission: "ADD",
-                  );
-                },
-                showTextSearch: false,
-                onUserPress: (user) {
-                  BlocProvider.of<AddPrivateEventCubit>(context)
-                      .addPrivateEventUserToList(
-                    privateEventUserDto:
-                        CreatePrivateEventUserFromPrivateEventDtoWithUserEntity(
-                      user: user,
-                    ),
-                  );
-                },
+                    return filteredUsers;
+                  },
+                  reloadRequest: ({String? text}) {
+                    BlocProvider.of<UserSearchCubit>(context)
+                        .getUsersByPermissionViaApi(
+                      followedToPrivateEventPermission: "ADD",
+                    );
+                  },
+                  loadMoreRequest: ({String? text}) {
+                    BlocProvider.of<UserSearchCubit>(context)
+                        .getUsersByPermissionViaApi(
+                      loadMore: true,
+                      followedToPrivateEventPermission: "ADD",
+                    );
+                  },
+                  showTextSearch: false,
+                  onUserPress: (user) {
+                    BlocProvider.of<AddPrivateEventCubit>(context)
+                        .addPrivateEventUserToList(
+                      privateEventUserDto:
+                          CreatePrivateEventUserFromPrivateEventDtoWithUserEntity(
+                        user: user,
+                      ),
+                    );
+                  },
+                ),
               ),
             ],
           );

@@ -30,44 +30,46 @@ class NewGroupchatSelectUserTab extends StatelessWidget {
                   userId: user.id,
                 ),
               ),
-              SelectableUserGridList(
-                //TODO: in future over api
-                filterUsers: (users) {
-                  List<UserEntity> filteredUsers = [];
+              Expanded(
+                child: SelectableUserGridList(
+                  //TODO: in future over api
+                  filterUsers: (users) {
+                    List<UserEntity> filteredUsers = [];
 
-                  for (final user in users) {
-                    int foundIndex = state.groupchatUsers.indexWhere(
-                      (groupchatUser) => groupchatUser.user.id == user.id,
-                    );
-                    if (foundIndex == -1) {
-                      filteredUsers.add(user);
+                    for (final user in users) {
+                      int foundIndex = state.groupchatUsers.indexWhere(
+                        (groupchatUser) => groupchatUser.user.id == user.id,
+                      );
+                      if (foundIndex == -1) {
+                        filteredUsers.add(user);
+                      }
                     }
-                  }
-                  return filteredUsers;
-                },
-                reloadRequest: ({String? text}) {
-                  BlocProvider.of<UserSearchCubit>(context)
-                      .getUsersByPermissionViaApi(
-                    followedToGroupchatPermission: "ADD",
-                  );
-                },
-                loadMoreRequest: ({String? text}) {
-                  BlocProvider.of<UserSearchCubit>(context)
-                      .getUsersByPermissionViaApi(
-                    loadMore: true,
-                    followedToGroupchatPermission: "ADD",
-                  );
-                },
-                showTextSearch: false,
-                onUserPress: (user) {
-                  BlocProvider.of<AddGroupchatCubit>(context)
-                      .addGroupchatUserToList(
-                    groupchatUser:
-                        CreateGroupchatUserFromCreateGroupchatDtoWithUserEntity(
-                      user: user,
-                    ),
-                  );
-                },
+                    return filteredUsers;
+                  },
+                  reloadRequest: ({String? text}) {
+                    BlocProvider.of<UserSearchCubit>(context)
+                        .getUsersByPermissionViaApi(
+                      followedToGroupchatPermission: "ADD",
+                    );
+                  },
+                  loadMoreRequest: ({String? text}) {
+                    BlocProvider.of<UserSearchCubit>(context)
+                        .getUsersByPermissionViaApi(
+                      loadMore: true,
+                      followedToGroupchatPermission: "ADD",
+                    );
+                  },
+                  showTextSearch: false,
+                  onUserPress: (user) {
+                    BlocProvider.of<AddGroupchatCubit>(context)
+                        .addGroupchatUserToList(
+                      groupchatUser:
+                          CreateGroupchatUserFromCreateGroupchatDtoWithUserEntity(
+                        user: user,
+                      ),
+                    );
+                  },
+                ),
               ),
             ],
           );

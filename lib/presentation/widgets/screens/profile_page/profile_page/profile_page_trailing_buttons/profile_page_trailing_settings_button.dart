@@ -18,7 +18,7 @@ class ProfilePageTrailingSettingsButton extends StatelessWidget {
             if (authState.currentUser.id == state.user.id) {
               return IconButton(
                 onPressed: () => AutoRouter.of(context).push(
-                  const SettingsWrapperPageRoute(),
+                  const SettingsPageRoute(),
                 ),
                 icon: Icon(PlatformIcons(context).settings),
               );

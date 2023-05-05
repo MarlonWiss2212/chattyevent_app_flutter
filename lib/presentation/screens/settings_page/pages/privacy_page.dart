@@ -1,4 +1,6 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
 
 class PrivacyPage extends StatefulWidget {
   const PrivacyPage({super.key});
@@ -67,9 +69,9 @@ class _PrivacyPageState extends State<PrivacyPage> {
                   ),
                   trailing: const Icon(Icons.arrow_right),
                   onTap: () {
-                    //AutoRouter.of(context).push(
-                    //  const UpdatePasswordPageRoute(),
-                    //);
+                    AutoRouter.of(context).push(
+                      const ImprintPageRoute(),
+                    );
                   },
                 ),
                 ListTile(
@@ -81,9 +83,9 @@ class _PrivacyPageState extends State<PrivacyPage> {
                   ),
                   trailing: const Icon(Icons.arrow_right),
                   onTap: () {
-                    //BlocProvider.of<AuthCubit>(context).deleteAccount();
-                    //AutoRouter.of(context).root.popUntilRoot();
-                    //AutoRouter.of(context).root.replace(const LoginPageRoute());
+                    AutoRouter.of(context).push(
+                      const RightOnDeletionPageRoute(),
+                    );
                   },
                 ),
               ],

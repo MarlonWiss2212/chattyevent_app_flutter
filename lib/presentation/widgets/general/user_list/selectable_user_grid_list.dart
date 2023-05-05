@@ -35,58 +35,56 @@ class _SelectableUserGridListState extends State<SelectableUserGridList> {
   TextEditingController userSearch = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Column(
-        children: [
-          if (widget.showTextSearch) ...{
-            PlatformTextFormField(
-              controller: userSearch,
-              onChanged: (text) => widget.reloadRequest(text: text),
-              hintText: "User Suche: ",
-            ),
-          } else ...[
-            SizedBox(
-              width: double.infinity,
-              child: Button(
-                text: "Neu Laden",
-                onTap: () => widget.reloadRequest(),
-              ),
-            ),
-          ],
-          const SizedBox(height: 8),
+    return Column(
+      children: [
+        if (widget.showTextSearch) ...{
+          PlatformTextFormField(
+            controller: userSearch,
+            onChanged: (text) => widget.reloadRequest(text: text),
+            hintText: "User Suche: ",
+          ),
+        } else ...[
           SizedBox(
             width: double.infinity,
             child: Button(
-              text: "Mehr Laden",
-              onTap: () => widget.loadMoreRequest(text: userSearch.text),
+              text: "Neu Laden",
+              onTap: () => widget.reloadRequest(),
             ),
           ),
-          const SizedBox(height: 8),
-          BlocBuilder<UserSearchCubit, UserSearchState>(
-            builder: (context, state) {
-              if (state.status == UserSearchStateStatus.loading) {
-                return Expanded(
-                  child: Center(
-                    child: PlatformCircularProgressIndicator(),
-                  ),
-                );
-              }
-
-              final filteredUsers = widget.filterUsers != null
-                  ? widget.filterUsers!(state.users)
-                  : state.users;
-
+        ],
+        const SizedBox(height: 8),
+        SizedBox(
+          width: double.infinity,
+          child: Button(
+            text: "Mehr Laden",
+            onTap: () => widget.loadMoreRequest(text: userSearch.text),
+          ),
+        ),
+        const SizedBox(height: 8),
+        BlocBuilder<UserSearchCubit, UserSearchState>(
+          builder: (context, state) {
+            if (state.status == UserSearchStateStatus.loading) {
               return Expanded(
-                child: UserGridList(
-                  users: filteredUsers,
-                  onPress: widget.onUserPress,
-                  button: widget.userButton,
+                child: Center(
+                  child: PlatformCircularProgressIndicator(),
                 ),
               );
-            },
-          ),
-        ],
-      ),
+            }
+
+            final filteredUsers = widget.filterUsers != null
+                ? widget.filterUsers!(state.users)
+                : state.users;
+
+            return Expanded(
+              child: UserGridList(
+                users: filteredUsers,
+                onPress: widget.onUserPress,
+                button: widget.userButton,
+              ),
+            );
+          },
+        ),
+      ],
     );
   }
 }
