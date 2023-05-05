@@ -1,4 +1,4 @@
-package com.example.social_media_app_flutter
+package com.chattyevent.chattyevent
 
 import io.flutter.embedding.android.FlutterActivity
 
