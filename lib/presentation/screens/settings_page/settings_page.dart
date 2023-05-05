@@ -82,8 +82,6 @@ class SettingsPage extends StatelessWidget {
                   ),
                   onTap: () {
                     BlocProvider.of<AuthCubit>(context).logout();
-                    AutoRouter.of(context).root.popUntilRoot();
-                    AutoRouter.of(context).root.replace(const LoginPageRoute());
                   },
                 ),
               ],

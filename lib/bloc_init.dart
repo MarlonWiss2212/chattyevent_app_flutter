@@ -25,6 +25,10 @@ class BlocInit extends StatelessWidget {
         if (state.goOnCreateUserPage) {
           appRouter.replace(const CreateUserPageRoute());
         }
+        if (state.status == AuthStateStatus.logout) {
+          appRouter.root.popUntilRoot();
+          appRouter.root.replace(const LoginPageRoute());
+        }
       },
       buildWhen: (p, c) => p.currentUser.authId != c.currentUser.authId,
       builder: (context, state) {

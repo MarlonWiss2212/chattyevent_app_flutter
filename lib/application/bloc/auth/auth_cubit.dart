@@ -181,25 +181,22 @@ class AuthCubit extends Cubit<AuthState> {
   Future logout() async {
     emitState(status: AuthStateStatus.loading);
     await authUseCases.logout();
-    emit(AuthState(currentUser: UserEntity(authId: "", id: "")));
+    emit(AuthState(
+      currentUser: UserEntity(authId: "", id: ""),
+      status: AuthStateStatus.logout,
+    ));
   }
 
   Future deleteUser() async {
-    if (auth.currentUser == null) {
-      notificationCubit.newAlert(
-        notificationAlert: NotificationAlert(
-          title: "Fehler User Löschen",
-          message: "Fehler beim Identifizierens des gerdigen Users",
-        ),
-      );
-      return;
-    }
     emitState(status: AuthStateStatus.loading);
     await Future.wait([
       authUseCases.logout(),
       userUseCases.deleteUserViaApi(),
     ]);
-    emit(AuthState(currentUser: UserEntity(authId: "", id: "")));
+    emit(AuthState(
+      currentUser: UserEntity(authId: "", id: ""),
+      status: AuthStateStatus.logout,
+    ));
   }
 
   Future refreshJwtToken() async {
