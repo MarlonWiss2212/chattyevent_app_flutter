@@ -1,6 +1,6 @@
 {
-    "name": "social_media_app_flutter",
-    "short_name": "social_media_app_flutter",
+    "name": "chattyevent_app_flutter",
+    "short_name": "chattyevent_app_flutter",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

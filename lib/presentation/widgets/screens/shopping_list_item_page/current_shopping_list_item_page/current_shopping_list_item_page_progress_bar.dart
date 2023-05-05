@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:social_media_app_flutter/application/bloc/shopping_list/current_shopping_list_item_cubit.dart';
-import 'package:social_media_app_flutter/core/dto/shopping_list_item/update_shopping_list_item_dto.dart';
-import 'package:social_media_app_flutter/presentation/widgets/general/dialog/alert_dialog.dart';
-import 'package:social_media_app_flutter/presentation/widgets/general/input_fields/edit_input_text_field.dart';
+import 'package:chattyevent_app_flutter/application/bloc/shopping_list/current_shopping_list_item_cubit.dart';
+import 'package:chattyevent_app_flutter/core/dto/shopping_list_item/update_shopping_list_item_dto.dart';
+import 'package:chattyevent_app_flutter/presentation/widgets/general/dialog/alert_dialog.dart';
+import 'package:chattyevent_app_flutter/presentation/widgets/general/input_fields/edit_input_text_field.dart';
 
 class CurrentShoppingListItemPageWithProgressBar extends StatelessWidget {
   const CurrentShoppingListItemPageWithProgressBar({super.key});

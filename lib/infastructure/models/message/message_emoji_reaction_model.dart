@@ -1,4 +1,4 @@
-import 'package:social_media_app_flutter/domain/entities/message/message_emoji_reaction_entity.dart';
+import 'package:chattyevent_app_flutter/domain/entities/message/message_emoji_reaction_entity.dart';
 
 class MessageEmojiReactionModel extends MessageEmojiReactionEntity {
   MessageEmojiReactionModel({

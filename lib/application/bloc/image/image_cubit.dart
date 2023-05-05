@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:meta/meta.dart';
-import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
-import 'package:social_media_app_flutter/domain/usecases/image_picker_usecases.dart';
+import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
+import 'package:chattyevent_app_flutter/domain/usecases/image_picker_usecases.dart';
 
 part 'image_state.dart';
 

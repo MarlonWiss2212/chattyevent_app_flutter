@@ -1,6 +1,6 @@
-import 'package:social_media_app_flutter/domain/entities/user-relation/user_relation_entity.dart';
-import 'package:social_media_app_flutter/domain/entities/user-relation/user_relation_follow_data_entity.dart';
-import 'package:social_media_app_flutter/infastructure/models/user_relation/user_relation_follow_data_model.dart';
+import 'package:chattyevent_app_flutter/domain/entities/user-relation/user_relation_entity.dart';
+import 'package:chattyevent_app_flutter/domain/entities/user-relation/user_relation_follow_data_entity.dart';
+import 'package:chattyevent_app_flutter/infastructure/models/user_relation/user_relation_follow_data_model.dart';
 
 class UserRelationModel extends UserRelationEntity {
   UserRelationModel({

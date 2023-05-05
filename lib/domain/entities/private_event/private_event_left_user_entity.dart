@@ -1,5 +1,5 @@
-import 'package:social_media_app_flutter/domain/entities/user-relation/user_relations_count_entity.dart';
-import 'package:social_media_app_flutter/domain/entities/user/user_entity.dart';
+import 'package:chattyevent_app_flutter/domain/entities/user-relation/user_relations_count_entity.dart';
+import 'package:chattyevent_app_flutter/domain/entities/user/user_entity.dart';
 
 class PrivateEventLeftUserEntity extends UserEntity {
   final String privateEventUserLeftId;

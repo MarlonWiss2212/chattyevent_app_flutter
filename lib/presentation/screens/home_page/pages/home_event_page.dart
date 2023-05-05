@@ -2,10 +2,10 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:social_media_app_flutter/application/bloc/home_page/home_event/home_event_cubit.dart';
-import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
-import 'package:social_media_app_flutter/presentation/widgets/general/event_list/event_horizontal_list_skeleton.dart';
-import 'package:social_media_app_flutter/presentation/widgets/screens/home_page/pages/home_event_page/home_event_page_details.dart';
+import 'package:chattyevent_app_flutter/application/bloc/home_page/home_event/home_event_cubit.dart';
+import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
+import 'package:chattyevent_app_flutter/presentation/widgets/general/event_list/event_horizontal_list_skeleton.dart';
+import 'package:chattyevent_app_flutter/presentation/widgets/screens/home_page/pages/home_event_page/home_event_page_details.dart';
 
 class HomeEventPage extends StatelessWidget {
   const HomeEventPage({super.key});

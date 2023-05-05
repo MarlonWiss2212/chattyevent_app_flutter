@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
+import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
 
 abstract class SharedPreferencesDatasource {
   Future<void> deleteFromStorage(String name);

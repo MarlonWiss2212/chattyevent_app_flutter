@@ -2,13 +2,13 @@ import 'package:auto_route/auto_route.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/current_private_event/current_private_event_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/shopping_list/current_shopping_list_item_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/shopping_list/my_shopping_list_cubit.dart';
-import 'package:social_media_app_flutter/core/injection.dart';
-import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
+import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
+import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
+import 'package:chattyevent_app_flutter/application/bloc/current_private_event/current_private_event_cubit.dart';
+import 'package:chattyevent_app_flutter/application/bloc/shopping_list/current_shopping_list_item_cubit.dart';
+import 'package:chattyevent_app_flutter/application/bloc/shopping_list/my_shopping_list_cubit.dart';
+import 'package:chattyevent_app_flutter/core/injection.dart';
+import 'package:chattyevent_app_flutter/domain/entities/private_event/private_event_entity.dart';
 
 class StandardShoppingListItemWrapperPage extends StatelessWidget {
   final String shoppingListItemId;

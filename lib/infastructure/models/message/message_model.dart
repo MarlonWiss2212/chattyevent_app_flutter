@@ -1,6 +1,6 @@
-import 'package:social_media_app_flutter/domain/entities/message/message_emoji_reaction_entity.dart';
-import 'package:social_media_app_flutter/domain/entities/message/message_entity.dart';
-import 'package:social_media_app_flutter/infastructure/models/message/message_emoji_reaction_model.dart';
+import 'package:chattyevent_app_flutter/domain/entities/message/message_emoji_reaction_entity.dart';
+import 'package:chattyevent_app_flutter/domain/entities/message/message_entity.dart';
+import 'package:chattyevent_app_flutter/infastructure/models/message/message_emoji_reaction_model.dart';
 
 class MessageModel extends MessageEntity {
   MessageModel({

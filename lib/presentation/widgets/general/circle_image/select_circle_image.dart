@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:social_media_app_flutter/presentation/widgets/general/bottom_sheet/image_picker_list.dart';
-import 'package:social_media_app_flutter/presentation/widgets/general/circle_image/cirlce_image.dart';
+import 'package:chattyevent_app_flutter/presentation/widgets/general/bottom_sheet/image_picker_list.dart';
+import 'package:chattyevent_app_flutter/presentation/widgets/general/circle_image/cirlce_image.dart';
 
 class SelectCircleImage extends StatelessWidget {
   final void Function(File newImage) imageChanged;

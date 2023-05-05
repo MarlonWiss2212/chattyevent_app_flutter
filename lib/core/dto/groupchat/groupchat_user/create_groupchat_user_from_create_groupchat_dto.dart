@@ -1,4 +1,4 @@
-import 'package:social_media_app_flutter/domain/entities/user/user_entity.dart';
+import 'package:chattyevent_app_flutter/domain/entities/user/user_entity.dart';
 
 class CreateGroupchatUserFromCreateGroupchatDto {
   final String userId;

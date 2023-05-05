@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:social_media_app_flutter/presentation/widgets/general/button.dart';
+import 'package:chattyevent_app_flutter/presentation/widgets/general/button.dart';
 
 class AcceptDeclineDialog extends StatelessWidget {
   final String title;

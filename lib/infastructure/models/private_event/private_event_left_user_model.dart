@@ -1,8 +1,8 @@
-import 'package:social_media_app_flutter/domain/entities/private_event/private_event_left_user_entity.dart';
-import 'package:social_media_app_flutter/domain/entities/user-relation/user_relation_entity.dart';
-import 'package:social_media_app_flutter/domain/entities/user-relation/user_relations_count_entity.dart';
-import 'package:social_media_app_flutter/infastructure/models/user_relation/user_relation_count_model.dart';
-import 'package:social_media_app_flutter/infastructure/models/user_relation/user_relation_model.dart';
+import 'package:chattyevent_app_flutter/domain/entities/private_event/private_event_left_user_entity.dart';
+import 'package:chattyevent_app_flutter/domain/entities/user-relation/user_relation_entity.dart';
+import 'package:chattyevent_app_flutter/domain/entities/user-relation/user_relations_count_entity.dart';
+import 'package:chattyevent_app_flutter/infastructure/models/user_relation/user_relation_count_model.dart';
+import 'package:chattyevent_app_flutter/infastructure/models/user_relation/user_relation_model.dart';
 
 class PrivateEventLeftUserModel extends PrivateEventLeftUserEntity {
   PrivateEventLeftUserModel({

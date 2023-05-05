@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:social_media_app_flutter/application/bloc/auth/add_current_user_cubit.dart';
-import 'package:social_media_app_flutter/presentation/widgets/general/button.dart';
+import 'package:chattyevent_app_flutter/application/bloc/auth/add_current_user_cubit.dart';
+import 'package:chattyevent_app_flutter/presentation/widgets/general/button.dart';
 
 class CreateUserPageBirthdayButton extends StatelessWidget {
   const CreateUserPageBirthdayButton({super.key});

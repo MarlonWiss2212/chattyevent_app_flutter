@@ -3,8 +3,8 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter/foundation.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:social_media_app_flutter/domain/repositories/device/location_repository.dart';
-import 'package:social_media_app_flutter/infastructure/datasources/device/location.dart';
+import 'package:chattyevent_app_flutter/domain/repositories/device/location_repository.dart';
+import 'package:chattyevent_app_flutter/infastructure/datasources/device/location.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class LocationRepositoryImpl implements LocationRepository {

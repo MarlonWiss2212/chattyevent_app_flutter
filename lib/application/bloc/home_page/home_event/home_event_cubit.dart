@@ -1,12 +1,12 @@
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:meta/meta.dart';
-import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/current_private_event/current_private_event_cubit.dart';
-import 'package:social_media_app_flutter/core/filter/limit_offset_filter.dart';
-import 'package:social_media_app_flutter/core/filter/private_event/find_private_events_filter.dart';
-import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
-import 'package:social_media_app_flutter/domain/usecases/private_event_usecases.dart';
+import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
+import 'package:chattyevent_app_flutter/application/bloc/current_private_event/current_private_event_cubit.dart';
+import 'package:chattyevent_app_flutter/core/filter/limit_offset_filter.dart';
+import 'package:chattyevent_app_flutter/core/filter/private_event/find_private_events_filter.dart';
+import 'package:chattyevent_app_flutter/domain/entities/private_event/private_event_entity.dart';
+import 'package:chattyevent_app_flutter/domain/usecases/private_event_usecases.dart';
 
 part 'home_event_state.dart';
 

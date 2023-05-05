@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:social_media_app_flutter/domain/usecases/settings_usecases.dart';
+import 'package:chattyevent_app_flutter/domain/usecases/settings_usecases.dart';
 
 class DarkModeProvider with ChangeNotifier {
   bool _darkMode = false;

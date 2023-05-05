@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
+import 'package:chattyevent_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 
 class ChatGridListItem extends StatelessWidget {
   final GroupchatEntity chat;

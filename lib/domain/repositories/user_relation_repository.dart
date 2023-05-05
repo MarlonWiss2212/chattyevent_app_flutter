@@ -1,13 +1,13 @@
 import 'package:dartz/dartz.dart';
-import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
-import 'package:social_media_app_flutter/core/dto/user_relation/create_user_relation_dto.dart';
-import 'package:social_media_app_flutter/core/dto/user_relation/update_user_relation_follow_data_dto.dart';
-import 'package:social_media_app_flutter/core/filter/limit_offset_filter.dart';
-import 'package:social_media_app_flutter/core/filter/user_relation/find_followed_filter.dart';
-import 'package:social_media_app_flutter/core/filter/user_relation/find_followers_filter.dart';
-import 'package:social_media_app_flutter/core/filter/user_relation/find_one_user_relation_filter.dart';
-import 'package:social_media_app_flutter/domain/entities/user-relation/user_relation_entity.dart';
-import 'package:social_media_app_flutter/domain/entities/user/user_entity.dart';
+import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
+import 'package:chattyevent_app_flutter/core/dto/user_relation/create_user_relation_dto.dart';
+import 'package:chattyevent_app_flutter/core/dto/user_relation/update_user_relation_follow_data_dto.dart';
+import 'package:chattyevent_app_flutter/core/filter/limit_offset_filter.dart';
+import 'package:chattyevent_app_flutter/core/filter/user_relation/find_followed_filter.dart';
+import 'package:chattyevent_app_flutter/core/filter/user_relation/find_followers_filter.dart';
+import 'package:chattyevent_app_flutter/core/filter/user_relation/find_one_user_relation_filter.dart';
+import 'package:chattyevent_app_flutter/domain/entities/user-relation/user_relation_entity.dart';
+import 'package:chattyevent_app_flutter/domain/entities/user/user_entity.dart';
 
 abstract class UserRelationRepository {
   Future<Either<NotificationAlert, UserRelationEntity>>

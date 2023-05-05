@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:social_media_app_flutter/application/bloc/chat/chat_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/add_private_event/add_private_event_cubit.dart';
-import 'package:social_media_app_flutter/presentation/widgets/general/chat_list/chat_grid_list.dart';
+import 'package:chattyevent_app_flutter/application/bloc/chat/chat_cubit.dart';
+import 'package:chattyevent_app_flutter/application/bloc/add_private_event/add_private_event_cubit.dart';
+import 'package:chattyevent_app_flutter/presentation/widgets/general/chat_list/chat_grid_list.dart';
 
 class NewPrivateEventSearchGroupchatTab extends StatefulWidget {
   const NewPrivateEventSearchGroupchatTab({super.key});

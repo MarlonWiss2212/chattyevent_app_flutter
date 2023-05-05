@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:social_media_app_flutter/domain/entities/user/user_entity.dart';
+import 'package:chattyevent_app_flutter/domain/entities/user/user_entity.dart';
 
 class UserGridListItem extends StatelessWidget {
   final UserEntity user;

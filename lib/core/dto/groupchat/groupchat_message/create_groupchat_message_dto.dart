@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:social_media_app_flutter/core/filter/groupchat/find_one_groupchat_to_filter.dart';
+import 'package:chattyevent_app_flutter/core/filter/groupchat/find_one_groupchat_to_filter.dart';
 
 class CreateGroupchatMessageDto extends FindOneGroupchatToFilter {
   final String message;

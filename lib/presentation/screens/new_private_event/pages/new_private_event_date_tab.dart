@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:social_media_app_flutter/application/bloc/add_private_event/add_private_event_cubit.dart';
-import 'package:social_media_app_flutter/presentation/widgets/general/button.dart';
+import 'package:chattyevent_app_flutter/application/bloc/add_private_event/add_private_event_cubit.dart';
+import 'package:chattyevent_app_flutter/presentation/widgets/general/button.dart';
 
 class NewPrivateEventDateTab extends StatelessWidget {
   const NewPrivateEventDateTab({super.key});

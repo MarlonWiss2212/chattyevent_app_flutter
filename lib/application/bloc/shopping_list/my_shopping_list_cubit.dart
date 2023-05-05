@@ -1,12 +1,12 @@
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:meta/meta.dart';
-import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/shopping_list/current_shopping_list_item_cubit.dart';
-import 'package:social_media_app_flutter/core/filter/limit_offset_filter.dart';
-import 'package:social_media_app_flutter/core/filter/shopping_list_item/find_shopping_list_items_filter.dart';
-import 'package:social_media_app_flutter/domain/entities/shopping_list_item/shopping_list_item_entity.dart';
-import 'package:social_media_app_flutter/domain/usecases/shopping_list_item_usecases.dart';
+import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
+import 'package:chattyevent_app_flutter/application/bloc/shopping_list/current_shopping_list_item_cubit.dart';
+import 'package:chattyevent_app_flutter/core/filter/limit_offset_filter.dart';
+import 'package:chattyevent_app_flutter/core/filter/shopping_list_item/find_shopping_list_items_filter.dart';
+import 'package:chattyevent_app_flutter/domain/entities/shopping_list_item/shopping_list_item_entity.dart';
+import 'package:chattyevent_app_flutter/domain/usecases/shopping_list_item_usecases.dart';
 
 part 'my_shopping_list_state.dart';
 

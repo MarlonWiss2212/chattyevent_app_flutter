@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'package:social_media_app_flutter/application/bloc/shopping_list/current_shopping_list_item_cubit.dart';
-import 'package:social_media_app_flutter/presentation/widgets/general/button.dart';
-import 'package:social_media_app_flutter/presentation/widgets/general/dialog/alert_dialog.dart';
+import 'package:chattyevent_app_flutter/application/bloc/shopping_list/current_shopping_list_item_cubit.dart';
+import 'package:chattyevent_app_flutter/presentation/widgets/general/button.dart';
+import 'package:chattyevent_app_flutter/presentation/widgets/general/dialog/alert_dialog.dart';
 
 class CurrentShoppingListItemPageCreateBoughtAmountTile extends StatefulWidget {
   const CurrentShoppingListItemPageCreateBoughtAmountTile({super.key});

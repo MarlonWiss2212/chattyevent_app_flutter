@@ -1,4 +1,4 @@
-# social_media_app_flutter
+# chattyevent_app_flutter
 
 A new Flutter project.
 

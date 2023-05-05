@@ -1,17 +1,17 @@
 import 'package:dartz/dartz.dart';
 import 'package:http/http.dart';
 import 'package:http_parser/http_parser.dart';
-import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
-import 'package:social_media_app_flutter/core/dto/user/create_user_dto.dart';
-import 'package:social_media_app_flutter/core/dto/user/update_user_dto.dart';
-import 'package:social_media_app_flutter/core/filter/limit_offset_filter.dart';
-import 'package:social_media_app_flutter/core/filter/user/find_one_user_filter.dart';
-import 'package:social_media_app_flutter/core/filter/user/find_users_filter.dart';
-import 'package:social_media_app_flutter/core/utils/failure_helper.dart';
-import 'package:social_media_app_flutter/domain/entities/user/user_entity.dart';
-import 'package:social_media_app_flutter/domain/repositories/user_repository.dart';
-import 'package:social_media_app_flutter/infastructure/datasources/remote/graphql.dart';
-import 'package:social_media_app_flutter/infastructure/models/user/user_model.dart';
+import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
+import 'package:chattyevent_app_flutter/core/dto/user/create_user_dto.dart';
+import 'package:chattyevent_app_flutter/core/dto/user/update_user_dto.dart';
+import 'package:chattyevent_app_flutter/core/filter/limit_offset_filter.dart';
+import 'package:chattyevent_app_flutter/core/filter/user/find_one_user_filter.dart';
+import 'package:chattyevent_app_flutter/core/filter/user/find_users_filter.dart';
+import 'package:chattyevent_app_flutter/core/utils/failure_helper.dart';
+import 'package:chattyevent_app_flutter/domain/entities/user/user_entity.dart';
+import 'package:chattyevent_app_flutter/domain/repositories/user_repository.dart';
+import 'package:chattyevent_app_flutter/infastructure/datasources/remote/graphql.dart';
+import 'package:chattyevent_app_flutter/infastructure/models/user/user_model.dart';
 
 class UserRepositoryImpl implements UserRepository {
   final GraphQlDatasource graphQlDatasource;

@@ -1,15 +1,15 @@
-import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
-import 'package:social_media_app_flutter/core/filter/limit_offset_filter.dart';
-import 'package:social_media_app_flutter/core/filter/shopping_list_item/bought_amount/find_bought_amounts_filter.dart';
-import 'package:social_media_app_flutter/core/filter/shopping_list_item/bought_amount/find_one_bought_amount_filter.dart';
-import 'package:social_media_app_flutter/core/utils/failure_helper.dart';
-import 'package:social_media_app_flutter/domain/entities/bought_amount_entity.dart';
-import 'package:social_media_app_flutter/core/dto/shopping_list_item/bought_amount/update_bought_amount_dto.dart';
-import 'package:social_media_app_flutter/core/dto/shopping_list_item/bought_amount/create_bought_amount_dto.dart';
+import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
+import 'package:chattyevent_app_flutter/core/filter/limit_offset_filter.dart';
+import 'package:chattyevent_app_flutter/core/filter/shopping_list_item/bought_amount/find_bought_amounts_filter.dart';
+import 'package:chattyevent_app_flutter/core/filter/shopping_list_item/bought_amount/find_one_bought_amount_filter.dart';
+import 'package:chattyevent_app_flutter/core/utils/failure_helper.dart';
+import 'package:chattyevent_app_flutter/domain/entities/bought_amount_entity.dart';
+import 'package:chattyevent_app_flutter/core/dto/shopping_list_item/bought_amount/update_bought_amount_dto.dart';
+import 'package:chattyevent_app_flutter/core/dto/shopping_list_item/bought_amount/create_bought_amount_dto.dart';
 import 'package:dartz/dartz.dart';
-import 'package:social_media_app_flutter/domain/repositories/bought_amount_repository.dart';
-import 'package:social_media_app_flutter/infastructure/datasources/remote/graphql.dart';
-import 'package:social_media_app_flutter/infastructure/models/bought_amount_model.dart';
+import 'package:chattyevent_app_flutter/domain/repositories/bought_amount_repository.dart';
+import 'package:chattyevent_app_flutter/infastructure/datasources/remote/graphql.dart';
+import 'package:chattyevent_app_flutter/infastructure/models/bought_amount_model.dart';
 
 class BoughtAmountRepositoryImpl implements BoughtAmountRepository {
   final GraphQlDatasource graphQlDatasource;

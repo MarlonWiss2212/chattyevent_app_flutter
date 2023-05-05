@@ -1,4 +1,4 @@
-import 'package:social_media_app_flutter/domain/entities/shopping_list_item/shopping_list_item_entity.dart';
+import 'package:chattyevent_app_flutter/domain/entities/shopping_list_item/shopping_list_item_entity.dart';
 
 class ShoppingListItemModel extends ShoppingListItemEntity {
   ShoppingListItemModel({

@@ -7,15 +7,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
-import 'package:social_media_app_flutter/application/bloc/auth/auth_cubit.dart';
-import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
-import 'package:social_media_app_flutter/application/provider/darkMode.dart';
-import 'package:social_media_app_flutter/bloc_init.dart';
-import 'package:social_media_app_flutter/core/colors.dart';
-import 'package:social_media_app_flutter/core/injection.dart';
-import 'package:social_media_app_flutter/domain/entities/user/user_entity.dart';
-import 'package:social_media_app_flutter/firebase_options.dart';
-import 'package:social_media_app_flutter/presentation/router/router.gr.dart';
+import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
+import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
+import 'package:chattyevent_app_flutter/application/provider/darkMode.dart';
+import 'package:chattyevent_app_flutter/bloc_init.dart';
+import 'package:chattyevent_app_flutter/core/colors.dart';
+import 'package:chattyevent_app_flutter/core/injection.dart';
+import 'package:chattyevent_app_flutter/domain/entities/user/user_entity.dart';
+import 'package:chattyevent_app_flutter/firebase_options.dart';
+import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:firebase_core/firebase_core.dart';
 
@@ -132,7 +132,7 @@ class _AppState extends State<App> {
           child: Consumer<DarkModeProvider>(
             builder: (context, value, child) {
               return MaterialApp.router(
-                title: 'Social Media App',
+                title: 'ChattyEvent',
                 routeInformationParser: widget.appRouter.defaultRouteParser(),
                 routerDelegate: widget.appRouter.delegate(),
                 builder: (context, widget) {

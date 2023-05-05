@@ -1,19 +1,19 @@
-import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
-import 'package:social_media_app_flutter/core/dto/shopping_list_item/update_shopping_list_item_dto.dart';
-import 'package:social_media_app_flutter/core/filter/limit_offset_filter.dart';
-import 'package:social_media_app_flutter/core/filter/shopping_list_item/bought_amount/find_bought_amounts_filter.dart';
-import 'package:social_media_app_flutter/core/filter/shopping_list_item/find_one_shopping_list_item_filter.dart';
-import 'package:social_media_app_flutter/core/filter/shopping_list_item/find_shopping_list_items_filter.dart';
-import 'package:social_media_app_flutter/core/response/shopping-list-item-data.response.dart';
-import 'package:social_media_app_flutter/core/utils/failure_helper.dart';
-import 'package:social_media_app_flutter/domain/entities/bought_amount_entity.dart';
-import 'package:social_media_app_flutter/domain/entities/shopping_list_item/shopping_list_item_entity.dart';
-import 'package:social_media_app_flutter/core/dto/shopping_list_item/create_shopping_list_item_dto.dart';
+import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
+import 'package:chattyevent_app_flutter/core/dto/shopping_list_item/update_shopping_list_item_dto.dart';
+import 'package:chattyevent_app_flutter/core/filter/limit_offset_filter.dart';
+import 'package:chattyevent_app_flutter/core/filter/shopping_list_item/bought_amount/find_bought_amounts_filter.dart';
+import 'package:chattyevent_app_flutter/core/filter/shopping_list_item/find_one_shopping_list_item_filter.dart';
+import 'package:chattyevent_app_flutter/core/filter/shopping_list_item/find_shopping_list_items_filter.dart';
+import 'package:chattyevent_app_flutter/core/response/shopping-list-item-data.response.dart';
+import 'package:chattyevent_app_flutter/core/utils/failure_helper.dart';
+import 'package:chattyevent_app_flutter/domain/entities/bought_amount_entity.dart';
+import 'package:chattyevent_app_flutter/domain/entities/shopping_list_item/shopping_list_item_entity.dart';
+import 'package:chattyevent_app_flutter/core/dto/shopping_list_item/create_shopping_list_item_dto.dart';
 import 'package:dartz/dartz.dart';
-import 'package:social_media_app_flutter/domain/repositories/shopping_list_item_repository.dart';
-import 'package:social_media_app_flutter/infastructure/datasources/remote/graphql.dart';
-import 'package:social_media_app_flutter/infastructure/models/bought_amount_model.dart';
-import 'package:social_media_app_flutter/infastructure/models/shopping_list_item_model.dart';
+import 'package:chattyevent_app_flutter/domain/repositories/shopping_list_item_repository.dart';
+import 'package:chattyevent_app_flutter/infastructure/datasources/remote/graphql.dart';
+import 'package:chattyevent_app_flutter/infastructure/models/bought_amount_model.dart';
+import 'package:chattyevent_app_flutter/infastructure/models/shopping_list_item_model.dart';
 
 class ShoppingListItemRepositoryImpl implements ShoppingListItemRepository {
   final GraphQlDatasource graphQlDatasource;

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
+import 'package:chattyevent_app_flutter/domain/entities/private_event/private_event_entity.dart';
 
 class EventHorizontalListItem extends StatelessWidget {
   final PrivateEventEntity privateEvent;

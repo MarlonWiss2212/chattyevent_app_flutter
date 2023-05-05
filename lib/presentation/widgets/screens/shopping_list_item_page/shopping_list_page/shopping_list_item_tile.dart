@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:social_media_app_flutter/domain/entities/private_event/private_event_user_entity.dart';
-import 'package:social_media_app_flutter/domain/entities/shopping_list_item/shopping_list_item_entity.dart';
+import 'package:chattyevent_app_flutter/domain/entities/private_event/private_event_user_entity.dart';
+import 'package:chattyevent_app_flutter/domain/entities/shopping_list_item/shopping_list_item_entity.dart';
 
 class ShoppingListItemTile extends StatelessWidget {
   final PrivateEventUserEntity userToBuyItem;

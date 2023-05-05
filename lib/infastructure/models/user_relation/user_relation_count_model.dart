@@ -1,4 +1,4 @@
-import 'package:social_media_app_flutter/domain/entities/user-relation/user_relations_count_entity.dart';
+import 'package:chattyevent_app_flutter/domain/entities/user-relation/user_relations_count_entity.dart';
 
 class UserRelationsCountModel extends UserRelationsCountEntity {
   UserRelationsCountModel({

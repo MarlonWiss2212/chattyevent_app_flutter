@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletons/skeletons.dart';
-import 'package:social_media_app_flutter/application/bloc/home_page/home_event/home_event_cubit.dart';
-import 'package:social_media_app_flutter/presentation/widgets/general/event_list/private_event_list_item.dart';
+import 'package:chattyevent_app_flutter/application/bloc/home_page/home_event/home_event_cubit.dart';
+import 'package:chattyevent_app_flutter/presentation/widgets/general/event_list/private_event_list_item.dart';
 
 class FutureEventsPage extends StatelessWidget {
   const FutureEventsPage({super.key});

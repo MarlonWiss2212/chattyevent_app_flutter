@@ -1,7 +1,7 @@
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:social_media_app_flutter/domain/repositories/device/image_picker_repository.dart';
-import 'package:social_media_app_flutter/infastructure/datasources/device/image_picker.dart';
+import 'package:chattyevent_app_flutter/domain/repositories/device/image_picker_repository.dart';
+import 'package:chattyevent_app_flutter/infastructure/datasources/device/image_picker.dart';
 
 class ImagePickerRepositoryImpl implements ImagePickerRepository {
   final ImagePickerDatasource imagePickerDatasource;

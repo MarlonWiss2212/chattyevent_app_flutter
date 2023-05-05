@@ -1,6 +1,6 @@
-import 'package:social_media_app_flutter/domain/entities/private_event/private_event_entity.dart';
-import 'package:social_media_app_flutter/domain/entities/private_event/private_event_location_entity.dart';
-import 'package:social_media_app_flutter/infastructure/models/private_event/private_event_location_model.dart';
+import 'package:chattyevent_app_flutter/domain/entities/private_event/private_event_entity.dart';
+import 'package:chattyevent_app_flutter/domain/entities/private_event/private_event_location_entity.dart';
+import 'package:chattyevent_app_flutter/infastructure/models/private_event/private_event_location_model.dart';
 
 class PrivateEventModel extends PrivateEventEntity {
   PrivateEventModel({

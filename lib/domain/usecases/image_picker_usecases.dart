@@ -3,9 +3,9 @@ import 'dart:io';
 import 'package:dartz/dartz.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:social_media_app_flutter/application/bloc/notification/notification_cubit.dart';
-import 'package:social_media_app_flutter/core/failures/image_picker_failures.dart';
-import 'package:social_media_app_flutter/domain/repositories/device/image_picker_repository.dart';
+import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
+import 'package:chattyevent_app_flutter/core/failures/image_picker_failures.dart';
+import 'package:chattyevent_app_flutter/domain/repositories/device/image_picker_repository.dart';
 
 class ImagePickerUseCases {
   final ImagePickerRepository imagePickerRepository;

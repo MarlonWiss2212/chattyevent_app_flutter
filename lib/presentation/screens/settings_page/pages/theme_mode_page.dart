@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:social_media_app_flutter/application/provider/darkMode.dart';
+import 'package:chattyevent_app_flutter/application/provider/darkMode.dart';
 
 class ThemeModePage extends StatelessWidget {
   const ThemeModePage({super.key});

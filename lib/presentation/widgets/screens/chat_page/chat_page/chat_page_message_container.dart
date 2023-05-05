@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
-import 'package:social_media_app_flutter/application/bloc/current_groupchat/add_groupchat_message_cubit.dart';
-import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_left_user_entity.dart';
-import 'package:social_media_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
-import 'package:social_media_app_flutter/domain/entities/message/message_entity.dart';
-import 'package:social_media_app_flutter/domain/entities/user/user_entity.dart';
-import 'package:social_media_app_flutter/presentation/widgets/screens/chat_page/chat_page/chat_page_react_message_container.dart';
+import 'package:chattyevent_app_flutter/application/bloc/current_groupchat/add_groupchat_message_cubit.dart';
+import 'package:chattyevent_app_flutter/domain/entities/groupchat/groupchat_left_user_entity.dart';
+import 'package:chattyevent_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
+import 'package:chattyevent_app_flutter/domain/entities/message/message_entity.dart';
+import 'package:chattyevent_app_flutter/domain/entities/user/user_entity.dart';
+import 'package:chattyevent_app_flutter/presentation/widgets/screens/chat_page/chat_page/chat_page_react_message_container.dart';
 
 class ChatPageMessageContainer extends StatelessWidget {
   const ChatPageMessageContainer({

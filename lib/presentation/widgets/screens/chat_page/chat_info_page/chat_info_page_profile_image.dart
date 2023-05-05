@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:social_media_app_flutter/application/bloc/current_groupchat/current_chat_cubit.dart';
-import 'package:social_media_app_flutter/core/dto/groupchat/update_groupchat_dto.dart';
-import 'package:social_media_app_flutter/presentation/widgets/general/bottom_sheet/image_picker_list.dart';
-import 'package:social_media_app_flutter/presentation/widgets/general/dialog/accept_decline_dialog.dart';
+import 'package:chattyevent_app_flutter/application/bloc/current_groupchat/current_chat_cubit.dart';
+import 'package:chattyevent_app_flutter/core/dto/groupchat/update_groupchat_dto.dart';
+import 'package:chattyevent_app_flutter/presentation/widgets/general/bottom_sheet/image_picker_list.dart';
+import 'package:chattyevent_app_flutter/presentation/widgets/general/dialog/accept_decline_dialog.dart';
 
 class ChatInfoPageProfileImage extends StatelessWidget {
   const ChatInfoPageProfileImage({super.key});

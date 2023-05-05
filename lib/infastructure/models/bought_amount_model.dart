@@ -1,4 +1,4 @@
-import 'package:social_media_app_flutter/domain/entities/bought_amount_entity.dart';
+import 'package:chattyevent_app_flutter/domain/entities/bought_amount_entity.dart';
 
 class BoughtAmountModel extends BoughtAmountEntity {
   BoughtAmountModel({
