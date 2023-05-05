@@ -50,6 +50,7 @@ import 'package:social_media_app_flutter/presentation/screens/reset_password_pag
 import 'package:social_media_app_flutter/presentation/screens/settings_page/pages/privacy_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/settings_page/pages/privacy_pages/imprint_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/settings_page/pages/privacy_pages/right_on_deletion_page.dart';
+import 'package:social_media_app_flutter/presentation/screens/settings_page/pages/privacy_pages/right_on_insight.dart';
 import 'package:social_media_app_flutter/presentation/screens/settings_page/pages/theme_mode_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/settings_page/settings_page.dart';
 import 'package:social_media_app_flutter/presentation/screens/settings_page/pages/update_password_page.dart';
@@ -425,6 +426,11 @@ const settingRoutes = [
     page: PrivacyPage,
     guards: [AuthGuard],
     path: '/settings/privacy',
+  ),
+  AutoRoute(
+    page: RightOnInsightPage,
+    guards: [AuthGuard],
+    path: '/settings/privacy/right-on-insight',
   ),
   AutoRoute(
     page: RightOnDeletionPage,

@@ -75,6 +75,20 @@ class _PrivacyPageState extends State<PrivacyPage> {
                   },
                 ),
                 ListTile(
+                  leading: const Icon(Icons.text_snippet),
+                  title: Text(
+                    "Recht auf Einsicht",
+                    style: Theme.of(context).textTheme.titleMedium,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  trailing: const Icon(Icons.arrow_right),
+                  onTap: () {
+                    AutoRouter.of(context).push(
+                      const RightOnInsightPageRoute(),
+                    );
+                  },
+                ),
+                ListTile(
                   leading: const Icon(Icons.delete),
                   title: Text(
                     "Recht auf Löschung",
