@@ -116,9 +116,10 @@ class CreateUserPage extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 8),
-                        BlocListener<AuthCubit, AuthState>(
+                        BlocListener<AddCurrentUserCubit, AddCurrentUserState>(
                           listener: (context, state) async {
-                            if (state.status == AuthStateStatus.success) {
+                            if (state.status ==
+                                AddCurrentUserStateStatus.created) {
                               AutoRouter.of(context)
                                   .replace(const HomePageRoute());
                             }

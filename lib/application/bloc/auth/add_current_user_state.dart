@@ -1,6 +1,6 @@
 part of 'add_current_user_cubit.dart';
 
-enum AddCurrentUserStateStatus { initial, loading, success }
+enum AddCurrentUserStateStatus { initial, loading, created }
 
 class AddCurrentUserState {
   final File? profileImage;

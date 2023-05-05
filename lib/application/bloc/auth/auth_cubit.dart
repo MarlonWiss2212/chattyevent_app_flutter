@@ -122,10 +122,7 @@ class AuthCubit extends Cubit<AuthState> {
         notificationCubit.newAlert(notificationAlert: alert);
       },
       (worked) {
-        emitState(
-          status: AuthStateStatus.success,
-          sendedVerificationEmail: true,
-        );
+        emitState(sendedVerificationEmail: true);
       },
     );
   }
@@ -143,10 +140,7 @@ class AuthCubit extends Cubit<AuthState> {
         notificationCubit.newAlert(notificationAlert: alert);
       },
       (worked) {
-        emitState(
-          status: AuthStateStatus.success,
-          sendedResetPasswordEmail: true,
-        );
+        emitState(sendedResetPasswordEmail: true);
       },
     );
   }
@@ -167,9 +161,7 @@ class AuthCubit extends Cubit<AuthState> {
         notificationCubit.newAlert(notificationAlert: alert);
       },
       (worked) {
-        emitState(
-          status: AuthStateStatus.success,
-        );
+        emitState(updatedPasswordSuccessfully: worked);
       },
     );
   }
@@ -189,14 +181,21 @@ class AuthCubit extends Cubit<AuthState> {
 
   Future deleteUser() async {
     emitState(status: AuthStateStatus.loading);
-    await Future.wait([
-      authUseCases.logout(),
-      userUseCases.deleteUserViaApi(),
-    ]);
-    emit(AuthState(
-      currentUser: UserEntity(authId: "", id: ""),
-      status: AuthStateStatus.logout,
-    ));
+    final deletedOrAlert = await authUseCases.deleteUser();
+
+    deletedOrAlert.fold(
+      (alert) {
+        emitState(status: AuthStateStatus.initial);
+        notificationCubit.newAlert(notificationAlert: alert);
+      },
+      (worked) {
+        userUseCases.deleteUserViaApi();
+        emit(AuthState(
+          currentUser: UserEntity(authId: "", id: ""),
+          status: AuthStateStatus.logout,
+        ));
+      },
+    );
   }
 
   Future refreshJwtToken() async {
@@ -214,25 +213,30 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future checkIfEmailVerfiedIfSoCreateUserPage() async {
+    await refreshUser();
     if (auth.currentUser != null && auth.currentUser!.emailVerified) {
       emitState(goOnCreateUserPage: true);
     }
   }
 
-  void emitState(
-      {AuthStateStatus? status,
-      String? token,
-      UserEntity? currentUser,
-      bool? sendedResetPasswordEmail,
-      bool? sendedVerificationEmail,
-      bool? goOnCreateUserPage}) {
+  void emitState({
+    AuthStateStatus? status,
+    String? token,
+    UserEntity? currentUser,
+    bool? sendedResetPasswordEmail,
+    bool? sendedVerificationEmail,
+    bool? goOnCreateUserPage,
+    bool? updatedPasswordSuccessfully,
+  }) {
     emit(AuthState(
-        status: status ?? AuthStateStatus.initial,
-        token: token ?? state.token,
-        currentUser: currentUser ?? state.currentUser,
-        sendedResetPasswordEmail: sendedResetPasswordEmail ?? false,
-        sendedVerificationEmail: sendedVerificationEmail ?? false,
-        goOnCreateUserPage: goOnCreateUserPage ?? false));
+      status: status ?? AuthStateStatus.initial,
+      token: token ?? state.token,
+      currentUser: currentUser ?? state.currentUser,
+      sendedResetPasswordEmail: sendedResetPasswordEmail ?? false,
+      sendedVerificationEmail: sendedVerificationEmail ?? false,
+      goOnCreateUserPage: goOnCreateUserPage ?? false,
+      updatedPasswordSuccessfully: updatedPasswordSuccessfully ?? false,
+    ));
     if (token != null) {
       userUseCases = serviceLocator(param1: state);
     }

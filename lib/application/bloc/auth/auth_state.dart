@@ -16,12 +16,14 @@ class AuthState {
   final bool sendedResetPasswordEmail;
   final bool sendedVerificationEmail;
   final bool goOnCreateUserPage;
+  final bool updatedPasswordSuccessfully;
 
   AuthState({
     required this.currentUser,
     this.token,
     this.status = AuthStateStatus.initial,
     this.sendedResetPasswordEmail = false,
+    this.updatedPasswordSuccessfully = false,
     this.sendedVerificationEmail = false,
     this.goOnCreateUserPage = false,
   });

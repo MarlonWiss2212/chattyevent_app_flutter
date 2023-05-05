@@ -60,7 +60,7 @@ class AddCurrentUserCubit extends Cubit<AddCurrentUserState> {
         );
         emit(AddCurrentUserState(
           addedUser: user,
-          status: AddCurrentUserStateStatus.success,
+          status: AddCurrentUserStateStatus.created,
         ));
       },
     );
