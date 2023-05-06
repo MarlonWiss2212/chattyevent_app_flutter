@@ -48,7 +48,7 @@ class _ImprintPageState extends State<ImprintPage> {
                     const SizedBox(height: 2),
                     Text("Land: ${state.imprint!.address.country}"),
                     const SizedBox(height: 20),
-                    Text("Nummer: ${state.imprint!.contact.phoneNumber}"),
+                    Text("Nummer: ${state.imprint!.contact.phonenumber}"),
                     const SizedBox(height: 2),
                     Text("E-Mail: ${state.imprint!.contact.email}"),
                     if (state.imprint!.contact.websiteUrl != null) ...[

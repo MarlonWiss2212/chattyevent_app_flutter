@@ -2,18 +2,18 @@ import 'package:chattyevent_app_flutter/domain/entities/imprint/imprint_contact_
 
 class ImprintContactModel extends ImprintContactEntity {
   ImprintContactModel({
-    required String phoneNumber,
+    required String phonenumber,
     required String email,
     String? websiteUrl,
   }) : super(
-          phoneNumber: phoneNumber,
+          phonenumber: phonenumber,
           email: email,
           websiteUrl: websiteUrl,
         );
 
   factory ImprintContactModel.fromJson(Map<String, dynamic> json) {
     return ImprintContactModel(
-      phoneNumber: json['phoneNumber'],
+      phonenumber: json['phonenumber'],
       email: json['email'],
       websiteUrl: json['websiteUrl'],
     );
