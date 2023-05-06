@@ -5,9 +5,11 @@ class ImprintAddressModel extends ImprintAddressEntity {
     required String street,
     required String housenumber,
     required String country,
+    required String city,
     required int zip,
   }) : super(
           street: street,
+          city: city,
           housenumber: housenumber,
           country: country,
           zip: zip,
@@ -19,6 +21,7 @@ class ImprintAddressModel extends ImprintAddressEntity {
       housenumber: json['housenumber'],
       country: json['country'],
       zip: json['zip'],
+      city: json['city'],
     );
   }
 }

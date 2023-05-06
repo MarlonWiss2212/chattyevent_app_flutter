@@ -44,6 +44,10 @@ class _ImprintPageState extends State<ImprintPage> {
                     Text("Name: ${state.imprint!.name}"),
                     const SizedBox(height: 2),
                     Text(
+                      "Stadt: ${state.imprint!.address.city} ${state.imprint!.address.zip}",
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
                       "Addresse: ${state.imprint!.address.street} ${state.imprint!.address.housenumber}",
                     ),
                     const SizedBox(height: 2),
@@ -80,6 +84,10 @@ class _ImprintPageState extends State<ImprintPage> {
                       style: SkeletonLineStyle(width: 300),
                     ),
                     SizedBox(height: 20),
+                    SkeletonLine(
+                      style: SkeletonLineStyle(width: 300),
+                    ),
+                    SizedBox(height: 2),
                     SkeletonLine(
                       style: SkeletonLineStyle(width: 300),
                     ),
