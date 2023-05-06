@@ -38,8 +38,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
               context: context,
               builder: (c) {
                 return CustomAlertDialog(
-                  message: state.message,
-                  title: state.title,
+                  notificationAlert: state,
                   context: c,
                 );
               },
@@ -61,7 +60,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                 const SizedBox(height: 8),
                 BlocListener<AuthCubit, AuthState>(
                   listener: (context, state) async {
-                    if (state.status == AuthStateStatus.success &&
+                    if (state.status == AuthStateStatus.loggedIn &&
                         state.token != null) {
                       AutoRouter.of(context).replace(const HomePageRoute());
                     } else if (state.sendedResetPasswordEmail) {

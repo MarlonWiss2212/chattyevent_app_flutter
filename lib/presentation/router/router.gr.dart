@@ -12,16 +12,17 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:auto_route/auto_route.dart' as _i61;
-import 'package:flutter/material.dart' as _i62;
 import 'package:chattyevent_app_flutter/application/bloc/current_groupchat/current_chat_cubit.dart'
-    as _i64;
-import 'package:chattyevent_app_flutter/application/bloc/current_private_event/current_private_event_cubit.dart'
     as _i65;
-import 'package:chattyevent_app_flutter/application/bloc/shopping_list/current_shopping_list_item_cubit.dart'
-    as _i67;
-import 'package:chattyevent_app_flutter/domain/entities/user/user_entity.dart'
+import 'package:chattyevent_app_flutter/application/bloc/current_private_event/current_private_event_cubit.dart'
     as _i66;
+import 'package:chattyevent_app_flutter/application/bloc/shopping_list/current_shopping_list_item_cubit.dart'
+    as _i68;
+import 'package:chattyevent_app_flutter/domain/entities/user/user_entity.dart'
+    as _i67;
 import 'package:chattyevent_app_flutter/presentation/router/auth_guard.dart'
+    as _i64;
+import 'package:chattyevent_app_flutter/presentation/router/auth_guard_create_user_page.dart'
     as _i63;
 import 'package:chattyevent_app_flutter/presentation/screens/chat_page/chat_add_user_page.dart'
     as _i41;
@@ -143,14 +144,18 @@ import 'package:chattyevent_app_flutter/presentation/screens/shopping_list_page/
     as _i16;
 import 'package:chattyevent_app_flutter/presentation/screens/verify_email_page.dart'
     as _i2;
+import 'package:flutter/material.dart' as _i62;
 
 class AppRouter extends _i61.RootStackRouter {
   AppRouter({
     _i62.GlobalKey<_i62.NavigatorState>? navigatorKey,
+    required this.authGuardCreateUserPage,
     required this.authGuard,
   }) : super(navigatorKey);
 
-  final _i63.AuthGuard authGuard;
+  final _i63.AuthGuardCreateUserPage authGuardCreateUserPage;
+
+  final _i64.AuthGuard authGuard;
 
   @override
   final Map<String, _i61.PageFactory> pagesMap = {
@@ -642,7 +647,7 @@ class AppRouter extends _i61.RootStackRouter {
         _i61.RouteConfig(
           CreateUserPageRoute.name,
           path: '/create-user-page',
-          guards: [authGuard],
+          guards: [authGuardCreateUserPage],
         ),
         _i61.RouteConfig(
           SettingsPageRoute.name,
@@ -1330,7 +1335,7 @@ class ChatPageWrapperRoute
   ChatPageWrapperRoute({
     _i62.Key? key,
     required String groupchatId,
-    required _i64.CurrentChatState chatStateToSet,
+    required _i65.CurrentChatState chatStateToSet,
     List<_i61.PageRouteInfo>? children,
   }) : super(
           ChatPageWrapperRoute.name,
@@ -1358,7 +1363,7 @@ class ChatPageWrapperRouteArgs {
 
   final String groupchatId;
 
-  final _i64.CurrentChatState chatStateToSet;
+  final _i65.CurrentChatState chatStateToSet;
 
   @override
   String toString() {
@@ -1372,7 +1377,7 @@ class PrivateEventWrapperPageRoute
     extends _i61.PageRouteInfo<PrivateEventWrapperPageRouteArgs> {
   PrivateEventWrapperPageRoute({
     required String privateEventId,
-    required _i65.CurrentPrivateEventState privateEventStateToSet,
+    required _i66.CurrentPrivateEventState privateEventStateToSet,
     _i62.Key? key,
     List<_i61.PageRouteInfo>? children,
   }) : super(
@@ -1399,7 +1404,7 @@ class PrivateEventWrapperPageRouteArgs {
 
   final String privateEventId;
 
-  final _i65.CurrentPrivateEventState privateEventStateToSet;
+  final _i66.CurrentPrivateEventState privateEventStateToSet;
 
   final _i62.Key? key;
 
@@ -1415,7 +1420,7 @@ class ProfileWrapperPageRoute
     extends _i61.PageRouteInfo<ProfileWrapperPageRouteArgs> {
   ProfileWrapperPageRoute({
     _i62.Key? key,
-    required _i66.UserEntity userToSet,
+    required _i67.UserEntity userToSet,
     required String userId,
     List<_i61.PageRouteInfo>? children,
   }) : super(
@@ -1442,7 +1447,7 @@ class ProfileWrapperPageRouteArgs {
 
   final _i62.Key? key;
 
-  final _i66.UserEntity userToSet;
+  final _i67.UserEntity userToSet;
 
   final String userId;
 
@@ -1707,7 +1712,7 @@ class ShoppingListItemWrapperPageRoute
   ShoppingListItemWrapperPageRoute({
     _i62.Key? key,
     required String shoppingListItemId,
-    required _i67.CurrentShoppingListItemState
+    required _i68.CurrentShoppingListItemState
         currentShoppingListItemStateToSet,
     List<_i61.PageRouteInfo>? children,
   }) : super(
@@ -1737,7 +1742,7 @@ class ShoppingListItemWrapperPageRouteArgs {
 
   final String shoppingListItemId;
 
-  final _i67.CurrentShoppingListItemState currentShoppingListItemStateToSet;
+  final _i68.CurrentShoppingListItemState currentShoppingListItemStateToSet;
 
   @override
   String toString() {
@@ -1950,7 +1955,7 @@ class PrivateEventShoppingListItemWrapperPageRoute extends _i61
   PrivateEventShoppingListItemWrapperPageRoute({
     _i62.Key? key,
     required String shoppingListItemId,
-    required _i67.CurrentShoppingListItemState shoppingListItemStateToSet,
+    required _i68.CurrentShoppingListItemState shoppingListItemStateToSet,
     bool setCurrentPrivateEvent = false,
     List<_i61.PageRouteInfo>? children,
   }) : super(
@@ -1981,7 +1986,7 @@ class PrivateEventShoppingListItemWrapperPageRouteArgs {
 
   final String shoppingListItemId;
 
-  final _i67.CurrentShoppingListItemState shoppingListItemStateToSet;
+  final _i68.CurrentShoppingListItemState shoppingListItemStateToSet;
 
   final bool setCurrentPrivateEvent;
 

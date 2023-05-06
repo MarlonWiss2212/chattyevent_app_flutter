@@ -54,10 +54,7 @@ class AddCurrentUserCubit extends Cubit<AddCurrentUserState> {
         emitState(status: AddCurrentUserStateStatus.initial);
       },
       (user) {
-        authCubit.emitState(
-          currentUser: user,
-          status: AuthStateStatus.success,
-        );
+        authCubit.emitState(currentUser: user, resetUserException: true);
         emit(AddCurrentUserState(
           addedUser: user,
           status: AddCurrentUserStateStatus.created,

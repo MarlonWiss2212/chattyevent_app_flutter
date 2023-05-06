@@ -46,7 +46,13 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
     );
 
     userOrFailure.fold(
-      (alert) => notificationCubit.newAlert(notificationAlert: alert),
+      (alert) {
+        if (state.user.id == authCubit.state.currentUser.id) {
+          authCubit.emitState(userException: alert.exception);
+        }
+        emitState(status: ProfilePageStateStatus.initial);
+        notificationCubit.newAlert(notificationAlert: alert);
+      },
       (user) {
         if (state.user.id == authCubit.state.currentUser.id) {
           authCubit.emitState(currentUser: user);
@@ -73,7 +79,10 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
     );
 
     userOrFailure.fold(
-      (alert) => notificationCubit.newAlert(notificationAlert: alert),
+      (alert) {
+        notificationCubit.newAlert(notificationAlert: alert);
+        emitState(followersStatus: ProfilePageStateFollowersStatus.initial);
+      },
       (users) {
         emitState(
           followersStatus: ProfilePageStateFollowersStatus.success,
@@ -112,7 +121,11 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
     );
 
     userOrFailure.fold(
-      (alert) => notificationCubit.newAlert(notificationAlert: alert),
+      (alert) {
+        notificationCubit.newAlert(notificationAlert: alert);
+        emitState(
+            followRequestsStatus: ProfilePageStateFollowRequestsStatus.initial);
+      },
       (users) {
         emitState(
           followRequestsStatus: ProfilePageStateFollowRequestsStatus.success,
@@ -140,7 +153,10 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
     );
 
     userOrFailure.fold(
-      (alert) => notificationCubit.newAlert(notificationAlert: alert),
+      (alert) {
+        notificationCubit.newAlert(notificationAlert: alert);
+        emitState(followedStatus: ProfilePageStateFollowedStatus.initial);
+      },
       (users) {
         emitState(
           followedStatus: ProfilePageStateFollowedStatus.success,
@@ -170,7 +186,10 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
     );
 
     userOrFailure.fold(
-      (alert) => notificationCubit.newAlert(notificationAlert: alert),
+      (alert) {
+        notificationCubit.newAlert(notificationAlert: alert);
+        authCubit.emitState(userException: alert.exception);
+      },
       (user) {
         final newUser = UserEntity.merge(
           newEntity: user,
@@ -182,9 +201,7 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
     );
   }
 
-  Future acceptFollowRequest({
-    required String userId,
-  }) async {
+  Future acceptFollowRequest({required String userId}) async {
     if (state.user.id != authCubit.state.currentUser.id) {
       notificationCubit.newAlert(
         notificationAlert: NotificationAlert(
@@ -195,15 +212,14 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
       );
       return;
     }
-    emitState(
-      followRequestsStatus: ProfilePageStateFollowRequestsStatus.loading,
-    );
 
     final userRelationOrFailure = await userRelationUseCases
         .acceptFollowRequestViaApi(requesterUserId: userId);
 
     userRelationOrFailure.fold(
-      (alert) => notificationCubit.newAlert(notificationAlert: alert),
+      (alert) {
+        notificationCubit.newAlert(notificationAlert: alert);
+      },
       (userRelation) {
         final user = UserEntity.merge(
           newEntity: UserEntity(
@@ -616,16 +632,14 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
     emit(
       ProfilePageState(
         user: user ?? state.user,
-        status: status ?? ProfilePageStateStatus.initial,
+        status: status ?? state.status,
         followers: followers ?? state.followers,
-        followersStatus:
-            followersStatus ?? ProfilePageStateFollowersStatus.initial,
+        followersStatus: followersStatus ?? state.followersStatus,
         followRequests: followRequests ?? state.followRequests,
-        followRequestsStatus: followRequestsStatus ??
-            ProfilePageStateFollowRequestsStatus.initial,
+        followRequestsStatus:
+            followRequestsStatus ?? state.followRequestsStatus,
         followed: followed ?? state.followed,
-        followedStatus:
-            followedStatus ?? ProfilePageStateFollowedStatus.initial,
+        followedStatus: followedStatus ?? state.followedStatus,
       ),
     );
   }

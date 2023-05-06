@@ -1,3 +1,4 @@
+import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
@@ -58,9 +59,11 @@ class CreateShoppingListItemPageDetail extends StatelessWidget {
                               context: context,
                               builder: (c) {
                                 return CustomAlertDialog(
-                                  title: "Menge Fehler",
-                                  message:
-                                      "Die eingegebene Menge muss eine Zahl sein",
+                                  notificationAlert: NotificationAlert(
+                                    title: "Menge Fehler",
+                                    message:
+                                        "Die eingegebene Menge muss eine Zahl sein",
+                                  ),
                                   context: c,
                                 );
                               },

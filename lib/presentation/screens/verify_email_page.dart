@@ -1,13 +1,11 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:auto_route/auto_route.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
-import 'package:chattyevent_app_flutter/core/injection.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/dialog/alert_dialog.dart';
 
@@ -26,7 +24,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
     timer = Timer.periodic(
       const Duration(seconds: 3),
       (timer) => BlocProvider.of<AuthCubit>(context)
-          .checkIfEmailVerfiedIfSoCreateUserPage(),
+          .checkIfEmailVerfiedIfSoGoToCreateUserPage(),
     );
     super.initState();
   }
@@ -46,8 +44,6 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
           IconButton(
             onPressed: () {
               BlocProvider.of<AuthCubit>(context).logout();
-              AutoRouter.of(context).root.popUntilRoot();
-              AutoRouter.of(context).root.replace(const LoginPageRoute());
             },
             icon: const Icon(Icons.logout),
           ),
@@ -60,8 +56,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
               context: context,
               builder: (c) {
                 return CustomAlertDialog(
-                  message: state.message,
-                  title: state.title,
+                  notificationAlert: state,
                   context: c,
                 );
               },

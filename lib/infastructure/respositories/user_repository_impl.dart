@@ -71,7 +71,7 @@ class UserRepositoryImpl implements UserRepository {
       if (response.hasException) {
         return Left(FailureHelper.graphqlFailureToNotificationAlert(
           title: "Finden User Fehler",
-          exception: response.exception!,
+          response: response,
         ));
       }
 
@@ -110,7 +110,7 @@ class UserRepositoryImpl implements UserRepository {
       if (response.hasException) {
         return Left(FailureHelper.graphqlFailureToNotificationAlert(
           title: "Finden Users Fehler",
-          exception: response.exception!,
+          response: response,
         ));
       }
       final List<UserEntity> users = [];
@@ -161,7 +161,7 @@ class UserRepositoryImpl implements UserRepository {
       if (response.hasException) {
         return Left(FailureHelper.graphqlFailureToNotificationAlert(
           title: "Updaten User Fehler",
-          exception: response.exception!,
+          response: response,
         ));
       }
       return Right(UserModel.fromJson(response.data!["updateUser"]));
@@ -183,7 +183,7 @@ class UserRepositoryImpl implements UserRepository {
       if (response.hasException) {
         return Left(FailureHelper.graphqlFailureToNotificationAlert(
           title: "Delete User Fehler",
-          exception: response.exception!,
+          response: response,
         ));
       }
       return Right(response.data!["updateUser"]);
@@ -229,7 +229,7 @@ class UserRepositoryImpl implements UserRepository {
       if (response.hasException) {
         return Left(FailureHelper.graphqlFailureToNotificationAlert(
           title: "Erstellen User Fehler",
-          exception: response.exception!,
+          response: response,
         ));
       }
 

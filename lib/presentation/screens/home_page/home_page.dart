@@ -33,8 +33,7 @@ class HomePage extends StatelessWidget {
                   context: context,
                   builder: (c) {
                     return CustomAlertDialog(
-                      title: state.title,
-                      message: state.message,
+                      notificationAlert: state,
                       context: c,
                     );
                   },

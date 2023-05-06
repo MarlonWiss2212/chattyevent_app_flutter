@@ -3,7 +3,7 @@ part of 'auth_cubit.dart';
 enum AuthStateStatus {
   initial,
   loading,
-  success,
+  loggedIn,
   logout,
 }
 
@@ -15,8 +15,22 @@ class AuthState {
 
   final bool sendedResetPasswordEmail;
   final bool sendedVerificationEmail;
-  final bool goOnCreateUserPage;
   final bool updatedPasswordSuccessfully;
+
+  final bool goOnCreateUserPage;
+  final OperationException? userException;
+
+  bool isUserCode404() {
+    if (userException == null) {
+      return false;
+    }
+    for (final error in userException!.graphqlErrors) {
+      if (error.extensions?["code"] == "404") {
+        return true;
+      }
+    }
+    return false;
+  }
 
   AuthState({
     required this.currentUser,
@@ -26,5 +40,6 @@ class AuthState {
     this.updatedPasswordSuccessfully = false,
     this.sendedVerificationEmail = false,
     this.goOnCreateUserPage = false,
+    this.userException,
   });
 }

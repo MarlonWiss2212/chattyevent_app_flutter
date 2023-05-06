@@ -80,7 +80,7 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
       if (response.hasException) {
         return Left(FailureHelper.graphqlFailureToNotificationAlert(
           title: "Erstellen Privates Event Fehler",
-          exception: response.exception!,
+          response: response,
         ));
       }
 
@@ -131,7 +131,7 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
       if (response.hasException) {
         return Left(FailureHelper.graphqlFailureToNotificationAlert(
           title: "Finden Privates Event Fehler",
-          exception: response.exception!,
+          response: response,
         ));
       }
       return Right(
@@ -296,7 +296,7 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
       if (response.hasException) {
         return Left(FailureHelper.graphqlFailureToNotificationAlert(
           title: "Finden Privates Event Daten Fehler",
-          exception: response.exception!,
+          response: response,
         ));
       }
 
@@ -357,7 +357,7 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
       if (response.hasException) {
         return Left(FailureHelper.graphqlFailureToNotificationAlert(
           title: "Finden Private Events Fehler",
-          exception: response.exception!,
+          response: response,
         ));
       }
 
@@ -426,7 +426,7 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
       if (response.hasException) {
         return Left(FailureHelper.graphqlFailureToNotificationAlert(
           title: "Updaten Privates Event Fehler",
-          exception: response.exception!,
+          response: response,
         ));
       }
       return Right(
@@ -456,7 +456,7 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
       if (response.hasException) {
         return Left(FailureHelper.graphqlFailureToNotificationAlert(
           title: "Löschen Privates Event Fehler",
-          exception: response.exception!,
+          response: response,
         ));
       }
 
@@ -530,7 +530,7 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
       if (response.hasException) {
         return Left(FailureHelper.graphqlFailureToNotificationAlert(
           title: "Updaten Privates Event User Fehler",
-          exception: response.exception!,
+          response: response,
         ));
       }
       return Right(
@@ -603,7 +603,7 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
       if (response.hasException) {
         return Left(FailureHelper.graphqlFailureToNotificationAlert(
           title: "User zum Privaten Event hinzufügen Fehler",
-          exception: response.exception!,
+          response: response,
         ));
       }
       return Right(
@@ -677,7 +677,7 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
       if (response.hasException) {
         return Left(FailureHelper.graphqlFailureToNotificationAlert(
           title: "User vom Privaten Event löschen Fehler",
-          exception: response.exception!,
+          response: response,
         ));
       }
       return Right(
@@ -800,7 +800,7 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
       if (response.hasException) {
         return Left(FailureHelper.graphqlFailureToNotificationAlert(
           title: "Finden Privates Event User Fehler",
-          exception: response.exception!,
+          response: response,
         ));
       }
 

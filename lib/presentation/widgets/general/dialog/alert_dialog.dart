@@ -1,14 +1,13 @@
+import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/button.dart';
 
 class CustomAlertDialog extends StatelessWidget {
-  final String title;
-  final String message;
+  final NotificationAlert notificationAlert;
   final BuildContext context;
   const CustomAlertDialog({
     super.key,
-    required this.message,
-    required this.title,
+    required this.notificationAlert,
     required this.context,
   });
 
@@ -31,13 +30,13 @@ class CustomAlertDialog extends StatelessWidget {
                   padding: const EdgeInsets.all(8.0),
                   children: [
                     Text(
-                      title,
+                      notificationAlert.title,
                       style: Theme.of(context).textTheme.titleLarge,
                       overflow: TextOverflow.clip,
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      message,
+                      notificationAlert.message,
                       style: Theme.of(context).textTheme.bodyMedium,
                       overflow: TextOverflow.clip,
                     ),

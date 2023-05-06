@@ -1,3 +1,4 @@
+import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/shopping_list/current_shopping_list_item_cubit.dart';
@@ -55,9 +56,11 @@ class CurrentShoppingListItemPageWithProgressBar extends StatelessWidget {
                             context: context,
                             builder: (c) {
                               return CustomAlertDialog(
-                                title: "Menge Fehler",
-                                message:
-                                    "Die eingegebene Menge muss eine Zahl sein",
+                                notificationAlert: NotificationAlert(
+                                  title: "Menge Fehler",
+                                  message:
+                                      "Die eingegebene Menge muss eine Zahl sein",
+                                ),
                                 context: c,
                               );
                             },

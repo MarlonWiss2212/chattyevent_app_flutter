@@ -162,7 +162,11 @@ class AuthRepositoryImpl implements AuthRepository {
         ),
       );
     }
-    await auth.currentUser!.delete();
-    return const Right(unit);
+    try {
+      await auth.currentUser!.delete();
+      return const Right(unit);
+    } catch (e) {
+      return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
+    }
   }
 }

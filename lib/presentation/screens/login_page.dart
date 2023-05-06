@@ -32,8 +32,7 @@ class _LoginPageState extends State<LoginPage> {
               context: context,
               builder: (c) {
                 return CustomAlertDialog(
-                  message: state.message,
-                  title: state.title,
+                  notificationAlert: state,
                   context: c,
                 );
               },
@@ -70,7 +69,7 @@ class _LoginPageState extends State<LoginPage> {
                       const SizedBox(height: 8),
                       BlocListener<AuthCubit, AuthState>(
                         listener: (context, state) async {
-                          if (state.status == AuthStateStatus.success &&
+                          if (state.status == AuthStateStatus.loggedIn &&
                               state.token != null) {
                             AutoRouter.of(context)
                                 .replace(const HomePageRoute());

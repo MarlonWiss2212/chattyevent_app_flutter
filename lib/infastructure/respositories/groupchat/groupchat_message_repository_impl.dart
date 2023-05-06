@@ -60,7 +60,7 @@ class GroupchatMessageRepositoryImpl implements GroupchatMessageRepository {
       if (response.hasException) {
         return Left(FailureHelper.graphqlFailureToNotificationAlert(
           title: "Erstellen Nachricht Fehler",
-          exception: response.exception!,
+          response: response,
         ));
       }
       return Right(
@@ -100,7 +100,7 @@ class GroupchatMessageRepositoryImpl implements GroupchatMessageRepository {
       if (response.hasException) {
         return Left(FailureHelper.graphqlFailureToNotificationAlert(
           title: "Finden Nachrichten Fehler",
-          exception: response.exception!,
+          response: response,
         ));
       }
 
@@ -143,7 +143,7 @@ class GroupchatMessageRepositoryImpl implements GroupchatMessageRepository {
         if (event.hasException) {
           yield Left(FailureHelper.graphqlFailureToNotificationAlert(
             title: "Nachricht Fehler",
-            exception: event.exception!,
+            response: event,
           ));
         }
         if (event.data != null) {

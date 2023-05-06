@@ -67,7 +67,7 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
       if (response.hasException) {
         return Left(FailureHelper.graphqlFailureToNotificationAlert(
           title: "Erstellen Chat Fehler",
-          exception: response.exception!,
+          response: response,
         ));
       }
       return Right(GroupchatModel.fromJson(response.data!["createGroupchat"]));
@@ -100,7 +100,7 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
       if (response.hasException) {
         return Left(FailureHelper.graphqlFailureToNotificationAlert(
           title: "Finden Chat Fehler",
-          exception: response.exception!,
+          response: response,
         ));
       }
 
@@ -233,7 +233,7 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
       if (response.hasException) {
         return Left(FailureHelper.graphqlFailureToNotificationAlert(
           title: "Finden von Chat Daten Fehler",
-          exception: response.exception!,
+          response: response,
         ));
       }
 
@@ -287,7 +287,7 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
       if (response.hasException) {
         return Left(FailureHelper.graphqlFailureToNotificationAlert(
           title: "Finden Chats Fehler",
-          exception: response.exception!,
+          response: response,
         ));
       }
 
@@ -342,7 +342,7 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
       if (response.hasException) {
         return Left(FailureHelper.graphqlFailureToNotificationAlert(
           title: "Updaten Chat Fehler",
-          exception: response.exception!,
+          response: response,
         ));
       }
       return Right(GroupchatModel.fromJson(response.data!["updateGroupchat"]));
@@ -413,7 +413,7 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
       if (response.hasException) {
         return Left(FailureHelper.graphqlFailureToNotificationAlert(
           title: "User zum Chat Hinzufügen Fehler",
-          exception: response.exception!,
+          response: response,
         ));
       }
 
@@ -483,7 +483,7 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
       if (response.hasException) {
         return Left(FailureHelper.graphqlFailureToNotificationAlert(
           title: "User vom Chat entfernen Fehler",
-          exception: response.exception!,
+          response: response,
         ));
       }
 
@@ -563,7 +563,7 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
       if (response.hasException) {
         return Left(FailureHelper.graphqlFailureToNotificationAlert(
           title: "Updaten vom Chat user Fehler",
-          exception: response.exception!,
+          response: response,
         ));
       }
 
@@ -685,7 +685,7 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
       if (response.hasException) {
         return Left(FailureHelper.graphqlFailureToNotificationAlert(
           title: "Finden von Chat Usern Fehler",
-          exception: response.exception!,
+          response: response,
         ));
       }
 

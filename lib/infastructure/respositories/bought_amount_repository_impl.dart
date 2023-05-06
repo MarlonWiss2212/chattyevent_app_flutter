@@ -43,7 +43,7 @@ class BoughtAmountRepositoryImpl implements BoughtAmountRepository {
       if (response.hasException) {
         return Left(FailureHelper.graphqlFailureToNotificationAlert(
           title: "Erstellen gekaufte Menge Fehler",
-          exception: response.exception!,
+          response: response,
         ));
       }
 
@@ -84,7 +84,7 @@ class BoughtAmountRepositoryImpl implements BoughtAmountRepository {
       if (response.hasException) {
         return Left(FailureHelper.graphqlFailureToNotificationAlert(
           title: "Holen gekaufte Menge Fehler",
-          exception: response.exception!,
+          response: response,
         ));
       }
 
@@ -127,7 +127,7 @@ class BoughtAmountRepositoryImpl implements BoughtAmountRepository {
       if (response.hasException) {
         return Left(FailureHelper.graphqlFailureToNotificationAlert(
           title: "Updaten gekaufte Menge Fehler",
-          exception: response.exception!,
+          response: response,
         ));
       }
 
@@ -156,7 +156,7 @@ class BoughtAmountRepositoryImpl implements BoughtAmountRepository {
       if (response.hasException) {
         return Left(FailureHelper.graphqlFailureToNotificationAlert(
           title: "Löschen gekaufte Menge Fehler",
-          exception: response.exception!,
+          response: response,
         ));
       }
 

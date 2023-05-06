@@ -9,7 +9,10 @@ class NotificationAlert extends NotificationState {
   final String title;
   final String message;
 
+  final OperationException? exception;
+
   NotificationAlert({
+    this.exception,
     required this.title,
     required this.message,
   });

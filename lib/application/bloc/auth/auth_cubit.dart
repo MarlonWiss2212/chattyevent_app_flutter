@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:graphql/client.dart';
 import 'package:meta/meta.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:chattyevent_app_flutter/core/filter/user/find_one_user_filter.dart';
@@ -45,11 +46,11 @@ class AuthCubit extends Cubit<AuthState> {
 
     await userOrFailure.fold(
       (alert) {
-        emitState(goOnCreateUserPage: true);
+        emitState(userException: alert.exception);
         notificationCubit.newAlert(notificationAlert: alert);
       },
       (user) async {
-        emitState(currentUser: user, status: AuthStateStatus.success);
+        emitState(currentUser: user);
         await one_signal.setExternalUserId(user.id);
       },
     );
@@ -74,7 +75,7 @@ class AuthCubit extends Cubit<AuthState> {
       },
       (authUser) async {
         emitState(
-          status: AuthStateStatus.success,
+          status: AuthStateStatus.loggedIn,
           token: await authUser.user?.getIdToken(),
         );
         await setCurrentUserFromFirebaseViaApi();
@@ -102,7 +103,7 @@ class AuthCubit extends Cubit<AuthState> {
       },
       (authUser) async {
         emitState(
-          status: AuthStateStatus.success,
+          status: AuthStateStatus.loggedIn,
           token: await authUser.user?.getIdToken(),
         );
         await notificationUseCases.requestNotificationPermission();
@@ -212,7 +213,7 @@ class AuthCubit extends Cubit<AuthState> {
     );
   }
 
-  Future checkIfEmailVerfiedIfSoCreateUserPage() async {
+  Future checkIfEmailVerfiedIfSoGoToCreateUserPage() async {
     await refreshUser();
     if (auth.currentUser != null && auth.currentUser!.emailVerified) {
       emitState(goOnCreateUserPage: true);
@@ -227,6 +228,8 @@ class AuthCubit extends Cubit<AuthState> {
     bool? sendedVerificationEmail,
     bool? goOnCreateUserPage,
     bool? updatedPasswordSuccessfully,
+    OperationException? userException,
+    bool resetUserException = false,
   }) {
     emit(AuthState(
       status: status ?? AuthStateStatus.initial,
@@ -236,6 +239,8 @@ class AuthCubit extends Cubit<AuthState> {
       sendedVerificationEmail: sendedVerificationEmail ?? false,
       goOnCreateUserPage: goOnCreateUserPage ?? false,
       updatedPasswordSuccessfully: updatedPasswordSuccessfully ?? false,
+      userException:
+          resetUserException ? null : userException ?? state.userException,
     ));
     if (token != null) {
       userUseCases = serviceLocator(param1: state);

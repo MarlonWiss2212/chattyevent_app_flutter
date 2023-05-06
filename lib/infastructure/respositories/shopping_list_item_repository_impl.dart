@@ -50,7 +50,7 @@ class ShoppingListItemRepositoryImpl implements ShoppingListItemRepository {
       if (response.hasException) {
         return Left(FailureHelper.graphqlFailureToNotificationAlert(
           title: "Erstellen Item Fehler",
-          exception: response.exception!,
+          response: response,
         ));
       }
 
@@ -97,7 +97,7 @@ class ShoppingListItemRepositoryImpl implements ShoppingListItemRepository {
       if (response.hasException) {
         return Left(FailureHelper.graphqlFailureToNotificationAlert(
           title: "Finden Items Fehler",
-          exception: response.exception!,
+          response: response,
         ));
       }
       final List<ShoppingListItemEntity> shoppingListItems = [];
@@ -141,7 +141,7 @@ class ShoppingListItemRepositoryImpl implements ShoppingListItemRepository {
       if (response.hasException) {
         return Left(FailureHelper.graphqlFailureToNotificationAlert(
           title: "Finden Item Fehler",
-          exception: response.exception!,
+          response: response,
         ));
       }
 
@@ -199,7 +199,7 @@ class ShoppingListItemRepositoryImpl implements ShoppingListItemRepository {
       if (response.hasException) {
         return Left(FailureHelper.graphqlFailureToNotificationAlert(
           title: "Finden Item Daten Fehler",
-          exception: response.exception!,
+          response: response,
         ));
       }
 
@@ -252,7 +252,7 @@ class ShoppingListItemRepositoryImpl implements ShoppingListItemRepository {
       if (response.hasException) {
         return Left(FailureHelper.graphqlFailureToNotificationAlert(
           title: "Updaten Item Fehler",
-          exception: response.exception!,
+          response: response,
         ));
       }
 
@@ -283,7 +283,7 @@ class ShoppingListItemRepositoryImpl implements ShoppingListItemRepository {
       if (response.hasException) {
         return Left(FailureHelper.graphqlFailureToNotificationAlert(
           title: "Löschen Item Fehler",
-          exception: response.exception!,
+          response: response,
         ));
       }
 

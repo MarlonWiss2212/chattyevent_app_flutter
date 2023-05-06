@@ -47,7 +47,7 @@ Future<void> main() async {
       id: "",
     ),
     token: token,
-    status: token != null ? AuthStateStatus.success : AuthStateStatus.initial,
+    status: token != null ? AuthStateStatus.loggedIn : AuthStateStatus.initial,
   );
 
   runApp(

@@ -33,8 +33,6 @@ class CreateUserPage extends StatelessWidget {
               IconButton(
                 onPressed: () {
                   BlocProvider.of<AuthCubit>(context).logout();
-                  AutoRouter.of(context).root.popUntilRoot();
-                  AutoRouter.of(context).root.replace(const LoginPageRoute());
                 },
                 icon: const Icon(Icons.logout),
               ),
@@ -47,8 +45,7 @@ class CreateUserPage extends StatelessWidget {
                   context: context,
                   builder: (c) {
                     return CustomAlertDialog(
-                      message: state.message,
-                      title: state.title,
+                      notificationAlert: state,
                       context: c,
                     );
                   },

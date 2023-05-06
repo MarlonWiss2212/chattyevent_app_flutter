@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:chattyevent_app_flutter/presentation/router/auth_guard.dart';
+import 'package:chattyevent_app_flutter/presentation/router/auth_guard_create_user_page.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/chat_page/chat_change_chat_username_page.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/chat_page/chat_future_private_events_page.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/chat_page/chat_info_page.dart';
@@ -67,7 +68,10 @@ import 'package:chattyevent_app_flutter/presentation/screens/shopping_list_page/
     AutoRoute(page: VerifyEmailPage, initial: false),
     AutoRoute(page: ResetPasswordPage, initial: false),
     AutoRoute(page: RegisterPage, initial: false),
-    AutoRoute(page: CreateUserPage, initial: false, guards: [AuthGuard]),
+    AutoRoute(
+        page: CreateUserPage,
+        initial: false,
+        guards: [AuthGuardCreateUserPage]),
 
     ...settingRoutes,
 

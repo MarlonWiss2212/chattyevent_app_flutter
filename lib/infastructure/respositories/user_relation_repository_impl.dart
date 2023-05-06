@@ -48,7 +48,7 @@ class UserRelationRepositoryImpl extends UserRelationRepository {
       if (response.hasException) {
         return Left(FailureHelper.graphqlFailureToNotificationAlert(
           title: "Erstellen Anfrage Fehler",
-          exception: response.exception!,
+          response: response,
         ));
       }
 
@@ -89,7 +89,7 @@ class UserRelationRepositoryImpl extends UserRelationRepository {
       if (response.hasException) {
         return Left(FailureHelper.graphqlFailureToNotificationAlert(
           title: "Finden User Relation Fehler",
-          exception: response.exception!,
+          response: response,
         ));
       }
 
@@ -159,7 +159,7 @@ class UserRelationRepositoryImpl extends UserRelationRepository {
       if (response.hasException) {
         return Left(FailureHelper.graphqlFailureToNotificationAlert(
           title: "Finden Followers Fehler",
-          exception: response.exception!,
+          response: response,
         ));
       }
       final List<UserEntity> users = [];
@@ -230,7 +230,7 @@ class UserRelationRepositoryImpl extends UserRelationRepository {
       if (response.hasException) {
         return Left(FailureHelper.graphqlFailureToNotificationAlert(
           title: "Finden Follow Requests Fehler",
-          exception: response.exception!,
+          response: response,
         ));
       }
       final List<UserEntity> users = [];
@@ -302,7 +302,7 @@ class UserRelationRepositoryImpl extends UserRelationRepository {
       if (response.hasException) {
         return Left(FailureHelper.graphqlFailureToNotificationAlert(
           title: "Finden Followed Fehler",
-          exception: response.exception!,
+          response: response,
         ));
       }
       final List<UserEntity> users = [];
@@ -344,7 +344,7 @@ class UserRelationRepositoryImpl extends UserRelationRepository {
       if (response.hasException) {
         return Left(FailureHelper.graphqlFailureToNotificationAlert(
           title: "Akzeptieren Anfrage Fehler",
-          exception: response.exception!,
+          response: response,
         ));
       }
 
@@ -388,7 +388,7 @@ class UserRelationRepositoryImpl extends UserRelationRepository {
       if (response.hasException) {
         return Left(FailureHelper.graphqlFailureToNotificationAlert(
           title: "Updaten User Relation Fehler",
-          exception: response.exception!,
+          response: response,
         ));
       }
 
@@ -417,7 +417,7 @@ class UserRelationRepositoryImpl extends UserRelationRepository {
       if (response.hasException) {
         return Left(FailureHelper.graphqlFailureToNotificationAlert(
           title: "Löschen User Relation Fehler",
-          exception: response.exception!,
+          response: response,
         ));
       }
 

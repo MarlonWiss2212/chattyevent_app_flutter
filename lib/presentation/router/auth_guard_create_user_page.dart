@@ -4,25 +4,25 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:chattyevent_app_flutter/core/injection.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
 
-class AuthGuard extends AutoRouteGuard {
+class AuthGuardCreateUserPage extends AutoRouteGuard {
   AuthCubit authCubit;
-  AuthGuard({required this.authCubit});
+  AuthGuardCreateUserPage({required this.authCubit});
 
   @override
   void onNavigation(NavigationResolver resolver, StackRouter router) async {
-    print("TEST");
+    print("TEST 1");
     final currentUser = serviceLocator<FirebaseAuth>().currentUser;
 
     if (currentUser != null) {
       await authCubit.refreshJwtToken();
 
-      if (currentUser.emailVerified &&
-          authCubit.state.isUserCode404() == false) {
+      if (authCubit.state.isUserCode404() ||
+          currentUser.emailVerified && authCubit.state.currentUser.id == "") {
         resolver.next(true);
-      } else if (currentUser.emailVerified) {
-        router.replace(const CreateUserPageRoute());
-      } else {
+      } else if (currentUser.emailVerified == false) {
         router.replace(const VerifyEmailPageRoute());
+      } else {
+        router.replace(const HomePageRoute());
       }
     } else {
       router.replace(const LoginPageRoute());

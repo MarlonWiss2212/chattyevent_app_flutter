@@ -4,15 +4,31 @@ import 'package:chattyevent_app_flutter/application/bloc/notification/notificati
 class FailureHelper {
   static NotificationAlert graphqlFailureToNotificationAlert({
     required String title,
-    required OperationException exception,
+    required QueryResult<Object?> response,
   }) {
-    String message = "";
-
-    for (final error in exception.graphqlErrors) {
-      message += "${error.message} |";
+    if (response.exception == null) {
+      return NotificationAlert(
+        title: "Fehler in der App",
+        message: "Unerwarteter Fehler in der App",
+      );
     }
 
-    return NotificationAlert(title: title, message: message);
+    bool showDivider = false;
+    String message = "";
+
+    for (final error in response.exception!.graphqlErrors) {
+      if (showDivider) {
+        message += "| ";
+      }
+      showDivider = true;
+      message += error.message;
+    }
+
+    return NotificationAlert(
+      title: title,
+      message: message,
+      exception: response.exception,
+    );
   }
 
   static NotificationAlert catchFailureToNotificationAlert({
