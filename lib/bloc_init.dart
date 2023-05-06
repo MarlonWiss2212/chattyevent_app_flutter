@@ -1,3 +1,4 @@
+import 'package:chattyevent_app_flutter/application/bloc/imprint/imprint_cubit.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -38,6 +39,12 @@ class BlocInit extends StatelessWidget {
             BlocProvider.value(
               value: HomeEventCubit(
                 privateEventUseCases: serviceLocator(param1: state),
+                notificationCubit: notificationCubit,
+              ),
+            ),
+            BlocProvider.value(
+              value: ImprintCubit(
+                imprintUseCases: serviceLocator(),
                 notificationCubit: notificationCubit,
               ),
             ),

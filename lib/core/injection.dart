@@ -1,6 +1,9 @@
+import 'package:chattyevent_app_flutter/domain/repositories/imprint_repository.dart';
+import 'package:chattyevent_app_flutter/domain/usecases/imprint_usecases.dart';
+import 'package:chattyevent_app_flutter/infastructure/datasources/remote/http.dart';
+import 'package:chattyevent_app_flutter/infastructure/respositories/imprint_repository_impl.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
-import 'package:graphql/client.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:chattyevent_app_flutter/core/graphql.dart';
@@ -55,6 +58,9 @@ Future init() async {
   serviceLocator.registerLazySingleton<NotificationUseCases>(
     () => NotificationUseCases(notificationRepository: serviceLocator()),
   );
+  serviceLocator.registerLazySingleton<ImprintUseCases>(
+    () => ImprintUseCases(imprintRepository: serviceLocator()),
+  );
   serviceLocator.registerLazySingleton<LocationUseCases>(
     () => LocationUseCases(locationRepository: serviceLocator()),
   );
@@ -108,6 +114,9 @@ Future init() async {
   // repositories
   serviceLocator.registerLazySingleton<NotificationRepository>(
     () => NotificationRepositoryImpl(notificationDatasource: serviceLocator()),
+  );
+  serviceLocator.registerLazySingleton<ImprintRepository>(
+    () => ImprintRepositoryImpl(httpDatasource: serviceLocator()),
   );
   serviceLocator.registerLazySingleton<LocationRepository>(
     () => LocationRepositoryImpl(locationDatasource: serviceLocator()),
@@ -165,6 +174,9 @@ Future init() async {
     () => SharedPreferencesDatasourceImpl(
       sharedPreferences: sharedPrefs,
     ),
+  );
+  serviceLocator.registerLazySingleton<HttpDatasource>(
+    () => HttpDatasourceImpl(),
   );
   serviceLocator.registerFactoryParam<GraphQlDatasource, AuthState?, void>(
     (param1, param2) {
