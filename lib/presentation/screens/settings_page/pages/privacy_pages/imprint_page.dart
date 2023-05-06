@@ -36,6 +36,7 @@ class _ImprintPageState extends State<ImprintPage> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SizedBox(height: 8),
                     Text(state.imprint!.imprintDescription),
