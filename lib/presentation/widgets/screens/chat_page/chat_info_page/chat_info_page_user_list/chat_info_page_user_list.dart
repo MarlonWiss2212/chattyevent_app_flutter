@@ -40,7 +40,7 @@ class ChatInfoPageUserList extends StatelessWidget {
                 },
               )
             },
-            if (state.users.isEmpty && state.loadingChat) ...[
+            if (state.users.isEmpty && state.loadingChat) ...{
               SkeletonListTile(
                 hasSubtitle: true,
                 hasLeading: false,
@@ -53,8 +53,9 @@ class ChatInfoPageUserList extends StatelessWidget {
                   height: 16,
                 ),
               ),
-            ] else if (state.users.isNotEmpty) ...{
+            } else if (state.users.isNotEmpty) ...{
               ListView.builder(
+                padding: const EdgeInsets.all(0),
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {

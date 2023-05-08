@@ -10,7 +10,6 @@ class AuthGuardCreateUserPage extends AutoRouteGuard {
 
   @override
   void onNavigation(NavigationResolver resolver, StackRouter router) async {
-    print("TEST 1");
     final currentUser = serviceLocator<FirebaseAuth>().currentUser;
 
     if (currentUser != null) {

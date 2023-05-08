@@ -20,7 +20,8 @@ class PrivateEventTabInfoLocationData extends StatelessWidget {
               : null,
           child: Column(
             children: [
-              if (state.privateEvent.eventLocation!.city != null &&
+              if (state.privateEvent.eventLocation != null &&
+                  state.privateEvent.eventLocation!.city != null &&
                   state.privateEvent.eventLocation!.street != null &&
                   state.privateEvent.eventLocation!.housenumber != null &&
                   state.privateEvent.eventLocation!.zip != null &&
@@ -76,7 +77,7 @@ class PrivateEventTabInfoLocationData extends StatelessWidget {
                 )
               ] else ...[
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  padding: const EdgeInsets.all(8.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: const [
@@ -86,7 +87,7 @@ class PrivateEventTabInfoLocationData extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      Text("Addresse ändern")
+                      Text("Addresse hinzufügen")
                     ],
                   ),
                 ),

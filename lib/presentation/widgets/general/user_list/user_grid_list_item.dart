@@ -23,6 +23,7 @@ class UserGridListItem extends StatelessWidget {
       onTap: onPress == null ? null : () => onPress!(),
       child: Ink(
         child: Stack(
+          fit: StackFit.expand,
           children: [
             user.profileImageLink != null
                 ? Container(
