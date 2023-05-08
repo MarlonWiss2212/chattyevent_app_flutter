@@ -45,17 +45,17 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions web = FirebaseOptions(
     apiKey: 'AIzaSyDFYBdBo6DwrVc_pHrnC73KZyxk3uwVM34',
-    appId: '1:386131382515:web:5302c068472e87d3d16786',
+    appId: '1:386131382515:web:20257c79c4dfed2ad16786',
     messagingSenderId: '386131382515',
     projectId: 'social-media-app-3cc43',
     authDomain: 'social-media-app-3cc43.firebaseapp.com',
     storageBucket: 'social-media-app-3cc43.appspot.com',
-    measurementId: 'G-SZJ238Y7CH',
+    measurementId: 'G-B880WR4VS2',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyAlKcP6_QKfGgyH6k1a4oDkATunai21cq4',
-    appId: '1:386131382515:android:dfc22e6b9d302bb7d16786',
+    appId: '1:386131382515:android:e2c26128d13f9ee1d16786',
     messagingSenderId: '386131382515',
     projectId: 'social-media-app-3cc43',
     storageBucket: 'social-media-app-3cc43.appspot.com',
@@ -63,21 +63,23 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyBbLDm26BA2ynBPSnRkd3bu2mzi91e22jM',
-    appId: '1:386131382515:ios:72c6de88d06e108fd16786',
+    appId: '1:386131382515:ios:e452f569b554423fd16786',
     messagingSenderId: '386131382515',
     projectId: 'social-media-app-3cc43',
     storageBucket: 'social-media-app-3cc43.appspot.com',
-    iosClientId: '386131382515-kq3lnmkj47a2gqfcsasnkhvodg1lcvie.apps.googleusercontent.com',
-    iosBundleId: 'com.example.socialMediaAppFlutter',
+    iosClientId:
+        '386131382515-kq3lnmkj47a2gqfcsasnkhvodg1lcvie.apps.googleusercontent.com',
+    iosBundleId: 'com.chattyevent.chattyevent',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
     apiKey: 'AIzaSyBbLDm26BA2ynBPSnRkd3bu2mzi91e22jM',
-    appId: '1:386131382515:ios:72c6de88d06e108fd16786',
+    appId: '1:386131382515:ios:cd2628e1c3a03f15d16786',
     messagingSenderId: '386131382515',
     projectId: 'social-media-app-3cc43',
     storageBucket: 'social-media-app-3cc43.appspot.com',
-    iosClientId: '386131382515-kq3lnmkj47a2gqfcsasnkhvodg1lcvie.apps.googleusercontent.com',
-    iosBundleId: 'com.example.socialMediaAppFlutter',
+    iosClientId:
+        '386131382515-ldg5dg50ka8fnj2g727b7l5b0ps973f8.apps.googleusercontent.com',
+    iosBundleId: 'com.chattyEvent.chattyEvent',
   );
 }
