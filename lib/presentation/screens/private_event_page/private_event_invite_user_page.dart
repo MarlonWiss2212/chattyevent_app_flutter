@@ -7,13 +7,24 @@ import 'package:chattyevent_app_flutter/domain/entities/private_event/private_ev
 import 'package:chattyevent_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/user_list/selectable_user_grid_list.dart';
 
-class PrivateEventInviteUserPage extends StatelessWidget {
+class PrivateEventInviteUserPage extends StatefulWidget {
   const PrivateEventInviteUserPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    BlocProvider.of<UserSearchCubit>(context).getUsersViaApi();
+  State<PrivateEventInviteUserPage> createState() =>
+      _PrivateEventInviteUserPageState();
+}
 
+class _PrivateEventInviteUserPageState
+    extends State<PrivateEventInviteUserPage> {
+  @override
+  void initState() {
+    BlocProvider.of<UserSearchCubit>(context).getUsersViaApi();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text("User zum Event hinzufügen"),

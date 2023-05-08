@@ -1,4 +1,7 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
+import 'package:chattyevent_app_flutter/presentation/screens/home_page/home_page.dart';
+import 'package:chattyevent_app_flutter/presentation/screens/home_page/pages/home_chat_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
@@ -59,7 +62,7 @@ class ChatPageWrapper extends StatelessWidget {
               BlocListener<CurrentChatCubit, CurrentChatState>(
                 listener: (context, state) async {
                   if (state.currentUserLeftChat == true) {
-                    AutoRouter.of(context).root.pop();
+                    AutoRouter.of(context).root.replace(const HomePageRoute());
                   }
                 },
               ),

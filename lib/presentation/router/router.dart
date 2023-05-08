@@ -48,10 +48,10 @@ import 'package:chattyevent_app_flutter/presentation/screens/profile_page/profil
 import 'package:chattyevent_app_flutter/presentation/screens/profile_page/profile_wrapper_page.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/register_page.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/reset_password_page.dart';
-import 'package:chattyevent_app_flutter/presentation/screens/settings_page/pages/privacy_page.dart';
-import 'package:chattyevent_app_flutter/presentation/screens/settings_page/pages/privacy_pages/imprint_page.dart';
-import 'package:chattyevent_app_flutter/presentation/screens/settings_page/pages/privacy_pages/right_on_deletion_page.dart';
-import 'package:chattyevent_app_flutter/presentation/screens/settings_page/pages/privacy_pages/right_on_insight.dart';
+import 'package:chattyevent_app_flutter/presentation/screens/settings_page/pages/info_page.dart';
+import 'package:chattyevent_app_flutter/presentation/screens/settings_page/pages/info_pages/imprint_page.dart';
+import 'package:chattyevent_app_flutter/presentation/screens/settings_page/pages/info_pages/right_on_deletion_page.dart';
+import 'package:chattyevent_app_flutter/presentation/screens/settings_page/pages/info_pages/right_on_insight.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/settings_page/pages/theme_mode_page.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/settings_page/settings_page.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/settings_page/pages/update_password_page.dart';
@@ -362,7 +362,7 @@ const homePageRouter = AutoRoute(
       initial: true,
     ),
     AutoRoute(page: HomeEventPage, guards: [AuthGuard], path: 'events'),
-    AutoRoute(page: Location, guards: [AuthGuard], path: 'map'),
+    AutoRoute(page: HomeMapPage, guards: [AuthGuard], path: 'map'),
     AutoRoute(page: HomeSearchPage, guards: [AuthGuard], path: 'search'),
     AutoRoute(
       page: HomeProfilePage,
@@ -427,23 +427,15 @@ const settingRoutes = [
     path: '/settings/update-password',
   ),
   AutoRoute(
-    page: PrivacyPage,
-    guards: [AuthGuard],
-    path: '/settings/privacy',
-  ),
+      page: SettingsInfoPage, guards: [AuthGuard], path: '/settings/info'),
   AutoRoute(
-    page: RightOnInsightPage,
-    guards: [AuthGuard],
-    path: '/settings/privacy/right-on-insight',
-  ),
+      page: RightOnInsightPage,
+      guards: [AuthGuard],
+      path: '/settings/info/right-on-insight'),
   AutoRoute(
-    page: RightOnDeletionPage,
-    guards: [AuthGuard],
-    path: '/settings/privacy/right-on-deletion',
-  ),
+      page: RightOnDeletionPage,
+      guards: [AuthGuard],
+      path: '/settings/info/right-on-deletion'),
   AutoRoute(
-    page: ImprintPage,
-    guards: [AuthGuard],
-    path: '/settings/privacy/impressum',
-  ),
+      page: ImprintPage, guards: [AuthGuard], path: '/settings/info/imprint'),
 ];

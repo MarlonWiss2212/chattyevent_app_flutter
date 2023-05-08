@@ -5,7 +5,7 @@ import 'package:chattyevent_app_flutter/application/bloc/current_groupchat/curre
 import 'package:chattyevent_app_flutter/application/bloc/user_search/user_search_cubit.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/chat_page/chat_add_user_page/add_user_groupchat_list_with_searchbar.dart';
 
-class ChatAddUserPage extends StatelessWidget {
+class ChatAddUserPage extends StatefulWidget {
   final String groupchatId;
   const ChatAddUserPage({
     @PathParam('id') required this.groupchatId,
@@ -13,9 +13,18 @@ class ChatAddUserPage extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    BlocProvider.of<UserSearchCubit>(context).getUsersViaApi();
+  State<ChatAddUserPage> createState() => _ChatAddUserPageState();
+}
 
+class _ChatAddUserPageState extends State<ChatAddUserPage> {
+  @override
+  void initState() {
+    BlocProvider.of<UserSearchCubit>(context).getUsersViaApi();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text("User zum Chat hinzufügen"),

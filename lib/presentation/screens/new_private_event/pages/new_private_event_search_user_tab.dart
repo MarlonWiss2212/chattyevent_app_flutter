@@ -7,15 +7,26 @@ import 'package:chattyevent_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/user_list/selectable_user_grid_list.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/user_list/selected_user_list.dart';
 
-class NewPrivateEventSearchUserTab extends StatelessWidget {
+class NewPrivateEventSearchUserTab extends StatefulWidget {
   const NewPrivateEventSearchUserTab({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  State<NewPrivateEventSearchUserTab> createState() =>
+      _NewPrivateEventSearchUserTabState();
+}
+
+class _NewPrivateEventSearchUserTabState
+    extends State<NewPrivateEventSearchUserTab> {
+  @override
+  void initState() {
     BlocProvider.of<UserSearchCubit>(context).getUsersByPermissionViaApi(
       followedToPrivateEventPermission: "ADD",
     );
+    super.initState();
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8),
       child: BlocBuilder<AddPrivateEventCubit, AddPrivateEventState>(

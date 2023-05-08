@@ -118,13 +118,13 @@ import 'package:chattyevent_app_flutter/presentation/screens/register_page.dart'
     as _i4;
 import 'package:chattyevent_app_flutter/presentation/screens/reset_password_page.dart'
     as _i3;
-import 'package:chattyevent_app_flutter/presentation/screens/settings_page/pages/privacy_page.dart'
+import 'package:chattyevent_app_flutter/presentation/screens/settings_page/pages/info_page.dart'
     as _i9;
-import 'package:chattyevent_app_flutter/presentation/screens/settings_page/pages/privacy_pages/imprint_page.dart'
+import 'package:chattyevent_app_flutter/presentation/screens/settings_page/pages/info_pages/imprint_page.dart'
     as _i12;
-import 'package:chattyevent_app_flutter/presentation/screens/settings_page/pages/privacy_pages/right_on_deletion_page.dart'
+import 'package:chattyevent_app_flutter/presentation/screens/settings_page/pages/info_pages/right_on_deletion_page.dart'
     as _i11;
-import 'package:chattyevent_app_flutter/presentation/screens/settings_page/pages/privacy_pages/right_on_insight.dart'
+import 'package:chattyevent_app_flutter/presentation/screens/settings_page/pages/info_pages/right_on_insight.dart'
     as _i10;
 import 'package:chattyevent_app_flutter/presentation/screens/settings_page/pages/theme_mode_page.dart'
     as _i7;
@@ -212,10 +212,10 @@ class AppRouter extends _i61.RootStackRouter {
         child: const _i8.UpdatePasswordPage(),
       );
     },
-    PrivacyPageRoute.name: (routeData) {
+    SettingsInfoPageRoute.name: (routeData) {
       return _i61.AdaptivePage<dynamic>(
         routeData: routeData,
-        child: const _i9.PrivacyPage(),
+        child: const _i9.SettingsInfoPage(),
       );
     },
     RightOnInsightPageRoute.name: (routeData) {
@@ -317,10 +317,10 @@ class AppRouter extends _i61.RootStackRouter {
         child: const _i23.HomeEventPage(),
       );
     },
-    LocationRoute.name: (routeData) {
+    HomeMapPageRoute.name: (routeData) {
       return _i61.AdaptivePage<dynamic>(
         routeData: routeData,
-        child: const _i24.Location(),
+        child: const _i24.HomeMapPage(),
       );
     },
     HomeSearchPageRoute.name: (routeData) {
@@ -665,23 +665,23 @@ class AppRouter extends _i61.RootStackRouter {
           guards: [authGuard],
         ),
         _i61.RouteConfig(
-          PrivacyPageRoute.name,
-          path: '/settings/privacy',
+          SettingsInfoPageRoute.name,
+          path: '/settings/info',
           guards: [authGuard],
         ),
         _i61.RouteConfig(
           RightOnInsightPageRoute.name,
-          path: '/settings/privacy/right-on-insight',
+          path: '/settings/info/right-on-insight',
           guards: [authGuard],
         ),
         _i61.RouteConfig(
           RightOnDeletionPageRoute.name,
-          path: '/settings/privacy/right-on-deletion',
+          path: '/settings/info/right-on-deletion',
           guards: [authGuard],
         ),
         _i61.RouteConfig(
           ImprintPageRoute.name,
-          path: '/settings/privacy/impressum',
+          path: '/settings/info/imprint',
           guards: [authGuard],
         ),
         _i61.RouteConfig(
@@ -709,7 +709,7 @@ class AppRouter extends _i61.RootStackRouter {
               guards: [authGuard],
             ),
             _i61.RouteConfig(
-              LocationRoute.name,
+              HomeMapPageRoute.name,
               path: 'map',
               parent: HomePageRoute.name,
               guards: [authGuard],
@@ -1231,15 +1231,15 @@ class UpdatePasswordPageRoute extends _i61.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i9.PrivacyPage]
-class PrivacyPageRoute extends _i61.PageRouteInfo<void> {
-  const PrivacyPageRoute()
+/// [_i9.SettingsInfoPage]
+class SettingsInfoPageRoute extends _i61.PageRouteInfo<void> {
+  const SettingsInfoPageRoute()
       : super(
-          PrivacyPageRoute.name,
-          path: '/settings/privacy',
+          SettingsInfoPageRoute.name,
+          path: '/settings/info',
         );
 
-  static const String name = 'PrivacyPageRoute';
+  static const String name = 'SettingsInfoPageRoute';
 }
 
 /// generated route for
@@ -1248,7 +1248,7 @@ class RightOnInsightPageRoute extends _i61.PageRouteInfo<void> {
   const RightOnInsightPageRoute()
       : super(
           RightOnInsightPageRoute.name,
-          path: '/settings/privacy/right-on-insight',
+          path: '/settings/info/right-on-insight',
         );
 
   static const String name = 'RightOnInsightPageRoute';
@@ -1260,7 +1260,7 @@ class RightOnDeletionPageRoute extends _i61.PageRouteInfo<void> {
   const RightOnDeletionPageRoute()
       : super(
           RightOnDeletionPageRoute.name,
-          path: '/settings/privacy/right-on-deletion',
+          path: '/settings/info/right-on-deletion',
         );
 
   static const String name = 'RightOnDeletionPageRoute';
@@ -1272,7 +1272,7 @@ class ImprintPageRoute extends _i61.PageRouteInfo<void> {
   const ImprintPageRoute()
       : super(
           ImprintPageRoute.name,
-          path: '/settings/privacy/impressum',
+          path: '/settings/info/imprint',
         );
 
   static const String name = 'ImprintPageRoute';
@@ -1508,15 +1508,15 @@ class HomeEventPageRoute extends _i61.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i24.Location]
-class LocationRoute extends _i61.PageRouteInfo<void> {
-  const LocationRoute()
+/// [_i24.HomeMapPage]
+class HomeMapPageRoute extends _i61.PageRouteInfo<void> {
+  const HomeMapPageRoute()
       : super(
-          LocationRoute.name,
+          HomeMapPageRoute.name,
           path: 'map',
         );
 
-  static const String name = 'LocationRoute';
+  static const String name = 'HomeMapPageRoute';
 }
 
 /// generated route for

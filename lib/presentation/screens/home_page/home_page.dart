@@ -16,7 +16,7 @@ class HomePage extends StatelessWidget {
       routes: [
         const HomeChatPageRoute(),
         const HomeEventPageRoute(),
-        const LocationRoute(),
+        const HomeMapPageRoute(),
         const HomeSearchPageRoute(),
         HomeProfilePageRoute(
           userId: BlocProvider.of<AuthCubit>(context).state.currentUser.id,

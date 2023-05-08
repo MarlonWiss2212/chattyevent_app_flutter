@@ -7,14 +7,23 @@ import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/event_list/event_horizontal_list_skeleton.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/home_page/pages/home_event_page/home_event_page_details.dart';
 
-class HomeEventPage extends StatelessWidget {
+class HomeEventPage extends StatefulWidget {
   const HomeEventPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  State<HomeEventPage> createState() => _HomeEventPageState();
+}
+
+class _HomeEventPageState extends State<HomeEventPage> {
+  @override
+  void initState() {
     BlocProvider.of<HomeEventCubit>(context).getFuturePrivateEventsViaApi();
     BlocProvider.of<HomeEventCubit>(context).getPastPrivateEventsViaApi();
+    super.initState();
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       body: CustomScrollView(
         slivers: [

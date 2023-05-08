@@ -10,14 +10,23 @@ import 'package:chattyevent_app_flutter/presentation/widgets/ads/custom_banner_a
 import 'package:chattyevent_app_flutter/presentation/widgets/general/button.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/home_page/pages/home_map_page/private_event_map_marker.dart';
 
-class Location extends StatelessWidget {
-  const Location({super.key});
+class HomeMapPage extends StatefulWidget {
+  const HomeMapPage({super.key});
+
+  @override
+  State<HomeMapPage> createState() => _HomeMapPageState();
+}
+
+class _HomeMapPageState extends State<HomeMapPage> {
+  @override
+  void initState() {
+    BlocProvider.of<HomeEventCubit>(context).getFuturePrivateEventsViaApi();
+    BlocProvider.of<LocationCubit>(context).getLocationFromDevice();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<HomeEventCubit>(context).getFuturePrivateEventsViaApi();
-    BlocProvider.of<LocationCubit>(context).getLocationFromDevice();
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Map'),

@@ -17,9 +17,13 @@ class _NewPrivateEventSearchGroupchatTabState
   TextEditingController search = TextEditingController();
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
     BlocProvider.of<ChatCubit>(context).getChatsViaApi();
+    super.initState();
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8),
       child: BlocBuilder<ChatCubit, ChatState>(

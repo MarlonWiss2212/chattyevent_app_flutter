@@ -9,13 +9,22 @@ import 'package:chattyevent_app_flutter/domain/entities/private_event/private_ev
 import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/shopping_list_item_page/shopping_list_page/shopping_list_item_tile.dart';
 
-class ShoppingListPage extends StatelessWidget {
+class ShoppingListPage extends StatefulWidget {
   const ShoppingListPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    BlocProvider.of<MyShoppingListCubit>(context).getShoppingListViaApi();
+  State<ShoppingListPage> createState() => _ShoppingListPageState();
+}
 
+class _ShoppingListPageState extends State<ShoppingListPage> {
+  @override
+  void initState() {
+    BlocProvider.of<MyShoppingListCubit>(context).getShoppingListViaApi();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       body: CustomScrollView(
         slivers: [

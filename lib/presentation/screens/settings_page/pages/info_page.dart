@@ -2,14 +2,14 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
 
-class PrivacyPage extends StatefulWidget {
-  const PrivacyPage({super.key});
+class SettingsInfoPage extends StatefulWidget {
+  const SettingsInfoPage({super.key});
 
   @override
-  State<PrivacyPage> createState() => _PrivacyPageState();
+  State<SettingsInfoPage> createState() => _SettingsInfoPageState();
 }
 
-class _PrivacyPageState extends State<PrivacyPage> {
+class _SettingsInfoPageState extends State<SettingsInfoPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,7 +22,7 @@ class _PrivacyPageState extends State<PrivacyPage> {
             expandedHeight: 100,
             flexibleSpace: FlexibleSpaceBar(
               title: Text(
-                "Privatsphäre",
+                "Info & Datenschutz",
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.onBackground,
                 ),

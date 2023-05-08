@@ -4,13 +4,23 @@ import 'package:chattyevent_app_flutter/application/bloc/profile_page/profile_pa
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/profile_page/profile_user_relations_tabs/profile_follow_requests_tab/profile_follow_requests_tab_list_view.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/profile_page/profile_user_relations_tabs/profile_follow_requests_tab/profile_follow_requests_tab_skeleton_list_view.dart';
 
-class ProfileFollowRequestsTab extends StatelessWidget {
+class ProfileFollowRequestsTab extends StatefulWidget {
   const ProfileFollowRequestsTab({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    BlocProvider.of<ProfilePageCubit>(context).getFollowRequests();
+  State<ProfileFollowRequestsTab> createState() =>
+      _ProfileFollowRequestsTabState();
+}
 
+class _ProfileFollowRequestsTabState extends State<ProfileFollowRequestsTab> {
+  @override
+  void initState() {
+    BlocProvider.of<ProfilePageCubit>(context).getFollowRequests();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return CustomScrollView(
       slivers: [
         CupertinoSliverRefreshControl(

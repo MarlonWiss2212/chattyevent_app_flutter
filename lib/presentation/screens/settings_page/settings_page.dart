@@ -44,18 +44,14 @@ class SettingsPage extends StatelessWidget {
                   },
                 ),
                 ListTile(
-                  leading: const Icon(Icons.privacy_tip),
+                  leading: const Icon(Icons.security),
                   title: Text(
-                    "Privatsphäre",
+                    "Privatsphäre & Sicherheit",
                     style: Theme.of(context).textTheme.titleMedium,
                     overflow: TextOverflow.ellipsis,
                   ),
                   trailing: const Icon(Icons.arrow_right),
-                  onTap: () {
-                    AutoRouter.of(context).push(
-                      const PrivacyPageRoute(),
-                    );
-                  },
+                  onTap: () {},
                 ),
                 ListTile(
                   leading: const Icon(Icons.password),
@@ -68,6 +64,20 @@ class SettingsPage extends StatelessWidget {
                   onTap: () {
                     AutoRouter.of(context).push(
                       const UpdatePasswordPageRoute(),
+                    );
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.info),
+                  title: Text(
+                    "Info & Datenschutz",
+                    style: Theme.of(context).textTheme.titleMedium,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  trailing: const Icon(Icons.arrow_right),
+                  onTap: () {
+                    AutoRouter.of(context).push(
+                      const SettingsInfoPageRoute(),
                     );
                   },
                 ),
