@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:386131382515:android:dfc22e6b9d302bb7d16786",
+        "mobilesdk_app_id": "1:386131382515:android:e2c26128d13f9ee1d16786",
         "android_client_info": {
-          "package_name": "com.example.chattyevent_app_flutter"
+          "package_name": "com.chattyevent.chattyevent"
         }
       },
       "oauth_client": [
@@ -29,10 +29,18 @@
             {
               "client_id": "386131382515-eqji07g4gr9tu9crmgsqqahaj4kob4ui.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "386131382515-kq3lnmkj47a2gqfcsasnkhvodg1lcvie.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.socialMediaAppFlutter"
+              }
             }
           ]
         }
-      }
+      },
+      "admob_app_id": "ca-app-pub-6709565406365779~9911278912"
     }
   ],
   "configuration_version": "1"

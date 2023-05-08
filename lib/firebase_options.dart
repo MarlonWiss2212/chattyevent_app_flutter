@@ -45,12 +45,12 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions web = FirebaseOptions(
     apiKey: 'AIzaSyDFYBdBo6DwrVc_pHrnC73KZyxk3uwVM34',
-    appId: '1:386131382515:web:20257c79c4dfed2ad16786',
+    appId: '1:386131382515:web:06c2764fc2af5064d16786',
     messagingSenderId: '386131382515',
     projectId: 'social-media-app-3cc43',
     authDomain: 'social-media-app-3cc43.firebaseapp.com',
     storageBucket: 'social-media-app-3cc43.appspot.com',
-    measurementId: 'G-B880WR4VS2',
+    measurementId: 'G-YLLTDMYXN5',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
@@ -63,23 +63,21 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyBbLDm26BA2ynBPSnRkd3bu2mzi91e22jM',
-    appId: '1:386131382515:ios:e452f569b554423fd16786',
+    appId: '1:386131382515:ios:acf5b820214e411ad16786',
     messagingSenderId: '386131382515',
     projectId: 'social-media-app-3cc43',
     storageBucket: 'social-media-app-3cc43.appspot.com',
-    iosClientId:
-        '386131382515-kq3lnmkj47a2gqfcsasnkhvodg1lcvie.apps.googleusercontent.com',
+    iosClientId: '386131382515-0oes6c0b7ketdl3kl9mlh4rrp6s7fhfa.apps.googleusercontent.com',
     iosBundleId: 'com.chattyevent.chattyevent',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
     apiKey: 'AIzaSyBbLDm26BA2ynBPSnRkd3bu2mzi91e22jM',
-    appId: '1:386131382515:ios:cd2628e1c3a03f15d16786',
+    appId: '1:386131382515:ios:acf5b820214e411ad16786',
     messagingSenderId: '386131382515',
     projectId: 'social-media-app-3cc43',
     storageBucket: 'social-media-app-3cc43.appspot.com',
-    iosClientId:
-        '386131382515-ldg5dg50ka8fnj2g727b7l5b0ps973f8.apps.googleusercontent.com',
-    iosBundleId: 'com.chattyEvent.chattyEvent',
+    iosClientId: '386131382515-0oes6c0b7ketdl3kl9mlh4rrp6s7fhfa.apps.googleusercontent.com',
+    iosBundleId: 'com.chattyevent.chattyevent',
   );
 }
