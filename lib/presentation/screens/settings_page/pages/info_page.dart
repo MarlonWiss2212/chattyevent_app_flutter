@@ -3,7 +3,6 @@ import 'package:chattyevent_app_flutter/core/injection.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/settings_usecases.dart';
 import 'package:flutter/material.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
-import 'package:url_launcher/url_launcher_string.dart';
 
 class SettingsInfoPage extends StatefulWidget {
   const SettingsInfoPage({super.key});

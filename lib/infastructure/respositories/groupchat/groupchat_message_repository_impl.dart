@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:chattyevent_app_flutter/domain/entities/groupchat/groupchat_message.dart';
+import 'package:chattyevent_app_flutter/infastructure/models/groupchat/groupchat_message_model.dart';
 import 'package:http/http.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
@@ -7,11 +9,9 @@ import 'package:chattyevent_app_flutter/core/filter/groupchat/groupchat_message/
 import 'package:chattyevent_app_flutter/core/filter/groupchat/groupchat_message/find_groupchat_messages_filter.dart';
 import 'package:chattyevent_app_flutter/core/filter/limit_offset_filter.dart';
 import 'package:chattyevent_app_flutter/core/utils/failure_helper.dart';
-import 'package:chattyevent_app_flutter/domain/entities/message/message_entity.dart';
 import 'package:dartz/dartz.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/groupchat/groupchat_message_repository.dart';
 import 'package:chattyevent_app_flutter/infastructure/datasources/remote/graphql.dart';
-import 'package:chattyevent_app_flutter/infastructure/models/message/message_model.dart';
 
 class GroupchatMessageRepositoryImpl implements GroupchatMessageRepository {
   final GraphQlDatasource graphQlDatasource;
@@ -19,7 +19,7 @@ class GroupchatMessageRepositoryImpl implements GroupchatMessageRepository {
   GroupchatMessageRepositoryImpl({required this.graphQlDatasource});
 
   @override
-  Future<Either<NotificationAlert, MessageEntity>>
+  Future<Either<NotificationAlert, GroupchatMessageEntity>>
       createGroupchatMessageViaApi({
     required CreateGroupchatMessageDto createGroupchatMessageDto,
   }) async {
@@ -63,15 +63,15 @@ class GroupchatMessageRepositoryImpl implements GroupchatMessageRepository {
           response: response,
         ));
       }
-      return Right(
-          MessageModel.fromJson(response.data!["createGroupchatMessage"]));
+      return Right(GroupchatMessageModel.fromJson(
+          response.data!["createGroupchatMessage"]));
     } catch (e) {
       return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
     }
   }
 
   @override
-  Future<Either<NotificationAlert, List<MessageEntity>>>
+  Future<Either<NotificationAlert, List<GroupchatMessageEntity>>>
       getGroupchatMessagesViaApi({
     required FindGroupchatMessagesFilter findGroupchatMessagesFilter,
     required LimitOffsetFilter limitOffsetFilter,
@@ -84,8 +84,8 @@ class GroupchatMessageRepositoryImpl implements GroupchatMessageRepository {
             _id
             message
             messageToReactTo
-            groupchatTo
             fileLink
+            groupchatTo
             createdBy
             createdAt
           }
@@ -104,9 +104,9 @@ class GroupchatMessageRepositoryImpl implements GroupchatMessageRepository {
         ));
       }
 
-      final List<MessageEntity> messages = [];
+      final List<GroupchatMessageEntity> messages = [];
       for (final message in response.data!["findGroupchatMessages"]) {
-        messages.add(MessageModel.fromJson(message));
+        messages.add(GroupchatMessageModel.fromJson(message));
       }
       return Right(messages);
     } catch (e) {
@@ -115,7 +115,7 @@ class GroupchatMessageRepositoryImpl implements GroupchatMessageRepository {
   }
 
   @override
-  Stream<Either<NotificationAlert, MessageEntity>>
+  Stream<Either<NotificationAlert, GroupchatMessageEntity>>
       getGroupchatMessagesRealtimeViaApi({
     required AddedGroupchatMessageFilter addedGroupchatMessageFilter,
   }) async* {
@@ -138,6 +138,7 @@ class GroupchatMessageRepositoryImpl implements GroupchatMessageRepository {
           "addedGroupchatMessageInput": addedGroupchatMessageFilter.toMap(),
         },
       );
+
       await for (var event in subscription) {
         if (event.hasException) {
           yield Left(FailureHelper.graphqlFailureToNotificationAlert(
@@ -146,7 +147,7 @@ class GroupchatMessageRepositoryImpl implements GroupchatMessageRepository {
           ));
         }
         if (event.data != null) {
-          final message = MessageModel.fromJson(
+          final message = GroupchatMessageModel.fromJson(
             event.data!['groupchatMessageAdded'],
           );
           yield Right(message);

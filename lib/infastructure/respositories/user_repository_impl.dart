@@ -40,6 +40,12 @@ class UserRepositoryImpl implements UserRepository {
               followedCount
               followRequestCount
             }
+            settings {
+              onAcceptFollowRequestStandardFollowData {
+                standardFollowedToPrivateEventPermission
+                standardFollowedToGroupchatPermission
+              }
+            }
             myUserRelationToOtherUser {
               _id
               createdAt
@@ -148,11 +154,46 @@ class UserRepositoryImpl implements UserRepository {
         mutation UpdateUser(\$updateUserInput: UpdateUserInput, \$updateProfileImage: Upload) {
           updateUser(updateUserInput: \$updateUserInput, updateProfileImage: \$updateProfileImage) {
             _id
-            firstname
             authId
+            birthdate
+            createdAt
+            firstname
             lastname
-            username
             profileImageLink
+            updatedAt
+            userRelationCounts {
+              followerCount
+              followedCount
+              followRequestCount
+            }
+            settings {
+              onAcceptFollowRequestStandardFollowData {
+                standardFollowedToPrivateEventPermission
+                standardFollowedToGroupchatPermission
+              }
+            }
+            myUserRelationToOtherUser {
+              _id
+              createdAt
+              updatedAt
+              statusOnRelatedUser
+              followData {
+                followedToPrivateEventPermission
+                followedToGroupchatPermission
+                followedUserAt
+              }
+            }
+            otherUserRelationToMyUser {
+              _id
+              createdAt
+              updatedAt
+              statusOnRelatedUser
+              followData {
+                followedToPrivateEventPermission
+                followedToGroupchatPermission
+                followedUserAt
+              }
+            }
           }
         }
         """,
@@ -214,12 +255,48 @@ class UserRepositoryImpl implements UserRepository {
         """
         mutation CreateUser(\$input: CreateUserInput!,\$profileImage: Upload) {
           createUser(createUserInput: \$input, profileImage: \$profileImage) {
-            _id
-            firstname
-            authId
-            lastname
             username
+            _id
+            authId
+            birthdate
+            createdAt
+            firstname
+            lastname
             profileImageLink
+            updatedAt
+            userRelationCounts {
+              followerCount
+              followedCount
+              followRequestCount
+            }
+            settings {
+              onAcceptFollowRequestStandardFollowData {
+                standardFollowedToPrivateEventPermission
+                standardFollowedToGroupchatPermission
+              }
+            }
+            myUserRelationToOtherUser {
+              _id
+              createdAt
+              updatedAt
+              statusOnRelatedUser
+              followData {
+                followedToPrivateEventPermission
+                followedToGroupchatPermission
+                followedUserAt
+              }
+            }
+            otherUserRelationToMyUser {
+              _id
+              createdAt
+              updatedAt
+              statusOnRelatedUser
+              followData {
+                followedToPrivateEventPermission
+                followedToGroupchatPermission
+                followedUserAt
+              }
+            }
           }
         }
         """,

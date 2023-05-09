@@ -40,7 +40,7 @@ class ProfileUserRelationsTabPage extends StatelessWidget {
                         return Hero(
                           tag: "${userId ?? state.user.id} username",
                           child: Text(
-                            state.user.username ?? "Profilseite",
+                            state.user.username ?? "",
                             style: Theme.of(context).textTheme.titleLarge,
                           ),
                         );

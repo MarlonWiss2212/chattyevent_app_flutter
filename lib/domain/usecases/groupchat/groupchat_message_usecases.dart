@@ -1,37 +1,37 @@
+import 'package:chattyevent_app_flutter/domain/entities/groupchat/groupchat_message.dart';
 import 'package:dartz/dartz.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:chattyevent_app_flutter/core/dto/groupchat/groupchat_message/create_groupchat_message_dto.dart';
 import 'package:chattyevent_app_flutter/core/filter/groupchat/groupchat_message/added_groupchat_message_filter.dart';
 import 'package:chattyevent_app_flutter/core/filter/groupchat/groupchat_message/find_groupchat_messages_filter.dart';
 import 'package:chattyevent_app_flutter/core/filter/limit_offset_filter.dart';
-import 'package:chattyevent_app_flutter/domain/entities/message/message_entity.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/groupchat/groupchat_message_repository.dart';
 
 class GroupchatMessageUseCases {
   final GroupchatMessageRepository groupchatMessageRepository;
   GroupchatMessageUseCases({required this.groupchatMessageRepository});
 
-  Future<Either<NotificationAlert, MessageEntity>>
+  Future<Either<NotificationAlert, GroupchatMessageEntity>>
       createGroupchatMessageViaApi({
     required CreateGroupchatMessageDto createGroupchatMessageDto,
   }) async {
-    return await groupchatMessageRepository.createGroupchatMessageViaApi(
+    return groupchatMessageRepository.createGroupchatMessageViaApi(
       createGroupchatMessageDto: createGroupchatMessageDto,
     );
   }
 
-  Future<Either<NotificationAlert, List<MessageEntity>>>
+  Future<Either<NotificationAlert, List<GroupchatMessageEntity>>>
       getGroupchatMessagesViaApi({
     required FindGroupchatMessagesFilter findGroupchatMessagesFilter,
     required LimitOffsetFilter limitOffsetFilter,
-  }) async {
-    return await groupchatMessageRepository.getGroupchatMessagesViaApi(
+  }) {
+    return groupchatMessageRepository.getGroupchatMessagesViaApi(
       findGroupchatMessagesFilter: findGroupchatMessagesFilter,
       limitOffsetFilter: limitOffsetFilter,
     );
   }
 
-  Stream<Either<NotificationAlert, MessageEntity>>
+  Stream<Either<NotificationAlert, GroupchatMessageEntity>>
       getGroupchatMessagesRealtimeViaApi({
     required AddedGroupchatMessageFilter addedGroupchatMessageFilter,
   }) {

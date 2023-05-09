@@ -44,7 +44,7 @@ class CurrentChatState {
     int? currentUserIndex,
     List<GroupchatLeftUserEntity>? leftUsers,
     List<PrivateEventEntity>? futureConnectedPrivateEvents,
-    List<MessageEntity>? messages,
+    List<GroupchatMessageEntity>? messages,
     bool? loadingPrivateEvents,
     bool? currentUserLeftChat,
     bool? loadingChat,

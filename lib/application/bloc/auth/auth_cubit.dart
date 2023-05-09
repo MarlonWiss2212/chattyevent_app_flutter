@@ -1,11 +1,9 @@
 import 'dart:async';
-
-import 'package:bloc/bloc.dart';
+import 'package:chattyevent_app_flutter/core/dto/user/update_user_dto.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graphql/client.dart';
-import 'package:meta/meta.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:chattyevent_app_flutter/core/filter/user/find_one_user_filter.dart';
 import 'package:chattyevent_app_flutter/core/injection.dart';
@@ -178,6 +176,28 @@ class AuthCubit extends Cubit<AuthState> {
       currentUser: UserEntity(authId: "", id: ""),
       status: AuthStateStatus.logout,
     ));
+  }
+
+  Future updateUser({
+    required UpdateUserDto updateUserDto,
+  }) async {
+    final userOrFailure = await userUseCases.updateUserViaApi(
+      updateUserDto: updateUserDto,
+    );
+
+    userOrFailure.fold(
+      (alert) {
+        notificationCubit.newAlert(notificationAlert: alert);
+        emitState(userException: alert.exception);
+      },
+      (user) {
+        final newUser = UserEntity.merge(
+          newEntity: user,
+          oldEntity: state.currentUser,
+        );
+        emitState(currentUser: newUser);
+      },
+    );
   }
 
   Future deleteUser() async {

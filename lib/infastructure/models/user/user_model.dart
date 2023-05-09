@@ -1,6 +1,8 @@
 import 'package:chattyevent_app_flutter/domain/entities/user-relation/user_relation_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/user-relation/user_relations_count_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/user/user_entity.dart';
+import 'package:chattyevent_app_flutter/domain/entities/user/user_settings_entity.dart';
+import 'package:chattyevent_app_flutter/infastructure/models/user/user_settings_model.dart';
 import 'package:chattyevent_app_flutter/infastructure/models/user_relation/user_relation_count_model.dart';
 import 'package:chattyevent_app_flutter/infastructure/models/user_relation/user_relation_model.dart';
 
@@ -16,6 +18,7 @@ class UserModel extends UserEntity {
     UserRelationsCountEntity? userRelationCounts,
     UserRelationEntity? myUserRelationToOtherUser,
     UserRelationEntity? otherUserRelationToMyUser,
+    UserSettingsEntity? settings,
     DateTime? createdAt,
     DateTime? updatedAt,
   }) : super(
@@ -26,6 +29,7 @@ class UserModel extends UserEntity {
           lastname: lastname,
           profileImageLink: profileImageLink,
           birthdate: birthdate,
+          settings: settings,
           userRelationCounts: userRelationCounts,
           myUserRelationToOtherUser: myUserRelationToOtherUser,
           otherUserRelationToMyUser: otherUserRelationToMyUser,
@@ -50,6 +54,11 @@ class UserModel extends UserEntity {
       firstname: json["fistname"],
       lastname: json["lastname"],
       birthdate: json["birthdate"],
+      settings: json['settings'] != null
+          ? UserSettingsModel.fromJson(
+              json['settings'],
+            )
+          : null,
       userRelationCounts: json['userRelationCounts'] != null
           ? UserRelationsCountModel.fromJson(
               json['userRelationCounts'],

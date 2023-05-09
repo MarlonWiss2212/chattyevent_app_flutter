@@ -51,7 +51,11 @@ class SettingsPage extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                   trailing: const Icon(Icons.arrow_right),
-                  onTap: () {},
+                  onTap: () {
+                    AutoRouter.of(context).push(
+                      const SettingsPrivacyPageRoute(),
+                    );
+                  },
                 ),
                 ListTile(
                   leading: const Icon(Icons.password),

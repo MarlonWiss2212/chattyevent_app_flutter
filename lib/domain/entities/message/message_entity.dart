@@ -1,12 +1,8 @@
-import 'package:chattyevent_app_flutter/domain/entities/message/message_emoji_reaction_entity.dart';
-
 class MessageEntity {
   final String id;
   final String? message;
   final String? fileLink;
-  final String? groupchatTo;
   final String? messageToReactTo;
-  final List<MessageEmojiReactionEntity>? emojiReactions;
   final String? createdBy;
   final DateTime? updatedAt;
   final DateTime createdAt;
@@ -16,9 +12,7 @@ class MessageEntity {
     required this.createdAt,
     this.message,
     this.fileLink,
-    this.groupchatTo,
     this.messageToReactTo,
-    this.emojiReactions,
     this.createdBy,
     this.updatedAt,
   });
@@ -31,10 +25,8 @@ class MessageEntity {
       id: newEntity.id,
       message: newEntity.message ?? oldEntity.message,
       fileLink: newEntity.fileLink ?? oldEntity.fileLink,
-      groupchatTo: newEntity.groupchatTo ?? oldEntity.groupchatTo,
       messageToReactTo:
           newEntity.messageToReactTo ?? oldEntity.messageToReactTo,
-      emojiReactions: newEntity.emojiReactions ?? oldEntity.emojiReactions,
       createdBy: newEntity.createdBy ?? oldEntity.createdBy,
       createdAt: newEntity.createdAt,
       updatedAt: newEntity.updatedAt ?? oldEntity.updatedAt,

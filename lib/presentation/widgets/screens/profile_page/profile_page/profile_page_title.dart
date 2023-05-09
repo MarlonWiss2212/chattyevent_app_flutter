@@ -23,7 +23,7 @@ class ProfilePageTitle extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.only(right: 8.0),
                 child: EditInputTextField(
-                  text: state.user.username ?? "Profilseite",
+                  text: state.user.username ?? "",
                   textStyle: TextStyle(
                     color: Theme.of(context).colorScheme.onBackground,
                   ),

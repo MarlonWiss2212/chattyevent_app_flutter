@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
+import 'package:chattyevent_app_flutter/domain/entities/groupchat/groupchat_message.dart';
 import 'package:dartz/dartz.dart';
 import 'package:meta/meta.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
@@ -53,7 +54,7 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
         groupchatMessageUseCases.getGroupchatMessagesRealtimeViaApi(
       addedGroupchatMessageFilter: AddedGroupchatMessageFilter(
         groupchatTo: state.currentChat.id,
-        returnMyAddedMessageToo: true, // TODO change lter
+        returnMyAddedMessageToo: true, // TODO change this
       ),
     );
 
@@ -371,7 +372,8 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
       oldState: state,
       loadingMessages: true,
     ));
-    final Either<NotificationAlert, List<MessageEntity>> messagesOrFailure =
+    final Either<NotificationAlert, List<GroupchatMessageEntity>>
+        messagesOrFailure =
         await groupchatMessageUseCases.getGroupchatMessagesViaApi(
       findGroupchatMessagesFilter: FindGroupchatMessagesFilter(
         groupchatTo: state.currentChat.id,
@@ -394,7 +396,7 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
         );
       },
       (messages) {
-        List<MessageEntity> newMessages = [];
+        List<GroupchatMessageEntity> newMessages = [];
         if (reload == false) {
           newMessages = List.from(state.messages)..addAll(messages);
         } else {
@@ -411,7 +413,7 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
     );
   }
 
-  MessageEntity addMessage({required MessageEntity message}) {
+  GroupchatMessageEntity addMessage({required GroupchatMessageEntity message}) {
     emit(CurrentChatState.merge(
       messages: List.from(state.messages)..add(message),
       oldState: state,

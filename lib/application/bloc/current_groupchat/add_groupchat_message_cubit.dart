@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
+import 'package:chattyevent_app_flutter/domain/entities/groupchat/groupchat_message.dart';
 import 'package:dartz/dartz.dart';
 import 'package:meta/meta.dart';
 import 'package:chattyevent_app_flutter/application/bloc/current_groupchat/current_chat_cubit.dart';
@@ -35,7 +36,7 @@ class AddGroupchatMessageCubit extends Cubit<AddGroupchatMessageState> {
       );
     }
 
-    final Either<NotificationAlert, MessageEntity> messageOrFailure =
+    final Either<NotificationAlert, GroupchatMessageEntity> messageOrFailure =
         await groupchatMessageUseCases.createGroupchatMessageViaApi(
       createGroupchatMessageDto: CreateGroupchatMessageDto(
         message: state.message!,
