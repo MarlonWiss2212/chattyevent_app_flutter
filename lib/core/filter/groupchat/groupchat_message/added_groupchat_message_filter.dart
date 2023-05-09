@@ -10,7 +10,7 @@ class AddedGroupchatMessageFilter extends FindOneGroupchatToFilter {
 
   @override
   Map<dynamic, dynamic> toMap() {
-    final Map<dynamic, dynamic> map = super.toMap();
+    Map<dynamic, dynamic> map = super.toMap();
     if (returnMyAddedMessageToo != null) {
       map.addAll({"returnMyAddedMessageToo": returnMyAddedMessageToo});
     }

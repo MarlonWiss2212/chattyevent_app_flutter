@@ -48,32 +48,29 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
     required this.chatCubit,
     required this.notificationCubit,
     required this.groupchatMessageUseCases,
-  });
-
-  void listenToMessages() {
+  }) {
     final subscription =
         groupchatMessageUseCases.getGroupchatMessagesRealtimeViaApi(
       addedGroupchatMessageFilter: AddedGroupchatMessageFilter(
         groupchatTo: state.currentChat.id,
+        returnMyAddedMessageToo: true, // TODO change lter
       ),
     );
 
-    _subscription = subscription.listen(
-      (event) {
-        event.fold(
-          (error) => notificationCubit.newAlert(
-            notificationAlert: NotificationAlert(
-              title: "Nachrichten error",
-              message:
-                  "Fehler beim herstellen einer Verbindung um live nachrichten zu erhalten",
-            ),
+    _subscription = subscription.listen((event) {
+      event.fold(
+        (error) => notificationCubit.newAlert(
+          notificationAlert: NotificationAlert(
+            title: "Nachrichten error",
+            message:
+                "Fehler beim herstellen einer Verbindung um live nachrichten zu erhalten",
           ),
-          (message) => addMessage(
-            message: message,
-          ),
-        );
-      },
-    );
+        ),
+        (message) => addMessage(
+          message: message,
+        ),
+      );
+    });
   }
 
   @override
@@ -369,7 +366,7 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
     );
   }
 
-  Future loadMessages() async {
+  Future loadMessages({bool reload = false}) async {
     emit(CurrentChatState.merge(
       oldState: state,
       loadingMessages: true,
@@ -380,8 +377,12 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
         groupchatTo: state.currentChat.id,
       ),
       limitOffsetFilter: LimitOffsetFilter(
-        limit: 20,
-        offset: state.messages.length,
+        limit: reload
+            ? state.messages.length > 20
+                ? state.messages.length
+                : 20
+            : 20,
+        offset: reload ? 0 : state.messages.length,
       ),
     );
 
@@ -393,8 +394,15 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
         );
       },
       (messages) {
+        List<MessageEntity> newMessages = [];
+        if (reload == false) {
+          newMessages = List.from(state.messages)..addAll(messages);
+        } else {
+          newMessages = messages;
+        }
+
         emit(CurrentChatState.merge(
-          messages: List.from(state.messages)..addAll(messages),
+          messages: newMessages,
           loadingMessages: false,
           oldState: state,
         ));

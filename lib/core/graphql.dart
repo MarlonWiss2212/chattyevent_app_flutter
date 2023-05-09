@@ -12,6 +12,7 @@ GraphQLClient getGraphQlClient({
       "authorization": "Bearer $token"
     },
   );
+
   final WebSocketLink webSocketLink = WebSocketLink(
     "wss://${dotenv.get("API_BASE_URL")}/graphql",
     subProtocol: GraphQLProtocol.graphqlWs,

@@ -22,8 +22,7 @@ class ChatPage extends StatefulWidget {
 class _ChatPageState extends State<ChatPage> {
   @override
   void initState() {
-    BlocProvider.of<CurrentChatCubit>(context).loadMessages();
-    BlocProvider.of<CurrentChatCubit>(context).listenToMessages();
+    BlocProvider.of<CurrentChatCubit>(context).loadMessages(reload: true);
     super.initState();
   }
 

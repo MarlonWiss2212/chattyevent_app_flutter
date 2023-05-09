@@ -69,6 +69,7 @@ dependencies:
   firebase_auth: ^4.2.2
   firebase_core: ^2.7.0
   collection: ^1.17.0
+  web_socket_channel: ^2.2.0
 
 dev_dependencies:
   flutter_test:

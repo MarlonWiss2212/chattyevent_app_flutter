@@ -138,16 +138,17 @@ class GroupchatMessageRepositoryImpl implements GroupchatMessageRepository {
           "addedGroupchatMessageInput": addedGroupchatMessageFilter.toMap(),
         },
       );
-
       await for (var event in subscription) {
         if (event.hasException) {
           yield Left(FailureHelper.graphqlFailureToNotificationAlert(
-            title: "Nachricht Fehler",
+            title: "Nachrichten Fehler",
             response: event,
           ));
         }
         if (event.data != null) {
-          final message = MessageModel.fromJson(event.data!['messageAdded']);
+          final message = MessageModel.fromJson(
+            event.data!['groupchatMessageAdded'],
+          );
           yield Right(message);
         }
       }
