@@ -46,7 +46,8 @@ class LocationUseCases {
     return Right(location);
   }
 
-  Future<Either<String, Unit>> openMaps({required String query}) async {
+  Future<Either<NotificationAlert, Unit>> openMaps(
+      {required String query}) async {
     return await locationRepository.openMaps(query: query);
   }
 }

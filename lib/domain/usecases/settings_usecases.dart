@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
-import 'package:chattyevent_app_flutter/domain/repositories/device/settings_repository.dart';
+import 'package:chattyevent_app_flutter/domain/repositories/settings_repository.dart';
 
 class SettingsUseCases {
   final SettingsRepository settingsRepository;
@@ -22,5 +22,13 @@ class SettingsUseCases {
 
   Future<Either<NotificationAlert, bool>> getDarkModeFromStorage() {
     return settingsRepository.getDarkModeFromStorage();
+  }
+
+  Future<Either<NotificationAlert, Unit>> openDatasecurityPage() {
+    return settingsRepository.openDatasecurityPage();
+  }
+
+  Future<Either<NotificationAlert, Unit>> openTermsOfUsePage() {
+    return settingsRepository.openTermsOfUsePage();
   }
 }

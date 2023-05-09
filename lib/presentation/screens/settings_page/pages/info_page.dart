@@ -1,6 +1,9 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:chattyevent_app_flutter/core/injection.dart';
+import 'package:chattyevent_app_flutter/domain/usecases/settings_usecases.dart';
 import 'package:flutter/material.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class SettingsInfoPage extends StatefulWidget {
   const SettingsInfoPage({super.key});
@@ -10,6 +13,7 @@ class SettingsInfoPage extends StatefulWidget {
 }
 
 class _SettingsInfoPageState extends State<SettingsInfoPage> {
+  final SettingsUseCases settingsUseCases = serviceLocator();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,10 +44,8 @@ class _SettingsInfoPageState extends State<SettingsInfoPage> {
                     overflow: TextOverflow.ellipsis,
                   ),
                   trailing: const Icon(Icons.arrow_right),
-                  onTap: () {
-                    // AutoRouter.of(context).push(
-                    // const ThemeModePageRoute(),
-                    // );
+                  onTap: () async {
+                    await settingsUseCases.openDatasecurityPage();
                   },
                 ),
                 ListTile(
@@ -54,10 +56,8 @@ class _SettingsInfoPageState extends State<SettingsInfoPage> {
                     overflow: TextOverflow.ellipsis,
                   ),
                   trailing: const Icon(Icons.arrow_right),
-                  onTap: () {
-                    //AutoRouter.of(context).push(
-                    //const UpdatePasswordPageRoute(),
-                    //);
+                  onTap: () async {
+                    await settingsUseCases.openTermsOfUsePage();
                   },
                 ),
                 ListTile(
@@ -74,7 +74,7 @@ class _SettingsInfoPageState extends State<SettingsInfoPage> {
                     );
                   },
                 ),
-                ListTile(
+                /*ListTile(
                   leading: const Icon(Icons.text_snippet),
                   title: Text(
                     "Recht auf Einsicht",
@@ -87,7 +87,7 @@ class _SettingsInfoPageState extends State<SettingsInfoPage> {
                       const RightOnInsightPageRoute(),
                     );
                   },
-                ),
+                ),*/
                 ListTile(
                   leading: const Icon(Icons.delete),
                   title: Text(

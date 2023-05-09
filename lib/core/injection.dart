@@ -1,5 +1,6 @@
 import 'package:chattyevent_app_flutter/domain/repositories/imprint_repository.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/imprint_usecases.dart';
+import 'package:chattyevent_app_flutter/infastructure/datasources/local/weblink.dart';
 import 'package:chattyevent_app_flutter/infastructure/datasources/remote/http.dart';
 import 'package:chattyevent_app_flutter/infastructure/respositories/imprint_repository_impl.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -12,7 +13,7 @@ import 'package:chattyevent_app_flutter/domain/repositories/bought_amount_reposi
 import 'package:chattyevent_app_flutter/domain/repositories/device/image_picker_repository.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/device/location_repository.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/device/notification_repository.dart';
-import 'package:chattyevent_app_flutter/domain/repositories/device/settings_repository.dart';
+import 'package:chattyevent_app_flutter/domain/repositories/settings_repository.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/groupchat/groupchat_message_repository.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/groupchat/groupchat_repository.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/private_event_repository.dart';
@@ -119,13 +120,18 @@ Future init() async {
     () => ImprintRepositoryImpl(httpDatasource: serviceLocator()),
   );
   serviceLocator.registerLazySingleton<LocationRepository>(
-    () => LocationRepositoryImpl(locationDatasource: serviceLocator()),
+    () => LocationRepositoryImpl(
+      locationDatasource: serviceLocator(),
+      weblinkDatasource: serviceLocator(),
+    ),
   );
   serviceLocator.registerLazySingleton<ImagePickerRepository>(
     () => ImagePickerRepositoryImpl(imagePickerDatasource: serviceLocator()),
   );
   serviceLocator.registerLazySingleton<SettingsRepository>(
-    () => SettingsRepositoryImpl(sharedPrefrencesDatasource: serviceLocator()),
+    () => SettingsRepositoryImpl(
+        sharedPrefrencesDatasource: serviceLocator(),
+        weblinkDatasource: serviceLocator()),
   );
   serviceLocator.registerLazySingleton<AuthRepository>(
     () => AuthRepositoryImpl(auth: serviceLocator()),
@@ -177,6 +183,9 @@ Future init() async {
   );
   serviceLocator.registerLazySingleton<HttpDatasource>(
     () => HttpDatasourceImpl(),
+  );
+  serviceLocator.registerLazySingleton<WeblinkDatasource>(
+    () => WeblinkDatasourceImpl(),
   );
   serviceLocator.registerFactoryParam<GraphQlDatasource, AuthState?, void>(
     (param1, param2) {

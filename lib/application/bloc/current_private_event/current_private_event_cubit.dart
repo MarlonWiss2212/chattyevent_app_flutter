@@ -354,19 +354,14 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
   }
 
   Future openMaps() async {
-    final Either<String, Unit> openedOrFailure =
+    final Either<NotificationAlert, Unit> openedOrFailure =
         await locationUseCases.openMaps(
       query:
           "${state.privateEvent.eventLocation!.street} ${state.privateEvent.eventLocation!.housenumber}, ${state.privateEvent.eventLocation!.city}, ${state.privateEvent.eventLocation!.zip}, ${state.privateEvent.eventLocation!.country}",
     );
 
     openedOrFailure.fold(
-      (errorMsg) => notificationCubit.newAlert(
-        notificationAlert: NotificationAlert(
-          title: "Google Maps Fehler",
-          message: errorMsg,
-        ),
-      ),
+      (alert) => notificationCubit.newAlert(notificationAlert: alert),
       (_) => null,
     );
   }
