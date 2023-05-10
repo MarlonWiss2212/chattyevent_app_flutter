@@ -121,13 +121,13 @@ import 'package:chattyevent_app_flutter/presentation/screens/reset_password_page
 import 'package:chattyevent_app_flutter/presentation/screens/settings_page/pages/info_page.dart'
     as _i9;
 import 'package:chattyevent_app_flutter/presentation/screens/settings_page/pages/info_pages/imprint_page.dart'
-    as _i13;
+    as _i12;
 import 'package:chattyevent_app_flutter/presentation/screens/settings_page/pages/info_pages/right_on_deletion_page.dart'
     as _i11;
 import 'package:chattyevent_app_flutter/presentation/screens/settings_page/pages/info_pages/right_on_insight.dart'
     as _i10;
 import 'package:chattyevent_app_flutter/presentation/screens/settings_page/pages/privacy_page.dart'
-    as _i12;
+    as _i13;
 import 'package:chattyevent_app_flutter/presentation/screens/settings_page/pages/privacy_pages/on_accept_follow_request_standard_follow_data_page.dart'
     as _i14;
 import 'package:chattyevent_app_flutter/presentation/screens/settings_page/pages/theme_mode_page.dart'
@@ -234,16 +234,16 @@ class AppRouter extends _i63.RootStackRouter {
         child: const _i11.RightOnDeletionPage(),
       );
     },
-    SettingsPrivacyPageRoute.name: (routeData) {
-      return _i63.AdaptivePage<dynamic>(
-        routeData: routeData,
-        child: const _i12.SettingsPrivacyPage(),
-      );
-    },
     ImprintPageRoute.name: (routeData) {
       return _i63.AdaptivePage<dynamic>(
         routeData: routeData,
-        child: const _i13.ImprintPage(),
+        child: const _i12.ImprintPage(),
+      );
+    },
+    SettingsPrivacyPageRoute.name: (routeData) {
+      return _i63.AdaptivePage<dynamic>(
+        routeData: routeData,
+        child: const _i13.SettingsPrivacyPage(),
       );
     },
     OnAcceptFollowRequestStandardFollowDataPageRoute.name: (routeData) {
@@ -696,12 +696,12 @@ class AppRouter extends _i63.RootStackRouter {
           guards: [authGuard],
         ),
         _i63.RouteConfig(
-          SettingsPrivacyPageRoute.name,
+          ImprintPageRoute.name,
           path: '/settings/info/imprint',
           guards: [authGuard],
         ),
         _i63.RouteConfig(
-          ImprintPageRoute.name,
+          SettingsPrivacyPageRoute.name,
           path: '/settings/privacy',
           guards: [authGuard],
         ),
@@ -1294,27 +1294,27 @@ class RightOnDeletionPageRoute extends _i63.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i12.SettingsPrivacyPage]
-class SettingsPrivacyPageRoute extends _i63.PageRouteInfo<void> {
-  const SettingsPrivacyPageRoute()
-      : super(
-          SettingsPrivacyPageRoute.name,
-          path: '/settings/info/imprint',
-        );
-
-  static const String name = 'SettingsPrivacyPageRoute';
-}
-
-/// generated route for
-/// [_i13.ImprintPage]
+/// [_i12.ImprintPage]
 class ImprintPageRoute extends _i63.PageRouteInfo<void> {
   const ImprintPageRoute()
       : super(
           ImprintPageRoute.name,
-          path: '/settings/privacy',
+          path: '/settings/info/imprint',
         );
 
   static const String name = 'ImprintPageRoute';
+}
+
+/// generated route for
+/// [_i13.SettingsPrivacyPage]
+class SettingsPrivacyPageRoute extends _i63.PageRouteInfo<void> {
+  const SettingsPrivacyPageRoute()
+      : super(
+          SettingsPrivacyPageRoute.name,
+          path: '/settings/privacy',
+        );
+
+  static const String name = 'SettingsPrivacyPageRoute';
 }
 
 /// generated route for

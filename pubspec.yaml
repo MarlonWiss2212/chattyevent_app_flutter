@@ -48,7 +48,7 @@ dependencies:
   dev: ^1.0.0
   flutter_dotenv: ^5.0.2
   grouped_list: ^5.1.2
-  intl: ^0.18.0
+  intl: ^0.17.0
   flutter_platform_widgets: ^2.2.6
   onesignal_flutter: ^3.5.0
   permission_handler: ^10.2.0
@@ -67,7 +67,7 @@ dependencies:
   smooth_page_indicator: ^1.0.1
   flutter_slidable: ^2.0.0
   firebase_auth: ^4.2.2
-  firebase_core: ^2.7.0
+  firebase_core: ^2.7.1
   collection: ^1.17.0
   web_socket_channel: ^2.2.0
 

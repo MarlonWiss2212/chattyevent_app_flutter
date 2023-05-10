@@ -439,12 +439,18 @@ const settingRoutes = [
       guards: [AuthGuard],
       path: '/settings/info/right-on-deletion'),
   AutoRoute(
-      page: SettingsPrivacyPage,
-      guards: [AuthGuard],
-      path: '/settings/info/imprint'),
-  AutoRoute(page: ImprintPage, guards: [AuthGuard], path: '/settings/privacy'),
+    page: ImprintPage,
+    guards: [AuthGuard],
+    path: '/settings/info/imprint',
+  ),
   AutoRoute(
-      page: OnAcceptFollowRequestStandardFollowDataPage,
-      guards: [AuthGuard],
-      path: '/settings/privacy/on-accept-follow-request-standard-follow-data'),
+    page: SettingsPrivacyPage,
+    guards: [AuthGuard],
+    path: '/settings/privacy',
+  ),
+  AutoRoute(
+    page: OnAcceptFollowRequestStandardFollowDataPage,
+    guards: [AuthGuard],
+    path: '/settings/privacy/on-accept-follow-request-standard-follow-data',
+  ),
 ];

@@ -31,10 +31,10 @@
               "client_type": 3
             },
             {
-              "client_id": "386131382515-kq3lnmkj47a2gqfcsasnkhvodg1lcvie.apps.googleusercontent.com",
+              "client_id": "386131382515-0oes6c0b7ketdl3kl9mlh4rrp6s7fhfa.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.socialMediaAppFlutter"
+                "bundle_id": "com.chattyevent.chattyevent"
               }
             }
           ]
