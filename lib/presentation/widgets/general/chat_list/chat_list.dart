@@ -14,7 +14,7 @@ class ChatList extends StatefulWidget {
 }
 
 class _ChatListState extends State<ChatList> {
-  final int _kAdIndex = 4;
+  final int _kAdIndex = 1;
 
   BannerAd? _ad;
 

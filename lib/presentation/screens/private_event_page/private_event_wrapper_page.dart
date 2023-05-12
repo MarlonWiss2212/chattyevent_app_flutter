@@ -68,13 +68,8 @@ class PrivateEventWrapperPage extends StatelessWidget {
               BlocListener<CurrentPrivateEventCubit, CurrentPrivateEventState>(
                 listener: (context, state) async {
                   if (state.status == CurrentPrivateEventStateStatus.deleted) {
-                    AutoRouter.of(context).root.replace(
-                          const HomePageRoute(
-                            children: [
-                              HomeEventPageRoute(),
-                            ],
-                          ),
-                        );
+                    AutoRouter.of(context).popUntilRoot();
+                    AutoRouter.of(context).pop();
                   }
                 },
               ),

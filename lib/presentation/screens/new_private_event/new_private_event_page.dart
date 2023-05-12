@@ -74,66 +74,54 @@ class NewPrivateEventPage extends StatelessWidget {
               appBar: AppBar(
                 title: const Text('Neues Private Event'),
               ),
-              body: BlocBuilder<AddPrivateEventCubit, AddPrivateEventState>(
-                buildWhen: (p, c) => p.isGroupchatEvent != c.isGroupchatEvent,
-                builder: (context, state) {
-                  return AutoTabsRouter.pageView(
-                    routes: [
-                      const NewPrivateEventDetailsTabRoute(),
-                      const NewPrivateEventTypeTabRoute(),
-                      if (state.isGroupchatEvent == false) ...{
-                        const NewPrivateEventSearchUserTabRoute(),
-                      } else ...{
-                        const NewPrivateEventSearchGroupchatTabRoute(),
-                      },
-                      const NewPrivateEventDateTabRoute(),
-                      const NewPrivateEventLocationTabRoute(),
+              body: AutoTabsRouter.pageView(
+                routes: const [
+                  NewPrivateEventDetailsTabRoute(),
+                  NewPrivateEventTypeTabRoute(),
+                  NewPrivateEventSearchTabRoute(),
+                  NewPrivateEventDateTabRoute(),
+                  NewPrivateEventLocationTabRoute(),
+                ],
+                builder: (context, child, pageController) {
+                  return Column(
+                    children: [
+                      BlocBuilder<AddPrivateEventCubit, AddPrivateEventState>(
+                        builder: (context, state) {
+                          if (state.status ==
+                              AddPrivateEventStateStatus.loading) {
+                            return const LinearProgressIndicator();
+                          }
+                          return Container();
+                        },
+                      ),
+                      Expanded(child: child),
+                      const SizedBox(height: 8),
+                      SmoothPageIndicator(
+                        controller: pageController,
+                        count: 5,
+                        onDotClicked: (index) {
+                          pageController.jumpToPage(index);
+                        },
+                        effect: WormEffect(
+                          activeDotColor: Theme.of(context).colorScheme.primary,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: SizedBox(
+                          width: double.infinity,
+                          child: Button(
+                            onTap: () {
+                              BlocProvider.of<AddPrivateEventCubit>(context)
+                                  .createPrivateEventViaApi();
+                            },
+                            text: "Speichern",
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
                     ],
-                    builder: (context, child, pageController) {
-                      return Column(
-                        children: [
-                          BlocBuilder<AddPrivateEventCubit,
-                              AddPrivateEventState>(
-                            builder: (context, state) {
-                              if (state.status ==
-                                  AddPrivateEventStateStatus.loading) {
-                                return const LinearProgressIndicator();
-                              }
-                              return Container();
-                            },
-                          ),
-                          Expanded(child: child),
-                          const SizedBox(height: 8),
-                          SmoothPageIndicator(
-                            controller: pageController,
-                            count: 5,
-                            onDotClicked: (index) {
-                              pageController.jumpToPage(index);
-                            },
-                            effect: WormEffect(
-                              activeDotColor:
-                                  Theme.of(context).colorScheme.primary,
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 8.0),
-                            child: SizedBox(
-                              width: double.infinity,
-                              child: Button(
-                                onTap: () {
-                                  BlocProvider.of<AddPrivateEventCubit>(context)
-                                      .createPrivateEventViaApi();
-                                },
-                                text: "Speichern",
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                        ],
-                      );
-                    },
                   );
                 },
               ),

@@ -41,9 +41,7 @@ class _ChatAddUserPageState extends State<ChatAddUserPage> {
               return const SizedBox();
             },
           ),
-          const Expanded(
-            child: AddUserGroupchatListWithSearchbar(),
-          ),
+          const Expanded(child: AddUserGroupchatListWithSearchbar()),
         ],
       ),
     );

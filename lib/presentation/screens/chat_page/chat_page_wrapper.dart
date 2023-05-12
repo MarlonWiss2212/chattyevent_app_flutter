@@ -62,7 +62,8 @@ class ChatPageWrapper extends StatelessWidget {
               BlocListener<CurrentChatCubit, CurrentChatState>(
                 listener: (context, state) async {
                   if (state.currentUserLeftChat == true) {
-                    AutoRouter.of(context).root.replace(const HomePageRoute());
+                    AutoRouter.of(context).popUntilRoot();
+                    AutoRouter.of(context).pop();
                   }
                 },
               ),

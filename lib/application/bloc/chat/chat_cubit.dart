@@ -26,11 +26,11 @@ class ChatCubit extends Cubit<ChatState> {
     if (foundIndex != -1) {
       List<CurrentChatState> newChatStates = state.chatStates;
       newChatStates[foundIndex] = chatState;
-      emit(ChatState(chatStates: newChatStates));
+      emit(ChatState.merge(chatStates: newChatStates));
       return newChatStates[foundIndex];
     } else {
       emit(
-        ChatState(
+        ChatState.merge(
           chatStates: List.from(state.chatStates)..add(chatState),
         ),
       );
@@ -56,7 +56,7 @@ class ChatCubit extends Cubit<ChatState> {
     newChatStates.removeWhere(
       (element) => element.currentChat.id == groupchatId,
     );
-    emit(ChatState(chatStates: newChatStates));
+    emit(ChatState.merge(chatStates: newChatStates));
   }
 
   Future getChatsViaApi() async {

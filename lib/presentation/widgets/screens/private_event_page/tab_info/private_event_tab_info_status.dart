@@ -96,7 +96,11 @@ class _PrivateEventTabInfoStatusState extends State<PrivateEventTabInfoStatus> {
                         ),
                       ),
                       Text(
-                        state.privateEvent.status ?? "",
+                        state.privateEvent.status == "TAKES_PLACE"
+                            ? "findes statt"
+                            : state.privateEvent.status == "CANCELLED"
+                                ? "abgesagt"
+                                : "nicht entschieden",
                       )
                     ],
                   ),

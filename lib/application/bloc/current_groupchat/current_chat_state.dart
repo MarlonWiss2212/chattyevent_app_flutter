@@ -53,6 +53,17 @@ class CurrentChatState {
     final List<MessageEntity> allMessages = messages ?? oldState.messages;
     allMessages.sort((a, b) => b.createdAt.compareTo(a.createdAt));
 
+    GroupchatEntity newChat = currentChat ?? oldState.currentChat;
+    allMessages.isNotEmpty
+        ? newChat = GroupchatEntity.merge(
+            newEntity: GroupchatEntity(
+              id: newChat.id,
+              latestMessage: allMessages.first,
+            ),
+            oldEntity: newChat,
+          )
+        : null;
+
     return CurrentChatState(
       messages: allMessages,
       currentUserIndex: currentUserIndex ?? oldState.currentUserIndex,
@@ -62,7 +73,7 @@ class CurrentChatState {
       futureConnectedPrivateEvents:
           futureConnectedPrivateEvents ?? oldState.futureConnectedPrivateEvents,
       loadingMessages: loadingMessages ?? oldState.loadingMessages,
-      currentChat: currentChat ?? oldState.currentChat,
+      currentChat: newChat,
       loadingChat: loadingChat ?? oldState.loadingChat,
       users: users ?? oldState.users,
       leftUsers: leftUsers ?? oldState.leftUsers,

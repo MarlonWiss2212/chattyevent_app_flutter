@@ -28,6 +28,7 @@ class GroupchatEntity {
     return GroupchatEntity(
       id: newEntity.id,
       title: newEntity.title ?? oldEntity.title,
+      latestMessage: newEntity.latestMessage ?? oldEntity.latestMessage,
       profileImageLink:
           newEntity.profileImageLink ?? oldEntity.profileImageLink,
       description: newEntity.description ?? oldEntity.description,

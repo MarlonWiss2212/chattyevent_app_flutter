@@ -1,6 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:chattyevent_app_flutter/presentation/router/auth_guard.dart';
-import 'package:chattyevent_app_flutter/presentation/router/auth_guard_create_user_page.dart';
+import 'package:chattyevent_app_flutter/presentation/router/auth_pages_guard.dart';
+import 'package:chattyevent_app_flutter/presentation/router/create_user_page_guard.dart';
+import 'package:chattyevent_app_flutter/presentation/router/verify_email_page_guard.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/chat_page/chat_change_chat_username_page.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/chat_page/chat_future_private_events_page.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/chat_page/chat_info_page.dart';
@@ -23,8 +25,7 @@ import 'package:chattyevent_app_flutter/presentation/screens/new_groupchat/new_g
 import 'package:chattyevent_app_flutter/presentation/screens/new_private_event/pages/new_private_event_date_tab.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/new_private_event/pages/new_private_event_details_tab.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/new_private_event/pages/new_private_event_location_tab.dart';
-import 'package:chattyevent_app_flutter/presentation/screens/new_private_event/pages/new_private_event_search_groupchat_tab.dart';
-import 'package:chattyevent_app_flutter/presentation/screens/new_private_event/pages/new_private_event_search_user_tab.dart';
+import 'package:chattyevent_app_flutter/presentation/screens/new_private_event/pages/new_private_event_search_tab.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/new_private_event/pages/new_private_event_type_tab.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/past_events_page/past_events_page.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/private_event_page/private_event_create_shopping_list_item_page.dart';
@@ -66,14 +67,32 @@ import 'package:chattyevent_app_flutter/presentation/screens/shopping_list_page/
 
 @AdaptiveAutoRouter(
   routes: <AutoRoute>[
-    AutoRoute(page: LoginPage, initial: false),
-    AutoRoute(page: VerifyEmailPage, initial: false),
-    AutoRoute(page: ResetPasswordPage, initial: false),
-    AutoRoute(page: RegisterPage, initial: false),
     AutoRoute(
-        page: CreateUserPage,
-        initial: false,
-        guards: [AuthGuardCreateUserPage]),
+      page: LoginPage,
+      initial: false,
+      guards: [AuthPagesGuard],
+    ),
+    AutoRoute(
+      page: ResetPasswordPage,
+      initial: false,
+      guards: [AuthPagesGuard],
+    ),
+    AutoRoute(
+      page: RegisterPage,
+      initial: false,
+      guards: [AuthPagesGuard],
+    ),
+    AutoRoute(
+      page: VerifyEmailPage,
+      initial: false,
+      guards: [VerifyEmailPageGuard],
+    ),
+
+    AutoRoute(
+      page: CreateUserPage,
+      initial: false,
+      guards: [CreateUserPageGuard],
+    ),
 
     ...settingRoutes,
 
@@ -168,15 +187,10 @@ import 'package:chattyevent_app_flutter/presentation/screens/shopping_list_page/
           path: 'type',
         ),
         AutoRoute(
-          page: NewPrivateEventSearchUserTab,
+          page: NewPrivateEventSearchTab,
           initial: true,
           guards: [AuthGuard],
-          path: 'users',
-        ),
-        AutoRoute(
-          page: NewPrivateEventSearchGroupchatTab,
-          guards: [AuthGuard],
-          path: 'groupchat',
+          path: 'search',
         ),
         AutoRoute(
           page: NewPrivateEventDateTab,

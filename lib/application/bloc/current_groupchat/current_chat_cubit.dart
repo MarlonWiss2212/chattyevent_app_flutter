@@ -110,6 +110,7 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
           loadingChat: false,
           oldState: state,
         ));
+        chatCubit.replaceOrAdd(chatState: state);
       },
     );
   }
@@ -135,6 +136,7 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
             ),
           ),
         );
+        chatCubit.replaceOrAdd(chatState: state);
       },
     );
   }
@@ -220,17 +222,16 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
     groupchatOrFailure.fold(
       (alert) {
         notificationCubit.newAlert(notificationAlert: alert);
-        emit(
-          CurrentChatState.merge(oldState: state, loadingChat: false),
-        );
+        emit(CurrentChatState.merge(oldState: state, loadingChat: false));
+        chatCubit.replaceOrAdd(chatState: state);
       },
       (groupchat) async {
-        chatCubit.replaceOrAdd(chatState: state);
         emit(CurrentChatState.merge(
           currentChat: groupchat,
           loadingChat: false,
           oldState: state,
         ));
+        chatCubit.replaceOrAdd(chatState: state);
       },
     );
   }
@@ -343,6 +344,7 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
         emit(
           CurrentChatState.merge(oldState: state, loadingChat: false),
         );
+        chatCubit.replaceOrAdd(chatState: state);
       },
       (groupchatLeftUser) {
         if (groupchatLeftUser == null ||
