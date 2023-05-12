@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:chattyevent_app_flutter/domain/entities/groupchat/groupchat_message.dart';
 import 'package:chattyevent_app_flutter/infastructure/models/groupchat/groupchat_message_model.dart';
+import 'package:graphql/client.dart';
 import 'package:http/http.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
@@ -115,12 +116,14 @@ class GroupchatMessageRepositoryImpl implements GroupchatMessageRepository {
   }
 
   @override
-  Stream<Either<NotificationAlert, GroupchatMessageEntity>>
+  Either<NotificationAlert,
+          Stream<Either<NotificationAlert, GroupchatMessageEntity>>>
       getGroupchatMessagesRealtimeViaApi({
     required AddedGroupchatMessageFilter addedGroupchatMessageFilter,
-  }) async* {
+  }) {
     try {
-      final subscription = graphQlDatasource.subscription(
+      final Stream<QueryResult<Object?>> subscription =
+          graphQlDatasource.subscription(
         """
         subscription(\$addedGroupchatMessageInput: AddedGroupchatMessageInput!) {
           groupchatMessageAdded(addedGroupchatMessageInput: \$addedGroupchatMessageInput) {
@@ -139,22 +142,27 @@ class GroupchatMessageRepositoryImpl implements GroupchatMessageRepository {
         },
       );
 
-      await for (var event in subscription) {
-        if (event.hasException) {
-          yield Left(FailureHelper.graphqlFailureToNotificationAlert(
-            title: "Nachrichten Fehler",
-            response: event,
-          ));
-        }
-        if (event.data != null) {
-          final message = GroupchatMessageModel.fromJson(
-            event.data!['groupchatMessageAdded'],
-          );
-          yield Right(message);
+      Stream<Either<NotificationAlert, GroupchatMessageEntity>>
+          subscriptionToStream() async* {
+        await for (var event in subscription) {
+          if (event.hasException) {
+            yield Left(FailureHelper.graphqlFailureToNotificationAlert(
+              title: "Nachrichten Fehler",
+              response: event,
+            ));
+          }
+          if (event.data != null) {
+            final message = GroupchatMessageModel.fromJson(
+              event.data!['groupchatMessageAdded'],
+            );
+            yield Right(message);
+          }
         }
       }
+
+      return Right(subscriptionToStream());
     } catch (e) {
-      yield Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
+      return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
     }
   }
 }

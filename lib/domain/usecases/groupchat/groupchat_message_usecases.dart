@@ -31,7 +31,8 @@ class GroupchatMessageUseCases {
     );
   }
 
-  Stream<Either<NotificationAlert, GroupchatMessageEntity>>
+  Either<NotificationAlert,
+          Stream<Either<NotificationAlert, GroupchatMessageEntity>>>
       getGroupchatMessagesRealtimeViaApi({
     required AddedGroupchatMessageFilter addedGroupchatMessageFilter,
   }) {

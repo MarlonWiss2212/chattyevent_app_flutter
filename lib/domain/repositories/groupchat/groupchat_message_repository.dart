@@ -17,7 +17,8 @@ abstract class GroupchatMessageRepository {
     required FindGroupchatMessagesFilter findGroupchatMessagesFilter,
     required LimitOffsetFilter limitOffsetFilter,
   });
-  Stream<Either<NotificationAlert, GroupchatMessageEntity>>
+  Either<NotificationAlert,
+          Stream<Either<NotificationAlert, GroupchatMessageEntity>>>
       getGroupchatMessagesRealtimeViaApi({
     required AddedGroupchatMessageFilter addedGroupchatMessageFilter,
   });

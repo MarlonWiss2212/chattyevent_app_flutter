@@ -18,6 +18,7 @@ GraphQLClient getGraphQlClient({
     subProtocol: GraphQLProtocol.graphqlWs,
     config: SocketClientConfig(
       inactivityTimeout: const Duration(hours: 1),
+      autoReconnect: false,
       initialPayload: {
         "authorization": "Bearer $token",
       },

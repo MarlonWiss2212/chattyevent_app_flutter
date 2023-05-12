@@ -51,7 +51,7 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
     required this.notificationCubit,
     required this.groupchatMessageUseCases,
   }) {
-    final subscription =
+    final eitherAlertOrStream =
         groupchatMessageUseCases.getGroupchatMessagesRealtimeViaApi(
       addedGroupchatMessageFilter: AddedGroupchatMessageFilter(
         groupchatTo: state.currentChat.id,
@@ -59,20 +59,34 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
       ),
     );
 
-    _subscription = subscription.listen((event) {
-      event.fold(
-        (error) => notificationCubit.newAlert(
-          notificationAlert: NotificationAlert(
-            title: "Nachrichten error",
-            message:
-                "Fehler beim herstellen einer Verbindung um live nachrichten zu erhalten",
-          ),
+    eitherAlertOrStream.fold(
+      (alert) => notificationCubit.newAlert(
+        notificationAlert: NotificationAlert(
+          title: "Nachrichten error",
+          message:
+              "Fehler beim herstellen einer Verbindung um live nachrichten zu erhalten",
         ),
-        (message) => addMessage(
-          message: message,
-        ),
-      );
-    });
+      ),
+      (subscription) {
+        _subscription = subscription.listen(
+          (event) {
+            event.fold(
+              (error) => notificationCubit.newAlert(
+                notificationAlert: NotificationAlert(
+                  title: "Nachrichten error",
+                  message:
+                      "Fehler beim herstellen einer Verbindung um live nachrichten zu erhalten",
+                ),
+              ),
+              (message) => addMessage(
+                message: message,
+              ),
+            );
+          },
+          cancelOnError: true,
+        );
+      },
+    );
   }
 
   @override

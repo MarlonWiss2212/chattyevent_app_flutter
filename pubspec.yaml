@@ -69,7 +69,6 @@ dependencies:
   firebase_auth: ^4.2.2
   firebase_core: ^2.7.1
   collection: ^1.17.0
-  web_socket_channel: ^2.2.0
   flutter_funding_choices: ^0.3.0+2
 
 dev_dependencies:
