@@ -1,3 +1,4 @@
+import 'package:chattyevent_app_flutter/domain/entities/groupchat/groupchat_message.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
@@ -27,7 +28,7 @@ class ChatPageReactMessageContainer extends StatelessWidget {
             isInputMessage: isInputMessage,
             message: state.messages.firstWhere(
               (element) => element.id == messageToReactTo,
-              orElse: () => MessageEntity(
+              orElse: () => GroupchatMessageEntity(
                 id: messageToReactTo,
                 createdAt: DateTime.now(),
               ),

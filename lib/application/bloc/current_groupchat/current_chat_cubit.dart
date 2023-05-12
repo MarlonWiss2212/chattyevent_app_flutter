@@ -39,7 +39,8 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
   final GroupchatMessageUseCases groupchatMessageUseCases;
   final PrivateEventUseCases privateEventUseCases;
 
-  StreamSubscription<Either<NotificationAlert, MessageEntity>>? _subscription;
+  StreamSubscription<Either<NotificationAlert, GroupchatMessageEntity>>?
+      _subscription;
 
   CurrentChatCubit(
     super.initialState, {

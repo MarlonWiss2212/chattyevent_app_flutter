@@ -1,5 +1,6 @@
 import 'package:chattyevent_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
-import 'package:chattyevent_app_flutter/domain/entities/message/message_entity.dart';
+import 'package:chattyevent_app_flutter/domain/entities/groupchat/groupchat_message.dart';
+import 'package:chattyevent_app_flutter/infastructure/models/groupchat/groupchat_message_model.dart';
 import 'package:chattyevent_app_flutter/infastructure/models/message/message_model.dart';
 
 class GroupchatModel extends GroupchatEntity {
@@ -7,7 +8,7 @@ class GroupchatModel extends GroupchatEntity {
     required String id,
     String? title,
     String? profileImageLink,
-    MessageEntity? latestMessage,
+    GroupchatMessageEntity? latestMessage,
     String? description,
     String? createdBy,
     DateTime? createdAt,
@@ -24,11 +25,11 @@ class GroupchatModel extends GroupchatEntity {
         );
 
   factory GroupchatModel.fromJson(Map<String, dynamic> json) {
-    List<MessageEntity>? messages;
+    List<GroupchatMessageEntity>? messages;
     if (json["messages"] != null) {
       messages = [];
       for (final message in json["messages"]) {
-        messages.add(MessageModel.fromJson(message));
+        messages.add(GroupchatMessageModel.fromJson(message));
       }
     }
 
@@ -45,7 +46,7 @@ class GroupchatModel extends GroupchatEntity {
       title: json['title'],
       profileImageLink: json['profileImageLink'],
       latestMessage: json["latestMessage"] != null
-          ? MessageModel.fromJson(json["latestMessage"])
+          ? GroupchatMessageModel.fromJson(json["latestMessage"])
           : null,
       description: json["description"],
       createdBy: json["createdBy"],

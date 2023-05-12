@@ -7,7 +7,7 @@ class CurrentChatState {
   final List<GroupchatUserEntity> users;
   final List<GroupchatLeftUserEntity> leftUsers;
 
-  final List<MessageEntity> messages;
+  final List<GroupchatMessageEntity> messages;
 
   final List<PrivateEventEntity> futureConnectedPrivateEvents;
   final bool loadingPrivateEvents;
@@ -50,7 +50,8 @@ class CurrentChatState {
     bool? loadingChat,
     bool? loadingMessages,
   }) {
-    final List<MessageEntity> allMessages = messages ?? oldState.messages;
+    final List<GroupchatMessageEntity> allMessages =
+        messages ?? oldState.messages;
     allMessages.sort((a, b) => b.createdAt.compareTo(a.createdAt));
 
     GroupchatEntity newChat = currentChat ?? oldState.currentChat;

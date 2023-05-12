@@ -1,3 +1,4 @@
+import 'package:chattyevent_app_flutter/domain/entities/groupchat/groupchat_message.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grouped_list/grouped_list.dart';
@@ -6,14 +7,13 @@ import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/current_groupchat/current_chat_cubit.dart';
 import 'package:chattyevent_app_flutter/domain/entities/groupchat/groupchat_left_user_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
-import 'package:chattyevent_app_flutter/domain/entities/message/message_entity.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/chat_page/chat_page/chat_page_message_container.dart';
 
 class ChatPageMessageList extends StatefulWidget {
   final String groupchatTo;
   final List<GroupchatUserEntity> users;
   final List<GroupchatLeftUserEntity> leftUsers;
-  final List<MessageEntity> messages;
+  final List<GroupchatMessageEntity> messages;
 
   const ChatPageMessageList({
     super.key,
@@ -50,7 +50,7 @@ class _ChatPageMessageListState extends State<ChatPageMessageList> {
 
   @override
   Widget build(BuildContext context) {
-    return GroupedListView<MessageEntity, String>(
+    return GroupedListView<GroupchatMessageEntity, String>(
       controller: _scrollController,
       padding: const EdgeInsets.symmetric(vertical: 8),
       itemBuilder: (context, message) {

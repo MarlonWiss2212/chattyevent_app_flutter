@@ -64,7 +64,7 @@ class AddGroupchatMessageCubit extends Cubit<AddGroupchatMessageState> {
 
   void emitState({
     AddGroupchatMessageStateStatus? status,
-    MessageEntity? addedMessage,
+    GroupchatMessageEntity? addedMessage,
     File? file,
     bool removeFile = false,
     bool removeMessageToReactTo = false,
