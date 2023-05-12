@@ -17,9 +17,9 @@ class HomeEventPage extends StatefulWidget {
 class _HomeEventPageState extends State<HomeEventPage> {
   @override
   void initState() {
+    super.initState();
     BlocProvider.of<HomeEventCubit>(context).getFuturePrivateEventsViaApi();
     BlocProvider.of<HomeEventCubit>(context).getPastPrivateEventsViaApi();
-    super.initState();
   }
 
   @override

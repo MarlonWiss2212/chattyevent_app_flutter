@@ -17,8 +17,8 @@ class HomeChatPage extends StatefulWidget {
 class _HomeChatPageState extends State<HomeChatPage> {
   @override
   void initState() {
-    BlocProvider.of<ChatCubit>(context).getChatsViaApi();
     super.initState();
+    BlocProvider.of<ChatCubit>(context).getChatsViaApi();
   }
 
   @override

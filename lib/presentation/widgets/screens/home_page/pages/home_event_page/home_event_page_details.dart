@@ -77,7 +77,7 @@ class HomeEventPageDetails extends StatelessWidget {
               );
             },
           ),
-          CustomBannerAd(adUnitId: AdHelper.bannerAdUnitId),
+          CustomBannerAd(adUnitId: AdHelper.privateEventListBannerAdUnitId),
           ListTile(
             leading: const Icon(Icons.shopping_bag),
             title: const Text("Einkaufsliste"),

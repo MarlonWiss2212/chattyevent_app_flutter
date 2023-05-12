@@ -366,6 +366,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.0.2"
+  flutter_funding_choices:
+    dependency: "direct main"
+    description:
+      name: flutter_funding_choices
+      sha256: "9b9f708251507c6de191af47bc9f35d0657106cc0a9e98a72dfa8dd9e187b4e3"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.3.0+2"
   flutter_launcher_icons:
     dependency: "direct main"
     description:

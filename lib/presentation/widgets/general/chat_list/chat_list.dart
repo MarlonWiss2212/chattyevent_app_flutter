@@ -32,7 +32,7 @@ class _ChatListState extends State<ChatList> {
       return;
     }
     BannerAd(
-      adUnitId: AdHelper.bannerAdUnitId,
+      adUnitId: AdHelper.chatListBannerAdUnitId,
       size: AdSize.banner,
       request: const AdRequest(),
       listener: BannerAdListener(

@@ -1,20 +1,29 @@
 import 'dart:io';
 
 class AdHelper {
-  static String get bannerAdUnitId {
-    if (Platform.isAndroid) {
-      return 'ca-app-pub-3940256099942544/6300978111';
-    } else if (Platform.isIOS) {
-      return 'ca-app-pub-3940256099942544/2934735716';
+  static String get chatListBannerAdUnitId {
+    if (Platform.isIOS) {
+      return 'ca-app-pub-6709565406365779/3106308129';
+    } else if (Platform.isAndroid) {
+      return 'ca-app-pub-6709565406365779/8430384700';
     }
     throw UnsupportedError("Unsupported platform");
   }
 
-  static String get nativeAdUnitId {
-    if (Platform.isAndroid) {
-      return 'ca-app-pub-3940256099942544/2247696110';
-    } else if (Platform.isIOS) {
-      return 'ca-app-pub-3940256099942544/3986624511';
+  static String get mapTabBannerAdUnitId {
+    if (Platform.isIOS) {
+      return 'ca-app-pub-6709565406365779/8022758731';
+    } else if (Platform.isAndroid) {
+      return 'ca-app-pub-6709565406365779/7756477534';
+    }
+    throw UnsupportedError("Unsupported platform");
+  }
+
+  static String get privateEventListBannerAdUnitId {
+    if (Platform.isIOS) {
+      return 'ca-app-pub-6709565406365779/5396595394';
+    } else if (Platform.isAndroid) {
+      return 'ca-app-pub-6709565406365779/4008804214';
     }
     throw UnsupportedError("Unsupported platform");
   }

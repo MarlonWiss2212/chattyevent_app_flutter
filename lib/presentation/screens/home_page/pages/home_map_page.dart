@@ -20,9 +20,9 @@ class HomeMapPage extends StatefulWidget {
 class _HomeMapPageState extends State<HomeMapPage> {
   @override
   void initState() {
+    super.initState();
     BlocProvider.of<HomeEventCubit>(context).getFuturePrivateEventsViaApi();
     BlocProvider.of<LocationCubit>(context).getLocationFromDevice();
-    super.initState();
   }
 
   @override
@@ -99,7 +99,7 @@ class _HomeMapPageState extends State<HomeMapPage> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      CustomBannerAd(adUnitId: AdHelper.bannerAdUnitId),
+                      CustomBannerAd(adUnitId: AdHelper.mapTabBannerAdUnitId),
                       SizedBox(
                         width: double.infinity,
                         child: Padding(

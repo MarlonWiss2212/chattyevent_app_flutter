@@ -21,6 +21,7 @@ import 'package:firebase_core/firebase_core.dart';
 
 import 'core/one_signal.dart' as one_signal;
 import 'core/injection.dart' as di;
+import 'package:flutter_funding_choices/flutter_funding_choices.dart' as fc;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -139,7 +140,7 @@ class _AppState extends State<App> {
                 builder: (context, widget) {
                   return ScrollConfiguration(
                     behavior: const ScrollBehaviorModified(),
-                    child: widget!,
+                    child: AdPopUp(child: widget!),
                   );
                 },
                 theme: ThemeData(
@@ -190,8 +191,39 @@ class _AppState extends State<App> {
   }
 }
 
+class AdPopUp extends StatefulWidget {
+  final Widget child;
+  const AdPopUp({super.key, required this.child});
+
+  @override
+  State<AdPopUp> createState() => _AdPopUpState();
+}
+
+class _AdPopUpState extends State<AdPopUp> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      fc.ConsentInformation consentInfo =
+          await fc.FlutterFundingChoices.requestConsentInformation();
+      if (consentInfo.isConsentFormAvailable &&
+          consentInfo.consentStatus == fc.ConsentStatus.REQUIRED_ANDROID &&
+          consentInfo.consentStatus == fc.ConsentStatus.REQUIRED_IOS) {
+        await fc.FlutterFundingChoices.showConsentForm();
+        // You can check the result by calling `FlutterFundingChoices.requestConsentInformation()` again !
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return widget.child;
+  }
+}
+
 class ScrollBehaviorModified extends ScrollBehavior {
   const ScrollBehaviorModified();
+
   @override
   ScrollPhysics getScrollPhysics(BuildContext context) {
     return const BouncingScrollPhysics();
