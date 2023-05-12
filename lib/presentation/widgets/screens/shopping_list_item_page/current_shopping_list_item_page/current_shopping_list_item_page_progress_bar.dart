@@ -14,6 +14,8 @@ class CurrentShoppingListItemPageWithProgressBar extends StatelessWidget {
     return BlocBuilder<CurrentShoppingListItemCubit,
         CurrentShoppingListItemState>(
       builder: (context, state) {
+        final gradientWidth = ((state.shoppingListItem.boughtAmount ?? 0) /
+            state.shoppingListItem.amount!);
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8),
           child: Container(
@@ -21,12 +23,8 @@ class CurrentShoppingListItemPageWithProgressBar extends StatelessWidget {
               borderRadius: BorderRadius.circular(8),
               gradient: LinearGradient(
                 stops: [
-                  (state.shoppingListItem.boughtAmount ??
-                          0 / state.shoppingListItem.amount!) -
-                      0.02,
-                  (state.shoppingListItem.boughtAmount ??
-                          0 / state.shoppingListItem.amount!) +
-                      0.02
+                  gradientWidth - 0.02,
+                  gradientWidth + 0.02,
                 ],
                 colors: [
                   Theme.of(context).colorScheme.onPrimary,
@@ -37,7 +35,8 @@ class CurrentShoppingListItemPageWithProgressBar extends StatelessWidget {
             height: 100,
             width: double.infinity,
             child: Center(
-              child: Wrap(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
                     "${state.shoppingListItem.boughtAmount ?? 0} von ",
@@ -46,52 +45,58 @@ class CurrentShoppingListItemPageWithProgressBar extends StatelessWidget {
                         ),
                     overflow: TextOverflow.ellipsis,
                   ),
-                  EditInputTextField(
-                    text: state.shoppingListItem.amount?.toString() ?? "0",
-                    onSaved: (text) async {
-                      final textAsDouble = double.tryParse(text);
-                      if (textAsDouble == null) {
+                  Container(
+                    constraints: const BoxConstraints(maxWidth: 100),
+                    child: EditInputTextField(
+                      text: state.shoppingListItem.amount?.toString() ?? "0",
+                      onSaved: (text) async {
+                        final textAsDouble = double.tryParse(text);
                         if (textAsDouble == null) {
-                          return await showDialog(
-                            context: context,
-                            builder: (c) {
-                              return CustomAlertDialog(
-                                notificationAlert: NotificationAlert(
-                                  title: "Menge Fehler",
-                                  message:
-                                      "Die eingegebene Menge muss eine Zahl sein",
-                                ),
-                                context: c,
-                              );
-                            },
-                          );
+                          if (textAsDouble == null) {
+                            return await showDialog(
+                              context: context,
+                              builder: (c) {
+                                return CustomAlertDialog(
+                                  notificationAlert: NotificationAlert(
+                                    title: "Menge Fehler",
+                                    message:
+                                        "Die eingegebene Menge muss eine Zahl sein",
+                                  ),
+                                  context: c,
+                                );
+                              },
+                            );
+                          }
                         }
-                      }
-                      BlocProvider.of<CurrentShoppingListItemCubit>(context)
-                          .updateShoppingListItemViaApi(
-                        updateShoppingListItemDto: UpdateShoppingListItemDto(
-                          amount: textAsDouble,
-                        ),
-                      );
-                    },
-                    textStyle: Theme.of(context).textTheme.labelLarge?.apply(
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
+                        BlocProvider.of<CurrentShoppingListItemCubit>(context)
+                            .updateShoppingListItemViaApi(
+                          updateShoppingListItemDto: UpdateShoppingListItemDto(
+                            amount: textAsDouble,
+                          ),
+                        );
+                      },
+                      textStyle: Theme.of(context).textTheme.labelLarge?.apply(
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                    ),
                   ),
-                  EditInputTextField(
-                    text:
-                        state.shoppingListItem.unit?.toString() ?? " (anzahl)",
-                    onSaved: (text) async {
-                      BlocProvider.of<CurrentShoppingListItemCubit>(context)
-                          .updateShoppingListItemViaApi(
-                        updateShoppingListItemDto: UpdateShoppingListItemDto(
-                          unit: text,
-                        ),
-                      );
-                    },
-                    textStyle: Theme.of(context).textTheme.labelLarge?.apply(
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
+                  Container(
+                    constraints: const BoxConstraints(maxWidth: 100),
+                    child: EditInputTextField(
+                      text: state.shoppingListItem.unit?.toString() ??
+                          " (anzahl)",
+                      onSaved: (text) async {
+                        BlocProvider.of<CurrentShoppingListItemCubit>(context)
+                            .updateShoppingListItemViaApi(
+                          updateShoppingListItemDto: UpdateShoppingListItemDto(
+                            unit: text,
+                          ),
+                        );
+                      },
+                      textStyle: Theme.of(context).textTheme.labelLarge?.apply(
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                    ),
                   ),
                   Text(
                     " gekauft",

@@ -15,6 +15,8 @@ class ShoppingListItemTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final gradientWidth =
+        ((shoppingListItem.boughtAmount ?? 0) / shoppingListItem.amount!);
     return ListTile(
       title: Wrap(
         spacing: 8,
@@ -62,12 +64,8 @@ class ShoppingListItemTile extends StatelessWidget {
                 ),
                 gradient: LinearGradient(
                   stops: [
-                    (shoppingListItem.boughtAmount ??
-                            0 / shoppingListItem.amount!) -
-                        0.02,
-                    (shoppingListItem.boughtAmount ??
-                            0 / shoppingListItem.amount!) +
-                        0.02
+                    gradientWidth - 0.02,
+                    gradientWidth + 0.02,
                   ],
                   colors: [
                     Theme.of(context).colorScheme.onPrimary,
