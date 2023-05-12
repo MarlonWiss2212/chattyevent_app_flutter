@@ -42,14 +42,14 @@ class SettingsRepositoryImpl extends SettingsRepository {
   Future<Either<NotificationAlert, Unit>> openDatasecurityPage() async {
     try {
       final worked = await weblinkDatasource.launchUrl(
-        url: "https://chattyevent-info-web.pages.dev/eu-dataprotection",
+        url: "https://info.chattyevent.com/eu-dataprotection",
       );
       if (worked == false) {
         return Left(
           NotificationAlert(
             message: "Konnte Datenschutzerklärung nicht öffnen",
             title:
-                "Sie können sie unter folgender URL finden: https://chattyevent-info-web.pages.dev/eu-dataprotection",
+                "Sie können sie unter folgender URL finden: https://info.chattyevent.com/eu-dataprotection",
           ),
         );
       }
@@ -59,7 +59,7 @@ class SettingsRepositoryImpl extends SettingsRepository {
         NotificationAlert(
           message: "Konnte Datenschutzerklärung nicht öffnen",
           title:
-              "Sie können sie unter folgender URL finden: https://chattyevent-info-web.pages.dev/eu-dataprotection",
+              "Sie können sie unter folgender URL finden: https://info.chattyevent.com/eu-dataprotection",
         ),
       );
     }
@@ -69,14 +69,14 @@ class SettingsRepositoryImpl extends SettingsRepository {
   Future<Either<NotificationAlert, Unit>> openTermsOfUsePage() async {
     try {
       final worked = await weblinkDatasource.launchUrl(
-        url: "https://chattyevent-info-web.pages.dev/terms-of-use",
+        url: "https://info.chattyevent.com/terms-of-use",
       );
       if (worked == false) {
         return Left(
           NotificationAlert(
             message: "Konnte Nutzungsbedingugen nicht öffnen",
             title:
-                "Sie können sie unter folgender URL finden: https://chattyevent-info-web.pages.dev/eu-dataprotection",
+                "Sie können sie unter folgender URL finden: https://info.chattyevent.com/eu-dataprotection",
           ),
         );
       }
@@ -86,7 +86,7 @@ class SettingsRepositoryImpl extends SettingsRepository {
         NotificationAlert(
           message: "Konnte Nutzungsbedingugen nicht öffnen",
           title:
-              "Sie können sie unter folgender URL finden: https://chattyevent-info-web.pages.dev/eu-dataprotection",
+              "Sie können sie unter folgender URL finden: https://info.chattyevent.com/eu-dataprotection",
         ),
       );
     }

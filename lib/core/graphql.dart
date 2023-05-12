@@ -21,6 +21,9 @@ GraphQLClient getGraphQlClient({
       initialPayload: {
         "authorization": "Bearer $token",
       },
+      headers: {
+        "authorization": "Bearer $token",
+      },
     ),
   );
 
