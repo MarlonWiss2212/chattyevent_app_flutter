@@ -43,7 +43,9 @@ class _ChatPageMessageListState extends State<ChatPageMessageList> {
   }
 
   void _scrollListener() {
-    if (_scrollController.position.extentAfter <= 0) {
+    if (_scrollController.position.extentAfter <= 0 &&
+        BlocProvider.of<CurrentChatCubit>(context).state.loadingMessages ==
+            false) {
       BlocProvider.of<CurrentChatCubit>(context).loadMessages();
     }
   }

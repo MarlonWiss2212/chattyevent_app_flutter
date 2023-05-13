@@ -31,23 +31,20 @@ class GroupchatMessageRepositoryImpl implements GroupchatMessageRepository {
 
       /// TODO: should accapt other files than jpg too
       /// TODO: limit size and scale down
-      if (createGroupchatMessageDto.files != null) {
-        final List<MultipartFile> files =
-            createGroupchatMessageDto.files!.asMap().entries.map((entry) {
-          return MultipartFile.fromBytes(
-            'photo',
-            entry.value.readAsBytesSync(),
-            filename: '${entry.key}.jpg',
-            contentType: MediaType("image", "jpg"),
-          );
-        }).toList();
-        variables.addAll({'files': files});
+      if (createGroupchatMessageDto.file != null) {
+        final MultipartFile file = MultipartFile.fromBytes(
+          'photo',
+          createGroupchatMessageDto.file!.readAsBytesSync(),
+          filename: '1.jpg',
+          contentType: MediaType("image", "jpg"),
+        );
+        variables.addAll({'file': file});
       }
 
       final response = await graphQlDatasource.mutation(
         """
-        mutation createGroupchatMessage(\$input: CreateGroupchatMessageInput!, \$files: [Upload!]) {
-          createGroupchatMessage(createGroupchatMessageInput: \$input, files: \$files) {
+        mutation createGroupchatMessage(\$input: CreateGroupchatMessageInput!, \$file: Upload!) {
+          createGroupchatMessage(createGroupchatMessageInput: \$input, file: \$file) {
             _id
             message
             messageToReactTo

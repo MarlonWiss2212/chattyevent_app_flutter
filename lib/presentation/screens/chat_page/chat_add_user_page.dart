@@ -19,7 +19,9 @@ class ChatAddUserPage extends StatefulWidget {
 class _ChatAddUserPageState extends State<ChatAddUserPage> {
   @override
   void initState() {
-    BlocProvider.of<UserSearchCubit>(context).getUsersViaApi();
+    BlocProvider.of<UserSearchCubit>(context).getUsersByPermissionViaApi(
+      followedToGroupchatPermission: "ADD",
+    );
     super.initState();
   }
 

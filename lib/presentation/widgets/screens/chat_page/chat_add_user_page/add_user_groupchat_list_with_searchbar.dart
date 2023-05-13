@@ -1,6 +1,6 @@
+import 'package:chattyevent_app_flutter/presentation/widgets/general/button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:chattyevent_app_flutter/application/bloc/current_groupchat/current_chat_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/user_search/user_search_cubit.dart';
 import 'package:chattyevent_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
@@ -31,16 +31,13 @@ class AddUserGroupchatListWithSearchbar extends StatelessWidget {
                 followedToGroupchatPermission: "ADD",
               );
             },
-            userButton: (user) => PlatformElevatedButton(
+            userButton: (user) => Button(
               color: Theme.of(context).colorScheme.primaryContainer,
-              onPressed: () {
+              onTap: () {
                 BlocProvider.of<CurrentChatCubit>(context)
                     .addUserToChat(userId: user.id);
               },
-              child: Text(
-                "Hinzufügen",
-                style: Theme.of(context).textTheme.labelMedium,
-              ),
+              text: "Hinzufügen",
             ),
             filterUsers: (users) {
               List<UserEntity> filteredUsers = [];

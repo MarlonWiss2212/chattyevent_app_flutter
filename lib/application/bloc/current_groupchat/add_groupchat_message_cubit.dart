@@ -42,7 +42,7 @@ class AddGroupchatMessageCubit extends Cubit<AddGroupchatMessageState> {
         message: state.message!,
         groupchatTo: state.groupchatTo!,
         messageToReactTo: state.messageToReactTo,
-        files: state.file != null ? [state.file!] : null,
+        file: state.file,
       ),
     );
 

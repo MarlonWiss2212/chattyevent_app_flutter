@@ -21,9 +21,11 @@ GraphQLClient getGraphQlClient({
       autoReconnect: false,
       initialPayload: {
         "authorization": "Bearer $token",
+        "Apollo-Require-Preflight": "true",
       },
       headers: {
         "authorization": "Bearer $token",
+        "Apollo-Require-Preflight": "true",
       },
     ),
   );

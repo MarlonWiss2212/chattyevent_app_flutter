@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:chattyevent_app_flutter/application/bloc/image/image_cubit.dart';
-import 'package:chattyevent_app_flutter/presentation/widgets/general/dialog/alert_dialog.dart';
 
 class ImagePickerList extends StatelessWidget {
   final void Function(File newImage) imageChanged;
