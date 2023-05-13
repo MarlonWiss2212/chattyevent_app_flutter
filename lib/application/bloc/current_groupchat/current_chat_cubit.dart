@@ -22,7 +22,6 @@ import 'package:chattyevent_app_flutter/core/response/groupchat/groupchat-users-
 import 'package:chattyevent_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/groupchat/groupchat_left_user_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
-import 'package:chattyevent_app_flutter/domain/entities/message/message_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/private_event/private_event_entity.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/groupchat/groupchat_message_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/groupchat/groupchat_usecases.dart';
@@ -83,7 +82,6 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
               ),
             );
           },
-          cancelOnError: true,
         );
       },
     );

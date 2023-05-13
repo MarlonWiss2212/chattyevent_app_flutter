@@ -121,21 +121,25 @@ class ChatPageMessageContainer extends StatelessWidget {
                     Text(DateFormat.jm().format(message.createdAt)),
                   ],
                 ),
-                if (message.fileLink != null &&
+                if (message.fileLinks != null &&
+                    message.fileLinks!.isNotEmpty &&
                     messageIsReactMessage == false) ...[
                   const SizedBox(height: 8),
                   Container(
                     constraints: BoxConstraints(
                       maxHeight: (MediaQuery.of(context).size.height / 2),
                     ),
+                    //TODO show as list because of multiple messages
                     child: Image.network(
-                      message.fileLink!,
+                      message.fileLinks![0],
                       fit: BoxFit.contain,
                     ),
                   ),
-                ] else if (message.fileLink != null &&
+                ] else if (message.fileLinks != null &&
+                    message.fileLinks!.isNotEmpty &&
                     messageIsReactMessage) ...[
                   const SizedBox(height: 8),
+                  //TODO show as list because of multiple messages
                   Row(
                     children: const [
                       Icon(Icons.file_copy),
@@ -150,7 +154,8 @@ class ChatPageMessageContainer extends StatelessWidget {
                     messageToReactTo: message.messageToReactTo!,
                   ),
                 },
-                if (message.fileLink != null) ...{
+                if (message.fileLinks != null &&
+                    message.fileLinks!.isNotEmpty) ...{
                   const SizedBox(height: 8),
                 },
                 if (message.message != null) ...{

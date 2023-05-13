@@ -4,7 +4,7 @@ class MessageModel extends MessageEntity {
   MessageModel({
     required String id,
     String? message,
-    String? fileLink,
+    List<String>? fileLinks,
     String? messageToReactTo,
     String? createdBy,
     required DateTime createdAt,
@@ -12,7 +12,7 @@ class MessageModel extends MessageEntity {
   }) : super(
           id: id,
           message: message,
-          fileLink: fileLink,
+          fileLinks: fileLinks,
           messageToReactTo: messageToReactTo,
           createdAt: createdAt,
           updatedAt: updatedAt,
@@ -26,10 +26,18 @@ class MessageModel extends MessageEntity {
         ? DateTime.parse(json["updatedAt"]).toLocal()
         : null;
 
+    List<String>? fileLinks;
+    if (json['fileLinks'] != null) {
+      fileLinks ??= [];
+      for (final link in json['fileLinks']) {
+        fileLinks.add(link);
+      }
+    }
+
     return MessageModel(
       id: json['_id'],
       message: json['message'],
-      fileLink: json['fileLink'],
+      fileLinks: fileLinks,
       messageToReactTo: json["messageToReactTo"],
       createdBy: json["createdBy"],
       createdAt: createdAt,

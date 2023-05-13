@@ -28,27 +28,30 @@ class GroupchatMessageRepositoryImpl implements GroupchatMessageRepository {
       Map<String, dynamic> variables = {
         "input": createGroupchatMessageDto.toMap(),
       };
-      if (createGroupchatMessageDto.file != null) {
-        final byteData = createGroupchatMessageDto.file!.readAsBytesSync();
 
-        /// TODO: should accapt other files than jpg too
-        final multipartFile = MultipartFile.fromBytes(
-          'photo',
-          byteData,
-          filename: '1.jpg',
-          contentType: MediaType("image", "jpg"),
-        );
-        variables.addAll({'file': multipartFile});
+      /// TODO: should accapt other files than jpg too
+      /// TODO: limit size and scale down
+      if (createGroupchatMessageDto.files != null) {
+        final List<MultipartFile> files =
+            createGroupchatMessageDto.files!.asMap().entries.map((entry) {
+          return MultipartFile.fromBytes(
+            'photo',
+            entry.value.readAsBytesSync(),
+            filename: '${entry.key}.jpg',
+            contentType: MediaType("image", "jpg"),
+          );
+        }).toList();
+        variables.addAll({'files': files});
       }
 
       final response = await graphQlDatasource.mutation(
         """
-        mutation createGroupchatMessage(\$input: CreateGroupchatMessageInput!, \$file: Upload) {
-          createGroupchatMessage(createGroupchatMessageInput: \$input, file: \$file) {
+        mutation createGroupchatMessage(\$input: CreateGroupchatMessageInput!, \$files: [Upload!]) {
+          createGroupchatMessage(createGroupchatMessageInput: \$input, files: \$files) {
             _id
             message
             messageToReactTo
-            fileLink
+            fileLinks
             groupchatTo
             createdBy
             createdAt
@@ -85,7 +88,7 @@ class GroupchatMessageRepositoryImpl implements GroupchatMessageRepository {
             _id
             message
             messageToReactTo
-            fileLink
+            fileLinks
             groupchatTo
             createdBy
             createdAt
@@ -131,7 +134,7 @@ class GroupchatMessageRepositoryImpl implements GroupchatMessageRepository {
             message
             messageToReactTo
             groupchatTo
-            fileLink
+            fileLinks
             createdBy
             createdAt
           }

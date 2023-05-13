@@ -4,7 +4,7 @@ class GroupchatMessageModel extends GroupchatMessageEntity {
   GroupchatMessageModel({
     required String id,
     String? message,
-    String? fileLink,
+    List<String>? fileLinks,
     String? messageToReactTo,
     String? createdBy,
     required DateTime createdAt,
@@ -13,7 +13,7 @@ class GroupchatMessageModel extends GroupchatMessageEntity {
   }) : super(
           id: id,
           message: message,
-          fileLink: fileLink,
+          fileLinks: fileLinks,
           messageToReactTo: messageToReactTo,
           createdAt: createdAt,
           updatedAt: updatedAt,
@@ -28,10 +28,18 @@ class GroupchatMessageModel extends GroupchatMessageEntity {
         ? DateTime.parse(json["updatedAt"]).toLocal()
         : null;
 
+    List<String>? fileLinks;
+    if (json['fileLinks'] != null) {
+      fileLinks ??= [];
+      for (final link in json['fileLinks']) {
+        fileLinks.add(link);
+      }
+    }
+
     return GroupchatMessageModel(
       id: json['_id'],
       message: json['message'],
-      fileLink: json['fileLink'],
+      fileLinks: fileLinks,
       messageToReactTo: json["messageToReactTo"],
       groupchatTo: json["groupchatTo"],
       createdBy: json["createdBy"],

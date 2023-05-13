@@ -6,7 +6,7 @@ class GroupchatMessageEntity extends MessageEntity {
     required super.id,
     required super.createdAt,
     super.message,
-    super.fileLink,
+    super.fileLinks,
     this.groupchatTo,
     super.messageToReactTo,
     super.createdBy,
@@ -20,7 +20,7 @@ class GroupchatMessageEntity extends MessageEntity {
     return GroupchatMessageEntity(
       id: newEntity.id,
       message: newEntity.message ?? oldEntity.message,
-      fileLink: newEntity.fileLink ?? oldEntity.fileLink,
+      fileLinks: newEntity.fileLinks ?? oldEntity.fileLinks,
       groupchatTo: newEntity.groupchatTo ?? oldEntity.groupchatTo,
       messageToReactTo:
           newEntity.messageToReactTo ?? oldEntity.messageToReactTo,

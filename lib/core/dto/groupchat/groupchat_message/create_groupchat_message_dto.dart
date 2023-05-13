@@ -5,12 +5,12 @@ import 'package:chattyevent_app_flutter/core/filter/groupchat/find_one_groupchat
 class CreateGroupchatMessageDto extends FindOneGroupchatToFilter {
   final String message;
   final String? messageToReactTo;
-  final File? file;
+  final List<File>? files;
 
   CreateGroupchatMessageDto({
     required this.message,
     required super.groupchatTo,
-    this.file,
+    this.files,
     this.messageToReactTo,
   });
 
