@@ -27,7 +27,7 @@ class _ChatListState extends State<ChatList> {
   @override
   void initState() {
     super.initState();
-    if (widget.chatStates.length <= 3) {
+    if (widget.chatStates.length < _kAdIndex) {
       return;
     }
     BannerAd(
