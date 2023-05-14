@@ -54,7 +54,6 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
         groupchatMessageUseCases.getGroupchatMessagesRealtimeViaApi(
       addedGroupchatMessageFilter: AddedGroupchatMessageFilter(
         groupchatTo: state.currentChat.id,
-        returnMyAddedMessageToo: true, // TODO change this
       ),
     );
 
