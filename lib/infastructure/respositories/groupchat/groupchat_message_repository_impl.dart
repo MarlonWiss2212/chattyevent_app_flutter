@@ -43,7 +43,7 @@ class GroupchatMessageRepositoryImpl implements GroupchatMessageRepository {
 
       final response = await graphQlDatasource.mutation(
         """
-        mutation createGroupchatMessage(\$input: CreateGroupchatMessageInput!, \$file: Upload!) {
+        mutation createGroupchatMessage(\$input: CreateGroupchatMessageInput!, \$file: Upload) {
           createGroupchatMessage(createGroupchatMessageInput: \$input, file: \$file) {
             _id
             message
