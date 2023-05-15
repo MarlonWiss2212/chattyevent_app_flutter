@@ -152,8 +152,8 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
                 updatedAt
                 statusOnRelatedUser
                 followData {
-                  followedToPrivateEventPermission
-                  followedToGroupchatPermission
+                  requesterPrivateEventAddPermission
+                  requesterGroupchatAddPermission
                   followedUserAt
                 }
               }
@@ -163,8 +163,8 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
                 updatedAt
                 statusOnRelatedUser
                 followData {
-                  followedToPrivateEventPermission
-                  followedToGroupchatPermission
+                  requesterPrivateEventAddPermission
+                  requesterGroupchatAddPermission
                   followedUserAt
                 }
               }
@@ -195,8 +195,8 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
                 updatedAt
                 statusOnRelatedUser
                 followData {
-                  followedToPrivateEventPermission
-                  followedToGroupchatPermission
+                  requesterPrivateEventAddPermission
+                  requesterGroupchatAddPermission
                   followedUserAt
                 }
               }
@@ -206,8 +206,8 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
                 updatedAt
                 statusOnRelatedUser
                 followData {
-                  followedToPrivateEventPermission
-                  followedToGroupchatPermission
+                  requesterPrivateEventAddPermission
+                  requesterGroupchatAddPermission
                   followedUserAt
                 }
               }
@@ -385,8 +385,8 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
               updatedAt
               statusOnRelatedUser
               followData {
-                followedToPrivateEventPermission
-                followedToGroupchatPermission
+                requesterPrivateEventAddPermission
+                requesterGroupchatAddPermission
                 followedUserAt
               }
             }
@@ -396,8 +396,8 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
               updatedAt
               statusOnRelatedUser
               followData {
-                followedToPrivateEventPermission
-                followedToGroupchatPermission
+                requesterPrivateEventAddPermission
+                requesterGroupchatAddPermission
                 followedUserAt
               }
             }
@@ -458,8 +458,8 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
               updatedAt
               statusOnRelatedUser
               followData {
-                followedToPrivateEventPermission
-                followedToGroupchatPermission
+                requesterPrivateEventAddPermission
+                requesterGroupchatAddPermission
                 followedUserAt
               }
             }
@@ -469,8 +469,8 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
               updatedAt
               statusOnRelatedUser
               followData {
-                followedToPrivateEventPermission
-                followedToGroupchatPermission
+                requesterPrivateEventAddPermission
+                requesterGroupchatAddPermission
                 followedUserAt
               }
             }
@@ -535,8 +535,8 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
               updatedAt
               statusOnRelatedUser
               followData {
-                followedToPrivateEventPermission
-                followedToGroupchatPermission
+                requesterPrivateEventAddPermission
+                requesterGroupchatAddPermission
                 followedUserAt
               }
             }
@@ -546,8 +546,8 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
               updatedAt
               statusOnRelatedUser
               followData {
-                followedToPrivateEventPermission
-                followedToGroupchatPermission
+                requesterPrivateEventAddPermission
+                requesterGroupchatAddPermission
                 followedUserAt
               }
             }
@@ -608,8 +608,8 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
                 updatedAt
                 statusOnRelatedUser
                 followData {
-                  followedToPrivateEventPermission
-                  followedToGroupchatPermission
+                  requesterPrivateEventAddPermission
+                  requesterGroupchatAddPermission
                   followedUserAt
                 }
               }
@@ -619,8 +619,8 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
                 updatedAt
                 statusOnRelatedUser
                 followData {
-                  followedToPrivateEventPermission
-                  followedToGroupchatPermission
+                  requesterPrivateEventAddPermission
+                  requesterGroupchatAddPermission
                   followedUserAt
                 }
               }
@@ -651,8 +651,8 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
                 updatedAt
                 statusOnRelatedUser
                 followData {
-                  followedToPrivateEventPermission
-                  followedToGroupchatPermission
+                  requesterPrivateEventAddPermission
+                  requesterGroupchatAddPermission
                   followedUserAt
                 }
               }
@@ -662,8 +662,8 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
                 updatedAt
                 statusOnRelatedUser
                 followData {
-                  followedToPrivateEventPermission
-                  followedToGroupchatPermission
+                  requesterPrivateEventAddPermission
+                  requesterGroupchatAddPermission
                   followedUserAt
                 }
               }

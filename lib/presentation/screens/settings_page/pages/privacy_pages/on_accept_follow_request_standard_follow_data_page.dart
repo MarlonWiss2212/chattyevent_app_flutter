@@ -45,7 +45,7 @@ class OnAcceptFollowRequestStandardFollowDataPage extends StatelessWidget {
                             .currentUser
                             .settings
                             ?.onAcceptFollowRequestStandardFollowData
-                            ?.standardFollowedToGroupchatPermission ==
+                            ?.standardRequesterGroupchatAddPermission ==
                         "ADD",
                     onChanged: (value) {
                       BlocProvider.of<AuthCubit>(context).updateUser(
@@ -53,7 +53,7 @@ class OnAcceptFollowRequestStandardFollowDataPage extends StatelessWidget {
                           settings: UpdateUserSettingsDto(
                             onAcceptFollowRequestStandardFollowData:
                                 UpdateOnAcceptFollowRequestStandardFollowDataDto(
-                              standardFollowedToGroupchatPermission:
+                              standardRequesterGroupchatAddPermission:
                                   value ? "ADD" : "NONE",
                             ),
                           ),
@@ -71,7 +71,7 @@ class OnAcceptFollowRequestStandardFollowDataPage extends StatelessWidget {
                             .currentUser
                             .settings
                             ?.onAcceptFollowRequestStandardFollowData
-                            ?.standardFollowedToPrivateEventPermission ==
+                            ?.standardRequesterPrivateEventAddPermission ==
                         "ADD",
                     onChanged: (value) {
                       BlocProvider.of<AuthCubit>(context).updateUser(
@@ -79,7 +79,7 @@ class OnAcceptFollowRequestStandardFollowDataPage extends StatelessWidget {
                           settings: UpdateUserSettingsDto(
                             onAcceptFollowRequestStandardFollowData:
                                 UpdateOnAcceptFollowRequestStandardFollowDataDto(
-                              standardFollowedToPrivateEventPermission:
+                              standardRequesterPrivateEventAddPermission:
                                   value ? "ADD" : "NONE",
                             ),
                           ),

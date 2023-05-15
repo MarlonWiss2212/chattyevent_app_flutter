@@ -21,14 +21,14 @@ class AddUserGroupchatListWithSearchbar extends StatelessWidget {
             reloadRequest: ({String? text}) {
               BlocProvider.of<UserSearchCubit>(context)
                   .getUsersByPermissionViaApi(
-                followedToGroupchatPermission: "ADD",
+                requesterGroupchatAddPermission: "ADD",
               );
             },
             loadMoreRequest: ({String? text}) {
               BlocProvider.of<UserSearchCubit>(context)
                   .getUsersByPermissionViaApi(
                 loadMore: true,
-                followedToGroupchatPermission: "ADD",
+                requesterGroupchatAddPermission: "ADD",
               );
             },
             userButton: (user) => Button(

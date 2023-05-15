@@ -20,7 +20,7 @@ class _ChatAddUserPageState extends State<ChatAddUserPage> {
   @override
   void initState() {
     BlocProvider.of<UserSearchCubit>(context).getUsersByPermissionViaApi(
-      followedToGroupchatPermission: "ADD",
+      requesterGroupchatAddPermission: "ADD",
     );
     super.initState();
   }

@@ -19,7 +19,7 @@ class _NewGroupchatSelectUserTabState extends State<NewGroupchatSelectUserTab> {
   @override
   void initState() {
     BlocProvider.of<UserSearchCubit>(context).getUsersByPermissionViaApi(
-      followedToGroupchatPermission: "ADD",
+      requesterGroupchatAddPermission: "ADD",
     );
     super.initState();
   }
@@ -59,14 +59,14 @@ class _NewGroupchatSelectUserTabState extends State<NewGroupchatSelectUserTab> {
                   reloadRequest: ({String? text}) {
                     BlocProvider.of<UserSearchCubit>(context)
                         .getUsersByPermissionViaApi(
-                      followedToGroupchatPermission: "ADD",
+                      requesterGroupchatAddPermission: "ADD",
                     );
                   },
                   loadMoreRequest: ({String? text}) {
                     BlocProvider.of<UserSearchCubit>(context)
                         .getUsersByPermissionViaApi(
                       loadMore: true,
-                      followedToGroupchatPermission: "ADD",
+                      requesterGroupchatAddPermission: "ADD",
                     );
                   },
                   showTextSearch: false,

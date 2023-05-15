@@ -35,8 +35,8 @@ class UserRelationRepositoryImpl extends UserRelationRepository {
             requesterUserId
             statusOnRelatedUser
             followData {
-              followedToPrivateEventPermission
-              followedToGroupchatPermission
+              requesterPrivateEventAddPermission
+              requesterGroupchatAddPermission
               followedUserAt
             }
           }
@@ -76,8 +76,8 @@ class UserRelationRepositoryImpl extends UserRelationRepository {
             requesterUserId
             statusOnRelatedUser
             followData {
-              followedToPrivateEventPermission
-              followedToGroupchatPermission
+              requesterPrivateEventAddPermission
+              requesterGroupchatAddPermission
               followedUserAt
             }
           }
@@ -131,8 +131,8 @@ class UserRelationRepositoryImpl extends UserRelationRepository {
               updatedAt
               statusOnRelatedUser
               followData {
-                followedToPrivateEventPermission
-                followedToGroupchatPermission
+                requesterPrivateEventAddPermission
+                requesterGroupchatAddPermission
                 followedUserAt
               }
             }
@@ -142,8 +142,8 @@ class UserRelationRepositoryImpl extends UserRelationRepository {
               updatedAt
               statusOnRelatedUser
               followData {
-                followedToPrivateEventPermission
-                followedToGroupchatPermission
+                requesterPrivateEventAddPermission
+                requesterGroupchatAddPermission
                 followedUserAt
               }
             }
@@ -203,8 +203,8 @@ class UserRelationRepositoryImpl extends UserRelationRepository {
               updatedAt
               statusOnRelatedUser
               followData {
-                followedToPrivateEventPermission
-                followedToGroupchatPermission
+                requesterPrivateEventAddPermission
+                requesterGroupchatAddPermission
                 followedUserAt
               }
             }
@@ -214,8 +214,8 @@ class UserRelationRepositoryImpl extends UserRelationRepository {
               updatedAt
               statusOnRelatedUser
               followData {
-                followedToPrivateEventPermission
-                followedToGroupchatPermission
+                requesterPrivateEventAddPermission
+                requesterGroupchatAddPermission
                 followedUserAt
               }
             }
@@ -274,8 +274,8 @@ class UserRelationRepositoryImpl extends UserRelationRepository {
               updatedAt
               statusOnRelatedUser
               followData {
-                followedToPrivateEventPermission
-                followedToGroupchatPermission
+                requesterPrivateEventAddPermission
+                requesterGroupchatAddPermission
                 followedUserAt
               }
             }
@@ -285,8 +285,8 @@ class UserRelationRepositoryImpl extends UserRelationRepository {
               updatedAt
               statusOnRelatedUser
               followData {
-                followedToPrivateEventPermission
-                followedToGroupchatPermission
+                requesterPrivateEventAddPermission
+                requesterGroupchatAddPermission
                 followedUserAt
               }
             }
@@ -331,8 +331,8 @@ class UserRelationRepositoryImpl extends UserRelationRepository {
             updatedAt            
             statusOnRelatedUser
             followData {
-              followedToPrivateEventPermission
-              followedToGroupchatPermission
+              requesterPrivateEventAddPermission
+              requesterGroupchatAddPermission
               followedUserAt
             }                
           }
@@ -371,8 +371,8 @@ class UserRelationRepositoryImpl extends UserRelationRepository {
             updatedAt            
             statusOnRelatedUser
             followData {
-              followedToPrivateEventPermission
-              followedToGroupchatPermission
+              requesterPrivateEventAddPermission
+              requesterGroupchatAddPermission
               followedUserAt
             } 
           }

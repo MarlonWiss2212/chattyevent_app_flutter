@@ -20,7 +20,7 @@ class _NewPrivateEventSearchUserTabState
   @override
   void initState() {
     BlocProvider.of<UserSearchCubit>(context).getUsersByPermissionViaApi(
-      followedToPrivateEventPermission: "ADD",
+      requesterPrivateEventAddPermission: "ADD",
     );
     super.initState();
   }
@@ -61,14 +61,14 @@ class _NewPrivateEventSearchUserTabState
                   reloadRequest: ({String? text}) {
                     BlocProvider.of<UserSearchCubit>(context)
                         .getUsersByPermissionViaApi(
-                      followedToPrivateEventPermission: "ADD",
+                      requesterPrivateEventAddPermission: "ADD",
                     );
                   },
                   loadMoreRequest: ({String? text}) {
                     BlocProvider.of<UserSearchCubit>(context)
                         .getUsersByPermissionViaApi(
                       loadMore: true,
-                      followedToPrivateEventPermission: "ADD",
+                      requesterPrivateEventAddPermission: "ADD",
                     );
                   },
                   showTextSearch: false,

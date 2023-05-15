@@ -1,6 +1,5 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:graphql/client.dart';
-import 'package:web_socket_channel/web_socket_channel.dart';
 
 GraphQLClient getGraphQlClient({
   String? token,
@@ -20,16 +19,8 @@ GraphQLClient getGraphQlClient({
     config: SocketClientConfig(
       inactivityTimeout: const Duration(hours: 1),
       autoReconnect: false,
-      connectFn: (uri, protocols) {
-        return WebSocketChannel.connect(uri, protocols: protocols).forGraphQL();
-      },
       initialPayload: {
-        "authorization": "Bearer $token",
-        "Apollo-Require-Preflight": "true",
-      },
-      headers: {
-        "authorization": "Bearer $token",
-        "Apollo-Require-Preflight": "true",
+        'authorization': 'Bearer $token',
       },
     ),
   );

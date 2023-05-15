@@ -1,9 +1,9 @@
 class OnAcceptFollowRequestStandardFollowDataEntity {
-  final String? standardFollowedToPrivateEventPermission;
-  final String? standardFollowedToGroupchatPermission;
+  final String? standardRequesterPrivateEventAddPermission;
+  final String? standardRequesterGroupchatAddPermission;
 
   OnAcceptFollowRequestStandardFollowDataEntity({
-    this.standardFollowedToPrivateEventPermission,
-    this.standardFollowedToGroupchatPermission,
+    this.standardRequesterPrivateEventAddPermission,
+    this.standardRequesterGroupchatAddPermission,
   });
 }

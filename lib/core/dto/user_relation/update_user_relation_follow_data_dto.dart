@@ -1,24 +1,25 @@
 class UpdateUserRelationFollowDataDto {
-  final String? followedToPrivateEventPermission;
-  final String? followedToGroupchatPermission;
+  final String? requesterPrivateEventAddPermission;
+  final String? requesterGroupchatAddPermission;
 
   UpdateUserRelationFollowDataDto({
-    this.followedToPrivateEventPermission,
-    this.followedToGroupchatPermission,
+    this.requesterPrivateEventAddPermission,
+    this.requesterGroupchatAddPermission,
   });
 
   Map<dynamic, dynamic> toMap() {
     Map<dynamic, dynamic> map = {};
 
-    if (followedToPrivateEventPermission != null) {
+    if (requesterPrivateEventAddPermission != null) {
       map.addAll({
-        "followedToPrivateEventPermission": followedToPrivateEventPermission,
+        "requesterPrivateEventAddPermission":
+            requesterPrivateEventAddPermission,
       });
     }
 
-    if (followedToGroupchatPermission != null) {
+    if (requesterGroupchatAddPermission != null) {
       map.addAll({
-        "followedToGroupchatPermission": followedToGroupchatPermission,
+        "requesterGroupchatAddPermission": requesterGroupchatAddPermission,
       });
     }
 

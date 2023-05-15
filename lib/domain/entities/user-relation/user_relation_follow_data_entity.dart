@@ -1,11 +1,11 @@
 class UserRelationFollowDataEntity {
-  final String? followedToPrivateEventPermission;
-  final String? followedToGroupchatPermission;
+  final String? requesterPrivateEventAddPermission;
+  final String? requesterGroupchatAddPermission;
   final DateTime? followedUserAt;
 
   UserRelationFollowDataEntity({
-    this.followedToPrivateEventPermission,
-    this.followedToGroupchatPermission,
+    this.requesterPrivateEventAddPermission,
+    this.requesterGroupchatAddPermission,
     this.followedUserAt,
   });
 
@@ -14,11 +14,12 @@ class UserRelationFollowDataEntity {
     required UserRelationFollowDataEntity oldEntity,
   }) {
     return UserRelationFollowDataEntity(
-      followedToPrivateEventPermission:
-          newEntity.followedToPrivateEventPermission ??
-              oldEntity.followedToPrivateEventPermission,
-      followedToGroupchatPermission: newEntity.followedToGroupchatPermission ??
-          oldEntity.followedToGroupchatPermission,
+      requesterPrivateEventAddPermission:
+          newEntity.requesterPrivateEventAddPermission ??
+              oldEntity.requesterPrivateEventAddPermission,
+      requesterGroupchatAddPermission:
+          newEntity.requesterGroupchatAddPermission ??
+              oldEntity.requesterGroupchatAddPermission,
       followedUserAt: newEntity.followedUserAt ?? oldEntity.followedUserAt,
     );
   }

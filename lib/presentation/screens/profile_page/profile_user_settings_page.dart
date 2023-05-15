@@ -38,14 +38,15 @@ class ProfileUserSettingsPage extends StatelessWidget {
                   return SwitchListTile.adaptive(
                     title: const Text("Darf dich in Gruppenchats adden"),
                     value: state.user.otherUserRelationToMyUser?.followData
-                            ?.followedToGroupchatPermission ==
+                            ?.requesterGroupchatAddPermission ==
                         "ADD",
                     onChanged: (value) {
                       BlocProvider.of<ProfilePageCubit>(context)
                           .updateFollowDataCurrentProfileUserViaApi(
                         updateUserRelationFollowDataDto:
                             UpdateUserRelationFollowDataDto(
-                          followedToGroupchatPermission: value ? "ADD" : "NONE",
+                          requesterGroupchatAddPermission:
+                              value ? "ADD" : "NONE",
                         ),
                       );
                     },
@@ -57,14 +58,14 @@ class ProfileUserSettingsPage extends StatelessWidget {
                   return SwitchListTile.adaptive(
                     title: const Text("Darf dich in Events adden"),
                     value: state.user.otherUserRelationToMyUser?.followData
-                            ?.followedToPrivateEventPermission ==
+                            ?.requesterPrivateEventAddPermission ==
                         "ADD",
                     onChanged: (value) {
                       BlocProvider.of<ProfilePageCubit>(context)
                           .updateFollowDataCurrentProfileUserViaApi(
                         updateUserRelationFollowDataDto:
                             UpdateUserRelationFollowDataDto(
-                          followedToPrivateEventPermission:
+                          requesterPrivateEventAddPermission:
                               value ? "ADD" : "NONE",
                         ),
                       );

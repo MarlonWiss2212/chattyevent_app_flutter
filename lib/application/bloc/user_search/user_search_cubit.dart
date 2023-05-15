@@ -63,8 +63,8 @@ class UserSearchCubit extends Cubit<UserSearchState> {
 
   Future getUsersByPermissionViaApi({
     bool loadMore = false,
-    String? followedToGroupchatPermission,
-    String? followedToPrivateEventPermission,
+    String? requesterGroupchatAddPermission,
+    String? requesterPrivateEventAddPermission,
   }) async {
     emit(UserSearchState(
       status: UserSearchStateStatus.loading,
@@ -75,8 +75,8 @@ class UserSearchCubit extends Cubit<UserSearchState> {
         await userRelationUseCases.getFollowedViaApi(
       findFollowedFilter: FindFollowedFilter(
         requesterUserId: authCubit.state.currentUser.id,
-        followedToGroupchatPermission: followedToGroupchatPermission,
-        followedToPrivateEventPermission: followedToPrivateEventPermission,
+        requesterGroupchatAddPermission: requesterGroupchatAddPermission,
+        requesterPrivateEventAddPermission: requesterPrivateEventAddPermission,
       ),
       limitOffsetFilter: LimitOffsetFilter(
         limit: 20,

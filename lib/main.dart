@@ -49,7 +49,6 @@ Future<void> main() async {
     token: token,
     status: token != null ? AuthStateStatus.loggedIn : AuthStateStatus.initial,
   );
-
   runApp(
     BlocProvider.value(
       value: NotificationCubit(),

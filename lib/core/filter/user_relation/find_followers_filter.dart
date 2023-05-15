@@ -1,26 +1,27 @@
 class FindFollowersFilter {
   final String targetUserId;
-  final String? followedToPrivateEventPermission;
-  final String? followedToGroupchatPermission;
+  final String? requesterPrivateEventAddPermission;
+  final String? requesterGroupchatAddPermission;
 
   FindFollowersFilter({
     required this.targetUserId,
-    this.followedToGroupchatPermission,
-    this.followedToPrivateEventPermission,
+    this.requesterGroupchatAddPermission,
+    this.requesterPrivateEventAddPermission,
   });
 
   Map<dynamic, dynamic> toMap() {
     Map<dynamic, dynamic> map = {"targetUserId": targetUserId};
 
-    if (followedToPrivateEventPermission != null) {
+    if (requesterPrivateEventAddPermission != null) {
       map.addAll({
-        "followedToPrivateEventPermission": followedToPrivateEventPermission,
+        "requesterPrivateEventAddPermission":
+            requesterPrivateEventAddPermission,
       });
     }
 
-    if (followedToGroupchatPermission != null) {
+    if (requesterGroupchatAddPermission != null) {
       map.addAll({
-        "followedToGroupchatPermission": followedToGroupchatPermission,
+        "requesterGroupchatAddPermission": requesterGroupchatAddPermission,
       });
     }
 

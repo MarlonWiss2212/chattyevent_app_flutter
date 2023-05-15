@@ -47,7 +47,7 @@ class ProfileFollowerUserSettingsPage extends StatelessWidget {
                             .followers?[followerIndex]
                             .otherUserRelationToMyUser
                             ?.followData
-                            ?.followedToGroupchatPermission ==
+                            ?.requesterGroupchatAddPermission ==
                         "ADD",
                     onChanged: (value) {
                       BlocProvider.of<ProfilePageCubit>(context)
@@ -55,7 +55,8 @@ class ProfileFollowerUserSettingsPage extends StatelessWidget {
                         followerIndex: followerIndex,
                         updateUserRelationFollowDataDto:
                             UpdateUserRelationFollowDataDto(
-                          followedToGroupchatPermission: value ? "ADD" : "NONE",
+                          requesterGroupchatAddPermission:
+                              value ? "ADD" : "NONE",
                         ),
                       );
                     },
@@ -70,7 +71,7 @@ class ProfileFollowerUserSettingsPage extends StatelessWidget {
                             .followers?[followerIndex]
                             .otherUserRelationToMyUser
                             ?.followData
-                            ?.followedToPrivateEventPermission ==
+                            ?.requesterPrivateEventAddPermission ==
                         "ADD",
                     onChanged: (value) {
                       BlocProvider.of<ProfilePageCubit>(context)
@@ -78,7 +79,7 @@ class ProfileFollowerUserSettingsPage extends StatelessWidget {
                         followerIndex: followerIndex,
                         updateUserRelationFollowDataDto:
                             UpdateUserRelationFollowDataDto(
-                          followedToPrivateEventPermission:
+                          requesterPrivateEventAddPermission:
                               value ? "ADD" : "NONE",
                         ),
                       );

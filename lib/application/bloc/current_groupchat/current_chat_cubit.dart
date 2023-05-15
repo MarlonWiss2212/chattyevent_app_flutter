@@ -49,7 +49,9 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
     required this.chatCubit,
     required this.notificationCubit,
     required this.groupchatMessageUseCases,
-  }) {
+  });
+
+  void listenToMessages() {
     final eitherAlertOrStream =
         groupchatMessageUseCases.getGroupchatMessagesRealtimeViaApi(
       addedGroupchatMessageFilter: AddedGroupchatMessageFilter(
@@ -89,6 +91,7 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
   @override
   Future<void> close() {
     _subscription?.cancel();
+    _subscription = null;
     return super.close();
   }
 

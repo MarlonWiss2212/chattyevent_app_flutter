@@ -1,25 +1,25 @@
 class UpdateOnAcceptFollowRequestStandardFollowDataDto {
-  final String? standardFollowedToPrivateEventPermission;
-  final String? standardFollowedToGroupchatPermission;
+  final String? standardRequesterPrivateEventAddPermission;
+  final String? standardRequesterGroupchatAddPermission;
 
   UpdateOnAcceptFollowRequestStandardFollowDataDto({
-    this.standardFollowedToGroupchatPermission,
-    this.standardFollowedToPrivateEventPermission,
+    this.standardRequesterGroupchatAddPermission,
+    this.standardRequesterPrivateEventAddPermission,
   });
 
   Map<dynamic, dynamic> toMap() {
     Map<dynamic, dynamic> variables = {};
 
-    if (standardFollowedToGroupchatPermission != null) {
+    if (standardRequesterGroupchatAddPermission != null) {
       variables.addAll({
-        "standardFollowedToGroupchatPermission":
-            standardFollowedToGroupchatPermission
+        "standardRequesterGroupchatAddPermission":
+            standardRequesterGroupchatAddPermission
       });
     }
-    if (standardFollowedToPrivateEventPermission != null) {
+    if (standardRequesterPrivateEventAddPermission != null) {
       variables.addAll({
-        "standardFollowedToPrivateEventPermission":
-            standardFollowedToPrivateEventPermission
+        "standardRequesterPrivateEventAddPermission":
+            standardRequesterPrivateEventAddPermission
       });
     }
     return variables;

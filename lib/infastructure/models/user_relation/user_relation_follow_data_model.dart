@@ -2,20 +2,21 @@ import 'package:chattyevent_app_flutter/domain/entities/user-relation/user_relat
 
 class UserRelationFollowDataModel extends UserRelationFollowDataEntity {
   UserRelationFollowDataModel({
-    String? followedToGroupchatPermission,
-    String? followedToPrivateEventPermission,
+    String? requesterGroupchatAddPermission,
+    String? requesterPrivateEventAddPermission,
     DateTime? followedUserAt,
   }) : super(
-          followedToGroupchatPermission: followedToGroupchatPermission,
-          followedToPrivateEventPermission: followedToPrivateEventPermission,
+          requesterGroupchatAddPermission: requesterGroupchatAddPermission,
+          requesterPrivateEventAddPermission:
+              requesterPrivateEventAddPermission,
           followedUserAt: followedUserAt,
         );
 
   factory UserRelationFollowDataModel.fromJson(Map<String, dynamic> json) {
     return UserRelationFollowDataModel(
-      followedToGroupchatPermission: json['followedToGroupchatPermission'],
-      followedToPrivateEventPermission:
-          json['followedToPrivateEventPermission'],
+      requesterGroupchatAddPermission: json['requesterGroupchatAddPermission'],
+      requesterPrivateEventAddPermission:
+          json['requesterPrivateEventAddPermission'],
       followedUserAt: json['followedUserAt'] != null
           ? DateTime.parse(json['followedUserAt'])
           : null,

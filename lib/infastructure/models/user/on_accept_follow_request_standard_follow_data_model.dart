@@ -3,22 +3,22 @@ import 'package:chattyevent_app_flutter/domain/entities/user/on_accept_follow_re
 class OnAcceptFollowRequestStandardFollowDataModel
     extends OnAcceptFollowRequestStandardFollowDataEntity {
   OnAcceptFollowRequestStandardFollowDataModel({
-    String? standardFollowedToPrivateEventPermission,
-    String? standardFollowedToGroupchatPermission,
+    String? standardRequesterPrivateEventAddPermission,
+    String? standardRequesterGroupchatAddPermission,
   }) : super(
-          standardFollowedToGroupchatPermission:
-              standardFollowedToGroupchatPermission,
-          standardFollowedToPrivateEventPermission:
-              standardFollowedToPrivateEventPermission,
+          standardRequesterGroupchatAddPermission:
+              standardRequesterGroupchatAddPermission,
+          standardRequesterPrivateEventAddPermission:
+              standardRequesterPrivateEventAddPermission,
         );
 
   factory OnAcceptFollowRequestStandardFollowDataModel.fromJson(
       Map<String, dynamic> json) {
     return OnAcceptFollowRequestStandardFollowDataModel(
-      standardFollowedToGroupchatPermission:
-          json['standardFollowedToGroupchatPermission'],
-      standardFollowedToPrivateEventPermission:
-          json['standardFollowedToPrivateEventPermission'],
+      standardRequesterGroupchatAddPermission:
+          json['standardRequesterGroupchatAddPermission'],
+      standardRequesterPrivateEventAddPermission:
+          json['standardRequesterPrivateEventAddPermission'],
     );
   }
 }

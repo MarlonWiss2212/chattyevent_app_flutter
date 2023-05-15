@@ -42,8 +42,8 @@ class UserRepositoryImpl implements UserRepository {
             }
             settings {
               onAcceptFollowRequestStandardFollowData {
-                standardFollowedToPrivateEventPermission
-                standardFollowedToGroupchatPermission
+                standardRequesterPrivateEventAddPermission
+                standardRequesterGroupchatAddPermission
               }
             }
             myUserRelationToOtherUser {
@@ -52,8 +52,8 @@ class UserRepositoryImpl implements UserRepository {
               updatedAt
               statusOnRelatedUser
               followData {
-                followedToPrivateEventPermission
-                followedToGroupchatPermission
+                requesterPrivateEventAddPermission
+                requesterGroupchatAddPermission
                 followedUserAt
               }
             }
@@ -63,8 +63,8 @@ class UserRepositoryImpl implements UserRepository {
               updatedAt
               statusOnRelatedUser
               followData {
-                followedToPrivateEventPermission
-                followedToGroupchatPermission
+                requesterPrivateEventAddPermission
+                requesterGroupchatAddPermission
                 followedUserAt
               }
             }
@@ -169,8 +169,8 @@ class UserRepositoryImpl implements UserRepository {
             }
             settings {
               onAcceptFollowRequestStandardFollowData {
-                standardFollowedToPrivateEventPermission
-                standardFollowedToGroupchatPermission
+                standardRequesterPrivateEventAddPermission
+                standardRequesterGroupchatAddPermission
               }
             }
             myUserRelationToOtherUser {
@@ -179,8 +179,8 @@ class UserRepositoryImpl implements UserRepository {
               updatedAt
               statusOnRelatedUser
               followData {
-                followedToPrivateEventPermission
-                followedToGroupchatPermission
+                requesterPrivateEventAddPermission
+                requesterGroupchatAddPermission
                 followedUserAt
               }
             }
@@ -190,8 +190,8 @@ class UserRepositoryImpl implements UserRepository {
               updatedAt
               statusOnRelatedUser
               followData {
-                followedToPrivateEventPermission
-                followedToGroupchatPermission
+                requesterPrivateEventAddPermission
+                requesterGroupchatAddPermission
                 followedUserAt
               }
             }
@@ -272,8 +272,8 @@ class UserRepositoryImpl implements UserRepository {
             }
             settings {
               onAcceptFollowRequestStandardFollowData {
-                standardFollowedToPrivateEventPermission
-                standardFollowedToGroupchatPermission
+                standardRequesterPrivateEventAddPermission
+                standardRequesterGroupchatAddPermission
               }
             }
             myUserRelationToOtherUser {
@@ -282,8 +282,8 @@ class UserRepositoryImpl implements UserRepository {
               updatedAt
               statusOnRelatedUser
               followData {
-                followedToPrivateEventPermission
-                followedToGroupchatPermission
+                requesterPrivateEventAddPermission
+                requesterGroupchatAddPermission
                 followedUserAt
               }
             }
@@ -293,8 +293,8 @@ class UserRepositoryImpl implements UserRepository {
               updatedAt
               statusOnRelatedUser
               followData {
-                followedToPrivateEventPermission
-                followedToGroupchatPermission
+                requesterPrivateEventAddPermission
+                requesterGroupchatAddPermission
                 followedUserAt
               }
             }
