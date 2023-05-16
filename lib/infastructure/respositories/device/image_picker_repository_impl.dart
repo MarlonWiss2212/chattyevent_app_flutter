@@ -1,3 +1,4 @@
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/device/image_picker_repository.dart';
@@ -35,5 +36,18 @@ class ImagePickerRepositoryImpl implements ImagePickerRepository {
   @override
   Future<XFile?> getImageFromGallery() async {
     return await imagePickerDatasource.getImageFromGallery();
+  }
+
+  @override
+  Future<CroppedFile?> cropImage({
+    required String sourcePath,
+    required int compressQuality,
+    required CropAspectRatio aspectRatio,
+  }) {
+    return imagePickerDatasource.cropImage(
+      sourcePath: sourcePath,
+      compressQuality: compressQuality,
+      aspectRatio: aspectRatio,
+    );
   }
 }

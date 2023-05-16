@@ -29,6 +29,9 @@ class ImagePickerUseCases {
 
   Future<Either<NotificationAlert, File>> getImageFromCameraWithPermissions({
     CropAspectRatio? cropAspectRatio,
+
+    /// 0 to 100
+    int quality = 50,
   }) async {
     PermissionStatus permissionStatus = await getCameraPermissionStatus();
 
@@ -51,9 +54,10 @@ class ImagePickerUseCases {
     }
 
     if (cropAspectRatio != null) {
-      final croppedImage = await ImageCropper().cropImage(
+      final croppedImage = await imagePickerRepository.cropImage(
         sourcePath: image.path,
         aspectRatio: cropAspectRatio,
+        compressQuality: quality,
       );
 
       if (croppedImage != null) {
@@ -70,6 +74,9 @@ class ImagePickerUseCases {
 
   Future<Either<NotificationAlert, File>> getImageFromPhotosWithPermissions({
     CropAspectRatio? cropAspectRatio,
+
+    /// 0 to 100
+    int quality = 50,
   }) async {
     final permissionStatus = await getPhotosPermissionStatus();
 
@@ -92,9 +99,10 @@ class ImagePickerUseCases {
     }
 
     if (cropAspectRatio != null) {
-      final croppedImage = await ImageCropper().cropImage(
+      final croppedImage = await imagePickerRepository.cropImage(
         sourcePath: image.path,
         aspectRatio: cropAspectRatio,
+        compressQuality: quality,
       );
 
       if (croppedImage != null) {

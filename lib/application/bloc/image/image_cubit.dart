@@ -20,8 +20,10 @@ class ImageCubit extends Cubit<ImageState> {
   Future getImageFromCamera({CropAspectRatio? cropAspectRatio}) async {
     emit(ImageLoading());
 
-    final imagePickerErrorOrImage = await imagePickerUseCases
-        .getImageFromCameraWithPermissions(cropAspectRatio: cropAspectRatio);
+    final imagePickerErrorOrImage =
+        await imagePickerUseCases.getImageFromCameraWithPermissions(
+      cropAspectRatio: cropAspectRatio,
+    );
 
     imagePickerErrorOrImage.fold(
       (alert) => notificationCubit.newAlert(notificationAlert: alert),

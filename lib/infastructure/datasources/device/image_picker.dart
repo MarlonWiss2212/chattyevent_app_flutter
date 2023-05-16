@@ -1,3 +1,4 @@
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -10,10 +11,17 @@ abstract class ImagePickerDatasource {
 
   Future<XFile?> getImageFromGallery();
   Future<XFile?> getImageFromCamera();
+
+  Future<CroppedFile?> cropImage({
+    required String sourcePath,
+    required int compressQuality,
+    required CropAspectRatio aspectRatio,
+  });
 }
 
 class ImagePickerDatasourceImpl implements ImagePickerDatasource {
   final ImagePicker _picker = ImagePicker();
+  final ImageCropper _cropper = ImageCropper();
 
   @override
   Future<PermissionStatus> requestCameraPermission() async {
@@ -43,5 +51,18 @@ class ImagePickerDatasourceImpl implements ImagePickerDatasource {
   @override
   Future<XFile?> getImageFromCamera() async {
     return await _picker.pickImage(source: ImageSource.camera);
+  }
+
+  @override
+  Future<CroppedFile?> cropImage({
+    required String sourcePath,
+    required int compressQuality,
+    required CropAspectRatio aspectRatio,
+  }) {
+    return _cropper.cropImage(
+      sourcePath: sourcePath,
+      compressQuality: compressQuality,
+      aspectRatio: aspectRatio,
+    );
   }
 }
