@@ -97,22 +97,44 @@ class HomeEventCubit extends Cubit<HomeEventState> {
       (alert) => notificationCubit.newAlert(notificationAlert: alert),
       (privateEvents) {
         emitState(status: HomeEventStateStatus.success);
-        replaceOrAddMultiple(
-          privateEventStates: privateEvents
-              .map(
-                (e) => CurrentPrivateEventState(
-                  privateEvent: e,
-                  loadingGroupchat: false,
-                  loadingPrivateEvent: false,
-                  loadingShoppingList: false,
-                  currentUserIndex: -1,
-                  privateEventUsers: [],
-                  privateEventLeftUsers: [],
-                  shoppingListItemStates: [],
+
+        if (reload) {
+          final pastEvents = state.getPastEvents();
+          emitState(
+            privateEvents: pastEvents
+              ..addAll(
+                privateEvents.map(
+                  (e) => CurrentPrivateEventState(
+                    privateEvent: e,
+                    loadingGroupchat: false,
+                    loadingPrivateEvent: false,
+                    loadingShoppingList: false,
+                    currentUserIndex: -1,
+                    privateEventUsers: [],
+                    privateEventLeftUsers: [],
+                    shoppingListItemStates: [],
+                  ),
                 ),
-              )
-              .toList(),
-        );
+              ),
+          );
+        } else {
+          replaceOrAddMultiple(
+            privateEventStates: privateEvents
+                .map(
+                  (e) => CurrentPrivateEventState(
+                    privateEvent: e,
+                    loadingGroupchat: false,
+                    loadingPrivateEvent: false,
+                    loadingShoppingList: false,
+                    currentUserIndex: -1,
+                    privateEventUsers: [],
+                    privateEventLeftUsers: [],
+                    shoppingListItemStates: [],
+                  ),
+                )
+                .toList(),
+          );
+        }
       },
     );
   }
@@ -142,22 +164,44 @@ class HomeEventCubit extends Cubit<HomeEventState> {
       (alert) => notificationCubit.newAlert(notificationAlert: alert),
       (privateEvents) {
         emitState(status: HomeEventStateStatus.success);
-        replaceOrAddMultiple(
-          privateEventStates: privateEvents
-              .map(
-                (e) => CurrentPrivateEventState(
-                  privateEvent: e,
-                  loadingGroupchat: false,
-                  loadingPrivateEvent: false,
-                  loadingShoppingList: false,
-                  currentUserIndex: -1,
-                  privateEventUsers: [],
-                  privateEventLeftUsers: [],
-                  shoppingListItemStates: [],
+
+        if (reload) {
+          final futureEvents = state.getFutureEvents();
+          emitState(
+            privateEvents: futureEvents
+              ..addAll(
+                privateEvents.map(
+                  (e) => CurrentPrivateEventState(
+                    privateEvent: e,
+                    loadingGroupchat: false,
+                    loadingPrivateEvent: false,
+                    loadingShoppingList: false,
+                    currentUserIndex: -1,
+                    privateEventUsers: [],
+                    privateEventLeftUsers: [],
+                    shoppingListItemStates: [],
+                  ),
                 ),
-              )
-              .toList(),
-        );
+              ),
+          );
+        } else {
+          replaceOrAddMultiple(
+            privateEventStates: privateEvents
+                .map(
+                  (e) => CurrentPrivateEventState(
+                    privateEvent: e,
+                    loadingGroupchat: false,
+                    loadingPrivateEvent: false,
+                    loadingShoppingList: false,
+                    currentUserIndex: -1,
+                    privateEventUsers: [],
+                    privateEventLeftUsers: [],
+                    shoppingListItemStates: [],
+                  ),
+                )
+                .toList(),
+          );
+        }
       },
     );
   }
