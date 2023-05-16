@@ -15,7 +15,7 @@ GraphQLClient getGraphQlClient({
 
   final WebSocketLink webSocketLink = WebSocketLink(
     "wss://${dotenv.get("API_BASE_URL")}/graphql",
-    subProtocol: GraphQLProtocol.graphqlWs,
+    subProtocol: GraphQLProtocol.graphqlTransportWs,
     config: SocketClientConfig(
       inactivityTimeout: const Duration(hours: 1),
       autoReconnect: false,
