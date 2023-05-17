@@ -1,9 +1,10 @@
+import 'package:chattyevent_app_flutter/domain/entities/geo_json/geo_json_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/private_event/private_event_location_entity.dart';
+import 'package:chattyevent_app_flutter/infastructure/models/geo_json/geo_json_model.dart';
 
 class PrivateEventLocationModel extends PrivateEventLocationEntity {
   PrivateEventLocationModel({
-    required double latitude,
-    required double longitude,
+    GeoJsonEntity? geoJsonLocation,
     String? city,
     String? country,
     String? zip,
@@ -15,18 +16,16 @@ class PrivateEventLocationModel extends PrivateEventLocationEntity {
           zip: zip,
           street: street,
           housenumber: housenumber,
-          latitude: latitude,
-          longitude: longitude,
+          geoJsonLocation: geoJsonLocation,
         );
 
   factory PrivateEventLocationModel.fromJson(Map<String, dynamic> json) {
     return PrivateEventLocationModel(
-      latitude: json["latitude"] is double
-          ? json["latitude"]
-          : double.tryParse(json["latitude"].toString()),
-      longitude: json["longitude"] is double
-          ? json["longitude"]
-          : double.tryParse(json["longitude"].toString()),
+      geoJsonLocation: json["geoJsonLocation"] != null
+          ? GeoJsonModel.fromJson(
+              json["geoJsonLocation"],
+            )
+          : null,
       city: json['city'],
       country: json['country'],
       zip: json['zip'],

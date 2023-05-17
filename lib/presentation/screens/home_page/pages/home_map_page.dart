@@ -63,18 +63,19 @@ class _HomeMapPageState extends State<HomeMapPage> {
                         List<Marker> markers = [];
                         for (final eventState in state.privateEvents) {
                           if (eventState.privateEvent.eventLocation != null &&
-                              eventState
-                                      .privateEvent.eventLocation!.longitude !=
+                              eventState.privateEvent.eventLocation!
+                                      .geoJsonLocation !=
                                   null &&
-                              eventState.privateEvent.eventLocation!.latitude !=
+                              eventState.privateEvent.eventLocation!
+                                      .geoJsonLocation!.coordinates !=
                                   null) {
                             markers.add(
                               Marker(
                                 point: LatLng(
-                                  eventState
-                                      .privateEvent.eventLocation!.latitude!,
-                                  eventState
-                                      .privateEvent.eventLocation!.longitude!,
+                                  eventState.privateEvent.eventLocation!
+                                      .geoJsonLocation!.coordinates![1],
+                                  eventState.privateEvent.eventLocation!
+                                      .geoJsonLocation!.coordinates![0],
                                 ),
                                 height: 50,
                                 width: 100,

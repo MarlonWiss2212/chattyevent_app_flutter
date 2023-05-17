@@ -1,6 +1,7 @@
+import 'package:chattyevent_app_flutter/domain/entities/geo_json/geo_json_entity.dart';
+
 class PrivateEventLocationEntity {
-  final double? latitude;
-  final double? longitude;
+  final GeoJsonEntity? geoJsonLocation;
   final String? country;
   final String? zip;
   final String? city;
@@ -8,8 +9,7 @@ class PrivateEventLocationEntity {
   final String? housenumber;
 
   PrivateEventLocationEntity({
-    this.latitude,
-    this.longitude,
+    this.geoJsonLocation,
     this.country,
     this.zip,
     this.city,
@@ -22,8 +22,7 @@ class PrivateEventLocationEntity {
     required PrivateEventLocationEntity oldEntity,
   }) {
     return PrivateEventLocationEntity(
-      latitude: newEntity.latitude ?? oldEntity.latitude,
-      longitude: newEntity.longitude ?? oldEntity.longitude,
+      geoJsonLocation: newEntity.geoJsonLocation ?? oldEntity.geoJsonLocation,
       country: newEntity.country ?? oldEntity.country,
       zip: newEntity.zip ?? oldEntity.zip,
       city: newEntity.city ?? oldEntity.city,

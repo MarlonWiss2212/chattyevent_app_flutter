@@ -16,8 +16,9 @@ class PrivateEventTabInfoLocationMap extends StatelessWidget {
     return BlocBuilder<CurrentPrivateEventCubit, CurrentPrivateEventState>(
       builder: (context, state) {
         if (state.privateEvent.eventLocation != null &&
-            state.privateEvent.eventLocation!.longitude != null &&
-            state.privateEvent.eventLocation!.latitude != null) {
+            state.privateEvent.eventLocation!.geoJsonLocation != null &&
+            state.privateEvent.eventLocation!.geoJsonLocation!.coordinates !=
+                null) {
           return Container(
             width: size.width,
             padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -31,8 +32,10 @@ class PrivateEventTabInfoLocationMap extends StatelessWidget {
                 options: MapOptions(
                   interactiveFlags: InteractiveFlag.none,
                   center: LatLng(
-                    state.privateEvent.eventLocation!.latitude!,
-                    state.privateEvent.eventLocation!.longitude!,
+                    state.privateEvent.eventLocation!.geoJsonLocation!
+                        .coordinates![1],
+                    state.privateEvent.eventLocation!.geoJsonLocation!
+                        .coordinates![0],
                   ),
                 ),
                 children: [
@@ -44,8 +47,10 @@ class PrivateEventTabInfoLocationMap extends StatelessWidget {
                     markers: [
                       Marker(
                         point: LatLng(
-                          state.privateEvent.eventLocation!.latitude!,
-                          state.privateEvent.eventLocation!.longitude!,
+                          state.privateEvent.eventLocation!.geoJsonLocation!
+                              .coordinates![1],
+                          state.privateEvent.eventLocation!.geoJsonLocation!
+                              .coordinates![0],
                         ),
                         builder: (context) {
                           return CircleImage(

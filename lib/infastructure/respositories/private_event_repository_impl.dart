@@ -58,8 +58,10 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
             eventEndDate
             groupchatTo
             eventLocation {
-              latitude
-              longitude
+              geoJsonLocation {
+                type
+                coordinates
+              }
               zip
               city
               country
@@ -107,8 +109,10 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
             coverImageLink
             description
             eventLocation {
-              latitude
-              longitude
+              geoJsonLocation {
+                type
+                coordinates
+              }
               zip
               city
               country
@@ -188,8 +192,10 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
             coverImageLink
             description
             eventLocation {
-              latitude
-              longitude
+              geoJsonLocation {
+                type
+                coordinates
+              }
               zip
               city
               country
@@ -343,8 +349,10 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
             eventDate
             eventEndDate
             eventLocation {
-              latitude
-              longitude
+              geoJsonLocation {
+                type
+                coordinates
+              }
             }
             coverImageLink
           }
@@ -404,8 +412,10 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
             coverImageLink
             description
             eventLocation {
-              latitude
-              longitude
+              geoJsonLocation {
+                type
+                coordinates
+              }
               zip
               city
               country
