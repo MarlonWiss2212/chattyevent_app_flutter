@@ -49,7 +49,7 @@ class OnAcceptFollowRequestStandardFollowDataPage extends StatelessWidget {
                             .settings
                             ?.onAcceptFollowRequestStandardFollowData
                             ?.standardRequesterGroupchatAddPermission ==
-                        "ADD",
+                        RequesterGroupchatAddPermissionEnum.add,
                     onChanged: (value) {
                       BlocProvider.of<AuthCubit>(context).updateUser(
                         updateUserDto: UpdateUserDto(
