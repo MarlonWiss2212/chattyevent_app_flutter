@@ -35,7 +35,7 @@ class _SettingsPrivacyPageState extends State<SettingsPrivacyPage> {
                 ListTile(
                   leading: const Icon(Icons.person_add),
                   title: Text(
-                    "Neue Anfrage Standardeinstellungen",
+                    "Neue Anfrage Standard",
                     style: Theme.of(context).textTheme.titleMedium,
                     overflow: TextOverflow.ellipsis,
                   ),

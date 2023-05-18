@@ -19,9 +19,9 @@ extension RequesterPrivateEventAddPermissionEnumExtension
   static RequesterPrivateEventAddPermissionEnum fromValue(String value) {
     switch (value) {
       case 'NONE':
-        return RequesterPrivateEventAddPermissionEnum.add;
-      case 'ADD':
         return RequesterPrivateEventAddPermissionEnum.none;
+      case 'ADD':
+        return RequesterPrivateEventAddPermissionEnum.add;
       default:
         throw Exception('Invalid value');
     }

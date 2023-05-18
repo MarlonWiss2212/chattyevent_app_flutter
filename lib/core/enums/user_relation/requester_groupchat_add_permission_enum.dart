@@ -19,9 +19,9 @@ extension RequesterGroupchatAddPermissionEnumExtension
   static RequesterGroupchatAddPermissionEnum fromValue(String value) {
     switch (value) {
       case 'NONE':
-        return RequesterGroupchatAddPermissionEnum.add;
-      case 'ADD':
         return RequesterGroupchatAddPermissionEnum.none;
+      case 'ADD':
+        return RequesterGroupchatAddPermissionEnum.add;
       default:
         throw Exception('Invalid value');
     }
