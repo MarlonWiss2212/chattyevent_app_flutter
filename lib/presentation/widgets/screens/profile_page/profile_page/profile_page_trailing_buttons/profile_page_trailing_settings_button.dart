@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:chattyevent_app_flutter/core/enums/user_relation/user_relation_status_enum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
@@ -24,7 +25,7 @@ class ProfilePageTrailingSettingsButton extends StatelessWidget {
               );
             } else if (state.user.otherUserRelationToMyUser != null &&
                 state.user.otherUserRelationToMyUser!.statusOnRelatedUser ==
-                    "FOLLOWER") {
+                    UserRelationStatusEnum.follower) {
               return IconButton(
                 onPressed: () => AutoRouter.of(context).push(
                   const ProfileUserSettingsPageRoute(),

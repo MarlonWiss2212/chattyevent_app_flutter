@@ -1,8 +1,9 @@
+import 'package:chattyevent_app_flutter/core/enums/geo_json/geo_json_type_enum.dart';
 import 'package:chattyevent_app_flutter/domain/entities/geo_json/geo_json_entity.dart';
 
 class GeoJsonModel extends GeoJsonEntity {
   GeoJsonModel({
-    String? type,
+    GeoJsonTypeEnum? type,
     List<double>? coordinates,
   }) : super(
           type: type,
@@ -23,7 +24,9 @@ class GeoJsonModel extends GeoJsonEntity {
     }
 
     return GeoJsonModel(
-      type: json["type"],
+      type: json["type"] != null
+          ? GeoJsonTypeEnumExtension.fromValue(json["type"])
+          : null,
       coordinates: coordinates,
     );
   }

@@ -1,3 +1,4 @@
+import 'package:chattyevent_app_flutter/core/enums/user_relation/user_relation_status_enum.dart';
 import 'package:dartz/dartz.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:chattyevent_app_flutter/core/dto/user_relation/create_user_relation_dto.dart';
@@ -92,8 +93,11 @@ class UserRelationUseCases {
     required FindOneUserRelationFilter findOneUserRelationFilter,
     required UserRelationEntity? myUserRelationToOtherUser,
   }) async {
-    if (myUserRelationToOtherUser?.statusOnRelatedUser != "FOLLOWER" &&
-        myUserRelationToOtherUser?.statusOnRelatedUser != "REQUESTTOFOLLOW") {
+    if (myUserRelationToOtherUser?.statusOnRelatedUser == null ||
+        myUserRelationToOtherUser?.statusOnRelatedUser !=
+                UserRelationStatusEnum.follower &&
+            myUserRelationToOtherUser?.statusOnRelatedUser !=
+                UserRelationStatusEnum.requesttofollow) {
       final userRelationOrNotificationAlert =
           await userRelationRepository.createUserRelationViaApi(
               createUserRelationDto: CreateUserRelationDto(

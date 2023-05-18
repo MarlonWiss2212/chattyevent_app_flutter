@@ -1,3 +1,4 @@
+import 'package:chattyevent_app_flutter/core/enums/private_event/private_event_status_enum.dart';
 import 'package:chattyevent_app_flutter/domain/entities/private_event/private_event_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/private_event/private_event_location_entity.dart';
 import 'package:chattyevent_app_flutter/infastructure/models/private_event/private_event_location_model.dart';
@@ -6,7 +7,7 @@ class PrivateEventModel extends PrivateEventEntity {
   PrivateEventModel({
     required String id,
     String? title,
-    String? status,
+    PrivateEventStatusEnum? status,
     String? description,
     String? coverImageLink,
     required DateTime eventDate,
@@ -53,7 +54,9 @@ class PrivateEventModel extends PrivateEventEntity {
       eventDate: eventDate,
       description: json["description"],
       eventEndDate: eventEndDate,
-      status: json["status"],
+      status: json["status"] != null
+          ? PrivateEventStatusEnumExtension.fromValue(json["status"])
+          : null,
       groupchatTo: json["groupchatTo"],
       createdBy: json["createdBy"],
       createdAt: createdAt,

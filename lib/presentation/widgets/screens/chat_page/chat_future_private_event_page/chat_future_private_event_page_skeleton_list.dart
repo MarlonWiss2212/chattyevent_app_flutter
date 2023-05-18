@@ -1,6 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:skeletons/skeletons.dart';
 
 class ChatFuturePrivateEventPageSkeletonList extends StatelessWidget {

@@ -1,3 +1,4 @@
+import 'package:chattyevent_app_flutter/core/enums/private_event/private_event_user_status_enum.dart';
 import 'package:flutter/material.dart';
 import 'package:chattyevent_app_flutter/domain/entities/private_event/private_event_user_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/shopping_list_item/shopping_list_item_entity.dart';
@@ -21,13 +22,13 @@ class ShoppingListItemTile extends StatelessWidget {
       title: Wrap(
         spacing: 8,
         children: [
-          if (userToBuyItem.status == "REJECTED" ||
-              userToBuyItem.status == "LEFT_EVENT" ||
-              userToBuyItem.status == "INVITED") ...{
+          if (userToBuyItem.status == PrivateEventUserStatusEnum.rejected ||
+              userToBuyItem.status == PrivateEventUserStatusEnum.invited) ...{
             Badge(
-              backgroundColor: userToBuyItem.status == "INVITED"
-                  ? Colors.yellow
-                  : Colors.red,
+              backgroundColor:
+                  userToBuyItem.status == PrivateEventUserStatusEnum.invited
+                      ? Colors.yellow
+                      : Colors.red,
             ),
           },
           Text(

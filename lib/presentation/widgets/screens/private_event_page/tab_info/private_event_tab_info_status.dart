@@ -1,3 +1,4 @@
+import 'package:chattyevent_app_flutter/core/enums/private_event/private_event_status_enum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletons/skeletons.dart';
@@ -33,7 +34,7 @@ class _PrivateEventTabInfoStatusState extends State<PrivateEventTabInfoStatus> {
         overlay.size.height - tapXY.dy,
       ),
       items: [
-        if (state.privateEvent.status != "TAKES_PLACE") ...[
+        if (state.privateEvent.status != PrivateEventStatusEnum.takesplace) ...[
           PopupMenuItem(
             child: const Text("findet statt"),
             onTap: () => BlocProvider.of<CurrentPrivateEventCubit>(context)
@@ -44,7 +45,7 @@ class _PrivateEventTabInfoStatusState extends State<PrivateEventTabInfoStatus> {
             ),
           ),
         ],
-        if (state.privateEvent.status != "UNDECIDED") ...[
+        if (state.privateEvent.status != PrivateEventStatusEnum.undecided) ...[
           PopupMenuItem(
             child: const Text("nicht entschieden"),
             onTap: () => BlocProvider.of<CurrentPrivateEventCubit>(context)
@@ -55,7 +56,7 @@ class _PrivateEventTabInfoStatusState extends State<PrivateEventTabInfoStatus> {
             ),
           ),
         ],
-        if (state.privateEvent.status != "CANCELLED") ...[
+        if (state.privateEvent.status != PrivateEventStatusEnum.cancelled) ...[
           PopupMenuItem(
             child: const Text("abgesagt"),
             onTap: () => BlocProvider.of<CurrentPrivateEventCubit>(context)
@@ -83,27 +84,32 @@ class _PrivateEventTabInfoStatusState extends State<PrivateEventTabInfoStatus> {
               : null,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: state.privateEvent.eventDate == null &&
-                    state.loadingPrivateEvent
-                ? const SkeletonLine()
-                : Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        "Status: ",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
+            child:
+                state.privateEvent.status == null && state.loadingPrivateEvent
+                    ? const SkeletonLine()
+                    : Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            "Status: ",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(
+                            state.privateEvent.status ==
+                                    PrivateEventStatusEnum.takesplace
+                                ? "findet statt"
+                                : state.privateEvent.status ==
+                                        PrivateEventStatusEnum.cancelled
+                                    ? "abgesagt"
+                                    : state.privateEvent.status ==
+                                            PrivateEventStatusEnum.undecided
+                                        ? "nicht entschieden"
+                                        : "keine daten",
+                          )
+                        ],
                       ),
-                      Text(
-                        state.privateEvent.status == "TAKES_PLACE"
-                            ? "findes statt"
-                            : state.privateEvent.status == "CANCELLED"
-                                ? "abgesagt"
-                                : "nicht entschieden",
-                      )
-                    ],
-                  ),
           ),
         );
       },

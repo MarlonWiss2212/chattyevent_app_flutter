@@ -1,3 +1,4 @@
+import 'package:chattyevent_app_flutter/core/enums/user_relation/user_relation_status_enum.dart';
 import 'package:chattyevent_app_flutter/domain/entities/user-relation/user_relation_follow_data_entity.dart';
 
 class UserRelationEntity {
@@ -6,7 +7,7 @@ class UserRelationEntity {
   final DateTime? updatedAt;
   final String? targetUserId;
   final String? requesterUserId;
-  final String? statusOnRelatedUser;
+  final UserRelationStatusEnum? statusOnRelatedUser;
   final UserRelationFollowDataEntity? followData;
 
   UserRelationEntity({

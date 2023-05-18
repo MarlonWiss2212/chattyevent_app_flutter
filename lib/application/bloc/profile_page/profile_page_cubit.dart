@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:chattyevent_app_flutter/core/enums/user_relation/user_relation_status_enum.dart';
 import 'package:dartz/dartz.dart';
 import 'package:meta/meta.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
@@ -227,8 +228,8 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
             authId: state.user.authId,
             userRelationCounts: UserRelationsCountEntity(
               followerCount: state.user.userRelationCounts != null &&
-                      state.user.userRelationCounts!.followedCount != null
-                  ? state.user.userRelationCounts!.followedCount! + 1
+                      state.user.userRelationCounts!.followerCount != null
+                  ? state.user.userRelationCounts!.followerCount! + 1
                   : 1,
               followRequestCount: state.user.userRelationCounts != null &&
                       state.user.userRelationCounts!.followRequestCount != null
@@ -534,7 +535,7 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
   }) async {
     if (state.user.otherUserRelationToMyUser == null ||
         state.user.otherUserRelationToMyUser!.statusOnRelatedUser !=
-            "FOLLOWER") {
+            UserRelationStatusEnum.follower) {
       notificationCubit.newAlert(
         notificationAlert: NotificationAlert(
           title: "Fehler Update Berechtigungen",
@@ -586,7 +587,7 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
         state.followers![followerIndex].otherUserRelationToMyUser == null ||
         state.followers![followerIndex].otherUserRelationToMyUser!
                 .statusOnRelatedUser !=
-            "FOLLOWER") {
+            UserRelationStatusEnum.follower) {
       notificationCubit.newAlert(
         notificationAlert: NotificationAlert(
           title: "Fehler Update Berechtigungen",

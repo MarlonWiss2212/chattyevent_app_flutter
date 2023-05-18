@@ -1,3 +1,4 @@
+import 'package:chattyevent_app_flutter/core/enums/user_relation/user_relation_status_enum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
@@ -19,14 +20,15 @@ class FollowButton extends StatelessWidget {
     TextStyle? textStyle;
     Color? color;
 
-    if (user.myUserRelationToOtherUser?.statusOnRelatedUser == "FOLLOWER") {
+    if (user.myUserRelationToOtherUser?.statusOnRelatedUser ==
+        UserRelationStatusEnum.follower) {
       text = "Gefolgt";
       color = Theme.of(context).colorScheme.secondaryContainer;
       textStyle = Theme.of(context).textTheme.labelMedium?.apply(
             color: Colors.white,
           );
     } else if (user.myUserRelationToOtherUser?.statusOnRelatedUser ==
-        "REQUESTTOFOLLOW") {
+        UserRelationStatusEnum.requesttofollow) {
       text = "Angefragt";
       color = Theme.of(context).colorScheme.secondaryContainer;
       textStyle = Theme.of(context).textTheme.labelMedium?.apply(

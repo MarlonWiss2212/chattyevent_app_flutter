@@ -1,3 +1,4 @@
+import 'package:chattyevent_app_flutter/core/enums/user_relation/requester_private_event_add_permission_enum.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,7 +21,8 @@ class _PrivateEventInviteUserPageState
   @override
   void initState() {
     BlocProvider.of<UserSearchCubit>(context).getUsersByPermissionViaApi(
-      requesterPrivateEventAddPermission: "ADD",
+      requesterPrivateEventAddPermission:
+          RequesterPrivateEventAddPermissionEnum.add,
     );
     super.initState();
   }
@@ -40,14 +42,16 @@ class _PrivateEventInviteUserPageState
               reloadRequest: ({String? text}) {
                 BlocProvider.of<UserSearchCubit>(context)
                     .getUsersByPermissionViaApi(
-                  requesterPrivateEventAddPermission: "ADD",
+                  requesterPrivateEventAddPermission:
+                      RequesterPrivateEventAddPermissionEnum.add,
                 );
               },
               loadMoreRequest: ({String? text}) {
                 BlocProvider.of<UserSearchCubit>(context)
                     .getUsersByPermissionViaApi(
                   loadMore: true,
-                  requesterPrivateEventAddPermission: "ADD",
+                  requesterPrivateEventAddPermission:
+                      RequesterPrivateEventAddPermissionEnum.add,
                 );
               },
               userButton: (user) => Button(

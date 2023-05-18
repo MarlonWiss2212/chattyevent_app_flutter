@@ -42,6 +42,5 @@ class PrivateEventListItem extends StatelessWidget {
         );
       },
     );
-    ;
   }
 }

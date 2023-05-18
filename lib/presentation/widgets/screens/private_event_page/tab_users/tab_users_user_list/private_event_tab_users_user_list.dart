@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:chattyevent_app_flutter/core/enums/private_event/private_event_user_status_enum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletons/skeletons.dart';
@@ -17,7 +18,7 @@ class PrivateEventTabUsersUserList extends StatelessWidget {
           children: [
             Center(
               child: Text(
-                "Mitglieder die da sein werden: ${state.privateEventUsers.where((element) => element.status == "ACCEPTED").length.toString()}",
+                "Mitglieder die da sein werden: ${state.privateEventUsers.where((element) => element.status == PrivateEventUserStatusEnum.accapted).length.toString()}",
                 style: Theme.of(context).textTheme.titleMedium,
               ),
             ),

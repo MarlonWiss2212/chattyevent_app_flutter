@@ -1,3 +1,4 @@
+import 'package:chattyevent_app_flutter/core/enums/user_relation/requester_groupchat_add_permission_enum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/add_groupchat/add_groupchat_cubit.dart';
@@ -19,7 +20,7 @@ class _NewGroupchatSelectUserTabState extends State<NewGroupchatSelectUserTab> {
   @override
   void initState() {
     BlocProvider.of<UserSearchCubit>(context).getUsersByPermissionViaApi(
-      requesterGroupchatAddPermission: "ADD",
+      requesterGroupchatAddPermission: RequesterGroupchatAddPermissionEnum.add,
     );
     super.initState();
   }
@@ -59,14 +60,16 @@ class _NewGroupchatSelectUserTabState extends State<NewGroupchatSelectUserTab> {
                   reloadRequest: ({String? text}) {
                     BlocProvider.of<UserSearchCubit>(context)
                         .getUsersByPermissionViaApi(
-                      requesterGroupchatAddPermission: "ADD",
+                      requesterGroupchatAddPermission:
+                          RequesterGroupchatAddPermissionEnum.add,
                     );
                   },
                   loadMoreRequest: ({String? text}) {
                     BlocProvider.of<UserSearchCubit>(context)
                         .getUsersByPermissionViaApi(
                       loadMore: true,
-                      requesterGroupchatAddPermission: "ADD",
+                      requesterGroupchatAddPermission:
+                          RequesterGroupchatAddPermissionEnum.add,
                     );
                   },
                   showTextSearch: false,

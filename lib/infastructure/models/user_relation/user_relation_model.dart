@@ -1,3 +1,4 @@
+import 'package:chattyevent_app_flutter/core/enums/user_relation/user_relation_status_enum.dart';
 import 'package:chattyevent_app_flutter/domain/entities/user-relation/user_relation_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/user-relation/user_relation_follow_data_entity.dart';
 import 'package:chattyevent_app_flutter/infastructure/models/user_relation/user_relation_follow_data_model.dart';
@@ -9,7 +10,7 @@ class UserRelationModel extends UserRelationEntity {
     DateTime? updatedAt,
     String? targetUserId,
     String? requesterUserId,
-    String? statusOnRelatedUser,
+    UserRelationStatusEnum? statusOnRelatedUser,
     UserRelationFollowDataEntity? followData,
   }) : super(
           id: id,
@@ -34,7 +35,11 @@ class UserRelationModel extends UserRelationEntity {
       id: json['_id'],
       targetUserId: json['targetUserId'],
       requesterUserId: json['requesterUserId'],
-      statusOnRelatedUser: json['statusOnRelatedUser'],
+      statusOnRelatedUser: json['statusOnRelatedUser'] != null
+          ? UserRelationStatusEnumExtension.fromValue(
+              json['statusOnRelatedUser'],
+            )
+          : null,
       followData: json['followData'] != null
           ? UserRelationFollowDataModel.fromJson(json['followData'])
           : null,

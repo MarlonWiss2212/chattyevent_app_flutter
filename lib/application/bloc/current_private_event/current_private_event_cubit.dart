@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:chattyevent_app_flutter/core/enums/private_event/private_event_user_status_enum.dart';
 import 'package:collection/collection.dart';
 import 'package:dartz/dartz.dart';
 import 'package:meta/meta.dart';
@@ -287,7 +288,7 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
   }
 
   Future updatePrivateEventUser({
-    String? status,
+    PrivateEventUserStatusEnum? status,
     bool? organizer,
     required String userId,
   }) async {

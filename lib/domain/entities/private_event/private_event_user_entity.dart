@@ -1,3 +1,4 @@
+import 'package:chattyevent_app_flutter/core/enums/private_event/private_event_user_status_enum.dart';
 import 'package:chattyevent_app_flutter/domain/entities/user-relation/user_relations_count_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/user/user_entity.dart';
 
@@ -5,7 +6,7 @@ class PrivateEventUserEntity extends UserEntity {
   final String privateEventUserId;
   final String? privateEventTo;
   final DateTime? joinedPrivateEventAt;
-  final String? status;
+  final PrivateEventUserStatusEnum? status;
   final bool? organizer;
 
   PrivateEventUserEntity({

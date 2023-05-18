@@ -1,3 +1,6 @@
+import 'package:chattyevent_app_flutter/core/enums/user_relation/requester_calender_watch_permission_enum.dart';
+import 'package:chattyevent_app_flutter/core/enums/user_relation/requester_groupchat_add_permission_enum.dart';
+import 'package:chattyevent_app_flutter/core/enums/user_relation/requester_private_event_add_permission_enum.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
@@ -63,8 +66,9 @@ class UserSearchCubit extends Cubit<UserSearchState> {
 
   Future getUsersByPermissionViaApi({
     bool loadMore = false,
-    String? requesterGroupchatAddPermission,
-    String? requesterPrivateEventAddPermission,
+    RequesterGroupchatAddPermissionEnum? requesterGroupchatAddPermission,
+    RequesterPrivateEventAddPermissionEnum? requesterPrivateEventAddPermission,
+    RequesterCalenderWatchPermissionEnum? requesterCalenderWatchPermission,
   }) async {
     emit(UserSearchState(
       status: UserSearchStateStatus.loading,
@@ -77,6 +81,7 @@ class UserSearchCubit extends Cubit<UserSearchState> {
         requesterUserId: authCubit.state.currentUser.id,
         requesterGroupchatAddPermission: requesterGroupchatAddPermission,
         requesterPrivateEventAddPermission: requesterPrivateEventAddPermission,
+        requesterCalenderWatchPermission: requesterCalenderWatchPermission,
       ),
       limitOffsetFilter: LimitOffsetFilter(
         limit: 20,
