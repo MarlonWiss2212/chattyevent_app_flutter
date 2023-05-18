@@ -24,6 +24,7 @@ class _DataprotectionCheckboxState extends State<DataprotectionCheckbox> {
           value: state.dataprotectionCheckbox,
           title: RichText(
             text: TextSpan(
+              style: Theme.of(context).textTheme.bodyMedium,
               children: [
                 const TextSpan(text: "Ich habe die "),
                 TextSpan(
