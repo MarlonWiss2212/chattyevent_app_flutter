@@ -58,6 +58,16 @@ class AuthCubit extends Cubit<AuthState> {
     required String email,
     required String password,
   }) async {
+    if (state.dataprotectionCheckbox == false) {
+      notificationCubit.newAlert(
+        notificationAlert: NotificationAlert(
+          title: "Datenschutz Fehler",
+          message:
+              "Du musst den Datenschutzbestimmungen zustimmen um dich anzumelden",
+        ),
+      );
+      return;
+    }
     emitState(status: AuthStateStatus.loading);
 
     final Either<NotificationAlert, UserCredential> authUserOrFailureString =
@@ -86,6 +96,16 @@ class AuthCubit extends Cubit<AuthState> {
     required String email,
     required String password,
   }) async {
+    if (state.dataprotectionCheckbox == false) {
+      notificationCubit.newAlert(
+        notificationAlert: NotificationAlert(
+          title: "Datenschutz Fehler",
+          message:
+              "Du musst den Datenschutzbestimmungen zustimmen um dich anzumelden",
+        ),
+      );
+      return;
+    }
     emitState(status: AuthStateStatus.loading);
 
     final Either<NotificationAlert, UserCredential> authUserOrFailureString =
@@ -248,6 +268,7 @@ class AuthCubit extends Cubit<AuthState> {
     bool? sendedVerificationEmail,
     bool? goOnCreateUserPage,
     bool? updatedPasswordSuccessfully,
+    bool? dataprotectionCheckbox,
     OperationException? userException,
     bool resetUserException = false,
   }) {
@@ -259,6 +280,8 @@ class AuthCubit extends Cubit<AuthState> {
       sendedVerificationEmail: sendedVerificationEmail ?? false,
       goOnCreateUserPage: goOnCreateUserPage ?? false,
       updatedPasswordSuccessfully: updatedPasswordSuccessfully ?? false,
+      dataprotectionCheckbox:
+          dataprotectionCheckbox ?? state.dataprotectionCheckbox,
       userException:
           resetUserException ? null : userException ?? state.userException,
     ));

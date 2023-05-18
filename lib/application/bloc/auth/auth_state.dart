@@ -13,6 +13,8 @@ class AuthState {
   final String? token;
   final UserEntity currentUser;
 
+  final bool dataprotectionCheckbox;
+
   final bool sendedResetPasswordEmail;
   final bool sendedVerificationEmail;
   final bool updatedPasswordSuccessfully;
@@ -34,6 +36,8 @@ class AuthState {
 
   AuthState({
     required this.currentUser,
+    // but dont merge in emitState
+    this.dataprotectionCheckbox = false,
     this.token,
     this.status = AuthStateStatus.initial,
     this.sendedResetPasswordEmail = false,
