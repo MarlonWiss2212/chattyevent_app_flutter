@@ -108,16 +108,16 @@ class UserRelationRepositoryImpl extends UserRelationRepository {
   }) async {
     try {
       final response = await graphQlDatasource.query(
+        // firstname
+        // lastname
+        // birthdate
         """
         query FindFollowers(\$limitOffsetFilter: LimitOffsetInput!, \$filter: FindFollowersInput!) {
           findFollowers(limitOffsetInput: \$limitOffsetFilter, filter: \$filter) {
             username
             _id
             authId
-            birthdate
             createdAt
-            firstname
-            lastname
             profileImageLink
             updatedAt
             userRelationCounts {
@@ -180,16 +180,16 @@ class UserRelationRepositoryImpl extends UserRelationRepository {
   }) async {
     try {
       final response = await graphQlDatasource.query(
+        // firstname
+        // lastname
+        // birthdate
         """
         query FindFollowRequests(\$limitOffsetFilter: LimitOffsetInput!) {
           findFollowRequests(limitOffsetInput: \$limitOffsetFilter) {
             username
             _id
             authId
-            birthdate
             createdAt
-            firstname
-            lastname
             profileImageLink
             updatedAt
             userRelationCounts {
@@ -251,16 +251,16 @@ class UserRelationRepositoryImpl extends UserRelationRepository {
   }) async {
     try {
       final response = await graphQlDatasource.query(
+        // firstname
+        // lastname
+        // birthdate
         """
         query FindFollowed(\$filter: FindFollowedInput!, \$limitOffsetFilter: LimitOffsetInput!) {
           findFollowed(filter: \$filter, limitOffsetInput: \$limitOffsetFilter) {
             username
             _id
             authId
-            birthdate
             createdAt
-            firstname
-            lastname
             profileImageLink
             updatedAt
             userRelationCounts {

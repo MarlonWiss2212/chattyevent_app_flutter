@@ -22,6 +22,9 @@ class UserRepositoryImpl implements UserRepository {
     required FindOneUserFilter findOneUserFilter,
   }) async {
     try {
+      // firstname
+      // lastname
+      // birthdate
       final response = await graphQlDatasource.query(
         """
         query FindUser(\$filter: FindOneUserInput!) {
@@ -29,10 +32,7 @@ class UserRepositoryImpl implements UserRepository {
             username
             _id
             authId
-            birthdate
-            createdAt
-            firstname
-            lastname
+            createdAt      
             profileImageLink
             updatedAt
             userRelationCounts {
@@ -150,16 +150,16 @@ class UserRepositoryImpl implements UserRepository {
       }
 
       final response = await graphQlDatasource.mutation(
+        // firstname
+        // lastname
+        // birthdate
         """
         mutation UpdateUser(\$updateUserInput: UpdateUserInput, \$updateProfileImage: Upload) {
           updateUser(updateUserInput: \$updateUserInput, updateProfileImage: \$updateProfileImage) {
             username
             _id
             authId
-            birthdate
             createdAt
-            firstname
-            lastname
             profileImageLink
             updatedAt
             userRelationCounts {
