@@ -87,39 +87,52 @@ class PrivateEventTabShoppingList extends StatelessWidget {
               return SliverList(
                 delegate: SliverChildBuilderDelegate(
                   (context, index) {
-                    PrivateEventUserEntity userToBuyItem =
-                        currentPrivateEventState.privateEventUsers.firstWhere(
-                      (element) =>
-                          element.id ==
-                          state.shoppingListItemStates[index].shoppingListItem
-                              .userToBuyItem,
-                      orElse: () => PrivateEventUserEntity(
-                        id: state.shoppingListItemStates[index].shoppingListItem
-                                .userToBuyItem ??
-                            "",
-                        authId: "",
-                        privateEventUserId: "",
-                      ),
-                    );
+                    if (index < state.shoppingListItemStates.length) {
+                      PrivateEventUserEntity userToBuyItem =
+                          currentPrivateEventState.privateEventUsers.firstWhere(
+                        (element) =>
+                            element.id ==
+                            state.shoppingListItemStates[index].shoppingListItem
+                                .userToBuyItem,
+                        orElse: () => PrivateEventUserEntity(
+                          id: state.shoppingListItemStates[index]
+                                  .shoppingListItem.userToBuyItem ??
+                              "",
+                          authId: "",
+                          privateEventUserId: "",
+                        ),
+                      );
 
-                    return ShoppingListItemTile(
-                      shoppingListItem:
-                          state.shoppingListItemStates[index].shoppingListItem,
-                      userToBuyItem: userToBuyItem,
-                      onTap: () {
-                        AutoRouter.of(context).push(
-                          PrivateEventShoppingListItemWrapperPageRoute(
-                            shoppingListItemId: state
-                                .shoppingListItemStates[index]
-                                .shoppingListItem
-                                .id,
-                            shoppingListItemStateToSet:
-                                state.shoppingListItemStates[index],
-                            setCurrentPrivateEvent: false,
-                          ),
-                        );
-                      },
-                    );
+                      return ShoppingListItemTile(
+                        shoppingListItem: state
+                            .shoppingListItemStates[index].shoppingListItem,
+                        userToBuyItem: userToBuyItem,
+                        onTap: () {
+                          AutoRouter.of(context).push(
+                            PrivateEventShoppingListItemWrapperPageRoute(
+                              shoppingListItemId: state
+                                  .shoppingListItemStates[index]
+                                  .shoppingListItem
+                                  .id,
+                              shoppingListItemStateToSet:
+                                  state.shoppingListItemStates[index],
+                              setCurrentPrivateEvent: false,
+                            ),
+                          );
+                        },
+                      );
+                    }
+                    if (state.loadingShoppingList) {
+                      return const CircularProgressIndicator.adaptive();
+                    } else {
+                      return IconButton(
+                        onPressed: () {
+                          BlocProvider.of<CurrentPrivateEventCubit>(context)
+                              .getShoppingListItemsViaApi();
+                        },
+                        icon: const Icon(Icons.add_circle),
+                      );
+                    }
                   },
                   childCount: state.shoppingListItemStates.length,
                 ),

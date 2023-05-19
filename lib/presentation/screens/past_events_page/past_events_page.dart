@@ -34,8 +34,7 @@ class PastEventsPage extends StatelessWidget {
           BlocBuilder<HomeEventCubit, HomeEventState>(
             builder: (context, state) {
               final pastEvents = state.getPastEvents();
-              if (state.status == HomeEventStateStatus.loading &&
-                  pastEvents.isEmpty) {
+              if (state.loadingPastEvents == true && pastEvents.isEmpty) {
                 return SliverFillRemaining(
                   child: SkeletonListView(
                     itemBuilder: (p0, p1) {
@@ -63,11 +62,24 @@ class PastEventsPage extends StatelessWidget {
               return SliverList(
                 delegate: SliverChildBuilderDelegate(
                   (context, index) {
-                    return PrivateEventListItem(
-                      privateEventState: pastEvents[index],
-                    );
+                    if (index < pastEvents.length) {
+                      return PrivateEventListItem(
+                        privateEventState: pastEvents[index],
+                      );
+                    }
+                    if (state.loadingPastEvents) {
+                      return const CircularProgressIndicator.adaptive();
+                    } else {
+                      return IconButton(
+                        onPressed: () {
+                          BlocProvider.of<HomeEventCubit>(context)
+                              .getPastPrivateEventsViaApi();
+                        },
+                        icon: const Icon(Icons.add_circle),
+                      );
+                    }
                   },
-                  childCount: pastEvents.length,
+                  childCount: pastEvents.length + 1,
                 ),
               );
             },

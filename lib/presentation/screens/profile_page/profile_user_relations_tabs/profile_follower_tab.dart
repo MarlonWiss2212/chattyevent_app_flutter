@@ -40,15 +40,14 @@ class _ProfileFollowerTabState extends State<ProfileFollowerTab> {
               return const ProfileFollowersTabSkeletonListView();
             }
 
-            if (state.followers == null ||
-                state.followers != null && state.followers!.isEmpty) {
-              return const SliverFillRemaining(
-                child: Center(child: Text("Keine Follower")),
-              );
-            }
-
             return ProfileFollowersTabListView(
               followers: state.followers ?? [],
+              loadMore: () {
+                BlocProvider.of<ProfilePageCubit>(context).getFollowRequests();
+              },
+              profileUserId: state.user.id,
+              loading: state.followRequestsStatus ==
+                  ProfilePageStateFollowRequestsStatus.loading,
             );
           },
         ),

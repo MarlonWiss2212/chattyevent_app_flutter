@@ -41,17 +41,13 @@ class _ProfileFollowRequestsTabState extends State<ProfileFollowRequestsTab> {
               return const ProfileFollowRequestsTabSkeletonListView();
             }
 
-            if (state.followRequests == null ||
-                state.followRequests != null && state.followRequests!.isEmpty) {
-              return const SliverFillRemaining(
-                child: Center(
-                  child: Text("Keine Freundschaftsanfragen"),
-                ),
-              );
-            }
-
             return ProfileFollowRequestsTabListView(
               followRequests: state.followRequests ?? [],
+              loadMore: () {
+                BlocProvider.of<ProfilePageCubit>(context).getFollowRequests();
+              },
+              loading: state.followRequestsStatus ==
+                  ProfilePageStateFollowRequestsStatus.loading,
             );
           },
         ),

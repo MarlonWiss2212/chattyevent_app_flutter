@@ -157,13 +157,20 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
   }
 
   Future getFutureConnectedPrivateEventsFromApi({
-    required LimitOffsetFilter limitOffsetFilter,
+    bool reload = false,
   }) async {
     emit(CurrentChatState.merge(oldState: state, loadingPrivateEvents: true));
 
     final privateEventsOrFailure =
         await privateEventUseCases.getPrivateEventsViaApi(
-      limitOffsetFilter: limitOffsetFilter,
+      limitOffsetFilter: LimitOffsetFilter(
+        limit: reload
+            ? state.futureConnectedPrivateEvents.length > 20
+                ? state.futureConnectedPrivateEvents.length
+                : 20
+            : 20,
+        offset: reload ? 0 : state.futureConnectedPrivateEvents.length,
+      ),
       findPrivateEventsFilter: FindPrivateEventsFilter(
         onlyFutureEvents: true,
         sortNewestDateFirst: false,
@@ -389,6 +396,7 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
       oldState: state,
       loadingMessages: true,
     ));
+
     final Either<NotificationAlert, List<GroupchatMessageEntity>>
         messagesOrFailure =
         await groupchatMessageUseCases.getGroupchatMessagesViaApi(

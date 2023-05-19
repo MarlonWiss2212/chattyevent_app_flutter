@@ -40,17 +40,13 @@ class _ProfileFollowedTabState extends State<ProfileFollowedTab> {
               return const ProfileFollowedTabSkeletonListView();
             }
 
-            if (state.followed == null ||
-                state.followed != null && state.followed!.isEmpty) {
-              return const SliverFillRemaining(
-                child: Center(
-                  child: Text("Keinem Gefolgt"),
-                ),
-              );
-            }
-
             return ProfileFollowedTabListView(
               followed: state.followed ?? [],
+              loadMore: () {
+                BlocProvider.of<ProfilePageCubit>(context).getFollowRequests();
+              },
+              loading: state.followRequestsStatus ==
+                  ProfilePageStateFollowRequestsStatus.loading,
             );
           },
         ),

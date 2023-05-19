@@ -1,14 +1,13 @@
 part of 'home_event_cubit.dart';
 
-enum HomeEventStateStatus { initial, loading, success }
-
 class HomeEventState {
   final List<CurrentPrivateEventState> privateEvents;
 
   final int futureOffset;
   final int pastOffset;
 
-  final HomeEventStateStatus status;
+  final bool loadingFutureEvents;
+  final bool loadingPastEvents;
 
   List<CurrentPrivateEventState> getFutureEvents() {
     return privateEvents
@@ -31,6 +30,8 @@ class HomeEventState {
     required this.privateEvents,
     required this.futureOffset,
     required this.pastOffset,
-    this.status = HomeEventStateStatus.initial,
+    // but not in emitState function
+    this.loadingFutureEvents = false,
+    this.loadingPastEvents = false,
   });
 }

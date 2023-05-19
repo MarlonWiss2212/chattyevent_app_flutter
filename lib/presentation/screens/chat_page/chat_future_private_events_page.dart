@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/current_groupchat/current_chat_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/current_private_event/current_private_event_cubit.dart';
-import 'package:chattyevent_app_flutter/core/filter/limit_offset_filter.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/event_list/private_event_list_item.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/chat_page/chat_future_private_event_page/chat_future_private_event_page_skeleton_list.dart';
 
@@ -12,14 +11,6 @@ class ChatFuturePrivateEventsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<CurrentChatCubit>(context)
-        .getFutureConnectedPrivateEventsFromApi(
-      limitOffsetFilter: LimitOffsetFilter(
-        limit: 100,
-        offset: 0,
-      ),
-    );
-
     return Scaffold(
       body: CustomScrollView(
         slivers: [
@@ -38,18 +29,9 @@ class ChatFuturePrivateEventsPage extends StatelessWidget {
           ),
           CupertinoSliverRefreshControl(
             onRefresh: () {
-              final privateEventLength =
-                  BlocProvider.of<CurrentChatCubit>(context)
-                      .state
-                      .futureConnectedPrivateEvents
-                      .length;
-
               return BlocProvider.of<CurrentChatCubit>(context)
                   .getFutureConnectedPrivateEventsFromApi(
-                limitOffsetFilter: LimitOffsetFilter(
-                  limit: privateEventLength > 10 ? privateEventLength : 10,
-                  offset: 0,
-                ),
+                reload: true,
               );
             },
           ),
@@ -62,32 +44,37 @@ class ChatFuturePrivateEventsPage extends StatelessWidget {
                 );
               }
 
-              if (state.loadingPrivateEvents == false &&
-                  state.futureConnectedPrivateEvents.isEmpty) {
-                return const SliverFillRemaining(
-                  child: Center(
-                    child: Text("Keine Zukünftigen Events für den Chat"),
-                  ),
-                );
-              }
-
               return SliverList(
                 delegate: SliverChildBuilderDelegate(
                   (context, index) {
-                    return PrivateEventListItem(
-                      privateEventState: CurrentPrivateEventState(
-                        privateEvent: state.futureConnectedPrivateEvents[index],
-                        loadingGroupchat: false,
-                        loadingPrivateEvent: false,
-                        loadingShoppingList: false,
-                        currentUserIndex: -1,
-                        privateEventUsers: [],
-                        privateEventLeftUsers: [],
-                        shoppingListItemStates: [],
-                      ),
-                    );
+                    if (index < state.futureConnectedPrivateEvents.length) {
+                      return PrivateEventListItem(
+                        privateEventState: CurrentPrivateEventState(
+                          privateEvent:
+                              state.futureConnectedPrivateEvents[index],
+                          loadingGroupchat: false,
+                          loadingPrivateEvent: false,
+                          loadingShoppingList: false,
+                          currentUserIndex: -1,
+                          privateEventUsers: [],
+                          privateEventLeftUsers: [],
+                          shoppingListItemStates: [],
+                        ),
+                      );
+                    }
+                    if (state.loadingPrivateEvents) {
+                      return const CircularProgressIndicator.adaptive();
+                    } else {
+                      return IconButton(
+                        onPressed: () {
+                          BlocProvider.of<CurrentChatCubit>(context)
+                              .getFutureConnectedPrivateEventsFromApi();
+                        },
+                        icon: const Icon(Icons.add_circle),
+                      );
+                    }
                   },
-                  childCount: state.futureConnectedPrivateEvents.length,
+                  childCount: state.futureConnectedPrivateEvents.length + 1,
                 ),
               );
             },

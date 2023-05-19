@@ -25,12 +25,7 @@ class _ChatInfoPageState extends State<ChatInfoPage> {
   @override
   void initState() {
     BlocProvider.of<CurrentChatCubit>(context)
-        .getFutureConnectedPrivateEventsFromApi(
-      limitOffsetFilter: LimitOffsetFilter(
-        limit: 10,
-        offset: 0,
-      ),
-    );
+        .getFutureConnectedPrivateEventsFromApi();
     super.initState();
   }
 
@@ -55,12 +50,7 @@ class _ChatInfoPageState extends State<ChatInfoPage> {
                 BlocProvider.of<CurrentChatCubit>(context)
                     .reloadGroupchatAndGroupchatUsersViaApi(),
                 BlocProvider.of<CurrentChatCubit>(context)
-                    .getFutureConnectedPrivateEventsFromApi(
-                  limitOffsetFilter: LimitOffsetFilter(
-                    limit: 10,
-                    offset: 0,
-                  ),
-                ),
+                    .getFutureConnectedPrivateEventsFromApi(),
               ]);
             },
           ),

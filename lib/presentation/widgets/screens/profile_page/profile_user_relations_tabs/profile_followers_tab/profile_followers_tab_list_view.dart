@@ -10,75 +10,82 @@ import 'package:chattyevent_app_flutter/presentation/widgets/general/user_list/u
 
 class ProfileFollowersTabListView extends StatelessWidget {
   final List<UserEntity> followers;
+  final void Function() loadMore;
+  final bool loading;
+  final String profileUserId;
 
   const ProfileFollowersTabListView({
     super.key,
     required this.followers,
+    required this.loadMore,
+    required this.loading,
+    required this.profileUserId,
   });
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ProfilePageCubit, ProfilePageState>(
-      buildWhen: (p, c) => p.user.id != c.user.id,
-      builder: (context, state) {
-        return SliverList(
-          delegate: SliverChildBuilderDelegate(
-            (context, index) {
-              return UserListTile(
-                user: followers[index],
-                items: [
+    return SliverList(
+      delegate: SliverChildBuilderDelegate(
+        (context, index) {
+          if (index < followers.length) {
+            return UserListTile(
+              user: followers[index],
+              items: [
+                if (BlocProvider.of<AuthCubit>(context).state.currentUser.id ==
+                    profileUserId) ...{
+                  PopupMenuItem(
+                    child: const Text("Entfernen"),
+                    onTap: () {
+                      BlocProvider.of<ProfilePageCubit>(context).deleteFollower(
+                        userId: followers[index].id,
+                      );
+                    },
+                  ),
+                },
+              ],
+              trailing: Wrap(
+                spacing: 8,
+                children: [
                   if (BlocProvider.of<AuthCubit>(context)
                           .state
                           .currentUser
                           .id ==
-                      state.user.id) ...{
-                    PopupMenuItem(
-                      child: const Text("Entfernen"),
-                      onTap: () {
-                        BlocProvider.of<ProfilePageCubit>(context)
-                            .deleteFollower(
-                          userId: followers[index].id,
+                      profileUserId) ...{
+                    IconButton(
+                      onPressed: () {
+                        AutoRouter.of(context).push(
+                          ProfileFollowerUserSettingsPageRoute(
+                            followerIndexString: index.toString(),
+                          ),
                         );
                       },
+                      icon: const Icon(Icons.settings),
                     ),
                   },
-                ],
-                trailing: Wrap(
-                  spacing: 8,
-                  children: [
-                    if (BlocProvider.of<AuthCubit>(context)
-                            .state
-                            .currentUser
-                            .id ==
-                        state.user.id) ...{
-                      IconButton(
-                        onPressed: () {
-                          AutoRouter.of(context).push(
-                            ProfileFollowerUserSettingsPageRoute(
-                              followerIndexString: index.toString(),
-                            ),
-                          );
-                        },
-                        icon: const Icon(Icons.settings),
-                      ),
-                    },
-                    SizedBox(
-                      width: 90,
-                      height: 40,
-                      child: FollowButton(
-                        user: followers[index],
-                        onTap: () => BlocProvider.of<ProfilePageCubit>(context)
-                            .followOrUnfollowUserViaApi(user: followers[index]),
-                      ),
+                  SizedBox(
+                    width: 90,
+                    height: 40,
+                    child: FollowButton(
+                      user: followers[index],
+                      onTap: () => BlocProvider.of<ProfilePageCubit>(context)
+                          .followOrUnfollowUserViaApi(user: followers[index]),
                     ),
-                  ],
-                ),
-              );
-            },
-            childCount: followers.length,
-          ),
-        );
-      },
+                  ),
+                ],
+              ),
+            );
+          }
+          if (loading) {
+            return const CircularProgressIndicator.adaptive();
+          } else {
+            return IconButton(
+              onPressed: loadMore,
+              icon: const Icon(Icons.add_circle),
+            );
+          }
+        },
+        childCount: followers.length + 1,
+      ),
     );
   }
 }

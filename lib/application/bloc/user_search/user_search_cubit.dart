@@ -34,7 +34,9 @@ class UserSearchCubit extends Cubit<UserSearchState> {
     FindUsersFilter? findUsersFilter,
   }) async {
     emit(UserSearchState(
-      status: UserSearchStateStatus.loading,
+      status: loadMore
+          ? UserSearchStateStatus.loadingMore
+          : UserSearchStateStatus.loading,
       users: state.users,
     ));
 
@@ -71,7 +73,9 @@ class UserSearchCubit extends Cubit<UserSearchState> {
     RequesterCalenderWatchPermissionEnum? requesterCalenderWatchPermission,
   }) async {
     emit(UserSearchState(
-      status: UserSearchStateStatus.loading,
+      status: loadMore
+          ? UserSearchStateStatus.loadingMore
+          : UserSearchStateStatus.loading,
       users: state.users,
     ));
 

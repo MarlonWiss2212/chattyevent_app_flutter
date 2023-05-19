@@ -34,8 +34,7 @@ class FutureEventsPage extends StatelessWidget {
           BlocBuilder<HomeEventCubit, HomeEventState>(
             builder: (context, state) {
               final futureEvents = state.getFutureEvents();
-              if (state.status == HomeEventStateStatus.loading &&
-                  futureEvents.isEmpty) {
+              if (state.loadingFutureEvents && futureEvents.isEmpty) {
                 return SliverFillRemaining(
                   child: SkeletonListView(
                     itemBuilder: (p0, p1) {
@@ -63,11 +62,25 @@ class FutureEventsPage extends StatelessWidget {
               return SliverList(
                 delegate: SliverChildBuilderDelegate(
                   (context, index) {
-                    return PrivateEventListItem(
-                      privateEventState: futureEvents[index],
-                    );
+                    if (index < futureEvents.length) {
+                      return PrivateEventListItem(
+                        privateEventState: futureEvents[index],
+                      );
+                    }
+
+                    if (state.loadingFutureEvents) {
+                      return const CircularProgressIndicator.adaptive();
+                    } else {
+                      return IconButton(
+                        onPressed: () {
+                          BlocProvider.of<HomeEventCubit>(context)
+                              .getFuturePrivateEventsViaApi();
+                        },
+                        icon: const Icon(Icons.add_circle),
+                      );
+                    }
                   },
-                  childCount: futureEvents.length,
+                  childCount: futureEvents.length + 1,
                 ),
               );
             },

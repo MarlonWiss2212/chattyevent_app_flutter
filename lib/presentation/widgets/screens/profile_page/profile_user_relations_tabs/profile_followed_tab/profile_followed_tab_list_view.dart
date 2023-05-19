@@ -7,32 +7,48 @@ import 'package:chattyevent_app_flutter/presentation/widgets/general/user_list/u
 
 class ProfileFollowedTabListView extends StatelessWidget {
   final List<UserEntity> followed;
-
-  const ProfileFollowedTabListView({super.key, required this.followed});
+  final void Function() loadMore;
+  final bool loading;
+  const ProfileFollowedTabListView({
+    super.key,
+    required this.followed,
+    required this.loadMore,
+    required this.loading,
+  });
 
   @override
   Widget build(BuildContext context) {
     return SliverList(
       delegate: SliverChildBuilderDelegate(
         (context, index) {
-          return UserListTile(
-            user: followed[index],
-            trailing: SizedBox(
-              width: 90,
-              height: 40,
-              child: FollowButton(
-                user: followed[index],
-                onTap: () {
-                  BlocProvider.of<ProfilePageCubit>(context)
-                      .followOrUnfollowUserViaApi(
-                    user: followed[index],
-                  );
-                },
+          if (index < followed.length) {
+            return UserListTile(
+              user: followed[index],
+              trailing: SizedBox(
+                width: 90,
+                height: 40,
+                child: FollowButton(
+                  user: followed[index],
+                  onTap: () {
+                    BlocProvider.of<ProfilePageCubit>(context)
+                        .followOrUnfollowUserViaApi(
+                      user: followed[index],
+                    );
+                  },
+                ),
               ),
-            ),
-          );
+            );
+          }
+          if (loading) {
+            return const CircularProgressIndicator.adaptive();
+          } else {
+            return IconButton(
+              onPressed: loadMore,
+              icon: const Icon(Icons.add_circle),
+            );
+          }
         },
-        childCount: followed.length,
+        childCount: followed.length + 1,
       ),
     );
   }

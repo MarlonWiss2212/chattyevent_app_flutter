@@ -63,7 +63,8 @@ class _SelectableUserGridListState extends State<SelectableUserGridList> {
         const SizedBox(height: 8),
         BlocBuilder<UserSearchCubit, UserSearchState>(
           builder: (context, state) {
-            if (state.status == UserSearchStateStatus.loading) {
+            if (state.status == UserSearchStateStatus.loading &&
+                state.users.isNotEmpty) {
               return Expanded(
                 child: Center(
                   child: PlatformCircularProgressIndicator(),
@@ -80,6 +81,10 @@ class _SelectableUserGridListState extends State<SelectableUserGridList> {
                 users: filteredUsers,
                 onPress: widget.onUserPress,
                 button: widget.userButton,
+                loadMore: () {
+                  widget.loadMoreRequest();
+                },
+                loading: state.status == UserSearchStateStatus.loadingMore,
               ),
             );
           },

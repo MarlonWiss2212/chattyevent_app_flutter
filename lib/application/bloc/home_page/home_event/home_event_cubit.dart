@@ -75,7 +75,7 @@ class HomeEventCubit extends Cubit<HomeEventState> {
   Future getFuturePrivateEventsViaApi({
     bool reload = false,
   }) async {
-    emitState(status: HomeEventStateStatus.loading);
+    emitState(loadingFutureEvents: false);
 
     final futureEventsLength = reload ? state.getFutureEvents().length : null;
 
@@ -94,9 +94,12 @@ class HomeEventCubit extends Cubit<HomeEventState> {
     );
 
     privateEventOrFailure.fold(
-      (alert) => notificationCubit.newAlert(notificationAlert: alert),
+      (alert) {
+        emitState(loadingFutureEvents: false);
+        notificationCubit.newAlert(notificationAlert: alert);
+      },
       (privateEvents) {
-        emitState(status: HomeEventStateStatus.success);
+        emitState(loadingFutureEvents: false);
 
         if (reload) {
           final pastEvents = state.getPastEvents();
@@ -142,7 +145,7 @@ class HomeEventCubit extends Cubit<HomeEventState> {
   Future getPastPrivateEventsViaApi({
     bool reload = false,
   }) async {
-    emitState(status: HomeEventStateStatus.loading);
+    emitState(loadingPastEvents: true);
 
     final pastEventsLength = reload ? state.getPastEvents().length : null;
 
@@ -161,9 +164,12 @@ class HomeEventCubit extends Cubit<HomeEventState> {
     );
 
     privateEventOrFailure.fold(
-      (alert) => notificationCubit.newAlert(notificationAlert: alert),
+      (alert) {
+        emitState(loadingPastEvents: false);
+        notificationCubit.newAlert(notificationAlert: alert);
+      },
       (privateEvents) {
-        emitState(status: HomeEventStateStatus.success);
+        emitState(loadingPastEvents: false);
 
         if (reload) {
           final futureEvents = state.getFutureEvents();
@@ -208,7 +214,8 @@ class HomeEventCubit extends Cubit<HomeEventState> {
 
   emitState({
     List<CurrentPrivateEventState>? privateEvents,
-    HomeEventStateStatus? status,
+    bool? loadingFutureEvents,
+    bool? loadingPastEvents,
   }) {
     privateEvents?.sort(
       (a, b) => a.privateEvent.eventDate.compareTo(b.privateEvent.eventDate),
@@ -227,7 +234,8 @@ class HomeEventCubit extends Cubit<HomeEventState> {
           : state.pastOffset,
       futureOffset:
           privateEvents != null ? futureEventsLength! : state.futureOffset,
-      status: status ?? HomeEventStateStatus.initial,
+      loadingFutureEvents: loadingFutureEvents ?? state.loadingFutureEvents,
+      loadingPastEvents: loadingPastEvents ?? state.loadingPastEvents,
     ));
   }
 }

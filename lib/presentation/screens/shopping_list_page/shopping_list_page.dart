@@ -78,38 +78,48 @@ class _ShoppingListPageState extends State<ShoppingListPage> {
               }
               final currentUser =
                   BlocProvider.of<AuthCubit>(context).state.currentUser;
-              final filteredShoppingList = state.shoppingListItemStates
-                  .where(
-                    (element) =>
-                        element.shoppingListItem.userToBuyItem ==
-                        currentUser.id,
-                  )
-                  .toList();
 
               return SliverList(
                 delegate: SliverChildBuilderDelegate(
                   (context, index) {
-                    return ShoppingListItemTile(
-                      shoppingListItem:
-                          filteredShoppingList[index].shoppingListItem,
-                      userToBuyItem: PrivateEventUserEntity(
-                        id: currentUser.id,
-                        authId: currentUser.authId,
-                        privateEventUserId: "",
-                      ),
-                      onTap: () {
-                        AutoRouter.of(context).push(
-                          ShoppingListItemWrapperPageRoute(
-                            currentShoppingListItemStateToSet:
-                                filteredShoppingList[index],
-                            shoppingListItemId:
-                                filteredShoppingList[index].shoppingListItem.id,
-                          ),
-                        );
-                      },
-                    );
+                    if (index < state.shoppingListItemStates.length) {
+                      return ShoppingListItemTile(
+                        shoppingListItem: state
+                            .shoppingListItemStates[index].shoppingListItem,
+                        userToBuyItem: PrivateEventUserEntity(
+                          id: currentUser.id,
+                          authId: currentUser.authId,
+                          username: currentUser.username,
+                          profileImageLink: currentUser.profileImageLink,
+                          privateEventUserId: "",
+                        ),
+                        onTap: () {
+                          AutoRouter.of(context).push(
+                            ShoppingListItemWrapperPageRoute(
+                              currentShoppingListItemStateToSet:
+                                  state.shoppingListItemStates[index],
+                              shoppingListItemId: state
+                                  .shoppingListItemStates[index]
+                                  .shoppingListItem
+                                  .id,
+                            ),
+                          );
+                        },
+                      );
+                    }
+                    if (state.loading) {
+                      return const CircularProgressIndicator.adaptive();
+                    } else {
+                      return IconButton(
+                        onPressed: () {
+                          BlocProvider.of<MyShoppingListCubit>(context)
+                              .getShoppingListViaApi();
+                        },
+                        icon: const Icon(Icons.add_circle),
+                      );
+                    }
                   },
-                  childCount: filteredShoppingList.length,
+                  childCount: state.shoppingListItemStates.length,
                 ),
               );
             },

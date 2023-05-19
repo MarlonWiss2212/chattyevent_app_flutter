@@ -1,6 +1,6 @@
 part of 'user_search_cubit.dart';
 
-enum UserSearchStateStatus { initial, loading, success }
+enum UserSearchStateStatus { initial, loading, success, loadingMore }
 
 class UserSearchState {
   final List<UserEntity> users;

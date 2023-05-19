@@ -62,14 +62,16 @@ class _HomeEventPageState extends State<HomeEventPage> {
           BlocBuilder<HomeEventCubit, HomeEventState>(
             builder: (context, state) {
               if (state.privateEvents.isEmpty &&
-                  state.status != HomeEventStateStatus.loading) {
+                  state.loadingFutureEvents == false &&
+                  state.loadingPastEvents == false) {
                 return const SliverFillRemaining(
                   child: Center(child: Text("Keine Privaten Events")),
                 );
               }
 
               if (state.privateEvents.isEmpty &&
-                  state.status == HomeEventStateStatus.loading) {
+                  state.loadingFutureEvents == true &&
+                  state.loadingPastEvents == true) {
                 return const EventHorizontalListSkeleton();
               }
 

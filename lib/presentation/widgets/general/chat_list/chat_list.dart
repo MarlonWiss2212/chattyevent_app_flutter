@@ -49,6 +49,7 @@ class _ChatListState extends State<ChatList> {
 
   @override
   Widget build(BuildContext context) {
+    // doesnt need load more because all loaded on initial
     return SliverList(
       delegate: SliverChildBuilderDelegate(
         (context, index) {
