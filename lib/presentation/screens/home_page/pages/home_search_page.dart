@@ -1,3 +1,4 @@
+import 'package:chattyevent_app_flutter/presentation/widgets/general/input_fields/debounce_input_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
@@ -48,14 +49,14 @@ class HomeSearchPage extends StatelessWidget {
                   delegate: SliverChildListDelegate(
                     [
                       const SizedBox(height: 8),
-                      PlatformTextFormField(
-                        onChanged: (text) {
-                          BlocProvider.of<UserSearchCubit>(context)
-                              .getUsersViaApi(
-                            findUsersFilter: FindUsersFilter(search: text),
-                          );
-                        },
-                        hintText: "User Suche:",
+                      DebouceInputField(
+                        userSearch: TextEditingController(),
+                        onSearchChanged: ({required String text}) =>
+                            BlocProvider.of<UserSearchCubit>(context)
+                                .getUsersViaApi(
+                          findUsersFilter: FindUsersFilter(search: text),
+                        ),
+                        hintText: "User Suche: ",
                       ),
                       const SizedBox(height: 8),
                       BlocBuilder<UserSearchCubit, UserSearchState>(
