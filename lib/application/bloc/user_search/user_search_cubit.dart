@@ -71,6 +71,7 @@ class UserSearchCubit extends Cubit<UserSearchState> {
     RequesterGroupchatAddPermissionEnum? requesterGroupchatAddPermission,
     RequesterPrivateEventAddPermissionEnum? requesterPrivateEventAddPermission,
     RequesterCalenderWatchPermissionEnum? requesterCalenderWatchPermission,
+    String? search,
   }) async {
     emit(UserSearchState(
       status: loadMore
@@ -86,6 +87,7 @@ class UserSearchCubit extends Cubit<UserSearchState> {
         requesterGroupchatAddPermission: requesterGroupchatAddPermission,
         requesterPrivateEventAddPermission: requesterPrivateEventAddPermission,
         requesterCalenderWatchPermission: requesterCalenderWatchPermission,
+        search: search,
       ),
       limitOffsetFilter: LimitOffsetFilter(
         limit: 20,

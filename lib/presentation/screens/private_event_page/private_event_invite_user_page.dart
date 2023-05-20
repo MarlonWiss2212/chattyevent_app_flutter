@@ -38,12 +38,13 @@ class _PrivateEventInviteUserPageState
         child: BlocBuilder<CurrentPrivateEventCubit, CurrentPrivateEventState>(
           builder: (context, state) {
             return SelectableUserGridList(
-              showTextSearch: false,
+              showTextSearch: true,
               reloadRequest: ({String? text}) {
                 BlocProvider.of<UserSearchCubit>(context)
                     .getUsersByPermissionViaApi(
                   requesterPrivateEventAddPermission:
                       RequesterPrivateEventAddPermissionEnum.add,
+                  search: text,
                 );
               },
               loadMoreRequest: ({String? text}) {
@@ -52,6 +53,7 @@ class _PrivateEventInviteUserPageState
                   loadMore: true,
                   requesterPrivateEventAddPermission:
                       RequesterPrivateEventAddPermissionEnum.add,
+                  search: text,
                 );
               },
               userButton: (user) => Button(

@@ -65,6 +65,7 @@ class _NewPrivateEventSearchUserTabState
                         .getUsersByPermissionViaApi(
                       requesterPrivateEventAddPermission:
                           RequesterPrivateEventAddPermissionEnum.add,
+                      search: text,
                     );
                   },
                   loadMoreRequest: ({String? text}) {
@@ -73,9 +74,10 @@ class _NewPrivateEventSearchUserTabState
                       loadMore: true,
                       requesterPrivateEventAddPermission:
                           RequesterPrivateEventAddPermissionEnum.add,
+                      search: text,
                     );
                   },
-                  showTextSearch: false,
+                  showTextSearch: true,
                   onUserPress: (user) {
                     BlocProvider.of<AddPrivateEventCubit>(context)
                         .addPrivateEventUserToList(

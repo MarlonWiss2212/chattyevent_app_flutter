@@ -8,16 +8,22 @@ class FindFollowersFilter {
       requesterPrivateEventAddPermission;
   final RequesterGroupchatAddPermissionEnum? requesterGroupchatAddPermission;
   final RequesterCalenderWatchPermissionEnum? requesterCalenderWatchPermission;
+  final String? search;
 
   FindFollowersFilter({
     required this.targetUserId,
     this.requesterGroupchatAddPermission,
     this.requesterPrivateEventAddPermission,
     this.requesterCalenderWatchPermission,
+    this.search,
   });
 
   Map<dynamic, dynamic> toMap() {
     Map<dynamic, dynamic> map = {"targetUserId": targetUserId};
+
+    if (search != null) {
+      map.addAll({"search": search});
+    }
 
     if (requesterPrivateEventAddPermission != null) {
       map.addAll({

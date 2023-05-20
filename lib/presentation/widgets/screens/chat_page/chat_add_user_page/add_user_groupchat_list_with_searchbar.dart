@@ -18,12 +18,13 @@ class AddUserGroupchatListWithSearchbar extends StatelessWidget {
       child: BlocBuilder<CurrentChatCubit, CurrentChatState>(
         builder: (context, state) {
           return SelectableUserGridList(
-            showTextSearch: false,
+            showTextSearch: true,
             reloadRequest: ({String? text}) {
               BlocProvider.of<UserSearchCubit>(context)
                   .getUsersByPermissionViaApi(
                 requesterGroupchatAddPermission:
                     RequesterGroupchatAddPermissionEnum.add,
+                search: text,
               );
             },
             loadMoreRequest: ({String? text}) {
@@ -32,6 +33,7 @@ class AddUserGroupchatListWithSearchbar extends StatelessWidget {
                 loadMore: true,
                 requesterGroupchatAddPermission:
                     RequesterGroupchatAddPermissionEnum.add,
+                search: text,
               );
             },
             userButton: (user) => Button(

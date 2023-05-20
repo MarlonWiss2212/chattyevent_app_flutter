@@ -62,6 +62,7 @@ class _NewGroupchatSelectUserTabState extends State<NewGroupchatSelectUserTab> {
                         .getUsersByPermissionViaApi(
                       requesterGroupchatAddPermission:
                           RequesterGroupchatAddPermissionEnum.add,
+                      search: text,
                     );
                   },
                   loadMoreRequest: ({String? text}) {
@@ -70,9 +71,10 @@ class _NewGroupchatSelectUserTabState extends State<NewGroupchatSelectUserTab> {
                       loadMore: true,
                       requesterGroupchatAddPermission:
                           RequesterGroupchatAddPermissionEnum.add,
+                      search: text,
                     );
                   },
-                  showTextSearch: false,
+                  showTextSearch: true,
                   onUserPress: (user) {
                     BlocProvider.of<AddGroupchatCubit>(context)
                         .addGroupchatUserToList(
