@@ -36,6 +36,7 @@ class UserEntity {
   /// only use this when changing a value
   factory UserEntity.merge({
     bool removeMyUserRelation = false,
+    bool removeOtherUserRelationToMe = false,
     required UserEntity newEntity,
     required UserEntity oldEntity,
   }) {
@@ -44,9 +45,14 @@ class UserEntity {
       id: newEntity.id,
       settings: newEntity.settings ?? oldEntity.settings,
       username: newEntity.username ?? oldEntity.username,
-      myUserRelationToOtherUser:
-          removeMyUserRelation ? null : newEntity.myUserRelationToOtherUser,
-      otherUserRelationToMyUser: newEntity.otherUserRelationToMyUser,
+      myUserRelationToOtherUser: removeMyUserRelation
+          ? null
+          : newEntity.myUserRelationToOtherUser ??
+              oldEntity.myUserRelationToOtherUser,
+      otherUserRelationToMyUser: removeOtherUserRelationToMe
+          ? null
+          : newEntity.otherUserRelationToMyUser ??
+              oldEntity.otherUserRelationToMyUser,
       profileImageLink:
           newEntity.profileImageLink ?? oldEntity.profileImageLink,
       firstname: newEntity.firstname ?? oldEntity.firstname,

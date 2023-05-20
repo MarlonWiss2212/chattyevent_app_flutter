@@ -308,10 +308,11 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
   Future deleteFollower({
     required String userId,
   }) async {
-    if (state.user.id != authCubit.state.currentUser.id) {
+    if (state.user.id != authCubit.state.currentUser.id &&
+        state.user.id != userId) {
       notificationCubit.newAlert(
         notificationAlert: NotificationAlert(
-          title: "Delete Follower NotificationAlert",
+          title: "Delete Follower",
           message: "Du kannst keinen Follower eines anderen Profiles löschen",
         ),
       );
@@ -332,33 +333,63 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
         if (boolean == false) {
           notificationCubit.newAlert(
             notificationAlert: NotificationAlert(
-              title: "Delete Follower NotificationAlert",
+              title: "Delete Follower",
               message: "Fehler bein löschen eines Followers",
             ),
           );
           return;
         }
-        final user = UserEntity.merge(
-          newEntity: UserEntity(
-            id: state.user.id,
-            authId: state.user.authId,
-            userRelationCounts: UserRelationsCountEntity(
-              followerCount: state.user.userRelationCounts != null &&
-                      state.user.userRelationCounts!.followedCount != null
-                  ? state.user.userRelationCounts!.followedCount! - 1
-                  : 0,
+
+        // when deleting profile user as my follower
+        if (state.user.id == userId) {
+          emitState(
+            user: UserEntity.merge(
+              removeOtherUserRelationToMe: true,
+              newEntity: state.user,
+              oldEntity: state.user,
             ),
-          ),
-          oldEntity: state.user,
-        );
-        emitState(
-          followers: List.from(state.followRequests ?? [])
-            ..removeWhere(
-              (user) => user.id == userId,
+          );
+          // make count less for deleting follower
+          authCubit.emitState(
+            currentUser: UserEntity.merge(
+              newEntity: UserEntity(
+                id: authCubit.state.currentUser.id,
+                authId: authCubit.state.currentUser.authId,
+                userRelationCounts: UserRelationsCountEntity(
+                  followerCount: state.user.userRelationCounts != null &&
+                          state.user.userRelationCounts!.followerCount != null
+                      ? state.user.userRelationCounts!.followerCount! - 1
+                      : 0,
+                ),
+              ),
+              oldEntity: authCubit.state.currentUser,
             ),
-          user: user,
-        );
-        authCubit.emitState(currentUser: user);
+          );
+        }
+        // when deleting my followers
+        else {
+          final user = UserEntity.merge(
+            newEntity: UserEntity(
+              id: state.user.id,
+              authId: state.user.authId,
+              userRelationCounts: UserRelationsCountEntity(
+                followerCount: state.user.userRelationCounts != null &&
+                        state.user.userRelationCounts!.followerCount != null
+                    ? state.user.userRelationCounts!.followerCount! - 1
+                    : 0,
+              ),
+            ),
+            oldEntity: state.user,
+          );
+          emitState(
+            followers: List.from(state.followRequests ?? [])
+              ..removeWhere(
+                (user) => user.id == userId,
+              ),
+            user: user,
+          );
+          authCubit.emitState(currentUser: user);
+        }
       },
     );
   }
