@@ -75,7 +75,7 @@ class HomeEventCubit extends Cubit<HomeEventState> {
   Future getFuturePrivateEventsViaApi({
     bool reload = false,
   }) async {
-    emitState(loadingFutureEvents: false);
+    emitState(loadingFutureEvents: true);
 
     final futureEventsLength = reload ? state.getFutureEvents().length : null;
 

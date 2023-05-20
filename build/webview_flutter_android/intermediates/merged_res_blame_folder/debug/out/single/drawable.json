@@ -1,0 +1,18 @@
+[
+    {
+        "merged": "E:\\SocialMediaProject\\chattyevent_app_flutter\\build\\webview_flutter_android\\intermediates\\res\\merged\\debug\\drawable\\notification_tile_bg.xml",
+        "source": "C:\\Users\\marlo\\.gradle\\caches\\transforms-3\\f6891e02ce334d6f224e2baffb8b6dc3\\transformed\\core-1.6.0\\res\\drawable\\notification_tile_bg.xml"
+    },
+    {
+        "merged": "E:\\SocialMediaProject\\chattyevent_app_flutter\\build\\webview_flutter_android\\intermediates\\res\\merged\\debug\\drawable\\notification_bg.xml",
+        "source": "C:\\Users\\marlo\\.gradle\\caches\\transforms-3\\f6891e02ce334d6f224e2baffb8b6dc3\\transformed\\core-1.6.0\\res\\drawable\\notification_bg.xml"
+    },
+    {
+        "merged": "E:\\SocialMediaProject\\chattyevent_app_flutter\\build\\webview_flutter_android\\intermediates\\res\\merged\\debug\\drawable\\notification_bg_low.xml",
+        "source": "C:\\Users\\marlo\\.gradle\\caches\\transforms-3\\f6891e02ce334d6f224e2baffb8b6dc3\\transformed\\core-1.6.0\\res\\drawable\\notification_bg_low.xml"
+    },
+    {
+        "merged": "E:\\SocialMediaProject\\chattyevent_app_flutter\\build\\webview_flutter_android\\intermediates\\res\\merged\\debug\\drawable\\notification_icon_background.xml",
+        "source": "C:\\Users\\marlo\\.gradle\\caches\\transforms-3\\f6891e02ce334d6f224e2baffb8b6dc3\\transformed\\core-1.6.0\\res\\drawable\\notification_icon_background.xml"
+    }
+]

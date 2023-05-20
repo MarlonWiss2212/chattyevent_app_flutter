@@ -30,21 +30,16 @@ class _ChatListState extends State<ChatList> {
     if (widget.chatStates.length < _kAdIndex) {
       return;
     }
-    BannerAd(
+    _ad = BannerAd(
       adUnitId: AdHelper.chatListBannerAdUnitId,
       size: AdSize.banner,
       request: const AdRequest(),
       listener: BannerAdListener(
-        onAdLoaded: (ad) {
-          setState(() {
-            _ad = ad as BannerAd;
-          });
-        },
         onAdFailedToLoad: (ad, error) {
           ad.dispose();
         },
       ),
-    ).load();
+    )..load();
   }
 
   @override
