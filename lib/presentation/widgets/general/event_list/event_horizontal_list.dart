@@ -18,50 +18,54 @@ class EventHorizontalList extends StatefulWidget {
 class _EventHorizontalListState extends State<EventHorizontalList> {
   NativeAd? _ad;
 
-  void loadAd() {
-    NativeAd(
-      adUnitId: AdHelper.privateEventHorizontalListNativeAdUnitId,
-      listener: NativeAdListener(
-        onAdLoaded: (ad) {
-          setState(() {
-            _ad = ad as NativeAd;
-          });
-        },
-        onAdFailedToLoad: (ad, error) {
-          ad.dispose();
-        },
-      ),
-      request: const AdRequest(),
-      nativeTemplateStyle: NativeTemplateStyle(
-        templateType: TemplateType.medium,
-        mainBackgroundColor: Theme.of(context).colorScheme.background,
-        cornerRadius: 8,
-        callToActionTextStyle: NativeTemplateTextStyle(
-          textColor: Theme.of(context).colorScheme.onBackground,
-          backgroundColor: Theme.of(context).colorScheme.background,
-          style: NativeTemplateFontStyle.monospace,
-          size: 16.0,
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration.zero, () {
+      NativeAd(
+        adUnitId: AdHelper.privateEventHorizontalListNativeAdUnitId,
+        listener: NativeAdListener(
+          onAdLoaded: (ad) {
+            setState(() {
+              _ad = ad as NativeAd;
+            });
+          },
+          onAdFailedToLoad: (ad, error) {
+            ad.dispose();
+          },
         ),
-        primaryTextStyle: NativeTemplateTextStyle(
-          textColor: Theme.of(context).colorScheme.onBackground,
-          backgroundColor: Theme.of(context).colorScheme.background,
-          style: NativeTemplateFontStyle.italic,
-          size: 16.0,
+        request: const AdRequest(),
+        nativeTemplateStyle: NativeTemplateStyle(
+          templateType: TemplateType.medium,
+          mainBackgroundColor: Theme.of(context).colorScheme.background,
+          cornerRadius: 8,
+          callToActionTextStyle: NativeTemplateTextStyle(
+            textColor: Theme.of(context).colorScheme.onBackground,
+            backgroundColor: Theme.of(context).colorScheme.background,
+            style: NativeTemplateFontStyle.monospace,
+            size: 16.0,
+          ),
+          primaryTextStyle: NativeTemplateTextStyle(
+            textColor: Theme.of(context).colorScheme.onBackground,
+            backgroundColor: Theme.of(context).colorScheme.background,
+            style: NativeTemplateFontStyle.italic,
+            size: 16.0,
+          ),
+          secondaryTextStyle: NativeTemplateTextStyle(
+            textColor: Theme.of(context).colorScheme.onBackground,
+            backgroundColor: Theme.of(context).colorScheme.background,
+            style: NativeTemplateFontStyle.bold,
+            size: 16.0,
+          ),
+          tertiaryTextStyle: NativeTemplateTextStyle(
+            textColor: Theme.of(context).colorScheme.onBackground,
+            backgroundColor: Theme.of(context).colorScheme.background,
+            style: NativeTemplateFontStyle.normal,
+            size: 16.0,
+          ),
         ),
-        secondaryTextStyle: NativeTemplateTextStyle(
-          textColor: Theme.of(context).colorScheme.onBackground,
-          backgroundColor: Theme.of(context).colorScheme.background,
-          style: NativeTemplateFontStyle.bold,
-          size: 16.0,
-        ),
-        tertiaryTextStyle: NativeTemplateTextStyle(
-          textColor: Theme.of(context).colorScheme.onBackground,
-          backgroundColor: Theme.of(context).colorScheme.background,
-          style: NativeTemplateFontStyle.normal,
-          size: 16.0,
-        ),
-      ),
-    ).load();
+      ).load();
+    });
   }
 
   @override
@@ -72,7 +76,6 @@ class _EventHorizontalListState extends State<EventHorizontalList> {
 
   @override
   Widget build(BuildContext context) {
-    loadAd();
     double viewportFraction = min(
       (300 / MediaQuery.of(context).size.width).toDouble(),
       1,
@@ -96,8 +99,8 @@ class _EventHorizontalListState extends State<EventHorizontalList> {
               constraints: BoxConstraints(
                 maxHeight: 400,
                 maxWidth: 400,
-                minHeight: height,
-                minWidth: width,
+                minHeight: min(height, 400),
+                minWidth: min(width, 400),
               ),
               child: AdWidget(ad: _ad!),
             );
