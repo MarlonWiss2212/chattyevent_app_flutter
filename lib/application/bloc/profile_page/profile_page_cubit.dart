@@ -345,7 +345,16 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
           emitState(
             user: UserEntity.merge(
               removeOtherUserRelationToMe: true,
-              newEntity: state.user,
+              newEntity: UserEntity(
+                id: state.user.id,
+                authId: state.user.authId,
+                userRelationCounts: UserRelationsCountEntity(
+                  followedCount: state.user.userRelationCounts != null &&
+                          state.user.userRelationCounts!.followedCount != null
+                      ? state.user.userRelationCounts!.followedCount! - 1
+                      : 0,
+                ),
+              ),
               oldEntity: state.user,
             ),
           );
