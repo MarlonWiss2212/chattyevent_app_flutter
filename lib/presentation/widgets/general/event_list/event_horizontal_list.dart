@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:auto_route/auto_route.dart';
 import 'package:chattyevent_app_flutter/core/utils/ad_helper.dart';
 import 'package:flutter/material.dart';
@@ -19,11 +18,15 @@ class EventHorizontalList extends StatefulWidget {
 class _EventHorizontalListState extends State<EventHorizontalList> {
   NativeAd? _ad;
 
-  @override
-  void initState() {
-    _ad = NativeAd(
+  void loadAd() {
+    NativeAd(
       adUnitId: AdHelper.privateEventHorizontalListNativeAdUnitId,
       listener: NativeAdListener(
+        onAdLoaded: (ad) {
+          setState(() {
+            _ad = ad as NativeAd;
+          });
+        },
         onAdFailedToLoad: (ad, error) {
           ad.dispose();
         },
@@ -31,12 +34,34 @@ class _EventHorizontalListState extends State<EventHorizontalList> {
       request: const AdRequest(),
       nativeTemplateStyle: NativeTemplateStyle(
         templateType: TemplateType.medium,
-        mainBackgroundColor: Colors.purple,
+        mainBackgroundColor: Theme.of(context).colorScheme.background,
         cornerRadius: 8,
+        callToActionTextStyle: NativeTemplateTextStyle(
+          textColor: Theme.of(context).colorScheme.onBackground,
+          backgroundColor: Theme.of(context).colorScheme.background,
+          style: NativeTemplateFontStyle.monospace,
+          size: 16.0,
+        ),
+        primaryTextStyle: NativeTemplateTextStyle(
+          textColor: Theme.of(context).colorScheme.onBackground,
+          backgroundColor: Theme.of(context).colorScheme.background,
+          style: NativeTemplateFontStyle.italic,
+          size: 16.0,
+        ),
+        secondaryTextStyle: NativeTemplateTextStyle(
+          textColor: Theme.of(context).colorScheme.onBackground,
+          backgroundColor: Theme.of(context).colorScheme.background,
+          style: NativeTemplateFontStyle.bold,
+          size: 16.0,
+        ),
+        tertiaryTextStyle: NativeTemplateTextStyle(
+          textColor: Theme.of(context).colorScheme.onBackground,
+          backgroundColor: Theme.of(context).colorScheme.background,
+          style: NativeTemplateFontStyle.normal,
+          size: 16.0,
+        ),
       ),
-    )..load();
-
-    super.initState();
+    ).load();
   }
 
   @override
@@ -47,6 +72,7 @@ class _EventHorizontalListState extends State<EventHorizontalList> {
 
   @override
   Widget build(BuildContext context) {
+    loadAd();
     double viewportFraction = min(
       (300 / MediaQuery.of(context).size.width).toDouble(),
       1,
@@ -66,10 +92,13 @@ class _EventHorizontalListState extends State<EventHorizontalList> {
         physics: const PageScrollPhysics(),
         itemBuilder: (context, index) {
           if (index == 1 && _ad != null) {
-            return Container(
-              decoration: BoxDecoration(borderRadius: BorderRadius.circular(8)),
-              width: width,
-              height: height,
+            return ConstrainedBox(
+              constraints: BoxConstraints(
+                maxHeight: 400,
+                maxWidth: 400,
+                minHeight: height,
+                minWidth: width,
+              ),
               child: AdWidget(ad: _ad!),
             );
           }
@@ -93,7 +122,7 @@ class _EventHorizontalListState extends State<EventHorizontalList> {
           );
         },
         itemCount: _ad != null
-            ? widget.privateEventStates.length - 1
+            ? widget.privateEventStates.length + 1
             : widget.privateEventStates.length,
       ),
     );

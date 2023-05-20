@@ -17,16 +17,21 @@ class _CustomBannerAdState extends State<CustomBannerAd> {
   @override
   void initState() {
     super.initState();
-    _ad = BannerAd(
+    BannerAd(
       adUnitId: widget.adUnitId,
       size: AdSize.banner,
       request: const AdRequest(),
       listener: BannerAdListener(
+        onAdLoaded: (ad) {
+          setState(() {
+            _ad = ad as BannerAd;
+          });
+        },
         onAdFailedToLoad: (ad, error) {
           ad.dispose();
         },
       ),
-    )..load();
+    ).load();
   }
 
   @override
