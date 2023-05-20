@@ -15,7 +15,7 @@ class ChatList extends StatefulWidget {
 
 class _ChatListState extends State<ChatList> {
   final int _kAdIndex = 1;
-  BannerAd? _ad;
+  NativeAd? _ad;
 
   int _getDestinationItemIndex(int rawIndex) {
     if (rawIndex >= _kAdIndex && _ad != null) {
@@ -30,21 +30,51 @@ class _ChatListState extends State<ChatList> {
     if (widget.chatStates.length < _kAdIndex) {
       return;
     }
-    BannerAd(
-      adUnitId: AdHelper.chatListBannerAdUnitId,
-      size: AdSize.banner,
-      request: const AdRequest(),
-      listener: BannerAdListener(
-        onAdLoaded: (ad) {
-          setState(() {
-            _ad = ad as BannerAd;
-          });
-        },
-        onAdFailedToLoad: (ad, error) {
-          ad.dispose();
-        },
-      ),
-    ).load();
+    Future.delayed(Duration.zero, () {
+      NativeAd(
+        adUnitId: AdHelper.chatListNativeAdUnitId,
+        listener: NativeAdListener(
+          onAdLoaded: (ad) {
+            setState(() {
+              _ad = ad as NativeAd;
+            });
+          },
+          onAdFailedToLoad: (ad, error) {
+            ad.dispose();
+          },
+        ),
+        request: const AdRequest(),
+        nativeTemplateStyle: NativeTemplateStyle(
+          templateType: TemplateType.small,
+          mainBackgroundColor: Theme.of(context).colorScheme.background,
+          cornerRadius: 8,
+          callToActionTextStyle: NativeTemplateTextStyle(
+            textColor: Theme.of(context).colorScheme.onBackground,
+            backgroundColor: Theme.of(context).colorScheme.background,
+            style: NativeTemplateFontStyle.monospace,
+            size: 16.0,
+          ),
+          primaryTextStyle: NativeTemplateTextStyle(
+            textColor: Theme.of(context).colorScheme.onBackground,
+            backgroundColor: Theme.of(context).colorScheme.background,
+            style: NativeTemplateFontStyle.italic,
+            size: 16.0,
+          ),
+          secondaryTextStyle: NativeTemplateTextStyle(
+            textColor: Theme.of(context).colorScheme.onBackground,
+            backgroundColor: Theme.of(context).colorScheme.background,
+            style: NativeTemplateFontStyle.bold,
+            size: 16.0,
+          ),
+          tertiaryTextStyle: NativeTemplateTextStyle(
+            textColor: Theme.of(context).colorScheme.onBackground,
+            backgroundColor: Theme.of(context).colorScheme.background,
+            style: NativeTemplateFontStyle.normal,
+            size: 16.0,
+          ),
+        ),
+      ).load();
+    });
   }
 
   @override
@@ -54,13 +84,17 @@ class _ChatListState extends State<ChatList> {
       delegate: SliverChildBuilderDelegate(
         (context, index) {
           if (_ad != null && index == _kAdIndex) {
-            return Container(
-              width: _ad!.size.width.toDouble(),
-              height: 72.0,
-              alignment: Alignment.center,
+            return ConstrainedBox(
+              constraints: BoxConstraints(
+                minWidth: MediaQuery.of(context).size.width,
+                minHeight: 80,
+                maxWidth: MediaQuery.of(context).size.width,
+                maxHeight: 90,
+              ),
               child: AdWidget(ad: _ad!),
             );
           }
+
           index = _getDestinationItemIndex(index);
           final message = widget.chatStates[index].messages.isNotEmpty
               ? widget.chatStates[index].messages.first

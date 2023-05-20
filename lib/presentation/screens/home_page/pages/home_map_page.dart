@@ -6,7 +6,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:chattyevent_app_flutter/application/bloc/home_page/home_event/home_event_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/location/location_cubit.dart';
 import 'package:chattyevent_app_flutter/core/utils/ad_helper.dart';
-import 'package:chattyevent_app_flutter/presentation/widgets/ads/custom_banner_ad.dart';
+import 'package:chattyevent_app_flutter/presentation/widgets/ads/custom_small_native_ad.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/button.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/home_page/pages/home_map_page/private_event_map_marker.dart';
 
@@ -100,7 +100,10 @@ class _HomeMapPageState extends State<HomeMapPage> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      CustomBannerAd(adUnitId: AdHelper.mapTabBannerAdUnitId),
+                      CustomSmallNativeAd(
+                        adUnitId: AdHelper.mapTabNativeAdUnitId,
+                        width: MediaQuery.of(context).size.width,
+                      ),
                       SizedBox(
                         width: double.infinity,
                         child: Padding(

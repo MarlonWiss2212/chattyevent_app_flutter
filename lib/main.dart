@@ -143,7 +143,7 @@ class _AppState extends State<App> {
                 theme: ThemeData(
                   appBarTheme: const AppBarTheme(
                     backgroundColor: Colors.white,
-                    foregroundColor: Colors.black,
+                    foregroundColor: Colors.black87,
                     shadowColor: Colors.transparent,
                   ),
                   tabBarTheme: TabBarTheme(
@@ -159,7 +159,7 @@ class _AppState extends State<App> {
                 ),
                 darkTheme: ThemeData(
                   appBarTheme: const AppBarTheme(
-                    backgroundColor: Colors.black,
+                    backgroundColor: Colors.black87,
                     foregroundColor: Colors.white,
                     shadowColor: Colors.transparent,
                   ),

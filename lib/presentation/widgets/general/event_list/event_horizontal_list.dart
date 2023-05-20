@@ -34,21 +34,24 @@ class _EventHorizontalListState extends State<EventHorizontalList> {
             ad.dispose();
           },
         ),
+        nativeAdOptions: NativeAdOptions(
+          mediaAspectRatio: MediaAspectRatio.square,
+        ),
         request: const AdRequest(),
         nativeTemplateStyle: NativeTemplateStyle(
-          templateType: TemplateType.medium,
+          templateType: TemplateType.small,
           mainBackgroundColor: Theme.of(context).colorScheme.background,
           cornerRadius: 8,
           callToActionTextStyle: NativeTemplateTextStyle(
             textColor: Theme.of(context).colorScheme.onBackground,
             backgroundColor: Theme.of(context).colorScheme.background,
-            style: NativeTemplateFontStyle.monospace,
+            style: NativeTemplateFontStyle.normal,
             size: 16.0,
           ),
           primaryTextStyle: NativeTemplateTextStyle(
             textColor: Theme.of(context).colorScheme.onBackground,
             backgroundColor: Theme.of(context).colorScheme.background,
-            style: NativeTemplateFontStyle.italic,
+            style: NativeTemplateFontStyle.normal,
             size: 16.0,
           ),
           secondaryTextStyle: NativeTemplateTextStyle(
@@ -90,6 +93,7 @@ class _EventHorizontalListState extends State<EventHorizontalList> {
       height: height,
       child: PageView.builder(
         padEnds: false,
+        pageSnapping: true,
         controller: pageController,
         scrollDirection: Axis.horizontal,
         physics: const PageScrollPhysics(),
@@ -97,10 +101,10 @@ class _EventHorizontalListState extends State<EventHorizontalList> {
           if (index == 1 && _ad != null) {
             return ConstrainedBox(
               constraints: BoxConstraints(
-                maxHeight: 400,
-                maxWidth: 400,
-                minHeight: min(height, 400),
-                minWidth: min(width, 400),
+                maxHeight: height,
+                maxWidth: width,
+                minHeight: height,
+                minWidth: width,
               ),
               child: AdWidget(ad: _ad!),
             );

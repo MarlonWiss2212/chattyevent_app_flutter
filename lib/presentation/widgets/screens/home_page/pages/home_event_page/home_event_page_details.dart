@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/home_page/home_event/home_event_cubit.dart';
 import 'package:chattyevent_app_flutter/core/utils/ad_helper.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
-import 'package:chattyevent_app_flutter/presentation/widgets/ads/custom_banner_ad.dart';
+import 'package:chattyevent_app_flutter/presentation/widgets/ads/custom_small_native_ad.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/event_list/event_horizontal_list.dart';
 
 class HomeEventPageDetails extends StatelessWidget {
@@ -77,7 +77,10 @@ class HomeEventPageDetails extends StatelessWidget {
               );
             },
           ),
-          CustomBannerAd(adUnitId: AdHelper.privateEventListBannerAdUnitId),
+          CustomSmallNativeAd(
+            adUnitId: AdHelper.privateEventListNativeAdUnitId,
+            width: MediaQuery.of(context).size.width,
+          ),
           ListTile(
             leading: const Icon(Icons.shopping_bag),
             title: const Text("Einkaufsliste"),
