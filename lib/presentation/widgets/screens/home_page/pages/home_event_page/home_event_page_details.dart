@@ -4,8 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/home_page/home_event/home_event_cubit.dart';
 import 'package:chattyevent_app_flutter/core/utils/ad_helper.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
-import 'package:chattyevent_app_flutter/presentation/widgets/ads/custom_small_native_ad.dart';
+import 'package:chattyevent_app_flutter/presentation/widgets/ads/custom_native_ad.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/event_list/event_horizontal_list.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class HomeEventPageDetails extends StatelessWidget {
   const HomeEventPageDetails({super.key});
@@ -77,9 +78,15 @@ class HomeEventPageDetails extends StatelessWidget {
               );
             },
           ),
-          CustomSmallNativeAd(
-            adUnitId: AdHelper.privateEventListNativeAdUnitId,
-            width: MediaQuery.of(context).size.width,
+          Center(
+            child: CustomNativeAd(
+              adUnitId: AdHelper.chatListNativeAdUnitId,
+              maxWidth: MediaQuery.of(context).size.width - 16,
+              minWidth: MediaQuery.of(context).size.width - 16,
+              maxHeight: 320,
+              minHeight: 320,
+              templateType: TemplateType.medium,
+            ),
           ),
           ListTile(
             leading: const Icon(Icons.shopping_bag),

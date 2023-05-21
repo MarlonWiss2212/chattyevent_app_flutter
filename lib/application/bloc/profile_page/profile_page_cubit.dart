@@ -1,7 +1,6 @@
-import 'package:bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/core/enums/user_relation/user_relation_status_enum.dart';
 import 'package:dartz/dartz.dart';
-import 'package:meta/meta.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:chattyevent_app_flutter/core/dto/user/update_user_dto.dart';
@@ -168,7 +167,7 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
     );
   }
 
-  /// this four can only be made if the profile user is the current user
+  /// this four can only be made if the profile user is the current user // replace later with auth cubit . listen
   Future updateUser({
     required UpdateUserDto updateUserDto,
   }) async {
@@ -255,9 +254,9 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
     if (state.user.id != authCubit.state.currentUser.id) {
       notificationCubit.newAlert(
         notificationAlert: NotificationAlert(
-          title: "Accept User Relation Fehler",
+          title: "Delete User Relation Request Fehler",
           message:
-              "Du kannst keine Freundschaftsanfragen auf anderen Profilen ablehnen",
+              "Du kannst keine Freundschaftsanfragen von anderen Profilen ablehnen",
         ),
       );
       return;
@@ -288,9 +287,9 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
             authId: state.user.authId,
             userRelationCounts: UserRelationsCountEntity(
               followRequestCount: state.user.userRelationCounts != null &&
-                      state.user.userRelationCounts!.followedCount != null
-                  ? state.user.userRelationCounts!.followedCount! - 1
-                  : 0,
+                      state.user.userRelationCounts!.followRequestCount != null
+                  ? state.user.userRelationCounts!.followRequestCount! - 1
+                  : null,
             ),
           ),
           oldEntity: state.user,
@@ -352,7 +351,7 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
                   followedCount: state.user.userRelationCounts != null &&
                           state.user.userRelationCounts!.followedCount != null
                       ? state.user.userRelationCounts!.followedCount! - 1
-                      : 0,
+                      : null,
                 ),
               ),
               oldEntity: state.user,
@@ -368,7 +367,7 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
                   followerCount: state.user.userRelationCounts != null &&
                           state.user.userRelationCounts!.followerCount != null
                       ? state.user.userRelationCounts!.followerCount! - 1
-                      : 0,
+                      : null,
                 ),
               ),
               oldEntity: authCubit.state.currentUser,
@@ -385,7 +384,7 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
                 followerCount: state.user.userRelationCounts != null &&
                         state.user.userRelationCounts!.followerCount != null
                     ? state.user.userRelationCounts!.followerCount! - 1
-                    : 0,
+                    : null,
               ),
             ),
             oldEntity: state.user,
@@ -447,7 +446,7 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
                                 null &&
                             state.user.userRelationCounts!.followerCount! > 0
                         ? state.user.userRelationCounts!.followerCount! - 1
-                        : 0,
+                        : null,
                   ),
                 ),
                 oldEntity: state.user,
@@ -526,17 +525,24 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
                 followed[foundIndex] = UserEntity.merge(
                   removeMyUserRelation: true,
                   newEntity: UserEntity(
-                    id: user.id,
-                    authId: user.authId,
+                    id: followed[foundIndex].id,
+                    authId: followed[foundIndex].authId,
                     userRelationCounts: UserRelationsCountEntity(
-                      followerCount: user.userRelationCounts != null &&
-                              user.userRelationCounts!.followerCount != null &&
-                              user.userRelationCounts!.followerCount! > 0
-                          ? user.userRelationCounts!.followerCount! - 1
-                          : 0,
+                      followerCount:
+                          followed[foundIndex].userRelationCounts != null &&
+                                  followed[foundIndex]
+                                          .userRelationCounts!
+                                          .followerCount !=
+                                      null &&
+                                  followed[foundIndex]
+                                          .userRelationCounts!
+                                          .followerCount! >
+                                      0
+                              ? user.userRelationCounts!.followerCount! - 1
+                              : null,
                     ),
                   ),
-                  oldEntity: user,
+                  oldEntity: followed[foundIndex],
                 );
               }
             }
@@ -548,17 +554,24 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
                 followers[foundIndex] = UserEntity.merge(
                   removeMyUserRelation: true,
                   newEntity: UserEntity(
-                    id: user.id,
-                    authId: user.authId,
+                    id: followers[foundIndex].id,
+                    authId: followers[foundIndex].authId,
                     userRelationCounts: UserRelationsCountEntity(
-                      followerCount: user.userRelationCounts != null &&
-                              user.userRelationCounts!.followerCount != null &&
-                              user.userRelationCounts!.followerCount! > 0
-                          ? user.userRelationCounts!.followerCount! - 1
-                          : 0,
+                      followerCount:
+                          followers[foundIndex].userRelationCounts != null &&
+                                  followers[foundIndex]
+                                          .userRelationCounts!
+                                          .followerCount !=
+                                      null &&
+                                  followers[foundIndex]
+                                          .userRelationCounts!
+                                          .followerCount! >
+                                      0
+                              ? user.userRelationCounts!.followerCount! - 1
+                              : null,
                     ),
                   ),
-                  oldEntity: user,
+                  oldEntity: followers[foundIndex],
                 );
               }
             }

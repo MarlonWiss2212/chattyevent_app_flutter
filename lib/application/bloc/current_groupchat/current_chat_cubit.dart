@@ -1,8 +1,6 @@
 import 'dart:async';
-import 'package:bloc/bloc.dart';
 import 'package:chattyevent_app_flutter/domain/entities/groupchat/groupchat_message.dart';
 import 'package:dartz/dartz.dart';
-import 'package:meta/meta.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/chat/chat_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
@@ -26,7 +24,7 @@ import 'package:chattyevent_app_flutter/domain/entities/private_event/private_ev
 import 'package:chattyevent_app_flutter/domain/usecases/groupchat/groupchat_message_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/groupchat/groupchat_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/private_event_usecases.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
 part 'current_chat_state.dart';
 
 class CurrentChatCubit extends Cubit<CurrentChatState> {

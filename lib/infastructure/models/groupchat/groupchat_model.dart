@@ -1,7 +1,6 @@
 import 'package:chattyevent_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/groupchat/groupchat_message.dart';
 import 'package:chattyevent_app_flutter/infastructure/models/groupchat/groupchat_message_model.dart';
-import 'package:chattyevent_app_flutter/infastructure/models/message/message_model.dart';
 
 class GroupchatModel extends GroupchatEntity {
   GroupchatModel({

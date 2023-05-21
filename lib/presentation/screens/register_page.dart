@@ -1,6 +1,4 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:chattyevent_app_flutter/core/injection.dart';
-import 'package:chattyevent_app_flutter/domain/usecases/notification_usecases.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/auth_pages/dataprotection_checkbox.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

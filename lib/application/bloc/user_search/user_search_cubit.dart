@@ -133,11 +133,11 @@ class UserSearchCubit extends Cubit<UserSearchState> {
             if (foundIndex != -1) {
               users[foundIndex] = UserEntity.merge(
                 newEntity: UserEntity(
-                  id: user.id,
-                  authId: user.authId,
+                  id: users[foundIndex].id,
+                  authId: users[foundIndex].authId,
                   myUserRelationToOtherUser: userRelation,
                 ),
-                oldEntity: user,
+                oldEntity: users[foundIndex],
               );
             }
 
@@ -166,17 +166,24 @@ class UserSearchCubit extends Cubit<UserSearchState> {
               users[foundIndex] = UserEntity.merge(
                 removeMyUserRelation: true,
                 newEntity: UserEntity(
-                  id: user.id,
-                  authId: user.authId,
+                  id: users[foundIndex].id,
+                  authId: users[foundIndex].authId,
                   userRelationCounts: UserRelationsCountEntity(
-                    followerCount: user.userRelationCounts != null &&
-                            user.userRelationCounts!.followerCount != null &&
-                            user.userRelationCounts!.followerCount! > 0
-                        ? user.userRelationCounts!.followerCount! - 1
-                        : 0,
+                    followerCount:
+                        users[foundIndex].userRelationCounts != null &&
+                                users[foundIndex]
+                                        .userRelationCounts!
+                                        .followerCount !=
+                                    null &&
+                                users[foundIndex]
+                                        .userRelationCounts!
+                                        .followerCount! >
+                                    0
+                            ? user.userRelationCounts!.followerCount! - 1
+                            : null,
                   ),
                 ),
-                oldEntity: user,
+                oldEntity: users[foundIndex],
               );
             }
 

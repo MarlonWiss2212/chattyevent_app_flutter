@@ -1,20 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
-class CustomSmallNativeAd extends StatefulWidget {
+class CustomNativeAd extends StatefulWidget {
   final String adUnitId;
-  final double width;
-  const CustomSmallNativeAd({
+  final double maxWidth;
+  final double maxHeight;
+  final double minWidth;
+  final double minHeight;
+  final TemplateType templateType;
+  const CustomNativeAd({
     super.key,
     required this.adUnitId,
-    required this.width,
+    required this.maxHeight,
+    required this.maxWidth,
+    required this.minHeight,
+    required this.minWidth,
+    required this.templateType,
   });
 
   @override
-  State<CustomSmallNativeAd> createState() => _CustomSmallNativeAdState();
+  State<CustomNativeAd> createState() => _CustomNativeAdState();
 }
 
-class _CustomSmallNativeAdState extends State<CustomSmallNativeAd> {
+class _CustomNativeAdState extends State<CustomNativeAd> {
   NativeAd? _ad;
 
   @override
@@ -35,7 +43,7 @@ class _CustomSmallNativeAdState extends State<CustomSmallNativeAd> {
         ),
         request: const AdRequest(),
         nativeTemplateStyle: NativeTemplateStyle(
-          templateType: TemplateType.small,
+          templateType: widget.templateType,
           mainBackgroundColor: Theme.of(context).colorScheme.background,
           cornerRadius: 8,
           callToActionTextStyle: NativeTemplateTextStyle(
@@ -78,10 +86,10 @@ class _CustomSmallNativeAdState extends State<CustomSmallNativeAd> {
     return _ad != null
         ? ConstrainedBox(
             constraints: BoxConstraints(
-              minWidth: widget.width,
-              minHeight: 80,
-              maxWidth: 400,
-              maxHeight: 90,
+              minWidth: widget.minWidth,
+              minHeight: widget.minHeight,
+              maxWidth: widget.maxWidth,
+              maxHeight: widget.maxHeight,
             ),
             child: AdWidget(ad: _ad!),
           )

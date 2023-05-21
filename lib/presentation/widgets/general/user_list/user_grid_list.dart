@@ -53,20 +53,20 @@ class _UserGridListState extends State<UserGridList> {
     return GridView.builder(
       //    controller: _scrollController,
       itemBuilder: (context, index) {
-        if (index < widget.users.length) {
-          return UserGridListItem(
-            user: widget.users[index],
-            button: widget.button != null
-                ? widget.button!(widget.users[index])
-                : null,
-            onLongPress: widget.onLongPress == null
-                ? null
-                : () => widget.onLongPress!(widget.users[index]),
-            onPress: widget.onPress == null
-                ? null
-                : () => widget.onPress!(widget.users[index]),
-          );
-        }
+        //  if (index < widget.users.length) {
+        return UserGridListItem(
+          user: widget.users[index],
+          button: widget.button != null
+              ? widget.button!(widget.users[index])
+              : null,
+          onLongPress: widget.onLongPress == null
+              ? null
+              : () => widget.onLongPress!(widget.users[index]),
+          onPress: widget.onPress == null
+              ? null
+              : () => widget.onPress!(widget.users[index]),
+        );
+        // }
         //  return const CircularProgressIndicator.adaptive();
       },
       itemCount: /* widget.loading ? widget.users.length + 1 :*/

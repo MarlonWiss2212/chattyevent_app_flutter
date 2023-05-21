@@ -1,8 +1,6 @@
-import 'package:bloc/bloc.dart';
 import 'package:chattyevent_app_flutter/core/enums/private_event/private_event_user_status_enum.dart';
 import 'package:collection/collection.dart';
 import 'package:dartz/dartz.dart';
-import 'package:meta/meta.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/chat/chat_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/current_groupchat/current_chat_cubit.dart';
@@ -30,6 +28,7 @@ import 'package:chattyevent_app_flutter/domain/usecases/location_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/private_event_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/shopping_list_item_usecases.dart';
 import 'package:chattyevent_app_flutter/core/dto/private_event/private_event_user/update_private_event_user_dto.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'current_private_event_state.dart';
 

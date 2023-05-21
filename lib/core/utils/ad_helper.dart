@@ -27,13 +27,4 @@ class AdHelper {
     }
     throw UnsupportedError("Unsupported platform");
   }
-
-  static String get privateEventHorizontalListNativeAdUnitId {
-    if (Platform.isIOS) {
-      return 'ca-app-pub-6709565406365779/6572997574';
-    } else if (Platform.isAndroid) {
-      return 'ca-app-pub-6709565406365779/2369178627';
-    }
-    throw UnsupportedError("Unsupported platform");
-  }
 }

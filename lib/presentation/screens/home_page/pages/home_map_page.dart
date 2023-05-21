@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:chattyevent_app_flutter/application/bloc/home_page/home_event/home_event_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/location/location_cubit.dart';
 import 'package:chattyevent_app_flutter/core/utils/ad_helper.dart';
-import 'package:chattyevent_app_flutter/presentation/widgets/ads/custom_small_native_ad.dart';
+import 'package:chattyevent_app_flutter/presentation/widgets/ads/custom_native_ad.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/button.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/home_page/pages/home_map_page/private_event_map_marker.dart';
 
@@ -100,9 +101,13 @@ class _HomeMapPageState extends State<HomeMapPage> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      CustomSmallNativeAd(
+                      CustomNativeAd(
                         adUnitId: AdHelper.mapTabNativeAdUnitId,
-                        width: MediaQuery.of(context).size.width,
+                        maxWidth: MediaQuery.of(context).size.width,
+                        minWidth: MediaQuery.of(context).size.width,
+                        maxHeight: 90,
+                        minHeight: 80,
+                        templateType: TemplateType.small,
                       ),
                       SizedBox(
                         width: double.infinity,

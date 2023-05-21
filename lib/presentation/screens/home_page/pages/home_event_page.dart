@@ -70,7 +70,7 @@ class _HomeEventPageState extends State<HomeEventPage> {
               }
 
               if (state.privateEvents.isEmpty &&
-                  state.loadingFutureEvents == true &&
+                      state.loadingFutureEvents == true ||
                   state.loadingPastEvents == true) {
                 return const EventHorizontalListSkeleton();
               }
