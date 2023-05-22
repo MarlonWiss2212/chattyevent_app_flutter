@@ -81,9 +81,10 @@ class OnAcceptFollowRequestStandardFollowDataPage extends StatelessWidget {
                             onAcceptStandard: UpdateOnAcceptStandardDto(
                               followData:
                                   UpdateOnAcceptStandardUpdateFollowDataDto(
-                                requesterGroupchatAddPermission: value
-                                    ? RequesterGroupchatAddPermissionEnum.add
-                                    : RequesterGroupchatAddPermissionEnum.none,
+                                requesterPrivateEventAddPermission: value
+                                    ? RequesterPrivateEventAddPermissionEnum.add
+                                    : RequesterPrivateEventAddPermissionEnum
+                                        .none,
                               ),
                             ),
                           ),

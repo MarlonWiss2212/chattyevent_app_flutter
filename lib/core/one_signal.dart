@@ -8,5 +8,6 @@ Future<void> init() async {
 }
 
 Future<void> setExternalUserId(String userId) async {
+  await OneSignal.shared.removeExternalUserId();
   await OneSignal.shared.setExternalUserId(userId);
 }

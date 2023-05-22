@@ -20,10 +20,10 @@ class RightOnDeletionPage extends StatelessWidget {
       ),
       body: Column(
         children: [
-          Expanded(
+          const Expanded(
             child: SingleChildScrollView(
               child: Column(
-                children: const [
+                children: [
                   Text(
                     "Wenn du auf den Button 'Daten Löschen' klickst werden alle Daten nach DSGVO von dir gelöscht dies sind folgende:",
                     textAlign: TextAlign.center,
