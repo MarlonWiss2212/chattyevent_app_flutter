@@ -26,7 +26,7 @@ class NewPrivateEventDateTab extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
                 child: Button(
-                  text: "Datum wählen: ${state.eventDate}",
+                  text: "Datum wählen*: ${state.eventDate}",
                   onTap: () async {
                     DateTime currentDate = DateTime.now();
                     DateTime? newDate = await showDatePicker(

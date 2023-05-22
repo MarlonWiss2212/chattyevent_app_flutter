@@ -49,12 +49,15 @@ class SelectCoverImage extends StatelessWidget {
                 ),
               ),
             )
-          : Card(
-              child: SizedBox(
-                width: size.width,
-                height: (size.width / 4 * 3) - 16,
-                child: const Icon(Icons.add),
-              ),
+          : Container(
+              width: size.width,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(
+                    color: Theme.of(context).colorScheme.onBackground,
+                  )),
+              height: (size.width / 4 * 3) - 16,
+              child: const Icon(Icons.add),
             ),
     );
   }

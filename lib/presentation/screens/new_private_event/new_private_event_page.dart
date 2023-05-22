@@ -116,7 +116,7 @@ class NewPrivateEventPage extends StatelessWidget {
                               BlocProvider.of<AddPrivateEventCubit>(context)
                                   .createPrivateEventViaApi();
                             },
-                            text: "Speichern",
+                            text: "Erstellen",
                           ),
                         ),
                       ),

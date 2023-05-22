@@ -112,7 +112,7 @@ class NewGroupchatWrapperPage extends StatelessWidget {
                               BlocProvider.of<AddGroupchatCubit>(context)
                                   .createGroupchatViaApi();
                             },
-                            text: "Speichern",
+                            text: "Erstellen",
                           ),
                         ),
                       ),

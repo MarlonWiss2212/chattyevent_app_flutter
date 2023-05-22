@@ -84,7 +84,7 @@ class PrivateEventCreateShoppingListItemPage extends StatelessWidget {
                                             context)
                                         .createShoppingListItemViaApi();
                                   },
-                                  text: "Speichern",
+                                  text: "Erstellen",
                                 ),
                               ),
                             ],

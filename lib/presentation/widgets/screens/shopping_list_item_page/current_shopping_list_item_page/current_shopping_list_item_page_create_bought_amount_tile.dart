@@ -29,7 +29,7 @@ class _CurrentShoppingListItemPageCreateBoughtAmountTileState
       trailing: SizedBox(
         width: 100,
         child: Button(
-          text: "Speichern",
+          text: "Erstellen",
           onTap: () async {
             double? boughtAmount = double.tryParse(boughtAmountController.text);
 
