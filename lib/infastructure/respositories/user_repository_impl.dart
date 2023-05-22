@@ -41,9 +41,11 @@ class UserRepositoryImpl implements UserRepository {
               followRequestCount
             }
             settings {
-              onAcceptFollowRequestStandardFollowData {
-                standardRequesterPrivateEventAddPermission
-                standardRequesterGroupchatAddPermission
+              onAcceptStandard {
+                followData {
+                  requesterPrivateEventAddPermission
+                  requesterGroupchatAddPermission
+                }
               }
             }
             myUserRelationToOtherUser {
@@ -168,9 +170,11 @@ class UserRepositoryImpl implements UserRepository {
               followRequestCount
             }
             settings {
-              onAcceptFollowRequestStandardFollowData {
-                standardRequesterPrivateEventAddPermission
-                standardRequesterGroupchatAddPermission
+              onAcceptStandard {
+                followData {
+                  requesterPrivateEventAddPermission
+                  requesterGroupchatAddPermission
+                }
               }
             }
             myUserRelationToOtherUser {
@@ -271,9 +275,11 @@ class UserRepositoryImpl implements UserRepository {
               followRequestCount
             }
             settings {
-              onAcceptFollowRequestStandardFollowData {
-                standardRequesterPrivateEventAddPermission
-                standardRequesterGroupchatAddPermission
+              onAcceptStandard {
+                followData {
+                  requesterPrivateEventAddPermission
+                  requesterGroupchatAddPermission
+                }
               }
             }
             myUserRelationToOtherUser {

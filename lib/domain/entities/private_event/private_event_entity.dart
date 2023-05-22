@@ -1,5 +1,6 @@
 import 'package:chattyevent_app_flutter/core/enums/private_event/private_event_status_enum.dart';
 import 'package:chattyevent_app_flutter/domain/entities/private_event/private_event_location_entity.dart';
+import 'package:chattyevent_app_flutter/domain/entities/private_event/private_event_settings_entity.dart';
 
 class PrivateEventEntity {
   final String id;
@@ -7,6 +8,7 @@ class PrivateEventEntity {
   final String? description;
   final String? coverImageLink;
   final PrivateEventStatusEnum? status;
+  final PrivateEventSettingsEntity? settings;
   final DateTime eventDate;
   final DateTime? eventEndDate;
   final String? groupchatTo;
@@ -22,6 +24,7 @@ class PrivateEventEntity {
     this.description,
     this.coverImageLink,
     required this.eventDate,
+    this.settings,
     this.eventEndDate,
     this.groupchatTo,
     this.createdBy,
@@ -36,6 +39,7 @@ class PrivateEventEntity {
   }) {
     return PrivateEventEntity(
       id: newEntity.id,
+      settings: newEntity.settings ?? oldEntity.settings,
       title: newEntity.title ?? oldEntity.title,
       coverImageLink: newEntity.coverImageLink ?? oldEntity.coverImageLink,
       eventDate: newEntity.eventDate,

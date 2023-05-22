@@ -1,6 +1,7 @@
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
-import 'package:chattyevent_app_flutter/core/dto/user/update_on_accept_follow_request_standard_follow_data_dto.dart';
 import 'package:chattyevent_app_flutter/core/dto/user/update_user_dto.dart';
+import 'package:chattyevent_app_flutter/core/dto/user/update_user_settings/update-on-accept-standard/update_follow_data_dto.dart';
+import 'package:chattyevent_app_flutter/core/dto/user/update_user_settings/update_on_accept_standard_dto.dart';
 import 'package:chattyevent_app_flutter/core/dto/user/update_user_settings_dto.dart';
 import 'package:chattyevent_app_flutter/core/enums/user_relation/requester_groupchat_add_permission_enum.dart';
 import 'package:chattyevent_app_flutter/core/enums/user_relation/requester_private_event_add_permission_enum.dart';
@@ -44,21 +45,20 @@ class OnAcceptFollowRequestStandardFollowDataPage extends StatelessWidget {
                 builder: (context, state) {
                   return SwitchListTile.adaptive(
                     title: const Text("Darf dich in Gruppenchats adden"),
-                    value: state
-                            .currentUser
-                            .settings
-                            ?.onAcceptFollowRequestStandardFollowData
-                            ?.standardRequesterGroupchatAddPermission ==
+                    value: state.currentUser.settings?.onAcceptStandard
+                            ?.followData?.requesterGroupchatAddPermission ==
                         RequesterGroupchatAddPermissionEnum.add,
                     onChanged: (value) {
                       BlocProvider.of<AuthCubit>(context).updateUser(
                         updateUserDto: UpdateUserDto(
                           settings: UpdateUserSettingsDto(
-                            onAcceptFollowRequestStandardFollowData:
-                                UpdateOnAcceptFollowRequestStandardFollowDataDto(
-                              standardRequesterGroupchatAddPermission: value
-                                  ? RequesterGroupchatAddPermissionEnum.add
-                                  : RequesterGroupchatAddPermissionEnum.none,
+                            onAcceptStandard: UpdateOnAcceptStandardDto(
+                              followData:
+                                  UpdateOnAcceptStandardUpdateFollowDataDto(
+                                requesterGroupchatAddPermission: value
+                                    ? RequesterGroupchatAddPermissionEnum.add
+                                    : RequesterGroupchatAddPermissionEnum.none,
+                              ),
                             ),
                           ),
                         ),
@@ -71,21 +71,20 @@ class OnAcceptFollowRequestStandardFollowDataPage extends StatelessWidget {
                 builder: (context, state) {
                   return SwitchListTile.adaptive(
                     title: const Text("Darf dich in Events adden"),
-                    value: state
-                            .currentUser
-                            .settings
-                            ?.onAcceptFollowRequestStandardFollowData
-                            ?.standardRequesterPrivateEventAddPermission ==
+                    value: state.currentUser.settings?.onAcceptStandard
+                            ?.followData?.requesterPrivateEventAddPermission ==
                         RequesterPrivateEventAddPermissionEnum.add,
                     onChanged: (value) {
                       BlocProvider.of<AuthCubit>(context).updateUser(
                         updateUserDto: UpdateUserDto(
                           settings: UpdateUserSettingsDto(
-                            onAcceptFollowRequestStandardFollowData:
-                                UpdateOnAcceptFollowRequestStandardFollowDataDto(
-                              standardRequesterPrivateEventAddPermission: value
-                                  ? RequesterPrivateEventAddPermissionEnum.add
-                                  : RequesterPrivateEventAddPermissionEnum.none,
+                            onAcceptStandard: UpdateOnAcceptStandardDto(
+                              followData:
+                                  UpdateOnAcceptStandardUpdateFollowDataDto(
+                                requesterGroupchatAddPermission: value
+                                    ? RequesterGroupchatAddPermissionEnum.add
+                                    : RequesterGroupchatAddPermissionEnum.none,
+                              ),
                             ),
                           ),
                         ),

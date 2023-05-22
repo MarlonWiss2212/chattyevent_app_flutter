@@ -56,6 +56,7 @@ class UserEntity {
       profileImageLink:
           newEntity.profileImageLink ?? oldEntity.profileImageLink,
       firstname: newEntity.firstname ?? oldEntity.firstname,
+      // TODO optimize this somehow
       userRelationCounts: UserRelationsCountEntity.merge(
         newEntity: newEntity.userRelationCounts ?? UserRelationsCountEntity(),
         oldEntity: oldEntity.userRelationCounts ?? UserRelationsCountEntity(),

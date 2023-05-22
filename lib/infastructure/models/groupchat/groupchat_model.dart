@@ -1,6 +1,8 @@
 import 'package:chattyevent_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/groupchat/groupchat_message.dart';
+import 'package:chattyevent_app_flutter/domain/entities/groupchat/groupchat_settings_entity.dart';
 import 'package:chattyevent_app_flutter/infastructure/models/groupchat/groupchat_message_model.dart';
+import 'package:chattyevent_app_flutter/infastructure/models/groupchat/groupchat_settings_model.dart';
 
 class GroupchatModel extends GroupchatEntity {
   GroupchatModel({
@@ -8,6 +10,7 @@ class GroupchatModel extends GroupchatEntity {
     String? title,
     String? profileImageLink,
     GroupchatMessageEntity? latestMessage,
+    GroupchatSettingsEntity? settings,
     String? description,
     String? createdBy,
     DateTime? createdAt,
@@ -19,6 +22,7 @@ class GroupchatModel extends GroupchatEntity {
           latestMessage: latestMessage,
           description: description,
           createdAt: createdAt,
+          settings: settings,
           createdBy: createdBy,
           updatedAt: updatedAt,
         );
@@ -49,6 +53,9 @@ class GroupchatModel extends GroupchatEntity {
           : null,
       description: json["description"],
       createdBy: json["createdBy"],
+      settings: json["settings"] != null
+          ? GroupchatSettingsModel.fromJson(json["settings"])
+          : null,
       createdAt: createdAt,
       updatedAt: updatedAt,
     );

@@ -72,7 +72,7 @@ class NewPrivateEventPage extends StatelessWidget {
             ],
             child: Scaffold(
               appBar: AppBar(
-                title: const Text('Neues Private Event'),
+                title: const Text('Neues Privates Event'),
               ),
               body: AutoTabsRouter.pageView(
                 routes: const [
