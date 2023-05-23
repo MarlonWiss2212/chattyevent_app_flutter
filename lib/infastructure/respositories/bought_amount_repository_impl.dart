@@ -120,7 +120,7 @@ class BoughtAmountRepositoryImpl implements BoughtAmountRepository {
       """,
         variables: {
           "input": updateBoughtAmountDto.toMap(),
-          "filter": findOneBoughtAmountFilter,
+          "filter": findOneBoughtAmountFilter.toMap(),
         },
       );
 
@@ -150,7 +150,9 @@ class BoughtAmountRepositoryImpl implements BoughtAmountRepository {
           deleteBoughtAmount(filter: \$filter)
         }
       """,
-        variables: {"filter": findOneBoughtAmountFilter},
+        variables: {
+          "filter": findOneBoughtAmountFilter.toMap(),
+        },
       );
 
       if (response.hasException) {
