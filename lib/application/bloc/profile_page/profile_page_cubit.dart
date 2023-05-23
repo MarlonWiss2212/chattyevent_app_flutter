@@ -65,15 +65,17 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
   Future getFollowers({
     bool reload = false,
   }) async {
-    const int limit = 30;
-
     emitState(followersStatus: ProfilePageStateFollowersStatus.loading);
 
     final Either<NotificationAlert, List<UserEntity>> userOrFailure =
         await userRelationUseCases.getFollowersViaApi(
       findFollowersFilter: FindFollowersFilter(targetUserId: state.user.id),
       limitOffsetFilter: LimitOffsetFilter(
-        limit: reload ? state.followers?.length ?? limit : limit,
+        limit: reload
+            ? state.followers != null && state.followers!.length > 20
+                ? state.followers!.length
+                : 20
+            : 20,
         offset: reload ? 0 : state.followers?.length ?? 0,
       ),
     );
@@ -96,8 +98,6 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
   Future getFollowRequests({
     bool reload = false,
   }) async {
-    const int limit = 30;
-
     if (authCubit.state.currentUser.id != state.user.id) {
       notificationCubit.newAlert(
         notificationAlert: NotificationAlert(
@@ -115,7 +115,11 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
     final Either<NotificationAlert, List<UserEntity>> userOrFailure =
         await userRelationUseCases.getFollowerRequestsViaApi(
       limitOffsetFilter: LimitOffsetFilter(
-        limit: reload ? state.followRequests?.length ?? limit : limit,
+        limit: reload
+            ? state.followRequests != null && state.followRequests!.length > 20
+                ? state.followRequests!.length
+                : 20
+            : 20,
         offset: reload ? 0 : state.followRequests?.length ?? 0,
       ),
     );
@@ -139,15 +143,17 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
   Future getFollowed({
     bool reload = false,
   }) async {
-    const int limit = 30;
-
     emitState(followedStatus: ProfilePageStateFollowedStatus.loading);
 
     final Either<NotificationAlert, List<UserEntity>> userOrFailure =
         await userRelationUseCases.getFollowedViaApi(
       findFollowedFilter: FindFollowedFilter(requesterUserId: state.user.id),
       limitOffsetFilter: LimitOffsetFilter(
-        limit: reload ? state.followed?.length ?? limit : limit,
+        limit: reload
+            ? state.followed != null && state.followed!.length > 20
+                ? state.followed!.length
+                : 20
+            : 20,
         offset: reload ? 0 : state.followed?.length ?? 0,
       ),
     );
