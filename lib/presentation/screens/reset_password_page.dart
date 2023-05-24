@@ -56,6 +56,12 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                 PlatformTextFormField(
                   controller: emailFieldController,
                   hintText: 'E-Mail',
+                  textInputAction: TextInputAction.done,
+                  onFieldSubmitted: (newValue) {
+                    BlocProvider.of<AuthCubit>(context).sendResetPasswordEmail(
+                      email: emailFieldController.text,
+                    );
+                  },
                 ),
                 const SizedBox(height: 8),
                 BlocListener<AuthCubit, AuthState>(

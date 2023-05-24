@@ -19,6 +19,7 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   final emailFieldController = TextEditingController();
   final passwordFieldController = TextEditingController();
+  final verifyPasswordFieldController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -60,12 +61,21 @@ class _RegisterPageState extends State<RegisterPage> {
                       PlatformTextFormField(
                         controller: emailFieldController,
                         hintText: 'E-Mail',
+                        textInputAction: TextInputAction.next,
                       ),
                       const SizedBox(height: 8),
                       PlatformTextFormField(
                         controller: passwordFieldController,
                         obscureText: true,
                         hintText: 'Passwort',
+                        textInputAction: TextInputAction.next,
+                      ),
+                      const SizedBox(height: 8),
+                      PlatformTextFormField(
+                        controller: passwordFieldController,
+                        obscureText: true,
+                        hintText: 'Passwort Bestätigen',
+                        textInputAction: TextInputAction.next,
                       ),
                       const SizedBox(height: 16),
                       const DataprotectionCheckbox(),
@@ -86,6 +96,8 @@ class _RegisterPageState extends State<RegisterPage> {
                                   .registerWithEmailAndPassword(
                                 email: emailFieldController.text,
                                 password: passwordFieldController.text,
+                                verifyPassword:
+                                    verifyPasswordFieldController.text,
                               );
                             },
                             text: "Registrieren",

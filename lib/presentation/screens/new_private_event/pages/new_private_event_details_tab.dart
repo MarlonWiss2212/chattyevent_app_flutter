@@ -43,6 +43,7 @@ class NewPrivateEventDetailsTab extends StatelessWidget {
                   title: value,
                 ),
                 hintText: 'Name*',
+                textInputAction: TextInputAction.next,
               ),
               const SizedBox(height: 8),
               PlatformTextFormField(

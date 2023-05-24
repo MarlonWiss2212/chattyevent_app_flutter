@@ -33,6 +33,7 @@ class _UpdatePasswordPageState extends State<UpdatePasswordPage> {
                 controller: passwordFieldController,
                 obscureText: true,
                 hintText: 'Neues Passwort',
+                textInputAction: TextInputAction.next,
               ),
               const SizedBox(height: 8),
               PlatformTextFormField(

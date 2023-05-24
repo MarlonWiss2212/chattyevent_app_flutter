@@ -8,62 +8,89 @@ class NewPrivateEventTypeTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Expanded(
-            child: InkWell(
-              onTap: () => BlocProvider.of<AddPrivateEventCubit>(context)
-                  .setIsGroupchatEvent(isGroupchatEvent: true),
-              borderRadius: BorderRadius.circular(8),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    const Icon(Icons.chat),
-                    Text(
-                      "Privates Gruppenchat Event",
-                      style: Theme.of(context).textTheme.labelLarge,
+    return BlocBuilder<AddPrivateEventCubit, AddPrivateEventState>(
+      buildWhen: (p, c) => p.isGroupchatEvent != c.isGroupchatEvent,
+      builder: (context, state) {
+        return Padding(
+          padding: const EdgeInsets.all(8),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(
+                child: InkWell(
+                  onTap: () => BlocProvider.of<AddPrivateEventCubit>(context)
+                      .setIsGroupchatEvent(isGroupchatEvent: true),
+                  borderRadius: BorderRadius.circular(8),
+                  child: Container(
+                    decoration: state.isGroupchatEvent
+                        ? BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(
+                              color: Theme.of(context).colorScheme.onBackground,
+                            ),
+                          )
+                        : null,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          const Icon(Icons.chat),
+                          Text(
+                            "Privates Gruppenchat Event",
+                            style: Theme.of(context).textTheme.labelLarge,
+                          ),
+                          const Text(
+                            "Hierbei verbindest du ein Event mit einem Gruppenchat. Es werden automatisch alle User eingeladen die im Gruppenchat sind. Wenn ein User aus dem Chat geht oder gekickt wird passiert das auch beim Event",
+                            overflow: TextOverflow.clip,
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ),
                     ),
-                    const Text(
-                      "Hierbei verbindest du ein Event mit einem Gruppenchat. Es werden automatisch alle User eingeladen die im Gruppenchat sind. Wenn ein User aus dem Chat geht oder gekickt wird passiert das auch beim Event",
-                      overflow: TextOverflow.clip,
-                    ),
-                  ],
+                  ),
                 ),
               ),
-            ),
-          ),
-          const CustomDivider(),
-          Expanded(
-            child: InkWell(
-              onTap: () => BlocProvider.of<AddPrivateEventCubit>(context)
-                  .setIsGroupchatEvent(isGroupchatEvent: false),
-              borderRadius: BorderRadius.circular(8),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    const Icon(Icons.person),
-                    Text(
-                      "Normales Privates Event",
-                      style: Theme.of(context).textTheme.labelLarge,
+              const CustomDivider(),
+              Expanded(
+                child: InkWell(
+                  onTap: () => BlocProvider.of<AddPrivateEventCubit>(context)
+                      .setIsGroupchatEvent(isGroupchatEvent: false),
+                  borderRadius: BorderRadius.circular(8),
+                  child: Container(
+                    decoration: state.isGroupchatEvent == false
+                        ? BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(
+                              color: Theme.of(context).colorScheme.onBackground,
+                            ),
+                          )
+                        : null,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          const Icon(Icons.person),
+                          Text(
+                            "Normales Privates Event",
+                            style: Theme.of(context).textTheme.labelLarge,
+                          ),
+                          const Text(
+                            "Du kannst hier User einladen und ausladen unabängig von einem Chat",
+                            overflow: TextOverflow.clip,
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ),
                     ),
-                    const Text(
-                      "Du kannst hier User einladen und ausladen unabängig von einem Chat",
-                      overflow: TextOverflow.clip,
-                    ),
-                  ],
+                  ),
                 ),
               ),
-            ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

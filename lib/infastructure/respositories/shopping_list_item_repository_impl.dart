@@ -277,7 +277,7 @@ class ShoppingListItemRepositoryImpl implements ShoppingListItemRepository {
             deleteShoppingListItem(filter: \$filter)
           }
         """,
-        variables: {"filter": findOneShoppingListItemFilter},
+        variables: {"filter": findOneShoppingListItemFilter.toMap()},
       );
 
       if (response.hasException) {

@@ -95,7 +95,17 @@ class AuthCubit extends Cubit<AuthState> {
   Future registerWithEmailAndPassword({
     required String email,
     required String password,
+    required String verifyPassword,
   }) async {
+    if (password != verifyPassword) {
+      notificationCubit.newAlert(
+        notificationAlert: NotificationAlert(
+          title: "Passwort Fehler",
+          message: "Die Passwörter müssen identisch sein",
+        ),
+      );
+      return;
+    }
     if (state.dataprotectionCheckbox == false) {
       notificationCubit.newAlert(
         notificationAlert: NotificationAlert(

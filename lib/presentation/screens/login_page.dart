@@ -60,12 +60,14 @@ class _LoginPageState extends State<LoginPage> {
                       PlatformTextFormField(
                         controller: emailFieldController,
                         hintText: 'E-Mail',
+                        textInputAction: TextInputAction.next,
                       ),
                       const SizedBox(height: 8),
                       PlatformTextFormField(
                         controller: passwordFieldController,
                         obscureText: true,
                         hintText: 'Passwort',
+                        textInputAction: TextInputAction.next,
                       ),
                       const SizedBox(height: 16),
                       const DataprotectionCheckbox(),

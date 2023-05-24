@@ -14,6 +14,7 @@ class CreateUserPageBirthdayButton extends StatelessWidget {
         return SizedBox(
           width: double.infinity,
           child: Button(
+            color: Theme.of(context).colorScheme.secondaryContainer,
             onTap: () async {
               DateTime currentDate = DateTime.now();
               DateTime? newDate = await showDatePicker(

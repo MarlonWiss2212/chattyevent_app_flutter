@@ -31,6 +31,7 @@ class CreateShoppingListItemPageDetail extends StatelessWidget {
                     );
                   },
                   hintText: "Item name",
+                  textInputAction: TextInputAction.next,
                 ),
               ),
               const SizedBox(height: 8.0),
@@ -75,6 +76,7 @@ class CreateShoppingListItemPageDetail extends StatelessWidget {
                           );
                         },
                         hintText: "Menge",
+                        textInputAction: TextInputAction.next,
                       ),
                     ),
                     const SizedBox(width: 8.0),
@@ -91,6 +93,7 @@ class CreateShoppingListItemPageDetail extends StatelessWidget {
                           );
                         },
                         hintText: "Einheit",
+                        textInputAction: TextInputAction.next,
                       ),
                     ),
                   ],

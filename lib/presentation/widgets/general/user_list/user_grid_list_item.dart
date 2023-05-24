@@ -47,6 +47,19 @@ class UserGridListItem extends StatelessWidget {
                       color: Theme.of(context).colorScheme.primaryContainer,
                     ),
                   ),
+            Container(
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Color(0x00000000),
+                    Color(0x00000000),
+                    Color(0xCC000000),
+                  ],
+                ),
+              ),
+            ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(

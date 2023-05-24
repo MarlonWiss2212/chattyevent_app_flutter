@@ -83,6 +83,7 @@ class CreateUserPage extends StatelessWidget {
                                     );
                                   },
                                   hintText: 'Benutzername',
+                                  textInputAction: TextInputAction.next,
                                 ),
                                 const SizedBox(height: 8),
                                 PlatformTextFormField(
@@ -93,6 +94,7 @@ class CreateUserPage extends StatelessWidget {
                                       firstname: value,
                                     );
                                   },
+                                  textInputAction: TextInputAction.next,
                                   hintText: 'Vorname',
                                 ),
                                 const SizedBox(height: 8),
