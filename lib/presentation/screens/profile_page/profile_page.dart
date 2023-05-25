@@ -27,7 +27,11 @@ class ProfilePage extends StatelessWidget {
             snap: true,
             floating: true,
             expandedHeight: 100,
-            flexibleSpace: const FlexibleSpaceBar(title: ProfilePageTitle()),
+            centerTitle: true,
+            flexibleSpace: const FlexibleSpaceBar(
+              centerTitle: true,
+              title: ProfilePageTitle(),
+            ),
             actions: const [
               ProfilePageTrailingFollowRequestIconButton(),
               ProfilePageTrailingSettingsButton(),

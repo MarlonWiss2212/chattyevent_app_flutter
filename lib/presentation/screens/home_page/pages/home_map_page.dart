@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:chattyevent_app_flutter/application/bloc/home_page/home_event/home_event_cubit.dart';
@@ -30,7 +29,8 @@ class _HomeMapPageState extends State<HomeMapPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Map'),
+        centerTitle: true,
+        title: const Text('Event Karte'),
       ),
       body: BlocBuilder<LocationCubit, LocationState>(
         builder: (context, state) {
@@ -41,14 +41,11 @@ class _HomeMapPageState extends State<HomeMapPage> {
                 InteractiveFlag.flingAnimation |
                 InteractiveFlag.pinchMove |
                 InteractiveFlag.pinchZoom,
-            center: state is LocationLoaded
-                ? LatLng(state.lat, state.lng)
+            center: state.lat != null && state.lng != null
+                ? LatLng(state.lat!, state.lng!)
                 : LatLng(47, 10),
-            zoom: state is LocationLoaded ? 14 : 3,
+            zoom: state.lat != null && state.lng != null ? 14 : 3,
           );
-          if (state is LocationLoading) {
-            return Center(child: PlatformCircularProgressIndicator());
-          }
           return Center(
             child: Stack(
               children: [
@@ -59,6 +56,7 @@ class _HomeMapPageState extends State<HomeMapPage> {
                       urlTemplate:
                           'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
                     ),
+                    //TODO change to own cubit
                     BlocBuilder<HomeEventCubit, HomeEventState>(
                       builder: (context, state) {
                         List<Marker> markers = [];

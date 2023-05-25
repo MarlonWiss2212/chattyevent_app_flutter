@@ -80,7 +80,7 @@ class HomeEventPageDetails extends StatelessWidget {
           ),
           Center(
             child: CustomNativeAd(
-              adUnitId: AdHelper.chatListNativeAdUnitId,
+              adUnitId: AdHelper.privateEventListNativeAdUnitId,
               maxWidth: MediaQuery.of(context).size.width - 16,
               minWidth: MediaQuery.of(context).size.width - 16,
               maxHeight: 320,

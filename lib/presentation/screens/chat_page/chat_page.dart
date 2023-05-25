@@ -30,30 +30,31 @@ class _ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         leading: const AutoLeadingButton(),
         title: BlocBuilder<CurrentChatCubit, CurrentChatState>(
           builder: (context, state) {
-            return Row(
-              children: [
-                CircleAvatar(
-                  backgroundImage: state.currentChat.profileImageLink != null
-                      ? NetworkImage(state.currentChat.profileImageLink!)
-                      : null,
-                  backgroundColor: state.currentChat.profileImageLink != null
-                      ? null
-                      : Theme.of(context).colorScheme.secondaryContainer,
-                ),
-                const SizedBox(width: 8),
-                Hero(
-                  tag: "${widget.groupchatId} title",
-                  child: Text(
-                    state.currentChat.title != null
-                        ? state.currentChat.title!
-                        : "Kein Titel",
-                    style: Theme.of(context).textTheme.titleLarge,
+            return Center(
+              child: Row(
+                children: [
+                  CircleAvatar(
+                    backgroundImage: state.currentChat.profileImageLink != null
+                        ? NetworkImage(state.currentChat.profileImageLink!)
+                        : null,
+                    backgroundColor: state.currentChat.profileImageLink != null
+                        ? null
+                        : Theme.of(context).colorScheme.secondaryContainer,
                   ),
-                ),
-              ],
+                  const SizedBox(width: 8),
+                  Hero(
+                    tag: "${widget.groupchatId} title",
+                    child: Text(
+                      state.currentChat.title ?? "",
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
+                  ),
+                ],
+              ),
             );
           },
         ),

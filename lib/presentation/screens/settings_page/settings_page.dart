@@ -17,7 +17,9 @@ class SettingsPage extends StatelessWidget {
             snap: true,
             floating: true,
             expandedHeight: 100,
+            centerTitle: true,
             flexibleSpace: FlexibleSpaceBar(
+              centerTitle: true,
               title: Text(
                 "Einstellungen",
                 style: TextStyle(

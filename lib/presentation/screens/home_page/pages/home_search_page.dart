@@ -34,7 +34,9 @@ class HomeSearchPage extends StatelessWidget {
                 snap: true,
                 floating: true,
                 expandedHeight: 100,
+                centerTitle: true,
                 flexibleSpace: FlexibleSpaceBar(
+                  centerTitle: true,
                   title: Text(
                     "Entdecken",
                     style: TextStyle(

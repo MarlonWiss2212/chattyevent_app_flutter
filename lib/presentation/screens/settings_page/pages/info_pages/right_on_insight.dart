@@ -7,6 +7,7 @@ class RightOnInsightPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: Text(
           "Recht auf Einsicht",
           style: TextStyle(

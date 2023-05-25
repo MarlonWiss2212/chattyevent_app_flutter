@@ -33,7 +33,9 @@ class PrivateEventTabInfo extends StatelessWidget {
           (MediaQuery.of(context).size.width / 4 * 3),
           (MediaQuery.of(context).size.height / 2),
         ),
+        centerTitle: true,
         flexibleSpace: const FlexibleSpaceBar(
+          centerTitle: true,
           background: PrivateEventTabInfoCoverImage(),
         ),
       ),

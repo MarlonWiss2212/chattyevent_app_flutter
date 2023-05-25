@@ -38,7 +38,9 @@ class _ChatInfoPageState extends State<ChatInfoPage> {
             snap: true,
             floating: true,
             expandedHeight: 200,
+            centerTitle: true,
             flexibleSpace: FlexibleSpaceBar(
+              centerTitle: true,
               background: ChatInfoPageProfileImage(),
               title: ChatInfoPageTitle(),
             ),

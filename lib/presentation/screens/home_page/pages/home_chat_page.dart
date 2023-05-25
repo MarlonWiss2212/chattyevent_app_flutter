@@ -31,7 +31,9 @@ class _HomeChatPageState extends State<HomeChatPage> {
             snap: true,
             floating: true,
             expandedHeight: 100,
+            centerTitle: true,
             flexibleSpace: FlexibleSpaceBar(
+              centerTitle: true,
               title: Text(
                 "Chats",
                 style: TextStyle(

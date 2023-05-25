@@ -27,7 +27,9 @@ class StandardShoppingListItemPage extends StatelessWidget {
             floating: true,
             expandedHeight: 100,
             leading: const AutoLeadingButton(),
+            centerTitle: true,
             flexibleSpace: FlexibleSpaceBar(
+              centerTitle: true,
               title: BlocBuilder<CurrentShoppingListItemCubit,
                   CurrentShoppingListItemState>(
                 buildWhen: (previous, current) =>

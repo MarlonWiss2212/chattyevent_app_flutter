@@ -20,7 +20,9 @@ class _SettingsPrivacyPageState extends State<SettingsPrivacyPage> {
             snap: true,
             floating: true,
             expandedHeight: 100,
+            centerTitle: true,
             flexibleSpace: FlexibleSpaceBar(
+              centerTitle: true,
               title: Text(
                 "Privatsphäre & Sicherheit",
                 style: TextStyle(

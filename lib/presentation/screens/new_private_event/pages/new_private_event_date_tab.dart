@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:chattyevent_app_flutter/application/bloc/add_private_event/add_private_event_cubit.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/button.dart';
+import 'package:intl/intl.dart';
 
 class NewPrivateEventDateTab extends StatelessWidget {
   const NewPrivateEventDateTab({super.key});
@@ -26,7 +27,9 @@ class NewPrivateEventDateTab extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
                 child: Button(
-                  text: "Datum wählen*: ${state.eventDate}",
+                  color: Theme.of(context).colorScheme.secondaryContainer,
+                  text:
+                      "Datum wählen*: ${state.eventDate != null ? DateFormat.yMd().add_jm().format(state.eventDate!) : ""}",
                   onTap: () async {
                     DateTime currentDate = DateTime.now();
                     DateTime? newDate = await showDatePicker(
@@ -64,7 +67,9 @@ class NewPrivateEventDateTab extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
                 child: Button(
-                  text: "End Datum wählen: ${state.eventEndDate}",
+                  color: Theme.of(context).colorScheme.secondaryContainer,
+                  text:
+                      "End Datum wählen: ${state.eventEndDate != null ? DateFormat.yMd().add_jm().format(state.eventEndDate!) : ""}",
                   onTap: () async {
                     DateTime currentDate = DateTime.now();
                     DateTime? newDate = await showDatePicker(

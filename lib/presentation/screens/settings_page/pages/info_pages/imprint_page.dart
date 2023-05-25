@@ -1,5 +1,6 @@
 import 'package:chattyevent_app_flutter/application/bloc/imprint/imprint_cubit.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/button.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletons/skeletons.dart';
@@ -22,6 +23,7 @@ class _ImprintPageState extends State<ImprintPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: Text(
           "Impressum",
           style: TextStyle(

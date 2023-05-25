@@ -34,7 +34,9 @@ class _ShoppingListPageState extends State<ShoppingListPage> {
             floating: true,
             leading: const AutoLeadingButton(),
             expandedHeight: 100,
+            centerTitle: true,
             flexibleSpace: FlexibleSpaceBar(
+              centerTitle: true,
               title: Text(
                 "Einkaufsliste",
                 style: TextStyle(

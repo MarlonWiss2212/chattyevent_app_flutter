@@ -32,7 +32,9 @@ class _HomeEventPageState extends State<HomeEventPage> {
             snap: true,
             floating: true,
             expandedHeight: 100,
+            centerTitle: true,
             flexibleSpace: FlexibleSpaceBar(
+              centerTitle: true,
               title: Text(
                 "Events",
                 style: TextStyle(

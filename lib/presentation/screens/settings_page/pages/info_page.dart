@@ -23,7 +23,9 @@ class _SettingsInfoPageState extends State<SettingsInfoPage> {
             snap: true,
             floating: true,
             expandedHeight: 100,
+            centerTitle: true,
             flexibleSpace: FlexibleSpaceBar(
+              centerTitle: true,
               title: Text(
                 "Info & Datenschutz",
                 style: TextStyle(

@@ -25,6 +25,7 @@ class PrivateEventTabPage extends StatelessWidget {
       builder: (context, child, tabController) {
         return Scaffold(
           appBar: AppBar(
+            centerTitle: true,
             leading: const AutoLeadingButton(),
             title:
                 BlocBuilder<CurrentPrivateEventCubit, CurrentPrivateEventState>(

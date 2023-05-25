@@ -17,8 +17,10 @@ class FutureEventsPage extends StatelessWidget {
             pinned: true,
             snap: true,
             floating: true,
+            centerTitle: true,
             expandedHeight: 100,
             flexibleSpace: FlexibleSpaceBar(
+              centerTitle: true,
               title: Text(
                 "Zukünftige Events",
                 style: TextStyle(

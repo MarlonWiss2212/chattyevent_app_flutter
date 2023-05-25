@@ -30,6 +30,7 @@ class _ChatAddUserPageState extends State<ChatAddUserPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: const Text("User zum Chat hinzufügen"),
       ),
       body: Column(
