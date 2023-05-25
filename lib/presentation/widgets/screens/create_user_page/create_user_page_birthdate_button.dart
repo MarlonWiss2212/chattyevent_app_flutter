@@ -17,15 +17,20 @@ class CreateUserPageBirthdayButton extends StatelessWidget {
           child: Button(
             color: Theme.of(context).colorScheme.secondaryContainer,
             onTap: () async {
-              DateTime currentDate = DateTime.now();
+              DateTime lastDate = DateTime.now();
+              lastDate = DateTime(
+                lastDate.year - 18,
+                lastDate.month,
+                lastDate.day,
+              );
               DateTime? newDate = await showDatePicker(
                 context: context,
                 initialDate: BlocProvider.of<AddCurrentUserCubit>(context)
                         .state
                         .birthdate ??
-                    currentDate,
-                firstDate: DateTime(currentDate.year - 200),
-                lastDate: DateTime(currentDate.year - 18),
+                    lastDate,
+                firstDate: DateTime(lastDate.year - 140),
+                lastDate: lastDate,
               );
 
               if (newDate == null) return;

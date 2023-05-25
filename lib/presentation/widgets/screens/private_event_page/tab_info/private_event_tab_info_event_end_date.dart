@@ -14,7 +14,7 @@ class PrivateEventTabInfoEventEndDate extends StatelessWidget {
       context: context,
       initialDate: initialDate,
       firstDate: currentDate,
-      lastDate: DateTime(currentDate.year + 10),
+      lastDate: currentDate.add(const Duration(days: 3650)),
     );
     TimeOfDay? newTime = await showTimePicker(
       context: context,

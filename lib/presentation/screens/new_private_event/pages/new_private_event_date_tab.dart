@@ -36,7 +36,7 @@ class NewPrivateEventDateTab extends StatelessWidget {
                       context: context,
                       initialDate: state.eventDate ?? currentDate,
                       firstDate: currentDate,
-                      lastDate: DateTime(currentDate.year + 10),
+                      lastDate: currentDate.add(const Duration(days: 3650)),
                     );
                     TimeOfDay? newTime = await showTimePicker(
                       context: context,
@@ -76,7 +76,7 @@ class NewPrivateEventDateTab extends StatelessWidget {
                       context: context,
                       initialDate: state.eventEndDate ?? currentDate,
                       firstDate: currentDate,
-                      lastDate: DateTime(currentDate.year + 10),
+                      lastDate: currentDate.add(const Duration(days: 3650)),
                     );
                     TimeOfDay? newTime = await showTimePicker(
                       context: context,

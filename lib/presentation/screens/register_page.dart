@@ -74,7 +74,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                       const SizedBox(height: 8),
                       PlatformTextFormField(
-                        controller: passwordFieldController,
+                        controller: verifyPasswordFieldController,
                         obscureText: true,
                         hintText: 'Passwort Bestätigen',
                         textInputAction: TextInputAction.next,
