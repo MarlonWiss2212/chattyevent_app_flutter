@@ -125,7 +125,8 @@ class PrivateEventTabShoppingList extends StatelessWidget {
                       );
                     }
                     if (state.loadingShoppingList) {
-                      return const CircularProgressIndicator.adaptive();
+                      return const Center(
+                          child: CircularProgressIndicator.adaptive());
                     } else {
                       return IconButton(
                         onPressed: () {

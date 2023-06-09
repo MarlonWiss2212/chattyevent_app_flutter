@@ -70,7 +70,8 @@ class PastEventsPage extends StatelessWidget {
                       );
                     }
                     if (state.loadingPastEvents) {
-                      return const CircularProgressIndicator.adaptive();
+                      return const Center(
+                          child: CircularProgressIndicator.adaptive());
                     } else {
                       return IconButton(
                         onPressed: () {

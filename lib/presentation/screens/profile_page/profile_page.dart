@@ -61,8 +61,10 @@ class ProfilePage extends StatelessWidget {
                 );
               } else if (state.status == ProfilePageStateStatus.loading &&
                   state.user.id == "") {
-                return SliverFillRemaining(
-                  child: Center(child: PlatformCircularProgressIndicator()),
+                return const SliverFillRemaining(
+                  child: Center(
+                    child: CircularProgressIndicator.adaptive(),
+                  ),
                 );
               } else {
                 return SliverFillRemaining(

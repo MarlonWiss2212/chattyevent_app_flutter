@@ -53,7 +53,7 @@ class ProfileFollowersTabListView extends StatelessWidget {
             );
           }
           if (loading) {
-            return const CircularProgressIndicator.adaptive();
+            return const Center(child: CircularProgressIndicator.adaptive());
           } else {
             return IconButton(
               onPressed: loadMore,

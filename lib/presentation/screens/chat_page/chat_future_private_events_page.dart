@@ -65,7 +65,8 @@ class ChatFuturePrivateEventsPage extends StatelessWidget {
                       );
                     }
                     if (state.loadingPrivateEvents) {
-                      return const CircularProgressIndicator.adaptive();
+                      return const Center(
+                          child: CircularProgressIndicator.adaptive());
                     } else {
                       return IconButton(
                         onPressed: () {

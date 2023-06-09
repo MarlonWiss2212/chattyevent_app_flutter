@@ -1,7 +1,6 @@
 import 'package:chattyevent_app_flutter/presentation/widgets/general/input_fields/debounce_input_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:chattyevent_app_flutter/application/bloc/user_search/user_search_cubit.dart';
 import 'package:chattyevent_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/button.dart';
@@ -71,9 +70,9 @@ class _SelectableUserGridListState extends State<SelectableUserGridList> {
           builder: (context, state) {
             if (state.status == UserSearchStateStatus.loading &&
                 state.users.isNotEmpty) {
-              return Expanded(
+              return const Expanded(
                 child: Center(
-                  child: PlatformCircularProgressIndicator(),
+                  child: CircularProgressIndicator.adaptive(),
                 ),
               );
             }

@@ -89,6 +89,7 @@ class HomeEventPageDetails extends StatelessWidget {
               templateType: TemplateType.medium,
             ),
           ),
+          const SizedBox(height: 8),
           const HomeEventPageShoppingListTile(),
         ],
       ),

@@ -50,17 +50,26 @@ class PrivateEventTabPage extends StatelessWidget {
               },
             ),
             actions: const [PrivateEventTabInfoDeleteButton()],
-            bottom: TabBar(
-              controller: tabController,
-              tabs: const [
-                Tab(icon: Icon(Icons.celebration)),
-                Tab(icon: Icon(Icons.person)),
-                Tab(icon: Icon(Icons.shopping_cart)),
-              ],
-            ),
           ),
           body: Column(
             children: [
+              Padding(
+                padding: const EdgeInsets.all(8),
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    color: Theme.of(context).colorScheme.surface,
+                  ),
+                  child: TabBar(
+                    controller: tabController,
+                    tabs: const [
+                      Tab(icon: Icon(Icons.celebration)),
+                      Tab(icon: Icon(Icons.person)),
+                      Tab(icon: Icon(Icons.shopping_cart)),
+                    ],
+                  ),
+                ),
+              ),
               BlocBuilder<CurrentPrivateEventCubit, CurrentPrivateEventState>(
                 buildWhen: (previous, current) {
                   if (previous.loadingGroupchat != current.loadingGroupchat) {

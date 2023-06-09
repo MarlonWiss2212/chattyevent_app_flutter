@@ -48,24 +48,38 @@ class ProfileUserRelationsTabPage extends StatelessWidget {
                         );
                       },
                     ),
-                    bottom: TabBar(
-                      controller: tabController,
-                      tabs: [
-                        const Tab(text: "Followers", icon: Icon(Icons.person)),
-                        const Tab(
-                            text: "Gefolgt",
-                            icon: Icon(Icons.person_2_outlined)),
-                        if (state.user.id == authState.currentUser.id ||
-                            userId == null) ...{
-                          const Tab(
-                            text: "Anfragen",
-                            icon: Icon(Icons.front_hand),
-                          ),
-                        }
-                      ],
-                    ),
                   ),
-                  body: child,
+                  body: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            color: Theme.of(context).colorScheme.surface,
+                          ),
+                          child: TabBar(
+                            controller: tabController,
+                            tabs: [
+                              const Tab(
+                                  text: "Followers", icon: Icon(Icons.person)),
+                              const Tab(
+                                  text: "Gefolgt",
+                                  icon: Icon(Icons.person_2_outlined)),
+                              if (state.user.id == authState.currentUser.id ||
+                                  userId == null) ...{
+                                const Tab(
+                                  text: "Anfragen",
+                                  icon: Icon(Icons.front_hand),
+                                ),
+                              }
+                            ],
+                          ),
+                        ),
+                      ),
+                      Expanded(child: child),
+                    ],
+                  ),
                 );
               },
             );

@@ -147,9 +147,13 @@ class _AppState extends State<App> {
                     shadowColor: Colors.transparent,
                   ),
                   tabBarTheme: TabBarTheme(
-                    indicatorColor: darkColorScheme.onPrimary,
-                    labelColor: darkColorScheme.onPrimary,
-                    dividerColor: darkColorScheme.onPrimary,
+                    indicatorColor: lightColorScheme.primary,
+                    labelColor: lightColorScheme.primary,
+                    dividerColor: lightColorScheme.primary,
+                    indicator: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      color: lightColorScheme.primaryContainer,
+                    ),
                   ),
                   bottomAppBarTheme: const BottomAppBarTheme(
                     color: Colors.white,
@@ -167,6 +171,10 @@ class _AppState extends State<App> {
                     indicatorColor: darkColorScheme.primary,
                     labelColor: darkColorScheme.primary,
                     dividerColor: darkColorScheme.primary,
+                    indicator: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      color: darkColorScheme.primaryContainer,
+                    ),
                   ),
                   bottomAppBarTheme: const BottomAppBarTheme(
                     color: Colors.black,

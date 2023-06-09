@@ -113,7 +113,9 @@ class _ShoppingListPageState extends State<ShoppingListPage> {
                       );
                     }
                     if (state.loading) {
-                      return const CircularProgressIndicator.adaptive();
+                      return const Center(
+                        child: CircularProgressIndicator.adaptive(),
+                      );
                     } else {
                       return IconButton(
                         onPressed: () {
