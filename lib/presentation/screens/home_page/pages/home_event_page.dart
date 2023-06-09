@@ -63,7 +63,8 @@ class _HomeEventPageState extends State<HomeEventPage> {
           ),
           BlocBuilder<HomeEventCubit, HomeEventState>(
             builder: (context, state) {
-              if (state.privateEvents.isEmpty &&
+              if (state.futurePrivateEvents.isEmpty &&
+                  state.pastPrivateEvents.isEmpty &&
                   state.loadingFutureEvents == false &&
                   state.loadingPastEvents == false) {
                 return const SliverFillRemaining(
@@ -71,7 +72,8 @@ class _HomeEventPageState extends State<HomeEventPage> {
                 );
               }
 
-              if (state.privateEvents.isEmpty &&
+              if (state.futurePrivateEvents.isEmpty &&
+                      state.pastPrivateEvents.isEmpty &&
                       state.loadingFutureEvents == true ||
                   state.loadingPastEvents == true) {
                 return const EventHorizontalListSkeleton();

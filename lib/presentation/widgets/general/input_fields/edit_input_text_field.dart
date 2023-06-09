@@ -41,21 +41,23 @@ class _EditInputTextFieldState extends State<EditInputTextField> {
         ),
       );
     } else {
-      return TextField(
-        controller: TextEditingController(text: widget.text),
-        textInputAction: TextInputAction.done,
-        autofocus: true,
-        style: widget.textStyle,
-        decoration: InputDecoration(
-          hintText: widget.hintText,
+      return IntrinsicWidth(
+        child: TextField(
+          controller: TextEditingController(text: widget.text),
+          textInputAction: TextInputAction.done,
+          autofocus: true,
+          style: widget.textStyle,
+          decoration: InputDecoration(
+            hintText: widget.hintText,
+          ),
+          onSubmitted: (value) {
+            if (value != widget.text) {
+              widget.onSaved != null ? widget.onSaved!(value) : null;
+            }
+          },
+          onTapOutside: (_) => setState(() => editing = !editing),
+          onEditingComplete: () => setState(() => editing = !editing),
         ),
-        onSubmitted: (value) {
-          if (value != widget.text) {
-            widget.onSaved != null ? widget.onSaved!(value) : null;
-          }
-        },
-        onTapOutside: (_) => setState(() => editing = !editing),
-        onEditingComplete: () => setState(() => editing = !editing),
       );
     }
   }

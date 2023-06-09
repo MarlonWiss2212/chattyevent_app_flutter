@@ -80,7 +80,10 @@ class StandardShoppingListItemWrapperPage extends StatelessWidget {
                 AutoRouter.of(context).pop();
               }
             },
-            child: const AutoRouter(),
+            child: HeroControllerScope(
+              controller: HeroController(),
+              child: const AutoRouter(),
+            ),
           );
         },
       ),

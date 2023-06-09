@@ -33,7 +33,10 @@ class HomeProfilePage extends StatelessWidget {
       child: Builder(
         builder: (context) {
           BlocProvider.of<ProfilePageCubit>(context).getCurrentUserViaApi();
-          return const AutoRouter();
+          return HeroControllerScope(
+            controller: HeroController(),
+            child: const AutoRouter(),
+          );
         },
       ),
     );

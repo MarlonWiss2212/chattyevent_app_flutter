@@ -35,8 +35,8 @@ class FutureEventsPage extends StatelessWidget {
           ),
           BlocBuilder<HomeEventCubit, HomeEventState>(
             builder: (context, state) {
-              final futureEvents = state.getFutureEvents();
-              if (state.loadingFutureEvents && futureEvents.isEmpty) {
+              if (state.loadingFutureEvents &&
+                  state.futurePrivateEvents.isEmpty) {
                 return SliverFillRemaining(
                   child: SkeletonListView(
                     itemBuilder: (p0, p1) {
@@ -55,7 +55,7 @@ class FutureEventsPage extends StatelessWidget {
                     },
                   ),
                 );
-              } else if (futureEvents.isEmpty) {
+              } else if (state.futurePrivateEvents.isEmpty) {
                 return const SliverFillRemaining(
                   child: Center(child: Text("Keine Zukünftigen Events")),
                 );
@@ -64,9 +64,9 @@ class FutureEventsPage extends StatelessWidget {
               return SliverList(
                 delegate: SliverChildBuilderDelegate(
                   (context, index) {
-                    if (index < futureEvents.length) {
+                    if (index < state.futurePrivateEvents.length) {
                       return PrivateEventListItem(
-                        privateEventState: futureEvents[index],
+                        privateEventState: state.futurePrivateEvents[index],
                       );
                     }
 
@@ -82,7 +82,7 @@ class FutureEventsPage extends StatelessWidget {
                       );
                     }
                   },
-                  childCount: futureEvents.length + 1,
+                  childCount: state.futurePrivateEvents.length + 1,
                 ),
               );
             },

@@ -6,6 +6,7 @@ import 'package:chattyevent_app_flutter/application/bloc/notification/notificati
 import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/dialog/alert_dialog.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/home_page/mini_profile_image.dart';
+import 'package:ionicons/ionicons.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -56,23 +57,23 @@ class HomePage extends StatelessWidget {
                             tabsRouter.setActiveIndex(value),
                         destinations: const [
                           NavigationRailDestination(
-                            icon: Icon(Icons.chat_bubble_outline),
-                            selectedIcon: Icon(Icons.chat_bubble),
+                            icon: Icon(Ionicons.chatbubble_outline),
+                            selectedIcon: Icon(Ionicons.chatbubble),
                             label: Text('Chat'),
                           ),
                           NavigationRailDestination(
-                            icon: Icon(Icons.celebration_outlined),
-                            selectedIcon: Icon(Icons.celebration),
+                            icon: Icon(Ionicons.people_outline),
+                            selectedIcon: Icon(Ionicons.people),
                             label: Text('Party'),
                           ),
                           NavigationRailDestination(
-                            icon: Icon(Icons.map_outlined),
-                            selectedIcon: Icon(Icons.map),
+                            icon: Icon(Ionicons.map_outline),
+                            selectedIcon: Icon(Ionicons.map),
                             label: Text('Map'),
                           ),
                           NavigationRailDestination(
-                            icon: Icon(Icons.search_outlined),
-                            selectedIcon: Icon(Icons.search),
+                            icon: Icon(Ionicons.search_outline),
+                            selectedIcon: Icon(Ionicons.search),
                             label: Text('Entdecken'),
                           ),
                           NavigationRailDestination(
@@ -82,11 +83,19 @@ class HomePage extends StatelessWidget {
                           )
                         ],
                       ),
-                      Expanded(child: child),
+                      Expanded(
+                        child: HeroControllerScope(
+                          controller: HeroController(),
+                          child: child,
+                        ),
+                      ),
                     ],
                   );
                 } else {
-                  return child;
+                  return HeroControllerScope(
+                    controller: HeroController(),
+                    child: child,
+                  );
                 }
               },
             ),
@@ -106,23 +115,23 @@ class HomePage extends StatelessWidget {
                       Theme.of(context).colorScheme.onBackground,
                   items: const [
                     BottomNavigationBarItem(
-                      icon: Icon(Icons.chat_bubble_outline),
-                      activeIcon: Icon(Icons.chat_bubble),
+                      icon: Icon(Ionicons.chatbubble_outline),
+                      activeIcon: Icon(Ionicons.chatbubble),
                       label: 'Chat',
                     ),
                     BottomNavigationBarItem(
-                      icon: Icon(Icons.celebration_outlined),
-                      activeIcon: Icon(Icons.celebration),
+                      icon: Icon(Ionicons.people_outline),
+                      activeIcon: Icon(Ionicons.people),
                       label: 'Party',
                     ),
                     BottomNavigationBarItem(
-                      icon: Icon(Icons.map_outlined),
-                      activeIcon: Icon(Icons.map),
+                      icon: Icon(Ionicons.map_outline),
+                      activeIcon: Icon(Ionicons.map),
                       label: 'Map',
                     ),
                     BottomNavigationBarItem(
-                      icon: Icon(Icons.search_outlined),
-                      activeIcon: Icon(Icons.search),
+                      icon: Icon(Ionicons.search_outline),
+                      activeIcon: Icon(Ionicons.search),
                       label: 'Entdecken',
                     ),
                     BottomNavigationBarItem(

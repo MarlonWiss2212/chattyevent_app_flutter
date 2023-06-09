@@ -24,9 +24,9 @@ class ProfilePageTitle extends StatelessWidget {
                 padding: const EdgeInsets.only(right: 8.0),
                 child: EditInputTextField(
                   text: state.user.username ?? "",
-                  textStyle: TextStyle(
-                    color: Theme.of(context).colorScheme.onBackground,
-                  ),
+                  textStyle: Theme.of(context).textTheme.titleLarge?.apply(
+                        color: Theme.of(context).colorScheme.onBackground,
+                      ),
                   editable: authState.currentUser.id == state.user.id,
                   onSaved: (text) {
                     BlocProvider.of<ProfilePageCubit>(context).updateUser(

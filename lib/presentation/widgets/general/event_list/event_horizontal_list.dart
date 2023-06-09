@@ -1,5 +1,5 @@
-import 'dart:math';
 import 'package:auto_route/auto_route.dart';
+import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:chattyevent_app_flutter/application/bloc/current_private_event/current_private_event_cubit.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
@@ -11,45 +11,36 @@ class EventHorizontalList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double viewportFraction = min(
-      (300 / MediaQuery.of(context).size.width).toDouble(),
-      1,
-    );
-    final pageController = PageController(viewportFraction: viewportFraction);
-    // to make the box in the 4 by 3 ratio just like the image is
-    // -16 is the padding
-    final width = (MediaQuery.of(context).size.width * viewportFraction) - 16;
-    final height = width / 4 * 3;
+    final double width = MediaQuery.of(context).size.width.toDouble() - 16;
+    final double height = width / 4 * 3;
 
-    return SizedBox(
-      height: height,
-      child: PageView.builder(
-        padEnds: false,
-        pageSnapping: true,
-        controller: pageController,
-        scrollDirection: Axis.horizontal,
-        physics: const PageScrollPhysics(),
-        itemBuilder: (context, index) {
-          return FractionallySizedBox(
-            widthFactor: .95,
-            alignment: Alignment.centerLeft,
-            child: EventHorizontalListItem(
-              height: height,
-              width: width,
-              privateEvent: privateEventStates[index].privateEvent,
-              onPress: () {
-                AutoRouter.of(context).push(
-                  PrivateEventWrapperPageRoute(
-                    privateEventStateToSet: privateEventStates[index],
-                    privateEventId: privateEventStates[index].privateEvent.id,
-                  ),
-                );
-              },
-            ),
-          );
-        },
-        itemCount: privateEventStates.length,
-      ),
+    final double itemWidth = MediaQuery.of(context).size.width.toDouble() - 40;
+    final double itemHeight = width / 4 * 3;
+
+    return Swiper(
+      loop: false,
+      layout: SwiperLayout.STACK,
+      viewportFraction: .9,
+      containerHeight: height,
+      containerWidth: width,
+      itemHeight: itemHeight,
+      itemWidth: itemWidth,
+      itemCount: privateEventStates.length,
+      itemBuilder: (context, index) {
+        return EventHorizontalListItem(
+          height: height,
+          width: width,
+          privateEvent: privateEventStates[index].privateEvent,
+          onPress: () {
+            AutoRouter.of(context).push(
+              PrivateEventWrapperPageRoute(
+                privateEventStateToSet: privateEventStates[index],
+                privateEventId: privateEventStates[index].privateEvent.id,
+              ),
+            );
+          },
+        );
+      },
     );
   }
 }

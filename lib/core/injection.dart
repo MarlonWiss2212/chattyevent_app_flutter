@@ -3,6 +3,11 @@ import 'package:chattyevent_app_flutter/domain/usecases/imprint_usecases.dart';
 import 'package:chattyevent_app_flutter/infastructure/datasources/local/weblink.dart';
 import 'package:chattyevent_app_flutter/infastructure/datasources/remote/http.dart';
 import 'package:chattyevent_app_flutter/infastructure/respositories/imprint_repository_impl.dart';
+import 'package:chattyevent_app_flutter/presentation/router/auth_guard.dart';
+import 'package:chattyevent_app_flutter/presentation/router/auth_pages_guard.dart';
+import 'package:chattyevent_app_flutter/presentation/router/create_user_page_guard.dart';
+import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
+import 'package:chattyevent_app_flutter/presentation/router/verify_email_page_guard.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -54,6 +59,15 @@ final serviceLocator = GetIt.I;
 
 Future init() async {
   serviceLocator.registerLazySingleton(() => FirebaseAuth.instance);
+
+  serviceLocator.registerFactoryParam<AppRouter, AuthCubit, void>(
+    (param1, param2) => AppRouter(
+      authPagesGuard: AuthPagesGuard(authCubit: param1),
+      verifyEmailPageGuard: VerifyEmailPageGuard(authCubit: param1),
+      createUserPageGuard: CreateUserPageGuard(authCubit: param1),
+      authGuard: AuthGuard(authCubit: param1),
+    ),
+  );
 
   // use cases
   serviceLocator.registerLazySingleton<NotificationUseCases>(

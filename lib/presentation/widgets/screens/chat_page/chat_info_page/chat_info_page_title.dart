@@ -17,9 +17,9 @@ class ChatInfoPageTitle extends StatelessWidget {
             padding: const EdgeInsets.only(right: 8.0),
             child: EditInputTextField(
               text: state.currentChat.title ?? "",
-              textStyle: TextStyle(
-                color: Theme.of(context).colorScheme.onBackground,
-              ),
+              textStyle: Theme.of(context).textTheme.titleLarge?.apply(
+                    color: Theme.of(context).colorScheme.onBackground,
+                  ),
               editable: state.getCurrentGroupchatUser()?.admin == true,
               onSaved: (text) {
                 BlocProvider.of<CurrentChatCubit>(context)

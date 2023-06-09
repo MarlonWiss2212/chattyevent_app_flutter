@@ -72,9 +72,9 @@ class EventHorizontalListItem extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.all(8),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.end,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Hero(
                       tag: "${privateEvent.id} title",
@@ -85,11 +85,16 @@ class EventHorizontalListItem extends StatelessWidget {
                             ),
                       ),
                     ),
-                    Text(
-                      DateFormat.yMd().add_jm().format(privateEvent.eventDate),
-                      style: Theme.of(context).textTheme.labelSmall?.apply(
-                            color: Colors.white,
-                          ),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: Text(
+                        DateFormat.yMd()
+                            .add_jm()
+                            .format(privateEvent.eventDate),
+                        style: Theme.of(context).textTheme.bodySmall?.apply(
+                              color: Colors.white,
+                            ),
+                      ),
                     ),
                   ],
                 ),

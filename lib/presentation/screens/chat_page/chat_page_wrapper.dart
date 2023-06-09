@@ -67,7 +67,10 @@ class ChatPageWrapper extends StatelessWidget {
                 },
               ),
             ],
-            child: const AutoRouter(),
+            child: HeroControllerScope(
+              controller: HeroController(),
+              child: const AutoRouter(),
+            ),
           );
         },
       ),

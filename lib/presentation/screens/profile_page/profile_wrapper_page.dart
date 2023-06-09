@@ -31,7 +31,10 @@ class ProfileWrapperPage extends StatelessWidget {
         authCubit: BlocProvider.of<AuthCubit>(context),
         notificationCubit: BlocProvider.of<NotificationCubit>(context),
       )..getCurrentUserViaApi(),
-      child: const AutoRouter(),
+      child: HeroControllerScope(
+        controller: HeroController(),
+        child: const AutoRouter(),
+      ),
     );
   }
 }

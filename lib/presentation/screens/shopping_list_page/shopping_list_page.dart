@@ -37,10 +37,13 @@ class _ShoppingListPageState extends State<ShoppingListPage> {
             centerTitle: true,
             flexibleSpace: FlexibleSpaceBar(
               centerTitle: true,
-              title: Text(
-                "Einkaufsliste",
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.onBackground,
+              title: Hero(
+                tag: "ShoppingListTitle",
+                child: Text(
+                  "Einkaufsliste",
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onBackground,
+                  ),
                 ),
               ),
             ),

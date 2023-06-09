@@ -60,7 +60,7 @@ class _HomeMapPageState extends State<HomeMapPage> {
                     BlocBuilder<HomeEventCubit, HomeEventState>(
                       builder: (context, state) {
                         List<Marker> markers = [];
-                        for (final eventState in state.privateEvents) {
+                        for (final eventState in state.futurePrivateEvents) {
                           if (eventState.privateEvent.eventLocation != null &&
                               eventState.privateEvent.eventLocation!
                                       .geoJsonLocation !=

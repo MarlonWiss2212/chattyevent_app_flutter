@@ -1,7 +1,4 @@
 import 'package:chattyevent_app_flutter/application/bloc/imprint/imprint_cubit.dart';
-import 'package:chattyevent_app_flutter/presentation/router/auth_pages_guard.dart';
-import 'package:chattyevent_app_flutter/presentation/router/create_user_page_guard.dart';
-import 'package:chattyevent_app_flutter/presentation/router/verify_email_page_guard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
@@ -12,7 +9,6 @@ import 'package:chattyevent_app_flutter/application/bloc/notification/notificati
 import 'package:chattyevent_app_flutter/application/bloc/image/image_cubit.dart';
 import 'package:chattyevent_app_flutter/core/injection.dart';
 import 'package:chattyevent_app_flutter/main.dart';
-import 'package:chattyevent_app_flutter/presentation/router/auth_guard.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
 
 class BlocInit extends StatelessWidget {
@@ -20,19 +16,8 @@ class BlocInit extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AppRouter appRouter = AppRouter(
-      authGuard: AuthGuard(
-        authCubit: BlocProvider.of<AuthCubit>(context),
-      ),
-      authPagesGuard: AuthPagesGuard(
-        authCubit: BlocProvider.of<AuthCubit>(context),
-      ),
-      createUserPageGuard: CreateUserPageGuard(
-        authCubit: BlocProvider.of<AuthCubit>(context),
-      ),
-      verifyEmailPageGuard: VerifyEmailPageGuard(
-        authCubit: BlocProvider.of<AuthCubit>(context),
-      ),
+    final AppRouter appRouter = serviceLocator(
+      param1: BlocProvider.of<AuthCubit>(context),
     );
 
     return BlocListener<AuthCubit, AuthState>(

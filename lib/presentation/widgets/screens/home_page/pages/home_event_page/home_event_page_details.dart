@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:chattyevent_app_flutter/presentation/widgets/screens/home_page/pages/home_event_page/home_event_page_shopping_list_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/home_page/home_event/home_event_cubit.dart';
@@ -18,15 +19,12 @@ class HomeEventPageDetails extends StatelessWidget {
         [
           BlocBuilder<HomeEventCubit, HomeEventState>(
             builder: (context, state) {
-              final futureEvents = state.getFutureEvents();
-              final pastEvents = state.getPastEvents();
-
               return Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    if (futureEvents.isNotEmpty) ...[
+                    if (state.futurePrivateEvents.isNotEmpty) ...[
                       const SizedBox(height: 20),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -47,9 +45,10 @@ class HomeEventPageDetails extends StatelessWidget {
                         ],
                       ),
                       const SizedBox(height: 8),
-                      EventHorizontalList(privateEventStates: futureEvents),
+                      EventHorizontalList(
+                          privateEventStates: state.futurePrivateEvents),
                     ],
-                    if (pastEvents.isNotEmpty) ...[
+                    if (state.pastPrivateEvents.isNotEmpty) ...[
                       const SizedBox(height: 20),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -70,7 +69,9 @@ class HomeEventPageDetails extends StatelessWidget {
                         ],
                       ),
                       const SizedBox(height: 8),
-                      EventHorizontalList(privateEventStates: pastEvents),
+                      EventHorizontalList(
+                        privateEventStates: state.pastPrivateEvents,
+                      ),
                     ],
                     const SizedBox(height: 20),
                   ],
@@ -88,17 +89,7 @@ class HomeEventPageDetails extends StatelessWidget {
               templateType: TemplateType.medium,
             ),
           ),
-          ListTile(
-            leading: const Icon(Icons.shopping_bag),
-            title: const Text("Einkaufsliste"),
-            onTap: () {
-              AutoRouter.of(context).push(
-                const ShoppingListWrapperPageRoute(
-                  children: [ShoppingListPageRoute()],
-                ),
-              );
-            },
-          ),
+          const HomeEventPageShoppingListTile(),
         ],
       ),
     );

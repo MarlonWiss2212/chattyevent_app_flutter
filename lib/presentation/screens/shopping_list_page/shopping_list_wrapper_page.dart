@@ -18,7 +18,10 @@ class ShoppingListWrapperPage extends StatelessWidget {
         ),
         notificationCubit: BlocProvider.of<NotificationCubit>(context),
       ),
-      child: const AutoRouter(),
+      child: HeroControllerScope(
+        controller: HeroController(),
+        child: const AutoRouter(),
+      ),
     );
   }
 }

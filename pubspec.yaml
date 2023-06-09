@@ -71,6 +71,8 @@ dependencies:
   collection: ^1.17.0
   flutter_funding_choices: ^0.3.0+2
   web_socket_channel: ^2.2.0
+  card_swiper: ^2.0.4
+  ionicons: ^0.2.2
 
 dev_dependencies:
   flutter_test:
