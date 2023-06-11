@@ -9,7 +9,7 @@ class AddGroupchatMessageState {
   final File? file;
   final String? message;
   final String? groupchatTo;
-  final String? messageToReactTo;
+  final GroupchatMessageEntity? messageToReactTo;
 
   AddGroupchatMessageState({
     this.addedMessage,

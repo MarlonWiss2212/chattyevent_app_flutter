@@ -95,7 +95,6 @@ class _ChatPageState extends State<ChatPage> {
                       child: ChatPageMessageArea(),
                     ),
                   ),
-                  const Divider(height: 2),
                   ChatPageMessageInput(groupchatTo: widget.groupchatId),
                 ],
               ),

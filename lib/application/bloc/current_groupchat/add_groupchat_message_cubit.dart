@@ -38,7 +38,7 @@ class AddGroupchatMessageCubit extends Cubit<AddGroupchatMessageState> {
       createGroupchatMessageDto: CreateGroupchatMessageDto(
         message: state.message!,
         groupchatTo: state.groupchatTo!,
-        messageToReactTo: state.messageToReactTo,
+        messageToReactTo: state.messageToReactTo?.id,
         file: state.file,
       ),
     );
@@ -67,7 +67,7 @@ class AddGroupchatMessageCubit extends Cubit<AddGroupchatMessageState> {
     bool removeMessageToReactTo = false,
     String? message,
     String? groupchatTo,
-    String? messageToReactTo,
+    GroupchatMessageEntity? messageToReactTo,
   }) {
     emit(AddGroupchatMessageState(
       message: message ?? state.message,

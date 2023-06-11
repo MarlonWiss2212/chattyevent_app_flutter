@@ -1,13 +1,15 @@
+import 'package:chattyevent_app_flutter/application/bloc/current_groupchat/current_chat_cubit.dart';
+import 'package:chattyevent_app_flutter/domain/entities/groupchat/groupchat_left_user_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/groupchat/groupchat_message.dart';
+import 'package:chattyevent_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
 import 'package:chattyevent_app_flutter/application/bloc/current_groupchat/add_groupchat_message_cubit.dart';
-import 'package:chattyevent_app_flutter/domain/entities/groupchat/groupchat_left_user_entity.dart';
-import 'package:chattyevent_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/chat_page/chat_page/chat_page_react_message_container.dart';
+import 'package:swipe_to/swipe_to.dart';
 
 class ChatPageMessageContainer extends StatelessWidget {
   const ChatPageMessageContainer({
@@ -16,21 +18,16 @@ class ChatPageMessageContainer extends StatelessWidget {
     required this.currentUserId,
     required this.users,
     required this.leftUsers,
-    this.messageIsReactMessage = false,
-    this.isInputMessage = false,
   });
 
-  final bool messageIsReactMessage;
-  final bool isInputMessage;
-
   final String currentUserId;
-  final List<GroupchatUserEntity> users;
-  final List<GroupchatLeftUserEntity> leftUsers;
+  final List<UserEntity> users;
+  final List<UserEntity> leftUsers;
   final GroupchatMessageEntity message;
 
   @override
   Widget build(BuildContext context) {
-    UserEntity? user;
+    late UserEntity user;
     final foundUser = users.firstWhere(
       (element) => element.id == message.createdBy,
       orElse: () => GroupchatUserEntity(
@@ -57,37 +54,23 @@ class ChatPageMessageContainer extends StatelessWidget {
     }
 
     return Row(
-      mainAxisAlignment: user?.id == currentUserId
+      mainAxisAlignment: user.id == currentUserId
           ? MainAxisAlignment.end
           : MainAxisAlignment.start,
       children: [
-        Slidable(
-          enabled: messageIsReactMessage == false,
-          startActionPane: ActionPane(
-            motion: const ScrollMotion(),
-            children: [
-              SlidableAction(
-                borderRadius: BorderRadius.circular(8),
-                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                foregroundColor: Theme.of(context).colorScheme.onBackground,
-                onPressed: (context) {
-                  BlocProvider.of<AddGroupchatMessageCubit>(context).emitState(
-                    messageToReactTo: message.id,
-                  );
-                },
-                icon: Icons.arrow_circle_left_sharp,
-              ),
-            ],
+        SwipeTo(
+          iconColor: Theme.of(context).colorScheme.onBackground,
+          onRightSwipe: () =>
+              BlocProvider.of<AddGroupchatMessageCubit>(context).emitState(
+            messageToReactTo: message,
           ),
           child: Container(
-            constraints: messageIsReactMessage == false
-                ? BoxConstraints(
-                    maxWidth: MediaQuery.of(context).size.width / 1.1,
-                  )
-                : null,
+            constraints: BoxConstraints(
+              maxWidth: MediaQuery.of(context).size.width / 1.1,
+            ),
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              borderRadius: user?.id == currentUserId
+              borderRadius: user.id == currentUserId
                   ? const BorderRadius.only(
                       topLeft: Radius.circular(20),
                       bottomLeft: Radius.circular(20),
@@ -98,32 +81,29 @@ class ChatPageMessageContainer extends StatelessWidget {
                       bottomRight: Radius.circular(20),
                       topRight: Radius.circular(20),
                     ),
-              color: messageIsReactMessage == false || isInputMessage
-                  ? user?.id == currentUserId
-                      ? Theme.of(context).colorScheme.primaryContainer
-                      : Theme.of(context).colorScheme.surface
-                  : const Color.fromARGB(40, 0, 0, 0),
+              color: user.id == currentUserId
+                  ? Theme.of(context).colorScheme.primaryContainer
+                  : Theme.of(context).colorScheme.surface,
             ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
+                  // OPTIMIZE
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      user != null && user.username != null
-                          ? user.username!
-                          : "",
+                      user.username != null ? user.username! : "",
+                      style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(width: 8),
                     Text(DateFormat.jm().format(message.createdAt)),
                   ],
                 ),
                 if (message.fileLinks != null &&
-                    message.fileLinks!.isNotEmpty &&
-                    messageIsReactMessage == false) ...[
+                    message.fileLinks!.isNotEmpty) ...[
                   const SizedBox(height: 8),
                   Container(
                     constraints: BoxConstraints(
@@ -135,32 +115,36 @@ class ChatPageMessageContainer extends StatelessWidget {
                       fit: BoxFit.contain,
                     ),
                   ),
-                ] else if (message.fileLinks != null &&
-                    message.fileLinks!.isNotEmpty &&
-                    messageIsReactMessage) ...[
-                  const SizedBox(height: 8),
-                  //TODO show as list because of multiple messages
-                  Row(
-                    children: const [
-                      Icon(Icons.file_copy),
-                      SizedBox(width: 2),
-                      Text("Datei"),
-                    ],
-                  ),
                 ],
-                if (message.messageToReactTo != null &&
-                    messageIsReactMessage == false) ...{
-                  ChatPageReactMessageContainer(
-                    messageToReactTo: message.messageToReactTo!,
+                if (message.messageToReactTo != null) ...{
+                  BlocBuilder<CurrentChatCubit, CurrentChatState>(
+                    builder: (context, state) {
+                      final foundMessage = state.messages.firstWhereOrNull(
+                        (element) => element.id == message.messageToReactTo,
+                      );
+                      if (foundMessage != null) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8),
+                          child: ChatPageReactMessageContainer(
+                            message: foundMessage,
+                            users: users,
+                            leftUsers: leftUsers,
+                            currentUserId: currentUserId,
+                            isInput: false,
+                          ),
+                        );
+                      }
+                      return const SizedBox();
+                    },
                   ),
                 },
-                if (message.fileLinks != null &&
-                    message.fileLinks!.isNotEmpty) ...{
-                  const SizedBox(height: 8),
-                },
-                if (message.message != null) ...{
+                if (message.message != null) ...[
+                  if (message.fileLinks != null &&
+                      message.fileLinks!.isNotEmpty) ...{
+                    const SizedBox(height: 8),
+                  },
                   Text(message.message!, overflow: TextOverflow.clip),
-                },
+                ],
               ],
             ),
           ),

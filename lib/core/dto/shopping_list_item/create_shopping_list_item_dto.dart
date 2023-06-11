@@ -4,6 +4,7 @@ class CreateShoppingListItemDto {
   final double amount;
   final String userToBuyItem;
   final String privateEventId;
+  //final String privateEventTo;
 
   CreateShoppingListItemDto({
     required this.itemName,
@@ -19,6 +20,7 @@ class CreateShoppingListItemDto {
       'amount': amount,
       'userToBuyItem': userToBuyItem,
       'privateEventId': privateEventId,
+      // 'privateEventTo': privateEventTo,
     };
 
     if (unit != null) {

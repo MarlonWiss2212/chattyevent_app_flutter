@@ -1,6 +1,7 @@
 class CreateBoughtAmountDto {
   final double boughtAmount;
   final String shoppingListItemId;
+  //final String shoppingListItemTo;
 
   CreateBoughtAmountDto({
     required this.shoppingListItemId,
@@ -11,6 +12,7 @@ class CreateBoughtAmountDto {
     Map<dynamic, dynamic> map = {
       "boughtAmount": boughtAmount,
       "shoppingListItemId": shoppingListItemId,
+      // "shoppingListItemTo": shoppingListItemTo,
     };
     return map;
   }
