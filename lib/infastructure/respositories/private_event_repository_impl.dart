@@ -233,8 +233,6 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
               updatedAt
               statusOnRelatedUser
               followData {
-                requesterPrivateEventAddPermission
-                requesterGroupchatAddPermission
                 followedUserAt
               }
             }
@@ -244,8 +242,6 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
               updatedAt
               statusOnRelatedUser
               followData {
-                requesterPrivateEventAddPermission
-                requesterGroupchatAddPermission
                 followedUserAt
               }
             } 
@@ -277,8 +273,6 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
               updatedAt
               statusOnRelatedUser
               followData {
-                requesterPrivateEventAddPermission
-                requesterGroupchatAddPermission
                 followedUserAt
               }
             }
@@ -288,8 +282,6 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
               updatedAt
               statusOnRelatedUser
               followData {
-                requesterPrivateEventAddPermission
-                requesterGroupchatAddPermission
                 followedUserAt
               }
             }
@@ -512,8 +504,6 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
                 updatedAt
                 statusOnRelatedUser
                 followData {
-                  requesterPrivateEventAddPermission
-                  requesterGroupchatAddPermission
                   followedUserAt
                 }
               }
@@ -523,8 +513,6 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
                 updatedAt
                 statusOnRelatedUser
                 followData {
-                  requesterPrivateEventAddPermission
-                  requesterGroupchatAddPermission
                   followedUserAt
                 }
               }
@@ -588,8 +576,6 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
                 updatedAt
                 statusOnRelatedUser
                 followData {
-                  requesterPrivateEventAddPermission
-                  requesterGroupchatAddPermission
                   followedUserAt
                 }
               }
@@ -599,8 +585,6 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
                 updatedAt
                 statusOnRelatedUser
                 followData {
-                  requesterPrivateEventAddPermission
-                  requesterGroupchatAddPermission
                   followedUserAt
                 }
               }
@@ -659,8 +643,6 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
                 updatedAt
                 statusOnRelatedUser
                 followData {
-                  requesterPrivateEventAddPermission
-                  requesterGroupchatAddPermission
                   followedUserAt
                 }
               }
@@ -670,8 +652,6 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
                 updatedAt
                 statusOnRelatedUser
                 followData {
-                  requesterPrivateEventAddPermission
-                  requesterGroupchatAddPermission
                   followedUserAt
                 }
               }
@@ -733,8 +713,6 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
                 updatedAt
                 statusOnRelatedUser
                 followData {
-                  requesterPrivateEventAddPermission
-                  requesterGroupchatAddPermission
                   followedUserAt
                 }
               }
@@ -744,8 +722,6 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
                 updatedAt
                 statusOnRelatedUser
                 followData {
-                  requesterPrivateEventAddPermission
-                  requesterGroupchatAddPermission
                   followedUserAt
                 }
               } 
@@ -777,8 +753,6 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
                 updatedAt
                 statusOnRelatedUser
                 followData {
-                  requesterPrivateEventAddPermission
-                  requesterGroupchatAddPermission
                   followedUserAt
                 }
               }
@@ -788,8 +762,6 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
                 updatedAt
                 statusOnRelatedUser
                 followData {
-                  requesterPrivateEventAddPermission
-                  requesterGroupchatAddPermission
                   followedUserAt
                 }
               }

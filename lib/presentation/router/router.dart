@@ -44,7 +44,6 @@ import 'package:chattyevent_app_flutter/presentation/screens/profile_page/profil
 import 'package:chattyevent_app_flutter/presentation/screens/profile_page/profile_user_relations_tabs/profile_user_relations_tab_page.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/profile_page/profile_user_relations_tabs/profile_followed_tab.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/profile_page/profile_user_relations_tabs/profile_follower_tab.dart';
-import 'package:chattyevent_app_flutter/presentation/screens/profile_page/profile_user_settings_page.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/profile_page/profile_wrapper_page.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/register_page.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/reset_password_page.dart';
@@ -53,7 +52,6 @@ import 'package:chattyevent_app_flutter/presentation/screens/settings_page/pages
 import 'package:chattyevent_app_flutter/presentation/screens/settings_page/pages/info_pages/right_on_deletion_page.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/settings_page/pages/info_pages/right_on_insight.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/settings_page/pages/privacy_page.dart';
-import 'package:chattyevent_app_flutter/presentation/screens/settings_page/pages/privacy_pages/on_accept_follow_request_standard_follow_data_page.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/settings_page/pages/theme_mode_page.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/settings_page/settings_page.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/settings_page/pages/update_password_page.dart';
@@ -329,11 +327,6 @@ const profileRouter = AutoRoute(
       path: '',
     ),
     AutoRoute(
-      page: ProfileUserSettingsPage,
-      guards: [AuthGuard],
-      path: 'settings',
-    ),
-    AutoRoute(
       page: ProfileUserRelationsTabPage,
       guards: [AuthGuard],
       path: 'user-relations',
@@ -450,10 +443,5 @@ const settingRoutes = [
     page: SettingsPrivacyPage,
     guards: [AuthGuard],
     path: '/settings/privacy',
-  ),
-  AutoRoute(
-    page: OnAcceptFollowRequestStandardFollowDataPage,
-    guards: [AuthGuard],
-    path: '/settings/privacy/on-accept-follow-request-standard-follow-data',
   ),
 ];

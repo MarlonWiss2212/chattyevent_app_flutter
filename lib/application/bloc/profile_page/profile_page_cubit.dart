@@ -1,10 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:chattyevent_app_flutter/core/enums/user_relation/user_relation_status_enum.dart';
 import 'package:dartz/dartz.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:chattyevent_app_flutter/core/dto/user/update_user_dto.dart';
-import 'package:chattyevent_app_flutter/core/dto/user_relation/update_user_relation_follow_data_dto.dart';
 import 'package:chattyevent_app_flutter/core/filter/limit_offset_filter.dart';
 import 'package:chattyevent_app_flutter/core/filter/user/find_one_user_filter.dart';
 import 'package:chattyevent_app_flutter/core/filter/user_relation/find_followed_filter.dart';
@@ -584,97 +582,6 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
             emitState(followed: followed, followers: followers);
           },
         );
-      },
-    );
-  }
-
-  // this is when you wanna update the permissions for the current profile user who follows you
-  Future updateFollowDataCurrentProfileUserViaApi({
-    required UpdateUserRelationFollowDataDto updateUserRelationFollowDataDto,
-  }) async {
-    if (state.user.otherUserRelationToMyUser == null ||
-        state.user.otherUserRelationToMyUser!.statusOnRelatedUser !=
-            UserRelationStatusEnum.follower) {
-      notificationCubit.newAlert(
-        notificationAlert: NotificationAlert(
-          title: "Fehler Update Berechtigungen",
-          message:
-              "Du kannst nicht die Berechtigungen eines users ändern der dir nicht folgt",
-        ),
-      );
-      return;
-    }
-
-    final userRelationOrFailure = await userRelationUseCases.updateFollowData(
-      updateUserRelationFollowDataDto: updateUserRelationFollowDataDto,
-      requesterUserId: state.user.id,
-    );
-
-    userRelationOrFailure.fold(
-      (alert) => notificationCubit.newAlert(notificationAlert: alert),
-      (userRelation) {
-        emitState(
-          user: UserEntity.merge(
-            newEntity: UserEntity(
-              id: state.user.id,
-              authId: state.user.authId,
-              otherUserRelationToMyUser: userRelation,
-            ),
-            oldEntity: state.user,
-          ),
-        );
-      },
-    );
-  }
-
-  // this is when you wanna update the permissions for any user but the profile user must be the current user
-  Future updateFollowDataForFollowerViaApi({
-    required int followerIndex,
-    required UpdateUserRelationFollowDataDto updateUserRelationFollowDataDto,
-  }) async {
-    if (state.user.id != authCubit.state.currentUser.id) {
-      notificationCubit.newAlert(
-        notificationAlert: NotificationAlert(
-          title: "Fehler Update Berechtigungen",
-          message:
-              "Du kannst nicht die Berechtigungen eines users ändern der dir nicht folgt",
-        ),
-      );
-      return;
-    }
-    if (state.followers == null ||
-        state.followers![followerIndex].otherUserRelationToMyUser == null ||
-        state.followers![followerIndex].otherUserRelationToMyUser!
-                .statusOnRelatedUser !=
-            UserRelationStatusEnum.follower) {
-      notificationCubit.newAlert(
-        notificationAlert: NotificationAlert(
-          title: "Fehler Update Berechtigungen",
-          message:
-              "Du kannst nicht die Berechtigungen eines users ändern der dir nicht folgt",
-        ),
-      );
-      return;
-    }
-
-    final userRelationOrFailure = await userRelationUseCases.updateFollowData(
-      updateUserRelationFollowDataDto: updateUserRelationFollowDataDto,
-      requesterUserId: state.followers![followerIndex].id,
-    );
-
-    userRelationOrFailure.fold(
-      (alert) => notificationCubit.newAlert(notificationAlert: alert),
-      (userRelation) {
-        final List<UserEntity> followers = state.followers!;
-        followers[followerIndex] = UserEntity.merge(
-          newEntity: UserEntity(
-            id: state.followers![followerIndex].id,
-            authId: state.followers![followerIndex].authId,
-            otherUserRelationToMyUser: userRelation,
-          ),
-          oldEntity: state.followers![followerIndex],
-        );
-        emitState(followers: followers);
       },
     );
   }

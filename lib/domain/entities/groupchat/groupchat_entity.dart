@@ -1,5 +1,4 @@
 import 'package:chattyevent_app_flutter/domain/entities/groupchat/groupchat_message.dart';
-import 'package:chattyevent_app_flutter/domain/entities/groupchat/groupchat_settings_entity.dart';
 
 class GroupchatEntity {
   final String id;
@@ -8,14 +7,12 @@ class GroupchatEntity {
   final GroupchatMessageEntity? latestMessage;
   final String? description;
   final String? createdBy;
-  final GroupchatSettingsEntity? settings;
   final DateTime? createdAt;
   final DateTime? updatedAt;
 
   GroupchatEntity({
     required this.id,
     this.title,
-    this.settings,
     this.latestMessage,
     this.description,
     this.profileImageLink,
@@ -31,7 +28,6 @@ class GroupchatEntity {
     return GroupchatEntity(
       id: newEntity.id,
       title: newEntity.title ?? oldEntity.title,
-      settings: newEntity.settings ?? oldEntity.settings,
       latestMessage: newEntity.latestMessage ?? oldEntity.latestMessage,
       profileImageLink:
           newEntity.profileImageLink ?? oldEntity.profileImageLink,

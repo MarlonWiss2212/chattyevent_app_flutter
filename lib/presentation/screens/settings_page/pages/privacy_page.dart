@@ -1,6 +1,4 @@
-import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
 import 'package:flutter/material.dart';
-import 'package:auto_route/auto_route.dart';
 
 class SettingsPrivacyPage extends StatefulWidget {
   const SettingsPrivacyPage({super.key});
@@ -34,6 +32,7 @@ class _SettingsPrivacyPageState extends State<SettingsPrivacyPage> {
           SliverList(
             delegate: SliverChildListDelegate(
               [
+                /*
                 ListTile(
                   leading: const Icon(Icons.person_add),
                   title: Text(
@@ -47,7 +46,7 @@ class _SettingsPrivacyPageState extends State<SettingsPrivacyPage> {
                       const OnAcceptFollowRequestStandardFollowDataPageRoute(),
                     );
                   },
-                ),
+                ),*/
               ],
             ),
           ),

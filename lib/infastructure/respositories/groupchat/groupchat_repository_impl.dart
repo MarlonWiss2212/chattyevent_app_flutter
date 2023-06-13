@@ -152,8 +152,6 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
                 updatedAt
                 statusOnRelatedUser
                 followData {
-                  requesterPrivateEventAddPermission
-                  requesterGroupchatAddPermission
                   followedUserAt
                 }
               }
@@ -163,8 +161,6 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
                 updatedAt
                 statusOnRelatedUser
                 followData {
-                  requesterPrivateEventAddPermission
-                  requesterGroupchatAddPermission
                   followedUserAt
                 }
               }
@@ -195,8 +191,6 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
                 updatedAt
                 statusOnRelatedUser
                 followData {
-                  requesterPrivateEventAddPermission
-                  requesterGroupchatAddPermission
                   followedUserAt
                 }
               }
@@ -206,8 +200,6 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
                 updatedAt
                 statusOnRelatedUser
                 followData {
-                  requesterPrivateEventAddPermission
-                  requesterGroupchatAddPermission
                   followedUserAt
                 }
               }
@@ -385,8 +377,6 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
               updatedAt
               statusOnRelatedUser
               followData {
-                requesterPrivateEventAddPermission
-                requesterGroupchatAddPermission
                 followedUserAt
               }
             }
@@ -396,8 +386,6 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
               updatedAt
               statusOnRelatedUser
               followData {
-                requesterPrivateEventAddPermission
-                requesterGroupchatAddPermission
                 followedUserAt
               }
             }
@@ -458,8 +446,6 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
               updatedAt
               statusOnRelatedUser
               followData {
-                requesterPrivateEventAddPermission
-                requesterGroupchatAddPermission
                 followedUserAt
               }
             }
@@ -469,8 +455,6 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
               updatedAt
               statusOnRelatedUser
               followData {
-                requesterPrivateEventAddPermission
-                requesterGroupchatAddPermission
                 followedUserAt
               }
             }
@@ -535,8 +519,6 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
               updatedAt
               statusOnRelatedUser
               followData {
-                requesterPrivateEventAddPermission
-                requesterGroupchatAddPermission
                 followedUserAt
               }
             }
@@ -546,8 +528,6 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
               updatedAt
               statusOnRelatedUser
               followData {
-                requesterPrivateEventAddPermission
-                requesterGroupchatAddPermission
                 followedUserAt
               }
             }
@@ -608,8 +588,6 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
                 updatedAt
                 statusOnRelatedUser
                 followData {
-                  requesterPrivateEventAddPermission
-                  requesterGroupchatAddPermission
                   followedUserAt
                 }
               }
@@ -619,8 +597,6 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
                 updatedAt
                 statusOnRelatedUser
                 followData {
-                  requesterPrivateEventAddPermission
-                  requesterGroupchatAddPermission
                   followedUserAt
                 }
               }
@@ -651,8 +627,6 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
                 updatedAt
                 statusOnRelatedUser
                 followData {
-                  requesterPrivateEventAddPermission
-                  requesterGroupchatAddPermission
                   followedUserAt
                 }
               }
@@ -662,8 +636,6 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
                 updatedAt
                 statusOnRelatedUser
                 followData {
-                  requesterPrivateEventAddPermission
-                  requesterGroupchatAddPermission
                   followedUserAt
                 }
               }

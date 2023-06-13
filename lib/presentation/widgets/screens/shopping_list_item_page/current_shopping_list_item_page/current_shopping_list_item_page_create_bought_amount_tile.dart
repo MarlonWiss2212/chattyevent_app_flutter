@@ -22,9 +22,12 @@ class _CurrentShoppingListItemPageCreateBoughtAmountTileState
   Widget build(BuildContext context) {
     return ListTile(
       title: const Text("Neu Eingekauft"),
-      subtitle: PlatformTextField(
+      subtitle: PlatformTextFormField(
         hintText: "Menge",
         controller: boughtAmountController,
+        keyboardType: const TextInputType.numberWithOptions(
+          decimal: true,
+        ),
       ),
       trailing: SizedBox(
         width: 100,

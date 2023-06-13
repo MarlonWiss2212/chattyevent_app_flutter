@@ -40,22 +40,12 @@ class UserRepositoryImpl implements UserRepository {
               followedCount
               followRequestCount
             }
-            settings {
-              onAcceptStandard {
-                followData {
-                  requesterPrivateEventAddPermission
-                  requesterGroupchatAddPermission
-                }
-              }
-            }
             myUserRelationToOtherUser {
               _id
               createdAt
               updatedAt
               statusOnRelatedUser
               followData {
-                requesterPrivateEventAddPermission
-                requesterGroupchatAddPermission
                 followedUserAt
               }
             }
@@ -65,8 +55,6 @@ class UserRepositoryImpl implements UserRepository {
               updatedAt
               statusOnRelatedUser
               followData {
-                requesterPrivateEventAddPermission
-                requesterGroupchatAddPermission
                 followedUserAt
               }
             }
@@ -169,22 +157,12 @@ class UserRepositoryImpl implements UserRepository {
               followedCount
               followRequestCount
             }
-            settings {
-              onAcceptStandard {
-                followData {
-                  requesterPrivateEventAddPermission
-                  requesterGroupchatAddPermission
-                }
-              }
-            }
             myUserRelationToOtherUser {
               _id
               createdAt
               updatedAt
               statusOnRelatedUser
               followData {
-                requesterPrivateEventAddPermission
-                requesterGroupchatAddPermission
                 followedUserAt
               }
             }
@@ -194,8 +172,6 @@ class UserRepositoryImpl implements UserRepository {
               updatedAt
               statusOnRelatedUser
               followData {
-                requesterPrivateEventAddPermission
-                requesterGroupchatAddPermission
                 followedUserAt
               }
             }
@@ -274,22 +250,12 @@ class UserRepositoryImpl implements UserRepository {
               followedCount
               followRequestCount
             }
-            settings {
-              onAcceptStandard {
-                followData {
-                  requesterPrivateEventAddPermission
-                  requesterGroupchatAddPermission
-                }
-              }
-            }
             myUserRelationToOtherUser {
               _id
               createdAt
               updatedAt
               statusOnRelatedUser
               followData {
-                requesterPrivateEventAddPermission
-                requesterGroupchatAddPermission
                 followedUserAt
               }
             }
@@ -299,8 +265,6 @@ class UserRepositoryImpl implements UserRepository {
               updatedAt
               statusOnRelatedUser
               followData {
-                requesterPrivateEventAddPermission
-                requesterGroupchatAddPermission
                 followedUserAt
               }
             }

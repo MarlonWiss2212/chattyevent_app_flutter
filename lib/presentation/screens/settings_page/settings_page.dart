@@ -45,6 +45,7 @@ class SettingsPage extends StatelessWidget {
                     );
                   },
                 ),
+                /*
                 ListTile(
                   leading: const Icon(Icons.security),
                   title: Text(
@@ -58,7 +59,7 @@ class SettingsPage extends StatelessWidget {
                       const SettingsPrivacyPageRoute(),
                     );
                   },
-                ),
+                ),*/
                 ListTile(
                   leading: const Icon(Icons.password),
                   title: Text(

@@ -1,6 +1,5 @@
 import 'package:chattyevent_app_flutter/domain/entities/user-relation/user_relation_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/user-relation/user_relations_count_entity.dart';
-import 'package:chattyevent_app_flutter/domain/entities/user/user_settings_entity.dart';
 
 class UserEntity {
   final String id;
@@ -15,7 +14,6 @@ class UserEntity {
   final UserRelationEntity? otherUserRelationToMyUser;
   final DateTime? createdAt;
   final DateTime? updatedAt;
-  final UserSettingsEntity? settings;
 
   UserEntity({
     required this.id,
@@ -30,7 +28,6 @@ class UserEntity {
     this.birthdate,
     this.createdAt,
     this.updatedAt,
-    this.settings,
   });
 
   /// only use this when changing a value
@@ -43,7 +40,6 @@ class UserEntity {
     return UserEntity(
       authId: newEntity.authId,
       id: newEntity.id,
-      settings: newEntity.settings ?? oldEntity.settings,
       username: newEntity.username ?? oldEntity.username,
       myUserRelationToOtherUser: removeMyUserRelation
           ? null
