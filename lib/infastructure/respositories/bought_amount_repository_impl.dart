@@ -13,7 +13,6 @@ import 'package:chattyevent_app_flutter/infastructure/models/bought_amount_model
 
 class BoughtAmountRepositoryImpl implements BoughtAmountRepository {
   final GraphQlDatasource graphQlDatasource;
-
   BoughtAmountRepositoryImpl({required this.graphQlDatasource});
 
   @override
