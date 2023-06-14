@@ -7,7 +7,7 @@ class ShoppingListItemEntity {
   final double? amount;
   final double? boughtAmount;
   final String? userToBuyItem;
-  final String? privateEventId;
+  final String? privateEventTo;
   final String? createdBy;
 
   ShoppingListItemEntity({
@@ -15,7 +15,7 @@ class ShoppingListItemEntity {
     this.createdAt,
     this.amount,
     this.itemName,
-    this.privateEventId,
+    this.privateEventTo,
     this.boughtAmount,
     this.unit,
     this.createdBy,
@@ -34,7 +34,7 @@ class ShoppingListItemEntity {
       amount: newEntity.amount ?? oldEntity.amount,
       boughtAmount: newEntity.boughtAmount ?? oldEntity.boughtAmount,
       userToBuyItem: newEntity.userToBuyItem ?? oldEntity.userToBuyItem,
-      privateEventId: newEntity.privateEventId ?? oldEntity.privateEventId,
+      privateEventTo: newEntity.privateEventTo ?? oldEntity.privateEventTo,
       createdBy: newEntity.createdBy ?? oldEntity.createdBy,
       createdAt: newEntity.createdAt ?? oldEntity.createdAt,
       updatedAt: newEntity.updatedAt ?? oldEntity.updatedAt,

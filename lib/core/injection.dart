@@ -1,7 +1,10 @@
+import 'package:chattyevent_app_flutter/domain/repositories/calendar_repository.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/imprint_repository.dart';
+import 'package:chattyevent_app_flutter/domain/usecases/calendar_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/imprint_usecases.dart';
-import 'package:chattyevent_app_flutter/infastructure/datasources/local/weblink.dart';
+import 'package:chattyevent_app_flutter/domain/usecases/permission_usecases.dart';
 import 'package:chattyevent_app_flutter/infastructure/datasources/remote/http.dart';
+import 'package:chattyevent_app_flutter/infastructure/respositories/calendar_repository_impl.dart';
 import 'package:chattyevent_app_flutter/infastructure/respositories/imprint_repository_impl.dart';
 import 'package:chattyevent_app_flutter/presentation/router/auth_guard.dart';
 import 'package:chattyevent_app_flutter/presentation/router/auth_pages_guard.dart';
@@ -17,7 +20,6 @@ import 'package:chattyevent_app_flutter/domain/repositories/auth_repository.dart
 import 'package:chattyevent_app_flutter/domain/repositories/bought_amount_repository.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/device/image_picker_repository.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/device/location_repository.dart';
-import 'package:chattyevent_app_flutter/domain/repositories/device/notification_repository.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/settings_repository.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/groupchat/groupchat_message_repository.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/groupchat/groupchat_repository.dart';
@@ -31,7 +33,6 @@ import 'package:chattyevent_app_flutter/domain/usecases/groupchat/groupchat_mess
 import 'package:chattyevent_app_flutter/domain/usecases/groupchat/groupchat_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/image_picker_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/location_usecases.dart';
-import 'package:chattyevent_app_flutter/domain/usecases/notification_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/private_event_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/settings_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/shopping_list_item_usecases.dart';
@@ -39,14 +40,12 @@ import 'package:chattyevent_app_flutter/domain/usecases/user_relation_usecases.d
 import 'package:chattyevent_app_flutter/domain/usecases/user_usecases.dart';
 import 'package:chattyevent_app_flutter/infastructure/datasources/device/image_picker.dart';
 import 'package:chattyevent_app_flutter/infastructure/datasources/device/location.dart';
-import 'package:chattyevent_app_flutter/infastructure/datasources/device/notification.dart';
 import 'package:chattyevent_app_flutter/infastructure/datasources/local/sharedPreferences.dart';
 import 'package:chattyevent_app_flutter/infastructure/datasources/remote/graphql.dart';
 import 'package:chattyevent_app_flutter/infastructure/respositories/auth_repository_impl.dart';
 import 'package:chattyevent_app_flutter/infastructure/respositories/bought_amount_repository_impl.dart';
 import 'package:chattyevent_app_flutter/infastructure/respositories/device/image_picker_repository_impl.dart';
 import 'package:chattyevent_app_flutter/infastructure/respositories/device/location_repository_impl.dart';
-import 'package:chattyevent_app_flutter/infastructure/respositories/device/notification_repository_impl.dart';
 import 'package:chattyevent_app_flutter/infastructure/respositories/device/settings_repository_impl.dart';
 import 'package:chattyevent_app_flutter/infastructure/respositories/groupchat/groupchat_message_repository_impl.dart';
 import 'package:chattyevent_app_flutter/infastructure/respositories/groupchat/groupchat_repository_impl.dart';
@@ -70,23 +69,34 @@ Future init() async {
   );
 
   // use cases
-  serviceLocator.registerLazySingleton<NotificationUseCases>(
-    () => NotificationUseCases(notificationRepository: serviceLocator()),
+  serviceLocator.registerLazySingleton<PermissionUseCases>(
+    () => PermissionUseCases(),
   );
   serviceLocator.registerLazySingleton<ImprintUseCases>(
     () => ImprintUseCases(imprintRepository: serviceLocator()),
   );
   serviceLocator.registerLazySingleton<LocationUseCases>(
-    () => LocationUseCases(locationRepository: serviceLocator()),
+    () => LocationUseCases(
+      locationRepository: serviceLocator(),
+      permissionUseCases: serviceLocator(),
+    ),
   );
   serviceLocator.registerLazySingleton<ImagePickerUseCases>(
-    () => ImagePickerUseCases(imagePickerRepository: serviceLocator()),
+    () => ImagePickerUseCases(
+      imagePickerRepository: serviceLocator(),
+      permissionUseCases: serviceLocator(),
+    ),
   );
   serviceLocator.registerLazySingleton<SettingsUseCases>(
     () => SettingsUseCases(settingsRepository: serviceLocator()),
   );
   serviceLocator.registerLazySingleton<AuthUseCases>(
     () => AuthUseCases(authRepository: serviceLocator()),
+  );
+  serviceLocator.registerFactoryParam<CalendarUseCases, AuthState?, void>(
+    (param1, param2) => CalendarUseCases(
+      calendarRepository: serviceLocator(param1: param1),
+    ),
   );
   serviceLocator.registerFactoryParam<GroupchatUseCases, AuthState?, void>(
     (param1, param2) => GroupchatUseCases(
@@ -127,25 +137,17 @@ Future init() async {
   );
 
   // repositories
-  serviceLocator.registerLazySingleton<NotificationRepository>(
-    () => NotificationRepositoryImpl(notificationDatasource: serviceLocator()),
-  );
   serviceLocator.registerLazySingleton<ImprintRepository>(
     () => ImprintRepositoryImpl(httpDatasource: serviceLocator()),
   );
   serviceLocator.registerLazySingleton<LocationRepository>(
-    () => LocationRepositoryImpl(
-      locationDatasource: serviceLocator(),
-      weblinkDatasource: serviceLocator(),
-    ),
+    () => LocationRepositoryImpl(locationDatasource: serviceLocator()),
   );
   serviceLocator.registerLazySingleton<ImagePickerRepository>(
     () => ImagePickerRepositoryImpl(imagePickerDatasource: serviceLocator()),
   );
   serviceLocator.registerLazySingleton<SettingsRepository>(
-    () => SettingsRepositoryImpl(
-        sharedPrefrencesDatasource: serviceLocator(),
-        weblinkDatasource: serviceLocator()),
+    () => SettingsRepositoryImpl(sharedPrefrencesDatasource: serviceLocator()),
   );
   serviceLocator.registerLazySingleton<AuthRepository>(
     () => AuthRepositoryImpl(auth: serviceLocator()),
@@ -153,6 +155,11 @@ Future init() async {
   serviceLocator
       .registerFactoryParam<GroupchatMessageRepository, AuthState?, void>(
     (param1, param2) => GroupchatMessageRepositoryImpl(
+      graphQlDatasource: serviceLocator(param1: param1),
+    ),
+  );
+  serviceLocator.registerFactoryParam<CalendarRepository, AuthState?, void>(
+    (param1, param2) => CalendarRepositoryImpl(
       graphQlDatasource: serviceLocator(param1: param1),
     ),
   );
@@ -198,9 +205,6 @@ Future init() async {
   serviceLocator.registerLazySingleton<HttpDatasource>(
     () => HttpDatasourceImpl(),
   );
-  serviceLocator.registerLazySingleton<WeblinkDatasource>(
-    () => WeblinkDatasourceImpl(),
-  );
   serviceLocator.registerFactoryParam<GraphQlDatasource, AuthState?, void>(
     (param1, param2) {
       return GraphQlDatasourceImpl(
@@ -213,8 +217,5 @@ Future init() async {
   });
   serviceLocator.registerLazySingleton<ImagePickerDatasource>(() {
     return ImagePickerDatasourceImpl();
-  });
-  serviceLocator.registerLazySingleton<NotificationDatasource>(() {
-    return NotificationDatasourceImpl();
   });
 }

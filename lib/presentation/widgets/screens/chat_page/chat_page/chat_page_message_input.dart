@@ -150,7 +150,6 @@ class ChatPageMessageInput extends StatelessWidget {
                               keyboardType: TextInputType.multiline,
                               minLines: 1,
                               maxLines: 6,
-                              controller: TextEditingController(text: ""),
                               material: (context, platform) =>
                                   MaterialTextFieldData(
                                 decoration: const InputDecoration.collapsed(

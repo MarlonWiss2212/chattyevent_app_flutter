@@ -6,14 +6,14 @@ class BoughtAmountModel extends BoughtAmountEntity {
     DateTime? createdAt,
     DateTime? updatedAt,
     double? boughtAmount,
-    String? shoppingListItemId,
+    String? shoppingListItemTo,
     String? createdBy,
   }) : super(
           id: id,
           createdAt: createdAt,
           updatedAt: updatedAt,
           boughtAmount: boughtAmount,
-          shoppingListItemId: shoppingListItemId,
+          shoppingListItemTo: shoppingListItemTo,
           createdBy: createdBy,
         );
 
@@ -36,7 +36,7 @@ class BoughtAmountModel extends BoughtAmountEntity {
       createdAt: createdAt,
       updatedAt: updatedAt,
       boughtAmount: boughtAmount,
-      shoppingListItemId: json['shoppingListItemId'],
+      shoppingListItemTo: json['shoppingListItemTo'],
       createdBy: json["createdBy"],
     );
   }

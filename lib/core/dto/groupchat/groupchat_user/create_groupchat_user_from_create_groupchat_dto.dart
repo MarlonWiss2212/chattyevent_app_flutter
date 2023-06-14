@@ -1,14 +1,15 @@
+import 'package:chattyevent_app_flutter/core/enums/groupchat/groupchat_user/groupchat_user_role_enum.dart';
 import 'package:chattyevent_app_flutter/domain/entities/user/user_entity.dart';
 
 class CreateGroupchatUserFromCreateGroupchatDto {
   final String userId;
-  final bool? admin;
+  final GroupchatUserRoleEnum? role;
   final String? usernameForChat;
 
   CreateGroupchatUserFromCreateGroupchatDto({
     required this.userId,
     this.usernameForChat,
-    this.admin,
+    this.role,
   });
 
   Map<dynamic, dynamic> toMap() {
@@ -16,8 +17,8 @@ class CreateGroupchatUserFromCreateGroupchatDto {
       'userId': userId,
     };
 
-    if (admin != null) {
-      variables.addAll({'admin': admin});
+    if (role != null) {
+      variables.addAll({'role': role!.value});
     }
     if (usernameForChat != null) {
       variables.addAll({'usernameForChat': usernameForChat});
@@ -33,7 +34,7 @@ class CreateGroupchatUserFromCreateGroupchatDtoWithUserEntity
 
   CreateGroupchatUserFromCreateGroupchatDtoWithUserEntity({
     required this.user,
-    super.admin,
+    super.role,
     super.usernameForChat,
   }) : super(userId: user.id);
 }

@@ -11,7 +11,7 @@ extension PrivateEventUserRoleEnumExtension on PrivateEventUserRoleEnum {
       case PrivateEventUserRoleEnum.member:
         return 'MEMBER';
       default:
-        throw Exception('Invalid value');
+        return 'MEMBER';
     }
   }
 
@@ -22,7 +22,7 @@ extension PrivateEventUserRoleEnumExtension on PrivateEventUserRoleEnum {
       case 'MEMBER':
         return PrivateEventUserRoleEnum.member;
       default:
-        throw Exception('Invalid value');
+        return PrivateEventUserRoleEnum.member;
     }
   }
 }

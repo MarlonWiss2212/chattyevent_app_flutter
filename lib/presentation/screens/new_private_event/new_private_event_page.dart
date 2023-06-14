@@ -26,6 +26,9 @@ class NewPrivateEventPage extends StatelessWidget {
           value: AddPrivateEventCubit(
             homeEventCubit: BlocProvider.of<HomeEventCubit>(context),
             notificationCubit: BlocProvider.of<NotificationCubit>(context),
+            calendarUseCases: serviceLocator(
+              param1: BlocProvider.of<AuthCubit>(context).state,
+            ),
             privateEventUseCases: serviceLocator(
               param1: BlocProvider.of<AuthCubit>(context).state,
             ),
@@ -96,7 +99,12 @@ class NewPrivateEventPage extends StatelessWidget {
                           return Container();
                         },
                       ),
-                      Expanded(child: child),
+                      Expanded(
+                        child: HeroControllerScope(
+                          controller: HeroController(),
+                          child: child,
+                        ),
+                      ),
                       const SizedBox(height: 8),
                       SmoothPageIndicator(
                         controller: pageController,

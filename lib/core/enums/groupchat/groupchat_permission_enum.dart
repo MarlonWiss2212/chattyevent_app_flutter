@@ -11,7 +11,7 @@ extension GroupchatPermissionEnumExtension on GroupchatPermissionEnum {
       case GroupchatPermissionEnum.adminsonly:
         return 'ADMINS_ONLY';
       default:
-        throw Exception('Invalid value');
+        return 'ADMINS_ONLY';
     }
   }
 
@@ -22,7 +22,7 @@ extension GroupchatPermissionEnumExtension on GroupchatPermissionEnum {
       case 'ADMINS_ONLY':
         return GroupchatPermissionEnum.adminsonly;
       default:
-        throw Exception('Invalid value');
+        return GroupchatPermissionEnum.adminsonly;
     }
   }
 }

@@ -32,6 +32,11 @@ class _NewPrivateEventSearchGroupchatTabState
             buildWhen: (previous, current) =>
                 previous.selectedGroupchat?.id != current.selectedGroupchat?.id,
             builder: (context, state) {
+              if (state.selectedGroupchat?.id != null) {
+                BlocProvider.of<AddPrivateEventCubit>(context)
+                    .getCalendarTimeUsers();
+              }
+
               return ChatGridList(
                 groupchats:
                     chatState.chatStates.map((e) => e.currentChat).toList(),

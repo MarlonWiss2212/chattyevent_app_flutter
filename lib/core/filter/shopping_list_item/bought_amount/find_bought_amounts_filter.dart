@@ -1,13 +1,11 @@
 class FindBoughtAmountsFilter {
-  final String shoppingListItemId;
-// final String shoppingListItemTo;
+  final String shoppingListItemTo;
 
-  FindBoughtAmountsFilter({required this.shoppingListItemId});
+  FindBoughtAmountsFilter({required this.shoppingListItemTo});
 
   Map<dynamic, dynamic> toMap() {
     return {
-      "shoppingListItemId": shoppingListItemId,
-      // "shoppingListItemTo": shoppingListItemTo,
+      "shoppingListItemTo": shoppingListItemTo,
     };
   }
 }

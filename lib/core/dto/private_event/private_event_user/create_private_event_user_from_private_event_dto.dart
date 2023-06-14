@@ -1,12 +1,13 @@
+import 'package:chattyevent_app_flutter/core/enums/private_event/private_event_user/private_event_user_role_enum.dart';
 import 'package:chattyevent_app_flutter/domain/entities/user/user_entity.dart';
 
 class CreatePrivateEventUserFromPrivateEventDto {
   final String userId;
-  final bool? organizer;
+  final PrivateEventUserRoleEnum? role;
 
   CreatePrivateEventUserFromPrivateEventDto({
     required this.userId,
-    this.organizer,
+    this.role,
   });
 
   Map<dynamic, dynamic> toMap() {
@@ -14,8 +15,8 @@ class CreatePrivateEventUserFromPrivateEventDto {
       "userId": userId,
     };
 
-    if (organizer != null) {
-      variables.addAll({"organizer": organizer});
+    if (role != null) {
+      variables.addAll({"role": role!.value});
     }
 
     return variables;
@@ -29,6 +30,6 @@ class CreatePrivateEventUserFromPrivateEventDtoWithUserEntity
 
   CreatePrivateEventUserFromPrivateEventDtoWithUserEntity({
     required this.user,
-    super.organizer,
+    super.role,
   }) : super(userId: user.id);
 }

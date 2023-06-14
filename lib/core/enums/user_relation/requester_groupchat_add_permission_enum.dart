@@ -12,7 +12,7 @@ extension RequesterGroupchatAddPermissionEnumExtension
       case RequesterGroupchatAddPermissionEnum.add:
         return 'ADD';
       default:
-        throw Exception('Invalid value');
+        return 'NONE';
     }
   }
 
@@ -23,7 +23,7 @@ extension RequesterGroupchatAddPermissionEnumExtension
       case 'ADD':
         return RequesterGroupchatAddPermissionEnum.add;
       default:
-        throw Exception('Invalid value');
+        return RequesterGroupchatAddPermissionEnum.none;
     }
   }
 }

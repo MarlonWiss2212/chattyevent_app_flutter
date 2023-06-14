@@ -1,3 +1,4 @@
+import 'package:chattyevent_app_flutter/core/enums/private_event/private_event_user/private_event_user_role_enum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -35,10 +36,12 @@ class PrivateEventTabUsersLeftUserListItem extends StatelessWidget {
       user: leftPrivateEventUser,
       items: [
         if (currentPrivatEventUser != null &&
-                currentPrivatEventUser!.organizer == true &&
+                currentPrivatEventUser!.role ==
+                    PrivateEventUserRoleEnum.organizer &&
                 privateEvent.groupchatTo == null ||
             currentPrivatEventUser != null &&
-                currentPrivatEventUser!.organizer == true &&
+                currentPrivatEventUser!.role ==
+                    PrivateEventUserRoleEnum.organizer &&
                 privateEvent.groupchatTo == "") ...{
           PopupMenuItem<void Function(void)>(
             child: const Text("Hinzufügen"),

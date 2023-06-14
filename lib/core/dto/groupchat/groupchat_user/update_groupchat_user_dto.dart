@@ -1,17 +1,19 @@
+import 'package:chattyevent_app_flutter/core/enums/groupchat/groupchat_user/groupchat_user_role_enum.dart';
+
 class UpdateGroupchatUserDto {
-  final bool? admin;
+  final GroupchatUserRoleEnum? role;
   final String? usernameForChat;
 
   UpdateGroupchatUserDto({
-    this.admin,
+    this.role,
     this.usernameForChat,
   });
 
   Map<dynamic, dynamic> toMap() {
     Map<dynamic, dynamic> map = {};
 
-    if (admin != null) {
-      map.addAll({'admin': admin});
+    if (role != null) {
+      map.addAll({'role': role!.value});
     }
     if (usernameForChat != null) {
       map.addAll({'usernameForChat': usernameForChat});

@@ -1,3 +1,4 @@
+import 'package:chattyevent_app_flutter/core/enums/private_event/private_event_user/private_event_user_role_enum.dart';
 import 'package:chattyevent_app_flutter/core/enums/private_event/private_event_user_status_enum.dart';
 import 'package:collection/collection.dart';
 import 'package:dartz/dartz.dart';
@@ -288,7 +289,7 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
 
   Future updatePrivateEventUser({
     PrivateEventUserStatusEnum? status,
-    bool? organizer,
+    PrivateEventUserRoleEnum? role,
     required String userId,
   }) async {
     final Either<NotificationAlert, PrivateEventUserEntity>
@@ -296,7 +297,7 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
         await privateEventUseCases.updatePrivateEventUser(
       updatePrivateEventUserDto: UpdatePrivateEventUserDto(
         status: status,
-        organizer: organizer,
+        role: role,
       ),
       findOnePrivateEventUserFilter: FindOnePrivateEventUserFilter(
         userId: userId,
@@ -427,7 +428,7 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
         shoppingListItemsOrFailure =
         await shoppingListItemUseCases.getShoppingListItemsViaApi(
       findShoppingListItemsFilter: FindShoppingListItemsFilter(
-        privateEventId: state.privateEvent.id,
+        privateEventTo: state.privateEvent.id,
       ),
       limitOffsetFilter: reload
           ? LimitOffsetFilter(

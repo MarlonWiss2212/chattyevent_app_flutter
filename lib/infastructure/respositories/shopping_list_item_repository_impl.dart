@@ -37,7 +37,7 @@ class ShoppingListItemRepositoryImpl implements ShoppingListItemRepository {
             amount
             boughtAmount
             userToBuyItem
-            privateEventId
+            privateEventTo
             createdBy
           }
         }
@@ -83,7 +83,7 @@ class ShoppingListItemRepositoryImpl implements ShoppingListItemRepository {
             amount
             boughtAmount
             userToBuyItem
-            privateEventId
+            privateEventTo
             createdBy
           }
         }
@@ -128,7 +128,7 @@ class ShoppingListItemRepositoryImpl implements ShoppingListItemRepository {
             amount
             boughtAmount
             userToBuyItem
-            privateEventId
+            privateEventTo
             createdBy
           }
         }
@@ -172,14 +172,14 @@ class ShoppingListItemRepositoryImpl implements ShoppingListItemRepository {
             amount
             boughtAmount
             userToBuyItem
-            privateEventId
+            privateEventTo
             createdBy
           }
           
           findBoughtAmounts(filter: \$findBoughtAmountsInput, limitOffsetInput: \$limitOffsetInput) {
             _id
             boughtAmount
-            shoppingListItemId
+            shoppingListItemTo
             createdAt
             updatedAt
             createdBy
@@ -189,8 +189,8 @@ class ShoppingListItemRepositoryImpl implements ShoppingListItemRepository {
         variables: {
           "filter": findOneShoppingListItemFilter.toMap(),
           "findBoughtAmountsInput": FindBoughtAmountsFilter(
-            shoppingListItemId:
-                findOneShoppingListItemFilter.shoppingListItemId,
+            shoppingListItemTo:
+                findOneShoppingListItemFilter.shoppingListItemTo,
           ).toMap(),
           "limitOffsetInput": limitOffsetFilterBoughtAmounts.toMap(),
         },
@@ -238,7 +238,7 @@ class ShoppingListItemRepositoryImpl implements ShoppingListItemRepository {
             amount
             boughtAmount
             userToBuyItem
-            privateEventId
+            privateEventTo
             createdBy
           }
         }

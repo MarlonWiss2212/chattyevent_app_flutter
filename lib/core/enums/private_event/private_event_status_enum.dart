@@ -14,7 +14,7 @@ extension PrivateEventStatusEnumExtension on PrivateEventStatusEnum {
       case PrivateEventStatusEnum.cancelled:
         return 'CANCELLED';
       default:
-        throw Exception('Invalid value');
+        return 'UNDECIDED';
     }
   }
 
@@ -27,7 +27,7 @@ extension PrivateEventStatusEnumExtension on PrivateEventStatusEnum {
       case 'CANCELLED':
         return PrivateEventStatusEnum.cancelled;
       default:
-        throw Exception('Invalid value');
+        return PrivateEventStatusEnum.undecided;
     }
   }
 }

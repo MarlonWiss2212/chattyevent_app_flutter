@@ -44,7 +44,7 @@ class StandardShoppingListItemWrapperPage extends StatelessWidget {
             BlocProvider.of<CurrentPrivateEventCubit>(context).emitState(
               privateEvent: PrivateEventEntity(
                 id: shoppingListItemStateToSet
-                        .shoppingListItem.privateEventId ??
+                        .shoppingListItem.privateEventTo ??
                     "",
                 eventDate: DateTime.now(),
               ),
@@ -66,7 +66,7 @@ class StandardShoppingListItemWrapperPage extends StatelessWidget {
                 BlocProvider.of<CurrentPrivateEventCubit>(context).emitState(
                   privateEvent: PrivateEventEntity(
                     id: shoppingListItemStateToSet
-                            .shoppingListItem.privateEventId ??
+                            .shoppingListItem.privateEventTo ??
                         "",
                     eventDate: DateTime.now(),
                   ),

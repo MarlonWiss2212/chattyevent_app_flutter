@@ -14,7 +14,7 @@ extension PrivateEventPermissionEnumExtension on PrivateEventPermissionEnum {
       case PrivateEventPermissionEnum.createronly:
         return 'CREATER_ONLY';
       default:
-        throw Exception('Invalid value');
+        return 'CREATER_ONLY';
     }
   }
 
@@ -27,7 +27,7 @@ extension PrivateEventPermissionEnumExtension on PrivateEventPermissionEnum {
       case 'CREATER_ONLY':
         return PrivateEventPermissionEnum.createronly;
       default:
-        throw Exception('Invalid value');
+        return PrivateEventPermissionEnum.createronly;
     }
   }
 }

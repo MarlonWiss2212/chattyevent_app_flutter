@@ -12,7 +12,7 @@ extension RequesterPrivateEventAddPermissionEnumExtension
       case RequesterPrivateEventAddPermissionEnum.add:
         return 'ADD';
       default:
-        throw Exception('Invalid value');
+        return 'NONE';
     }
   }
 
@@ -23,7 +23,7 @@ extension RequesterPrivateEventAddPermissionEnumExtension
       case 'ADD':
         return RequesterPrivateEventAddPermissionEnum.add;
       default:
-        throw Exception('Invalid value');
+        return RequesterPrivateEventAddPermissionEnum.none;
     }
   }
 }

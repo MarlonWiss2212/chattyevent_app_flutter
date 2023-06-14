@@ -10,12 +10,12 @@ class CalendarUseCases {
   CalendarUseCases({required this.calendarRepository});
 
   Future<Either<NotificationAlert, List<CalendarTimeUserEntity>>>
-      getTimeByUsers({
-    required FindTimeByUsersCalendarFilter findTimeByUsersCalendarFilter,
-    required LimitOffsetFilter groupchatLimitOffsetInput,
+      checkTimeByUsers({
+    required CheckTimeByUsersCalendarFilter checkTimeByUsersCalendarFilter,
+    LimitOffsetFilter? groupchatLimitOffsetInput,
   }) async {
-    return await calendarRepository.getTimeByUsers(
-      findTimeByUsersCalendarFilter: findTimeByUsersCalendarFilter,
+    return await calendarRepository.checkTimeByUsers(
+      checkTimeByUsersCalendarFilter: checkTimeByUsersCalendarFilter,
       groupchatLimitOffsetInput: groupchatLimitOffsetInput,
     );
   }

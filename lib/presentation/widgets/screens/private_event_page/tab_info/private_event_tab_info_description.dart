@@ -1,3 +1,4 @@
+import 'package:chattyevent_app_flutter/core/enums/private_event/private_event_user/private_event_user_role_enum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletons/skeletons.dart';
@@ -26,7 +27,8 @@ class PrivateEventTabInfoDescription extends StatelessWidget {
                   ? description
                   : "Keine Beschreibung",
               textStyle: Theme.of(context).textTheme.titleMedium,
-              editable: state.getCurrentPrivateEventUser()?.organizer == true,
+              editable: state.getCurrentPrivateEventUser()?.role ==
+                  PrivateEventUserRoleEnum.organizer,
               onSaved: (text) {
                 BlocProvider.of<CurrentPrivateEventCubit>(context)
                     .updateCurrentPrivateEvent(

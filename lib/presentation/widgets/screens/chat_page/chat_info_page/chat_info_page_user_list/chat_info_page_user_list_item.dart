@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:chattyevent_app_flutter/core/enums/groupchat/groupchat_user/groupchat_user_role_enum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/current_groupchat/current_chat_cubit.dart';
@@ -18,11 +19,9 @@ class ChatInfoPageUserListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool userIsAdmin = user.admin != null && user.admin! == true;
-
     return UserListTile(
       user: user,
-      subtitle: userIsAdmin
+      subtitle: currentUser.role == GroupchatUserRoleEnum.admin
           ? Text(
               "Admin",
               style: TextStyle(
@@ -36,8 +35,8 @@ class ChatInfoPageUserListItem extends StatelessWidget {
             ),
       customTitle: user.usernameForChat != null ? user.usernameForChat! : null,
       items: [
-        if (currentUser.admin != null &&
-            currentUser.admin == true &&
+        if (currentUser.role != null &&
+            currentUser.role == GroupchatUserRoleEnum.admin &&
             currentUser.id != user.id) ...{
           PopupMenuItem(
             child: const Text("Kicken"),
@@ -47,16 +46,18 @@ class ChatInfoPageUserListItem extends StatelessWidget {
             ),
           ),
         },
-        if (currentUser.admin == true) ...{
+        if (currentUser.role == GroupchatUserRoleEnum.admin) ...{
           PopupMenuItem(
-            child: userIsAdmin
+            child: currentUser.role == GroupchatUserRoleEnum.admin
                 ? const Text("Admin degradieren")
                 : const Text("Zum Admin machen"),
             onTap: () => BlocProvider.of<CurrentChatCubit>(context)
                 .updateGroupchatUserViaApi(
               userId: user.id,
-              updateGroupchatUserDto:
-                  UpdateGroupchatUserDto(admin: userIsAdmin ? false : true),
+              updateGroupchatUserDto: UpdateGroupchatUserDto(
+                  role: currentUser.role == GroupchatUserRoleEnum.admin
+                      ? GroupchatUserRoleEnum.member
+                      : GroupchatUserRoleEnum.admin),
             ),
           )
         },

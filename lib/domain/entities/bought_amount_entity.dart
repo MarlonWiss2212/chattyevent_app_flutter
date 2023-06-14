@@ -3,14 +3,14 @@ class BoughtAmountEntity {
   DateTime? createdAt;
   DateTime? updatedAt;
   double? boughtAmount;
-  String? shoppingListItemId;
+  String? shoppingListItemTo;
   String? createdBy;
 
   BoughtAmountEntity({
     required this.id,
     this.createdAt,
     this.boughtAmount,
-    this.shoppingListItemId,
+    this.shoppingListItemTo,
     this.createdBy,
     this.updatedAt,
   });
@@ -22,8 +22,8 @@ class BoughtAmountEntity {
     return BoughtAmountEntity(
       id: newEntity.id,
       boughtAmount: newEntity.boughtAmount ?? oldEntity.boughtAmount,
-      shoppingListItemId:
-          newEntity.shoppingListItemId ?? oldEntity.shoppingListItemId,
+      shoppingListItemTo:
+          newEntity.shoppingListItemTo ?? oldEntity.shoppingListItemTo,
       createdBy: newEntity.createdBy ?? oldEntity.createdBy,
       createdAt: newEntity.createdAt ?? oldEntity.createdAt,
       updatedAt: newEntity.updatedAt ?? oldEntity.updatedAt,

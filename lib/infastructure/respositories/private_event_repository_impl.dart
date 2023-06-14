@@ -253,7 +253,7 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
             _id
             authId
             status
-            organizer
+            role
             joinedEventAt
             privateEventTo
             birthdate
@@ -484,7 +484,7 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
               _id
               authId
               status
-              organizer
+              role
               joinedEventAt
               privateEventTo
               birthdate
@@ -556,7 +556,7 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
               _id
               authId
               status
-              organizer
+              role
               joinedEventAt
               privateEventTo
               birthdate
@@ -733,7 +733,7 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
               _id
               authId
               status
-              organizer
+              role
               joinedEventAt
               privateEventTo
               birthdate

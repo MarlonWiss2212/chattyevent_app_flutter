@@ -1,3 +1,4 @@
+import 'package:chattyevent_app_flutter/core/enums/groupchat/groupchat_user/groupchat_user_role_enum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletons/skeletons.dart';
@@ -25,7 +26,8 @@ class ChatInfoPageDescription extends StatelessWidget {
                   ? description
                   : "Keine Beschreibung",
               textStyle: Theme.of(context).textTheme.titleMedium,
-              editable: state.getCurrentGroupchatUser()?.admin == true,
+              editable: state.getCurrentGroupchatUser()?.role ==
+                  GroupchatUserRoleEnum.admin,
               onSaved: (text) {
                 BlocProvider.of<CurrentChatCubit>(context)
                     .updateCurrentGroupchatViaApi(

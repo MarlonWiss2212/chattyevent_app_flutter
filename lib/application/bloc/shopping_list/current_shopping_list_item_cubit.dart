@@ -41,7 +41,7 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
         dataOrFailure =
         await shoppingListItemUseCases.getShoppingListItemDataViaApi(
       findOneShoppingListItemFilter: FindOneShoppingListItemFilter(
-        shoppingListItemId: state.shoppingListItem.id,
+        shoppingListItemTo: state.shoppingListItem.id,
       ),
       limitOffsetFilterBoughtAmounts: LimitOffsetFilter(
         limit:
@@ -83,7 +83,7 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
         shoppingListItemOrFailure =
         await shoppingListItemUseCases.getOneShoppingListItemsViaApi(
             findOneShoppingListItemFilter: FindOneShoppingListItemFilter(
-      shoppingListItemId: state.shoppingListItem.id,
+      shoppingListItemTo: state.shoppingListItem.id,
     ));
 
     shoppingListItemOrFailure.fold(
@@ -118,7 +118,7 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
         await shoppingListItemUseCases.updateShoppingListItemsViaApi(
       updateShoppingListItemDto: updateShoppingListItemDto,
       findOneShoppingListItemFilter: FindOneShoppingListItemFilter(
-        shoppingListItemId: state.shoppingListItem.id,
+        shoppingListItemTo: state.shoppingListItem.id,
       ),
     );
 
@@ -148,7 +148,7 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
     final Either<NotificationAlert, bool> deletedOrFailure =
         await shoppingListItemUseCases.deleteShoppingListItemViaApi(
       findOneShoppingListItemFilter: FindOneShoppingListItemFilter(
-        shoppingListItemId: state.shoppingListItem.id,
+        shoppingListItemTo: state.shoppingListItem.id,
       ),
     );
 
@@ -179,7 +179,7 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
         boughtAmountOrFailure =
         await boughtAmountUseCases.getBoughtAmountsViaApi(
       findBoughtAmountsFilter: FindBoughtAmountsFilter(
-        shoppingListItemId: state.shoppingListItem.id,
+        shoppingListItemTo: state.shoppingListItem.id,
       ),
       limitOffsetFilter: LimitOffsetFilter(
         limit: reload
@@ -226,7 +226,7 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
     final Either<NotificationAlert, BoughtAmountEntity> boughtAmountOrFailure =
         await boughtAmountUseCases.createBoughtAmountViaApi(
       createBoughtAmountDto: CreateBoughtAmountDto(
-        shoppingListItemId: state.shoppingListItem.id,
+        shoppingListItemTo: state.shoppingListItem.id,
         boughtAmount: boughtAmount,
       ),
     );

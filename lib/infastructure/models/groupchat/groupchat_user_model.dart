@@ -1,3 +1,4 @@
+import 'package:chattyevent_app_flutter/core/enums/groupchat/groupchat_user/groupchat_user_role_enum.dart';
 import 'package:chattyevent_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/user-relation/user_relation_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/user-relation/user_relations_count_entity.dart';
@@ -10,7 +11,7 @@ class GroupchatUserModel extends GroupchatUserEntity {
     required String groupchatUserId,
     required String authId,
     String? groupchatTo,
-    bool? admin,
+    GroupchatUserRoleEnum? role,
     DateTime? joinedGroupchatAt,
     String? usernameForChat,
     String? username,
@@ -27,7 +28,7 @@ class GroupchatUserModel extends GroupchatUserEntity {
           groupchatUserId: groupchatUserId,
           groupchatTo: groupchatTo,
           joinedGroupchatAt: joinedGroupchatAt,
-          admin: admin,
+          role: role,
           usernameForChat: usernameForChat,
           id: id,
           authId: authId,
@@ -59,7 +60,9 @@ class GroupchatUserModel extends GroupchatUserEntity {
       groupchatUserId: json["groupchatUserId"],
       groupchatTo: json["groupchatTo"],
       joinedGroupchatAt: joinedGroupchatAt,
-      admin: json["admin"],
+      role: json["role"] != null
+          ? GroupchatUserRoleEnumExtension.fromValue(json["role"])
+          : null,
       usernameForChat: json["usernameForChat"],
       id: json['_id'],
       authId: json["authId"],

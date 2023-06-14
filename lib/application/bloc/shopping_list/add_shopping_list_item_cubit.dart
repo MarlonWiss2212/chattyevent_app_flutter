@@ -46,7 +46,7 @@ class AddShoppingListItemCubit extends Cubit<AddShoppingListItemState> {
         amount: state.amount!,
         userToBuyItem: state.userToBuyItemEntity!.id,
         unit: state.unit,
-        privateEventId: state.selectedPrivateEvent!.id,
+        privateEventTo: state.selectedPrivateEvent!.id,
       ),
     );
 

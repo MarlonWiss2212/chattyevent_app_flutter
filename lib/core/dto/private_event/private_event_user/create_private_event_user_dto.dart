@@ -7,7 +7,7 @@ class CreatePrivateEventUserDto
   CreatePrivateEventUserDto({
     required super.userId,
     required this.privateEventTo,
-    super.organizer,
+    super.role,
   });
 
   @override

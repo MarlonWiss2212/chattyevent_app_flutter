@@ -1,3 +1,4 @@
+import 'package:chattyevent_app_flutter/core/enums/groupchat/groupchat_user/groupchat_user_role_enum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/current_groupchat/current_chat_cubit.dart';
@@ -20,7 +21,8 @@ class ChatInfoPageTitle extends StatelessWidget {
               textStyle: Theme.of(context).textTheme.titleLarge?.apply(
                     color: Theme.of(context).colorScheme.onBackground,
                   ),
-              editable: state.getCurrentGroupchatUser()?.admin == true,
+              editable: state.getCurrentGroupchatUser()?.role ==
+                  GroupchatUserRoleEnum.admin,
               onSaved: (text) {
                 BlocProvider.of<CurrentChatCubit>(context)
                     .updateCurrentGroupchatViaApi(

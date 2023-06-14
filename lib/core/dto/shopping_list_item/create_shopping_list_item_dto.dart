@@ -3,15 +3,14 @@ class CreateShoppingListItemDto {
   final String? unit;
   final double amount;
   final String userToBuyItem;
-  final String privateEventId;
-  //final String privateEventTo;
+  final String privateEventTo;
 
   CreateShoppingListItemDto({
     required this.itemName,
     this.unit,
     required this.amount,
     required this.userToBuyItem,
-    required this.privateEventId,
+    required this.privateEventTo,
   });
 
   Map<dynamic, dynamic> toMap() {
@@ -19,8 +18,7 @@ class CreateShoppingListItemDto {
       'itemName': itemName,
       'amount': amount,
       'userToBuyItem': userToBuyItem,
-      'privateEventId': privateEventId,
-      // 'privateEventTo': privateEventTo,
+      'privateEventTo': privateEventTo,
     };
 
     if (unit != null) {

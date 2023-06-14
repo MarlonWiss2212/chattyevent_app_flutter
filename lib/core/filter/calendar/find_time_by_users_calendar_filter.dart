@@ -1,18 +1,24 @@
-class FindTimeByUsersCalendarFilter {
+class CheckTimeByUsersCalendarFilter {
   final String? groupchatId;
   final List<String>? userIds;
+  final DateTime? endDate;
   final DateTime startDate;
-  final DateTime endDate;
 
-  FindTimeByUsersCalendarFilter({
+  CheckTimeByUsersCalendarFilter({
     this.groupchatId,
     this.userIds,
-    required this.endDate,
+    this.endDate,
     required this.startDate,
   });
 
   Map<dynamic, dynamic> toMap() {
-    Map<dynamic, dynamic> map = {"startDate": startDate, "endDate": startDate};
+    Map<dynamic, dynamic> map = {
+      "startDate": startDate.toUtc().toIso8601String()
+    };
+
+    if (endDate != null) {
+      map.addAll({"endDate": endDate!.toUtc().toIso8601String()});
+    }
 
     if (groupchatId != null) {
       map.addAll({"groupchatId": groupchatId});

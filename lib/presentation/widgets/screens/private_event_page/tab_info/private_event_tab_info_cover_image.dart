@@ -1,3 +1,4 @@
+import 'package:chattyevent_app_flutter/core/enums/private_event/private_event_user/private_event_user_role_enum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletons/skeletons.dart';
@@ -50,7 +51,8 @@ class PrivateEventTabInfoCoverImage extends StatelessWidget {
     return BlocBuilder<CurrentPrivateEventCubit, CurrentPrivateEventState>(
       builder: (context, state) {
         return InkWell(
-          onTap: state.getCurrentPrivateEventUser()?.organizer == true
+          onTap: state.getCurrentPrivateEventUser()?.role ==
+                  PrivateEventUserRoleEnum.organizer
               ? () => _onTapSetImageFunction(context)
               : null,
           child: Builder(

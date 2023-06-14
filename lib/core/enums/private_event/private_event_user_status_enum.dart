@@ -14,7 +14,7 @@ extension PrivateEventUserStatusEnumExtension on PrivateEventUserStatusEnum {
       case PrivateEventUserStatusEnum.invited:
         return 'INVITED';
       default:
-        throw Exception('Invalid value');
+        return 'INVITED';
     }
   }
 
@@ -27,7 +27,7 @@ extension PrivateEventUserStatusEnumExtension on PrivateEventUserStatusEnum {
       case 'INVITED':
         return PrivateEventUserStatusEnum.invited;
       default:
-        throw Exception('Invalid value');
+        return PrivateEventUserStatusEnum.invited;
     }
   }
 }

@@ -8,7 +8,7 @@ extension GeoJsonTypeEnumExtension on GeoJsonTypeEnum {
       case GeoJsonTypeEnum.point:
         return 'Point';
       default:
-        throw Exception('Invalid value');
+        return 'Point';
     }
   }
 
@@ -17,7 +17,7 @@ extension GeoJsonTypeEnumExtension on GeoJsonTypeEnum {
       case 'Point':
         return GeoJsonTypeEnum.point;
       default:
-        throw Exception('Invalid value');
+        return GeoJsonTypeEnum.point;
     }
   }
 }

@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'package:chattyevent_app_flutter/core/filter/calendar/find_time_by_users_calendar_filter.dart';
+import 'package:chattyevent_app_flutter/domain/usecases/calendar_usecases.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:chattyevent_app_flutter/application/bloc/home_page/home_event/home_event_cubit.dart';
@@ -9,20 +11,23 @@ import 'package:chattyevent_app_flutter/core/dto/private_event/private_event_use
 import 'package:chattyevent_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/private_event/private_event_entity.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/private_event_usecases.dart';
-
+import 'package:chattyevent_app_flutter/domain/entities/calendar/calendar_time_user_entity.dart';
 part 'add_private_event_state.dart';
 
 class AddPrivateEventCubit extends Cubit<AddPrivateEventState> {
   final HomeEventCubit homeEventCubit;
   final PrivateEventUseCases privateEventUseCases;
   final NotificationCubit notificationCubit;
+  final CalendarUseCases calendarUseCases;
 
   AddPrivateEventCubit({
     required this.privateEventUseCases,
     required this.homeEventCubit,
+    required this.calendarUseCases,
     required this.notificationCubit,
   }) : super(AddPrivateEventState(
           isGroupchatEvent: false,
+          calendarTimeUsers: [],
           privateEventUsersDto: [],
         ));
 
@@ -78,6 +83,7 @@ class AddPrivateEventCubit extends Cubit<AddPrivateEventState> {
         homeEventCubit.getFuturePrivateEventsViaApi(reload: true);
         emit(AddPrivateEventState(
           privateEventUsersDto: [],
+          calendarTimeUsers: [],
           isGroupchatEvent: false,
           status: AddPrivateEventStateStatus.success,
           addedPrivateEvent: privateEvent,
@@ -94,6 +100,7 @@ class AddPrivateEventCubit extends Cubit<AddPrivateEventState> {
       privateEventUsersDto: List.from(state.privateEventUsersDto)
         ..add(privateEventUserDto),
     );
+    getCalendarTimeUsers();
   }
 
   void removePrivateEventUserFromList({
@@ -106,13 +113,46 @@ class AddPrivateEventCubit extends Cubit<AddPrivateEventState> {
           )
           .toList(),
     );
+    getCalendarTimeUsers();
   }
 
   void setIsGroupchatEvent({required bool isGroupchatEvent}) {
     emitState(
       isGroupchatEvent: isGroupchatEvent,
+      calendarTimeUsers: [],
       privateEventUsersDto: isGroupchatEvent == true ? [] : null,
       resetSelectedGroupchat: isGroupchatEvent == false ? true : false,
+    );
+  }
+
+  Future getCalendarTimeUsers() async {
+    if ((state.selectedGroupchat == null && state.privateEventUsersDto == []) ||
+        (state.eventDate == null)) {
+      return;
+    }
+    emitState(loadingCalendarTimeUsers: true);
+
+    final timeByUsersOrAlert = await calendarUseCases.checkTimeByUsers(
+      checkTimeByUsersCalendarFilter: CheckTimeByUsersCalendarFilter(
+        startDate: state.eventDate!,
+        endDate: state.eventEndDate,
+        groupchatId: state.isGroupchatEvent && state.selectedGroupchat != null
+            ? state.selectedGroupchat!.id
+            : null,
+        userIds: state.isGroupchatEvent == false
+            ? state.privateEventUsersDto.map((e) => e.user.id).toList()
+            : null,
+      ),
+    );
+
+    timeByUsersOrAlert.fold(
+      (alert) {
+        notificationCubit.newAlert(notificationAlert: alert);
+        emitState(loadingCalendarTimeUsers: false);
+      },
+      (users) {
+        emitState(calendarTimeUsers: users, loadingCalendarTimeUsers: false);
+      },
     );
   }
 
@@ -134,6 +174,8 @@ class AddPrivateEventCubit extends Cubit<AddPrivateEventState> {
     bool? isGroupchatEvent,
     AddPrivateEventStateStatus? status,
     PrivateEventEntity? addedPrivateEvent,
+    List<CalendarTimeUserEntity>? calendarTimeUsers,
+    bool? loadingCalendarTimeUsers,
   }) {
     emit(AddPrivateEventState(
       isGroupchatEvent: isGroupchatEvent ?? state.isGroupchatEvent,
@@ -152,7 +194,10 @@ class AddPrivateEventCubit extends Cubit<AddPrivateEventState> {
       street: street ?? state.street,
       housenumber: housenumber ?? state.housenumber,
       status: status ?? AddPrivateEventStateStatus.initial,
+      calendarTimeUsers: calendarTimeUsers ?? state.calendarTimeUsers,
       addedPrivateEvent: addedPrivateEvent,
+      loadingCalendarTimeUsers:
+          loadingCalendarTimeUsers ?? state.loadingCalendarTimeUsers,
     ));
   }
 }

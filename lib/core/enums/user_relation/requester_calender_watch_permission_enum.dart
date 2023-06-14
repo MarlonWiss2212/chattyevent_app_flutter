@@ -12,7 +12,7 @@ extension RequesterCalenderWatchPermissionEnumExtension
       case RequesterCalenderWatchPermissionEnum.allowed:
         return 'ALLOWED';
       default:
-        throw Exception('Invalid value');
+        return 'NOT_ALLOWED';
     }
   }
 
@@ -23,7 +23,7 @@ extension RequesterCalenderWatchPermissionEnumExtension
       case 'ALLOWED':
         return RequesterCalenderWatchPermissionEnum.allowed;
       default:
-        throw Exception('Invalid value');
+        return RequesterCalenderWatchPermissionEnum.notallowed;
     }
   }
 }

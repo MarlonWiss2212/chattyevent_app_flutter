@@ -1,3 +1,4 @@
+import 'package:chattyevent_app_flutter/core/enums/groupchat/groupchat_user/groupchat_user_role_enum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -29,8 +30,8 @@ class ChatInfoPageLeftUserListItem extends StatelessWidget {
               "Kein Datum",
               overflow: TextOverflow.ellipsis,
             ),
-      items: currentUser.admin != null &&
-              currentUser.admin == true &&
+      items: currentUser.role != null &&
+              currentUser.role == GroupchatUserRoleEnum.admin &&
               currentUser.id != leftUser.id
           ? [
               PopupMenuItem(

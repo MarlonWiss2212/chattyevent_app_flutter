@@ -1,4 +1,5 @@
 import 'package:chattyevent_app_flutter/core/enums/private_event/private_event_status_enum.dart';
+import 'package:chattyevent_app_flutter/core/enums/private_event/private_event_user/private_event_user_role_enum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletons/skeletons.dart';
@@ -79,7 +80,8 @@ class _PrivateEventTabInfoStatusState extends State<PrivateEventTabInfoStatus> {
       builder: (context, state) {
         return GestureDetector(
           onTapDown: getPosition,
-          onTap: state.getCurrentPrivateEventUser()?.organizer == true
+          onTap: state.getCurrentPrivateEventUser()?.role ==
+                  PrivateEventUserRoleEnum.organizer
               ? () => _showMenu(context, state)
               : null,
           child: Padding(

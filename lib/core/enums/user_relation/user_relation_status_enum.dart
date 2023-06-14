@@ -11,7 +11,7 @@ extension UserRelationStatusEnumExtension on UserRelationStatusEnum {
       case UserRelationStatusEnum.requesttofollow:
         return 'REQUESTTOFOLLOW';
       default:
-        throw Exception('Invalid value');
+        return 'REQUESTTOFOLLOW';
     }
   }
 
@@ -22,7 +22,7 @@ extension UserRelationStatusEnumExtension on UserRelationStatusEnum {
       case 'REQUESTTOFOLLOW':
         return UserRelationStatusEnum.requesttofollow;
       default:
-        throw Exception('Invalid value');
+        return UserRelationStatusEnum.requesttofollow;
     }
   }
 }

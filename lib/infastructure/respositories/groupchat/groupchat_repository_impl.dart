@@ -170,7 +170,7 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
               groupchatUserId
               _id
               authId
-              admin
+              role
               joinedChatAt
               groupchatTo
               usernameForChat
@@ -356,7 +356,7 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
             groupchatUserId
             _id
             authId
-            admin
+            role
             joinedChatAt
             groupchatTo
             usernameForChat
@@ -496,7 +496,7 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
           updateGroupchatUser(updateGroupchatUserInput: \$updateGroupchatUserInput, filter: \$filter) {
             groupchatUserId
             usernameForChat
-            admin
+            role
             _id
             authId
             joinedChatAt
@@ -606,7 +606,7 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
               groupchatUserId
               _id
               authId
-              admin
+              role
               joinedChatAt
               groupchatTo
               usernameForChat

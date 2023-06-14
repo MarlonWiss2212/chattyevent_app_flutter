@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:chattyevent_app_flutter/core/dto/user/update_user_dto.dart';
+import 'package:chattyevent_app_flutter/domain/usecases/permission_usecases.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,7 +10,6 @@ import 'package:chattyevent_app_flutter/core/filter/user/find_one_user_filter.da
 import 'package:chattyevent_app_flutter/core/injection.dart';
 import 'package:chattyevent_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/auth_usecases.dart';
-import 'package:chattyevent_app_flutter/domain/usecases/notification_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/user_usecases.dart';
 import '../../../core/one_signal.dart' as one_signal;
 
@@ -18,7 +18,7 @@ part 'auth_state.dart';
 class AuthCubit extends Cubit<AuthState> {
   final FirebaseAuth auth;
   final AuthUseCases authUseCases;
-  final NotificationUseCases notificationUseCases;
+  final PermissionUseCases permissionUseCases;
   final NotificationCubit notificationCubit;
   UserUseCases userUseCases;
 
@@ -28,7 +28,7 @@ class AuthCubit extends Cubit<AuthState> {
     required this.auth,
     required this.authUseCases,
     required this.userUseCases,
-    required this.notificationUseCases,
+    required this.permissionUseCases,
   });
 
   Future setCurrentUserFromFirebaseViaApi() async {
@@ -87,7 +87,7 @@ class AuthCubit extends Cubit<AuthState> {
           token: await authUser.user?.getIdToken(),
         );
         await setCurrentUserFromFirebaseViaApi();
-        await notificationUseCases.requestNotificationPermission();
+        await permissionUseCases.requestNotificationPermission();
       },
     );
   }
@@ -134,7 +134,7 @@ class AuthCubit extends Cubit<AuthState> {
           status: AuthStateStatus.loggedIn,
           token: await authUser.user?.getIdToken(),
         );
-        await notificationUseCases.requestNotificationPermission();
+        await permissionUseCases.requestNotificationPermission();
       },
     );
   }

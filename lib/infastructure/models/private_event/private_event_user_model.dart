@@ -1,3 +1,4 @@
+import 'package:chattyevent_app_flutter/core/enums/private_event/private_event_user/private_event_user_role_enum.dart';
 import 'package:chattyevent_app_flutter/core/enums/private_event/private_event_user_status_enum.dart';
 import 'package:chattyevent_app_flutter/domain/entities/private_event/private_event_user_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/user-relation/user_relation_entity.dart';
@@ -12,7 +13,7 @@ class PrivateEventUserModel extends PrivateEventUserEntity {
     required String authId,
     String? privateEventTo,
     PrivateEventUserStatusEnum? status,
-    bool? organizer,
+    PrivateEventUserRoleEnum? role,
     DateTime? joinedPrivateEventAt,
     String? username,
     String? firstname,
@@ -29,7 +30,7 @@ class PrivateEventUserModel extends PrivateEventUserEntity {
           privateEventTo: privateEventTo,
           joinedPrivateEventAt: joinedPrivateEventAt,
           status: status,
-          organizer: organizer,
+          role: role,
           id: id,
           authId: authId,
           username: username,
@@ -60,7 +61,9 @@ class PrivateEventUserModel extends PrivateEventUserEntity {
       privateEventUserId: json["privateEventUserId"],
       privateEventTo: json["privateEventTo"],
       joinedPrivateEventAt: joinedPrivateEventAt,
-      organizer: json["organizer"],
+      role: json["role"] != null
+          ? PrivateEventUserRoleEnumExtension.fromValue(json["role"])
+          : null,
       status: json["status"] != null
           ? PrivateEventUserStatusEnumExtension.fromValue(json["status"])
           : null,

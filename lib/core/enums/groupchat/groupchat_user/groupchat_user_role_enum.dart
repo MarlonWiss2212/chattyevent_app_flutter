@@ -11,7 +11,7 @@ extension GroupchatUserRoleEnumExtension on GroupchatUserRoleEnum {
       case GroupchatUserRoleEnum.member:
         return 'MEMBER';
       default:
-        throw Exception('Invalid value');
+        return 'MEMBER';
     }
   }
 
@@ -22,7 +22,7 @@ extension GroupchatUserRoleEnumExtension on GroupchatUserRoleEnum {
       case 'MEMBER':
         return GroupchatUserRoleEnum.member;
       default:
-        throw Exception('Invalid value');
+        return GroupchatUserRoleEnum.member;
     }
   }
 }

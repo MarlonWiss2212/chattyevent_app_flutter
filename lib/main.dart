@@ -26,7 +26,7 @@ import 'package:flutter_funding_choices/flutter_funding_choices.dart' as fc;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  await dotenv.load(fileName: '.env');
+  await dotenv.load(fileName: '.dev.env');
   await di.init();
 
   if (!kIsWeb) {
@@ -58,7 +58,7 @@ Future<void> main() async {
             authState,
             notificationCubit: BlocProvider.of<NotificationCubit>(context),
             auth: di.serviceLocator(),
-            notificationUseCases: di.serviceLocator(),
+            permissionUseCases: di.serviceLocator(),
             userUseCases: di.serviceLocator(param1: authState),
             authUseCases: di.serviceLocator(),
           )..setCurrentUserFromFirebaseViaApi(),

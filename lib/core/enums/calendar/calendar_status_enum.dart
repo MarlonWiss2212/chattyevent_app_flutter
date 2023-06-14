@@ -14,7 +14,7 @@ extension CalendarStatusEnumExtension on CalendarStatusEnum {
       case CalendarStatusEnum.unknown:
         return 'UNKNOWN';
       default:
-        throw Exception('Invalid value');
+        return 'UNKNOWN';
     }
   }
 
@@ -27,7 +27,7 @@ extension CalendarStatusEnumExtension on CalendarStatusEnum {
       case 'UNKNOWN':
         return CalendarStatusEnum.unknown;
       default:
-        throw Exception('Invalid value');
+        return CalendarStatusEnum.unknown;
     }
   }
 }

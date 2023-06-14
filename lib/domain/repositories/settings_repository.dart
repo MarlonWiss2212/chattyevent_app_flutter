@@ -8,6 +8,4 @@ abstract class SettingsRepository {
     required bool autoDarkMode,
   });
   Future<Either<NotificationAlert, bool>> getAutoDarkModeFromStorage();
-  Future<Either<NotificationAlert, Unit>> openDatasecurityPage();
-  Future<Either<NotificationAlert, Unit>> openTermsOfUsePage();
 }

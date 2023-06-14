@@ -1,12 +1,13 @@
+import 'package:chattyevent_app_flutter/core/enums/private_event/private_event_user/private_event_user_role_enum.dart';
 import 'package:chattyevent_app_flutter/core/enums/private_event/private_event_user_status_enum.dart';
 
 class UpdatePrivateEventUserDto {
   final PrivateEventUserStatusEnum? status;
-  final bool? organizer;
+  final PrivateEventUserRoleEnum? role;
 
   UpdatePrivateEventUserDto({
     this.status,
-    this.organizer,
+    this.role,
   });
 
   Map<dynamic, dynamic> toMap() {
@@ -15,8 +16,8 @@ class UpdatePrivateEventUserDto {
     if (status != null) {
       variables.addAll({"status": status!.value});
     }
-    if (organizer != null) {
-      variables.addAll({"organizer": organizer});
+    if (role != null) {
+      variables.addAll({"role": role!.value});
     }
 
     return variables;

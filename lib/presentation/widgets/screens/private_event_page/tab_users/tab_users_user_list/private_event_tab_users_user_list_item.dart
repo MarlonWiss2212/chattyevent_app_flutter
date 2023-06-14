@@ -1,3 +1,4 @@
+import 'package:chattyevent_app_flutter/core/enums/private_event/private_event_user/private_event_user_role_enum.dart';
 import 'package:chattyevent_app_flutter/core/enums/private_event/private_event_user_status_enum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -67,7 +68,7 @@ class PrivateEventTabUsersUserListItem extends StatelessWidget {
           : null;
     }
 
-    if (privateEventUser.organizer == true) {
+    if (privateEventUser.role == PrivateEventUserRoleEnum.organizer) {
       subtitle += " | Organisator";
     }
 
@@ -80,10 +81,12 @@ class PrivateEventTabUsersUserListItem extends StatelessWidget {
       trailing: trailingWidget,
       items: [
         if (currentPrivatEventUser != null &&
-                currentPrivatEventUser!.organizer == true &&
+                currentPrivatEventUser!.role ==
+                    PrivateEventUserRoleEnum.organizer &&
                 privateEvent.groupchatTo == null ||
             currentPrivatEventUser != null &&
-                currentPrivatEventUser!.organizer == true &&
+                currentPrivatEventUser!.role ==
+                    PrivateEventUserRoleEnum.organizer &&
                 privateEvent.groupchatTo == "") ...{
           PopupMenuItem<void Function(void)>(
             child: const Text("Kicken"),
@@ -96,18 +99,22 @@ class PrivateEventTabUsersUserListItem extends StatelessWidget {
           ),
         },
         if (currentPrivatEventUser != null &&
-            currentPrivatEventUser!.organizer == true &&
-            privateEventUser.organizer != null &&
+            currentPrivatEventUser!.role ==
+                PrivateEventUserRoleEnum.organizer &&
+            privateEventUser.role != null &&
             currentPrivatEventUser?.id != privateEventUser.id) ...{
           PopupMenuItem<void Function(void)>(
-            child: privateEventUser.organizer == true
+            child: privateEventUser.role == PrivateEventUserRoleEnum.organizer
                 ? const Text("Organisator status entfernen")
                 : const Text("Zum Organisator machen"),
             onTap: () {
               BlocProvider.of<CurrentPrivateEventCubit>(context)
                   .updatePrivateEventUser(
                 userId: privateEventUser.id,
-                organizer: !privateEventUser.organizer!,
+                role:
+                    privateEventUser.role == PrivateEventUserRoleEnum.organizer
+                        ? PrivateEventUserRoleEnum.member
+                        : PrivateEventUserRoleEnum.organizer,
               );
             },
           ),

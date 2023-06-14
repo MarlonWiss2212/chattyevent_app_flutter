@@ -6,8 +6,8 @@ import 'package:chattyevent_app_flutter/application/bloc/notification/notificati
 
 abstract class CalendarRepository {
   Future<Either<NotificationAlert, List<CalendarTimeUserEntity>>>
-      getTimeByUsers({
-    required FindTimeByUsersCalendarFilter findTimeByUsersCalendarFilter,
-    required LimitOffsetFilter groupchatLimitOffsetInput,
+      checkTimeByUsers({
+    required CheckTimeByUsersCalendarFilter checkTimeByUsersCalendarFilter,
+    LimitOffsetFilter? groupchatLimitOffsetInput,
   });
 }

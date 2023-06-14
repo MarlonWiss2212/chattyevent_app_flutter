@@ -11,7 +11,7 @@ class ShoppingListItemModel extends ShoppingListItemEntity {
     double? boughtAmount,
     String? userToBuyItem,
     String? createdBy,
-    String? privateEventId,
+    String? privateEventTo,
   }) : super(
           id: id,
           createdAt: createdAt,
@@ -22,7 +22,7 @@ class ShoppingListItemModel extends ShoppingListItemEntity {
           amount: amount,
           boughtAmount: boughtAmount,
           userToBuyItem: userToBuyItem,
-          privateEventId: privateEventId,
+          privateEventTo: privateEventTo,
         );
 
   factory ShoppingListItemModel.fromJson(Map<String, dynamic> json) {
@@ -55,7 +55,7 @@ class ShoppingListItemModel extends ShoppingListItemEntity {
       createdBy: json["createdBy"],
       boughtAmount: boughtAmount,
       userToBuyItem: json["userToBuyItem"],
-      privateEventId: json["privateEventId"],
+      privateEventTo: json["privateEventTo"],
     );
   }
 }

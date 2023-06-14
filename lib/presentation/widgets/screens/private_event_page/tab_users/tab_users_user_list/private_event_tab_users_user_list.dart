@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:chattyevent_app_flutter/core/enums/private_event/private_event_user/private_event_user_role_enum.dart';
 import 'package:chattyevent_app_flutter/core/enums/private_event/private_event_user_status_enum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,7 +26,8 @@ class PrivateEventTabUsersUserList extends StatelessWidget {
             const SizedBox(height: 8),
             if (state.getCurrentPrivateEventUser() != null &&
                 state.privateEvent.groupchatTo == null &&
-                state.getCurrentPrivateEventUser()?.organizer != false) ...{
+                state.getCurrentPrivateEventUser()?.role !=
+                    PrivateEventUserRoleEnum.member) ...{
               ListTile(
                 leading: const Icon(
                   Icons.person_add,

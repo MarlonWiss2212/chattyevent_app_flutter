@@ -14,28 +14,34 @@ class CalendarRepositoryImpl extends CalendarRepository {
 
   @override
   Future<Either<NotificationAlert, List<CalendarTimeUserEntity>>>
-      getTimeByUsers({
-    required FindTimeByUsersCalendarFilter findTimeByUsersCalendarFilter,
-    required LimitOffsetFilter groupchatLimitOffsetInput,
+      checkTimeByUsers({
+    required CheckTimeByUsersCalendarFilter checkTimeByUsersCalendarFilter,
+    LimitOffsetFilter? groupchatLimitOffsetInput,
   }) async {
     try {
-      final response = await graphQlDatasource.mutation(
+      final variables = {"filter": checkTimeByUsersCalendarFilter.toMap()};
+      // if (groupchatLimitOffsetInput != null) {
+      //   variables.addAll({
+      //     "groupchatLimitOffsetInput": groupchatLimitOffsetInput.toMap(),
+      //   });
+      // }
+      //, \$groupchatLimitOffsetInput: LimitOffsetInput
+      //, groupchatLimitOffsetInput: \$groupchatLimitOffsetInput
+      final response = await graphQlDatasource.query(
         """
-        query GetTimeByUsers(\$filter: FindTimeByUsersCalendarInput!, \$groupchatLimitOffsetInput: LimitOffsetInput!) {
-          getTimeByUsers(filter: \$filter, groupchatLimitOffsetInput: \$groupchatLimitOffsetInput) {
+        query CheckTimeByUsers(\$filter: CheckTimeByUsersCalendarInput!) {
+          checkTimeByUsers(filter: \$filter) {
+            username
             _id
-            boughtAmount
-            shoppingListItemId
+            authId
+            profileImageLink
+            status
             createdAt
             updatedAt
-            createdBy
           }
         }
       """,
-        variables: {
-          "filter": groupchatLimitOffsetInput.toMap(),
-          "groupchatLimitOffsetInput": groupchatLimitOffsetInput.toMap(),
-        },
+        variables: variables,
       );
 
       if (response.hasException) {
@@ -46,7 +52,7 @@ class CalendarRepositoryImpl extends CalendarRepository {
       }
 
       final List<CalendarTimeUserEntity> calendarTimeUsers = [];
-      for (var calendarTimeUser in response.data!["getTimeByUsers"]) {
+      for (var calendarTimeUser in response.data!["checkTimeByUsers"]) {
         calendarTimeUsers.add(CalendarTimeUserModel.fromJson(calendarTimeUser));
       }
       return Right(calendarTimeUsers);
