@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:chattyevent_app_flutter/core/filter/groupchat/find_one_groupchat_to_filter.dart';
+import 'package:chattyevent_app_flutter/core/utils/encryption_utils.dart';
 
 class CreateGroupchatMessageDto extends FindOneGroupchatToFilter {
   final String message;
@@ -19,7 +20,7 @@ class CreateGroupchatMessageDto extends FindOneGroupchatToFilter {
   Map toMap() {
     Map<dynamic, dynamic> map = super.toMap();
     map.addAll({
-      'message': message,
+      'message': EncryptionUtils.encrypt(text: message),
       'groupchatTo': groupchatTo,
     });
 

@@ -1,3 +1,4 @@
+import 'package:chattyevent_app_flutter/core/utils/encryption_utils.dart';
 import 'package:chattyevent_app_flutter/domain/entities/groupchat/groupchat_message.dart';
 
 class GroupchatMessageModel extends GroupchatMessageEntity {
@@ -38,7 +39,9 @@ class GroupchatMessageModel extends GroupchatMessageEntity {
 
     return GroupchatMessageModel(
       id: json['_id'],
-      message: json['message'],
+      message: json['message'] != null
+          ? EncryptionUtils.decrypt(encryptedText: json["message"])
+          : null,
       fileLinks: fileLinks,
       messageToReactTo: json["messageToReactTo"],
       groupchatTo: json["groupchatTo"],

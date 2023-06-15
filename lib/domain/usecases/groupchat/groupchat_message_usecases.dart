@@ -24,7 +24,7 @@ class GroupchatMessageUseCases {
       getGroupchatMessagesViaApi({
     required FindGroupchatMessagesFilter findGroupchatMessagesFilter,
     required LimitOffsetFilter limitOffsetFilter,
-  }) {
+  }) async {
     return groupchatMessageRepository.getGroupchatMessagesViaApi(
       findGroupchatMessagesFilter: findGroupchatMessagesFilter,
       limitOffsetFilter: limitOffsetFilter,
