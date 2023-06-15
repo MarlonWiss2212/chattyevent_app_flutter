@@ -1,9 +1,9 @@
 import 'package:chattyevent_app_flutter/core/filter/groupchat/find_one_groupchat_to_filter.dart';
 
-class AddedGroupchatMessageFilter extends FindOneGroupchatToFilter {
+class AddedMessageFilter extends FindOneGroupchatToFilter {
   final bool? returnMyAddedMessageToo;
 
-  AddedGroupchatMessageFilter({
+  AddedMessageFilter({
     required super.groupchatTo,
     this.returnMyAddedMessageToo,
   });

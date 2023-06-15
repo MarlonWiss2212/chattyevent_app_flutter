@@ -24,7 +24,7 @@ import 'package:chattyevent_app_flutter/domain/entities/private_event/private_ev
 import 'package:chattyevent_app_flutter/domain/entities/private_event/private_event_user_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/shopping_list_item/shopping_list_item_entity.dart';
 import 'package:chattyevent_app_flutter/core/filter/private_event/find_one_private_event_filter.dart';
-import 'package:chattyevent_app_flutter/domain/usecases/groupchat/groupchat_usecases.dart';
+import 'package:chattyevent_app_flutter/domain/usecases/groupchat_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/location_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/private_event_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/shopping_list_item_usecases.dart';

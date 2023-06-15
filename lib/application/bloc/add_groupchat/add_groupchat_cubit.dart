@@ -7,7 +7,7 @@ import 'package:chattyevent_app_flutter/application/bloc/notification/notificati
 import 'package:chattyevent_app_flutter/core/dto/groupchat/create_groupchat_dto.dart';
 import 'package:chattyevent_app_flutter/core/dto/groupchat/groupchat_user/create_groupchat_user_from_create_groupchat_dto.dart';
 import 'package:chattyevent_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
-import 'package:chattyevent_app_flutter/domain/usecases/groupchat/groupchat_usecases.dart';
+import 'package:chattyevent_app_flutter/domain/usecases/groupchat_usecases.dart';
 
 part 'add_groupchat_state.dart';
 

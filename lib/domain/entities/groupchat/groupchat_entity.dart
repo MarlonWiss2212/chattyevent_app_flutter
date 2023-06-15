@@ -1,10 +1,10 @@
-import 'package:chattyevent_app_flutter/domain/entities/groupchat/groupchat_message.dart';
+import 'package:chattyevent_app_flutter/domain/entities/message/message_entity.dart';
 
 class GroupchatEntity {
   final String id;
   final String? title;
   final String? profileImageLink;
-  final GroupchatMessageEntity? latestMessage;
+  final MessageEntity? latestMessage;
   final String? description;
   final String? createdBy;
   final DateTime? createdAt;

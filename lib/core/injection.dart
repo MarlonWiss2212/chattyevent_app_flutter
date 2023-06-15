@@ -1,11 +1,14 @@
 import 'package:chattyevent_app_flutter/domain/repositories/calendar_repository.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/imprint_repository.dart';
+import 'package:chattyevent_app_flutter/domain/repositories/message_repository.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/calendar_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/imprint_usecases.dart';
+import 'package:chattyevent_app_flutter/domain/usecases/message_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/permission_usecases.dart';
 import 'package:chattyevent_app_flutter/infastructure/datasources/remote/http.dart';
 import 'package:chattyevent_app_flutter/infastructure/respositories/calendar_repository_impl.dart';
 import 'package:chattyevent_app_flutter/infastructure/respositories/imprint_repository_impl.dart';
+import 'package:chattyevent_app_flutter/infastructure/respositories/message_repository_impl.dart';
 import 'package:chattyevent_app_flutter/presentation/router/auth_guard.dart';
 import 'package:chattyevent_app_flutter/presentation/router/auth_pages_guard.dart';
 import 'package:chattyevent_app_flutter/presentation/router/create_user_page_guard.dart';
@@ -21,16 +24,14 @@ import 'package:chattyevent_app_flutter/domain/repositories/bought_amount_reposi
 import 'package:chattyevent_app_flutter/domain/repositories/device/image_picker_repository.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/device/location_repository.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/settings_repository.dart';
-import 'package:chattyevent_app_flutter/domain/repositories/groupchat/groupchat_message_repository.dart';
-import 'package:chattyevent_app_flutter/domain/repositories/groupchat/groupchat_repository.dart';
+import 'package:chattyevent_app_flutter/domain/repositories/groupchat_repository.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/private_event_repository.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/shopping_list_item_repository.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/user_relation_repository.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/user_repository.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/auth_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/bought_amount_usecases.dart';
-import 'package:chattyevent_app_flutter/domain/usecases/groupchat/groupchat_message_usecases.dart';
-import 'package:chattyevent_app_flutter/domain/usecases/groupchat/groupchat_usecases.dart';
+import 'package:chattyevent_app_flutter/domain/usecases/groupchat_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/image_picker_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/location_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/private_event_usecases.dart';
@@ -47,8 +48,7 @@ import 'package:chattyevent_app_flutter/infastructure/respositories/bought_amoun
 import 'package:chattyevent_app_flutter/infastructure/respositories/device/image_picker_repository_impl.dart';
 import 'package:chattyevent_app_flutter/infastructure/respositories/device/location_repository_impl.dart';
 import 'package:chattyevent_app_flutter/infastructure/respositories/device/settings_repository_impl.dart';
-import 'package:chattyevent_app_flutter/infastructure/respositories/groupchat/groupchat_message_repository_impl.dart';
-import 'package:chattyevent_app_flutter/infastructure/respositories/groupchat/groupchat_repository_impl.dart';
+import 'package:chattyevent_app_flutter/infastructure/respositories/groupchat_repository_impl.dart';
 import 'package:chattyevent_app_flutter/infastructure/respositories/private_event_repository_impl.dart';
 import 'package:chattyevent_app_flutter/infastructure/respositories/shopping_list_item_repository_impl.dart';
 import 'package:chattyevent_app_flutter/infastructure/respositories/user_relation_repository_impl.dart';
@@ -108,10 +108,9 @@ Future init() async {
       boughtAmountRepository: serviceLocator(param1: param1),
     ),
   );
-  serviceLocator
-      .registerFactoryParam<GroupchatMessageUseCases, AuthState?, void>(
-    (param1, param2) => GroupchatMessageUseCases(
-      groupchatMessageRepository: serviceLocator(param1: param1),
+  serviceLocator.registerFactoryParam<MessageUseCases, AuthState?, void>(
+    (param1, param2) => MessageUseCases(
+      messageRepository: serviceLocator(param1: param1),
     ),
   );
   serviceLocator.registerFactoryParam<PrivateEventUseCases, AuthState?, void>(
@@ -152,9 +151,8 @@ Future init() async {
   serviceLocator.registerLazySingleton<AuthRepository>(
     () => AuthRepositoryImpl(auth: serviceLocator()),
   );
-  serviceLocator
-      .registerFactoryParam<GroupchatMessageRepository, AuthState?, void>(
-    (param1, param2) => GroupchatMessageRepositoryImpl(
+  serviceLocator.registerFactoryParam<MessageRepository, AuthState?, void>(
+    (param1, param2) => MessageRepositoryImpl(
       graphQlDatasource: serviceLocator(param1: param1),
     ),
   );

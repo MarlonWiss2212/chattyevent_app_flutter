@@ -6,9 +6,11 @@ class MessageEntity {
   final String? createdBy;
   final DateTime? updatedAt;
   final DateTime createdAt;
+  final String? groupchatTo;
 
   MessageEntity({
     required this.id,
+    this.groupchatTo,
     required this.createdAt,
     this.message,
     this.fileLinks,
@@ -25,6 +27,7 @@ class MessageEntity {
       id: newEntity.id,
       message: newEntity.message ?? oldEntity.message,
       fileLinks: newEntity.fileLinks ?? oldEntity.fileLinks,
+      groupchatTo: newEntity.groupchatTo ?? oldEntity.groupchatTo,
       messageToReactTo:
           newEntity.messageToReactTo ?? oldEntity.messageToReactTo,
       createdBy: newEntity.createdBy ?? oldEntity.createdBy,

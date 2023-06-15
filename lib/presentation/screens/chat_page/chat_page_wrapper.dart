@@ -27,7 +27,7 @@ class ChatPageWrapper extends StatelessWidget {
             chatStateToSet,
             notificationCubit: BlocProvider.of<NotificationCubit>(context),
             authCubit: BlocProvider.of<AuthCubit>(context),
-            groupchatMessageUseCases: serviceLocator(
+            messageUseCases: serviceLocator(
               param1: BlocProvider.of<AuthCubit>(context).state,
             ),
             privateEventUseCases: serviceLocator(

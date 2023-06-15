@@ -1,4 +1,4 @@
-import 'package:chattyevent_app_flutter/domain/entities/groupchat/groupchat_message.dart';
+import 'package:chattyevent_app_flutter/domain/entities/message/message_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grouped_list/grouped_list.dart';
@@ -13,7 +13,7 @@ class ChatPageMessageList extends StatefulWidget {
   final String groupchatTo;
   final List<GroupchatUserEntity> users;
   final List<GroupchatLeftUserEntity> leftUsers;
-  final List<GroupchatMessageEntity> messages;
+  final List<MessageEntity> messages;
 
   const ChatPageMessageList({
     super.key,
@@ -52,7 +52,7 @@ class _ChatPageMessageListState extends State<ChatPageMessageList> {
 
   @override
   Widget build(BuildContext context) {
-    return GroupedListView<GroupchatMessageEntity, String>(
+    return GroupedListView<MessageEntity, String>(
       controller: _scrollController,
       padding: const EdgeInsets.symmetric(vertical: 8),
       itemBuilder: (context, message) {

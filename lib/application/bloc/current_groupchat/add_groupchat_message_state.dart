@@ -3,13 +3,13 @@ part of 'add_groupchat_message_cubit.dart';
 enum AddGroupchatMessageStateStatus { initial, loading, success }
 
 class AddGroupchatMessageState {
-  final GroupchatMessageEntity? addedMessage;
+  final MessageEntity? addedMessage;
   final AddGroupchatMessageStateStatus status;
 
   final File? file;
   final String? message;
   final String? groupchatTo;
-  final GroupchatMessageEntity? messageToReactTo;
+  final MessageEntity? messageToReactTo;
 
   AddGroupchatMessageState({
     this.addedMessage,

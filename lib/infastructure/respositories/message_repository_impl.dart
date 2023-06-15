@@ -1,40 +1,38 @@
 import 'dart:async';
-import 'package:chattyevent_app_flutter/domain/entities/groupchat/groupchat_message.dart';
-import 'package:chattyevent_app_flutter/infastructure/models/groupchat/groupchat_message_model.dart';
+import 'package:chattyevent_app_flutter/core/filter/message/added_message_filter.dart';
+import 'package:chattyevent_app_flutter/domain/entities/message/message_entity.dart';
+import 'package:chattyevent_app_flutter/infastructure/models/message/message_model.dart';
 import 'package:graphql/client.dart';
 import 'package:http/http.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
-import 'package:chattyevent_app_flutter/core/dto/groupchat/groupchat_message/create_groupchat_message_dto.dart';
-import 'package:chattyevent_app_flutter/core/filter/groupchat/groupchat_message/added_groupchat_message_filter.dart';
-import 'package:chattyevent_app_flutter/core/filter/groupchat/groupchat_message/find_groupchat_messages_filter.dart';
+import 'package:chattyevent_app_flutter/core/dto/message/create_message_dto.dart';
+import 'package:chattyevent_app_flutter/core/filter/message/find_messages_filter.dart';
 import 'package:chattyevent_app_flutter/core/filter/limit_offset_filter.dart';
 import 'package:chattyevent_app_flutter/core/utils/failure_helper.dart';
 import 'package:dartz/dartz.dart';
-import 'package:chattyevent_app_flutter/domain/repositories/groupchat/groupchat_message_repository.dart';
+import 'package:chattyevent_app_flutter/domain/repositories/message_repository.dart';
 import 'package:chattyevent_app_flutter/infastructure/datasources/remote/graphql.dart';
 
-class GroupchatMessageRepositoryImpl implements GroupchatMessageRepository {
+class MessageRepositoryImpl implements MessageRepository {
   final GraphQlDatasource graphQlDatasource;
-
-  GroupchatMessageRepositoryImpl({required this.graphQlDatasource});
+  MessageRepositoryImpl({required this.graphQlDatasource});
 
   @override
-  Future<Either<NotificationAlert, GroupchatMessageEntity>>
-      createGroupchatMessageViaApi({
-    required CreateGroupchatMessageDto createGroupchatMessageDto,
+  Future<Either<NotificationAlert, MessageEntity>> createMessageViaApi({
+    required CreateMessageDto createMessageDto,
   }) async {
     try {
       Map<String, dynamic> variables = {
-        "input": createGroupchatMessageDto.toMap(),
+        "input": createMessageDto.toMap(),
       };
 
       /// TODO: should accapt other files than jpg too
       /// TODO: limit size and scale down
-      if (createGroupchatMessageDto.file != null) {
+      if (createMessageDto.file != null) {
         final MultipartFile file = MultipartFile.fromBytes(
           'photo',
-          createGroupchatMessageDto.file!.readAsBytesSync(),
+          createMessageDto.file!.readAsBytesSync(),
           filename: '1.jpg',
           contentType: MediaType("image", "jpg"),
         );
@@ -43,8 +41,8 @@ class GroupchatMessageRepositoryImpl implements GroupchatMessageRepository {
 
       final response = await graphQlDatasource.mutation(
         """
-        mutation createGroupchatMessage(\$input: CreateGroupchatMessageInput!, \$file: Upload) {
-          createGroupchatMessage(createGroupchatMessageInput: \$input, file: \$file) {
+        mutation createMessage(\$input: CreateMessageInput!, \$file: Upload) {
+          createMessage(createMessageInput: \$input, file: \$file) {
             _id
             message
             messageToReactTo
@@ -64,24 +62,22 @@ class GroupchatMessageRepositoryImpl implements GroupchatMessageRepository {
           response: response,
         ));
       }
-      return Right(GroupchatMessageModel.fromJson(
-          response.data!["createGroupchatMessage"]));
+      return Right(MessageModel.fromJson(response.data!["createMessage"]));
     } catch (e) {
       return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
     }
   }
 
   @override
-  Future<Either<NotificationAlert, List<GroupchatMessageEntity>>>
-      getGroupchatMessagesViaApi({
-    required FindGroupchatMessagesFilter findGroupchatMessagesFilter,
+  Future<Either<NotificationAlert, List<MessageEntity>>> getMessagesViaApi({
+    required FindMessagesFilter findMessagesFilter,
     required LimitOffsetFilter limitOffsetFilter,
   }) async {
     try {
       final response = await graphQlDatasource.query(
         """
-        query FindGroupchatMessages(\$input: FindGroupchatMessagesInput!, \$limitOffsetFilter: LimitOffsetInput!) {
-          findGroupchatMessages(filter: \$input, limitOffsetInput: \$limitOffsetFilter) {
+        query FindMessages(\$input: FindMessagesInput!, \$limitOffsetFilter: LimitOffsetInput!) {
+          findMessages(filter: \$input, limitOffsetInput: \$limitOffsetFilter) {
             _id
             message
             messageToReactTo
@@ -93,7 +89,7 @@ class GroupchatMessageRepositoryImpl implements GroupchatMessageRepository {
         }
       """,
         variables: {
-          "input": findGroupchatMessagesFilter.toMap(),
+          "input": findMessagesFilter.toMap(),
           "limitOffsetFilter": limitOffsetFilter.toMap(),
         },
       );
@@ -105,9 +101,9 @@ class GroupchatMessageRepositoryImpl implements GroupchatMessageRepository {
         ));
       }
 
-      final List<GroupchatMessageEntity> messages = [];
-      for (final message in response.data!["findGroupchatMessages"]) {
-        messages.add(GroupchatMessageModel.fromJson(message));
+      final List<MessageEntity> messages = [];
+      for (final message in response.data!["findMessages"]) {
+        messages.add(MessageModel.fromJson(message));
       }
       return Right(messages);
     } catch (e) {
@@ -116,17 +112,16 @@ class GroupchatMessageRepositoryImpl implements GroupchatMessageRepository {
   }
 
   @override
-  Either<NotificationAlert,
-          Stream<Either<NotificationAlert, GroupchatMessageEntity>>>
-      getGroupchatMessagesRealtimeViaApi({
-    required AddedGroupchatMessageFilter addedGroupchatMessageFilter,
+  Either<NotificationAlert, Stream<Either<NotificationAlert, MessageEntity>>>
+      getMessagesRealtimeViaApi({
+    required AddedMessageFilter addedMessageFilter,
   }) {
     try {
       final Stream<QueryResult<Object?>> subscription =
           graphQlDatasource.subscription(
         """
-        subscription(\$addedGroupchatMessageInput: AddedGroupchatMessageInput!) {
-          groupchatMessageAdded(addedGroupchatMessageInput: \$addedGroupchatMessageInput) {
+        subscription(\$addedMessageInput: AddedMessageInput!) {
+          messageAdded(addedMessageInput: \$addedMessageInput) {
             _id
             message
             messageToReactTo
@@ -138,11 +133,11 @@ class GroupchatMessageRepositoryImpl implements GroupchatMessageRepository {
         }
       """,
         variables: {
-          "addedGroupchatMessageInput": addedGroupchatMessageFilter.toMap(),
+          "addedMessageInput": addedMessageFilter.toMap(),
         },
       );
 
-      Stream<Either<NotificationAlert, GroupchatMessageEntity>>
+      Stream<Either<NotificationAlert, MessageEntity>>
           subscriptionToStream() async* {
         await for (var event in subscription) {
           if (event.hasException) {
@@ -152,9 +147,7 @@ class GroupchatMessageRepositoryImpl implements GroupchatMessageRepository {
             ));
           }
           if (event.data != null) {
-            final message = GroupchatMessageModel.fromJson(
-              event.data!['groupchatMessageAdded'],
-            );
+            final message = MessageModel.fromJson(event.data!['messageAdded']);
             yield Right(message);
           }
         }

@@ -3,13 +3,13 @@ import 'dart:io';
 import 'package:chattyevent_app_flutter/core/filter/groupchat/find_one_groupchat_to_filter.dart';
 import 'package:chattyevent_app_flutter/core/utils/encryption_utils.dart';
 
-class CreateGroupchatMessageDto extends FindOneGroupchatToFilter {
+class CreateMessageDto extends FindOneGroupchatToFilter {
   final String message;
   final String? messageToReactTo;
   // TODO: multiple files
   final File? file;
 
-  CreateGroupchatMessageDto({
+  CreateMessageDto({
     required this.message,
     required super.groupchatTo,
     this.file,

@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:chattyevent_app_flutter/domain/entities/groupchat/groupchat_message.dart';
+import 'package:chattyevent_app_flutter/domain/entities/message/message_entity.dart';
 import 'package:dartz/dartz.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/chat/chat_cubit.dart';
@@ -10,9 +10,9 @@ import 'package:chattyevent_app_flutter/core/dto/groupchat/update_groupchat_dto.
 import 'package:chattyevent_app_flutter/core/dto/groupchat/groupchat_user/update_groupchat_user_dto.dart';
 import 'package:chattyevent_app_flutter/core/filter/groupchat/find_one_groupchat_filter.dart';
 import 'package:chattyevent_app_flutter/core/filter/groupchat/find_one_groupchat_to_filter.dart';
-import 'package:chattyevent_app_flutter/core/filter/groupchat/groupchat_message/added_groupchat_message_filter.dart';
+import 'package:chattyevent_app_flutter/core/filter/message/added_message_filter.dart';
 import 'package:chattyevent_app_flutter/core/filter/private_event/find_private_events_filter.dart';
-import 'package:chattyevent_app_flutter/core/filter/groupchat/groupchat_message/find_groupchat_messages_filter.dart';
+import 'package:chattyevent_app_flutter/core/filter/message/find_messages_filter.dart';
 import 'package:chattyevent_app_flutter/core/filter/groupchat/groupchat_user/find_one_groupchat_user_filter.dart';
 import 'package:chattyevent_app_flutter/core/filter/limit_offset_filter.dart';
 import 'package:chattyevent_app_flutter/core/response/groupchat/groupchat-data.response.dart';
@@ -21,8 +21,8 @@ import 'package:chattyevent_app_flutter/domain/entities/groupchat/groupchat_enti
 import 'package:chattyevent_app_flutter/domain/entities/groupchat/groupchat_left_user_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/private_event/private_event_entity.dart';
-import 'package:chattyevent_app_flutter/domain/usecases/groupchat/groupchat_message_usecases.dart';
-import 'package:chattyevent_app_flutter/domain/usecases/groupchat/groupchat_usecases.dart';
+import 'package:chattyevent_app_flutter/domain/usecases/message_usecases.dart';
+import 'package:chattyevent_app_flutter/domain/usecases/groupchat_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/private_event_usecases.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 part 'current_chat_state.dart';
@@ -33,11 +33,10 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
   final NotificationCubit notificationCubit;
 
   final GroupchatUseCases groupchatUseCases;
-  final GroupchatMessageUseCases groupchatMessageUseCases;
+  final MessageUseCases messageUseCases;
   final PrivateEventUseCases privateEventUseCases;
 
-  StreamSubscription<Either<NotificationAlert, GroupchatMessageEntity>>?
-      _subscription;
+  StreamSubscription<Either<NotificationAlert, MessageEntity>>? _subscription;
 
   CurrentChatCubit(
     super.initialState, {
@@ -46,13 +45,12 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
     required this.privateEventUseCases,
     required this.chatCubit,
     required this.notificationCubit,
-    required this.groupchatMessageUseCases,
+    required this.messageUseCases,
   });
 
   void listenToMessages() {
-    final eitherAlertOrStream =
-        groupchatMessageUseCases.getGroupchatMessagesRealtimeViaApi(
-      addedGroupchatMessageFilter: AddedGroupchatMessageFilter(
+    final eitherAlertOrStream = messageUseCases.getMessagesRealtimeViaApi(
+      addedMessageFilter: AddedMessageFilter(
         groupchatTo: state.currentChat.id,
       ),
     );
@@ -395,10 +393,9 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
       loadingMessages: true,
     ));
 
-    final Either<NotificationAlert, List<GroupchatMessageEntity>>
-        messagesOrFailure =
-        await groupchatMessageUseCases.getGroupchatMessagesViaApi(
-      findGroupchatMessagesFilter: FindGroupchatMessagesFilter(
+    final Either<NotificationAlert, List<MessageEntity>> messagesOrFailure =
+        await messageUseCases.getMessagesViaApi(
+      findMessagesFilter: FindMessagesFilter(
         groupchatTo: state.currentChat.id,
       ),
       limitOffsetFilter: LimitOffsetFilter(
@@ -419,7 +416,7 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
         );
       },
       (messages) {
-        List<GroupchatMessageEntity> newMessages = [];
+        List<MessageEntity> newMessages = [];
         if (reload == false) {
           newMessages = List.from(state.messages)..addAll(messages);
         } else {
@@ -436,7 +433,7 @@ class CurrentChatCubit extends Cubit<CurrentChatState> {
     );
   }
 
-  GroupchatMessageEntity addMessage({required GroupchatMessageEntity message}) {
+  MessageEntity addMessage({required MessageEntity message}) {
     emit(CurrentChatState.merge(
       messages: List.from(state.messages)..add(message),
       oldState: state,

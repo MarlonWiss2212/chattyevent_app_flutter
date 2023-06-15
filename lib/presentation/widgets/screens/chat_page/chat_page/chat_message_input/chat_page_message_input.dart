@@ -1,16 +1,13 @@
-import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
-import 'package:chattyevent_app_flutter/application/bloc/current_groupchat/current_chat_cubit.dart';
+import 'package:chattyevent_app_flutter/presentation/widgets/screens/chat_page/chat_page/chat_message_input/chat_page_message_input_react_message_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:chattyevent_app_flutter/application/bloc/current_groupchat/add_groupchat_message_cubit.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/bottom_sheet/image_picker_list.dart';
-import 'package:chattyevent_app_flutter/presentation/widgets/screens/chat_page/chat_page/chat_page_react_message_container.dart';
 import 'package:ionicons/ionicons.dart';
 
 class ChatPageMessageInput extends StatelessWidget {
-  final String groupchatTo;
-  const ChatPageMessageInput({super.key, required this.groupchatTo});
+  const ChatPageMessageInput({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +31,9 @@ class ChatPageMessageInput extends StatelessWidget {
                         if (state.file != null) {
                           return Column(
                             children: [
-                              SizedBox(
+                              AnimatedContainer(
+                                duration: const Duration(seconds: 1),
+                                curve: Curves.easeIn,
                                 height: 100,
                                 child: Expanded(
                                   child: InkWell(
@@ -103,34 +102,7 @@ class ChatPageMessageInput extends StatelessWidget {
                         return Container();
                       },
                     ),
-                    BlocBuilder<AddGroupchatMessageCubit,
-                        AddGroupchatMessageState>(
-                      builder: (context, state) {
-                        if (state.messageToReactTo != null) {
-                          return Scrollable(
-                            viewportBuilder: (context, position) =>
-                                BlocBuilder<CurrentChatCubit, CurrentChatState>(
-                              builder: (context, chatState) {
-                                return Expanded(
-                                  child: ChatPageReactMessageContainer(
-                                    message: state.messageToReactTo!,
-                                    isInput: true,
-                                    users: chatState.users,
-                                    leftUsers: chatState.leftUsers,
-                                    currentUserId:
-                                        BlocProvider.of<AuthCubit>(context)
-                                            .state
-                                            .currentUser
-                                            .id,
-                                  ),
-                                );
-                              },
-                            ),
-                          );
-                        }
-                        return Container();
-                      },
-                    ),
+                    const ChatPageMessageInputReactMessageContainer(),
                     BlocBuilder<AddGroupchatMessageCubit,
                         AddGroupchatMessageState>(
                       builder: (context, state) {
@@ -145,7 +117,7 @@ class ChatPageMessageInput extends StatelessWidget {
                             color: Theme.of(context).colorScheme.surface,
                           ),
                           child: Padding(
-                            padding: const EdgeInsets.all(8),
+                            padding: const EdgeInsets.all(10),
                             child: PlatformTextField(
                               keyboardType: TextInputType.multiline,
                               minLines: 1,
@@ -193,7 +165,7 @@ class ChatPageMessageInput extends StatelessWidget {
                     color: Theme.of(context).colorScheme.surface,
                   ),
                   child: const Padding(
-                    padding: EdgeInsets.all(7),
+                    padding: EdgeInsets.all(10),
                     child: Icon(
                       Ionicons.camera,
                       size: 20,
@@ -212,7 +184,7 @@ class ChatPageMessageInput extends StatelessWidget {
                     color: Theme.of(context).colorScheme.surface,
                   ),
                   child: const Padding(
-                    padding: EdgeInsets.all(7),
+                    padding: EdgeInsets.all(10),
                     child: Icon(
                       Ionicons.send,
                       size: 20,

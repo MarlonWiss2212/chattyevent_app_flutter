@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:chattyevent_app_flutter/presentation/widgets/screens/chat_page/chat_page/chat_message_input/chat_page_message_input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
@@ -9,7 +10,6 @@ import 'package:chattyevent_app_flutter/application/bloc/notification/notificati
 import 'package:chattyevent_app_flutter/core/injection.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/chat_page/chat_page/chat_page_message_area.dart';
-import 'package:chattyevent_app_flutter/presentation/widgets/screens/chat_page/chat_page/chat_page_message_input.dart';
 
 class ChatPage extends StatefulWidget {
   const ChatPage({@PathParam('id') required this.groupchatId, super.key});
@@ -83,19 +83,19 @@ class _ChatPageState extends State<ChatPage> {
                 AddGroupchatMessageState(groupchatTo: widget.groupchatId),
                 notificationCubit: BlocProvider.of<NotificationCubit>(context),
                 currentChatCubit: BlocProvider.of<CurrentChatCubit>(context),
-                groupchatMessageUseCases: serviceLocator(
+                messageUseCases: serviceLocator(
                   param1: BlocProvider.of<AuthCubit>(context).state,
                 ),
               ),
-              child: Column(
+              child: const Column(
                 children: [
-                  const Expanded(
+                  Expanded(
                     child: Padding(
                       padding: EdgeInsets.symmetric(horizontal: 8.0),
                       child: ChatPageMessageArea(),
                     ),
                   ),
-                  ChatPageMessageInput(groupchatTo: widget.groupchatId),
+                  ChatPageMessageInput(),
                 ],
               ),
             ),

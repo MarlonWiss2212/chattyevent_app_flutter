@@ -1,23 +1,23 @@
 import 'dart:io';
+import 'package:chattyevent_app_flutter/domain/entities/message/message_entity.dart';
+import 'package:chattyevent_app_flutter/domain/usecases/message_usecases.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:chattyevent_app_flutter/domain/entities/groupchat/groupchat_message.dart';
 import 'package:dartz/dartz.dart';
 import 'package:chattyevent_app_flutter/application/bloc/current_groupchat/current_chat_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
-import 'package:chattyevent_app_flutter/core/dto/groupchat/groupchat_message/create_groupchat_message_dto.dart';
-import 'package:chattyevent_app_flutter/domain/usecases/groupchat/groupchat_message_usecases.dart';
+import 'package:chattyevent_app_flutter/core/dto/message/create_message_dto.dart';
 
 part 'add_groupchat_message_state.dart';
 
 class AddGroupchatMessageCubit extends Cubit<AddGroupchatMessageState> {
   final CurrentChatCubit currentChatCubit;
-  final GroupchatMessageUseCases groupchatMessageUseCases;
+  final MessageUseCases messageUseCases;
   final NotificationCubit notificationCubit;
 
   AddGroupchatMessageCubit(
     super.initialState, {
     required this.currentChatCubit,
-    required this.groupchatMessageUseCases,
+    required this.messageUseCases,
     required this.notificationCubit,
   });
 
@@ -33,9 +33,9 @@ class AddGroupchatMessageCubit extends Cubit<AddGroupchatMessageState> {
       );
     }
 
-    final Either<NotificationAlert, GroupchatMessageEntity> messageOrFailure =
-        await groupchatMessageUseCases.createGroupchatMessageViaApi(
-      createGroupchatMessageDto: CreateGroupchatMessageDto(
+    final Either<NotificationAlert, MessageEntity> messageOrFailure =
+        await messageUseCases.createMessageViaApi(
+      createMessageDto: CreateMessageDto(
         message: state.message!,
         groupchatTo: state.groupchatTo!,
         messageToReactTo: state.messageToReactTo?.id,
@@ -61,13 +61,13 @@ class AddGroupchatMessageCubit extends Cubit<AddGroupchatMessageState> {
 
   void emitState({
     AddGroupchatMessageStateStatus? status,
-    GroupchatMessageEntity? addedMessage,
+    MessageEntity? addedMessage,
     File? file,
     bool removeFile = false,
     bool removeMessageToReactTo = false,
     String? message,
     String? groupchatTo,
-    GroupchatMessageEntity? messageToReactTo,
+    MessageEntity? messageToReactTo,
   }) {
     emit(AddGroupchatMessageState(
       message: message ?? state.message,

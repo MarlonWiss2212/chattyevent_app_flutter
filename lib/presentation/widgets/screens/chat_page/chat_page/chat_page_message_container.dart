@@ -1,7 +1,7 @@
 import 'package:chattyevent_app_flutter/application/bloc/current_groupchat/current_chat_cubit.dart';
 import 'package:chattyevent_app_flutter/domain/entities/groupchat/groupchat_left_user_entity.dart';
-import 'package:chattyevent_app_flutter/domain/entities/groupchat/groupchat_message.dart';
 import 'package:chattyevent_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
+import 'package:chattyevent_app_flutter/domain/entities/message/message_entity.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,7 +23,7 @@ class ChatPageMessageContainer extends StatelessWidget {
   final String currentUserId;
   final List<UserEntity> users;
   final List<UserEntity> leftUsers;
-  final GroupchatMessageEntity message;
+  final MessageEntity message;
 
   @override
   Widget build(BuildContext context) {

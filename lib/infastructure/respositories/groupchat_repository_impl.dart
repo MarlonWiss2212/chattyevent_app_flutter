@@ -19,7 +19,7 @@ import 'package:chattyevent_app_flutter/domain/entities/groupchat/groupchat_enti
 import 'package:dartz/dartz.dart';
 import 'package:chattyevent_app_flutter/domain/entities/groupchat/groupchat_left_user_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
-import 'package:chattyevent_app_flutter/domain/repositories/groupchat/groupchat_repository.dart';
+import 'package:chattyevent_app_flutter/domain/repositories/groupchat_repository.dart';
 import 'package:chattyevent_app_flutter/infastructure/datasources/remote/graphql.dart';
 import 'package:chattyevent_app_flutter/infastructure/models/groupchat/groupchat_left_user_model.dart';
 import 'package:chattyevent_app_flutter/infastructure/models/groupchat/groupchat_model.dart';
