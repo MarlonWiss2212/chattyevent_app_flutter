@@ -1,10 +1,10 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:chattyevent_app_flutter/application/bloc/add_message/add_message_cubit.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/chat_page/chat_page/chat_message_input/chat_page_message_input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
-import 'package:chattyevent_app_flutter/application/bloc/current_groupchat/add_groupchat_message_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/current_groupchat/current_chat_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:chattyevent_app_flutter/core/injection.dart';
@@ -79,8 +79,8 @@ class _ChatPageState extends State<ChatPage> {
           ),
           Expanded(
             child: BlocProvider.value(
-              value: AddGroupchatMessageCubit(
-                AddGroupchatMessageState(groupchatTo: widget.groupchatId),
+              value: AddMessageCubit(
+                AddMessageState(groupchatTo: widget.groupchatId),
                 notificationCubit: BlocProvider.of<NotificationCubit>(context),
                 currentChatCubit: BlocProvider.of<CurrentChatCubit>(context),
                 messageUseCases: serviceLocator(

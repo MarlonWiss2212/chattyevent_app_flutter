@@ -6,7 +6,7 @@ GraphQLClient getGraphQlClient({
   bool websocketEndpoint = false,
 }) {
   final HttpLink httpLink = HttpLink(
-    "http://${dotenv.get("API_BASE_URL")}/graphql",
+    "https://${dotenv.get("API_BASE_URL")}/graphql",
     defaultHeaders: {
       "Apollo-Require-Preflight": "true",
       "authorization": "Bearer $token"
@@ -14,7 +14,7 @@ GraphQLClient getGraphQlClient({
   );
 
   final WebSocketLink webSocketLink = WebSocketLink(
-    "ws://${dotenv.get("API_BASE_URL")}/graphql",
+    "wss://${dotenv.get("API_BASE_URL")}/graphql",
     subProtocol: GraphQLProtocol.graphqlTransportWs,
     config: SocketClientConfig(
       inactivityTimeout: const Duration(hours: 1),

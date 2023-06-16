@@ -1,3 +1,4 @@
+import 'package:chattyevent_app_flutter/core/utils/encryption_utils.dart';
 import 'package:chattyevent_app_flutter/domain/entities/message/message_entity.dart';
 
 class MessageModel extends MessageEntity {
@@ -36,7 +37,9 @@ class MessageModel extends MessageEntity {
 
     return MessageModel(
       id: json['_id'],
-      message: json['message'],
+      message: json['message'] != null
+          ? EncryptionUtils.decrypt(encryptedText: json['message'])
+          : null,
       fileLinks: fileLinks,
       messageToReactTo: json["messageToReactTo"],
       createdBy: json["createdBy"],
