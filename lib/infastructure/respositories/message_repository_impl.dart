@@ -48,6 +48,8 @@ class MessageRepositoryImpl implements MessageRepository {
             messageToReactTo
             fileLinks
             groupchatTo
+            privateEventTo
+            userTo
             createdBy
             createdAt
           }
@@ -83,6 +85,8 @@ class MessageRepositoryImpl implements MessageRepository {
             messageToReactTo
             fileLinks
             groupchatTo
+            privateEventTo
+            userTo
             createdBy
             createdAt
           }
@@ -126,6 +130,8 @@ class MessageRepositoryImpl implements MessageRepository {
             message
             messageToReactTo
             groupchatTo
+            privateEventTo
+            userTo
             fileLinks
             createdBy
             createdAt

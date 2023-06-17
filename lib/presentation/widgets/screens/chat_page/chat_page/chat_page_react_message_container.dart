@@ -1,8 +1,7 @@
 import 'package:chattyevent_app_flutter/application/bloc/add_message/add_message_cubit.dart';
-import 'package:chattyevent_app_flutter/domain/entities/groupchat/groupchat_left_user_entity.dart';
-import 'package:chattyevent_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/message/message_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/user/user_entity.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -27,26 +26,17 @@ class ChatPageReactMessageContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     late UserEntity user;
-    final foundUser = users.firstWhere(
+    final foundUser = users.firstWhereOrNull(
       (element) => element.id == message.createdBy,
-      orElse: () => GroupchatUserEntity(
-        id: message.createdBy ?? "",
-        authId: "",
-        groupchatUserId: "",
-      ),
     );
-    if (foundUser.id == "") {
-      final foundLeftUser = leftUsers.firstWhere(
+    if (foundUser == null) {
+      final foundLeftUser = leftUsers.firstWhereOrNull(
         (element) => element.id == message.createdBy,
-        orElse: () => GroupchatLeftUserEntity(
-          id: message.createdBy ?? "",
-          authId: "",
-          groupchatUserLeftId: "",
-        ),
       );
-
-      if (foundLeftUser.id != "") {
+      if (foundLeftUser != null) {
         user = foundLeftUser;
+      } else {
+        user = UserEntity(id: message.createdBy ?? "", authId: "");
       }
     } else {
       user = foundUser;

@@ -25,6 +25,8 @@ class FindFollowersFilter {
       map.addAll({"search": search});
     }
 
+    //new schema
+    /*
     if (requesterPrivateEventAddPermission != null) {
       map.addAll({
         "requesterPrivateEventAddPermission":
@@ -44,7 +46,7 @@ class FindFollowersFilter {
         "requesterCalenderWatchPermission":
             requesterCalenderWatchPermission!.value,
       });
-    }
+    }*/
 
     return map;
   }

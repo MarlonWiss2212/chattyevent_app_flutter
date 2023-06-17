@@ -21,7 +21,7 @@ class ChatInfoPageUserListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return UserListTile(
       user: user,
-      subtitle: currentUser.role == GroupchatUserRoleEnum.admin
+      subtitle: user.role != null && user.role == GroupchatUserRoleEnum.admin
           ? Text(
               "Admin",
               style: TextStyle(
@@ -48,14 +48,14 @@ class ChatInfoPageUserListItem extends StatelessWidget {
         },
         if (currentUser.role == GroupchatUserRoleEnum.admin) ...{
           PopupMenuItem(
-            child: currentUser.role == GroupchatUserRoleEnum.admin
+            child: user.role == GroupchatUserRoleEnum.admin
                 ? const Text("Admin degradieren")
                 : const Text("Zum Admin machen"),
             onTap: () => BlocProvider.of<CurrentChatCubit>(context)
                 .updateGroupchatUserViaApi(
               userId: user.id,
               updateGroupchatUserDto: UpdateGroupchatUserDto(
-                  role: currentUser.role == GroupchatUserRoleEnum.admin
+                  role: user.role == GroupchatUserRoleEnum.admin
                       ? GroupchatUserRoleEnum.member
                       : GroupchatUserRoleEnum.admin),
             ),

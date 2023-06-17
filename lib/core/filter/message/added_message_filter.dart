@@ -1,16 +1,27 @@
-import 'package:chattyevent_app_flutter/core/filter/groupchat/find_one_groupchat_to_filter.dart';
-
-class AddedMessageFilter extends FindOneGroupchatToFilter {
+class AddedMessageFilter {
   final bool? returnMyAddedMessageToo;
+  final String? groupchatTo;
+  final String? privateEventTo;
+  final String? userTo;
 
   AddedMessageFilter({
-    required super.groupchatTo,
+    this.groupchatTo,
+    this.privateEventTo,
+    this.userTo,
     this.returnMyAddedMessageToo,
   });
 
-  @override
   Map<dynamic, dynamic> toMap() {
-    Map<dynamic, dynamic> map = super.toMap();
+    Map<dynamic, dynamic> map = {};
+    if (groupchatTo != null) {
+      map.addAll({"groupchatTo": groupchatTo});
+    }
+    if (privateEventTo != null) {
+      map.addAll({"privateEventTo": privateEventTo});
+    }
+    if (userTo != null) {
+      map.addAll({"userTo": userTo});
+    }
     if (returnMyAddedMessageToo != null) {
       map.addAll({"returnMyAddedMessageToo": returnMyAddedMessageToo});
     }
