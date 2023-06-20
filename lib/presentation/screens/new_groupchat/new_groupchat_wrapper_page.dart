@@ -5,7 +5,6 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/add_groupchat/add_groupchat_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/chat/chat_cubit.dart';
-import 'package:chattyevent_app_flutter/application/bloc/current_groupchat/current_chat_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/user_search/user_search_cubit.dart';
 import 'package:chattyevent_app_flutter/core/injection.dart';
@@ -52,18 +51,7 @@ class NewGroupchatWrapperPage extends StatelessWidget {
                     AutoRouter.of(context).root.replace(
                           ChatPageWrapperRoute(
                             groupchatId: state.addedChat!.id,
-                            chatStateToSet: CurrentChatState(
-                              currentUserIndex: -1,
-                              currentUserLeftChat: false,
-                              loadingPrivateEvents: false,
-                              futureConnectedPrivateEvents: [],
-                              loadingMessages: false,
-                              messages: [],
-                              currentChat: state.addedChat!,
-                              loadingChat: false,
-                              users: [],
-                              leftUsers: [],
-                            ),
+                            groupchat: state.addedChat!,
                           ),
                         );
                   }

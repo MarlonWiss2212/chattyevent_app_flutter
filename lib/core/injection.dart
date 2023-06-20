@@ -2,11 +2,13 @@ import 'package:chattyevent_app_flutter/domain/repositories/calendar_repository.
 import 'package:chattyevent_app_flutter/domain/repositories/imprint_repository.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/message_repository.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/calendar_usecases.dart';
+import 'package:chattyevent_app_flutter/domain/usecases/chat_usecase.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/imprint_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/message_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/permission_usecases.dart';
 import 'package:chattyevent_app_flutter/infastructure/datasources/remote/http.dart';
 import 'package:chattyevent_app_flutter/infastructure/respositories/calendar_repository_impl.dart';
+import 'package:chattyevent_app_flutter/infastructure/respositories/chat_repsoitory_impl.dart';
 import 'package:chattyevent_app_flutter/infastructure/respositories/imprint_repository_impl.dart';
 import 'package:chattyevent_app_flutter/infastructure/respositories/message_repository_impl.dart';
 import 'package:chattyevent_app_flutter/presentation/router/auth_guard.dart';
@@ -103,6 +105,11 @@ Future init() async {
       groupchatRepository: serviceLocator(param1: param1),
     ),
   );
+  serviceLocator.registerFactoryParam<ChatUseCase, AuthState?, void>(
+    (param1, param2) => ChatUseCase(
+      chatRepository: serviceLocator(param1: param1),
+    ),
+  );
   serviceLocator.registerFactoryParam<BoughtAmountUseCases, AuthState?, void>(
     (param1, param2) => BoughtAmountUseCases(
       boughtAmountRepository: serviceLocator(param1: param1),
@@ -163,6 +170,11 @@ Future init() async {
   );
   serviceLocator.registerFactoryParam<GroupchatRepository, AuthState?, void>(
     (param1, param2) => GroupchatRepositoryImpl(
+      graphQlDatasource: serviceLocator(param1: param1),
+    ),
+  );
+  serviceLocator.registerFactoryParam<ChatRepositoryImpl, AuthState?, void>(
+    (param1, param2) => ChatRepositoryImpl(
       graphQlDatasource: serviceLocator(param1: param1),
     ),
   );

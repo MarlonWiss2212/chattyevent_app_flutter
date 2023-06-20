@@ -1,6 +1,8 @@
+import 'package:chattyevent_app_flutter/domain/entities/message/message_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/user-relation/user_relation_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/user-relation/user_relations_count_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/user/user_entity.dart';
+import 'package:chattyevent_app_flutter/infastructure/models/message/message_model.dart';
 import 'package:chattyevent_app_flutter/infastructure/models/user_relation/user_relation_count_model.dart';
 import 'package:chattyevent_app_flutter/infastructure/models/user_relation/user_relation_model.dart';
 
@@ -16,6 +18,7 @@ class UserModel extends UserEntity {
     UserRelationsCountEntity? userRelationCounts,
     UserRelationEntity? myUserRelationToOtherUser,
     UserRelationEntity? otherUserRelationToMyUser,
+    MessageEntity? latestMessage,
     DateTime? createdAt,
     DateTime? updatedAt,
   }) : super(
@@ -31,6 +34,7 @@ class UserModel extends UserEntity {
           otherUserRelationToMyUser: otherUserRelationToMyUser,
           createdAt: createdAt,
           updatedAt: updatedAt,
+          latestMessage: latestMessage,
         );
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
@@ -49,6 +53,9 @@ class UserModel extends UserEntity {
       profileImageLink: json['profileImageLink'],
       firstname: json["fistname"],
       lastname: json["lastname"],
+      latestMessage: json["latestMessage"] != null
+          ? MessageModel.fromJson(json["latestMessage"])
+          : null,
       birthdate: json["birthdate"],
       userRelationCounts: json['userRelationCounts'] != null
           ? UserRelationsCountModel.fromJson(

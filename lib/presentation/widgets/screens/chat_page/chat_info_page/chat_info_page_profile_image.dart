@@ -26,15 +26,16 @@ class ChatInfoPageProfileImage extends StatelessWidget {
                   title: "Bild speichern",
                   message: "Möchtest du das Bild als Gruppenchat Bild nehmen",
                   onNoPress: () => Navigator.of(c).pop(),
-                  onYesPress: () => BlocProvider.of<CurrentChatCubit>(context)
-                      .updateCurrentGroupchatViaApi(
-                        updateGroupchatDto: UpdateGroupchatDto(
-                          updateProfileImage: newImage,
-                        ),
-                      )
-                      .then(
-                        (value) => Navigator.of(c).pop(),
-                      ),
+                  onYesPress: () =>
+                      BlocProvider.of<CurrentGroupchatCubit>(context)
+                          .updateCurrentGroupchatViaApi(
+                            updateGroupchatDto: UpdateGroupchatDto(
+                              updateProfileImage: newImage,
+                            ),
+                          )
+                          .then(
+                            (value) => Navigator.of(c).pop(),
+                          ),
                 );
               },
             );
@@ -46,7 +47,7 @@ class ChatInfoPageProfileImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CurrentChatCubit, CurrentChatState>(
+    return BlocBuilder<CurrentGroupchatCubit, CurrentGroupchatState>(
       builder: (context, state) {
         return InkWell(
           borderRadius: const BorderRadius.all(

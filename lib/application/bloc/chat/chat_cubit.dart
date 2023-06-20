@@ -1,100 +1,85 @@
+import 'package:chattyevent_app_flutter/domain/entities/chat_entity.dart';
+import 'package:chattyevent_app_flutter/domain/usecases/chat_usecase.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dartz/dartz.dart';
-import 'package:chattyevent_app_flutter/application/bloc/current_groupchat/current_chat_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
-import 'package:chattyevent_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
-import 'package:chattyevent_app_flutter/domain/usecases/groupchat_usecases.dart';
 
 part 'chat_state.dart';
 
 class ChatCubit extends Cubit<ChatState> {
-  final GroupchatUseCases groupchatUseCases;
+  final ChatUseCase chatUseCase;
   final NotificationCubit notificationCubit;
   ChatCubit({
-    required this.groupchatUseCases,
+    required this.chatUseCase,
     required this.notificationCubit,
-  }) : super(const ChatState(
-          chatStates: [],
-        ));
+  }) : super(const ChatState(chats: []));
 
-  CurrentChatState replaceOrAdd({required CurrentChatState chatState}) {
-    int foundIndex = state.chatStates.indexWhere(
-      (element) => element.currentChat.id == chatState.currentChat.id,
-    );
+  ChatEntity replaceOrAdd({
+    required ChatEntity chat,
+  }) {
+    int foundIndex = state.chats.indexWhere((element) {
+      if (element.groupchat != null && chat.groupchat != null) {
+        return element.groupchat!.id == chat.groupchat!.id;
+      } else if (element.privateEvent != null && chat.privateEvent != null) {
+        return element.privateEvent!.id == chat.privateEvent!.id;
+      } else if (element.user != null && chat.user != null) {
+        return element.user!.id == chat.user!.id;
+      }
+      return false;
+    });
 
     if (foundIndex != -1) {
-      List<CurrentChatState> newChatStates = state.chatStates;
-      newChatStates[foundIndex] = chatState;
-      emit(ChatState.merge(chatStates: newChatStates));
-      return newChatStates[foundIndex];
+      List<ChatEntity> newChats = state.chats;
+      newChats[foundIndex] = chat;
+      emit(ChatState.merge(chats: newChats));
+      return newChats[foundIndex];
     } else {
-      emit(
-        ChatState.merge(
-          chatStates: List.from(state.chatStates)..add(chatState),
-        ),
-      );
+      emit(ChatState.merge(chats: [chat, ...state.chats]));
     }
-    return chatState;
+    return chat;
   }
 
-  List<CurrentChatState> replaceOrAddMultiple({
-    required List<CurrentChatState> chatStates,
+  List<ChatEntity> replaceOrAddMultiple({
+    required List<ChatEntity> chats,
   }) {
-    List<CurrentChatState> mergedChatStates = [];
-    for (final chatState in chatStates) {
-      final mergedChatState = replaceOrAdd(
-        chatState: chatState,
-      );
-      mergedChatStates.add(mergedChatState);
+    List<ChatEntity> mergedChats = [];
+    for (final chat in chats) {
+      final mergedChat = replaceOrAdd(chat: chat);
+      mergedChats.add(mergedChat);
     }
-    return mergedChatStates;
+    return mergedChats;
   }
 
-  void delete({required String groupchatId}) {
-    List<CurrentChatState> newChatStates = state.chatStates;
-    newChatStates.removeWhere(
-      (element) => element.currentChat.id == groupchatId,
+  void delete({
+    String? groupchatId,
+    String? privateEventId,
+    String? userId,
+  }) {
+    List<ChatEntity> newChats = state.chats;
+    newChats.removeWhere(
+      (element) => groupchatId != null
+          ? element.groupchat?.id == groupchatId
+          : privateEventId != null
+              ? element.privateEvent?.id == privateEventId
+              : element.user?.id == userId,
     );
-    emit(ChatState.merge(chatStates: newChatStates));
+    emit(ChatState.merge(chats: newChats));
   }
 
   Future getChatsViaApi() async {
-    emit(
-      ChatState(chatStates: state.chatStates, status: ChatStateStatus.loading),
-    );
+    emit(ChatState(chats: state.chats, status: ChatStateStatus.loading));
 
-    final Either<NotificationAlert, List<GroupchatEntity>> groupchatsOrFailure =
-        await groupchatUseCases.getGroupchatsViaApi();
+    final Either<NotificationAlert, List<ChatEntity>> groupchatsOrFailure =
+        await chatUseCase.getChatsViaApi();
 
     groupchatsOrFailure.fold(
       (alert) {
-        ChatState(
-          chatStates: state.chatStates,
-          status: ChatStateStatus.initial,
-        );
+        ChatState(chats: state.chats, status: ChatStateStatus.initial);
         notificationCubit.newAlert(notificationAlert: alert);
       },
-      (groupchats) {
+      (chats) {
         emit(
-          ChatState(
-            status: ChatStateStatus.success,
-            chatStates: groupchats
-                .map(
-                  (e) => CurrentChatState(
-                    currentUserIndex: -1,
-                    currentUserLeftChat: false,
-                    loadingPrivateEvents: false,
-                    futureConnectedPrivateEvents: [],
-                    loadingMessages: false,
-                    currentChat: e,
-                    messages: e.latestMessage != null ? [e.latestMessage!] : [],
-                    loadingChat: false,
-                    users: [],
-                    leftUsers: [],
-                  ),
-                )
-                .toList(),
-          ),
+          ChatState(status: ChatStateStatus.success, chats: chats),
         );
       },
     );

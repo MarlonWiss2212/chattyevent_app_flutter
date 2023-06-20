@@ -1,13 +1,14 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:chattyevent_app_flutter/domain/entities/chat_entity.dart';
+import 'package:chattyevent_app_flutter/domain/entities/message/message_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:chattyevent_app_flutter/application/bloc/current_groupchat/current_chat_cubit.dart';
 import 'package:chattyevent_app_flutter/core/utils/ad_helper.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
 
 class ChatList extends StatefulWidget {
-  final List<CurrentChatState> chatStates;
-  const ChatList({super.key, required this.chatStates});
+  final List<ChatEntity> chats;
+  const ChatList({super.key, required this.chats});
 
   @override
   State<ChatList> createState() => _ChatListState();
@@ -27,7 +28,7 @@ class _ChatListState extends State<ChatList> {
   @override
   void initState() {
     super.initState();
-    if (widget.chatStates.length < _kAdIndex) {
+    if (widget.chats.length < _kAdIndex) {
       return;
     }
     Future.delayed(Duration.zero, () {
@@ -96,27 +97,56 @@ class _ChatListState extends State<ChatList> {
           }
 
           index = _getDestinationItemIndex(index);
-          final message = widget.chatStates[index].messages.isNotEmpty
-              ? widget.chatStates[index].messages.first
-              : null;
+          final MessageEntity? message = widget.chats[index].groupchat != null
+              ? widget.chats[index].groupchat!.latestMessage
+              : widget.chats[index].privateEvent != null
+                  ? widget.chats[index].privateEvent!.latestMessage
+                  : widget.chats[index].user != null
+                      ? widget.chats[index].user!.latestMessage
+                      : null;
+
+          final NetworkImage? backgroundImage =
+              widget.chats[index].groupchat?.profileImageLink != null
+                  ? NetworkImage(
+                      widget.chats[index].groupchat!.profileImageLink!,
+                    )
+                  : widget.chats[index].privateEvent?.coverImageLink != null
+                      ? NetworkImage(
+                          widget.chats[index].privateEvent!.coverImageLink!,
+                        )
+                      : widget.chats[index].user?.profileImageLink != null
+                          ? NetworkImage(
+                              widget.chats[index].user!.profileImageLink!,
+                            )
+                          : null;
+
+          final String? title = widget.chats[index].groupchat?.title != null
+              ? widget.chats[index].groupchat!.title!
+              : widget.chats[index].privateEvent?.title != null
+                  ? widget.chats[index].privateEvent!.title!
+                  : widget.chats[index].user?.username != null
+                      ? widget.chats[index].user!.username!
+                      : null;
+
+          final String? id = widget.chats[index].groupchat?.id != null
+              ? widget.chats[index].groupchat!.id
+              : widget.chats[index].privateEvent?.id != null
+                  ? widget.chats[index].privateEvent!.id
+                  : widget.chats[index].user?.id != null
+                      ? widget.chats[index].user!.id
+                      : null;
 
           return ListTile(
             leading: CircleAvatar(
-              backgroundImage: widget
-                          .chatStates[index].currentChat.profileImageLink !=
-                      null
-                  ? NetworkImage(
-                      widget.chatStates[index].currentChat.profileImageLink!)
+              backgroundImage: backgroundImage,
+              backgroundColor: backgroundImage == null
+                  ? Theme.of(context).colorScheme.secondaryContainer
                   : null,
-              backgroundColor:
-                  widget.chatStates[index].currentChat.profileImageLink == null
-                      ? Theme.of(context).colorScheme.secondaryContainer
-                      : null,
             ),
             title: Hero(
-              tag: "${widget.chatStates[index]..currentChat.id} title",
+              tag: "$id title",
               child: Text(
-                widget.chatStates[index].currentChat.title ?? "",
+                title ?? "",
                 style: Theme.of(context).textTheme.titleMedium,
               ),
             ),
@@ -133,16 +163,18 @@ class _ChatListState extends State<ChatList> {
                     overflow: TextOverflow.ellipsis,
                   ),
             onTap: () {
-              AutoRouter.of(context).push(
-                ChatPageWrapperRoute(
-                  chatStateToSet: widget.chatStates[index],
-                  groupchatId: widget.chatStates[index].currentChat.id,
-                ),
-              );
+              if (widget.chats[index].groupchat != null) {
+                AutoRouter.of(context).push(
+                  ChatPageWrapperRoute(
+                    groupchat: widget.chats[index].groupchat!,
+                    groupchatId: widget.chats[index].groupchat!.id,
+                  ),
+                );
+              }
             },
           );
         },
-        childCount: widget.chatStates.length + (_ad != null ? 1 : 0),
+        childCount: widget.chats.length + (_ad != null ? 1 : 0),
       ),
     );
   }

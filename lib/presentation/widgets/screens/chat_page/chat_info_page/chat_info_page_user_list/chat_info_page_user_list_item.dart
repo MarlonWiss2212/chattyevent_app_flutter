@@ -40,8 +40,8 @@ class ChatInfoPageUserListItem extends StatelessWidget {
             currentUser.id != user.id) ...{
           PopupMenuItem(
             child: const Text("Kicken"),
-            onTap: () =>
-                BlocProvider.of<CurrentChatCubit>(context).deleteUserFromChat(
+            onTap: () => BlocProvider.of<CurrentGroupchatCubit>(context)
+                .deleteUserFromChat(
               userId: user.id,
             ),
           ),
@@ -51,7 +51,7 @@ class ChatInfoPageUserListItem extends StatelessWidget {
             child: user.role == GroupchatUserRoleEnum.admin
                 ? const Text("Admin degradieren")
                 : const Text("Zum Admin machen"),
-            onTap: () => BlocProvider.of<CurrentChatCubit>(context)
+            onTap: () => BlocProvider.of<CurrentGroupchatCubit>(context)
                 .updateGroupchatUserViaApi(
               userId: user.id,
               updateGroupchatUserDto: UpdateGroupchatUserDto(

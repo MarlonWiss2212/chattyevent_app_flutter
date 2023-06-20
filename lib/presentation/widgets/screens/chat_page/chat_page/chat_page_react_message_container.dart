@@ -117,7 +117,11 @@ class ChatPageReactMessageContainer extends StatelessWidget {
                       const SizedBox(height: 8),
                     },
                     if (message.message != null) ...{
-                      Text(message.message!, overflow: TextOverflow.ellipsis),
+                      Text(
+                        message.message!,
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
                     },
                   ],
                 ),

@@ -11,7 +11,7 @@ class ChatInfoPageDescription extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CurrentChatCubit, CurrentChatState>(
+    return BlocBuilder<CurrentGroupchatCubit, CurrentGroupchatState>(
       builder: (context, state) {
         if (state.currentChat.description == null && state.loadingChat) {
           return const SkeletonLine();
@@ -29,7 +29,7 @@ class ChatInfoPageDescription extends StatelessWidget {
               editable: state.getCurrentGroupchatUser()?.role ==
                   GroupchatUserRoleEnum.admin,
               onSaved: (text) {
-                BlocProvider.of<CurrentChatCubit>(context)
+                BlocProvider.of<CurrentGroupchatCubit>(context)
                     .updateCurrentGroupchatViaApi(
                   updateGroupchatDto: UpdateGroupchatDto(
                     description: text,

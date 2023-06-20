@@ -9,7 +9,7 @@ class ChatPageMessageArea extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CurrentChatCubit, CurrentChatState>(
+    return BlocBuilder<CurrentGroupchatCubit, CurrentGroupchatState>(
       buildWhen: (previous, current) {
         if (previous.messages.length != current.messages.length) {
           return true;

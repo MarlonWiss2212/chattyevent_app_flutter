@@ -36,8 +36,8 @@ class ChatInfoPageLeftUserListItem extends StatelessWidget {
           ? [
               PopupMenuItem(
                 child: const Text("Hinzufügen"),
-                onTap: () =>
-                    BlocProvider.of<CurrentChatCubit>(context).addUserToChat(
+                onTap: () => BlocProvider.of<CurrentGroupchatCubit>(context)
+                    .addUserToChat(
                   userId: leftUser.id,
                 ),
               ),

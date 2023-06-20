@@ -38,8 +38,10 @@ class _NewPrivateEventSearchGroupchatTabState
               }
 
               return ChatGridList(
-                groupchats:
-                    chatState.chatStates.map((e) => e.currentChat).toList(),
+                groupchats: chatState.chats
+                    .where((element) => element.groupchat != null)
+                    .map((e) => e.groupchat!)
+                    .toList(),
                 highlightIds: state.selectedGroupchat != null
                     ? [state.selectedGroupchat!.id]
                     : null,

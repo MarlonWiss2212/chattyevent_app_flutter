@@ -11,7 +11,7 @@ class ChatInfoPageLeftUserList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CurrentChatCubit, CurrentChatState>(
+    return BlocBuilder<CurrentGroupchatCubit, CurrentGroupchatState>(
       builder: (context, state) {
         return Column(
           children: [

@@ -14,7 +14,8 @@ class SelectCircleImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return CircleImage(
+      image: image,
       onTap: () async {
         await showModalBottomSheet(
           context: context,
@@ -30,10 +31,7 @@ class SelectCircleImage extends StatelessWidget {
           },
         );
       },
-      child: CircleImage(
-        image: image,
-        icon: const Icon(Icons.add),
-      ),
+      icon: const Icon(Icons.add),
     );
   }
 }

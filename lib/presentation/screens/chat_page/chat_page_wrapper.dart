@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:chattyevent_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
@@ -10,12 +11,12 @@ import 'package:chattyevent_app_flutter/core/injection.dart';
 
 class ChatPageWrapper extends StatelessWidget {
   final String groupchatId;
-  final CurrentChatState chatStateToSet;
+  final GroupchatEntity groupchat;
 
   const ChatPageWrapper({
     super.key,
     @PathParam('id') required this.groupchatId,
-    required this.chatStateToSet,
+    required this.groupchat,
   });
 
   @override
@@ -23,8 +24,8 @@ class ChatPageWrapper extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => CurrentChatCubit(
-            chatStateToSet,
+          create: (context) => CurrentGroupchatCubit(
+            CurrentGroupchatState.fromGroupchat(groupchat: groupchat),
             notificationCubit: BlocProvider.of<NotificationCubit>(context),
             authCubit: BlocProvider.of<AuthCubit>(context),
             messageUseCases: serviceLocator(
@@ -58,7 +59,7 @@ class ChatPageWrapper extends StatelessWidget {
         builder: (context) {
           return MultiBlocListener(
             listeners: [
-              BlocListener<CurrentChatCubit, CurrentChatState>(
+              BlocListener<CurrentGroupchatCubit, CurrentGroupchatState>(
                 listener: (context, state) async {
                   if (state.currentUserLeftChat == true) {
                     AutoRouter.of(context).popUntilRoot();

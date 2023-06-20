@@ -26,8 +26,8 @@ class ChatInfoPageLeaveChat extends StatelessWidget {
               title: "Gruppenchat verlassen",
               message: "Möchtest du den Gruppenchat wirklich verlassen",
               onNoPress: () => Navigator.of(c).pop(),
-              onYesPress: () =>
-                  BlocProvider.of<CurrentChatCubit>(context).deleteUserFromChat(
+              onYesPress: () => BlocProvider.of<CurrentGroupchatCubit>(context)
+                  .deleteUserFromChat(
                 userId:
                     BlocProvider.of<AuthCubit>(context).state.currentUser.id,
               ),

@@ -12,14 +12,12 @@ class PrivateEventTabInfoGroupchatTo extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<CurrentPrivateEventCubit, CurrentPrivateEventState>(
       builder: (context, state) {
-        if (state.chatState != null || state.loadingGroupchat) {
+        if (state.groupchat != null || state.loadingGroupchat) {
           return Column(
             children: [
               const CustomDivider(),
-              if (state.chatState != null) ...{
-                PrivateEventTabInfogroupchatToTile(
-                  chatState: state.chatState!,
-                )
+              if (state.groupchat != null) ...{
+                PrivateEventTabInfoGroupchatToTile(groupchat: state.groupchat!)
               } else ...{
                 SkeletonListTile(
                   padding: const EdgeInsets.symmetric(horizontal: 8),

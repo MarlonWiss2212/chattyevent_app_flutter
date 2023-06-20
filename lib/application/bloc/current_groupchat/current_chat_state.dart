@@ -1,6 +1,6 @@
 part of 'current_chat_cubit.dart';
 
-class CurrentChatState {
+class CurrentGroupchatState {
   final GroupchatEntity currentChat;
   final int currentUserIndex;
 
@@ -24,7 +24,7 @@ class CurrentChatState {
     return null;
   }
 
-  const CurrentChatState({
+  const CurrentGroupchatState({
     required this.currentUserIndex,
     required this.currentUserLeftChat,
     required this.loadingPrivateEvents,
@@ -37,8 +37,25 @@ class CurrentChatState {
     required this.leftUsers,
   });
 
-  factory CurrentChatState.merge({
-    required CurrentChatState oldState,
+  factory CurrentGroupchatState.fromGroupchat({
+    required GroupchatEntity groupchat,
+  }) {
+    return CurrentGroupchatState(
+      currentChat: groupchat,
+      messages: [],
+      currentUserIndex: -1,
+      currentUserLeftChat: false,
+      futureConnectedPrivateEvents: [],
+      loadingChat: false,
+      leftUsers: [],
+      loadingMessages: false,
+      loadingPrivateEvents: false,
+      users: [],
+    );
+  }
+
+  factory CurrentGroupchatState.merge({
+    required CurrentGroupchatState oldState,
     GroupchatEntity? currentChat,
     List<GroupchatUserEntity>? users,
     int? currentUserIndex,
@@ -64,7 +81,7 @@ class CurrentChatState {
           )
         : null;
 
-    return CurrentChatState(
+    return CurrentGroupchatState(
       messages: allMessages,
       currentUserIndex: currentUserIndex ?? oldState.currentUserIndex,
       currentUserLeftChat: currentUserLeftChat ?? oldState.currentUserLeftChat,

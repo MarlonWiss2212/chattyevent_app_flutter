@@ -35,7 +35,7 @@ class _ChatAddUserPageState extends State<ChatAddUserPage> {
       ),
       body: Column(
         children: [
-          BlocBuilder<CurrentChatCubit, CurrentChatState>(
+          BlocBuilder<CurrentGroupchatCubit, CurrentGroupchatState>(
             buildWhen: (previous, current) =>
                 previous.loadingChat != current.loadingChat,
             builder: (context, state) {

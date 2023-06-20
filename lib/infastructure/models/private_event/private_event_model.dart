@@ -1,6 +1,8 @@
 import 'package:chattyevent_app_flutter/core/enums/private_event/private_event_status_enum.dart';
+import 'package:chattyevent_app_flutter/domain/entities/message/message_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/private_event/private_event_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/private_event/private_event_location_entity.dart';
+import 'package:chattyevent_app_flutter/infastructure/models/message/message_model.dart';
 import 'package:chattyevent_app_flutter/infastructure/models/private_event/private_event_location_model.dart';
 
 class PrivateEventModel extends PrivateEventEntity {
@@ -17,6 +19,7 @@ class PrivateEventModel extends PrivateEventEntity {
     DateTime? createdAt,
     DateTime? updatedAt,
     PrivateEventLocationEntity? eventLocation,
+    MessageEntity? latestMessage,
   }) : super(
           id: id,
           title: title,
@@ -29,6 +32,7 @@ class PrivateEventModel extends PrivateEventEntity {
           createdAt: createdAt,
           updatedAt: updatedAt,
           createdBy: createdBy,
+          latestMessage: latestMessage,
           eventLocation: eventLocation,
         );
 
@@ -56,6 +60,9 @@ class PrivateEventModel extends PrivateEventEntity {
       eventEndDate: eventEndDate,
       status: json["status"] != null
           ? PrivateEventStatusEnumExtension.fromValue(json["status"])
+          : null,
+      latestMessage: json["latestMessage"] != null
+          ? MessageModel.fromJson(json["latestMessage"])
           : null,
       groupchatTo: json["groupchatTo"],
       createdBy: json["createdBy"],

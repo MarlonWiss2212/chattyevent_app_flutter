@@ -1,3 +1,4 @@
+import 'package:chattyevent_app_flutter/domain/entities/message/message_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/user-relation/user_relation_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/user-relation/user_relations_count_entity.dart';
 
@@ -14,6 +15,7 @@ class UserEntity {
   final UserRelationEntity? otherUserRelationToMyUser;
   final DateTime? createdAt;
   final DateTime? updatedAt;
+  final MessageEntity? latestMessage;
 
   UserEntity({
     required this.id,
@@ -21,6 +23,7 @@ class UserEntity {
     this.myUserRelationToOtherUser,
     this.otherUserRelationToMyUser,
     this.userRelationCounts,
+    this.latestMessage,
     this.username,
     this.profileImageLink,
     this.firstname,
@@ -52,6 +55,7 @@ class UserEntity {
       profileImageLink:
           newEntity.profileImageLink ?? oldEntity.profileImageLink,
       firstname: newEntity.firstname ?? oldEntity.firstname,
+      latestMessage: newEntity.latestMessage ?? oldEntity.latestMessage,
       // TODO optimize this somehow
       userRelationCounts: UserRelationsCountEntity.merge(
         newEntity: newEntity.userRelationCounts ?? UserRelationsCountEntity(),

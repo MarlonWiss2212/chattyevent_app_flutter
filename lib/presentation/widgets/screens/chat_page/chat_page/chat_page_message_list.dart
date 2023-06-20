@@ -44,9 +44,9 @@ class _ChatPageMessageListState extends State<ChatPageMessageList> {
 
   void _scrollListener() {
     if (_scrollController.position.extentAfter <= 0 &&
-        BlocProvider.of<CurrentChatCubit>(context).state.loadingMessages ==
+        BlocProvider.of<CurrentGroupchatCubit>(context).state.loadingMessages ==
             false) {
-      BlocProvider.of<CurrentChatCubit>(context).loadMessages();
+      BlocProvider.of<CurrentGroupchatCubit>(context).loadMessages();
     }
   }
 
@@ -54,7 +54,7 @@ class _ChatPageMessageListState extends State<ChatPageMessageList> {
   Widget build(BuildContext context) {
     return GroupedListView<MessageEntity, String>(
       controller: _scrollController,
-      padding: const EdgeInsets.symmetric(vertical: 8),
+      padding: const EdgeInsets.symmetric(vertical: 4),
       itemBuilder: (context, message) {
         return ChatPageMessageContainer(
           currentUserId:

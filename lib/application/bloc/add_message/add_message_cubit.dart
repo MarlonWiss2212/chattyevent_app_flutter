@@ -10,13 +10,13 @@ import 'package:chattyevent_app_flutter/core/dto/message/create_message_dto.dart
 part 'add_message_state.dart';
 
 class AddMessageCubit extends Cubit<AddMessageState> {
-  final CurrentChatCubit currentChatCubit;
+  final CurrentGroupchatCubit currentGroupchatCubit;
   final MessageUseCases messageUseCases;
   final NotificationCubit notificationCubit;
 
   AddMessageCubit(
     super.initialState, {
-    required this.currentChatCubit,
+    required this.currentGroupchatCubit,
     required this.messageUseCases,
     required this.notificationCubit,
   });
@@ -54,7 +54,7 @@ class AddMessageCubit extends Cubit<AddMessageState> {
           status: AddMessageStateStatus.success,
           addedMessage: message,
         ));
-        currentChatCubit.addMessage(message: message);
+        currentGroupchatCubit.addMessage(message: message);
       },
     );
   }

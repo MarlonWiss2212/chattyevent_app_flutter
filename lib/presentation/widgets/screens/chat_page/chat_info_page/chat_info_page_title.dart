@@ -10,7 +10,7 @@ class ChatInfoPageTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CurrentChatCubit, CurrentChatState>(
+    return BlocBuilder<CurrentGroupchatCubit, CurrentGroupchatState>(
       builder: (context, state) {
         return Hero(
           tag: "${state.currentChat.id} title",
@@ -24,7 +24,7 @@ class ChatInfoPageTitle extends StatelessWidget {
               editable: state.getCurrentGroupchatUser()?.role ==
                   GroupchatUserRoleEnum.admin,
               onSaved: (text) {
-                BlocProvider.of<CurrentChatCubit>(context)
+                BlocProvider.of<CurrentGroupchatCubit>(context)
                     .updateCurrentGroupchatViaApi(
                   updateGroupchatDto: UpdateGroupchatDto(
                     title: text,

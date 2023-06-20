@@ -15,7 +15,7 @@ class AddUserGroupchatListWithSearchbar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: BlocBuilder<CurrentChatCubit, CurrentChatState>(
+      child: BlocBuilder<CurrentGroupchatCubit, CurrentGroupchatState>(
         builder: (context, state) {
           return SelectableUserGridList(
             showTextSearch: true,
@@ -39,7 +39,7 @@ class AddUserGroupchatListWithSearchbar extends StatelessWidget {
             userButton: (user) => Button(
               color: Theme.of(context).colorScheme.primaryContainer,
               onTap: () {
-                BlocProvider.of<CurrentChatCubit>(context)
+                BlocProvider.of<CurrentGroupchatCubit>(context)
                     .addUserToChat(userId: user.id);
               },
               text: "Hinzufügen",

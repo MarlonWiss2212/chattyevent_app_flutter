@@ -22,7 +22,7 @@ class ChatPage extends StatefulWidget {
 class _ChatPageState extends State<ChatPage> {
   @override
   void initState() {
-    BlocProvider.of<CurrentChatCubit>(context).loadMessages(reload: true);
+    BlocProvider.of<CurrentGroupchatCubit>(context).loadMessages(reload: true);
     super.initState();
   }
 
@@ -32,7 +32,7 @@ class _ChatPageState extends State<ChatPage> {
       appBar: AppBar(
         centerTitle: true,
         leading: const AutoLeadingButton(),
-        title: BlocBuilder<CurrentChatCubit, CurrentChatState>(
+        title: BlocBuilder<CurrentGroupchatCubit, CurrentGroupchatState>(
           builder: (context, state) {
             return Center(
               child: Row(
@@ -69,7 +69,7 @@ class _ChatPageState extends State<ChatPage> {
       ),
       body: Column(
         children: [
-          BlocBuilder<CurrentChatCubit, CurrentChatState>(
+          BlocBuilder<CurrentGroupchatCubit, CurrentGroupchatState>(
             builder: (context, state) {
               if (state.loadingChat || state.loadingMessages) {
                 return const LinearProgressIndicator();
@@ -82,7 +82,8 @@ class _ChatPageState extends State<ChatPage> {
               value: AddMessageCubit(
                 AddMessageState(groupchatTo: widget.groupchatId),
                 notificationCubit: BlocProvider.of<NotificationCubit>(context),
-                currentChatCubit: BlocProvider.of<CurrentChatCubit>(context),
+                currentGroupchatCubit:
+                    BlocProvider.of<CurrentGroupchatCubit>(context),
                 messageUseCases: serviceLocator(
                   param1: BlocProvider.of<AuthCubit>(context).state,
                 ),

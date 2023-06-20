@@ -23,7 +23,7 @@ class ChatInfoPage extends StatefulWidget {
 class _ChatInfoPageState extends State<ChatInfoPage> {
   @override
   void initState() {
-    BlocProvider.of<CurrentChatCubit>(context)
+    BlocProvider.of<CurrentGroupchatCubit>(context)
         .getFutureConnectedPrivateEventsFromApi();
     super.initState();
   }
@@ -48,9 +48,9 @@ class _ChatInfoPageState extends State<ChatInfoPage> {
           CupertinoSliverRefreshControl(
             onRefresh: () async {
               await Future.wait([
-                BlocProvider.of<CurrentChatCubit>(context)
+                BlocProvider.of<CurrentGroupchatCubit>(context)
                     .reloadGroupchatAndGroupchatUsersViaApi(),
-                BlocProvider.of<CurrentChatCubit>(context)
+                BlocProvider.of<CurrentGroupchatCubit>(context)
                     .getFutureConnectedPrivateEventsFromApi(),
               ]);
             },

@@ -1,8 +1,8 @@
 import 'dart:io';
+import 'package:chattyevent_app_flutter/domain/entities/chat_entity.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:chattyevent_app_flutter/application/bloc/chat/chat_cubit.dart';
-import 'package:chattyevent_app_flutter/application/bloc/current_groupchat/current_chat_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:chattyevent_app_flutter/core/dto/groupchat/create_groupchat_dto.dart';
 import 'package:chattyevent_app_flutter/core/dto/groupchat/groupchat_user/create_groupchat_user_from_create_groupchat_dto.dart';
@@ -51,20 +51,7 @@ class AddGroupchatCubit extends Cubit<AddGroupchatState> {
       },
       (groupchat) {
         chatCubit.replaceOrAdd(
-          chatState: CurrentChatState(
-            currentUserIndex: -1,
-            currentUserLeftChat: false,
-            loadingPrivateEvents: false,
-            messages: groupchat.latestMessage != null
-                ? [groupchat.latestMessage!]
-                : [],
-            futureConnectedPrivateEvents: [],
-            loadingMessages: false,
-            currentChat: groupchat,
-            loadingChat: false,
-            users: [],
-            leftUsers: [],
-          ),
+          chat: ChatEntity(groupchat: groupchat),
         );
         emit(AddGroupchatState(
           groupchatUsers: [],

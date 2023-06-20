@@ -85,7 +85,8 @@ class ChatPageMessageContainer extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         if (message.messageToReactTo != null) ...{
-                          BlocBuilder<CurrentChatCubit, CurrentChatState>(
+                          BlocBuilder<CurrentGroupchatCubit,
+                              CurrentGroupchatState>(
                             builder: (context, state) {
                               final foundMessage =
                                   state.messages.firstWhereOrNull(
@@ -128,6 +129,7 @@ class ChatPageMessageContainer extends StatelessWidget {
                           Text(
                             message.message!,
                             overflow: TextOverflow.clip,
+                            style: Theme.of(context).textTheme.bodyMedium,
                           ),
                         },
                       ],

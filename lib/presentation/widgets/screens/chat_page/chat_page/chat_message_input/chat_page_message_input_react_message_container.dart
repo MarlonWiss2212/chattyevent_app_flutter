@@ -27,33 +27,26 @@ class _ChatPageMessageInputReactMessageContainerState
           //TODO animate position
           duration: const Duration(seconds: 1),
           curve: Curves.elasticIn,
-          child: Scrollable(
-            viewportBuilder: (context, position) =>
-                BlocBuilder<CurrentChatCubit, CurrentChatState>(
-              builder: (context, chatState) {
-                return Expanded(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.surface,
-                      borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(8),
-                        topRight: Radius.circular(8),
-                      ),
-                    ),
-                    child: ChatPageReactMessageContainer(
-                      message: state.messageToReactTo!,
-                      isInput: true,
-                      users: chatState.users,
-                      leftUsers: chatState.leftUsers,
-                      currentUserId: BlocProvider.of<AuthCubit>(context)
-                          .state
-                          .currentUser
-                          .id,
-                    ),
+          child: BlocBuilder<CurrentGroupchatCubit, CurrentGroupchatState>(
+            builder: (context, chatState) {
+              return Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.surface,
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(8),
+                    topRight: Radius.circular(8),
                   ),
-                );
-              },
-            ),
+                ),
+                child: ChatPageReactMessageContainer(
+                  message: state.messageToReactTo!,
+                  isInput: true,
+                  users: chatState.users,
+                  leftUsers: chatState.leftUsers,
+                  currentUserId:
+                      BlocProvider.of<AuthCubit>(context).state.currentUser.id,
+                ),
+              );
+            },
           ),
         );
       },

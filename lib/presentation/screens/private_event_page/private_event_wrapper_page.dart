@@ -39,7 +39,7 @@ class PrivateEventWrapperPage extends StatelessWidget {
         param1: BlocProvider.of<AuthCubit>(context).state,
       ),
     )
-          ..setCurrentChatFromChatCubit()
+          ..setGroupchatFromChatCubit()
           ..reloadPrivateEventStandardDataViaApi();
 
     return MultiBlocProvider(

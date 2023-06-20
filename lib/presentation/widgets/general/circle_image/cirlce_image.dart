@@ -30,27 +30,19 @@ class CircleImage extends StatelessWidget {
     final width = this.width ?? min(120, size.width / 1.5);
 
     return image != null || imageLink != null
-        ? Container(
+        ? SizedBox(
             height: height,
             width: width,
-            decoration: const BoxDecoration(
-              shape: BoxShape.circle,
-            ),
             child: InkWell(
               onTap: onTap,
+              customBorder: const CircleBorder(),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(width / 2),
                 child: Hero(
                   tag: heroTag ?? "",
                   child: image != null
-                      ? Image.file(
-                          image!,
-                          fit: BoxFit.cover,
-                        )
-                      : Image.network(
-                          imageLink!,
-                          fit: BoxFit.cover,
-                        ),
+                      ? Image.file(image!, fit: BoxFit.cover)
+                      : Image.network(imageLink!, fit: BoxFit.cover),
                 ),
               ),
             ),
@@ -64,6 +56,7 @@ class CircleImage extends StatelessWidget {
             ),
             child: InkWell(
               onTap: onTap,
+              customBorder: const CircleBorder(),
               child: Center(
                 child: icon,
               ),

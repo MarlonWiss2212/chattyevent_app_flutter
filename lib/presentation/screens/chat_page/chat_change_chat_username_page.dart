@@ -44,7 +44,7 @@ class _ChatChangeChatUsernamePageState
             SizedBox(
               width: double.infinity,
               child: Button(
-                onTap: () => BlocProvider.of<CurrentChatCubit>(context)
+                onTap: () => BlocProvider.of<CurrentGroupchatCubit>(context)
                     .updateGroupchatUserViaApi(
                       userId: BlocProvider.of<AuthCubit>(context)
                           .state

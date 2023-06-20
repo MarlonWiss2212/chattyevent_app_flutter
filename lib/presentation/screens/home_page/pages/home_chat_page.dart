@@ -56,7 +56,7 @@ class _HomeChatPageState extends State<HomeChatPage> {
           ),
           BlocBuilder<ChatCubit, ChatState>(
             builder: (context, state) {
-              if (state.chatStates.isEmpty &&
+              if (state.chats.isEmpty &&
                   state.status != ChatStateStatus.loading) {
                 return const SliverFillRemaining(
                   child: Center(
@@ -64,11 +64,11 @@ class _HomeChatPageState extends State<HomeChatPage> {
                   ),
                 );
               }
-              if (state.chatStates.isEmpty &&
+              if (state.chats.isEmpty &&
                   state.status == ChatStateStatus.loading) {
                 return const SliverFillRemaining(child: HomeChatPageSkeleton());
               }
-              return ChatList(chatStates: state.chatStates);
+              return ChatList(chats: state.chats);
             },
           ),
         ],

@@ -12,12 +12,12 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:auto_route/auto_route.dart' as _i59;
-import 'package:chattyevent_app_flutter/application/bloc/current_groupchat/current_chat_cubit.dart'
-    as _i65;
 import 'package:chattyevent_app_flutter/application/bloc/current_private_event/current_private_event_cubit.dart'
     as _i66;
 import 'package:chattyevent_app_flutter/application/bloc/shopping_list/current_shopping_list_item_cubit.dart'
     as _i68;
+import 'package:chattyevent_app_flutter/domain/entities/groupchat/groupchat_entity.dart'
+    as _i65;
 import 'package:chattyevent_app_flutter/domain/entities/user/user_entity.dart'
     as _i67;
 import 'package:chattyevent_app_flutter/presentation/router/auth_guard.dart'
@@ -279,7 +279,7 @@ class AppRouter extends _i59.RootStackRouter {
         child: _i18.ChatPageWrapper(
           key: args.key,
           groupchatId: args.groupchatId,
-          chatStateToSet: args.chatStateToSet,
+          groupchat: args.groupchat,
         ),
       );
     },
@@ -1318,7 +1318,7 @@ class ChatPageWrapperRoute
   ChatPageWrapperRoute({
     _i60.Key? key,
     required String groupchatId,
-    required _i65.CurrentChatState chatStateToSet,
+    required _i65.GroupchatEntity groupchat,
     List<_i59.PageRouteInfo>? children,
   }) : super(
           ChatPageWrapperRoute.name,
@@ -1326,7 +1326,7 @@ class ChatPageWrapperRoute
           args: ChatPageWrapperRouteArgs(
             key: key,
             groupchatId: groupchatId,
-            chatStateToSet: chatStateToSet,
+            groupchat: groupchat,
           ),
           rawPathParams: {'id': groupchatId},
           initialChildren: children,
@@ -1339,18 +1339,18 @@ class ChatPageWrapperRouteArgs {
   const ChatPageWrapperRouteArgs({
     this.key,
     required this.groupchatId,
-    required this.chatStateToSet,
+    required this.groupchat,
   });
 
   final _i60.Key? key;
 
   final String groupchatId;
 
-  final _i65.CurrentChatState chatStateToSet;
+  final _i65.GroupchatEntity groupchat;
 
   @override
   String toString() {
-    return 'ChatPageWrapperRouteArgs{key: $key, groupchatId: $groupchatId, chatStateToSet: $chatStateToSet}';
+    return 'ChatPageWrapperRouteArgs{key: $key, groupchatId: $groupchatId, groupchat: $groupchat}';
   }
 }
 

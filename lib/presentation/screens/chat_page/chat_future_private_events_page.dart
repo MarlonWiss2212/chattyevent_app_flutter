@@ -31,13 +31,13 @@ class ChatFuturePrivateEventsPage extends StatelessWidget {
           ),
           CupertinoSliverRefreshControl(
             onRefresh: () {
-              return BlocProvider.of<CurrentChatCubit>(context)
+              return BlocProvider.of<CurrentGroupchatCubit>(context)
                   .getFutureConnectedPrivateEventsFromApi(
                 reload: true,
               );
             },
           ),
-          BlocBuilder<CurrentChatCubit, CurrentChatState>(
+          BlocBuilder<CurrentGroupchatCubit, CurrentGroupchatState>(
             builder: (context, state) {
               if (state.loadingPrivateEvents == true &&
                   state.futureConnectedPrivateEvents.isEmpty) {
@@ -70,7 +70,7 @@ class ChatFuturePrivateEventsPage extends StatelessWidget {
                     } else {
                       return IconButton(
                         onPressed: () {
-                          BlocProvider.of<CurrentChatCubit>(context)
+                          BlocProvider.of<CurrentGroupchatCubit>(context)
                               .getFutureConnectedPrivateEventsFromApi();
                         },
                         icon: const Icon(Icons.add_circle),

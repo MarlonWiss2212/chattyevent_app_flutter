@@ -67,7 +67,7 @@ class BlocInit extends StatelessWidget {
               ),
               BlocProvider.value(
                 value: ChatCubit(
-                  groupchatUseCases: serviceLocator(param1: state),
+                  chatUseCase: serviceLocator(param1: state),
                   notificationCubit: notificationCubit,
                 ),
               ),

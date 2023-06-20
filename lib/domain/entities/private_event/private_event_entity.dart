@@ -1,4 +1,5 @@
 import 'package:chattyevent_app_flutter/core/enums/private_event/private_event_status_enum.dart';
+import 'package:chattyevent_app_flutter/domain/entities/message/message_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/private_event/private_event_location_entity.dart';
 
 class PrivateEventEntity {
@@ -14,10 +15,12 @@ class PrivateEventEntity {
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final PrivateEventLocationEntity? eventLocation;
+  final MessageEntity? latestMessage;
 
   PrivateEventEntity({
     required this.id,
     this.title,
+    this.latestMessage,
     this.status,
     this.description,
     this.coverImageLink,
@@ -42,6 +45,7 @@ class PrivateEventEntity {
       eventEndDate: newEntity.eventEndDate ?? oldEntity.eventEndDate,
       groupchatTo: newEntity.groupchatTo ?? oldEntity.groupchatTo,
       status: newEntity.status ?? oldEntity.status,
+      latestMessage: newEntity.latestMessage ?? oldEntity.latestMessage,
       eventLocation: PrivateEventLocationEntity.merge(
         newEntity: newEntity.eventLocation ?? PrivateEventLocationEntity(),
         oldEntity: oldEntity.eventLocation ?? PrivateEventLocationEntity(),

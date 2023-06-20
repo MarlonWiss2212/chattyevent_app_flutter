@@ -40,6 +40,7 @@ class _ChatPageMessageInputTextFieldState
               keyboardType: TextInputType.multiline,
               minLines: 1,
               maxLines: 6,
+              style: Theme.of(context).textTheme.bodyMedium,
               material: (context, platform) => MaterialTextFieldData(
                 decoration: const InputDecoration.collapsed(
                   hintText: "Nachricht",
