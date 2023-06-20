@@ -1,4 +1,5 @@
 import 'package:chattyevent_app_flutter/domain/repositories/calendar_repository.dart';
+import 'package:chattyevent_app_flutter/domain/repositories/chat_repository.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/imprint_repository.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/message_repository.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/calendar_usecases.dart';
@@ -173,7 +174,7 @@ Future init() async {
       graphQlDatasource: serviceLocator(param1: param1),
     ),
   );
-  serviceLocator.registerFactoryParam<ChatRepositoryImpl, AuthState?, void>(
+  serviceLocator.registerFactoryParam<ChatRepository, AuthState?, void>(
     (param1, param2) => ChatRepositoryImpl(
       graphQlDatasource: serviceLocator(param1: param1),
     ),
