@@ -1,14 +1,14 @@
-import 'package:chattyevent_app_flutter/presentation/widgets/screens/chat_page/chat_page/chat_message_input/chat_page_mesasage_input_text_field.dart';
-import 'package:chattyevent_app_flutter/presentation/widgets/screens/chat_page/chat_page/chat_message_input/chat_page_message_input_files.dart';
-import 'package:chattyevent_app_flutter/presentation/widgets/screens/chat_page/chat_page/chat_message_input/chat_page_message_input_react_message_container.dart';
+import 'package:chattyevent_app_flutter/presentation/widgets/general/chat_message_input/chat_mesasage_input_text_field.dart';
+import 'package:chattyevent_app_flutter/presentation/widgets/general/chat_message_input/chat_message_input_files.dart';
+import 'package:chattyevent_app_flutter/presentation/widgets/general/chat_message_input/chat_message_input_react_message_container.dart';
+import 'package:chattyevent_app_flutter/presentation/widgets/general/dialog/add_chat_message_detail_dialog/add_chat_message_detail_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/add_message/add_message_cubit.dart';
-import 'package:chattyevent_app_flutter/presentation/widgets/general/bottom_sheet/image_picker_list.dart';
 import 'package:ionicons/ionicons.dart';
 
-class ChatPageMessageInput extends StatelessWidget {
-  const ChatPageMessageInput({super.key});
+class ChatMessageInput extends StatelessWidget {
+  const ChatMessageInput({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -24,9 +24,9 @@ class ChatPageMessageInput extends StatelessWidget {
               const Expanded(
                 child: Column(
                   children: [
-                    ChatPageMessageInputFiles(),
-                    ChatPageMessageInputReactMessageContainer(),
-                    ChatPageMessageInputTextField(),
+                    ChatMessageInputFiles(),
+                    ChatMessageInputReactMessageContainer(),
+                    ChatMessageInputTextField(),
                   ],
                 ),
               ),
@@ -34,31 +34,19 @@ class ChatPageMessageInput extends StatelessWidget {
               InkWell(
                 customBorder: const CircleBorder(),
                 onTap: () async {
-                  await showModalBottomSheet(
+                  await showDialog(
                     context: context,
-                    builder: (modalContext) {
-                      return ImagePickerList(
-                        imageChanged: (newImage) {
-                          BlocProvider.of<AddMessageCubit>(context)
-                              .emitState(file: newImage);
-                          Navigator.of(modalContext).pop();
-                        },
-                      );
-                    },
+                    builder: (c) => AddChatMessageDetailDialog(c: context),
                   );
                 },
                 child: Ink(
+                  width: 40,
+                  height: 40,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: Theme.of(context).colorScheme.surface,
                   ),
-                  child: const Padding(
-                    padding: EdgeInsets.all(10),
-                    child: Icon(
-                      Ionicons.camera,
-                      size: 20,
-                    ),
-                  ),
+                  child: const Icon(Ionicons.add, size: 20),
                 ),
               ),
               const SizedBox(width: 4),
@@ -67,17 +55,13 @@ class ChatPageMessageInput extends StatelessWidget {
                 onTap: () =>
                     BlocProvider.of<AddMessageCubit>(context).createMessage(),
                 child: Ink(
+                  width: 40,
+                  height: 40,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: Theme.of(context).colorScheme.surface,
                   ),
-                  child: const Padding(
-                    padding: EdgeInsets.all(10),
-                    child: Icon(
-                      Ionicons.send,
-                      size: 20,
-                    ),
-                  ),
+                  child: const Icon(Ionicons.send, size: 20),
                 ),
               ),
             ],

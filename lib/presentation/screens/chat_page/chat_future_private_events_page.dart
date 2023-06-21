@@ -51,16 +51,10 @@ class ChatFuturePrivateEventsPage extends StatelessWidget {
                   (context, index) {
                     if (index < state.futureConnectedPrivateEvents.length) {
                       return PrivateEventListItem(
-                        privateEventState: CurrentPrivateEventState(
+                        privateEventState:
+                            CurrentPrivateEventState.fromPrivateEvent(
                           privateEvent:
                               state.futureConnectedPrivateEvents[index],
-                          loadingGroupchat: false,
-                          loadingPrivateEvent: false,
-                          loadingShoppingList: false,
-                          currentUserIndex: -1,
-                          privateEventUsers: [],
-                          privateEventLeftUsers: [],
-                          shoppingListItemStates: [],
                         ),
                       );
                     }

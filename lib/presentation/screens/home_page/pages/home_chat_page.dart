@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/chat/chat_cubit.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
-import 'package:chattyevent_app_flutter/presentation/widgets/general/chat_list/chat_list.dart';
+import 'package:chattyevent_app_flutter/presentation/widgets/screens/home_page/pages/home_chat_page/chat_list.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/home_page/pages/home_chat_page/home_chat_page_skeleton.dart';
 
 class HomeChatPage extends StatefulWidget {

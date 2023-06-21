@@ -9,6 +9,8 @@ class AddMessageState {
   final File? file;
   final String? message;
   final String? groupchatTo;
+  final String? privateEventTo;
+  final String? userTo;
   final MessageEntity? messageToReactTo;
 
   AddMessageState({
@@ -16,6 +18,8 @@ class AddMessageState {
     this.message,
     this.messageToReactTo,
     this.groupchatTo,
+    this.privateEventTo,
+    this.userTo,
     this.file,
     this.status = AddMessageStateStatus.initial,
   });

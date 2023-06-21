@@ -7,6 +7,9 @@ class CurrentPrivateEventState {
   final GroupchatEntity? groupchat;
   final List<CurrentShoppingListItemState> shoppingListItemStates;
 
+  final List<MessageEntity> messages;
+  final bool loadingMessages;
+
   final bool loadingPrivateEvent;
   final bool loadingGroupchat;
   final bool loadingShoppingList;
@@ -27,6 +30,8 @@ class CurrentPrivateEventState {
 
   const CurrentPrivateEventState({
     required this.currentUserIndex,
+    required this.messages,
+    required this.loadingMessages,
     required this.privateEvent,
     required this.privateEventUsers,
     required this.privateEventLeftUsers,
@@ -37,4 +42,21 @@ class CurrentPrivateEventState {
     required this.loadingGroupchat,
     this.status = CurrentPrivateEventStateStatus.initial,
   });
+
+  factory CurrentPrivateEventState.fromPrivateEvent({
+    required PrivateEventEntity privateEvent,
+  }) {
+    return CurrentPrivateEventState(
+      privateEvent: privateEvent,
+      loadingGroupchat: false,
+      loadingPrivateEvent: false,
+      loadingShoppingList: false,
+      currentUserIndex: -1,
+      privateEventUsers: [],
+      privateEventLeftUsers: [],
+      shoppingListItemStates: [],
+      messages: [],
+      loadingMessages: false,
+    );
+  }
 }

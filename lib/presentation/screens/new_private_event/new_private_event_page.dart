@@ -58,14 +58,8 @@ class NewPrivateEventPage extends StatelessWidget {
                     AutoRouter.of(context).root.replace(
                           PrivateEventWrapperPageRoute(
                             privateEventId: state.addedPrivateEvent!.id,
-                            privateEventStateToSet: CurrentPrivateEventState(
-                              currentUserIndex: -1,
-                              privateEventUsers: [],
-                              privateEventLeftUsers: [],
-                              loadingGroupchat: false,
-                              loadingPrivateEvent: false,
-                              loadingShoppingList: false,
-                              shoppingListItemStates: [],
+                            privateEventStateToSet:
+                                CurrentPrivateEventState.fromPrivateEvent(
                               privateEvent: state.addedPrivateEvent!,
                             ),
                           ),

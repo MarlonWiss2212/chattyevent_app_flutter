@@ -1,5 +1,8 @@
 import 'dart:io';
+import 'package:chattyevent_app_flutter/application/bloc/current_private_event/current_private_event_cubit.dart';
+import 'package:chattyevent_app_flutter/application/bloc/profile_page/profile_page_cubit.dart';
 import 'package:chattyevent_app_flutter/domain/entities/message/message_entity.dart';
+import 'package:chattyevent_app_flutter/domain/usecases/image_picker_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/message_usecases.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dartz/dartz.dart';
@@ -10,21 +13,27 @@ import 'package:chattyevent_app_flutter/core/dto/message/create_message_dto.dart
 part 'add_message_state.dart';
 
 class AddMessageCubit extends Cubit<AddMessageState> {
-  final CurrentGroupchatCubit currentGroupchatCubit;
+  final Either<Either<CurrentPrivateEventCubit, CurrentGroupchatCubit>,
+      ProfilePageCubit> cubitToAddMessageTo;
   final MessageUseCases messageUseCases;
+  final ImagePickerUseCases imagePickerUseCases;
   final NotificationCubit notificationCubit;
 
   AddMessageCubit(
     super.initialState, {
-    required this.currentGroupchatCubit,
+    required this.cubitToAddMessageTo,
     required this.messageUseCases,
     required this.notificationCubit,
+    required this.imagePickerUseCases,
   });
 
   Future createMessage() async {
     emitState(status: AddMessageStateStatus.loading);
 
-    if (state.message == null || state.groupchatTo == null) {
+    if (state.message == null ||
+        (state.groupchatTo == null ||
+            state.privateEventTo == null ||
+            state.userTo == null)) {
       notificationCubit.newAlert(
         notificationAlert: NotificationAlert(
           title: "Ausfüll Fehler",
@@ -37,7 +46,9 @@ class AddMessageCubit extends Cubit<AddMessageState> {
         await messageUseCases.createMessageViaApi(
       createMessageDto: CreateMessageDto(
         message: state.message!,
-        groupchatTo: state.groupchatTo!,
+        groupchatTo: state.groupchatTo,
+        userTo: state.userTo,
+        privateEventTo: state.privateEventTo,
         messageToReactTo: state.messageToReactTo?.id,
         file: state.file,
       ),
@@ -54,8 +65,34 @@ class AddMessageCubit extends Cubit<AddMessageState> {
           status: AddMessageStateStatus.success,
           addedMessage: message,
         ));
-        currentGroupchatCubit.addMessage(message: message);
+        cubitToAddMessageTo.fold(
+          (either) => either.fold(
+            (privateEventCubit) => null,
+            (groupchatCubit) => groupchatCubit.addMessage(message: message),
+          ),
+          (profileCubit) => null,
+        );
       },
+    );
+  }
+
+  Future setFileFromCamera() async {
+    final imagePickerErrorOrImage =
+        await imagePickerUseCases.getImageFromCameraWithPermissions();
+
+    imagePickerErrorOrImage.fold(
+      (alert) => notificationCubit.newAlert(notificationAlert: alert),
+      (image) => emitState(file: image),
+    );
+  }
+
+  Future setFileFromGallery() async {
+    final imagePickerErrorOrImage =
+        await imagePickerUseCases.getImageFromPhotosWithPermissions();
+
+    imagePickerErrorOrImage.fold(
+      (alert) => notificationCubit.newAlert(notificationAlert: alert),
+      (image) => emitState(file: image),
     );
   }
 

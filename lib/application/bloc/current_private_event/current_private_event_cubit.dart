@@ -1,6 +1,7 @@
 import 'package:chattyevent_app_flutter/core/enums/private_event/private_event_user/private_event_user_role_enum.dart';
 import 'package:chattyevent_app_flutter/core/enums/private_event/private_event_user_status_enum.dart';
 import 'package:chattyevent_app_flutter/domain/entities/chat_entity.dart';
+import 'package:chattyevent_app_flutter/domain/entities/message/message_entity.dart';
 import 'package:collection/collection.dart';
 import 'package:dartz/dartz.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
@@ -442,15 +443,19 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
     PrivateEventEntity? privateEvent,
     List<PrivateEventUserEntity>? privateEventUsers,
     List<PrivateEventLeftUserEntity>? privateEventLeftUsers,
+    List<MessageEntity>? messages,
     GroupchatEntity? groupchat,
     int? currentUserIndex,
     bool? loadingPrivateEvent,
     bool? loadingGroupchat,
+    bool? loadingMessages,
     bool? loadingShoppingList,
     List<CurrentShoppingListItemState>? shoppingListItemStates,
     CurrentPrivateEventStateStatus? status,
   }) {
     final CurrentPrivateEventState newState = CurrentPrivateEventState(
+      messages: messages ?? state.messages,
+      loadingMessages: loadingMessages ?? state.loadingMessages,
       currentUserIndex: currentUserIndex ?? state.currentUserIndex,
       shoppingListItemStates:
           shoppingListItemStates ?? state.shoppingListItemStates,

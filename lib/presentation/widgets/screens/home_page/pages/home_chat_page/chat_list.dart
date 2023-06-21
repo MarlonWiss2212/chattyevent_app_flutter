@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:chattyevent_app_flutter/application/bloc/current_private_event/current_private_event_cubit.dart';
 import 'package:chattyevent_app_flutter/domain/entities/chat_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/message/message_entity.dart';
 import 'package:flutter/material.dart';
@@ -170,6 +171,23 @@ class _ChatListState extends State<ChatList> {
                     groupchatId: widget.chats[index].groupchat!.id,
                   ),
                 );
+              } else if (widget.chats[index].privateEvent != null) {
+                AutoRouter.of(context).push(
+                  PrivateEventWrapperPageRoute(
+                    privateEventId: widget.chats[index].privateEvent!.id,
+                    privateEventStateToSet:
+                        CurrentPrivateEventState.fromPrivateEvent(
+                      privateEvent: widget.chats[index].privateEvent!,
+                    ),
+                    children: [
+                      PrivateEventTabPageRoute(
+                        children: [PrivateEventTabChatRoute()],
+                      )
+                    ],
+                  ),
+                );
+              } else if (widget.chats[index].user != null) {
+                // push user page
               }
             },
           );

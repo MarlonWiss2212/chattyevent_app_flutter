@@ -3,19 +3,11 @@ import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/current_groupchat/current_chat_cubit.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/chat_page/chat_page/chat_page_react_message_container.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class ChatPageMessageInputReactMessageContainer extends StatefulWidget {
-  const ChatPageMessageInputReactMessageContainer({super.key});
+class ChatMessageInputReactMessageContainer extends StatelessWidget {
+  const ChatMessageInputReactMessageContainer({super.key});
 
-  @override
-  State<ChatPageMessageInputReactMessageContainer> createState() =>
-      _ChatPageMessageInputReactMessageContainerState();
-}
-
-class _ChatPageMessageInputReactMessageContainerState
-    extends State<ChatPageMessageInputReactMessageContainer> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AddMessageCubit, AddMessageState>(

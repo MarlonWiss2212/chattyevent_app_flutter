@@ -41,14 +41,6 @@ class StandardShoppingListItemWrapperPage extends StatelessWidget {
       child: Builder(
         builder: (context) {
           if (setCurrentPrivateEvent) {
-            BlocProvider.of<CurrentPrivateEventCubit>(context).emitState(
-              privateEvent: PrivateEventEntity(
-                id: shoppingListItemStateToSet
-                        .shoppingListItem.privateEventTo ??
-                    "",
-                eventDate: DateTime.now(),
-              ),
-            );
             BlocProvider.of<CurrentPrivateEventCubit>(context)
                 .setGroupchatFromChatCubit();
             BlocProvider.of<CurrentPrivateEventCubit>(context)

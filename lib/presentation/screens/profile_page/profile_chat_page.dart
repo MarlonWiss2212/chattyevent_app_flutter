@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:chattyevent_app_flutter/application/bloc/add_message/add_message_cubit.dart';
+import 'package:chattyevent_app_flutter/application/bloc/profile_page/profile_page_cubit.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/chat_message_input/chat_message_input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,21 +10,23 @@ import 'package:chattyevent_app_flutter/application/bloc/current_groupchat/curre
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:chattyevent_app_flutter/core/injection.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
-import 'package:chattyevent_app_flutter/presentation/widgets/screens/chat_page/chat_page/chat_page_message_area.dart';
 import 'package:dartz/dartz.dart' as dz;
 
-class ChatPage extends StatefulWidget {
-  const ChatPage({@PathParam('id') required this.groupchatId, super.key});
-  final String groupchatId;
+class ProfileChatPage extends StatefulWidget {
+  const ProfileChatPage({
+    @PathParam('id') required this.userId,
+    super.key,
+  });
+  final String userId;
 
   @override
-  State<ChatPage> createState() => _ChatPageState();
+  State<ProfileChatPage> createState() => _ProfileChatPageState();
 }
 
-class _ChatPageState extends State<ChatPage> {
+class _ProfileChatPageState extends State<ProfileChatPage> {
   @override
   void initState() {
-    BlocProvider.of<CurrentGroupchatCubit>(context).loadMessages(reload: true);
+    //BlocProvider.of<CurrentGroupchatCubit>(context).loadMessages(reload: true);
     super.initState();
   }
 
@@ -33,24 +36,24 @@ class _ChatPageState extends State<ChatPage> {
       appBar: AppBar(
         centerTitle: true,
         leading: const AutoLeadingButton(),
-        title: BlocBuilder<CurrentGroupchatCubit, CurrentGroupchatState>(
+        title: BlocBuilder<ProfilePageCubit, ProfilePageState>(
           builder: (context, state) {
             return Center(
               child: Row(
                 children: [
                   CircleAvatar(
-                    backgroundImage: state.currentChat.profileImageLink != null
-                        ? NetworkImage(state.currentChat.profileImageLink!)
+                    backgroundImage: state.user.profileImageLink != null
+                        ? NetworkImage(state.user.profileImageLink!)
                         : null,
-                    backgroundColor: state.currentChat.profileImageLink != null
+                    backgroundColor: state.user.profileImageLink != null
                         ? null
                         : Theme.of(context).colorScheme.secondaryContainer,
                   ),
                   const SizedBox(width: 8),
                   Hero(
-                    tag: "${widget.groupchatId} title",
+                    tag: "${widget.userId} username",
                     child: Text(
-                      state.currentChat.title ?? "",
+                      state.user.username ?? "",
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
                   ),
@@ -81,12 +84,12 @@ class _ChatPageState extends State<ChatPage> {
           Expanded(
             child: BlocProvider.value(
               value: AddMessageCubit(
-                AddMessageState(groupchatTo: widget.groupchatId),
+                AddMessageState(userTo: widget.userId),
                 imagePickerUseCases: serviceLocator(),
                 notificationCubit: BlocProvider.of<NotificationCubit>(context),
-                cubitToAddMessageTo: dz.Left(dz.Right(
-                  BlocProvider.of<CurrentGroupchatCubit>(context),
-                )),
+                cubitToAddMessageTo: dz.Right(
+                  BlocProvider.of<ProfilePageCubit>(context),
+                ),
                 messageUseCases: serviceLocator(
                   param1: BlocProvider.of<AuthCubit>(context).state,
                 ),
@@ -96,7 +99,7 @@ class _ChatPageState extends State<ChatPage> {
                   Expanded(
                     child: Padding(
                       padding: EdgeInsets.symmetric(horizontal: 8.0),
-                      child: ChatPageMessageArea(),
+                      child: Placeholder(), //ChatPageMessageArea(),
                     ),
                   ),
                   ChatMessageInput(),

@@ -35,10 +35,12 @@ import 'package:chattyevent_app_flutter/presentation/screens/private_event_page/
 import 'package:chattyevent_app_flutter/presentation/screens/private_event_page/shopping_list_item_page/private_event_shopping_list_change_user_page.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/private_event_page/shopping_list_item_page/private_event_shopping_list_item_page.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/private_event_page/shopping_list_item_page/private_event_shopping_list_item_wrapper_page.dart';
+import 'package:chattyevent_app_flutter/presentation/screens/private_event_page/tab_page/pages/private_event_tab_chat.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/private_event_page/tab_page/pages/private_event_tab_info.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/private_event_page/tab_page/pages/private_event_tab_shopping_list.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/private_event_page/tab_page/pages/private_event_tab_user_list.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/private_event_page/tab_page/private_event_tab_page.dart';
+import 'package:chattyevent_app_flutter/presentation/screens/profile_page/profile_chat_page.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/profile_page/profile_page.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/profile_page/profile_user_relations_tabs/profile_follow_requests_tab.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/profile_page/profile_user_relations_tabs/profile_user_relations_tab_page.dart';
@@ -262,6 +264,12 @@ const privateEventRouter = AutoRoute(
           guards: [AuthGuard],
         ),
         AutoRoute(
+          page: PrivateEventTabChat,
+          initial: true,
+          path: 'chat',
+          guards: [AuthGuard],
+        ),
+        AutoRoute(
           page: PrivateEventTabUserList,
           initial: false,
           path: 'users',
@@ -325,6 +333,11 @@ const profileRouter = AutoRoute(
       page: ProfilePage,
       guards: [AuthGuard],
       path: '',
+    ),
+    AutoRoute(
+      page: ProfileChatPage,
+      guards: [AuthGuard],
+      path: 'chat',
     ),
     AutoRoute(
       page: ProfileUserRelationsTabPage,

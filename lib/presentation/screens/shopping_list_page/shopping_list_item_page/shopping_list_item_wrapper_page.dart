@@ -25,15 +25,13 @@ class ShoppingListItemWrapperPage extends StatelessWidget {
   Widget build(BuildContext context) {
     CurrentPrivateEventCubit currentPrivateEventCubit =
         CurrentPrivateEventCubit(
-      CurrentPrivateEventState(
-        currentUserIndex: -1,
-        privateEventLeftUsers: [],
-        shoppingListItemStates: [],
-        loadingShoppingList: false,
-        privateEventUsers: const [],
-        privateEvent: PrivateEventEntity(id: "", eventDate: DateTime.now()),
-        loadingGroupchat: false,
-        loadingPrivateEvent: false,
+      CurrentPrivateEventState.fromPrivateEvent(
+        privateEvent: PrivateEventEntity(
+          id: currentShoppingListItemStateToSet
+                  .shoppingListItem.privateEventTo ??
+              "",
+          eventDate: DateTime.now(),
+        ),
       ),
       authCubit: BlocProvider.of<AuthCubit>(context),
       locationUseCases: serviceLocator(),

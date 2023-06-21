@@ -1,16 +1,16 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:chattyevent_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
-import 'package:chattyevent_app_flutter/presentation/widgets/general/chat_list/chat_grid_list_item.dart';
+import 'package:chattyevent_app_flutter/presentation/widgets/general/groupchat_list/groupchat_grid_list_item.dart';
 
-class ChatGridList extends StatelessWidget {
+class GroupchatGridList extends StatelessWidget {
   final List<GroupchatEntity> groupchats;
   final List<String>? highlightIds;
   final Function(GroupchatEntity groupchat)? onLongPress;
   final Function(GroupchatEntity groupchat)? onPress;
   final Widget Function(GroupchatEntity groupchat)? button;
 
-  const ChatGridList({
+  const GroupchatGridList({
     super.key,
     required this.groupchats,
     this.button,
@@ -32,7 +32,7 @@ class ChatGridList extends StatelessWidget {
             highlighted = true;
           }
         }
-        return ChatGridListItem(
+        return GroupchatGridListItem(
           highlighted: highlighted,
           chat: groupchats[index],
           button: button != null ? button!(groupchats[index]) : null,

@@ -130,15 +130,8 @@ class HomeEventCubit extends Cubit<HomeEventState> {
           emitState(
             futurePrivateEvents: privateEvents
                 .map(
-                  (e) => CurrentPrivateEventState(
+                  (e) => CurrentPrivateEventState.fromPrivateEvent(
                     privateEvent: e,
-                    loadingGroupchat: false,
-                    loadingPrivateEvent: false,
-                    loadingShoppingList: false,
-                    currentUserIndex: -1,
-                    privateEventUsers: [],
-                    privateEventLeftUsers: [],
-                    shoppingListItemStates: [],
                   ),
                 )
                 .toList(),
@@ -147,15 +140,8 @@ class HomeEventCubit extends Cubit<HomeEventState> {
           replaceOrAddMultiple(
             privateEventStates: privateEvents
                 .map(
-                  (e) => CurrentPrivateEventState(
+                  (e) => CurrentPrivateEventState.fromPrivateEvent(
                     privateEvent: e,
-                    loadingGroupchat: false,
-                    loadingPrivateEvent: false,
-                    loadingShoppingList: false,
-                    currentUserIndex: -1,
-                    privateEventUsers: [],
-                    privateEventLeftUsers: [],
-                    shoppingListItemStates: [],
                   ),
                 )
                 .toList(),
@@ -196,15 +182,8 @@ class HomeEventCubit extends Cubit<HomeEventState> {
           emitState(
             pastPrivateEvents: privateEvents
                 .map(
-                  (e) => CurrentPrivateEventState(
+                  (e) => CurrentPrivateEventState.fromPrivateEvent(
                     privateEvent: e,
-                    loadingGroupchat: false,
-                    loadingPrivateEvent: false,
-                    loadingShoppingList: false,
-                    currentUserIndex: -1,
-                    privateEventUsers: [],
-                    privateEventLeftUsers: [],
-                    shoppingListItemStates: [],
                   ),
                 )
                 .toList(),
@@ -213,15 +192,8 @@ class HomeEventCubit extends Cubit<HomeEventState> {
           replaceOrAddMultiple(
             privateEventStates: privateEvents
                 .map(
-                  (e) => CurrentPrivateEventState(
+                  (e) => CurrentPrivateEventState.fromPrivateEvent(
                     privateEvent: e,
-                    loadingGroupchat: false,
-                    loadingPrivateEvent: false,
-                    loadingShoppingList: false,
-                    currentUserIndex: -1,
-                    privateEventUsers: [],
-                    privateEventLeftUsers: [],
-                    shoppingListItemStates: [],
                   ),
                 )
                 .toList(),

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:chattyevent_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 
-class ChatGridListItem extends StatelessWidget {
+class GroupchatGridListItem extends StatelessWidget {
   final GroupchatEntity chat;
   final bool highlighted;
   final Function? onLongPress;
   final Function? onPress;
   final Widget? button;
 
-  const ChatGridListItem({
+  const GroupchatGridListItem({
     super.key,
     required this.chat,
     this.highlighted = false,

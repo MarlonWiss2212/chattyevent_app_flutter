@@ -7,6 +7,7 @@ import 'package:chattyevent_app_flutter/core/dto/private_event/update_private_ev
 import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/input_fields/edit_input_text_field.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/private_event_page/tab_info/private_event_tab_info_delete_button.dart';
+import 'package:ionicons/ionicons.dart';
 
 class PrivateEventTabPage extends StatelessWidget {
   final String privateEventId;
@@ -20,6 +21,13 @@ class PrivateEventTabPage extends StatelessWidget {
     return AutoTabsRouter.tabBar(
       routes: [
         PrivateEventTabInfoRoute(),
+        if (BlocProvider.of<CurrentPrivateEventCubit>(context)
+                .state
+                .privateEvent
+                .groupchatTo ==
+            null) ...{
+          PrivateEventTabChatRoute(),
+        },
         const PrivateEventTabUserListRoute(),
         PrivateEventTabShoppingListRoute(),
       ],
@@ -63,10 +71,17 @@ class PrivateEventTabPage extends StatelessWidget {
                   ),
                   child: TabBar(
                     controller: tabController,
-                    tabs: const [
-                      Tab(icon: Icon(Icons.celebration)),
-                      Tab(icon: Icon(Icons.person)),
-                      Tab(icon: Icon(Icons.shopping_cart)),
+                    tabs: [
+                      const Tab(icon: Icon(Icons.celebration)),
+                      if (BlocProvider.of<CurrentPrivateEventCubit>(context)
+                              .state
+                              .privateEvent
+                              .groupchatTo ==
+                          null) ...{
+                        const Tab(icon: Icon(Ionicons.chatbubble)),
+                      },
+                      const Tab(icon: Icon(Icons.person)),
+                      const Tab(icon: Icon(Icons.shopping_cart)),
                     ],
                   ),
                 ),

@@ -3,16 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 
-class ChatPageMessageInputTextField extends StatefulWidget {
-  const ChatPageMessageInputTextField({super.key});
+class ChatMessageInputTextField extends StatefulWidget {
+  const ChatMessageInputTextField({super.key});
 
   @override
-  State<ChatPageMessageInputTextField> createState() =>
-      _ChatPageMessageInputTextFieldState();
+  State<ChatMessageInputTextField> createState() =>
+      _ChatMessageInputTextFieldState();
 }
 
-class _ChatPageMessageInputTextFieldState
-    extends State<ChatPageMessageInputTextField> {
+class _ChatMessageInputTextFieldState extends State<ChatMessageInputTextField> {
   TextEditingController textEditingController = TextEditingController();
 
   @override
@@ -24,6 +23,9 @@ class _ChatPageMessageInputTextFieldState
               : null,
       builder: (context, state) {
         return Container(
+          constraints: const BoxConstraints(minHeight: 40),
+          alignment: Alignment.centerLeft,
+          padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
             borderRadius: state.messageToReactTo != null
                 ? const BorderRadius.only(
@@ -33,25 +35,21 @@ class _ChatPageMessageInputTextFieldState
                 : BorderRadius.circular(8),
             color: Theme.of(context).colorScheme.surface,
           ),
-          child: Padding(
-            padding: const EdgeInsets.all(10),
-            child: PlatformTextField(
-              controller: textEditingController,
-              keyboardType: TextInputType.multiline,
-              minLines: 1,
-              maxLines: 6,
-              style: Theme.of(context).textTheme.bodyMedium,
-              material: (context, platform) => MaterialTextFieldData(
-                decoration: const InputDecoration.collapsed(
-                  hintText: "Nachricht",
-                ),
+          child: PlatformTextField(
+            controller: textEditingController,
+            keyboardType: TextInputType.multiline,
+            minLines: 1,
+            maxLines: 6,
+            style: Theme.of(context).textTheme.bodyMedium,
+            material: (context, platform) => MaterialTextFieldData(
+              decoration: const InputDecoration.collapsed(
+                hintText: "Nachricht",
               ),
-              onChanged: (p0) {
-                BlocProvider.of<AddMessageCubit>(context)
-                    .emitState(message: p0);
-              },
-              hintText: 'Nachricht',
             ),
+            onChanged: (p0) {
+              BlocProvider.of<AddMessageCubit>(context).emitState(message: p0);
+            },
+            hintText: 'Nachricht',
           ),
         );
       },
