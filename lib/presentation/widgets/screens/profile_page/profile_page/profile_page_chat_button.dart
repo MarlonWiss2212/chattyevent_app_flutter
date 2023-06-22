@@ -11,37 +11,39 @@ class ProfilePageChatButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: BlocBuilder<ProfilePageCubit, ProfilePageState>(
-        buildWhen: (previous, current) =>
-            previous.user.myUserRelationToOtherUser?.statusOnRelatedUser !=
-            current.user.myUserRelationToOtherUser?.statusOnRelatedUser,
-        builder: (context, state) {
-          if (state.user.myUserRelationToOtherUser?.statusOnRelatedUser !=
-              UserRelationStatusEnum.follower) {
-            return const SizedBox();
-          }
-          return InkWell(
-            onTap: () => AutoRouter.of(context).push(ProfileChatPageRoute()),
+    return BlocBuilder<ProfilePageCubit, ProfilePageState>(
+      buildWhen: (previous, current) =>
+          previous.user.myUserRelationToOtherUser?.statusOnRelatedUser !=
+          current.user.myUserRelationToOtherUser?.statusOnRelatedUser,
+      builder: (context, state) {
+        if (state.user.myUserRelationToOtherUser?.statusOnRelatedUser !=
+            UserRelationStatusEnum.follower) {
+          return const SizedBox();
+        }
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          child: InkWell(
             borderRadius: BorderRadius.circular(8),
+            onTap: () => AutoRouter.of(context).push(ProfileChatPageRoute()),
             child: Ink(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.surface,
                 borderRadius: BorderRadius.circular(8),
               ),
-              child: Row(
-                children: [
-                  const Icon(Ionicons.chatbubble),
-                  const SizedBox(width: 32),
-                  Text("Chat", style: Theme.of(context).textTheme.labelLarge),
-                ],
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Row(
+                  children: [
+                    const Icon(Ionicons.chatbubble),
+                    const SizedBox(width: 16),
+                    Text("Chat", style: Theme.of(context).textTheme.labelLarge),
+                  ],
+                ),
               ),
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 }

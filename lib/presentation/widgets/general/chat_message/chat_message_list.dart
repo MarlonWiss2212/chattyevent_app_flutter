@@ -1,33 +1,25 @@
 import 'package:chattyevent_app_flutter/domain/entities/message/message_entity.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:intl/intl.dart';
-import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
-import 'package:chattyevent_app_flutter/application/bloc/current_groupchat/current_chat_cubit.dart';
-import 'package:chattyevent_app_flutter/domain/entities/groupchat/groupchat_left_user_entity.dart';
-import 'package:chattyevent_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
-import 'package:chattyevent_app_flutter/presentation/widgets/screens/chat_page/chat_page/chat_page_message_container.dart';
 
-class ChatPageMessageList extends StatefulWidget {
-  final String groupchatTo;
-  final List<GroupchatUserEntity> users;
-  final List<GroupchatLeftUserEntity> leftUsers;
+class ChatMessageList extends StatefulWidget {
+  final Widget Function(BuildContext, MessageEntity)? itemBuilder;
   final List<MessageEntity> messages;
+  final void Function() loadMoreMessages;
 
-  const ChatPageMessageList({
+  const ChatMessageList({
     super.key,
-    required this.groupchatTo,
     required this.messages,
-    required this.users,
-    required this.leftUsers,
+    required this.itemBuilder,
+    required this.loadMoreMessages,
   });
 
   @override
-  State<ChatPageMessageList> createState() => _ChatPageMessageListState();
+  State<ChatMessageList> createState() => _ChatMessageListState();
 }
 
-class _ChatPageMessageListState extends State<ChatPageMessageList> {
+class _ChatMessageListState extends State<ChatMessageList> {
   late ScrollController _scrollController;
 
   @override
@@ -43,10 +35,8 @@ class _ChatPageMessageListState extends State<ChatPageMessageList> {
   }
 
   void _scrollListener() {
-    if (_scrollController.position.extentAfter <= 0 &&
-        BlocProvider.of<CurrentGroupchatCubit>(context).state.loadingMessages ==
-            false) {
-      BlocProvider.of<CurrentGroupchatCubit>(context).loadMessages();
+    if (_scrollController.position.extentAfter <= 0) {
+      widget.loadMoreMessages();
     }
   }
 
@@ -55,15 +45,7 @@ class _ChatPageMessageListState extends State<ChatPageMessageList> {
     return GroupedListView<MessageEntity, String>(
       controller: _scrollController,
       padding: const EdgeInsets.symmetric(vertical: 4),
-      itemBuilder: (context, message) {
-        return ChatPageMessageContainer(
-          currentUserId:
-              BlocProvider.of<AuthCubit>(context).state.currentUser.id,
-          message: message,
-          users: widget.users,
-          leftUsers: widget.leftUsers,
-        );
-      },
+      itemBuilder: widget.itemBuilder,
       elements: widget.messages,
       useStickyGroupSeparators: true,
       physics: const ClampingScrollPhysics(),

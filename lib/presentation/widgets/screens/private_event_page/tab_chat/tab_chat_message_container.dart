@@ -1,5 +1,5 @@
 import 'package:chattyevent_app_flutter/application/bloc/add_message/add_message_cubit.dart';
-import 'package:chattyevent_app_flutter/application/bloc/current_groupchat/current_chat_cubit.dart';
+import 'package:chattyevent_app_flutter/application/bloc/current_private_event/current_private_event_cubit.dart';
 import 'package:chattyevent_app_flutter/domain/entities/message/message_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/chat_message/chat_message_container.dart';
@@ -7,8 +7,8 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class ChatPageMessageContainer extends StatelessWidget {
-  const ChatPageMessageContainer({
+class TabChatMessageContainer extends StatelessWidget {
+  const TabChatMessageContainer({
     Key? key,
     required this.message,
     required this.currentUserId,
@@ -19,14 +19,14 @@ class ChatPageMessageContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CurrentGroupchatCubit, CurrentGroupchatState>(
+    return BlocBuilder<CurrentPrivateEventCubit, CurrentPrivateEventState>(
       builder: (context, state) {
         late UserEntity user;
-        final foundUser = state.users.firstWhereOrNull(
+        final foundUser = state.privateEventUsers.firstWhereOrNull(
           (element) => element.id == message.createdBy,
         );
         if (foundUser == null) {
-          final foundLeftUser = state.leftUsers.firstWhereOrNull(
+          final foundLeftUser = state.privateEventLeftUsers.firstWhereOrNull(
             (element) => element.id == message.createdBy,
           );
           if (foundLeftUser != null) {
@@ -51,12 +51,13 @@ class ChatPageMessageContainer extends StatelessWidget {
                     ),
                   );
                   late UserEntity userToReactTo;
-                  var foundUserToReactTo = state.users.firstWhereOrNull(
+                  var foundUserToReactTo =
+                      state.privateEventUsers.firstWhereOrNull(
                     (element) => element.id == message.createdBy,
                   );
                   if (foundUserToReactTo == null) {
                     final foundLeftUserToReactTo =
-                        state.leftUsers.firstWhereOrNull(
+                        state.privateEventLeftUsers.firstWhereOrNull(
                       (element) => element.id == message.createdBy,
                     );
                     if (foundLeftUserToReactTo != null) {

@@ -23,12 +23,17 @@ class ChatMessageInput extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               const Expanded(
-                child: Column(
-                  children: [
-                    ChatMessageInputFiles(),
-                    ChatMessageInputReactMessageContainer(),
-                    ChatMessageInputTextField(),
-                  ],
+                child: //Container(
+                    // constraints: const BoxConstraints(maxHeight: 200),child:
+                    SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      ChatMessageInputFiles(),
+                      ChatMessageInputReactMessageContainer(),
+                      ChatMessageInputTextField(),
+                    ],
+                  ),
+                  //  ),
                 ),
               ),
               const SizedBox(width: 8),
@@ -52,7 +57,7 @@ class ChatMessageInput extends StatelessWidget {
                   child: const Icon(Ionicons.add, size: 20),
                 ),
               ),
-              const SizedBox(width: 4),
+              const SizedBox(width: 8),
               InkWell(
                 customBorder: const CircleBorder(),
                 onTap: () =>

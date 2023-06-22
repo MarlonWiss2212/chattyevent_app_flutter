@@ -1,17 +1,17 @@
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
+import 'package:chattyevent_app_flutter/application/bloc/current_private_event/current_private_event_cubit.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/chat_message/chat_message_list.dart';
-import 'package:chattyevent_app_flutter/presentation/widgets/screens/chat_page/chat_page/chat_page_message_container.dart';
+import 'package:chattyevent_app_flutter/presentation/widgets/screens/private_event_page/tab_chat/tab_chat_message_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletons/skeletons.dart';
-import 'package:chattyevent_app_flutter/application/bloc/current_groupchat/current_chat_cubit.dart';
 
-class ChatPageMessageArea extends StatelessWidget {
-  const ChatPageMessageArea({super.key});
+class TabChatMessageArea extends StatelessWidget {
+  const TabChatMessageArea({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CurrentGroupchatCubit, CurrentGroupchatState>(
+    return BlocBuilder<CurrentPrivateEventCubit, CurrentPrivateEventState>(
       buildWhen: (previous, current) {
         if (previous.messages.length != current.messages.length) {
           return true;
@@ -19,10 +19,12 @@ class ChatPageMessageArea extends StatelessWidget {
         if (previous.loadingMessages != current.loadingMessages) {
           return true;
         }
-        if (previous.users.length != current.users.length) {
+        if (previous.privateEventUsers.length !=
+            current.privateEventUsers.length) {
           return true;
         }
-        if (previous.leftUsers.length != current.leftUsers.length) {
+        if (previous.privateEventLeftUsers.length !=
+            current.privateEventLeftUsers.length) {
           return true;
         }
         return true;
@@ -50,11 +52,10 @@ class ChatPageMessageArea extends StatelessWidget {
             },
           );
         }
-
         return ChatMessageList(
           messages: state.messages,
           itemBuilder: (context, message) {
-            return ChatPageMessageContainer(
+            return TabChatMessageContainer(
               currentUserId:
                   BlocProvider.of<AuthCubit>(context).state.currentUser.id,
               message: message,
@@ -62,7 +63,7 @@ class ChatPageMessageArea extends StatelessWidget {
           },
           loadMoreMessages: () {
             if (state.loadingMessages == false) {
-              BlocProvider.of<CurrentGroupchatCubit>(context).loadMessages();
+              BlocProvider.of<CurrentPrivateEventCubit>(context).loadMessages();
             }
           },
         );

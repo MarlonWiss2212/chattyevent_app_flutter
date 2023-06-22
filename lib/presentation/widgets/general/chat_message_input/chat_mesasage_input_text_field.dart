@@ -27,7 +27,7 @@ class _ChatMessageInputTextFieldState extends State<ChatMessageInputTextField> {
           alignment: Alignment.centerLeft,
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            borderRadius: state.messageToReactTo != null
+            borderRadius: state.messageToReactToWithUser != null
                 ? const BorderRadius.only(
                     bottomLeft: Radius.circular(8),
                     bottomRight: Radius.circular(8),

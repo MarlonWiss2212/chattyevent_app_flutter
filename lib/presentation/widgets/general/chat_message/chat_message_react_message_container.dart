@@ -1,47 +1,23 @@
 import 'package:chattyevent_app_flutter/application/bloc/add_message/add_message_cubit.dart';
-import 'package:chattyevent_app_flutter/domain/entities/message/message_entity.dart';
-import 'package:chattyevent_app_flutter/domain/entities/user/user_entity.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:ionicons/ionicons.dart';
 
-class ChatPageReactMessageContainer extends StatelessWidget {
-  const ChatPageReactMessageContainer({
+class ChatMessageReactMessageContainer extends StatelessWidget {
+  const ChatMessageReactMessageContainer({
     Key? key,
-    required this.message,
+    required this.messageAndUser,
     required this.currentUserId,
-    required this.users,
-    required this.leftUsers,
     required this.isInput,
   }) : super(key: key);
 
   final bool isInput;
   final String currentUserId;
-  final List<UserEntity> users;
-  final List<UserEntity> leftUsers;
-  final MessageEntity message;
+  final MessageAndUser messageAndUser;
 
   @override
   Widget build(BuildContext context) {
-    late UserEntity user;
-    final foundUser = users.firstWhereOrNull(
-      (element) => element.id == message.createdBy,
-    );
-    if (foundUser == null) {
-      final foundLeftUser = leftUsers.firstWhereOrNull(
-        (element) => element.id == message.createdBy,
-      );
-      if (foundLeftUser != null) {
-        user = foundLeftUser;
-      } else {
-        user = UserEntity(id: message.createdBy ?? "", authId: "");
-      }
-    } else {
-      user = foundUser;
-    }
-
     return LayoutBuilder(
       builder: (context, constraints) {
         return Container(
@@ -62,7 +38,7 @@ class ChatPageReactMessageContainer extends StatelessWidget {
               Container(
                 width: 4,
                 height: 40,
-                color: user.id == currentUserId
+                color: messageAndUser.user.id == currentUserId
                     ? Theme.of(context).colorScheme.primaryContainer
                     : Theme.of(context).colorScheme.surface,
               ),
@@ -78,14 +54,17 @@ class ChatPageReactMessageContainer extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          user.username != null ? user.username! : "",
+                          messageAndUser.user.username != null
+                              ? messageAndUser.user.username!
+                              : "",
                           style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                         const SizedBox(width: 8),
                         Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Text(DateFormat.jm().format(message.createdAt)),
+                            Text(DateFormat.jm()
+                                .format(messageAndUser.message.createdAt)),
                             const SizedBox(width: 8),
                             if (isInput) ...{
                               GestureDetector(
@@ -101,8 +80,8 @@ class ChatPageReactMessageContainer extends StatelessWidget {
                         )
                       ],
                     ),
-                    if (message.fileLinks != null &&
-                        message.fileLinks!.isNotEmpty) ...[
+                    if (messageAndUser.message.fileLinks != null &&
+                        messageAndUser.message.fileLinks!.isNotEmpty) ...[
                       const SizedBox(height: 8),
                       const Row(
                         children: [
@@ -112,13 +91,13 @@ class ChatPageReactMessageContainer extends StatelessWidget {
                         ],
                       ),
                     ],
-                    if (message.fileLinks != null &&
-                        message.fileLinks!.isNotEmpty) ...{
+                    if (messageAndUser.message.fileLinks != null &&
+                        messageAndUser.message.fileLinks!.isNotEmpty) ...{
                       const SizedBox(height: 8),
                     },
-                    if (message.message != null) ...{
+                    if (messageAndUser.message.message != null) ...{
                       Text(
-                        message.message!,
+                        messageAndUser.message.message!,
                         overflow: TextOverflow.ellipsis,
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),

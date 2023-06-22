@@ -4,6 +4,7 @@ import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:chattyevent_app_flutter/core/injection.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/chat_message_input/chat_message_input.dart';
+import 'package:chattyevent_app_flutter/presentation/widgets/screens/private_event_page/tab_chat/tab_chat_message_area.dart';
 import 'package:dartz/dartz.dart' as dz;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -49,7 +50,7 @@ class _PrivateEventTabChatState extends State<PrivateEventTabChat> {
           Expanded(
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 8.0),
-              child: Placeholder(), //ChatPageMessageArea(),
+              child: TabChatMessageArea(),
             ),
           ),
           ChatMessageInput(),

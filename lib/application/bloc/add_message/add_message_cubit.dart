@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:chattyevent_app_flutter/application/bloc/current_private_event/current_private_event_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/profile_page/profile_page_cubit.dart';
 import 'package:chattyevent_app_flutter/domain/entities/message/message_entity.dart';
+import 'package:chattyevent_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/image_picker_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/message_usecases.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -31,8 +32,8 @@ class AddMessageCubit extends Cubit<AddMessageState> {
     emitState(status: AddMessageStateStatus.loading);
 
     if (state.message == null ||
-        (state.groupchatTo == null ||
-            state.privateEventTo == null ||
+        (state.groupchatTo == null &&
+            state.privateEventTo == null &&
             state.userTo == null)) {
       notificationCubit.newAlert(
         notificationAlert: NotificationAlert(
@@ -40,6 +41,7 @@ class AddMessageCubit extends Cubit<AddMessageState> {
           message: "Bitte fülle erst alle Felder aus",
         ),
       );
+      return;
     }
 
     final Either<NotificationAlert, MessageEntity> messageOrFailure =
@@ -49,7 +51,7 @@ class AddMessageCubit extends Cubit<AddMessageState> {
         groupchatTo: state.groupchatTo,
         userTo: state.userTo,
         privateEventTo: state.privateEventTo,
-        messageToReactTo: state.messageToReactTo?.id,
+        messageToReactTo: state.messageToReactToWithUser?.message.id,
         file: state.file,
       ),
     );
@@ -104,17 +106,21 @@ class AddMessageCubit extends Cubit<AddMessageState> {
     bool removeMessageToReactTo = false,
     String? message,
     String? groupchatTo,
-    MessageEntity? messageToReactTo,
+    MessageAndUser? messageToReactToWithUser,
+    String? userTo,
+    String? privateEventTo,
   }) {
     emit(AddMessageState(
       message: message ?? state.message,
-      messageToReactTo: removeMessageToReactTo
+      messageToReactToWithUser: removeMessageToReactTo
           ? null
-          : messageToReactTo ?? state.messageToReactTo,
+          : messageToReactToWithUser ?? state.messageToReactToWithUser,
       groupchatTo: groupchatTo ?? state.groupchatTo,
       file: removeFile ? null : file ?? state.file,
       status: status ?? AddMessageStateStatus.initial,
       addedMessage: addedMessage ?? state.addedMessage,
+      userTo: userTo ?? state.userTo,
+      privateEventTo: privateEventTo ?? state.privateEventTo,
     ));
   }
 }
