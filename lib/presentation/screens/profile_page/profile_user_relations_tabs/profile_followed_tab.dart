@@ -31,17 +31,13 @@ class _ProfileFollowedTabState extends State<ProfileFollowedTab> {
         BlocBuilder<ProfilePageCubit, ProfilePageState>(
           builder: (context, state) {
             if (state.followedStatus ==
-                        ProfilePageStateFollowedStatus.loading &&
-                    state.followed == null ||
-                state.followedStatus ==
-                        ProfilePageStateFollowedStatus.loading &&
-                    state.followed != null &&
-                    state.followed!.isEmpty) {
+                    ProfilePageStateFollowedStatus.loading &&
+                state.followed.isEmpty) {
               return const ProfileFollowedTabSkeletonListView();
             }
 
             return ProfileFollowedTabListView(
-              followed: state.followed ?? [],
+              followed: state.followed,
               loadMore: () {
                 BlocProvider.of<ProfilePageCubit>(context).getFollowRequests();
               },

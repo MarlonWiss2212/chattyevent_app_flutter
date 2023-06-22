@@ -49,42 +49,6 @@ class CurrentGroupchatCubit extends Cubit<CurrentGroupchatState> {
     required this.messageUseCases,
   });
 
-  void listenToMessages() {
-    final eitherAlertOrStream = messageUseCases.getMessagesRealtimeViaApi(
-      addedMessageFilter: AddedMessageFilter(
-        groupchatTo: state.currentChat.id,
-      ),
-    );
-
-    eitherAlertOrStream.fold(
-      (alert) => notificationCubit.newAlert(
-        notificationAlert: NotificationAlert(
-          title: "Nachrichten error",
-          message:
-              "Fehler beim herstellen einer Verbindung um live nachrichten zu erhalten",
-        ),
-      ),
-      (subscription) {
-        _subscription = subscription.listen(
-          (event) {
-            event.fold(
-              (error) => notificationCubit.newAlert(
-                notificationAlert: NotificationAlert(
-                  title: "Nachrichten error",
-                  message:
-                      "Fehler beim herstellen einer Verbindung um live nachrichten zu erhalten",
-                ),
-              ),
-              (message) => addMessage(
-                message: message,
-              ),
-            );
-          },
-        );
-      },
-    );
-  }
-
   @override
   Future<void> close() {
     _subscription?.cancel();
@@ -388,6 +352,42 @@ class CurrentGroupchatCubit extends Cubit<CurrentGroupchatState> {
           chatCubit.replaceOrAdd(
               chat: ChatEntity(groupchat: state.currentChat));
         }
+      },
+    );
+  }
+
+  void listenToMessages() {
+    final eitherAlertOrStream = messageUseCases.getMessagesRealtimeViaApi(
+      addedMessageFilter: AddedMessageFilter(
+        groupchatTo: state.currentChat.id,
+      ),
+    );
+
+    eitherAlertOrStream.fold(
+      (alert) => notificationCubit.newAlert(
+        notificationAlert: NotificationAlert(
+          title: "Nachrichten error",
+          message:
+              "Fehler beim herstellen einer Verbindung um live nachrichten zu erhalten",
+        ),
+      ),
+      (subscription) {
+        _subscription = subscription.listen(
+          (event) {
+            event.fold(
+              (error) => notificationCubit.newAlert(
+                notificationAlert: NotificationAlert(
+                  title: "Nachrichten error",
+                  message:
+                      "Fehler beim herstellen einer Verbindung um live nachrichten zu erhalten",
+                ),
+              ),
+              (message) => addMessage(
+                message: message,
+              ),
+            );
+          },
+        );
       },
     );
   }

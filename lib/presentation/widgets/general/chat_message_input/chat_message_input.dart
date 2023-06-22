@@ -3,6 +3,7 @@ import 'package:chattyevent_app_flutter/presentation/widgets/general/chat_messag
 import 'package:chattyevent_app_flutter/presentation/widgets/general/chat_message_input/chat_message_input_react_message_container.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/dialog/add_chat_message_detail_dialog/add_chat_message_detail_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/add_message/add_message_cubit.dart';
 import 'package:ionicons/ionicons.dart';
@@ -34,8 +35,10 @@ class ChatMessageInput extends StatelessWidget {
               InkWell(
                 customBorder: const CircleBorder(),
                 onTap: () async {
-                  await showDialog(
+                  await showAnimatedDialog(
                     context: context,
+                    curve: Curves.fastOutSlowIn,
+                    animationType: DialogTransitionType.slideFromBottomFade,
                     builder: (c) => AddChatMessageDetailDialog(c: context),
                   );
                 },

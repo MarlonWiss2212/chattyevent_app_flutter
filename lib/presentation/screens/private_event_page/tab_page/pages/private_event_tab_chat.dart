@@ -4,14 +4,13 @@ import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:chattyevent_app_flutter/core/injection.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/chat_message_input/chat_message_input.dart';
-//import 'package:chattyevent_app_flutter/presentation/widgets/screens/chat_page/chat_page/chat_page_message_area.dart';
-import 'package:dartz/dartz.dart';
+import 'package:dartz/dartz.dart' as dz;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/current_private_event/current_private_event_cubit.dart';
 
-class PrivateEventTabChat extends StatelessWidget {
+class PrivateEventTabChat extends StatefulWidget {
   final String privateEventId;
   const PrivateEventTabChat({
     @PathParam('id') required this.privateEventId,
@@ -19,17 +18,32 @@ class PrivateEventTabChat extends StatelessWidget {
   });
 
   @override
+  State<PrivateEventTabChat> createState() => _PrivateEventTabChatState();
+}
+
+class _PrivateEventTabChatState extends State<PrivateEventTabChat> {
+  @override
+  void initState() {
+    BlocProvider.of<CurrentPrivateEventCubit>(context).loadMessages(
+      reload: true,
+    );
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocProvider.value(
-      value: AddMessageCubit(AddMessageState(privateEventTo: privateEventId),
-          notificationCubit: BlocProvider.of<NotificationCubit>(context),
-          messageUseCases: serviceLocator(
-            param1: BlocProvider.of<AuthCubit>(context).state,
-          ),
-          imagePickerUseCases: serviceLocator(),
-          cubitToAddMessageTo: Left(Left(
-            BlocProvider.of<CurrentPrivateEventCubit>(context),
-          ))),
+      value: AddMessageCubit(
+        AddMessageState(privateEventTo: widget.privateEventId),
+        notificationCubit: BlocProvider.of<NotificationCubit>(context),
+        messageUseCases: serviceLocator(
+          param1: BlocProvider.of<AuthCubit>(context).state,
+        ),
+        imagePickerUseCases: serviceLocator(),
+        cubitToAddMessageTo: dz.Left(dz.Left(
+          BlocProvider.of<CurrentPrivateEventCubit>(context),
+        )),
+      ),
       child: const Column(
         children: [
           Expanded(

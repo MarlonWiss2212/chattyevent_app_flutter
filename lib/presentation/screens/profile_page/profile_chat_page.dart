@@ -65,9 +65,7 @@ class _ProfileChatPageState extends State<ProfileChatPage> {
         actions: [
           PlatformIconButton(
             icon: const Icon(Icons.info),
-            onPressed: () => AutoRouter.of(context).push(
-              ChatInfoPageRoute(),
-            ),
+            onPressed: () => AutoRouter.of(context).push(ProfilePageRoute()),
           )
         ],
       ),

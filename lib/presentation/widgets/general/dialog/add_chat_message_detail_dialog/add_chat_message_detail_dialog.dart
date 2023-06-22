@@ -17,56 +17,66 @@ class AddChatMessageDetailDialog extends StatelessWidget {
       filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
       child: Dialog(
         backgroundColor: Colors.transparent,
-        child: Align(
-          alignment: Alignment.topLeft,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              IconButton(
-                onPressed: () => Navigator.of(context).pop(),
-                icon: const Icon(Ionicons.close),
-              ),
-              const SizedBox(height: 12),
-              SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 12),
-                    GestureDetector(
-                      onTap: () => BlocProvider.of<AddMessageCubit>(c)
-                          .setFileFromCamera(),
-                      child: Row(
-                        children: [
-                          const Icon(Ionicons.camera, size: 32),
-                          const SizedBox(width: 32),
-                          Text(
-                            "Kamera",
-                            style: Theme.of(context).textTheme.titleMedium,
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    GestureDetector(
-                      onTap: () => BlocProvider.of<AddMessageCubit>(c)
-                          .setFileFromGallery(),
-                      child: Row(
-                        children: [
-                          const Icon(Ionicons.image, size: 32),
-                          const SizedBox(width: 32),
-                          Text(
-                            "Gallerie",
-                            style: Theme.of(context).textTheme.titleMedium,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+        insetPadding: const EdgeInsets.all(20),
+        child: Padding(
+          padding: const EdgeInsets.all(12),
+          child: Align(
+            alignment: Alignment.topLeft,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                IconButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  icon: const Icon(Ionicons.close),
                 ),
-              ),
-            ],
+                const SizedBox(height: 20),
+                SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      InkWell(
+                        borderRadius: BorderRadius.circular(8),
+                        onTap: () => BlocProvider.of<AddMessageCubit>(c)
+                            .setFileFromCamera(),
+                        child: Ink(
+                          padding: const EdgeInsets.all(10),
+                          child: Row(
+                            children: [
+                              const Icon(Ionicons.camera, size: 32),
+                              const SizedBox(width: 32),
+                              Text(
+                                "Kamera",
+                                style: Theme.of(context).textTheme.titleMedium,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      InkWell(
+                        borderRadius: BorderRadius.circular(8),
+                        onTap: () => BlocProvider.of<AddMessageCubit>(c)
+                            .setFileFromGallery(),
+                        child: Ink(
+                          padding: const EdgeInsets.all(10),
+                          child: Row(
+                            children: [
+                              const Icon(Ionicons.image, size: 32),
+                              const SizedBox(width: 32),
+                              Text(
+                                "Gallerie",
+                                style: Theme.of(context).textTheme.titleMedium,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

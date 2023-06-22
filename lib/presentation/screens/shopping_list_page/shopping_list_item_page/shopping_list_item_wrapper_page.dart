@@ -33,6 +33,9 @@ class ShoppingListItemWrapperPage extends StatelessWidget {
           eventDate: DateTime.now(),
         ),
       ),
+      messageUseCases: serviceLocator(
+        param1: BlocProvider.of<AuthCubit>(context).state,
+      ),
       authCubit: BlocProvider.of<AuthCubit>(context),
       locationUseCases: serviceLocator(),
       chatCubit: BlocProvider.of<ChatCubit>(context),

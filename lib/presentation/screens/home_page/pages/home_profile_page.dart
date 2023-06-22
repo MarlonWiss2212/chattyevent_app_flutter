@@ -18,13 +18,16 @@ class HomeProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => ProfilePageCubit(
-        ProfilePageState(
+        ProfilePageState.fromUser(
           user: BlocProvider.of<AuthCubit>(context).state.currentUser,
         ),
         userUseCases: serviceLocator(
           param1: BlocProvider.of<AuthCubit>(context).state,
         ),
         userRelationUseCases: serviceLocator(
+          param1: BlocProvider.of<AuthCubit>(context).state,
+        ),
+        messageUseCases: serviceLocator(
           param1: BlocProvider.of<AuthCubit>(context).state,
         ),
         notificationCubit: BlocProvider.of<NotificationCubit>(context),

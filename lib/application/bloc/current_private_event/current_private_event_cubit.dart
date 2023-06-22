@@ -1,7 +1,12 @@
+import 'dart:async';
+
 import 'package:chattyevent_app_flutter/core/enums/private_event/private_event_user/private_event_user_role_enum.dart';
 import 'package:chattyevent_app_flutter/core/enums/private_event/private_event_user_status_enum.dart';
+import 'package:chattyevent_app_flutter/core/filter/message/added_message_filter.dart';
+import 'package:chattyevent_app_flutter/core/filter/message/find_messages_filter.dart';
 import 'package:chattyevent_app_flutter/domain/entities/chat_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/message/message_entity.dart';
+import 'package:chattyevent_app_flutter/domain/usecases/message_usecases.dart';
 import 'package:collection/collection.dart';
 import 'package:dartz/dartz.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
@@ -44,6 +49,9 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
   final GroupchatUseCases groupchatUseCases;
   final LocationUseCases locationUseCases;
   final ShoppingListItemUseCases shoppingListItemUseCases;
+  final MessageUseCases messageUseCases;
+
+  StreamSubscription<Either<NotificationAlert, MessageEntity>>? _subscription;
 
   CurrentPrivateEventCubit(
     super.initialState, {
@@ -55,7 +63,15 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
     required this.groupchatUseCases,
     required this.shoppingListItemUseCases,
     required this.privateEventUseCases,
+    required this.messageUseCases,
   });
+
+  @override
+  Future<void> close() {
+    _subscription?.cancel();
+    _subscription = null;
+    return super.close();
+  }
 
   Future reloadPrivateEventStandardDataViaApi() async {
     emitState(loadingGroupchat: true, loadingPrivateEvent: true);
@@ -437,6 +453,85 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
         }
       },
     );
+  }
+
+  // messages only for private events where no groupchat is connected
+
+  void listenToMessages() {
+    if (state.privateEvent.groupchatTo != null) return;
+    final eitherAlertOrStream = messageUseCases.getMessagesRealtimeViaApi(
+      addedMessageFilter: AddedMessageFilter(
+        privateEventTo: state.privateEvent.id,
+      ),
+    );
+
+    eitherAlertOrStream.fold(
+      (alert) => notificationCubit.newAlert(
+        notificationAlert: NotificationAlert(
+          title: "Nachrichten error",
+          message:
+              "Fehler beim herstellen einer Verbindung um live nachrichten zu erhalten",
+        ),
+      ),
+      (subscription) {
+        _subscription = subscription.listen(
+          (event) {
+            event.fold(
+              (error) => notificationCubit.newAlert(
+                notificationAlert: NotificationAlert(
+                  title: "Nachrichten error",
+                  message:
+                      "Fehler beim herstellen einer Verbindung um live nachrichten zu erhalten",
+                ),
+              ),
+              (message) => addMessage(message: message),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  Future loadMessages({bool reload = false}) async {
+    if (state.privateEvent.groupchatTo != null) return;
+    emitState(loadingMessages: true);
+
+    final Either<NotificationAlert, List<MessageEntity>> messagesOrFailure =
+        await messageUseCases.getMessagesViaApi(
+      findMessagesFilter: FindMessagesFilter(
+        privateEventTo: state.privateEvent.id,
+      ),
+      limitOffsetFilter: LimitOffsetFilter(
+        limit: reload
+            ? state.messages.length > 20
+                ? state.messages.length
+                : 20
+            : 20,
+        offset: reload ? 0 : state.messages.length,
+      ),
+    );
+
+    messagesOrFailure.fold(
+      (alert) {
+        notificationCubit.newAlert(notificationAlert: alert);
+        emitState(loadingMessages: false);
+      },
+      (messages) {
+        List<MessageEntity> newMessages = [];
+        if (reload == false) {
+          newMessages = List.from(state.messages)..addAll(messages);
+        } else {
+          newMessages = messages;
+        }
+
+        emitState(messages: newMessages, loadingMessages: false);
+      },
+    );
+  }
+
+  MessageEntity addMessage({required MessageEntity message}) {
+    emitState(messages: List.from(state.messages)..add(message));
+    return message;
   }
 
   void emitState({

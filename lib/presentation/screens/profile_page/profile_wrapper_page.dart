@@ -21,8 +21,11 @@ class ProfileWrapperPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => ProfilePageCubit(
-        ProfilePageState(user: userToSet),
+        ProfilePageState.fromUser(user: userToSet),
         userRelationUseCases: serviceLocator(
+          param1: BlocProvider.of<AuthCubit>(context).state,
+        ),
+        messageUseCases: serviceLocator(
           param1: BlocProvider.of<AuthCubit>(context).state,
         ),
         userUseCases: serviceLocator(

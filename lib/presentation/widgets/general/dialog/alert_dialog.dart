@@ -43,7 +43,7 @@ class CustomAlertDialog extends StatelessWidget {
                   ],
                 ),
               ),
-              Button(onTap: () => Navigator.of(c).pop(), text: "Ok")
+              Button(onTap: () => Navigator.of(c).pop(), text: "OK")
             ],
           ),
         ),

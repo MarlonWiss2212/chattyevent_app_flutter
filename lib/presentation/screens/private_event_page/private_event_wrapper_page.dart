@@ -28,6 +28,9 @@ class PrivateEventWrapperPage extends StatelessWidget {
       chatCubit: BlocProvider.of<ChatCubit>(context),
       notificationCubit: BlocProvider.of<NotificationCubit>(context),
       locationUseCases: serviceLocator(),
+      messageUseCases: serviceLocator(
+        param1: BlocProvider.of<AuthCubit>(context).state,
+      ),
       groupchatUseCases: serviceLocator(
         param1: BlocProvider.of<AuthCubit>(context).state,
       ),
@@ -40,7 +43,8 @@ class PrivateEventWrapperPage extends StatelessWidget {
       ),
     )
           ..setGroupchatFromChatCubit()
-          ..reloadPrivateEventStandardDataViaApi();
+          ..reloadPrivateEventStandardDataViaApi()
+          ..listenToMessages();
 
     return MultiBlocProvider(
       providers: [

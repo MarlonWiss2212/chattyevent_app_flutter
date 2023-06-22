@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:chattyevent_app_flutter/presentation/widgets/screens/profile_page/profile_page/profile_page_chat_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -52,10 +53,10 @@ class ProfilePage extends StatelessWidget {
                       SizedBox(height: 20),
                       ProfileFollowerCounts(),
                       SizedBox(height: 20),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 8.0),
-                        child: ProfilePageFollowButton(),
-                      ),
+                      ProfilePageFollowButton(),
+                      SizedBox(height: 20),
+                      // can be empty
+                      ProfilePageChatButton(),
                     ],
                   ),
                 );
