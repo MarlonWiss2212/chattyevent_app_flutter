@@ -54,9 +54,7 @@ class ChatMessageReactMessageContainer extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          messageAndUser.user.username != null
-                              ? messageAndUser.user.username!
-                              : "",
+                          messageAndUser.user.username ?? "",
                           style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                         const SizedBox(width: 8),

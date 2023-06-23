@@ -28,12 +28,8 @@ class _EditInputTextFieldState extends State<EditInputTextField> {
   Widget build(BuildContext context) {
     if (!editing) {
       return InkWell(
-        onTap: () {
-          if (widget.editable == false) {
-            return;
-          }
-          setState(() => editing = !editing);
-        },
+        onTap:
+            widget.editable ? () => setState(() => editing = !editing) : null,
         child: Text(
           widget.text,
           style: widget.textStyle,

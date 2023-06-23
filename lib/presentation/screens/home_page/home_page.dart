@@ -17,7 +17,7 @@ class HomePage extends StatelessWidget {
       routes: [
         const HomeChatPageRoute(),
         const HomeEventPageRoute(),
-        const HomeMapPageRoute(),
+        //  const HomeMapPageRoute(),
         const HomeSearchPageRoute(),
         HomeProfilePageRoute(
           userId: BlocProvider.of<AuthCubit>(context).state.currentUser.id,
@@ -62,15 +62,15 @@ class HomePage extends StatelessWidget {
                             label: Text('Chat'),
                           ),
                           NavigationRailDestination(
-                            icon: Icon(Ionicons.people_outline),
-                            selectedIcon: Icon(Ionicons.people),
+                            icon: Icon(Icons.celebration_outlined),
+                            selectedIcon: Icon(Icons.celebration),
                             label: Text('Party'),
                           ),
-                          NavigationRailDestination(
+                          /*     NavigationRailDestination(
                             icon: Icon(Ionicons.map_outline),
                             selectedIcon: Icon(Ionicons.map),
                             label: Text('Map'),
-                          ),
+                          ),*/
                           NavigationRailDestination(
                             icon: Icon(Ionicons.search_outline),
                             selectedIcon: Icon(Ionicons.search),
@@ -120,15 +120,15 @@ class HomePage extends StatelessWidget {
                       label: 'Chat',
                     ),
                     BottomNavigationBarItem(
-                      icon: Icon(Ionicons.people_outline),
-                      activeIcon: Icon(Ionicons.people),
+                      icon: Icon(Icons.celebration_outlined),
+                      activeIcon: Icon(Icons.celebration),
                       label: 'Party',
                     ),
-                    BottomNavigationBarItem(
+                    /*   BottomNavigationBarItem(
                       icon: Icon(Ionicons.map_outline),
                       activeIcon: Icon(Ionicons.map),
                       label: 'Map',
-                    ),
+                    ),*/
                     BottomNavigationBarItem(
                       icon: Icon(Ionicons.search_outline),
                       activeIcon: Icon(Ionicons.search),

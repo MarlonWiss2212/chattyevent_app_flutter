@@ -83,8 +83,10 @@ class CurrentShoppingListItemPageWithProgressBar extends StatelessWidget {
                   Container(
                     constraints: const BoxConstraints(maxWidth: 100),
                     child: EditInputTextField(
-                      text: state.shoppingListItem.unit?.toString() ??
-                          " (anzahl)",
+                      text: state.shoppingListItem.unit == null ||
+                              state.shoppingListItem.unit!.isEmpty
+                          ? " (einheit)"
+                          : state.shoppingListItem.unit!,
                       onSaved: (text) async {
                         BlocProvider.of<CurrentShoppingListItemCubit>(context)
                             .updateShoppingListItemViaApi(

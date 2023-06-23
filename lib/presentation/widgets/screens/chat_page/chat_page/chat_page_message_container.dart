@@ -52,18 +52,19 @@ class ChatPageMessageContainer extends StatelessWidget {
                   );
                   late UserEntity userToReactTo;
                   var foundUserToReactTo = state.users.firstWhereOrNull(
-                    (element) => element.id == message.createdBy,
+                    (element) => element.id == foundMessageToReactTo.createdBy,
                   );
                   if (foundUserToReactTo == null) {
                     final foundLeftUserToReactTo =
                         state.leftUsers.firstWhereOrNull(
-                      (element) => element.id == message.createdBy,
+                      (element) =>
+                          element.id == foundMessageToReactTo.createdBy,
                     );
                     if (foundLeftUserToReactTo != null) {
                       userToReactTo = foundLeftUserToReactTo;
                     } else {
                       userToReactTo = UserEntity(
-                        id: message.createdBy ?? "",
+                        id: foundMessageToReactTo.createdBy ?? "",
                         authId: "",
                       );
                     }

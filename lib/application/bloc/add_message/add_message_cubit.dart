@@ -64,15 +64,18 @@ class AddMessageCubit extends Cubit<AddMessageState> {
       (message) {
         emit(AddMessageState(
           groupchatTo: state.groupchatTo,
+          privateEventTo: state.privateEventTo,
+          userTo: state.userTo,
           status: AddMessageStateStatus.success,
           addedMessage: message,
         ));
         cubitToAddMessageTo.fold(
           (either) => either.fold(
-            (privateEventCubit) => null,
+            (privateEventCubit) =>
+                privateEventCubit.addMessage(message: message),
             (groupchatCubit) => groupchatCubit.addMessage(message: message),
           ),
-          (profileCubit) => null,
+          (profileCubit) => profileCubit.addMessage(message: message),
         );
       },
     );

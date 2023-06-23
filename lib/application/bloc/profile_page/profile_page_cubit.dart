@@ -1,6 +1,4 @@
 import 'dart:async';
-
-import 'package:chattyevent_app_flutter/core/enums/user_relation/user_relation_status_enum.dart';
 import 'package:chattyevent_app_flutter/core/filter/message/added_message_filter.dart';
 import 'package:chattyevent_app_flutter/core/filter/message/find_messages_filter.dart';
 import 'package:chattyevent_app_flutter/domain/entities/message/message_entity.dart';
@@ -601,8 +599,6 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
   // messages only if follow the other user
 
   void listenToMessages() {
-    if (state.user.myUserRelationToOtherUser?.statusOnRelatedUser !=
-        UserRelationStatusEnum.follower) return;
     final eitherAlertOrStream = messageUseCases.getMessagesRealtimeViaApi(
       addedMessageFilter: AddedMessageFilter(userTo: state.user.id),
     );
@@ -635,15 +631,11 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
   }
 
   Future loadMessages({bool reload = false}) async {
-    if (state.user.myUserRelationToOtherUser?.statusOnRelatedUser !=
-        UserRelationStatusEnum.follower) return;
     emitState(loadingMessages: true);
 
     final Either<NotificationAlert, List<MessageEntity>> messagesOrFailure =
         await messageUseCases.getMessagesViaApi(
-      findMessagesFilter: FindMessagesFilter(
-        userTo: state.user.id,
-      ),
+      findMessagesFilter: FindMessagesFilter(userTo: state.user.id),
       limitOffsetFilter: LimitOffsetFilter(
         limit: reload
             ? state.messages.length > 20
@@ -689,9 +681,11 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
     List<MessageEntity>? messages,
     bool? loadingMessages,
   }) {
+    final List<MessageEntity> allMessages = messages ?? state.messages;
+    allMessages.sort((a, b) => b.createdAt.compareTo(a.createdAt));
     emit(
       ProfilePageState(
-        messages: messages ?? state.messages,
+        messages: allMessages,
         loadingMessages: loadingMessages ?? state.loadingMessages,
         user: user ?? state.user,
         status: status ?? state.status,

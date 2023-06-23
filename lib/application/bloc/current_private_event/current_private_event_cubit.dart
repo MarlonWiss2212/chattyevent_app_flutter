@@ -548,8 +548,11 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
     List<CurrentShoppingListItemState>? shoppingListItemStates,
     CurrentPrivateEventStateStatus? status,
   }) {
+    final List<MessageEntity> allMessages = messages ?? state.messages;
+    allMessages.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+
     final CurrentPrivateEventState newState = CurrentPrivateEventState(
-      messages: messages ?? state.messages,
+      messages: allMessages,
       loadingMessages: loadingMessages ?? state.loadingMessages,
       currentUserIndex: currentUserIndex ?? state.currentUserIndex,
       shoppingListItemStates:

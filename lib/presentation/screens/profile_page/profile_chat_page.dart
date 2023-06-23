@@ -2,11 +2,11 @@ import 'package:auto_route/auto_route.dart';
 import 'package:chattyevent_app_flutter/application/bloc/add_message/add_message_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/profile_page/profile_page_cubit.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/chat_message_input/chat_message_input.dart';
+import 'package:chattyevent_app_flutter/presentation/widgets/screens/profile_page/profile_chat_page/profile_chat_page_message_area.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
-import 'package:chattyevent_app_flutter/application/bloc/current_groupchat/current_chat_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:chattyevent_app_flutter/core/injection.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
@@ -26,7 +26,8 @@ class ProfileChatPage extends StatefulWidget {
 class _ProfileChatPageState extends State<ProfileChatPage> {
   @override
   void initState() {
-    //BlocProvider.of<CurrentGroupchatCubit>(context).loadMessages(reload: true);
+    BlocProvider.of<ProfilePageCubit>(context).loadMessages(reload: true);
+    BlocProvider.of<ProfilePageCubit>(context).listenToMessages();
     super.initState();
   }
 
@@ -71,9 +72,9 @@ class _ProfileChatPageState extends State<ProfileChatPage> {
       ),
       body: Column(
         children: [
-          BlocBuilder<CurrentGroupchatCubit, CurrentGroupchatState>(
+          BlocBuilder<ProfilePageCubit, ProfilePageState>(
             builder: (context, state) {
-              if (state.loadingChat || state.loadingMessages) {
+              if (state.loadingMessages) {
                 return const LinearProgressIndicator();
               }
               return const SizedBox();
@@ -97,7 +98,7 @@ class _ProfileChatPageState extends State<ProfileChatPage> {
                   Expanded(
                     child: Padding(
                       padding: EdgeInsets.symmetric(horizontal: 8.0),
-                      child: Placeholder(), //ChatPageMessageArea(),
+                      child: ProfileChatPageMessageArea(),
                     ),
                   ),
                   ChatMessageInput(),

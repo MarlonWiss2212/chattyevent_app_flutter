@@ -27,7 +27,7 @@ class TabChatMessageArea extends StatelessWidget {
             current.privateEventLeftUsers.length) {
           return true;
         }
-        return true;
+        return false;
       },
       builder: (context, state) {
         if (state.loadingMessages == false && state.messages.isEmpty) {
