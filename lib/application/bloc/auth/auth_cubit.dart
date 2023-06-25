@@ -11,7 +11,7 @@ import 'package:chattyevent_app_flutter/core/injection.dart';
 import 'package:chattyevent_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/auth_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/user_usecases.dart';
-import '../../../core/one_signal.dart' as one_signal;
+import '../../../core/utils/one_signal_utils.dart';
 
 part 'auth_state.dart';
 
@@ -49,7 +49,7 @@ class AuthCubit extends Cubit<AuthState> {
       },
       (user) async {
         emitState(currentUser: user);
-        await one_signal.setExternalUserId(user.id);
+        await OneSignalUtils.setExternalUserId(user.id);
       },
     );
   }

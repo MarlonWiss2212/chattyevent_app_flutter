@@ -277,7 +277,10 @@ class AppRouter extends _i61.RootStackRouter {
       );
     },
     ChatPageWrapperRoute.name: (routeData) {
-      final args = routeData.argsAs<ChatPageWrapperRouteArgs>();
+      final pathParams = routeData.inheritedPathParams;
+      final args = routeData.argsAs<ChatPageWrapperRouteArgs>(
+          orElse: () => ChatPageWrapperRouteArgs(
+              groupchatId: pathParams.getString('id')));
       return _i61.AdaptivePage<dynamic>(
         routeData: routeData,
         child: _i18.ChatPageWrapper(
@@ -288,7 +291,10 @@ class AppRouter extends _i61.RootStackRouter {
       );
     },
     PrivateEventWrapperPageRoute.name: (routeData) {
-      final args = routeData.argsAs<PrivateEventWrapperPageRouteArgs>();
+      final pathParams = routeData.inheritedPathParams;
+      final args = routeData.argsAs<PrivateEventWrapperPageRouteArgs>(
+          orElse: () => PrivateEventWrapperPageRouteArgs(
+              privateEventId: pathParams.getString('id')));
       return _i61.AdaptivePage<dynamic>(
         routeData: routeData,
         child: _i19.PrivateEventWrapperPage(
@@ -299,12 +305,15 @@ class AppRouter extends _i61.RootStackRouter {
       );
     },
     ProfileWrapperPageRoute.name: (routeData) {
-      final args = routeData.argsAs<ProfileWrapperPageRouteArgs>();
+      final pathParams = routeData.inheritedPathParams;
+      final args = routeData.argsAs<ProfileWrapperPageRouteArgs>(
+          orElse: () =>
+              ProfileWrapperPageRouteArgs(userId: pathParams.getString('id')));
       return _i61.AdaptivePage<dynamic>(
         routeData: routeData,
         child: _i20.ProfileWrapperPage(
           key: args.key,
-          userToSet: args.userToSet,
+          user: args.user,
           userId: args.userId,
         ),
       );
@@ -851,7 +860,7 @@ class AppRouter extends _i61.RootStackRouter {
         ),
         _i61.RouteConfig(
           ChatPageWrapperRoute.name,
-          path: '/chats/:id',
+          path: '/groupchat/:id',
           guards: [authGuard],
           children: [
             _i61.RouteConfig(
@@ -1358,11 +1367,11 @@ class ChatPageWrapperRoute
   ChatPageWrapperRoute({
     _i62.Key? key,
     required String groupchatId,
-    required _i67.GroupchatEntity groupchat,
+    _i67.GroupchatEntity? groupchat,
     List<_i61.PageRouteInfo>? children,
   }) : super(
           ChatPageWrapperRoute.name,
-          path: '/chats/:id',
+          path: '/groupchat/:id',
           args: ChatPageWrapperRouteArgs(
             key: key,
             groupchatId: groupchatId,
@@ -1379,14 +1388,14 @@ class ChatPageWrapperRouteArgs {
   const ChatPageWrapperRouteArgs({
     this.key,
     required this.groupchatId,
-    required this.groupchat,
+    this.groupchat,
   });
 
   final _i62.Key? key;
 
   final String groupchatId;
 
-  final _i67.GroupchatEntity groupchat;
+  final _i67.GroupchatEntity? groupchat;
 
   @override
   String toString() {
@@ -1400,7 +1409,7 @@ class PrivateEventWrapperPageRoute
     extends _i61.PageRouteInfo<PrivateEventWrapperPageRouteArgs> {
   PrivateEventWrapperPageRoute({
     required String privateEventId,
-    required _i68.CurrentPrivateEventState privateEventStateToSet,
+    _i68.CurrentPrivateEventState? privateEventStateToSet,
     _i62.Key? key,
     List<_i61.PageRouteInfo>? children,
   }) : super(
@@ -1421,13 +1430,13 @@ class PrivateEventWrapperPageRoute
 class PrivateEventWrapperPageRouteArgs {
   const PrivateEventWrapperPageRouteArgs({
     required this.privateEventId,
-    required this.privateEventStateToSet,
+    this.privateEventStateToSet,
     this.key,
   });
 
   final String privateEventId;
 
-  final _i68.CurrentPrivateEventState privateEventStateToSet;
+  final _i68.CurrentPrivateEventState? privateEventStateToSet;
 
   final _i62.Key? key;
 
@@ -1443,7 +1452,7 @@ class ProfileWrapperPageRoute
     extends _i61.PageRouteInfo<ProfileWrapperPageRouteArgs> {
   ProfileWrapperPageRoute({
     _i62.Key? key,
-    required _i69.UserEntity userToSet,
+    _i69.UserEntity? user,
     required String userId,
     List<_i61.PageRouteInfo>? children,
   }) : super(
@@ -1451,7 +1460,7 @@ class ProfileWrapperPageRoute
           path: '/profile/:id',
           args: ProfileWrapperPageRouteArgs(
             key: key,
-            userToSet: userToSet,
+            user: user,
             userId: userId,
           ),
           rawPathParams: {'id': userId},
@@ -1464,19 +1473,19 @@ class ProfileWrapperPageRoute
 class ProfileWrapperPageRouteArgs {
   const ProfileWrapperPageRouteArgs({
     this.key,
-    required this.userToSet,
+    this.user,
     required this.userId,
   });
 
   final _i62.Key? key;
 
-  final _i69.UserEntity userToSet;
+  final _i69.UserEntity? user;
 
   final String userId;
 
   @override
   String toString() {
-    return 'ProfileWrapperPageRouteArgs{key: $key, userToSet: $userToSet, userId: $userId}';
+    return 'ProfileWrapperPageRouteArgs{key: $key, user: $user, userId: $userId}';
   }
 }
 

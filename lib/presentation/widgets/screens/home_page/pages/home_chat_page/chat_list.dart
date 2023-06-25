@@ -189,7 +189,7 @@ class _ChatListState extends State<ChatList> {
               } else if (widget.chats[index].user != null) {
                 AutoRouter.of(context).push(
                   ProfileWrapperPageRoute(
-                    userToSet: widget.chats[index].user!,
+                    user: widget.chats[index].user!,
                     userId: widget.chats[index].user!.id,
                     children: [ProfileChatPageRoute()],
                   ),

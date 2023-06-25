@@ -1,4 +1,5 @@
 import 'package:chattyevent_app_flutter/application/bloc/imprint/imprint_cubit.dart';
+import 'package:chattyevent_app_flutter/core/utils/one_signal_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
@@ -19,6 +20,9 @@ class BlocInit extends StatelessWidget {
     final AppRouter appRouter = serviceLocator(
       param1: BlocProvider.of<AuthCubit>(context),
     );
+
+    // push route when open notification
+    OneSignalUtils.setNotificationOpenedHandler(appRouter);
 
     return BlocListener<AuthCubit, AuthState>(
       listenWhen: (p, c) => p.userException != c.userException,

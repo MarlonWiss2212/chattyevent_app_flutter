@@ -9,11 +9,11 @@ import 'package:chattyevent_app_flutter/domain/entities/user/user_entity.dart';
 
 class ProfileWrapperPage extends StatelessWidget {
   final String userId;
-  final UserEntity userToSet;
+  final UserEntity? user;
 
   const ProfileWrapperPage({
     super.key,
-    required this.userToSet,
+    this.user,
     @PathParam('id') required this.userId,
   });
 
@@ -21,7 +21,9 @@ class ProfileWrapperPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => ProfilePageCubit(
-        ProfilePageState.fromUser(user: userToSet),
+        ProfilePageState.fromUser(
+          user: user ?? UserEntity(id: userId, authId: ""),
+        ),
         userRelationUseCases: serviceLocator(
           param1: BlocProvider.of<AuthCubit>(context).state,
         ),

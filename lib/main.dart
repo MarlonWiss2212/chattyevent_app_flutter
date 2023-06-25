@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:chattyevent_app_flutter/core/utils/material_theme_utils.dart';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
@@ -11,7 +12,6 @@ import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:chattyevent_app_flutter/application/provider/darkMode.dart';
 import 'package:chattyevent_app_flutter/bloc_init.dart';
-import 'package:chattyevent_app_flutter/core/colors.dart';
 import 'package:chattyevent_app_flutter/core/injection.dart';
 import 'package:chattyevent_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:chattyevent_app_flutter/firebase_options.dart';
@@ -19,7 +19,7 @@ import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:firebase_core/firebase_core.dart';
 
-import 'core/one_signal.dart' as one_signal;
+import 'core/utils/one_signal_utils.dart';
 import 'core/injection.dart' as di;
 import 'package:flutter_funding_choices/flutter_funding_choices.dart' as fc;
 
@@ -32,7 +32,7 @@ Future<void> main() async {
   if (!kIsWeb) {
     if (Platform.isAndroid || Platform.isIOS) {
       await MobileAds.instance.initialize();
-      await one_signal.init();
+      await OneSignalUtils.init();
     }
   }
 
@@ -121,10 +121,10 @@ class _AppState extends State<App> {
 
         lightDynamic != null
             ? lightColorScheme = lightDynamic
-            : lightColorScheme = lightColorSchemeStatic;
+            : lightColorScheme = MaterialThemeUtils.lightColorSchemeStatic;
         darkDynamic != null
             ? darkColorScheme = darkDynamic
-            : darkColorScheme = darkColorSchemeStatic;
+            : darkColorScheme = MaterialThemeUtils.darkColorSchemeStatic;
 
         return ChangeNotifierProvider(
           create: (context) => darkModeProvider,

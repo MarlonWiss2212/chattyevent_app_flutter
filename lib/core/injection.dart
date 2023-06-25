@@ -21,7 +21,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
-import 'package:chattyevent_app_flutter/core/graphql.dart';
+import 'package:chattyevent_app_flutter/core/utils/graphql_utils.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/auth_repository.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/bought_amount_repository.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/device/image_picker_repository.dart';
@@ -219,7 +219,7 @@ Future init() async {
   serviceLocator.registerFactoryParam<GraphQlDatasource, AuthState?, void>(
     (param1, param2) {
       return GraphQlDatasourceImpl(
-        client: getGraphQlClient(token: param1?.token),
+        client: GraphQlUtils.getGraphQlClient(token: param1?.token),
       );
     },
   );

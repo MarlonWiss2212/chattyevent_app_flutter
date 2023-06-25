@@ -11,12 +11,12 @@ import 'package:chattyevent_app_flutter/core/injection.dart';
 
 class ChatPageWrapper extends StatelessWidget {
   final String groupchatId;
-  final GroupchatEntity groupchat;
+  final GroupchatEntity? groupchat;
 
   const ChatPageWrapper({
     super.key,
     @PathParam('id') required this.groupchatId,
-    required this.groupchat,
+    this.groupchat,
   });
 
   @override
@@ -25,7 +25,9 @@ class ChatPageWrapper extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (context) => CurrentGroupchatCubit(
-            CurrentGroupchatState.fromGroupchat(groupchat: groupchat),
+            CurrentGroupchatState.fromGroupchat(
+              groupchat: groupchat ?? GroupchatEntity(id: groupchatId),
+            ),
             notificationCubit: BlocProvider.of<NotificationCubit>(context),
             authCubit: BlocProvider.of<AuthCubit>(context),
             messageUseCases: serviceLocator(

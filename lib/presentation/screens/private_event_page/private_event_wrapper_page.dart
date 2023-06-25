@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:chattyevent_app_flutter/domain/entities/private_event/private_event_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
@@ -11,11 +12,11 @@ import 'package:chattyevent_app_flutter/core/injection.dart';
 
 class PrivateEventWrapperPage extends StatelessWidget {
   final String privateEventId;
-  final CurrentPrivateEventState privateEventStateToSet;
+  final CurrentPrivateEventState? privateEventStateToSet;
 
   const PrivateEventWrapperPage({
     @PathParam('id') required this.privateEventId,
-    required this.privateEventStateToSet,
+    this.privateEventStateToSet,
     super.key,
   });
 
@@ -23,7 +24,13 @@ class PrivateEventWrapperPage extends StatelessWidget {
   Widget build(BuildContext context) {
     CurrentPrivateEventCubit currentPrivateEventCubit =
         CurrentPrivateEventCubit(
-      privateEventStateToSet,
+      privateEventStateToSet ??
+          CurrentPrivateEventState.fromPrivateEvent(
+            privateEvent: PrivateEventEntity(
+              id: privateEventId,
+              eventDate: DateTime.now(),
+            ),
+          ),
       authCubit: BlocProvider.of<AuthCubit>(context),
       chatCubit: BlocProvider.of<ChatCubit>(context),
       notificationCubit: BlocProvider.of<NotificationCubit>(context),

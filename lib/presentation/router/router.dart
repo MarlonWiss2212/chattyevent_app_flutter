@@ -141,7 +141,7 @@ import 'package:chattyevent_app_flutter/presentation/screens/shopping_list_page/
       ],
     ),
 
-    chatRouter,
+    groupchatRouter,
     privateEventRouter,
     profileRouter,
 
@@ -210,10 +210,10 @@ import 'package:chattyevent_app_flutter/presentation/screens/shopping_list_page/
 )
 class $AppRouter {}
 
-const chatRouter = AutoRoute(
+const groupchatRouter = AutoRoute(
   page: ChatPageWrapper,
   guards: [AuthGuard],
-  path: '/chats/:id',
+  path: '/groupchat/:id',
   children: [
     AutoRoute(
       page: ChatPage,

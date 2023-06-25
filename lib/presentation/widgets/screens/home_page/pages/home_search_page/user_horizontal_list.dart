@@ -51,7 +51,7 @@ class UserHorizontalList extends StatelessWidget {
                   AutoRouter.of(context).push(
                     ProfileWrapperPageRoute(
                       userId: users[index].id,
-                      userToSet: users[index],
+                      user: users[index],
                     ),
                   );
                 },

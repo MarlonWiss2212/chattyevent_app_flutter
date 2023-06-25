@@ -14,61 +14,57 @@ class ChatMessageInputFiles extends StatelessWidget {
         if (state.file != null) {
           return Column(
             children: [
-              AnimatedContainer(
-                duration: const Duration(seconds: 1),
-                curve: Curves.easeIn,
+              SizedBox(
                 height: 100,
-                child: Expanded(
-                  child: InkWell(
-                    onTap: () {
-                      BlocProvider.of<AddMessageCubit>(context).emitState(
-                        removeFile: true,
-                      );
-                    },
-                    child: Stack(
-                      fit: StackFit.expand,
-                      children: [
-                        Container(
-                          decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                          ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(8),
-                            child: Image.file(
-                              BlocProvider.of<AddMessageCubit>(context)
-                                  .state
-                                  .file!,
-                              fit: BoxFit.cover,
-                            ),
+                child: InkWell(
+                  onTap: () {
+                    BlocProvider.of<AddMessageCubit>(context).emitState(
+                      removeFile: true,
+                    );
+                  },
+                  child: Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      Container(
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: Image.file(
+                            BlocProvider.of<AddMessageCubit>(context)
+                                .state
+                                .file!,
+                            fit: BoxFit.cover,
                           ),
                         ),
-                        Container(
-                          decoration: const BoxDecoration(
-                            gradient: LinearGradient(
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
-                              colors: [
-                                Color(0xCC000000),
-                                Color(0x00000000),
-                                Color(0x00000000),
-                              ],
-                            ),
+                      ),
+                      Container(
+                        decoration: const BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              Color(0xCC000000),
+                              Color(0x00000000),
+                              Color(0x00000000),
+                            ],
                           ),
                         ),
-                        Align(
-                          alignment: Alignment.topRight,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: GestureDetector(
-                              onTap: () =>
-                                  BlocProvider.of<AddMessageCubit>(context)
-                                      .emitState(removeFile: true),
-                              child: const Icon(Ionicons.close),
-                            ),
+                      ),
+                      Align(
+                        alignment: Alignment.topRight,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: GestureDetector(
+                            onTap: () =>
+                                BlocProvider.of<AddMessageCubit>(context)
+                                    .emitState(removeFile: true),
+                            child: const Icon(Ionicons.close),
                           ),
-                        )
-                      ],
-                    ),
+                        ),
+                      )
+                    ],
                   ),
                 ),
               ),
