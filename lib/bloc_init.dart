@@ -21,8 +21,9 @@ class BlocInit extends StatelessWidget {
       param1: BlocProvider.of<AuthCubit>(context),
     );
 
-    // push route when open notification
+    // push route when open notification and receive
     OneSignalUtils.setNotificationOpenedHandler(appRouter);
+    OneSignalUtils.setNotificationReceivedHandler(appRouter);
 
     return BlocListener<AuthCubit, AuthState>(
       listenWhen: (p, c) => p.userException != c.userException,
