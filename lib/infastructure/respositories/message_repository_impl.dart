@@ -46,6 +46,7 @@ class MessageRepositoryImpl implements MessageRepository {
             _id
             message
             messageToReactTo
+            readBy
             fileLinks
             groupchatTo
             privateEventTo
@@ -84,6 +85,7 @@ class MessageRepositoryImpl implements MessageRepository {
             message
             messageToReactTo
             fileLinks
+            readBy
             groupchatTo
             privateEventTo
             userTo
@@ -128,6 +130,7 @@ class MessageRepositoryImpl implements MessageRepository {
           messageAdded(addedMessageInput: \$addedMessageInput) {
             _id
             message
+            readBy
             messageToReactTo
             groupchatTo
             privateEventTo

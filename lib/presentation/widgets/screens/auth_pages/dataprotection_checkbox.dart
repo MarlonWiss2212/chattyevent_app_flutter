@@ -1,5 +1,5 @@
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
-import 'package:chattyevent_app_flutter/core/injection.dart';
+import 'package:chattyevent_app_flutter/core/utils/injection.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/settings_usecases.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';

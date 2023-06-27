@@ -1,7 +1,6 @@
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/current_private_event/current_private_event_cubit.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/chat_message/chat_message_list.dart';
-import 'package:chattyevent_app_flutter/presentation/widgets/screens/private_event_page/tab_chat/tab_chat_message_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletons/skeletons.dart';
@@ -54,13 +53,9 @@ class TabChatMessageArea extends StatelessWidget {
         }
         return ChatMessageList(
           messages: state.messages,
-          itemBuilder: (context, message) {
-            return TabChatMessageContainer(
-              currentUserId:
-                  BlocProvider.of<AuthCubit>(context).state.currentUser.id,
-              message: message,
-            );
-          },
+          users: [...state.privateEventUsers, ...state.privateEventLeftUsers],
+          currentUserId:
+              BlocProvider.of<AuthCubit>(context).state.currentUser.id,
           loadMoreMessages: () {
             if (state.loadingMessages == false) {
               BlocProvider.of<CurrentPrivateEventCubit>(context).loadMessages();

@@ -12,9 +12,11 @@ class MessageModel extends MessageEntity {
     String? privateEventTo,
     String? userTo,
     required DateTime createdAt,
+    List<String>? readBy,
     DateTime? updatedAt,
   }) : super(
           id: id,
+          readBy: readBy,
           message: message,
           fileLinks: fileLinks,
           groupchatTo: groupchatTo,
@@ -41,12 +43,21 @@ class MessageModel extends MessageEntity {
       }
     }
 
+    List<String>? readBy;
+    if (json['readBy'] != null) {
+      readBy ??= [];
+      for (final readId in json["readBy"]) {
+        readBy.add(readId);
+      }
+    }
+
     return MessageModel(
       id: json['_id'],
       message: json['message'] != null
           ? EncryptionUtils.decrypt(encryptedText: json['message'])
           : null,
       fileLinks: fileLinks,
+      readBy: readBy,
       messageToReactTo: json["messageToReactTo"],
       createdBy: json["createdBy"],
       groupchatTo: json['groupchatTo'],

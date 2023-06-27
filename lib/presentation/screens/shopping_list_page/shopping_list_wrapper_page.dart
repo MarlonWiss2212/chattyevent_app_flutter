@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/shopping_list/my_shopping_list_cubit.dart';
-import 'package:chattyevent_app_flutter/core/injection.dart';
+import 'package:chattyevent_app_flutter/core/utils/injection.dart';
 
 class ShoppingListWrapperPage extends StatelessWidget {
   const ShoppingListWrapperPage({super.key});

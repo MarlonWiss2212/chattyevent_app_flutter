@@ -264,6 +264,7 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
             title
             latestMessage {
               _id
+              readBy
               message
               messageToReactTo
               fileLinks

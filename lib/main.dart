@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:io';
 import 'package:chattyevent_app_flutter/core/utils/material_theme_utils.dart';
 import 'package:dynamic_color/dynamic_color.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,22 +11,19 @@ import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:chattyevent_app_flutter/application/provider/darkMode.dart';
 import 'package:chattyevent_app_flutter/bloc_init.dart';
-import 'package:chattyevent_app_flutter/core/injection.dart';
-import 'package:chattyevent_app_flutter/domain/entities/user/user_entity.dart';
+import 'package:chattyevent_app_flutter/core/utils/injection.dart';
 import 'package:chattyevent_app_flutter/firebase_options.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:firebase_core/firebase_core.dart';
-
 import 'core/utils/one_signal_utils.dart';
-import 'core/injection.dart' as di;
 import 'package:flutter_funding_choices/flutter_funding_choices.dart' as fc;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await dotenv.load(fileName: '.env');
-  await di.init();
+  await InjectionUtils.init();
 
   if (!kIsWeb) {
     if (Platform.isAndroid || Platform.isIOS) {
@@ -36,47 +32,20 @@ Future<void> main() async {
     }
   }
 
-  final String? token =
-      await serviceLocator<FirebaseAuth>().currentUser?.getIdToken();
-
-  print(token);
-
-  final authState = AuthState(
-    currentUser: UserEntity(
-      authId: di.serviceLocator<FirebaseAuth>().currentUser?.uid ?? "",
-      id: "",
-    ),
-    token: token,
-    status: token != null ? AuthStateStatus.loggedIn : AuthStateStatus.initial,
-  );
   runApp(
-    BlocProvider.value(
-      value: NotificationCubit(),
-      child: Builder(
-        builder: (context) => BlocProvider.value(
-          value: AuthCubit(
-            authState,
-            notificationCubit: BlocProvider.of<NotificationCubit>(context),
-            auth: di.serviceLocator(),
-            permissionUseCases: di.serviceLocator(),
-            userUseCases: di.serviceLocator(param1: authState),
-            authUseCases: di.serviceLocator(),
-          )..setCurrentUserFromFirebaseViaApi(),
-          child: const BlocInit(),
-        ),
-      ),
+    MultiBlocProvider(
+      providers: [
+        BlocProvider.value(value: serviceLocator<NotificationCubit>()),
+        BlocProvider.value(value: serviceLocator<AuthCubit>()),
+      ],
+      child: const BlocInit(),
     ),
   );
 }
 
 class App extends StatefulWidget {
   final AuthState authState;
-  final AppRouter appRouter;
-  const App({
-    super.key,
-    required this.authState,
-    required this.appRouter,
-  });
+  const App({super.key, required this.authState});
 
   @override
   State<App> createState() => _AppState();
@@ -132,12 +101,15 @@ class _AppState extends State<App> {
             builder: (context, value, child) {
               return MaterialApp.router(
                 title: 'ChattyEvent',
-                routeInformationParser: widget.appRouter.defaultRouteParser(),
-                routerDelegate: widget.appRouter.delegate(),
+                routeInformationParser:
+                    serviceLocator<AppRouter>().defaultRouteParser(),
+                routerDelegate: serviceLocator<AppRouter>().delegate(),
                 builder: (context, widget) {
-                  return ScrollConfiguration(
-                    behavior: const ScrollBehaviorModified(),
-                    child: AdPopUp(child: widget!),
+                  return SafeArea(
+                    child: ScrollConfiguration(
+                      behavior: const ScrollBehaviorModified(),
+                      child: AdPopUp(child: widget!),
+                    ),
                   );
                 },
                 theme: ThemeData(

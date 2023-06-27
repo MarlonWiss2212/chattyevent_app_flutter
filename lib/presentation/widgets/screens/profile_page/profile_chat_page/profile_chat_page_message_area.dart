@@ -1,7 +1,6 @@
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/profile_page/profile_page_cubit.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/chat_message/chat_message_list.dart';
-import 'package:chattyevent_app_flutter/presentation/widgets/screens/profile_page/profile_chat_page/profile_chat_page_message_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletons/skeletons.dart';
@@ -44,15 +43,12 @@ class ProfileChatPageMessageArea extends StatelessWidget {
             },
           );
         }
+        final currentUser =
+            BlocProvider.of<AuthCubit>(context).state.currentUser;
         return ChatMessageList(
           messages: state.messages,
-          itemBuilder: (context, message) {
-            return ProfileChatPageMessageContainer(
-              currentUserId:
-                  BlocProvider.of<AuthCubit>(context).state.currentUser.id,
-              message: message,
-            );
-          },
+          users: [state.user, currentUser],
+          currentUserId: currentUser.id,
           loadMoreMessages: () {
             if (state.loadingMessages == false) {
               BlocProvider.of<ProfilePageCubit>(context).loadMessages();

@@ -9,6 +9,7 @@ class MessageEntity {
   final String? groupchatTo;
   final String? privateEventTo;
   final String? userTo;
+  final List<String>? readBy;
 
   MessageEntity({
     required this.id,
@@ -16,6 +17,7 @@ class MessageEntity {
     this.privateEventTo,
     this.userTo,
     required this.createdAt,
+    this.readBy,
     this.message,
     this.fileLinks,
     this.messageToReactTo,
@@ -31,6 +33,7 @@ class MessageEntity {
       id: newEntity.id,
       message: newEntity.message ?? oldEntity.message,
       fileLinks: newEntity.fileLinks ?? oldEntity.fileLinks,
+      readBy: newEntity.readBy ?? oldEntity.readBy,
       groupchatTo: newEntity.groupchatTo ?? oldEntity.groupchatTo,
       userTo: newEntity.userTo ?? oldEntity.userTo,
       privateEventTo: newEntity.privateEventTo ?? oldEntity.privateEventTo,

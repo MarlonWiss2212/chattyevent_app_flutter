@@ -1,6 +1,5 @@
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/chat_message/chat_message_list.dart';
-import 'package:chattyevent_app_flutter/presentation/widgets/screens/chat_page/chat_page/chat_page_message_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletons/skeletons.dart';
@@ -53,13 +52,9 @@ class ChatPageMessageArea extends StatelessWidget {
 
         return ChatMessageList(
           messages: state.messages,
-          itemBuilder: (context, message) {
-            return ChatPageMessageContainer(
-              currentUserId:
-                  BlocProvider.of<AuthCubit>(context).state.currentUser.id,
-              message: message,
-            );
-          },
+          users: [...state.users, ...state.leftUsers],
+          currentUserId:
+              BlocProvider.of<AuthCubit>(context).state.currentUser.id,
           loadMoreMessages: () {
             if (state.loadingMessages == false) {
               BlocProvider.of<CurrentGroupchatCubit>(context).loadMessages();

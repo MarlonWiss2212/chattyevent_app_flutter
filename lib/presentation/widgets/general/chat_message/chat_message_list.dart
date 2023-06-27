@@ -1,17 +1,21 @@
 import 'package:chattyevent_app_flutter/domain/entities/message/message_entity.dart';
+import 'package:chattyevent_app_flutter/domain/entities/user/user_entity.dart';
+import 'package:chattyevent_app_flutter/presentation/widgets/general/chat_message/chat_message_container.dart';
 import 'package:flutter/material.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:intl/intl.dart';
 
 class ChatMessageList extends StatefulWidget {
-  final Widget Function(BuildContext, MessageEntity)? itemBuilder;
   final List<MessageEntity> messages;
+  final List<UserEntity> users;
+  final String currentUserId;
   final void Function() loadMoreMessages;
 
   const ChatMessageList({
     super.key,
     required this.messages,
-    required this.itemBuilder,
+    required this.currentUserId,
+    required this.users,
     required this.loadMoreMessages,
   });
 
@@ -45,7 +49,20 @@ class _ChatMessageListState extends State<ChatMessageList> {
     return GroupedListView<MessageEntity, String>(
       controller: _scrollController,
       padding: const EdgeInsets.symmetric(vertical: 4),
-      itemBuilder: widget.itemBuilder,
+      itemBuilder: (context, message) {
+        return ChatMessageContainer(
+          users: widget.users,
+          message: message,
+          messageToReactTo: message.messageToReactTo != null
+              ? widget.messages.firstWhere(
+                  (element) => element.id == message.messageToReactTo,
+                  orElse: () =>
+                      MessageEntity(id: "", createdAt: message.createdAt),
+                )
+              : null,
+          currentUserId: widget.currentUserId,
+        );
+      },
       elements: widget.messages,
       useStickyGroupSeparators: true,
       physics: const ClampingScrollPhysics(),

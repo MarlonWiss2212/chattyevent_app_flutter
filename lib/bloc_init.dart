@@ -6,9 +6,8 @@ import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/chat/chat_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/home_page/home_event/home_event_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/location/location_cubit.dart';
-import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/image/image_cubit.dart';
-import 'package:chattyevent_app_flutter/core/injection.dart';
+import 'package:chattyevent_app_flutter/core/utils/injection.dart';
 import 'package:chattyevent_app_flutter/main.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
 
@@ -17,79 +16,68 @@ class BlocInit extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AppRouter appRouter = serviceLocator(
-      param1: BlocProvider.of<AuthCubit>(context),
-    );
-
     // push route when open notification and receive
-    OneSignalUtils.setNotificationOpenedHandler(appRouter);
-    OneSignalUtils.setNotificationReceivedHandler(appRouter);
+    OneSignalUtils.setNotificationOpenedHandler(serviceLocator<AppRouter>());
+    OneSignalUtils.setNotificationReceivedHandler(serviceLocator<AppRouter>());
 
     return BlocListener<AuthCubit, AuthState>(
       listenWhen: (p, c) => p.userException != c.userException,
       listener: (context, state) {
         if (state.isUserCode404()) {
-          appRouter.root.popUntilRoot();
-          appRouter.root.replace(const CreateUserPageRoute());
+          serviceLocator<AppRouter>().root.popUntilRoot();
+          serviceLocator<AppRouter>().root.replace(const CreateUserPageRoute());
         }
       },
       child: BlocConsumer<AuthCubit, AuthState>(
         listener: (context, state) {
-          appRouter.authGuard.authCubit = BlocProvider.of<AuthCubit>(context);
-          appRouter.authPagesGuard.authCubit =
-              BlocProvider.of<AuthCubit>(context);
-          appRouter.createUserPageGuard.authCubit =
-              BlocProvider.of<AuthCubit>(context);
-          appRouter.verifyEmailPageGuard.authCubit =
-              BlocProvider.of<AuthCubit>(context);
-
           if (state.status == AuthStateStatus.logout) {
-            appRouter.root.popUntilRoot();
-            appRouter.root.replace(const LoginPageRoute());
+            serviceLocator<AppRouter>().root.popUntilRoot();
+            serviceLocator<AppRouter>().root.replace(const LoginPageRoute());
           }
           if (state.goOnCreateUserPage) {
-            appRouter.root.popUntilRoot();
-            appRouter.root.replace(const CreateUserPageRoute());
+            serviceLocator<AppRouter>().root.popUntilRoot();
+            serviceLocator<AppRouter>()
+                .root
+                .replace(const CreateUserPageRoute());
           }
         },
         buildWhen: (p, c) =>
             p.currentUser.authId != c.currentUser.authId || p.token != c.token,
         builder: (context, state) {
-          final notificationCubit = BlocProvider.of<NotificationCubit>(context);
           return MultiBlocProvider(
             providers: [
               BlocProvider.value(
                 value: HomeEventCubit(
                   privateEventUseCases: serviceLocator(param1: state),
-                  notificationCubit: notificationCubit,
+                  notificationCubit: serviceLocator(),
                 ),
               ),
               BlocProvider.value(
                 value: ImprintCubit(
                   imprintUseCases: serviceLocator(),
-                  notificationCubit: notificationCubit,
+                  notificationCubit: serviceLocator(),
                 ),
               ),
               BlocProvider.value(
                 value: ChatCubit(
                   chatUseCase: serviceLocator(param1: state),
-                  notificationCubit: notificationCubit,
+                  notificationCubit: serviceLocator(),
                 ),
               ),
               BlocProvider.value(
                 value: LocationCubit(
                   locationUseCases: serviceLocator(),
-                  notificationCubit: notificationCubit,
+                  notificationCubit: serviceLocator(),
                 ),
               ),
               BlocProvider.value(
                 value: ImageCubit(
                   imagePickerUseCases: serviceLocator(),
-                  notificationCubit: notificationCubit,
+                  notificationCubit: serviceLocator(),
                 ),
               ),
             ],
-            child: App(authState: state, appRouter: appRouter),
+            child: App(authState: state),
           );
         },
       ),

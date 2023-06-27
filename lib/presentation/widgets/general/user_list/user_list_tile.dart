@@ -65,18 +65,20 @@ class _UserListTileState extends State<UserListTile> {
                 ),
               );
         },
-        onLongPress: () {
-          showMenu(
-            context: context,
-            position: RelativeRect.fromLTRB(
-              tapXY.dx,
-              tapXY.dy,
-              overlay.size.width - tapXY.dx,
-              overlay.size.height - tapXY.dy,
-            ),
-            items: widget.items ?? [],
-          );
-        },
+        onLongPress: widget.items != null && widget.items!.isNotEmpty
+            ? () {
+                showMenu(
+                  context: context,
+                  position: RelativeRect.fromLTRB(
+                    tapXY.dx,
+                    tapXY.dy,
+                    overlay.size.width - tapXY.dx,
+                    overlay.size.height - tapXY.dy,
+                  ),
+                  items: widget.items!,
+                );
+              }
+            : null,
         trailing: widget.trailing,
       ),
     );

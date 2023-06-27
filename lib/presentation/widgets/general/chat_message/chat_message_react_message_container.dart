@@ -5,16 +5,16 @@ import 'package:intl/intl.dart';
 import 'package:ionicons/ionicons.dart';
 
 class ChatMessageReactMessageContainer extends StatelessWidget {
+  final bool isInput;
+  final String currentUserId;
+  final MessageAndUser messageAndUser;
+
   const ChatMessageReactMessageContainer({
     Key? key,
     required this.messageAndUser,
     required this.currentUserId,
     required this.isInput,
   }) : super(key: key);
-
-  final bool isInput;
-  final String currentUserId;
-  final MessageAndUser messageAndUser;
 
   @override
   Widget build(BuildContext context) {
@@ -55,14 +55,18 @@ class ChatMessageReactMessageContainer extends StatelessWidget {
                       children: [
                         Text(
                           messageAndUser.user.username ?? "",
-                          style: const TextStyle(fontWeight: FontWeight.bold),
+                          style: Theme.of(context).textTheme.labelLarge,
                         ),
                         const SizedBox(width: 8),
                         Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Text(DateFormat.jm()
-                                .format(messageAndUser.message.createdAt)),
+                            Text(
+                              DateFormat.jm().format(
+                                messageAndUser.message.createdAt,
+                              ),
+                              style: Theme.of(context).textTheme.labelMedium,
+                            ),
                             const SizedBox(width: 8),
                             if (isInput) ...{
                               GestureDetector(
@@ -81,11 +85,14 @@ class ChatMessageReactMessageContainer extends StatelessWidget {
                     if (messageAndUser.message.fileLinks != null &&
                         messageAndUser.message.fileLinks!.isNotEmpty) ...[
                       const SizedBox(height: 8),
-                      const Row(
+                      Row(
                         children: [
-                          Icon(Icons.file_copy),
-                          SizedBox(width: 2),
-                          Text("Dateien"),
+                          const Icon(Icons.file_copy),
+                          const SizedBox(width: 2),
+                          Text(
+                            "Dateien",
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
                         ],
                       ),
                     ],

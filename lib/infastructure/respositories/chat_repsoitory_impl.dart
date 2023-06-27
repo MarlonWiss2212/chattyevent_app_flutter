@@ -24,6 +24,7 @@ class ChatRepositoryImpl implements ChatRepository {
               latestMessage {
                 _id
                 message
+                readBy
                 messageToReactTo
                 fileLinks
                 groupchatTo
@@ -47,6 +48,7 @@ class ChatRepositoryImpl implements ChatRepository {
               coverImageLink
               latestMessage {
                 _id
+                readBy
                 message
                 messageToReactTo
                 fileLinks
@@ -62,6 +64,7 @@ class ChatRepositoryImpl implements ChatRepository {
               profileImageLink
               latestMessage {
                 _id
+                readBy
                 message
                 messageToReactTo
                 fileLinks
