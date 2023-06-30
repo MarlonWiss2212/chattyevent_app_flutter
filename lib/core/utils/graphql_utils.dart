@@ -2,10 +2,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:graphql/client.dart';
 
 class GraphQlUtils {
-  static GraphQLClient getGraphQlClient({
-    String? token,
-    bool websocketEndpoint = false,
-  }) {
+  static GraphQLClient getGraphQlClient({String? token}) {
     final HttpLink httpLink = HttpLink(
       "https://${dotenv.get("API_BASE_URL")}/graphql",
       defaultHeaders: {

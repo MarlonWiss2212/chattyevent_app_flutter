@@ -195,6 +195,13 @@ class AuthCubit extends Cubit<AuthState> {
     );
   }
 
+  Future refreshAuthToken() async {
+    final token = await auth.currentUser?.getIdToken();
+    if (token != state.token) {
+      emitState(token: token);
+    }
+  }
+
   Future refreshUser() async {
     return await authUseCases.refreshUser();
   }
@@ -245,20 +252,6 @@ class AuthCubit extends Cubit<AuthState> {
           currentUser: UserEntity(authId: "", id: ""),
           status: AuthStateStatus.logout,
         ));
-      },
-    );
-  }
-
-  Future refreshJwtToken() async {
-    final Either<NotificationAlert, String> newTokenOrFailure =
-        await authUseCases.refreshToken();
-
-    newTokenOrFailure.fold(
-      (alert) {
-        notificationCubit.newAlert(notificationAlert: alert);
-      },
-      (token) {
-        emitState(token: token);
       },
     );
   }

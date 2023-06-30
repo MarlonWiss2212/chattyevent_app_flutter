@@ -9,6 +9,7 @@ class UpdatePrivateEventDto {
   final DateTime? eventDate;
   final DateTime? eventEndDate;
   final CreatePrivateEventLocationDto? eventLocation;
+  final bool? removeEventLocation;
 
   UpdatePrivateEventDto({
     this.title,
@@ -17,6 +18,7 @@ class UpdatePrivateEventDto {
     this.updateCoverImage,
     this.eventDate,
     this.eventEndDate,
+    this.removeEventLocation,
     this.eventLocation,
   });
 
@@ -39,6 +41,9 @@ class UpdatePrivateEventDto {
     }
     if (eventLocation != null) {
       map.addAll({"eventLocation": eventLocation!.toMap()});
+    }
+    if (removeEventLocation != null) {
+      map.addAll({"removeEventLocation": removeEventLocation});
     }
     if (eventEndDate != null) {
       map.addAll({'eventEndDate': eventEndDate!.toUtc().toIso8601String()});

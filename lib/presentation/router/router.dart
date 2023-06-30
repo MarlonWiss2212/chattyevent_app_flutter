@@ -1,4 +1,6 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:chattyevent_app_flutter/presentation/screens/authorized_page/authorized_page.dart';
+import 'package:chattyevent_app_flutter/presentation/screens/bloc_init_page.dart';
 import 'package:chattyevent_app_flutter/presentation/router/auth_guard.dart';
 import 'package:chattyevent_app_flutter/presentation/router/auth_pages_guard.dart';
 import 'package:chattyevent_app_flutter/presentation/router/create_user_page_guard.dart';
@@ -82,127 +84,138 @@ import 'package:chattyevent_app_flutter/presentation/screens/shopping_list_page/
       guards: [AuthPagesGuard],
     ),
     AutoRoute(
-      page: VerifyEmailPage,
-      initial: false,
-      guards: [VerifyEmailPageGuard],
-    ),
-
-    AutoRoute(
-      page: CreateUserPage,
-      initial: false,
-      guards: [CreateUserPageGuard],
-    ),
-
-    ...settingRoutes,
-
-    homePageRouter,
-
-    // future and past events
-    AutoRoute(
-      page: FutureEventsPage,
-      guards: [AuthGuard],
-      path: '/future-events',
-    ),
-    AutoRoute(
-      page: PastEventsPage,
-      guards: [AuthGuard],
-      path: '/past-events',
-    ),
-
-    //Shopping List page
-    AutoRoute(
-      page: ShoppingListWrapperPage,
-      guards: [AuthGuard],
-      path: '/shopping-list',
+      page: AuthorizedPage,
+      path: '/',
+      initial: true,
       children: [
         AutoRoute(
-          page: ShoppingListPage,
-          guards: [AuthGuard],
-          path: '',
+          page: VerifyEmailPage,
+          guards: [VerifyEmailPageGuard],
         ),
         AutoRoute(
-          page: ShoppingListItemWrapperPage,
+          page: CreateUserPage,
+          initial: false,
+          guards: [CreateUserPageGuard],
+        ),
+        AutoRoute(
+          page: BlocInitPage,
+          path: '',
+          initial: true,
           guards: [AuthGuard],
-          path: ':shoppingListItemId',
           children: [
+            homePageRouter,
+            ...settingRoutes,
+
+            // future and past events
             AutoRoute(
-              page: ShoppingListItemPage,
+              page: FutureEventsPage,
               guards: [AuthGuard],
-              path: '',
+              path: 'future-events',
             ),
             AutoRoute(
-              page: ShoppingListItemChangeUserPage,
+              page: PastEventsPage,
               guards: [AuthGuard],
-              path: 'change-user-to-buy-item',
+              path: 'past-events',
+            ),
+
+            //Shopping List page
+            AutoRoute(
+              page: ShoppingListWrapperPage,
+              guards: [AuthGuard],
+              path: 'shopping-list',
+              children: [
+                AutoRoute(
+                  page: ShoppingListPage,
+                  guards: [AuthGuard],
+                  path: '',
+                ),
+                AutoRoute(
+                  page: ShoppingListItemWrapperPage,
+                  guards: [AuthGuard],
+                  path: ':shoppingListItemId',
+                  children: [
+                    AutoRoute(
+                      page: ShoppingListItemPage,
+                      guards: [AuthGuard],
+                      path: '',
+                    ),
+                    AutoRoute(
+                      page: ShoppingListItemChangeUserPage,
+                      guards: [AuthGuard],
+                      path: 'change-user-to-buy-item',
+                    ),
+                  ],
+                ),
+                RedirectRoute(path: '*', redirectTo: '')
+              ],
+            ),
+
+            groupchatRouter,
+            privateEventRouter,
+            profileRouter,
+
+            // new groupchat
+            AutoRoute(
+              page: NewGroupchatWrapperPage,
+              guards: [AuthGuard],
+              path: 'new-groupchat',
+              children: [
+                AutoRoute(
+                  page: NewGroupchatDetailsTab,
+                  initial: true,
+                  guards: [AuthGuard],
+                  path: '',
+                ),
+                AutoRoute(
+                  page: NewGroupchatSelectUserTab,
+                  initial: false,
+                  guards: [AuthGuard],
+                  path: 'users',
+                ),
+                RedirectRoute(path: '*', redirectTo: '')
+              ],
+            ),
+
+            // new private event
+            AutoRoute(
+              page: NewPrivateEventPage,
+              guards: [AuthGuard],
+              path: 'new-private-event',
+              children: [
+                AutoRoute(
+                  page: NewPrivateEventDetailsTab,
+                  initial: true,
+                  guards: [AuthGuard],
+                  path: '',
+                ),
+                AutoRoute(
+                  page: NewPrivateEventTypeTab,
+                  initial: true,
+                  guards: [AuthGuard],
+                  path: 'type',
+                ),
+                AutoRoute(
+                  page: NewPrivateEventSearchTab,
+                  initial: true,
+                  guards: [AuthGuard],
+                  path: 'search',
+                ),
+                AutoRoute(
+                  page: NewPrivateEventDateTab,
+                  guards: [AuthGuard],
+                  path: 'date',
+                ),
+                AutoRoute(
+                  page: NewPrivateEventLocationTab,
+                  initial: false,
+                  guards: [AuthGuard],
+                  path: 'location',
+                ),
+                RedirectRoute(path: '*', redirectTo: '')
+              ],
             ),
           ],
         ),
-        RedirectRoute(path: '*', redirectTo: '')
-      ],
-    ),
-
-    groupchatRouter,
-    privateEventRouter,
-    profileRouter,
-
-    // new groupchat
-    AutoRoute(
-      page: NewGroupchatWrapperPage,
-      guards: [AuthGuard],
-      path: '/new-groupchat',
-      children: [
-        AutoRoute(
-          page: NewGroupchatDetailsTab,
-          initial: true,
-          guards: [AuthGuard],
-          path: '',
-        ),
-        AutoRoute(
-          page: NewGroupchatSelectUserTab,
-          initial: false,
-          guards: [AuthGuard],
-          path: 'users',
-        ),
-        RedirectRoute(path: '*', redirectTo: '')
-      ],
-    ),
-
-    // new private event
-    AutoRoute(
-      page: NewPrivateEventPage,
-      guards: [AuthGuard],
-      path: '/new-private-event',
-      children: [
-        AutoRoute(
-          page: NewPrivateEventDetailsTab,
-          initial: true,
-          guards: [AuthGuard],
-          path: '',
-        ),
-        AutoRoute(
-          page: NewPrivateEventTypeTab,
-          initial: true,
-          guards: [AuthGuard],
-          path: 'type',
-        ),
-        AutoRoute(
-          page: NewPrivateEventSearchTab,
-          initial: true,
-          guards: [AuthGuard],
-          path: 'search',
-        ),
-        AutoRoute(
-          page: NewPrivateEventDateTab,
-          guards: [AuthGuard],
-          path: 'date',
-        ),
-        AutoRoute(
-          page: NewPrivateEventLocationTab,
-          initial: false,
-          guards: [AuthGuard],
-          path: 'location',
-        ),
-        RedirectRoute(path: '*', redirectTo: '')
       ],
     ),
     RedirectRoute(path: '*', redirectTo: '/chats')
@@ -213,7 +226,8 @@ class $AppRouter {}
 const groupchatRouter = AutoRoute(
   page: ChatPageWrapper,
   guards: [AuthGuard],
-  path: '/groupchat/:id',
+  path: 'groupchat/:id',
+  initial: true,
   children: [
     AutoRoute(
       page: ChatPage,
@@ -249,7 +263,7 @@ const groupchatRouter = AutoRoute(
 const privateEventRouter = AutoRoute(
   page: PrivateEventWrapperPage,
   guards: [AuthGuard],
-  path: '/private-event/:id',
+  path: 'private-event/:id',
   children: [
     AutoRoute(
       page: PrivateEventTabPage,
@@ -327,7 +341,7 @@ const profileRouter = AutoRoute(
   page: ProfileWrapperPage,
   initial: false,
   guards: [AuthGuard],
-  path: '/profile/:id',
+  path: 'profile/:id',
   children: [
     AutoRoute(
       page: ProfilePage,
@@ -369,7 +383,7 @@ const homePageRouter = AutoRoute(
   page: HomePage,
   initial: true,
   guards: [AuthGuard],
-  path: '/',
+  path: '',
   children: [
     AutoRoute(
       page: HomeChatPage,
@@ -425,36 +439,35 @@ const settingRoutes = [
   AutoRoute(
     page: SettingsPage,
     guards: [AuthGuard],
-    path: '/settings',
+    path: 'settings',
   ),
   AutoRoute(
     page: ThemeModePage,
     guards: [AuthGuard],
-    path: '/settings/theme',
+    path: 'settings/theme',
   ),
   AutoRoute(
     page: UpdatePasswordPage,
     guards: [AuthGuard],
-    path: '/settings/update-password',
+    path: 'settings/update-password',
   ),
-  AutoRoute(
-      page: SettingsInfoPage, guards: [AuthGuard], path: '/settings/info'),
+  AutoRoute(page: SettingsInfoPage, guards: [AuthGuard], path: 'settings/info'),
   AutoRoute(
       page: RightOnInsightPage,
       guards: [AuthGuard],
-      path: '/settings/info/right-on-insight'),
+      path: 'settings/info/right-on-insight'),
   AutoRoute(
       page: RightOnDeletionPage,
       guards: [AuthGuard],
-      path: '/settings/info/right-on-deletion'),
+      path: 'settings/info/right-on-deletion'),
   AutoRoute(
     page: ImprintPage,
     guards: [AuthGuard],
-    path: '/settings/info/imprint',
+    path: 'settings/info/imprint',
   ),
   AutoRoute(
     page: SettingsPrivacyPage,
     guards: [AuthGuard],
-    path: '/settings/privacy',
+    path: 'settings/privacy',
   ),
 ];

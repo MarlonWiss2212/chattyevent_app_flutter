@@ -13,7 +13,9 @@ class VerifyEmailPageGuard extends AutoRouteGuard {
     } else if (currentUser.emailVerified == false) {
       resolver.next(true);
     } else {
-      router.replace(const HomePageRoute());
+      router.replace(const AuthorizedPageRoute(children: [
+        BlocInitPageRoute(children: [HomePageRoute()])
+      ]));
     }
   }
 }

@@ -21,6 +21,16 @@ class _ChatChangeChatUsernamePageState
   TextEditingController newUsernameController = TextEditingController();
 
   @override
+  void initState() {
+    newUsernameController.text = BlocProvider.of<CurrentGroupchatCubit>(context)
+            .state
+            .getCurrentGroupchatUser()
+            ?.usernameForChat ??
+        "";
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -41,6 +51,28 @@ class _ChatChangeChatUsernamePageState
                 ],
               ),
             ),
+            const SizedBox(height: 8),
+            SizedBox(
+              width: double.infinity,
+              child: Button(
+                onTap: () => BlocProvider.of<CurrentGroupchatCubit>(context)
+                    .updateGroupchatUserViaApi(
+                      userId: BlocProvider.of<AuthCubit>(context)
+                          .state
+                          .currentUser
+                          .id,
+                      updateGroupchatUserDto: UpdateGroupchatUserDto(
+                        removeUsernameForChat: true,
+                      ),
+                    )
+                    .then(
+                      /// TODO optimize this later
+                      (value) => AutoRouter.of(context).pop(),
+                    ),
+                text: "Chat Namen Löschen",
+              ),
+            ),
+            const SizedBox(height: 8),
             SizedBox(
               width: double.infinity,
               child: Button(

@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:chattyevent_app_flutter/ad_pop_up_form.dart';
 import 'package:chattyevent_app_flutter/core/utils/material_theme_utils.dart';
+import 'package:chattyevent_app_flutter/scroll_bahaviour.dart';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -10,14 +12,12 @@ import 'package:provider/provider.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:chattyevent_app_flutter/application/provider/darkMode.dart';
-import 'package:chattyevent_app_flutter/bloc_init.dart';
 import 'package:chattyevent_app_flutter/core/utils/injection.dart';
 import 'package:chattyevent_app_flutter/firebase_options.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'core/utils/one_signal_utils.dart';
-import 'package:flutter_funding_choices/flutter_funding_choices.dart' as fc;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,7 +28,7 @@ Future<void> main() async {
   if (!kIsWeb) {
     if (Platform.isAndroid || Platform.isIOS) {
       await MobileAds.instance.initialize();
-      await OneSignalUtils.init();
+      await OneSignalUtils.initialize();
     }
   }
 
@@ -38,14 +38,54 @@ Future<void> main() async {
         BlocProvider.value(value: serviceLocator<NotificationCubit>()),
         BlocProvider.value(value: serviceLocator<AuthCubit>()),
       ],
-      child: const BlocInit(),
+      child: Builder(builder: (context) {
+        return MultiBlocListener(
+          listeners: [
+            BlocListener<AuthCubit, AuthState>(
+              listenWhen: (p, c) => p.userException != c.userException,
+              listener: (context, state) {
+                if (state.isUserCode404()) {
+                  serviceLocator<AppRouter>().root.popUntilRoot();
+                  serviceLocator<AppRouter>().root.replace(
+                      const AuthorizedPageRoute(
+                          children: [CreateUserPageRoute()]));
+                }
+              },
+            ),
+            BlocListener<AuthCubit, AuthState>(
+              listenWhen: (p, c) => c.goOnCreateUserPage,
+              listener: (context, state) {
+                serviceLocator<AppRouter>().root.popUntilRoot();
+                serviceLocator<AppRouter>().root.replace(
+                    const AuthorizedPageRoute(
+                        children: [CreateUserPageRoute()]));
+              },
+            ),
+            BlocListener<AuthCubit, AuthState>(
+              listenWhen: (p, c) => p.status != c.status,
+              listener: (context, state) {
+                if (state.status == AuthStateStatus.loggedIn &&
+                    state.token != null) {
+                  serviceLocator<AppRouter>()
+                      .replace(const AuthorizedPageRoute(children: [
+                    BlocInitPageRoute(children: [HomePageRoute()])
+                  ]));
+                } else if (state.status == AuthStateStatus.logout) {
+                  serviceLocator<AppRouter>().popUntilRoot();
+                  serviceLocator<AppRouter>().replace(const LoginPageRoute());
+                }
+              },
+            ),
+          ],
+          child: const App(),
+        );
+      }),
     ),
   );
 }
 
 class App extends StatefulWidget {
-  final AuthState authState;
-  const App({super.key, required this.authState});
+  const App({super.key});
 
   @override
   State<App> createState() => _AppState();
@@ -165,44 +205,5 @@ class _AppState extends State<App> {
         );
       },
     );
-  }
-}
-
-class AdPopUp extends StatefulWidget {
-  final Widget child;
-  const AdPopUp({super.key, required this.child});
-
-  @override
-  State<AdPopUp> createState() => _AdPopUpState();
-}
-
-class _AdPopUpState extends State<AdPopUp> {
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      fc.ConsentInformation consentInfo =
-          await fc.FlutterFundingChoices.requestConsentInformation();
-      if (consentInfo.isConsentFormAvailable &&
-          consentInfo.consentStatus == fc.ConsentStatus.REQUIRED_ANDROID &&
-          consentInfo.consentStatus == fc.ConsentStatus.REQUIRED_IOS) {
-        await fc.FlutterFundingChoices.showConsentForm();
-        // You can check the result by calling `FlutterFundingChoices.requestConsentInformation()` again !
-      }
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return widget.child;
-  }
-}
-
-class ScrollBehaviorModified extends ScrollBehavior {
-  const ScrollBehaviorModified();
-
-  @override
-  ScrollPhysics getScrollPhysics(BuildContext context) {
-    return const BouncingScrollPhysics();
   }
 }

@@ -4,7 +4,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 class OneSignalUtils {
-  static Future<void> init() async {
+  static Future<void> initialize() async {
     await OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
     await OneSignal.shared.setAppId(dotenv.get("ONE_SIGNAL_APP_ID"));
   }

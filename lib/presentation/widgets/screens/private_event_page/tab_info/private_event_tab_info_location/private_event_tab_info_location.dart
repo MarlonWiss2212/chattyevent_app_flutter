@@ -12,8 +12,8 @@ class PrivateEventTabInfoLocation extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<CurrentPrivateEventCubit, CurrentPrivateEventState>(
       builder: (context, state) {
-        return Column(
-          children: const [
+        return const Column(
+          children: [
             PrivateEventTabInfoLocationData(),
             SizedBox(height: 8),
             PrivateEventTabInfoLocationMap(),

@@ -74,26 +74,17 @@ class _LoginPageState extends State<LoginPage> {
                       const SizedBox(height: 16),
                       const DataprotectionCheckbox(),
                       const SizedBox(height: 16),
-                      BlocListener<AuthCubit, AuthState>(
-                        listener: (context, state) async {
-                          if (state.status == AuthStateStatus.loggedIn &&
-                              state.token != null) {
-                            AutoRouter.of(context)
-                                .replace(const HomePageRoute());
-                          }
-                        },
-                        child: SizedBox(
-                          width: double.infinity,
-                          child: Button(
-                            onTap: () {
-                              BlocProvider.of<AuthCubit>(context)
-                                  .loginWithEmailAndPassword(
-                                email: emailFieldController.text,
-                                password: passwordFieldController.text,
-                              );
-                            },
-                            text: "Einloggen",
-                          ),
+                      SizedBox(
+                        width: double.infinity,
+                        child: Button(
+                          onTap: () {
+                            BlocProvider.of<AuthCubit>(context)
+                                .loginWithEmailAndPassword(
+                              email: emailFieldController.text,
+                              password: passwordFieldController.text,
+                            );
+                          },
+                          text: "Einloggen",
                         ),
                       ),
                       const SizedBox(height: 16),

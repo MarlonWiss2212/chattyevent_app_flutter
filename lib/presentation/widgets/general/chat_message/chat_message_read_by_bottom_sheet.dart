@@ -34,6 +34,7 @@ class ChatMessageReadByBottomSheet extends StatelessWidget {
         ),
         Expanded(
           child: ListView.builder(
+            shrinkWrap: true,
             itemBuilder: (context, index) => UserListTile(
               user: filteredUsers[index],
             ),

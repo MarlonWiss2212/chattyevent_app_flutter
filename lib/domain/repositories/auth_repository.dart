@@ -21,7 +21,6 @@ abstract class AuthRepository {
   });
   Future<void> logout();
   Future<Either<NotificationAlert, Unit>> refreshUser();
-  Future<Either<NotificationAlert, String>> refreshToken();
 
   Future<Either<NotificationAlert, Unit>> deleteUser();
 }

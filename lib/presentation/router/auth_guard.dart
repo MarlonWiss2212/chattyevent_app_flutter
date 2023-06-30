@@ -5,7 +5,7 @@ import 'package:chattyevent_app_flutter/core/utils/injection.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
 
 class AuthGuard extends AutoRouteGuard {
-  AuthCubit authCubit;
+  final AuthCubit authCubit;
   AuthGuard({required this.authCubit});
 
   @override
@@ -13,15 +13,17 @@ class AuthGuard extends AutoRouteGuard {
     final currentUser = serviceLocator<FirebaseAuth>().currentUser;
 
     if (currentUser != null) {
-      await authCubit.refreshJwtToken();
-
       if (currentUser.emailVerified &&
           authCubit.state.isUserCode404() == false) {
         resolver.next(true);
       } else if (currentUser.emailVerified) {
-        router.replace(const CreateUserPageRoute());
+        router.replace(
+          const AuthorizedPageRoute(children: [CreateUserPageRoute()]),
+        );
       } else {
-        router.replace(const VerifyEmailPageRoute());
+        router.replace(
+          const AuthorizedPageRoute(children: [VerifyEmailPageRoute()]),
+        );
       }
     } else {
       router.replace(const LoginPageRoute());

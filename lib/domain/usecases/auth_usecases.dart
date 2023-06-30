@@ -64,10 +64,6 @@ class AuthUseCases {
     return await authRepository.refreshUser();
   }
 
-  Future<Either<NotificationAlert, String>> refreshToken() async {
-    return await authRepository.refreshToken();
-  }
-
   Future<void> logout() async {
     await authRepository.logout();
   }

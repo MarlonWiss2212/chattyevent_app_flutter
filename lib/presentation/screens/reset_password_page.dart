@@ -1,11 +1,8 @@
-import 'package:auto_route/auto_route.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
-import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/button.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/dialog/alert_dialog.dart';
 
@@ -68,10 +65,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                 const SizedBox(height: 8),
                 BlocListener<AuthCubit, AuthState>(
                   listener: (context, state) async {
-                    if (state.status == AuthStateStatus.loggedIn &&
-                        state.token != null) {
-                      AutoRouter.of(context).replace(const HomePageRoute());
-                    } else if (state.sendedResetPasswordEmail) {
+                    if (state.sendedResetPasswordEmail) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                           content: Text("Email gesendet"),

@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:chattyevent_app_flutter/core/enums/private_event/private_event_user/private_event_user_role_enum.dart';
+import 'package:chattyevent_app_flutter/presentation/widgets/screens/private_event_page/tab_info/private_event_tab_info_location/private_event_tab_info_location_remove_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletons/skeletons.dart';
@@ -40,6 +41,7 @@ class PrivateEventTabInfoLocationData extends StatelessWidget {
                         ),
                       ),
                       Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           Text(
                             "${state.privateEvent.eventLocation!.country}, ${state.privateEvent.eventLocation!.city}, ${state.privateEvent.eventLocation!.zip}",
@@ -49,6 +51,11 @@ class PrivateEventTabInfoLocationData extends StatelessWidget {
                             "${state.privateEvent.eventLocation!.street} ${state.privateEvent.eventLocation!.housenumber}",
                             style: Theme.of(context).textTheme.bodyMedium,
                           ),
+                          const SizedBox(height: 8),
+                          if (state.getCurrentPrivateEventUser()?.role ==
+                              PrivateEventUserRoleEnum.organizer) ...{
+                            const PrivateEventTabInfoLocationRemoveIcon(),
+                          },
                         ],
                       )
                     ],
@@ -78,11 +85,11 @@ class PrivateEventTabInfoLocationData extends StatelessWidget {
                   ),
                 )
               ] else ...[
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
+                const Padding(
+                  padding: EdgeInsets.all(8.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
+                    children: [
                       Text(
                         "Addresse: ",
                         style: TextStyle(

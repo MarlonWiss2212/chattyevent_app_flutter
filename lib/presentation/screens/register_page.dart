@@ -1,5 +1,4 @@
 import 'package:auto_route/auto_route.dart';
-
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/auth_pages/dataprotection_checkbox.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -82,28 +81,19 @@ class _RegisterPageState extends State<RegisterPage> {
                       const SizedBox(height: 16),
                       const DataprotectionCheckbox(),
                       const SizedBox(height: 16),
-                      BlocListener<AuthCubit, AuthState>(
-                        listener: (context, state) async {
-                          if (state.status == AuthStateStatus.loggedIn &&
-                              state.token != null) {
-                            AutoRouter.of(context)
-                                .replace(const HomePageRoute());
-                          }
-                        },
-                        child: SizedBox(
-                          width: double.infinity,
-                          child: Button(
-                            onTap: () {
-                              BlocProvider.of<AuthCubit>(context)
-                                  .registerWithEmailAndPassword(
-                                email: emailFieldController.text,
-                                password: passwordFieldController.text,
-                                verifyPassword:
-                                    verifyPasswordFieldController.text,
-                              );
-                            },
-                            text: "Registrieren",
-                          ),
+                      SizedBox(
+                        width: double.infinity,
+                        child: Button(
+                          onTap: () {
+                            BlocProvider.of<AuthCubit>(context)
+                                .registerWithEmailAndPassword(
+                              email: emailFieldController.text,
+                              password: passwordFieldController.text,
+                              verifyPassword:
+                                  verifyPasswordFieldController.text,
+                            );
+                          },
+                          text: "Registrieren",
                         ),
                       ),
                       const SizedBox(height: 16),

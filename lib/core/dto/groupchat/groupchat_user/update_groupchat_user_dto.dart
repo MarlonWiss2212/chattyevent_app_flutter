@@ -3,10 +3,12 @@ import 'package:chattyevent_app_flutter/core/enums/groupchat/groupchat_user/grou
 class UpdateGroupchatUserDto {
   final GroupchatUserRoleEnum? role;
   final String? usernameForChat;
+  final bool? removeUsernameForChat;
 
   UpdateGroupchatUserDto({
     this.role,
     this.usernameForChat,
+    this.removeUsernameForChat,
   });
 
   Map<dynamic, dynamic> toMap() {
@@ -17,6 +19,9 @@ class UpdateGroupchatUserDto {
     }
     if (usernameForChat != null) {
       map.addAll({'usernameForChat': usernameForChat});
+    }
+    if (removeUsernameForChat != null) {
+      map.addAll({'removeUsernameForChat': removeUsernameForChat});
     }
 
     return map;

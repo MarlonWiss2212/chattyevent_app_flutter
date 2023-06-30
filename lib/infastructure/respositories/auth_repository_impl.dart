@@ -139,20 +139,6 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<NotificationAlert, String>> refreshToken() async {
-    if (auth.currentUser == null) {
-      return Left(
-        NotificationAlert(
-          title: "Fehler Refresh Auth",
-          message: "Fehler beim aktualisieren der Authentifizierungsdaten",
-        ),
-      );
-    }
-    final String token = await auth.currentUser!.getIdToken();
-    return Right(token);
-  }
-
-  @override
   Future<Either<NotificationAlert, Unit>> deleteUser() async {
     if (auth.currentUser == null) {
       return Left(
