@@ -47,14 +47,17 @@ Future<void> main() async {
                 if (state.isUserCode404()) {
                   serviceLocator<AppRouter>().root.popUntilRoot();
                   serviceLocator<AppRouter>().root.replace(
-                      const AuthorizedPageRoute(
-                          children: [CreateUserPageRoute()]));
+                        const AuthorizedPageRoute(
+                            children: [CreateUserPageRoute()]),
+                      );
                 }
               },
             ),
             BlocListener<AuthCubit, AuthState>(
-              listenWhen: (p, c) => c.goOnCreateUserPage,
+              listenWhen: (p, c) =>
+                  p.goOnCreateUserPage != c.goOnCreateUserPage,
               listener: (context, state) {
+                if (state.goOnCreateUserPage == false) return;
                 serviceLocator<AppRouter>().root.popUntilRoot();
                 serviceLocator<AppRouter>().root.replace(
                     const AuthorizedPageRoute(
@@ -67,12 +70,15 @@ Future<void> main() async {
                 if (state.status == AuthStateStatus.loggedIn &&
                     state.token != null) {
                   serviceLocator<AppRouter>()
+                      .root
                       .replace(const AuthorizedPageRoute(children: [
-                    BlocInitPageRoute(children: [HomePageRoute()])
-                  ]));
+                        BlocInitPageRoute(children: [HomePageRoute()])
+                      ]));
                 } else if (state.status == AuthStateStatus.logout) {
-                  serviceLocator<AppRouter>().popUntilRoot();
-                  serviceLocator<AppRouter>().replace(const LoginPageRoute());
+                  serviceLocator<AppRouter>().root.popUntilRoot();
+                  serviceLocator<AppRouter>().root.replace(
+                        const LoginPageRoute(),
+                      );
                 }
               },
             ),

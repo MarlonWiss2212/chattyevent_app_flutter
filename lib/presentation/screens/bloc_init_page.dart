@@ -6,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/chat/chat_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/home_page/home_event/home_event_cubit.dart';
-import 'package:chattyevent_app_flutter/application/bloc/location/location_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/image/image_cubit.dart';
 import 'package:chattyevent_app_flutter/core/utils/injection.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
@@ -19,6 +18,7 @@ class BlocInitPage extends StatelessWidget {
     // push route when open notification and receive
     OneSignalUtils.setNotificationOpenedHandler(serviceLocator<AppRouter>());
     OneSignalUtils.setNotificationReceivedHandler(serviceLocator<AppRouter>());
+    BlocProvider.of<AuthCubit>(context).setCurrentUserFromFirebaseViaApi();
 
     return BlocBuilder<AuthCubit, AuthState>(
       buildWhen: (p, c) => p.token != c.token,
@@ -40,12 +40,6 @@ class BlocInitPage extends StatelessWidget {
             BlocProvider.value(
               value: ChatCubit(
                 chatUseCase: serviceLocator(param1: state),
-                notificationCubit: serviceLocator(),
-              ),
-            ),
-            BlocProvider.value(
-              value: LocationCubit(
-                locationUseCases: serviceLocator(),
                 notificationCubit: serviceLocator(),
               ),
             ),

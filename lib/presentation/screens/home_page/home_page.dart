@@ -17,7 +17,6 @@ class HomePage extends StatelessWidget {
       routes: [
         const HomeChatPageRoute(),
         const HomeEventPageRoute(),
-        //  const HomeMapPageRoute(),
         const HomeSearchPageRoute(),
         HomeProfilePageRoute(
           userId: BlocProvider.of<AuthCubit>(context).state.currentUser.id,
@@ -66,11 +65,6 @@ class HomePage extends StatelessWidget {
                             selectedIcon: Icon(Icons.celebration),
                             label: Text('Party'),
                           ),
-                          /*     NavigationRailDestination(
-                            icon: Icon(Ionicons.map_outline),
-                            selectedIcon: Icon(Ionicons.map),
-                            label: Text('Map'),
-                          ),*/
                           NavigationRailDestination(
                             icon: Icon(Ionicons.search_outline),
                             selectedIcon: Icon(Ionicons.search),
@@ -124,11 +118,6 @@ class HomePage extends StatelessWidget {
                       activeIcon: Icon(Icons.celebration),
                       label: 'Party',
                     ),
-                    /*   BottomNavigationBarItem(
-                      icon: Icon(Ionicons.map_outline),
-                      activeIcon: Icon(Ionicons.map),
-                      label: 'Map',
-                    ),*/
                     BottomNavigationBarItem(
                       icon: Icon(Ionicons.search_outline),
                       activeIcon: Icon(Ionicons.search),

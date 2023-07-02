@@ -91,7 +91,7 @@ class InjectionUtils {
         authUseCases: serviceLocator(),
         userUseCases: serviceLocator(param1: authState),
         permissionUseCases: serviceLocator(),
-      )..setCurrentUserFromFirebaseViaApi(),
+      ),
     );
 
     // router

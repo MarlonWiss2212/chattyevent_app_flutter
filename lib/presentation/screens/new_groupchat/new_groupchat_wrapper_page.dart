@@ -87,7 +87,7 @@ class NewGroupchatWrapperPage extends StatelessWidget {
                         onDotClicked: (index) {
                           pageController.jumpToPage(index);
                         },
-                        effect: WormEffect(
+                        effect: ExpandingDotsEffect(
                           activeDotColor: Theme.of(context).colorScheme.primary,
                         ),
                       ),

@@ -16,7 +16,6 @@ import 'package:chattyevent_app_flutter/presentation/screens/future_events_page/
 import 'package:chattyevent_app_flutter/presentation/screens/home_page/home_page.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/home_page/pages/home_chat_page.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/home_page/pages/home_event_page.dart';
-import 'package:chattyevent_app_flutter/presentation/screens/home_page/pages/home_map_page.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/home_page/pages/home_profile_page.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/home_page/pages/home_search_page.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/login_page.dart';
@@ -67,6 +66,7 @@ import 'package:chattyevent_app_flutter/presentation/screens/verify_email_page.d
 import 'package:chattyevent_app_flutter/presentation/screens/shopping_list_page/shopping_list_page.dart';
 
 @AdaptiveAutoRouter(
+  replaceInRouteName: "Screen,Page",
   routes: <AutoRoute>[
     AutoRoute(
       page: LoginPage,
@@ -90,6 +90,7 @@ import 'package:chattyevent_app_flutter/presentation/screens/shopping_list_page/
       children: [
         AutoRoute(
           page: VerifyEmailPage,
+          initial: false,
           guards: [VerifyEmailPageGuard],
         ),
         AutoRoute(
@@ -392,7 +393,6 @@ const homePageRouter = AutoRoute(
       initial: true,
     ),
     AutoRoute(page: HomeEventPage, guards: [AuthGuard], path: 'events'),
-    AutoRoute(page: HomeMapPage, guards: [AuthGuard], path: 'map'),
     AutoRoute(page: HomeSearchPage, guards: [AuthGuard], path: 'search'),
     AutoRoute(
       page: HomeProfilePage,
