@@ -50,22 +50,26 @@ class _ChatMessageListState extends State<ChatMessageList> {
       controller: _scrollController,
       padding: const EdgeInsets.symmetric(vertical: 4),
       itemBuilder: (context, message) {
-        return ChatMessageContainer(
-          users: widget.users,
-          message: message,
-          messageToReactTo: message.messageToReactTo != null
-              ? widget.messages.firstWhere(
-                  (element) => element.id == message.messageToReactTo,
-                  orElse: () =>
-                      MessageEntity(id: "", createdAt: message.createdAt),
-                )
-              : null,
-          currentUserId: widget.currentUserId,
+        return Padding(
+          padding: message.id == widget.messages.first.id
+              ? const EdgeInsets.only(bottom: 50)
+              : const EdgeInsets.all(0),
+          child: ChatMessageContainer(
+            users: widget.users,
+            message: message,
+            messageToReactTo: message.messageToReactTo != null
+                ? widget.messages.firstWhere(
+                    (element) => element.id == message.messageToReactTo,
+                    orElse: () =>
+                        MessageEntity(id: "", createdAt: message.createdAt),
+                  )
+                : null,
+            currentUserId: widget.currentUserId,
+          ),
         );
       },
       elements: widget.messages,
       useStickyGroupSeparators: true,
-      physics: const ClampingScrollPhysics(),
       reverse: true,
       sort: false,
       order: GroupedListOrder.DESC,
@@ -94,8 +98,8 @@ class _ChatMessageListState extends State<ChatMessageList> {
           ),
         );
       },
-      groupSeparatorBuilder: (_) => const SizedBox(height: 8),
-      separator: const SizedBox(height: 8),
+      groupSeparatorBuilder: (_) => const SizedBox(height: 4),
+      separator: const SizedBox(height: 4),
     );
   }
 }

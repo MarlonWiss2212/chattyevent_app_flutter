@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/chat_message_input/chat_mesasage_input_text_field.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/chat_message_input/chat_message_input_files.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/chat_message_input/chat_message_input_react_message_container.dart';
@@ -23,9 +24,7 @@ class ChatMessageInput extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               const Expanded(
-                child: //Container(
-                    // constraints: const BoxConstraints(maxHeight: 200),child:
-                    SingleChildScrollView(
+                child: SingleChildScrollView(
                   child: Column(
                     children: [
                       ChatMessageInputFiles(),
@@ -33,49 +32,65 @@ class ChatMessageInput extends StatelessWidget {
                       ChatMessageInputTextField(),
                     ],
                   ),
-                  //  ),
                 ),
               ),
               const SizedBox(width: 8),
-              InkWell(
-                customBorder: const CircleBorder(),
-                onTap: () async {
-                  await showAnimatedDialog(
-                    context: context,
-                    curve: Curves.fastOutSlowIn,
-                    animationType: DialogTransitionType.slideFromBottomFade,
-                    builder: (c) => AddChatMessageDetailDialog(c: context),
-                  );
-                },
-                child: Ink(
-                  width: 40,
-                  height: 40,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Theme.of(context).colorScheme.surface,
-                  ),
-                  child: const Icon(Ionicons.add, size: 20),
-                ),
-              ),
+              addButton(context),
               const SizedBox(width: 8),
-              InkWell(
-                customBorder: const CircleBorder(),
-                onTap: () =>
-                    BlocProvider.of<AddMessageCubit>(context).createMessage(),
-                child: Ink(
-                  width: 40,
-                  height: 40,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Theme.of(context).colorScheme.surface,
-                  ),
-                  child: const Icon(Ionicons.send, size: 20),
-                ),
-              ),
+              sendButton(context),
             ],
           ),
         );
       },
+    );
+  }
+
+  Widget addButton(BuildContext context) {
+    return InkWell(
+      customBorder: const CircleBorder(),
+      onTap: () async {
+        await showAnimatedDialog(
+          context: context,
+          curve: Curves.fastOutSlowIn,
+          animationType: DialogTransitionType.slideFromBottomFade,
+          builder: (c) => AddChatMessageDetailDialog(c: context),
+        );
+      },
+      child: ClipOval(
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
+          child: Ink(
+            width: 40,
+            height: 40,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: Theme.of(context).colorScheme.surface.withOpacity(.5),
+            ),
+            child: const Icon(Ionicons.add, size: 20),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget sendButton(BuildContext context) {
+    return InkWell(
+      customBorder: const CircleBorder(),
+      onTap: () => BlocProvider.of<AddMessageCubit>(context).createMessage(),
+      child: ClipOval(
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
+          child: Ink(
+            width: 40,
+            height: 40,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: Theme.of(context).colorScheme.surface.withOpacity(.5),
+            ),
+            child: const Icon(Ionicons.send, size: 20),
+          ),
+        ),
+      ),
     );
   }
 }

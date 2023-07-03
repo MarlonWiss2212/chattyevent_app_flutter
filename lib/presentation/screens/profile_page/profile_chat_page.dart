@@ -11,6 +11,7 @@ import 'package:chattyevent_app_flutter/application/bloc/notification/notificati
 import 'package:chattyevent_app_flutter/core/utils/injection.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
 import 'package:dartz/dartz.dart' as dz;
+import 'package:ionicons/ionicons.dart';
 
 class ProfileChatPage extends StatefulWidget {
   const ProfileChatPage({
@@ -65,7 +66,7 @@ class _ProfileChatPageState extends State<ProfileChatPage> {
         ),
         actions: [
           PlatformIconButton(
-            icon: const Icon(Icons.info),
+            icon: const Icon(Ionicons.ellipsis_vertical),
             onPressed: () => AutoRouter.of(context).push(ProfilePageRoute()),
           )
         ],
@@ -93,7 +94,8 @@ class _ProfileChatPageState extends State<ProfileChatPage> {
                   param1: BlocProvider.of<AuthCubit>(context).state,
                 ),
               ),
-              child: const Column(
+              child: const Stack(
+                fit: StackFit.expand,
                 children: [
                   Expanded(
                     child: Padding(

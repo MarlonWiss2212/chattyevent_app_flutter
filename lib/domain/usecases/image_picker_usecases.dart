@@ -1,6 +1,5 @@
 import 'dart:io';
-
-import 'package:chattyevent_app_flutter/domain/usecases/permission_usecases.dart';
+import 'package:chattyevent_app_flutter/domain/repositories/device/permission_repository.dart';
 import 'package:dartz/dartz.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -9,26 +8,12 @@ import 'package:chattyevent_app_flutter/core/failures/image_picker_failures.dart
 import 'package:chattyevent_app_flutter/domain/repositories/device/image_picker_repository.dart';
 
 class ImagePickerUseCases {
-  final ImageCropper _cropper = ImageCropper();
-
-  final PermissionUseCases permissionUseCases;
+  final PermissionRepository permissionRepository;
   final ImagePickerRepository imagePickerRepository;
   ImagePickerUseCases({
     required this.imagePickerRepository,
-    required this.permissionUseCases,
+    required this.permissionRepository,
   });
-
-  Future<CroppedFile?> cropImage({
-    required String sourcePath,
-    required int compressQuality,
-    required CropAspectRatio aspectRatio,
-  }) {
-    return _cropper.cropImage(
-      sourcePath: sourcePath,
-      compressQuality: compressQuality,
-      aspectRatio: aspectRatio,
-    );
-  }
 
   Future<Either<NotificationAlert, File>> getImageFromCameraWithPermissions({
     CropAspectRatio? cropAspectRatio,
@@ -37,10 +22,10 @@ class ImagePickerUseCases {
     int quality = 50,
   }) async {
     PermissionStatus permissionStatus =
-        await permissionUseCases.getCameraPermissionStatus();
+        await permissionRepository.getCameraPermissionStatus();
 
     if (permissionStatus.isDenied) {
-      permissionStatus = await permissionUseCases.requestCameraPermission();
+      permissionStatus = await permissionRepository.requestCameraPermission();
     }
 
     if (permissionStatus.isPermanentlyDenied || permissionStatus.isDenied) {
@@ -51,29 +36,19 @@ class ImagePickerUseCases {
 
     final image = await imagePickerRepository.getImageFromCamera();
 
-    if (image == null) {
-      return Left(mapImagePickerFailureToNotificationAlert(
-        NoPhotoTakenFailure(),
-      ));
-    }
-
-    if (cropAspectRatio != null) {
-      final croppedImage = await cropImage(
-        sourcePath: image.path,
-        aspectRatio: cropAspectRatio,
-        compressQuality: quality,
-      );
-
-      if (croppedImage != null) {
-        return Right(File(croppedImage.path));
-      }
-
-      return Left(mapImagePickerFailureToNotificationAlert(
-        PhotoNotCroppedFailure(),
-      ));
-    }
-
-    return Right(File(image.path));
+    return await image.fold(
+      (alert) => Left(alert),
+      (image) async {
+        if (cropAspectRatio != null) {
+          return await imagePickerRepository.cropImage(
+            sourcePath: image.path,
+            aspectRatio: cropAspectRatio,
+            compressQuality: quality,
+          );
+        }
+        return Right(image);
+      },
+    );
   }
 
   Future<Either<NotificationAlert, File>> getImageFromPhotosWithPermissions({
@@ -83,10 +58,10 @@ class ImagePickerUseCases {
     int quality = 50,
   }) async {
     final permissionStatus =
-        await permissionUseCases.getPhotosPermissionStatus();
+        await permissionRepository.getPhotosPermissionStatus();
 
     if (permissionStatus.isDenied || permissionStatus.isLimited) {
-      await permissionUseCases.requestPhotosPermission();
+      await permissionRepository.requestPhotosPermission();
     }
 
     if (permissionStatus.isPermanentlyDenied || permissionStatus.isRestricted) {
@@ -97,28 +72,18 @@ class ImagePickerUseCases {
 
     final image = await imagePickerRepository.getImageFromGallery();
 
-    if (image == null) {
-      return Left(mapImagePickerFailureToNotificationAlert(
-        NoPhotoSelectedFailure(),
-      ));
-    }
-
-    if (cropAspectRatio != null) {
-      final croppedImage = await cropImage(
-        sourcePath: image.path,
-        aspectRatio: cropAspectRatio,
-        compressQuality: quality,
-      );
-
-      if (croppedImage != null) {
-        return Right(File(croppedImage.path));
-      }
-
-      return Left(mapImagePickerFailureToNotificationAlert(
-        PhotoNotCroppedFailure(),
-      ));
-    }
-
-    return Right(File(image.path));
+    return await image.fold(
+      (alert) => Left(alert),
+      (image) async {
+        if (cropAspectRatio != null) {
+          return await imagePickerRepository.cropImage(
+            sourcePath: image.path,
+            aspectRatio: cropAspectRatio,
+            compressQuality: quality,
+          );
+        }
+        return Right(image);
+      },
+    );
   }
 }

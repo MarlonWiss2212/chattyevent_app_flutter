@@ -11,6 +11,7 @@ import 'package:chattyevent_app_flutter/core/utils/injection.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/chat_page/chat_page/chat_page_message_area.dart';
 import 'package:dartz/dartz.dart' as dz;
+import 'package:ionicons/ionicons.dart';
 
 class ChatPage extends StatefulWidget {
   const ChatPage({@PathParam('id') required this.groupchatId, super.key});
@@ -61,7 +62,7 @@ class _ChatPageState extends State<ChatPage> {
         ),
         actions: [
           PlatformIconButton(
-            icon: const Icon(Icons.info),
+            icon: const Icon(Ionicons.ellipsis_vertical),
             onPressed: () => AutoRouter.of(context).push(
               ChatInfoPageRoute(),
             ),
@@ -91,7 +92,8 @@ class _ChatPageState extends State<ChatPage> {
                   param1: BlocProvider.of<AuthCubit>(context).state,
                 ),
               ),
-              child: const Column(
+              child: const Stack(
+                fit: StackFit.expand,
                 children: [
                   Expanded(
                     child: Padding(

@@ -59,12 +59,15 @@ class ChatMessageContainer extends StatelessWidget {
       ],
       child: SwipeTo(
         iconColor: Theme.of(context).colorScheme.onBackground,
-        onRightSwipe: () => foundUser != null
-            ? BlocProvider.of<AddMessageCubit>(context).emitState(
-                messageToReactToWithUser:
-                    MessageAndUser(message: message, user: foundUser),
-              )
-            : null,
+        onRightSwipe: () {
+          if (foundUser != null) {
+            // vibrate
+            BlocProvider.of<AddMessageCubit>(context).emitState(
+              messageToReactToWithUser:
+                  MessageAndUser(message: message, user: foundUser),
+            );
+          }
+        },
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 8.0),
           child: Align(

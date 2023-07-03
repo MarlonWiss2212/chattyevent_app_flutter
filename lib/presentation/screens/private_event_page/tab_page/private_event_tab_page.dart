@@ -3,7 +3,7 @@ import 'package:chattyevent_app_flutter/core/enums/private_event/private_event_u
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/current_private_event/current_private_event_cubit.dart';
-import 'package:chattyevent_app_flutter/core/dto/private_event/update_private_event_dto.dart';
+import 'package:chattyevent_app_flutter/infastructure/dto/private_event/update_private_event_dto.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/input_fields/edit_input_text_field.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/private_event_page/tab_info/private_event_tab_info_delete_button.dart';

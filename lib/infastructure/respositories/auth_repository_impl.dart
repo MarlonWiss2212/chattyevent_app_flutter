@@ -125,7 +125,8 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<NotificationAlert, Unit>> refreshUser() async {
+  Future<Either<NotificationAlert, User>> refreshUser() async {
+    await auth.currentUser!.reload();
     if (auth.currentUser == null) {
       return Left(
         NotificationAlert(
@@ -134,8 +135,7 @@ class AuthRepositoryImpl implements AuthRepository {
         ),
       );
     }
-    await auth.currentUser!.reload();
-    return const Right(unit);
+    return Right(auth.currentUser!);
   }
 
   @override
@@ -151,6 +151,24 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       await auth.currentUser!.delete();
       return const Right(unit);
+    } catch (e) {
+      return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
+    }
+  }
+
+  @override
+  Future<Either<NotificationAlert, String>> refreshToken() async {
+    if (auth.currentUser == null) {
+      return Left(
+        NotificationAlert(
+          title: "Fehler User Löschen",
+          message: "Fehler beim Identifizierens des gerdigen Users",
+        ),
+      );
+    }
+    try {
+      final token = await auth.currentUser!.getIdToken();
+      return Right(token);
     } catch (e) {
       return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
     }

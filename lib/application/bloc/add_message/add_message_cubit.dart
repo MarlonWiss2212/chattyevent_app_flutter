@@ -9,7 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:chattyevent_app_flutter/application/bloc/current_groupchat/current_chat_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
-import 'package:chattyevent_app_flutter/core/dto/message/create_message_dto.dart';
+import 'package:chattyevent_app_flutter/infastructure/dto/message/create_message_dto.dart';
 
 part 'add_message_state.dart';
 
@@ -29,6 +29,7 @@ class AddMessageCubit extends Cubit<AddMessageState> {
   });
 
   Future createMessage() async {
+    if (state.status == AddMessageStateStatus.loading) return;
     emitState(status: AddMessageStateStatus.loading);
 
     if (state.message == null ||

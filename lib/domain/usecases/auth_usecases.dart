@@ -60,8 +60,12 @@ class AuthUseCases {
     return await authRepository.updatePassword(newPassword: password);
   }
 
-  Future<Either<NotificationAlert, Unit>> refreshUser() async {
+  Future<Either<NotificationAlert, User>> refreshUser() async {
     return await authRepository.refreshUser();
+  }
+
+  Future<Either<NotificationAlert, String>> refreshToken() async {
+    return await authRepository.refreshToken();
   }
 
   Future<void> logout() async {
@@ -70,5 +74,13 @@ class AuthUseCases {
 
   Future<Either<NotificationAlert, Unit>> deleteUser() async {
     return await authRepository.deleteUser();
+  }
+
+  Future<bool> isEmailVerified() async {
+    final currentAuthUser = await authRepository.refreshUser();
+    return currentAuthUser.fold(
+      (alert) => false,
+      (user) => user.emailVerified,
+    );
   }
 }

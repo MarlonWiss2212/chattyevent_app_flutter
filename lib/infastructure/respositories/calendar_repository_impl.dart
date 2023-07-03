@@ -1,5 +1,5 @@
-import 'package:chattyevent_app_flutter/core/filter/calendar/find_time_by_users_calendar_filter.dart';
-import 'package:chattyevent_app_flutter/core/filter/limit_offset_filter.dart';
+import 'package:chattyevent_app_flutter/infastructure/filter/calendar/find_time_by_users_calendar_filter.dart';
+import 'package:chattyevent_app_flutter/infastructure/filter/limit_offset_filter.dart';
 import 'package:chattyevent_app_flutter/core/utils/failure_helper.dart';
 import 'package:chattyevent_app_flutter/domain/entities/calendar/calendar_time_user_entity.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/calendar_repository.dart';

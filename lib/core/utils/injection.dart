@@ -2,6 +2,7 @@ import 'package:chattyevent_app_flutter/application/bloc/notification/notificati
 import 'package:chattyevent_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/calendar_repository.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/chat_repository.dart';
+import 'package:chattyevent_app_flutter/domain/repositories/device/permission_repository.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/imprint_repository.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/message_repository.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/calendar_usecases.dart';
@@ -9,9 +10,11 @@ import 'package:chattyevent_app_flutter/domain/usecases/chat_usecase.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/imprint_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/message_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/permission_usecases.dart';
+import 'package:chattyevent_app_flutter/infastructure/datasources/device/permission.dart';
 import 'package:chattyevent_app_flutter/infastructure/datasources/remote/http.dart';
 import 'package:chattyevent_app_flutter/infastructure/respositories/calendar_repository_impl.dart';
 import 'package:chattyevent_app_flutter/infastructure/respositories/chat_repsoitory_impl.dart';
+import 'package:chattyevent_app_flutter/infastructure/respositories/device/permission_repository_impl.dart';
 import 'package:chattyevent_app_flutter/infastructure/respositories/imprint_repository_impl.dart';
 import 'package:chattyevent_app_flutter/infastructure/respositories/message_repository_impl.dart';
 import 'package:chattyevent_app_flutter/presentation/router/auth_guard.dart';
@@ -21,6 +24,7 @@ import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
 import 'package:chattyevent_app_flutter/presentation/router/verify_email_page_guard.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:chattyevent_app_flutter/core/utils/graphql_utils.dart';
@@ -106,7 +110,7 @@ class InjectionUtils {
 
     // use cases
     serviceLocator.registerLazySingleton<PermissionUseCases>(
-      () => PermissionUseCases(),
+      () => PermissionUseCases(permissionRepository: serviceLocator()),
     );
     serviceLocator.registerLazySingleton<ImprintUseCases>(
       () => ImprintUseCases(imprintRepository: serviceLocator()),
@@ -114,13 +118,13 @@ class InjectionUtils {
     serviceLocator.registerLazySingleton<LocationUseCases>(
       () => LocationUseCases(
         locationRepository: serviceLocator(),
-        permissionUseCases: serviceLocator(),
+        permissionRepository: serviceLocator(),
       ),
     );
     serviceLocator.registerLazySingleton<ImagePickerUseCases>(
       () => ImagePickerUseCases(
         imagePickerRepository: serviceLocator(),
-        permissionUseCases: serviceLocator(),
+        permissionRepository: serviceLocator(),
       ),
     );
     serviceLocator.registerLazySingleton<SettingsUseCases>(
@@ -184,7 +188,13 @@ class InjectionUtils {
       () => LocationRepositoryImpl(locationDatasource: serviceLocator()),
     );
     serviceLocator.registerLazySingleton<ImagePickerRepository>(
-      () => ImagePickerRepositoryImpl(imagePickerDatasource: serviceLocator()),
+      () => ImagePickerRepositoryImpl(
+        imagePickerDatasource: serviceLocator(),
+        imageCropper: ImageCropper(),
+      ),
+    );
+    serviceLocator.registerLazySingleton<PermissionRepository>(
+      () => PermissionRepositoryImpl(permissionDatasource: serviceLocator()),
     );
     serviceLocator.registerLazySingleton<SettingsRepository>(
       () =>
@@ -249,6 +259,9 @@ class InjectionUtils {
       () => SharedPreferencesDatasourceImpl(
         sharedPreferences: sharedPrefs,
       ),
+    );
+    serviceLocator.registerLazySingleton<PermissionDatasource>(
+      () => PermissionDatasourceImpl(),
     );
     serviceLocator.registerLazySingleton<HttpDatasource>(
       () => HttpDatasourceImpl(),

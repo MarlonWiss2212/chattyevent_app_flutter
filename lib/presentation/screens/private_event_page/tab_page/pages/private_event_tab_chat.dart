@@ -45,7 +45,8 @@ class _PrivateEventTabChatState extends State<PrivateEventTabChat> {
           BlocProvider.of<CurrentPrivateEventCubit>(context),
         )),
       ),
-      child: const Column(
+      child: const Stack(
+        fit: StackFit.expand,
         children: [
           Expanded(
             child: Padding(

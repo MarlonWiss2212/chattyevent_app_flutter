@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:chattyevent_app_flutter/core/dto/private_event/create_location_private_event_dto.dart';
+import 'package:chattyevent_app_flutter/infastructure/dto/private_event/create_location_private_event_dto.dart';
 
 class UpdatePrivateEventDto {
   final String? title;

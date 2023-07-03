@@ -1,4 +1,4 @@
-import 'package:chattyevent_app_flutter/core/filter/groupchat/find_one_groupchat_to_filter.dart';
+import 'package:chattyevent_app_flutter/infastructure/filter/groupchat/find_one_groupchat_to_filter.dart';
 
 class CreateGroupchatLeftUserDto extends FindOneGroupchatToFilter {
   final String userId;

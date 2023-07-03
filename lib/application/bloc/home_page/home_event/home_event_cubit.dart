@@ -2,8 +2,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/current_private_event/current_private_event_cubit.dart';
-import 'package:chattyevent_app_flutter/core/filter/limit_offset_filter.dart';
-import 'package:chattyevent_app_flutter/core/filter/private_event/find_private_events_filter.dart';
+import 'package:chattyevent_app_flutter/infastructure/filter/limit_offset_filter.dart';
+import 'package:chattyevent_app_flutter/infastructure/filter/private_event/find_private_events_filter.dart';
 import 'package:chattyevent_app_flutter/domain/entities/private_event/private_event_entity.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/private_event_usecases.dart';
 

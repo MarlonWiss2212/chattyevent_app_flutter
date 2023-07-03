@@ -1,12 +1,12 @@
 import 'dart:async';
-import 'package:chattyevent_app_flutter/core/dto/user/update_user_dto.dart';
+import 'package:chattyevent_app_flutter/infastructure/dto/user/update_user_dto.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/permission_usecases.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graphql/client.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
-import 'package:chattyevent_app_flutter/core/filter/user/find_one_user_filter.dart';
+import 'package:chattyevent_app_flutter/infastructure/filter/user/find_one_user_filter.dart';
 import 'package:chattyevent_app_flutter/core/utils/injection.dart';
 import 'package:chattyevent_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/auth_usecases.dart';
@@ -16,8 +16,8 @@ import '../../../core/utils/one_signal_utils.dart';
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
-  final FirebaseAuth auth;
   final AuthUseCases authUseCases;
+  final FirebaseAuth auth;
   final PermissionUseCases permissionUseCases;
   final NotificationCubit notificationCubit;
   UserUseCases userUseCases;
@@ -25,8 +25,8 @@ class AuthCubit extends Cubit<AuthState> {
   AuthCubit(
     super.initialState, {
     required this.notificationCubit,
-    required this.auth,
     required this.authUseCases,
+    required this.auth,
     required this.userUseCases,
     required this.permissionUseCases,
   });
@@ -196,10 +196,11 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future refreshAuthToken() async {
-    final token = await auth.currentUser?.getIdToken();
-    if (token != state.token) {
-      emitState(token: token);
-    }
+    final token = await authUseCases.refreshToken();
+    token.fold(
+      (alert) => notificationCubit.newAlert(notificationAlert: alert),
+      (token) => token != state.token ? emitState(token: token) : null,
+    );
   }
 
   Future refreshUser() async {
@@ -257,8 +258,7 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future checkIfEmailVerfiedIfSoGoToCreateUserPage() async {
-    await refreshUser();
-    if (auth.currentUser != null && auth.currentUser!.emailVerified) {
+    if (await authUseCases.isEmailVerified()) {
       emitState(goOnCreateUserPage: true);
     }
   }

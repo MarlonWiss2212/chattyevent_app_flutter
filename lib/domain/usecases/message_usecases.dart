@@ -2,10 +2,10 @@ import 'package:chattyevent_app_flutter/domain/entities/message/message_entity.d
 import 'package:chattyevent_app_flutter/domain/repositories/message_repository.dart';
 import 'package:dartz/dartz.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
-import 'package:chattyevent_app_flutter/core/dto/message/create_message_dto.dart';
-import 'package:chattyevent_app_flutter/core/filter/message/added_message_filter.dart';
-import 'package:chattyevent_app_flutter/core/filter/message/find_messages_filter.dart';
-import 'package:chattyevent_app_flutter/core/filter/limit_offset_filter.dart';
+import 'package:chattyevent_app_flutter/infastructure/dto/message/create_message_dto.dart';
+import 'package:chattyevent_app_flutter/infastructure/filter/message/added_message_filter.dart';
+import 'package:chattyevent_app_flutter/infastructure/filter/message/find_messages_filter.dart';
+import 'package:chattyevent_app_flutter/infastructure/filter/limit_offset_filter.dart';
 
 class MessageUseCases {
   final MessageRepository messageRepository;

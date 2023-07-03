@@ -5,7 +5,7 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/user_search/user_search_cubit.dart';
-import 'package:chattyevent_app_flutter/core/filter/user/find_users_filter.dart';
+import 'package:chattyevent_app_flutter/infastructure/filter/user/find_users_filter.dart';
 import 'package:chattyevent_app_flutter/core/utils/injection.dart';
 import '../../../widgets/screens/home_page/pages/home_search_page/user_horizontal_list.dart';
 

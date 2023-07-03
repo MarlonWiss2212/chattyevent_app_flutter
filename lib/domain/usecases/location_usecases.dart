@@ -1,6 +1,5 @@
 import 'dart:io';
-
-import 'package:chattyevent_app_flutter/domain/usecases/permission_usecases.dart';
+import 'package:chattyevent_app_flutter/domain/repositories/device/permission_repository.dart';
 import 'package:dartz/dartz.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -11,10 +10,10 @@ import 'package:url_launcher/url_launcher_string.dart';
 
 class LocationUseCases {
   final LocationRepository locationRepository;
-  final PermissionUseCases permissionUseCases;
+  final PermissionRepository permissionRepository;
   LocationUseCases({
     required this.locationRepository,
-    required this.permissionUseCases,
+    required this.permissionRepository,
   });
 
   Future<bool> locationServiceIsEnabled() async {
@@ -24,7 +23,7 @@ class LocationUseCases {
   Future<Either<NotificationAlert, Position>>
       getCurrentLocationWithPermissions() async {
     PermissionStatus permissionStatus =
-        await permissionUseCases.getLocationPermissionStatus();
+        await permissionRepository.getLocationPermissionStatus();
 
     if (await locationServiceIsEnabled() == false) {
       return Left(mapLocationFailureToNotificationAlert(
@@ -33,7 +32,7 @@ class LocationUseCases {
     }
 
     if (permissionStatus.isDenied) {
-      permissionStatus = await permissionUseCases.requestLocationPermission();
+      permissionStatus = await permissionRepository.requestLocationPermission();
     }
 
     if (permissionStatus.isPermanentlyDenied || permissionStatus.isDenied) {
