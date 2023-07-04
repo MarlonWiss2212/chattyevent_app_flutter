@@ -18,25 +18,28 @@ class Button extends StatelessWidget {
   Widget build(BuildContext context) {
     const standardTextStyle = TextStyle(fontWeight: FontWeight.w700);
 
-    return InkWell(
-      borderRadius: BorderRadius.circular(8),
-      onTap: onTap,
-      child: Ink(
-        decoration: BoxDecoration(
-          color: color ?? Theme.of(context).colorScheme.primaryContainer,
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Center(
-            child: Text(
-              text,
-              style: textStyle != null
-                  ? textStyle?.merge(
-                        standardTextStyle,
-                      ) ??
-                      standardTextStyle
-                  : standardTextStyle,
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(8),
+        onTap: onTap,
+        child: Ink(
+          decoration: BoxDecoration(
+            color: color ?? Theme.of(context).colorScheme.primaryContainer,
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Center(
+              child: Text(
+                text,
+                style: textStyle != null
+                    ? textStyle?.merge(
+                          standardTextStyle,
+                        ) ??
+                        standardTextStyle
+                    : standardTextStyle,
+              ),
             ),
           ),
         ),

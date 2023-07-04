@@ -1,20 +1,13 @@
-import 'package:chattyevent_app_flutter/core/enums/user_relation/requester_calender_watch_permission_enum.dart';
-import 'package:chattyevent_app_flutter/core/enums/user_relation/requester_groupchat_add_permission_enum.dart';
-import 'package:chattyevent_app_flutter/core/enums/user_relation/requester_private_event_add_permission_enum.dart';
-
 class FindFollowersFilter {
   final String targetUserId;
-  final RequesterPrivateEventAddPermissionEnum?
-      requesterPrivateEventAddPermission;
-  final RequesterGroupchatAddPermissionEnum? requesterGroupchatAddPermission;
-  final RequesterCalenderWatchPermissionEnum? requesterCalenderWatchPermission;
+  final bool? filterForPrivateEventAddMeAllowedUsers;
+  final bool? filterForGroupchatAddMeAllowedUsers;
   final String? search;
 
   FindFollowersFilter({
     required this.targetUserId,
-    this.requesterGroupchatAddPermission,
-    this.requesterPrivateEventAddPermission,
-    this.requesterCalenderWatchPermission,
+    this.filterForPrivateEventAddMeAllowedUsers,
+    this.filterForGroupchatAddMeAllowedUsers,
     this.search,
   });
 
@@ -25,28 +18,19 @@ class FindFollowersFilter {
       map.addAll({"search": search});
     }
 
-    //new schema
-    /*
-    if (requesterPrivateEventAddPermission != null) {
+    if (filterForPrivateEventAddMeAllowedUsers != null) {
       map.addAll({
-        "requesterPrivateEventAddPermission":
-            requesterPrivateEventAddPermission!.value,
+        "filterForPrivateEventAddMeAllowedUsers":
+            filterForPrivateEventAddMeAllowedUsers,
       });
     }
 
-    if (requesterGroupchatAddPermission != null) {
+    if (filterForGroupchatAddMeAllowedUsers != null) {
       map.addAll({
-        "requesterGroupchatAddPermission":
-            requesterGroupchatAddPermission!.value,
+        "filterForGroupchatAddMeAllowedUsers":
+            filterForGroupchatAddMeAllowedUsers,
       });
     }
-
-    if (requesterCalenderWatchPermission != null) {
-      map.addAll({
-        "requesterCalenderWatchPermission":
-            requesterCalenderWatchPermission!.value,
-      });
-    }*/
 
     return map;
   }

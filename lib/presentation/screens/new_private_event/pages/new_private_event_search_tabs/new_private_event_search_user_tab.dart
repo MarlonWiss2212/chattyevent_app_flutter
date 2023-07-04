@@ -1,4 +1,3 @@
-import 'package:chattyevent_app_flutter/core/enums/user_relation/requester_private_event_add_permission_enum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/add_private_event/add_private_event_cubit.dart';
@@ -20,9 +19,8 @@ class _NewPrivateEventSearchUserTabState
     extends State<NewPrivateEventSearchUserTab> {
   @override
   void initState() {
-    BlocProvider.of<UserSearchCubit>(context).getUsersByPermissionViaApi(
-      requesterPrivateEventAddPermission:
-          RequesterPrivateEventAddPermissionEnum.add,
+    BlocProvider.of<UserSearchCubit>(context).getFollowedViaApi(
+      filterForPrivateEventAddMeAllowedUsers: true,
     );
     super.initState();
   }
@@ -61,19 +59,15 @@ class _NewPrivateEventSearchUserTabState
                     return filteredUsers;
                   },
                   reloadRequest: ({String? text}) {
-                    BlocProvider.of<UserSearchCubit>(context)
-                        .getUsersByPermissionViaApi(
-                      requesterPrivateEventAddPermission:
-                          RequesterPrivateEventAddPermissionEnum.add,
+                    BlocProvider.of<UserSearchCubit>(context).getFollowedViaApi(
+                      filterForPrivateEventAddMeAllowedUsers: true,
                       search: text,
                     );
                   },
                   loadMoreRequest: ({String? text}) {
-                    BlocProvider.of<UserSearchCubit>(context)
-                        .getUsersByPermissionViaApi(
+                    BlocProvider.of<UserSearchCubit>(context).getFollowedViaApi(
                       loadMore: true,
-                      requesterPrivateEventAddPermission:
-                          RequesterPrivateEventAddPermissionEnum.add,
+                      filterForPrivateEventAddMeAllowedUsers: true,
                       search: text,
                     );
                   },

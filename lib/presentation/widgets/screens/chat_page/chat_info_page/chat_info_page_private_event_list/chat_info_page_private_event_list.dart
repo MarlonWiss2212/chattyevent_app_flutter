@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ionicons/ionicons.dart';
 import 'package:skeletons/skeletons.dart';
 import 'package:chattyevent_app_flutter/application/bloc/current_groupchat/current_chat_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/current_private_event/current_private_event_cubit.dart';
@@ -59,7 +60,7 @@ class ChatInfoPagePrivateEventList extends StatelessWidget {
                 style: Theme.of(context).textTheme.titleMedium,
                 overflow: TextOverflow.ellipsis,
               ),
-              trailing: const Icon(Icons.arrow_right),
+              trailing: const Icon(Ionicons.arrow_forward),
               onTap: () {
                 AutoRouter.of(context).push(
                   const ChatFuturePrivateEventsPageRoute(),

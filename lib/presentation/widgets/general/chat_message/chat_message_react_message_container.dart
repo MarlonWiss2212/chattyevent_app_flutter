@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:chattyevent_app_flutter/domain/entities/message/message_and_user_entity.dart';
 
 class ChatMessageReactMessageContainer extends StatelessWidget {
   final bool isInput;
   final String currentUserId;
-  final MessageAndUser messageAndUser;
+  final MessageAndUserEntity messageAndUser;
 
   const ChatMessageReactMessageContainer({
     Key? key,

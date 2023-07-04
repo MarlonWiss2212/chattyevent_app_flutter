@@ -1,5 +1,4 @@
 import 'package:auto_route/annotations.dart';
-import 'package:chattyevent_app_flutter/core/enums/user_relation/requester_groupchat_add_permission_enum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/current_groupchat/current_chat_cubit.dart';
@@ -20,8 +19,8 @@ class ChatAddUserPage extends StatefulWidget {
 class _ChatAddUserPageState extends State<ChatAddUserPage> {
   @override
   void initState() {
-    BlocProvider.of<UserSearchCubit>(context).getUsersByPermissionViaApi(
-      requesterGroupchatAddPermission: RequesterGroupchatAddPermissionEnum.add,
+    BlocProvider.of<UserSearchCubit>(context).getFollowedViaApi(
+      filterForGroupchatAddMeAllowedUsers: true,
     );
     super.initState();
   }

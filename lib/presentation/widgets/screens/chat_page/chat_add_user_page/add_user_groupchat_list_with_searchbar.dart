@@ -1,4 +1,3 @@
-import 'package:chattyevent_app_flutter/core/enums/user_relation/requester_groupchat_add_permission_enum.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,19 +19,15 @@ class AddUserGroupchatListWithSearchbar extends StatelessWidget {
           return SelectableUserGridList(
             showTextSearch: true,
             reloadRequest: ({String? text}) {
-              BlocProvider.of<UserSearchCubit>(context)
-                  .getUsersByPermissionViaApi(
-                requesterGroupchatAddPermission:
-                    RequesterGroupchatAddPermissionEnum.add,
+              BlocProvider.of<UserSearchCubit>(context).getFollowedViaApi(
+                filterForGroupchatAddMeAllowedUsers: true,
                 search: text,
               );
             },
             loadMoreRequest: ({String? text}) {
-              BlocProvider.of<UserSearchCubit>(context)
-                  .getUsersByPermissionViaApi(
+              BlocProvider.of<UserSearchCubit>(context).getFollowedViaApi(
                 loadMore: true,
-                requesterGroupchatAddPermission:
-                    RequesterGroupchatAddPermissionEnum.add,
+                filterForGroupchatAddMeAllowedUsers: true,
                 search: text,
               );
             },

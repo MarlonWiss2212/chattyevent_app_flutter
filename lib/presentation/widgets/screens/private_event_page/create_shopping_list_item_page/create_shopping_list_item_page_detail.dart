@@ -17,6 +17,7 @@ class CreateShoppingListItemPageDetail extends StatelessWidget {
       builder: (context, state) {
         return SingleChildScrollView(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
                 width: double.infinity,
@@ -99,7 +100,7 @@ class CreateShoppingListItemPageDetail extends StatelessWidget {
                   ],
                 ),
               ),
-              const SizedBox(height: 8.0),
+              const SizedBox(height: 16),
               Row(
                 children: [
                   Text(
@@ -110,6 +111,7 @@ class CreateShoppingListItemPageDetail extends StatelessWidget {
                   ),
                 ],
               ),
+              const SizedBox(height: 8.0),
               const CreateShoppingListItemPageSelectUserList(),
             ],
           ),

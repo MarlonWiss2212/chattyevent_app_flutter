@@ -1,4 +1,3 @@
-import 'package:chattyevent_app_flutter/core/enums/user_relation/requester_groupchat_add_permission_enum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/add_groupchat/add_groupchat_cubit.dart';
@@ -19,8 +18,8 @@ class NewGroupchatSelectUserTab extends StatefulWidget {
 class _NewGroupchatSelectUserTabState extends State<NewGroupchatSelectUserTab> {
   @override
   void initState() {
-    BlocProvider.of<UserSearchCubit>(context).getUsersByPermissionViaApi(
-      requesterGroupchatAddPermission: RequesterGroupchatAddPermissionEnum.add,
+    BlocProvider.of<UserSearchCubit>(context).getFollowedViaApi(
+      filterForGroupchatAddMeAllowedUsers: true,
     );
     super.initState();
   }
@@ -58,19 +57,15 @@ class _NewGroupchatSelectUserTabState extends State<NewGroupchatSelectUserTab> {
                     return filteredUsers;
                   },
                   reloadRequest: ({String? text}) {
-                    BlocProvider.of<UserSearchCubit>(context)
-                        .getUsersByPermissionViaApi(
-                      requesterGroupchatAddPermission:
-                          RequesterGroupchatAddPermissionEnum.add,
+                    BlocProvider.of<UserSearchCubit>(context).getFollowedViaApi(
+                      filterForGroupchatAddMeAllowedUsers: true,
                       search: text,
                     );
                   },
                   loadMoreRequest: ({String? text}) {
-                    BlocProvider.of<UserSearchCubit>(context)
-                        .getUsersByPermissionViaApi(
+                    BlocProvider.of<UserSearchCubit>(context).getFollowedViaApi(
                       loadMore: true,
-                      requesterGroupchatAddPermission:
-                          RequesterGroupchatAddPermissionEnum.add,
+                      filterForGroupchatAddMeAllowedUsers: true,
                       search: text,
                     );
                   },

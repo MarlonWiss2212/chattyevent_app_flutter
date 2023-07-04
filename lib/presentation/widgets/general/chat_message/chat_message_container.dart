@@ -10,6 +10,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:swipe_to/swipe_to.dart';
+import 'package:chattyevent_app_flutter/domain/entities/message/message_and_user_entity.dart';
 
 class ChatMessageContainer extends StatelessWidget {
   final List<UserEntity> users;
@@ -64,7 +65,7 @@ class ChatMessageContainer extends StatelessWidget {
             // vibrate
             BlocProvider.of<AddMessageCubit>(context).emitState(
               messageToReactToWithUser:
-                  MessageAndUser(message: message, user: foundUser),
+                  MessageAndUserEntity(message: message, user: foundUser),
             );
           }
         },
@@ -103,7 +104,7 @@ class ChatMessageContainer extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.only(bottom: 8),
                           child: ChatMessageReactMessageContainer(
-                            messageAndUser: MessageAndUser(
+                            messageAndUser: MessageAndUserEntity(
                               message: messageToReactTo!,
                               user: findUser(
                                     messageToReactTo!.createdBy ?? "",

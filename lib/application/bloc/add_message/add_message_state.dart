@@ -11,7 +11,7 @@ class AddMessageState {
   final String? groupchatTo;
   final String? privateEventTo;
   final String? userTo;
-  final MessageAndUser? messageToReactToWithUser;
+  final MessageAndUserEntity? messageToReactToWithUser;
 
   AddMessageState({
     this.addedMessage,
@@ -22,14 +22,5 @@ class AddMessageState {
     this.userTo,
     this.file,
     this.status = AddMessageStateStatus.initial,
-  });
-}
-
-class MessageAndUser {
-  final UserEntity user;
-  final MessageEntity message;
-  MessageAndUser({
-    required this.message,
-    required this.user,
   });
 }

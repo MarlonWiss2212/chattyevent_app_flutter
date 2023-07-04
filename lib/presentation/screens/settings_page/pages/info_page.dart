@@ -3,6 +3,7 @@ import 'package:chattyevent_app_flutter/core/utils/injection.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/settings_usecases.dart';
 import 'package:flutter/material.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
+import 'package:ionicons/ionicons.dart';
 
 class SettingsInfoPage extends StatefulWidget {
   const SettingsInfoPage({super.key});
@@ -44,7 +45,7 @@ class _SettingsInfoPageState extends State<SettingsInfoPage> {
                     style: Theme.of(context).textTheme.titleMedium,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  trailing: const Icon(Icons.arrow_right),
+                  trailing: const Icon(Ionicons.arrow_forward),
                   onTap: () async {
                     await settingsUseCases.openDatasecurityPage();
                   },
@@ -56,7 +57,7 @@ class _SettingsInfoPageState extends State<SettingsInfoPage> {
                     style: Theme.of(context).textTheme.titleMedium,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  trailing: const Icon(Icons.arrow_right),
+                  trailing: const Icon(Ionicons.arrow_forward),
                   onTap: () async {
                     await settingsUseCases.openTermsOfUsePage();
                   },
@@ -68,7 +69,7 @@ class _SettingsInfoPageState extends State<SettingsInfoPage> {
                     style: Theme.of(context).textTheme.titleMedium,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  trailing: const Icon(Icons.arrow_right),
+                  trailing: const Icon(Ionicons.arrow_forward),
                   onTap: () {
                     AutoRouter.of(context).push(
                       const ImprintPageRoute(),
@@ -82,7 +83,7 @@ class _SettingsInfoPageState extends State<SettingsInfoPage> {
                     style: Theme.of(context).textTheme.titleMedium,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  trailing: const Icon(Icons.arrow_right),
+                  trailing: const Icon(Ionicons.arrow_forward),
                   onTap: () {
                     AutoRouter.of(context).push(
                       const RightOnInsightPageRoute(),
@@ -96,7 +97,7 @@ class _SettingsInfoPageState extends State<SettingsInfoPage> {
                     style: Theme.of(context).textTheme.titleMedium,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  trailing: const Icon(Icons.arrow_right),
+                  trailing: const Icon(Ionicons.arrow_forward),
                   onTap: () {
                     AutoRouter.of(context).push(
                       const RightOnDeletionPageRoute(),

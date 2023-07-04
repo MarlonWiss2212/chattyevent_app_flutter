@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'package:chattyevent_app_flutter/application/bloc/current_private_event/current_private_event_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/profile_page/profile_page_cubit.dart';
+import 'package:chattyevent_app_flutter/domain/entities/message/message_and_user_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/message/message_entity.dart';
-import 'package:chattyevent_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/image_picker_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/message_usecases.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -110,7 +110,7 @@ class AddMessageCubit extends Cubit<AddMessageState> {
     bool removeMessageToReactTo = false,
     String? message,
     String? groupchatTo,
-    MessageAndUser? messageToReactToWithUser,
+    MessageAndUserEntity? messageToReactToWithUser,
     String? userTo,
     String? privateEventTo,
   }) {

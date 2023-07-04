@@ -1,6 +1,4 @@
-import 'package:chattyevent_app_flutter/core/enums/user_relation/requester_calender_watch_permission_enum.dart';
-import 'package:chattyevent_app_flutter/core/enums/user_relation/requester_groupchat_add_permission_enum.dart';
-import 'package:chattyevent_app_flutter/core/enums/user_relation/requester_private_event_add_permission_enum.dart';
+import 'package:chattyevent_app_flutter/infastructure/filter/user_relation/find_followers_filter.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
@@ -66,12 +64,11 @@ class UserSearchCubit extends Cubit<UserSearchState> {
     );
   }
 
-  Future getUsersByPermissionViaApi({
+  /// to see if you have the permission to add others
+  Future getFollowedViaApi({
     bool loadMore = false,
-    //TODO: update schema
-    RequesterGroupchatAddPermissionEnum? requesterGroupchatAddPermission,
-    RequesterPrivateEventAddPermissionEnum? requesterPrivateEventAddPermission,
-    RequesterCalenderWatchPermissionEnum? requesterCalenderWatchPermission,
+    bool? filterForPrivateEventAddMeAllowedUsers,
+    bool? filterForGroupchatAddMeAllowedUsers,
     String? search,
   }) async {
     emit(UserSearchState(
@@ -85,9 +82,54 @@ class UserSearchCubit extends Cubit<UserSearchState> {
         await userRelationUseCases.getFollowedViaApi(
       findFollowedFilter: FindFollowedFilter(
         requesterUserId: authCubit.state.currentUser.id,
-        requesterGroupchatAddPermission: requesterGroupchatAddPermission,
-        requesterPrivateEventAddPermission: requesterPrivateEventAddPermission,
-        requesterCalenderWatchPermission: requesterCalenderWatchPermission,
+        filterForPrivateEventAddMeAllowedUsers:
+            filterForPrivateEventAddMeAllowedUsers,
+        filterForGroupchatAddMeAllowedUsers:
+            filterForGroupchatAddMeAllowedUsers,
+        search: search,
+      ),
+      limitOffsetFilter: LimitOffsetFilter(
+        limit: 20,
+        offset: loadMore ? state.users.length : 0,
+      ),
+    );
+
+    userSearchOrFailure.fold(
+      (alert) {
+        notificationCubit.newAlert(notificationAlert: alert);
+        emit(UserSearchState(
+          users: state.users,
+          status: UserSearchStateStatus.initial,
+        ));
+      },
+      (users) => emit(UserSearchState(
+        users: loadMore ? (List.from(state.users)..addAll(users)) : users,
+        status: UserSearchStateStatus.success,
+      )),
+    );
+  }
+
+  Future getFollowersViaApi({
+    bool loadMore = false,
+    bool? filterForPrivateEventAddMeAllowedUsers,
+    bool? filterForGroupchatAddMeAllowedUsers,
+    String? search,
+  }) async {
+    emit(UserSearchState(
+      status: loadMore
+          ? UserSearchStateStatus.loadingMore
+          : UserSearchStateStatus.loading,
+      users: state.users,
+    ));
+
+    final Either<NotificationAlert, List<UserEntity>> userSearchOrFailure =
+        await userRelationUseCases.getFollowersViaApi(
+      findFollowersFilter: FindFollowersFilter(
+        targetUserId: authCubit.state.currentUser.id,
+        filterForGroupchatAddMeAllowedUsers:
+            filterForGroupchatAddMeAllowedUsers,
+        filterForPrivateEventAddMeAllowedUsers:
+            filterForPrivateEventAddMeAllowedUsers,
         search: search,
       ),
       limitOffsetFilter: LimitOffsetFilter(

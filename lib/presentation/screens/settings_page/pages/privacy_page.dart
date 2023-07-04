@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ionicons/ionicons.dart';
 
 class SettingsPrivacyPage extends StatefulWidget {
   const SettingsPrivacyPage({super.key});
@@ -32,21 +33,7 @@ class _SettingsPrivacyPageState extends State<SettingsPrivacyPage> {
           SliverList(
             delegate: SliverChildListDelegate(
               [
-                /*
-                ListTile(
-                  leading: const Icon(Icons.person_add),
-                  title: Text(
-                    "Neue Anfrage Standard",
-                    style: Theme.of(context).textTheme.titleMedium,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  trailing: const Icon(Icons.arrow_right),
-                  onTap: () async {
-                    AutoRouter.of(context).push(
-                      const OnAcceptFollowRequestStandardFollowDataPageRoute(),
-                    );
-                  },
-                ),*/
+                howOthersInteractWithMeColumn(context),
               ],
             ),
           ),
@@ -54,4 +41,50 @@ class _SettingsPrivacyPageState extends State<SettingsPrivacyPage> {
       ),
     );
   }
+
+  Widget howOthersInteractWithMeColumn(BuildContext context) => Padding(
+        padding: const EdgeInsets.all(12),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            color: Theme.of(context).colorScheme.surface,
+          ),
+          child: Material(
+            borderRadius: BorderRadius.circular(12),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Text(
+                    "Wie dürfen andere mit dir interagieren?",
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
+                ),
+                const Divider(thickness: 3),
+                ListTile(
+                  title: const Text("Gruppenchat hinzufügen"),
+                  onTap: () {
+                    print("test");
+                  },
+                  trailing: const Icon(Ionicons.arrow_forward),
+                ),
+                ListTile(
+                  title: const Text("Privates Event hinzufügen"),
+                  onTap: () {
+                    print("test");
+                  },
+                  trailing: const Icon(Ionicons.arrow_forward),
+                ),
+                SwitchListTile.adaptive(
+                  title: const Text(
+                      "Kalender sehen ob du an einen Termin Zeit hast (für follower)"),
+                  value: true,
+                  onChanged: (newValue) {},
+                )
+              ],
+            ),
+          ),
+        ),
+      );
 }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
+import 'package:ionicons/ionicons.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
@@ -38,14 +39,13 @@ class SettingsPage extends StatelessWidget {
                     style: Theme.of(context).textTheme.titleMedium,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  trailing: const Icon(Icons.arrow_right),
+                  trailing: const Icon(Ionicons.arrow_forward),
                   onTap: () {
                     AutoRouter.of(context).push(
                       const ThemeModePageRoute(),
                     );
                   },
                 ),
-                /*
                 ListTile(
                   leading: const Icon(Icons.security),
                   title: Text(
@@ -53,13 +53,13 @@ class SettingsPage extends StatelessWidget {
                     style: Theme.of(context).textTheme.titleMedium,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  trailing: const Icon(Icons.arrow_right),
+                  trailing: const Icon(Ionicons.arrow_forward),
                   onTap: () {
                     AutoRouter.of(context).push(
                       const SettingsPrivacyPageRoute(),
                     );
                   },
-                ),*/
+                ),
                 ListTile(
                   leading: const Icon(Icons.password),
                   title: Text(
@@ -67,7 +67,7 @@ class SettingsPage extends StatelessWidget {
                     style: Theme.of(context).textTheme.titleMedium,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  trailing: const Icon(Icons.arrow_right),
+                  trailing: const Icon(Ionicons.arrow_forward),
                   onTap: () {
                     AutoRouter.of(context).push(
                       const UpdatePasswordPageRoute(),
@@ -81,7 +81,7 @@ class SettingsPage extends StatelessWidget {
                     style: Theme.of(context).textTheme.titleMedium,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  trailing: const Icon(Icons.arrow_right),
+                  trailing: const Icon(Ionicons.arrow_forward),
                   onTap: () {
                     AutoRouter.of(context).push(
                       const SettingsInfoPageRoute(),
