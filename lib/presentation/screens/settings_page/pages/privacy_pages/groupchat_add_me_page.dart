@@ -22,7 +22,7 @@ class GroupchatAddMePage extends StatelessWidget {
           param1: BlocProvider.of<AuthCubit>(context).state,
         ),
         notificationCubit: BlocProvider.of<NotificationCubit>(context),
-      ),
+      )..getFollowersViaApi(filterForGroupchatAddMeAllowedUsers: true),
       child: child,
     );
   }
@@ -42,6 +42,7 @@ class GroupchatAddMePage extends StatelessWidget {
             children: [
               GroupchatAddMePageChipList(),
               GroupchatAddMeSearchbar(),
+              SizedBox(height: 8),
               GroupchatAddMePageUserList(),
             ],
           ),

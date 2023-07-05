@@ -162,7 +162,7 @@ class UserRepositoryImpl implements UserRepository {
         // lastname
         // birthdate
         """
-        mutation UpdateUser(\$updateUserInput: UpdateUserInput, \$updateProfileImage: Upload) {
+        mutation UpdateUser(\$updateUserInput: UpdateUserInput!, \$updateProfileImage: Upload) {
           updateUser(updateUserInput: \$updateUserInput, updateProfileImage: \$updateProfileImage) {
             username
             _id

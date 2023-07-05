@@ -84,6 +84,7 @@ class _ChatPageState extends State<ChatPage> {
               value: AddMessageCubit(
                 AddMessageState(groupchatTo: widget.groupchatId),
                 imagePickerUseCases: serviceLocator(),
+                vibrationUseCases: serviceLocator(),
                 notificationCubit: BlocProvider.of<NotificationCubit>(context),
                 cubitToAddMessageTo: dz.Left(dz.Right(
                   BlocProvider.of<CurrentGroupchatCubit>(context),

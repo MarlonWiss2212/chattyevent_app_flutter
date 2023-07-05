@@ -18,7 +18,7 @@ class GroupchatAddMePageChipList extends StatelessWidget {
           p.currentUser.permissions?.groupchatAddMe?.permission !=
           c.currentUser.permissions?.groupchatAddMe?.permission,
       builder: (context, state) {
-        print(state.currentUser);
+        print(state.currentUser.permissions?.groupchatAddMe?.permission);
 
         final permissionIsNone =
             state.currentUser.permissions?.groupchatAddMe?.permission ==

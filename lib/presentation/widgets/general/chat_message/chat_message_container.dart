@@ -62,10 +62,11 @@ class ChatMessageContainer extends StatelessWidget {
         iconColor: Theme.of(context).colorScheme.onBackground,
         onRightSwipe: () {
           if (foundUser != null) {
-            // vibrate
-            BlocProvider.of<AddMessageCubit>(context).emitState(
-              messageToReactToWithUser:
-                  MessageAndUserEntity(message: message, user: foundUser),
+            BlocProvider.of<AddMessageCubit>(context).reactToMessage(
+              messageToReactToWithUser: MessageAndUserEntity(
+                message: message,
+                user: foundUser,
+              ),
             );
           }
         },

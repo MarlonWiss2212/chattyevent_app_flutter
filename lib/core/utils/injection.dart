@@ -3,6 +3,7 @@ import 'package:chattyevent_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/calendar_repository.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/chat_repository.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/device/permission_repository.dart';
+import 'package:chattyevent_app_flutter/domain/repositories/device/vibration_repository.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/imprint_repository.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/message_repository.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/calendar_usecases.dart';
@@ -10,11 +11,14 @@ import 'package:chattyevent_app_flutter/domain/usecases/chat_usecase.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/imprint_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/message_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/permission_usecases.dart';
+import 'package:chattyevent_app_flutter/domain/usecases/vibration_usecases.dart';
 import 'package:chattyevent_app_flutter/infastructure/datasources/device/permission.dart';
+import 'package:chattyevent_app_flutter/infastructure/datasources/device/vibration.dart';
 import 'package:chattyevent_app_flutter/infastructure/datasources/remote/http.dart';
 import 'package:chattyevent_app_flutter/infastructure/respositories/calendar_repository_impl.dart';
 import 'package:chattyevent_app_flutter/infastructure/respositories/chat_repsoitory_impl.dart';
 import 'package:chattyevent_app_flutter/infastructure/respositories/device/permission_repository_impl.dart';
+import 'package:chattyevent_app_flutter/infastructure/respositories/device/vibration_repository_impl.dart';
 import 'package:chattyevent_app_flutter/infastructure/respositories/imprint_repository_impl.dart';
 import 'package:chattyevent_app_flutter/infastructure/respositories/message_repository_impl.dart';
 import 'package:chattyevent_app_flutter/presentation/router/auth_guard.dart';
@@ -112,6 +116,9 @@ class InjectionUtils {
     serviceLocator.registerLazySingleton<PermissionUseCases>(
       () => PermissionUseCases(permissionRepository: serviceLocator()),
     );
+    serviceLocator.registerLazySingleton<VibrationUseCases>(
+      () => VibrationUseCases(vibrationRepository: serviceLocator()),
+    );
     serviceLocator.registerLazySingleton<ImprintUseCases>(
       () => ImprintUseCases(imprintRepository: serviceLocator()),
     );
@@ -183,6 +190,9 @@ class InjectionUtils {
     // repositories
     serviceLocator.registerLazySingleton<ImprintRepository>(
       () => ImprintRepositoryImpl(httpDatasource: serviceLocator()),
+    );
+    serviceLocator.registerLazySingleton<VibrationRepository>(
+      () => VibrationRepositoryImpl(vibrationDatasource: serviceLocator()),
     );
     serviceLocator.registerLazySingleton<LocationRepository>(
       () => LocationRepositoryImpl(locationDatasource: serviceLocator()),
@@ -259,6 +269,9 @@ class InjectionUtils {
       () => SharedPreferencesDatasourceImpl(
         sharedPreferences: sharedPrefs,
       ),
+    );
+    serviceLocator.registerLazySingleton<VibrationDatasource>(
+      () => VibrationDatasourceImpl(),
     );
     serviceLocator.registerLazySingleton<PermissionDatasource>(
       () => PermissionDatasourceImpl(),

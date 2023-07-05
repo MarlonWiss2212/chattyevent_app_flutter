@@ -5,6 +5,7 @@ import 'package:chattyevent_app_flutter/domain/entities/message/message_and_user
 import 'package:chattyevent_app_flutter/domain/entities/message/message_entity.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/image_picker_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/message_usecases.dart';
+import 'package:chattyevent_app_flutter/domain/usecases/vibration_usecases.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:chattyevent_app_flutter/application/bloc/current_groupchat/current_chat_cubit.dart';
@@ -19,6 +20,7 @@ class AddMessageCubit extends Cubit<AddMessageState> {
   final MessageUseCases messageUseCases;
   final ImagePickerUseCases imagePickerUseCases;
   final NotificationCubit notificationCubit;
+  final VibrationUseCases vibrationUseCases;
 
   AddMessageCubit(
     super.initialState, {
@@ -26,7 +28,19 @@ class AddMessageCubit extends Cubit<AddMessageState> {
     required this.messageUseCases,
     required this.notificationCubit,
     required this.imagePickerUseCases,
+    required this.vibrationUseCases,
   });
+
+  Future reactToMessage({
+    required MessageAndUserEntity messageToReactToWithUser,
+  }) async {
+    final vibrate = await vibrationUseCases.vibrate();
+    vibrate.fold(
+      (alert) => notificationCubit.newAlert(notificationAlert: alert),
+      (r) => null,
+    );
+    emitState(messageToReactToWithUser: messageToReactToWithUser);
+  }
 
   Future createMessage() async {
     if (state.status == AddMessageStateStatus.loading) return;

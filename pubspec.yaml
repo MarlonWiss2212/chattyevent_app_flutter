@@ -79,6 +79,8 @@ dependencies:
   flutter_animated_dialog: ^2.0.1
   focused_menu_custom: ^1.2.0
   blur: ^3.1.0
+  vibration: ^1.8.1
+  device_info_plus: ^9.0.2
 
 dev_dependencies:
   flutter_test:

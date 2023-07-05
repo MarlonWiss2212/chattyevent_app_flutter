@@ -37,6 +37,7 @@ class _PrivateEventTabChatState extends State<PrivateEventTabChat> {
       value: AddMessageCubit(
         AddMessageState(privateEventTo: widget.privateEventId),
         notificationCubit: BlocProvider.of<NotificationCubit>(context),
+        vibrationUseCases: serviceLocator(),
         messageUseCases: serviceLocator(
           param1: BlocProvider.of<AuthCubit>(context).state,
         ),

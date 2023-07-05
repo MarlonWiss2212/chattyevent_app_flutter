@@ -13,7 +13,6 @@ class GroupchatAddMeSearchbar extends StatelessWidget {
         searchController: TextEditingController(),
         onSearchChanged: ({required String text}) {
           BlocProvider.of<UserSearchCubit>(context).getFollowersViaApi(
-            filterForGroupchatAddMeAllowedUsers: true,
             search: text,
           );
         },

@@ -22,7 +22,7 @@ class PrivateEventAddMePage extends StatelessWidget {
           param1: BlocProvider.of<AuthCubit>(context).state,
         ),
         notificationCubit: BlocProvider.of<NotificationCubit>(context),
-      ),
+      )..getFollowersViaApi(filterForPrivateEventAddMeAllowedUsers: true),
       child: child,
     );
   }
@@ -42,6 +42,7 @@ class PrivateEventAddMePage extends StatelessWidget {
             children: [
               PrivateEventAddMePageChipList(),
               PrivateEventAddMeSearchbar(),
+              SizedBox(height: 8),
               PrivateEventAddMePageUserList(),
             ],
           ),
