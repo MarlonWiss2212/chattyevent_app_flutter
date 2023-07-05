@@ -22,9 +22,11 @@ class UserUseCases {
 
   Future<Either<NotificationAlert, UserEntity>> getUserViaApi({
     required FindOneUserFilter findOneUserFilter,
+    bool currentUser = false,
   }) async {
     return await userRepository.getUserViaApi(
       findOneUserFilter: findOneUserFilter,
+      currentUser: currentUser,
     );
   }
 

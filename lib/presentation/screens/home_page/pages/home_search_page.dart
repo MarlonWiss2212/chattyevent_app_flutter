@@ -52,7 +52,7 @@ class HomeSearchPage extends StatelessWidget {
                     [
                       const SizedBox(height: 8),
                       DebouceInputField(
-                        userSearch: TextEditingController(),
+                        searchController: TextEditingController(),
                         onSearchChanged: ({required String text}) =>
                             BlocProvider.of<UserSearchCubit>(context)
                                 .getUsersViaApi(

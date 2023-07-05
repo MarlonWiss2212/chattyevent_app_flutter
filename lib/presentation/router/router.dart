@@ -55,6 +55,8 @@ import 'package:chattyevent_app_flutter/presentation/screens/settings_page/pages
 import 'package:chattyevent_app_flutter/presentation/screens/settings_page/pages/info_pages/right_on_deletion_page.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/settings_page/pages/info_pages/right_on_insight.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/settings_page/pages/privacy_page.dart';
+import 'package:chattyevent_app_flutter/presentation/screens/settings_page/pages/privacy_pages/groupchat_add_me_page.dart';
+import 'package:chattyevent_app_flutter/presentation/screens/settings_page/pages/privacy_pages/private_event_add_me_page.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/settings_page/pages/theme_mode_page.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/settings_page/settings_page.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/settings_page/pages/update_password_page.dart';
@@ -66,7 +68,6 @@ import 'package:chattyevent_app_flutter/presentation/screens/verify_email_page.d
 import 'package:chattyevent_app_flutter/presentation/screens/shopping_list_page/shopping_list_page.dart';
 
 @AdaptiveAutoRouter(
-  replaceInRouteName: "Screen,Page",
   routes: <AutoRoute>[
     AutoRoute(
       page: LoginPage,
@@ -469,5 +470,15 @@ const settingRoutes = [
     page: SettingsPrivacyPage,
     guards: [AuthGuard],
     path: 'settings/privacy',
+  ),
+  AutoRoute(
+    page: GroupchatAddMePage,
+    guards: [AuthGuard],
+    path: 'settings/privacy/groupchat-add-me-permission',
+  ),
+  AutoRoute(
+    page: PrivateEventAddMePage,
+    guards: [AuthGuard],
+    path: 'settings/privacy/private-event-add-me-permission',
   ),
 ];

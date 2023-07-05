@@ -40,7 +40,7 @@ class _SelectableUserGridListState extends State<SelectableUserGridList> {
       children: [
         if (widget.showTextSearch) ...{
           DebouceInputField(
-            userSearch: userSearch,
+            searchController: userSearch,
             onSearchChanged: ({required String text}) => widget.reloadRequest(
               text: text,
             ),

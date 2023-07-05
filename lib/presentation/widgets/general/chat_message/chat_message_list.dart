@@ -35,6 +35,7 @@ class _ChatMessageListState extends State<ChatMessageList> {
   @override
   void dispose() {
     _scrollController.removeListener(_scrollListener);
+    _scrollController.dispose();
     super.dispose();
   }
 

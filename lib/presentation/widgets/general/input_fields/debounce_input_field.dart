@@ -5,13 +5,13 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 
 class DebouceInputField extends StatefulWidget {
   final void Function({required String text}) onSearchChanged;
-  final TextEditingController userSearch;
+  final TextEditingController searchController;
   final String? hintText;
 
   const DebouceInputField({
     super.key,
     required this.onSearchChanged,
-    required this.userSearch,
+    required this.searchController,
     this.hintText,
   });
 
@@ -38,7 +38,7 @@ class _DebouceInputFieldState extends State<DebouceInputField> {
   @override
   Widget build(BuildContext context) {
     return PlatformTextFormField(
-      controller: widget.userSearch,
+      controller: widget.searchController,
       onChanged: (text) => _onSearchChanged(text: text),
       hintText: widget.hintText,
     );

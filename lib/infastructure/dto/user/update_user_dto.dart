@@ -29,7 +29,7 @@ class UpdateUserDto {
       variables.addAll({"username": username});
     }
     if (permissions != null) {
-      variables.addAll({"permissions": permissions});
+      variables.addAll({"permissions": permissions!.toMap()});
     }
     return variables;
   }

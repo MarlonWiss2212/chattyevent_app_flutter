@@ -20,8 +20,10 @@ class UserRepositoryImpl implements UserRepository {
   @override
   Future<Either<NotificationAlert, UserEntity>> getUserViaApi({
     required FindOneUserFilter findOneUserFilter,
+    required bool currentUser,
   }) async {
     try {
+      // TODO new perrmission schema
       // firstname
       // lastname
       // birthdate
@@ -40,6 +42,21 @@ class UserRepositoryImpl implements UserRepository {
               followedCount
               followRequestCount
             }
+            ${currentUser == true ? """
+            permissions {
+              groupchatAddMe {
+                permission
+                exceptUserIds
+                selectedUserIds
+              }
+              privateEventAddMe {
+                permission
+                exceptUserIds
+                selectedUserIds
+              }
+              calendarWatchIHaveTime
+            }
+            """ : """
             myUserRelationToOtherUser {
               _id
               createdAt
@@ -58,6 +75,7 @@ class UserRepositoryImpl implements UserRepository {
                 followedUserAt
               }
             }
+            """}
           }
         }
         """,
@@ -152,28 +170,18 @@ class UserRepositoryImpl implements UserRepository {
             createdAt
             profileImageLink
             updatedAt
-            userRelationCounts {
-              followerCount
-              followedCount
-              followRequestCount
-            }
-            myUserRelationToOtherUser {
-              _id
-              createdAt
-              updatedAt
-              statusOnRelatedUser
-              followData {
-                followedUserAt
+            permissions {
+              groupchatAddMe {
+                permission
+                exceptUserIds
+                selectedUserIds
               }
-            }
-            otherUserRelationToMyUser {
-              _id
-              createdAt
-              updatedAt
-              statusOnRelatedUser
-              followData {
-                followedUserAt
+              privateEventAddMe {
+                permission
+                exceptUserIds
+                selectedUserIds
               }
+              calendarWatchIHaveTime
             }
           }
         }

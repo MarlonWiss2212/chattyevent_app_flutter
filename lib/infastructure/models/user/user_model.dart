@@ -2,7 +2,9 @@ import 'package:chattyevent_app_flutter/domain/entities/message/message_entity.d
 import 'package:chattyevent_app_flutter/domain/entities/user-relation/user_relation_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/user-relation/user_relations_count_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/user/user_entity.dart';
+import 'package:chattyevent_app_flutter/domain/entities/user/user_permissions_entity.dart';
 import 'package:chattyevent_app_flutter/infastructure/models/message/message_model.dart';
+import 'package:chattyevent_app_flutter/infastructure/models/user/user_permissions_model.dart';
 import 'package:chattyevent_app_flutter/infastructure/models/user_relation/user_relation_count_model.dart';
 import 'package:chattyevent_app_flutter/infastructure/models/user_relation/user_relation_model.dart';
 
@@ -19,11 +21,13 @@ class UserModel extends UserEntity {
     UserRelationEntity? myUserRelationToOtherUser,
     UserRelationEntity? otherUserRelationToMyUser,
     MessageEntity? latestMessage,
+    UserPermissionsEntity? permissions,
     DateTime? createdAt,
     DateTime? updatedAt,
   }) : super(
           id: id,
           authId: authId,
+          permissions: permissions,
           username: username,
           firstname: firstname,
           lastname: lastname,
@@ -50,6 +54,9 @@ class UserModel extends UserEntity {
       id: json['_id'],
       authId: json["authId"],
       username: json['username'],
+      permissions: json["permissions"] != null
+          ? UserPermissionsModel.fromJson(json["permissions"])
+          : null,
       profileImageLink: json['profileImageLink'],
       firstname: json["fistname"],
       lastname: json["lastname"],

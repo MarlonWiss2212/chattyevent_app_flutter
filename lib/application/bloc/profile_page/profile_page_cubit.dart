@@ -50,6 +50,8 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
     emitState(status: ProfilePageStateStatus.loading);
     final Either<NotificationAlert, UserEntity> userOrFailure =
         await userUseCases.getUserViaApi(
+      currentUser: state.user.id == authCubit.state.currentUser.id ||
+          state.user.authId == authCubit.state.currentUser.authId,
       findOneUserFilter: FindOneUserFilter(
         id: state.user.id != "" ? state.user.id : null,
         authId: state.user.authId != "" &&

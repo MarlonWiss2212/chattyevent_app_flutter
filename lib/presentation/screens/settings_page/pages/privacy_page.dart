@@ -1,4 +1,9 @@
+import 'package:auto_route/auto_route.dart';
+import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
+import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
+import 'package:chattyevent_app_flutter/presentation/widgets/screens/settings_page/pages/privacy_page/privacy_page_calendar_watch_i_have_time_switch.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ionicons/ionicons.dart';
 
 class SettingsPrivacyPage extends StatefulWidget {
@@ -42,49 +47,57 @@ class _SettingsPrivacyPageState extends State<SettingsPrivacyPage> {
     );
   }
 
-  Widget howOthersInteractWithMeColumn(BuildContext context) => Padding(
-        padding: const EdgeInsets.all(12),
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
-            color: Theme.of(context).colorScheme.surface,
-          ),
-          child: Material(
-            borderRadius: BorderRadius.circular(12),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: Text(
-                    "Wie dürfen andere mit dir interagieren?",
-                    style: Theme.of(context).textTheme.titleLarge,
+  Widget howOthersInteractWithMeColumn(BuildContext context) {
+    return BlocBuilder<AuthCubit, AuthState>(
+      builder: (context, state) {
+        return Padding(
+          padding: const EdgeInsets.all(12),
+          child: Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+              color: Theme.of(context).colorScheme.surface,
+            ),
+            child: Material(
+              color: Colors.transparent,
+              borderRadius: BorderRadius.circular(12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      left: 20,
+                      top: 14,
+                      bottom: 20,
+                      right: 20,
+                    ),
+                    child: Text(
+                      "Wie dürfen andere mit dir interagieren?",
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
                   ),
-                ),
-                const Divider(thickness: 3),
-                ListTile(
-                  title: const Text("Gruppenchat hinzufügen"),
-                  onTap: () {
-                    print("test");
-                  },
-                  trailing: const Icon(Ionicons.arrow_forward),
-                ),
-                ListTile(
-                  title: const Text("Privates Event hinzufügen"),
-                  onTap: () {
-                    print("test");
-                  },
-                  trailing: const Icon(Ionicons.arrow_forward),
-                ),
-                SwitchListTile.adaptive(
-                  title: const Text(
-                      "Kalender sehen ob du an einen Termin Zeit hast (für follower)"),
-                  value: true,
-                  onChanged: (newValue) {},
-                )
-              ],
+                  const Divider(thickness: 3),
+                  ListTile(
+                    title: const Text("Gruppenchat hinzufügen"),
+                    onTap: () => AutoRouter.of(context).push(
+                      const GroupchatAddMePageRoute(),
+                    ),
+                    trailing: const Icon(Ionicons.arrow_forward),
+                  ),
+                  ListTile(
+                    title: const Text("Privates Event hinzufügen"),
+                    onTap: () => AutoRouter.of(context).push(
+                      const PrivateEventAddMePageRoute(),
+                    ),
+                    trailing: const Icon(Ionicons.arrow_forward),
+                  ),
+                  const PrivacyPageCalendarWatchIHaveTimeSwitch(),
+                ],
+              ),
             ),
           ),
-        ),
-      );
+        );
+      },
+    );
+  }
 }

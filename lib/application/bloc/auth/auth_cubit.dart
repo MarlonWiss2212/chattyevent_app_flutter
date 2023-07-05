@@ -39,6 +39,7 @@ class AuthCubit extends Cubit<AuthState> {
 
     final Either<NotificationAlert, UserEntity> userOrFailure =
         await userUseCases.getUserViaApi(
+      currentUser: true,
       findOneUserFilter: FindOneUserFilter(authId: auth.currentUser!.uid),
     );
 

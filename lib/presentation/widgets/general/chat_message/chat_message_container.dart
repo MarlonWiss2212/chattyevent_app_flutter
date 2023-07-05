@@ -121,7 +121,7 @@ class ChatMessageContainer extends StatelessWidget {
                       },
                       if (message.fileLinks != null &&
                           message.fileLinks!.isNotEmpty) ...{
-                        //TODO: list
+                        //TODO: as list of documents
                         Container(
                           constraints: BoxConstraints(
                             maxHeight: MediaQuery.of(context).size.height / 2,

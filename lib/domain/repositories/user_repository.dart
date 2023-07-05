@@ -13,6 +13,7 @@ abstract class UserRepository {
   });
   Future<Either<NotificationAlert, UserEntity>> getUserViaApi({
     required FindOneUserFilter findOneUserFilter,
+    required bool currentUser,
   });
   Future<Either<NotificationAlert, List<UserEntity>>> getUsersViaApi({
     required FindUsersFilter findUsersFilter,
