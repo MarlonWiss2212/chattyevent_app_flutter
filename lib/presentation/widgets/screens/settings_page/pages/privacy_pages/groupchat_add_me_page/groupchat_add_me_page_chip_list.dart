@@ -1,4 +1,5 @@
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
+import 'package:chattyevent_app_flutter/application/bloc/user_search/user_search_cubit.dart';
 import 'package:chattyevent_app_flutter/core/enums/user/groupchat_add_me_permission_enum.dart';
 import 'package:chattyevent_app_flutter/infastructure/dto/user/update_user_dto.dart';
 import 'package:chattyevent_app_flutter/infastructure/dto/user/update_user_permissions.dart';
@@ -18,8 +19,6 @@ class GroupchatAddMePageChipList extends StatelessWidget {
           p.currentUser.permissions?.groupchatAddMe?.permission !=
           c.currentUser.permissions?.groupchatAddMe?.permission,
       builder: (context, state) {
-        print(state.currentUser.permissions?.groupchatAddMe?.permission);
-
         final permissionIsNone =
             state.currentUser.permissions?.groupchatAddMe?.permission ==
                 GroupchatAddMePermissionEnum.none;
@@ -58,16 +57,23 @@ class GroupchatAddMePageChipList extends StatelessWidget {
                   text: const Text("Niemand"),
                 ),
                 CustomChip(
-                  onTap: () => BlocProvider.of<AuthCubit>(context).updateUser(
-                    updateUserDto: UpdateUserDto(
-                      permissions: UpdateUserPermissionsDto(
-                        groupchatAddMe: UpdateGroupchatAddMeDto(
-                          permission:
-                              GroupchatAddMePermissionEnum.followersExcept,
-                        ),
-                      ),
-                    ),
-                  ),
+                  onTap: () async {
+                    BlocProvider.of<AuthCubit>(context)
+                        .updateUser(
+                          updateUserDto: UpdateUserDto(
+                            permissions: UpdateUserPermissionsDto(
+                              groupchatAddMe: UpdateGroupchatAddMeDto(
+                                permission: GroupchatAddMePermissionEnum
+                                    .followersExcept,
+                              ),
+                            ),
+                          ),
+                        )
+                        .then(
+                          (value) => BlocProvider.of<UserSearchCubit>(context)
+                              .getFollowersViaApi(),
+                        );
+                  },
                   color: permissionIsFollowersExcept
                       ? Theme.of(context).colorScheme.primaryContainer
                       : Theme.of(context).colorScheme.surface,
@@ -77,16 +83,21 @@ class GroupchatAddMePageChipList extends StatelessWidget {
                   text: const Text("Follower außer"),
                 ),
                 CustomChip(
-                  onTap: () => BlocProvider.of<AuthCubit>(context).updateUser(
-                    updateUserDto: UpdateUserDto(
-                      permissions: UpdateUserPermissionsDto(
-                        groupchatAddMe: UpdateGroupchatAddMeDto(
-                          permission: GroupchatAddMePermissionEnum
-                              .onlySelectedFollowers,
+                  onTap: () => BlocProvider.of<AuthCubit>(context)
+                      .updateUser(
+                        updateUserDto: UpdateUserDto(
+                          permissions: UpdateUserPermissionsDto(
+                            groupchatAddMe: UpdateGroupchatAddMeDto(
+                              permission: GroupchatAddMePermissionEnum
+                                  .onlySelectedFollowers,
+                            ),
+                          ),
                         ),
+                      )
+                      .then(
+                        (value) => BlocProvider.of<UserSearchCubit>(context)
+                            .getFollowersViaApi(),
                       ),
-                    ),
-                  ),
                   color: permissionIsOnlySelectedFollowers
                       ? Theme.of(context).colorScheme.primaryContainer
                       : Theme.of(context).colorScheme.surface,

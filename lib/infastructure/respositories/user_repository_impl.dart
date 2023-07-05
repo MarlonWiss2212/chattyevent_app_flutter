@@ -253,28 +253,18 @@ class UserRepositoryImpl implements UserRepository {
             lastname
             profileImageLink
             updatedAt
-            userRelationCounts {
-              followerCount
-              followedCount
-              followRequestCount
-            }
-            myUserRelationToOtherUser {
-              _id
-              createdAt
-              updatedAt
-              statusOnRelatedUser
-              followData {
-                followedUserAt
+            permissions {
+              groupchatAddMe {
+                permission
+                exceptUserIds
+                selectedUserIds
               }
-            }
-            otherUserRelationToMyUser {
-              _id
-              createdAt
-              updatedAt
-              statusOnRelatedUser
-              followData {
-                followedUserAt
+              privateEventAddMe {
+                permission
+                exceptUserIds
+                selectedUserIds
               }
+              calendarWatchIHaveTime
             }
           }
         }

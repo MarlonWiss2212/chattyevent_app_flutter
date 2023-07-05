@@ -1,4 +1,5 @@
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
+import 'package:chattyevent_app_flutter/application/bloc/user_search/user_search_cubit.dart';
 import 'package:chattyevent_app_flutter/core/enums/user/private_event_add_me_permission_enum.dart';
 import 'package:chattyevent_app_flutter/infastructure/dto/user/update_user_dto.dart';
 import 'package:chattyevent_app_flutter/infastructure/dto/user/update_user_permissions.dart';
@@ -18,8 +19,6 @@ class PrivateEventAddMePageChipList extends StatelessWidget {
           p.currentUser.permissions?.privateEventAddMe?.permission !=
           c.currentUser.permissions?.privateEventAddMe?.permission,
       builder: (context, state) {
-        print(state.currentUser);
-
         final permissionIsNone =
             state.currentUser.permissions?.privateEventAddMe?.permission ==
                 PrivateEventAddMePermissionEnum.none;
@@ -58,16 +57,21 @@ class PrivateEventAddMePageChipList extends StatelessWidget {
                   text: const Text("Niemand"),
                 ),
                 CustomChip(
-                  onTap: () => BlocProvider.of<AuthCubit>(context).updateUser(
-                    updateUserDto: UpdateUserDto(
-                      permissions: UpdateUserPermissionsDto(
-                        privateEventAddMe: UpdatePrivateEventAddMeDto(
-                          permission:
-                              PrivateEventAddMePermissionEnum.followersExcept,
+                  onTap: () => BlocProvider.of<AuthCubit>(context)
+                      .updateUser(
+                        updateUserDto: UpdateUserDto(
+                          permissions: UpdateUserPermissionsDto(
+                            privateEventAddMe: UpdatePrivateEventAddMeDto(
+                              permission: PrivateEventAddMePermissionEnum
+                                  .followersExcept,
+                            ),
+                          ),
                         ),
+                      )
+                      .then(
+                        (value) => BlocProvider.of<UserSearchCubit>(context)
+                            .getFollowersViaApi(),
                       ),
-                    ),
-                  ),
                   color: permissionIsFollowersExcept
                       ? Theme.of(context).colorScheme.primaryContainer
                       : Theme.of(context).colorScheme.surface,
@@ -77,16 +81,21 @@ class PrivateEventAddMePageChipList extends StatelessWidget {
                   text: const Text("Follower außer"),
                 ),
                 CustomChip(
-                  onTap: () => BlocProvider.of<AuthCubit>(context).updateUser(
-                    updateUserDto: UpdateUserDto(
-                      permissions: UpdateUserPermissionsDto(
-                        privateEventAddMe: UpdatePrivateEventAddMeDto(
-                          permission: PrivateEventAddMePermissionEnum
-                              .onlySelectedFollowers,
+                  onTap: () => BlocProvider.of<AuthCubit>(context)
+                      .updateUser(
+                        updateUserDto: UpdateUserDto(
+                          permissions: UpdateUserPermissionsDto(
+                            privateEventAddMe: UpdatePrivateEventAddMeDto(
+                              permission: PrivateEventAddMePermissionEnum
+                                  .onlySelectedFollowers,
+                            ),
+                          ),
                         ),
+                      )
+                      .then(
+                        (value) => BlocProvider.of<UserSearchCubit>(context)
+                            .getFollowersViaApi(),
                       ),
-                    ),
-                  ),
                   color: permissionIsOnlySelectedFollowers
                       ? Theme.of(context).colorScheme.primaryContainer
                       : Theme.of(context).colorScheme.surface,
