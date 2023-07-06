@@ -18,8 +18,8 @@ class NewGroupchatWrapperPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider.value(
-          value: AddGroupchatCubit(
+        BlocProvider(
+          create: (context) => AddGroupchatCubit(
             notificationCubit: BlocProvider.of<NotificationCubit>(context),
             chatCubit: BlocProvider.of<ChatCubit>(context),
             groupchatUseCases: serviceLocator(
@@ -27,8 +27,8 @@ class NewGroupchatWrapperPage extends StatelessWidget {
             ),
           ),
         ),
-        BlocProvider.value(
-          value: UserSearchCubit(
+        BlocProvider(
+          create: (context) => UserSearchCubit(
             authCubit: BlocProvider.of<AuthCubit>(context),
             userRelationUseCases: serviceLocator(
               param1: BlocProvider.of<AuthCubit>(context).state,

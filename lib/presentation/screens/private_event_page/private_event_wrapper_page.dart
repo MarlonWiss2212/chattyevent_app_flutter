@@ -55,11 +55,11 @@ class PrivateEventWrapperPage extends StatelessWidget {
 
     return MultiBlocProvider(
       providers: [
-        BlocProvider.value(
-          value: currentPrivateEventCubit,
+        BlocProvider(
+          create: (context) => currentPrivateEventCubit,
         ),
-        BlocProvider.value(
-          value: UserSearchCubit(
+        BlocProvider(
+          create: (context) => UserSearchCubit(
             authCubit: BlocProvider.of<AuthCubit>(context),
             userRelationUseCases: serviceLocator(
               param1: BlocProvider.of<AuthCubit>(context).state,

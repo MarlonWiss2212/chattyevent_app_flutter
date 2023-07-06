@@ -14,8 +14,8 @@ class HomeSearchPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider.value(
-      value: UserSearchCubit(
+    return BlocProvider(
+      create: (context) => UserSearchCubit(
         authCubit: BlocProvider.of<AuthCubit>(context),
         userRelationUseCases: serviceLocator(
           param1: BlocProvider.of<AuthCubit>(context).state,

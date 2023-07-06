@@ -11,8 +11,8 @@ class ShoppingListWrapperPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider.value(
-      value: MyShoppingListCubit(
+    return BlocProvider(
+      create: (context) => MyShoppingListCubit(
         shoppingListItemUseCases: serviceLocator(
           param1: BlocProvider.of<AuthCubit>(context).state,
         ),

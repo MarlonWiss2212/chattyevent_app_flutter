@@ -22,8 +22,8 @@ class NewPrivateEventPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider.value(
-          value: AddPrivateEventCubit(
+        BlocProvider(
+          create: (context) => AddPrivateEventCubit(
             homeEventCubit: BlocProvider.of<HomeEventCubit>(context),
             notificationCubit: BlocProvider.of<NotificationCubit>(context),
             calendarUseCases: serviceLocator(
@@ -34,8 +34,8 @@ class NewPrivateEventPage extends StatelessWidget {
             ),
           ),
         ),
-        BlocProvider.value(
-          value: UserSearchCubit(
+        BlocProvider(
+          create: (context) => UserSearchCubit(
             authCubit: BlocProvider.of<AuthCubit>(context),
             userRelationUseCases: serviceLocator(
               param1: BlocProvider.of<AuthCubit>(context).state,

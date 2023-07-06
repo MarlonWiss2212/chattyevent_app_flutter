@@ -17,8 +17,8 @@ class CreateUserPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider.value(
-      value: AddCurrentUserCubit(
+    return BlocProvider(
+      create: (context) => AddCurrentUserCubit(
         authCubit: BlocProvider.of<AuthCubit>(context),
         userUseCases: serviceLocator(
           param1: BlocProvider.of<AuthCubit>(context).state,

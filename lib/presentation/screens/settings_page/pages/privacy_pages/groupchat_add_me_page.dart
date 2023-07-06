@@ -12,8 +12,8 @@ class GroupchatAddMePage extends StatelessWidget {
   const GroupchatAddMePage({super.key});
 
   Widget initBloc(BuildContext context, {required Widget child}) {
-    return BlocProvider.value(
-      value: UserSearchCubit(
+    return BlocProvider(
+      create: (context) => UserSearchCubit(
         authCubit: BlocProvider.of<AuthCubit>(context),
         userRelationUseCases: serviceLocator(
           param1: BlocProvider.of<AuthCubit>(context).state,

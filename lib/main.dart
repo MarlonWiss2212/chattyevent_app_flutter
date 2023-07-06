@@ -35,8 +35,8 @@ Future<void> main() async {
   runApp(
     MultiBlocProvider(
       providers: [
-        BlocProvider.value(value: serviceLocator<NotificationCubit>()),
-        BlocProvider.value(value: serviceLocator<AuthCubit>()),
+        BlocProvider(create: (context) => serviceLocator<NotificationCubit>()),
+        BlocProvider(create: (context) => serviceLocator<AuthCubit>()),
       ],
       child: Builder(builder: (context) {
         return MultiBlocListener(
@@ -196,6 +196,11 @@ class _AppState extends State<App> {
                   ),
                   bottomAppBarTheme: const BottomAppBarTheme(
                     color: Colors.black,
+                  ),
+                  checkboxTheme: CheckboxThemeData(
+                    fillColor: MaterialStateProperty.all(
+                      darkColorScheme.secondaryContainer,
+                    ),
                   ),
                   scaffoldBackgroundColor: Colors.black,
                   colorScheme: darkColorScheme,

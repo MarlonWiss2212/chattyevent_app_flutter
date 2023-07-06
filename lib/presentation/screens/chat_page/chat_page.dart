@@ -80,8 +80,8 @@ class _ChatPageState extends State<ChatPage> {
             },
           ),
           Expanded(
-            child: BlocProvider.value(
-              value: AddMessageCubit(
+            child: BlocProvider(
+              create: (context) => AddMessageCubit(
                 AddMessageState(groupchatTo: widget.groupchatId),
                 imagePickerUseCases: serviceLocator(),
                 vibrationUseCases: serviceLocator(),

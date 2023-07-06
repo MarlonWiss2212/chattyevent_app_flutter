@@ -33,8 +33,8 @@ class _PrivateEventTabChatState extends State<PrivateEventTabChat> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider.value(
-      value: AddMessageCubit(
+    return BlocProvider(
+      create: (context) => AddMessageCubit(
         AddMessageState(privateEventTo: widget.privateEventId),
         notificationCubit: BlocProvider.of<NotificationCubit>(context),
         vibrationUseCases: serviceLocator(),

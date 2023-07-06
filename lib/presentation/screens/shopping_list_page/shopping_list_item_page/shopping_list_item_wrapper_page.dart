@@ -54,7 +54,7 @@ class ShoppingListItemWrapperPage extends StatelessWidget {
 
     return MultiBlocProvider(
       providers: [
-        BlocProvider.value(value: currentPrivateEventCubit),
+        BlocProvider(create: (context) => currentPrivateEventCubit),
       ],
       child: StandardShoppingListItemWrapperPage(
         shoppingListItemId: shoppingListItemId,

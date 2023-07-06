@@ -22,8 +22,8 @@ class PrivateEventCreateShoppingListItemPage extends StatelessWidget {
     final currentPrivateEvent =
         BlocProvider.of<CurrentPrivateEventCubit>(context).state.privateEvent;
 
-    return BlocProvider.value(
-      value: AddShoppingListItemCubit(
+    return BlocProvider(
+      create: (context) => AddShoppingListItemCubit(
         AddShoppingListItemState(selectedPrivateEvent: currentPrivateEvent),
         shoppingListItemUseCases: serviceLocator(
           param1: BlocProvider.of<AuthCubit>(context).state,
