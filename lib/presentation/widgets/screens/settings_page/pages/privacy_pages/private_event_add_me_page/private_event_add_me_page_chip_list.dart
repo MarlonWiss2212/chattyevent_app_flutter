@@ -70,7 +70,9 @@ class PrivateEventAddMePageChipList extends StatelessWidget {
                       )
                       .then(
                         (value) => BlocProvider.of<UserSearchCubit>(context)
-                            .getFollowersViaApi(),
+                            .getFollowersViaApi(
+                          sortForPrivateEventAddMeAllowedUsersFirst: true,
+                        ),
                       ),
                   color: permissionIsFollowersExcept
                       ? Theme.of(context).colorScheme.primaryContainer
@@ -94,7 +96,9 @@ class PrivateEventAddMePageChipList extends StatelessWidget {
                       )
                       .then(
                         (value) => BlocProvider.of<UserSearchCubit>(context)
-                            .getFollowersViaApi(),
+                            .getFollowersViaApi(
+                          sortForPrivateEventAddMeAllowedUsersFirst: true,
+                        ),
                       ),
                   color: permissionIsOnlySelectedFollowers
                       ? Theme.of(context).colorScheme.primaryContainer

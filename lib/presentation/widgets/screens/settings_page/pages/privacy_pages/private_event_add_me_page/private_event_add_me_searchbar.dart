@@ -13,6 +13,7 @@ class PrivateEventAddMeSearchbar extends StatelessWidget {
         searchController: TextEditingController(),
         onSearchChanged: ({required String text}) {
           BlocProvider.of<UserSearchCubit>(context).getFollowersViaApi(
+            sortForPrivateEventAddMeAllowedUsersFirst: true,
             search: text,
           );
         },

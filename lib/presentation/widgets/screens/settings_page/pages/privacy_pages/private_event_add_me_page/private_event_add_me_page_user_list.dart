@@ -89,6 +89,7 @@ class PrivateEventAddMePageUserList extends StatelessWidget {
         return IconButton(
           onPressed: () {
             BlocProvider.of<UserSearchCubit>(context).getFollowersViaApi(
+              sortForPrivateEventAddMeAllowedUsersFirst: true,
               loadMore: true,
             );
           },

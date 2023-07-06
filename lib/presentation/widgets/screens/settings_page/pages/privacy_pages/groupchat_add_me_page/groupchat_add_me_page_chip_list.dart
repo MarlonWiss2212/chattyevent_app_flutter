@@ -71,7 +71,9 @@ class GroupchatAddMePageChipList extends StatelessWidget {
                         )
                         .then(
                           (value) => BlocProvider.of<UserSearchCubit>(context)
-                              .getFollowersViaApi(),
+                              .getFollowersViaApi(
+                            sortForGroupchatAddMeAllowedUsersFirst: true,
+                          ),
                         );
                   },
                   color: permissionIsFollowersExcept
@@ -96,7 +98,9 @@ class GroupchatAddMePageChipList extends StatelessWidget {
                       )
                       .then(
                         (value) => BlocProvider.of<UserSearchCubit>(context)
-                            .getFollowersViaApi(),
+                            .getFollowersViaApi(
+                          sortForGroupchatAddMeAllowedUsersFirst: true,
+                        ),
                       ),
                   color: permissionIsOnlySelectedFollowers
                       ? Theme.of(context).colorScheme.primaryContainer

@@ -14,6 +14,7 @@ class GroupchatAddMeSearchbar extends StatelessWidget {
         onSearchChanged: ({required String text}) {
           BlocProvider.of<UserSearchCubit>(context).getFollowersViaApi(
             search: text,
+            sortForGroupchatAddMeAllowedUsersFirst: true,
           );
         },
         hintText: "User Suche: ",

@@ -2,12 +2,16 @@ class FindFollowersFilter {
   final String targetUserId;
   final bool? filterForPrivateEventAddMeAllowedUsers;
   final bool? filterForGroupchatAddMeAllowedUsers;
+  final bool? sortForPrivateEventAddMeAllowedUsersFirst;
+  final bool? sortForGroupchatAddMeAllowedUsersFirst;
   final String? search;
 
   FindFollowersFilter({
     required this.targetUserId,
     this.filterForPrivateEventAddMeAllowedUsers,
     this.filterForGroupchatAddMeAllowedUsers,
+    this.sortForPrivateEventAddMeAllowedUsersFirst,
+    this.sortForGroupchatAddMeAllowedUsersFirst,
     this.search,
   });
 
@@ -24,11 +28,22 @@ class FindFollowersFilter {
             filterForPrivateEventAddMeAllowedUsers,
       });
     }
-
     if (filterForGroupchatAddMeAllowedUsers != null) {
       map.addAll({
         "filterForGroupchatAddMeAllowedUsers":
             filterForGroupchatAddMeAllowedUsers,
+      });
+    }
+    if (sortForGroupchatAddMeAllowedUsersFirst != null) {
+      map.addAll({
+        "sortForGroupchatAddMeAllowedUsersFirst":
+            sortForGroupchatAddMeAllowedUsersFirst,
+      });
+    }
+    if (sortForPrivateEventAddMeAllowedUsersFirst != null) {
+      map.addAll({
+        "sortForPrivateEventAddMeAllowedUsersFirst":
+            sortForPrivateEventAddMeAllowedUsersFirst,
       });
     }
 

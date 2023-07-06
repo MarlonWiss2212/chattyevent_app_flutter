@@ -90,6 +90,7 @@ class GroupchatAddMePageUserList extends StatelessWidget {
           onPressed: () {
             BlocProvider.of<UserSearchCubit>(context).getFollowersViaApi(
               loadMore: true,
+              sortForGroupchatAddMeAllowedUsersFirst: true,
             );
           },
           icon: const Icon(Icons.add_circle),

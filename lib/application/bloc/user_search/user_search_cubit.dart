@@ -112,6 +112,8 @@ class UserSearchCubit extends Cubit<UserSearchState> {
   Future getFollowersViaApi({
     bool loadMore = false,
     bool? filterForPrivateEventAddMeAllowedUsers,
+    bool? sortForPrivateEventAddMeAllowedUsersFirst,
+    bool? sortForGroupchatAddMeAllowedUsersFirst,
     bool? filterForGroupchatAddMeAllowedUsers,
     String? search,
   }) async {
@@ -130,6 +132,10 @@ class UserSearchCubit extends Cubit<UserSearchState> {
             filterForGroupchatAddMeAllowedUsers,
         filterForPrivateEventAddMeAllowedUsers:
             filterForPrivateEventAddMeAllowedUsers,
+        sortForGroupchatAddMeAllowedUsersFirst:
+            sortForGroupchatAddMeAllowedUsersFirst,
+        sortForPrivateEventAddMeAllowedUsersFirst:
+            sortForPrivateEventAddMeAllowedUsersFirst,
         search: search,
       ),
       limitOffsetFilter: LimitOffsetFilter(
