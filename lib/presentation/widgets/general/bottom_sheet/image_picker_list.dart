@@ -1,9 +1,10 @@
 import 'dart:io';
-import 'dart:math';
+import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
+import 'package:chattyevent_app_flutter/core/utils/injection.dart';
+import 'package:chattyevent_app_flutter/domain/usecases/image_picker_usecases.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_cropper/image_cropper.dart';
-import 'package:chattyevent_app_flutter/application/bloc/image/image_cubit.dart';
+import 'package:ionicons/ionicons.dart';
 
 class ImagePickerList extends StatelessWidget {
   final void Function(File newImage) imageChanged;
@@ -26,68 +27,39 @@ class ImagePickerList extends StatelessWidget {
       );
     }
 
-    return BlocListener<ImageCubit, ImageState>(
-      listener: (context, state) async {
-        if (state is ImageLoaded) {
-          imageChanged(state.image);
-        }
-      },
-      child: Container(
-        constraints: BoxConstraints(
-          maxHeight: min(200, MediaQuery.of(context).size.width),
+    return Column(
+      children: [
+        ListTile(
+          leading: const Icon(Ionicons.camera),
+          title: const Text("Kamera"),
+          onTap: () async {
+            final image = await serviceLocator<ImagePickerUseCases>()
+                .getImageFromCameraWithPermissions(
+              cropAspectRatio: cropAspectRatio,
+            );
+            image.fold(
+                (alert) => serviceLocator<NotificationCubit>().newAlert(
+                      notificationAlert: alert,
+                    ),
+                imageChanged);
+          },
         ),
-        child: Padding(
-          padding: const EdgeInsets.all(8),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Expanded(
-                child: InkWell(
-                  borderRadius: BorderRadius.circular(12),
-                  onTap: () {
-                    BlocProvider.of<ImageCubit>(context).getImageFromCamera(
-                      cropAspectRatio: cropAspectRatio,
-                    );
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(
-                        color: Theme.of(context).colorScheme.onBackground,
-                      ),
-                    ),
-                    child: const Center(
-                      child: Icon(Icons.camera),
-                    ),
-                  ),
-                ),
+        ListTile(
+          leading: const Icon(Ionicons.image),
+          title: const Text("Gallerie"),
+          onTap: () async {
+            final image = await serviceLocator<ImagePickerUseCases>()
+                .getImageFromPhotosWithPermissions(
+                    cropAspectRatio: cropAspectRatio);
+            image.fold(
+              (alert) => serviceLocator<NotificationCubit>().newAlert(
+                notificationAlert: alert,
               ),
-              const SizedBox(width: 8),
-              Expanded(
-                child: InkWell(
-                  borderRadius: BorderRadius.circular(12),
-                  onTap: () {
-                    BlocProvider.of<ImageCubit>(context).getImageFromGallery(
-                      cropAspectRatio: cropAspectRatio,
-                    );
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(
-                        color: Theme.of(context).colorScheme.onBackground,
-                      ),
-                    ),
-                    child: const Center(
-                      child: Icon(Icons.photo_album),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
+              imageChanged,
+            );
+          },
         ),
-      ),
+      ],
     );
   }
 }

@@ -4,7 +4,6 @@ import 'package:chattyevent_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/chat_message/chat_message_react_message_container.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/chat_message/chat_message_read_by_bottom_sheet.dart';
 import 'package:collection/collection.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -38,134 +37,176 @@ class ChatMessageContainer extends StatelessWidget {
     final isDarkMode =
         MediaQuery.of(context).platformBrightness == Brightness.dark;
 
-    return CupertinoContextMenu(
-      actions: [
-        CupertinoContextMenuAction(
-          trailingIcon: Ionicons.book,
-          child: const Text("gelesen von"),
-          onPressed: () async {
-            Navigator.of(context, rootNavigator: true).pop();
-            await showModalBottomSheet(
-              backgroundColor: Theme.of(context).colorScheme.surface,
-              context: context,
-              builder: (context) {
-                return ChatMessageReadByBottomSheet(
-                  users: users,
-                  readByIds: message.readBy ?? [],
-                );
-              },
-            );
-          },
-        ),
-      ],
-      child: SwipeTo(
-        iconColor: Theme.of(context).colorScheme.onBackground,
-        onRightSwipe: () {
-          if (foundUser != null) {
-            BlocProvider.of<AddMessageCubit>(context).reactToMessage(
-              messageToReactToWithUser: MessageAndUserEntity(
-                message: message,
-                user: foundUser,
-              ),
-            );
-          }
-        },
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0),
-          child: Align(
-            alignment:
-                isCurrentUser ? Alignment.centerRight : Alignment.centerLeft,
-            child: Column(
-              crossAxisAlignment: isCurrentUser
-                  ? CrossAxisAlignment.end
-                  : CrossAxisAlignment.start,
-              children: [
-                if (!isCurrentUser) ...[
-                  Text(
-                    foundUser?.username ?? "",
-                    style: Theme.of(context).textTheme.labelLarge,
-                  ),
-                  const SizedBox(height: 4),
-                ],
-                Container(
-                  constraints: BoxConstraints(
-                    maxWidth: MediaQuery.of(context).size.width * 0.7,
-                  ),
-                  padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
-                    color: isCurrentUser
-                        ? Theme.of(context).colorScheme.primaryContainer
-                        : Theme.of(context).colorScheme.surface,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      if (messageToReactTo != null) ...{
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 8),
-                          child: ChatMessageReactMessageContainer(
-                            messageAndUser: MessageAndUserEntity(
-                              message: messageToReactTo!,
-                              user: findUser(
-                                    messageToReactTo!.createdBy ?? "",
-                                  ) ??
-                                  UserEntity(
-                                    id: "",
-                                    authId: "",
-                                  ),
-                            ),
-                            currentUserId: currentUserId,
-                            isInput: false,
-                          ),
-                        ),
-                      },
-                      if (message.fileLinks != null &&
-                          message.fileLinks!.isNotEmpty) ...{
-                        //TODO: as list of documents
-                        Container(
-                          constraints: BoxConstraints(
-                            maxHeight: MediaQuery.of(context).size.height / 2,
-                          ),
-                          child: Container(
-                            decoration: const BoxDecoration(
-                              shape: BoxShape.circle,
-                            ),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(8.0),
-                              child: Image.network(
-                                message.fileLinks![0],
-                                fit: BoxFit.contain,
-                              ),
-                            ),
-                          ),
-                        ),
-                      },
-                      if (message.message != null) ...{
-                        if (message.fileLinks != null &&
-                            message.fileLinks!.isNotEmpty) ...{
-                          const SizedBox(height: 8),
-                        },
-                        Text(
-                          message.message!,
-                          overflow: TextOverflow.clip,
-                          style: Theme.of(context).textTheme.bodyMedium,
-                        ),
-                      },
-                    ],
-                  ),
+    return SwipeTo(
+      iconColor: Theme.of(context).colorScheme.onBackground,
+      onRightSwipe: () {
+        if (foundUser != null) {
+          BlocProvider.of<AddMessageCubit>(context).reactToMessage(
+            messageToReactToWithUser: MessageAndUserEntity(
+              message: message,
+              user: foundUser,
+            ),
+          );
+        }
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8.0),
+        child: Align(
+          alignment:
+              isCurrentUser ? Alignment.centerRight : Alignment.centerLeft,
+          child: Column(
+            crossAxisAlignment: isCurrentUser
+                ? CrossAxisAlignment.end
+                : CrossAxisAlignment.start,
+            children: [
+              if (!isCurrentUser) ...[
+                Text(
+                  foundUser?.username ?? "",
+                  style: Theme.of(context).textTheme.labelLarge,
                 ),
                 const SizedBox(height: 4),
-                Text(
-                  DateFormat.jm().format(message.createdAt),
-                  style: Theme.of(context).textTheme.labelMedium?.apply(
-                      color: isDarkMode ? Colors.white54 : Colors.black54),
-                ),
               ],
-            ),
+              GestureDetector(
+                onLongPress: () async {
+                  await showModalBottomSheet(
+                    backgroundColor: Theme.of(context).colorScheme.surface,
+                    context: context,
+                    builder: (context) {
+                      return ChatMessageReadByBottomSheet(
+                        users: users,
+                        readByIds: message.readBy ?? [],
+                      );
+                    },
+                  );
+                },
+                child: messageWithFilesAndReactMessage(
+                  context,
+                  isCurrentUser,
+                  isDarkMode,
+                ),
+              ),
+              const SizedBox(height: 4),
+              bottomContainer(context, isCurrentUser, isDarkMode),
+            ],
           ),
         ),
       ),
+    );
+  }
+
+  Widget messageWithFilesAndReactMessage(
+      BuildContext context, bool isCurrentUser, bool isDarkMode) {
+    return Container(
+      constraints: BoxConstraints(
+        maxWidth: MediaQuery.of(context).size.width * 0.7,
+      ),
+      padding: const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16),
+        color: isCurrentUser
+            ? Theme.of(context).colorScheme.primaryContainer
+            : Theme.of(context).colorScheme.surface,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (messageToReactTo != null) ...{
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: ChatMessageReactMessageContainer(
+                messageAndUser: MessageAndUserEntity(
+                  message: messageToReactTo!,
+                  user: findUser(
+                        messageToReactTo!.createdBy ?? "",
+                      ) ??
+                      UserEntity(
+                        id: "",
+                        authId: "",
+                      ),
+                ),
+                currentUserId: currentUserId,
+                isInput: false,
+              ),
+            ),
+          },
+          if (message.fileLinks != null && message.fileLinks!.isNotEmpty) ...{
+            //TODO: as list of documents
+            Container(
+              constraints: BoxConstraints(
+                maxHeight: MediaQuery.of(context).size.height / 2,
+              ),
+              child: Container(
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(8.0),
+                  child: Image.network(
+                    message.fileLinks![0],
+                    fit: BoxFit.contain,
+                  ),
+                ),
+              ),
+            ),
+          },
+          if (message.message != null) ...{
+            if (message.fileLinks != null && message.fileLinks!.isNotEmpty) ...{
+              const SizedBox(height: 8),
+            },
+            Text(
+              message.message!,
+              overflow: TextOverflow.clip,
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+          },
+        ],
+      ),
+    );
+  }
+
+  Widget bottomContainer(
+      BuildContext context, bool isCurrentUser, bool isDarkMode) {
+    return Row(
+      mainAxisAlignment:
+          isCurrentUser ? MainAxisAlignment.end : MainAxisAlignment.start,
+      children: [
+        Text(
+          "${DateFormat.jm().format(message.createdAt)}, ",
+          style: Theme.of(context)
+              .textTheme
+              .labelMedium
+              ?.apply(color: isDarkMode ? Colors.white54 : Colors.black54),
+        ),
+        const SizedBox(width: 8),
+        if (isCurrentUser &&
+            message.readBy != null &&
+            message.readBy!.isNotEmpty &&
+            message.readBy!.length == users.length) ...[
+          Stack(
+            children: [
+              Icon(
+                Ionicons.checkmark,
+                color: isDarkMode ? Colors.white54 : Colors.black54,
+                size: Theme.of(context).textTheme.bodySmall?.fontSize,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 5),
+                child: Icon(
+                  Ionicons.checkmark,
+                  color: isDarkMode ? Colors.white54 : Colors.black54,
+                  size: Theme.of(context).textTheme.bodySmall?.fontSize,
+                ),
+              ),
+            ],
+          ),
+        ] else if (isCurrentUser) ...{
+          Icon(
+            Ionicons.checkmark,
+            color: isDarkMode ? Colors.white54 : Colors.black54,
+            size: Theme.of(context).textTheme.bodySmall?.fontSize,
+          ),
+        }
+      ],
     );
   }
 }

@@ -194,6 +194,9 @@ class _AppState extends State<App> {
                       color: darkColorScheme.primaryContainer,
                     ),
                   ),
+                  bottomSheetTheme: BottomSheetThemeData(
+                    backgroundColor: darkColorScheme.surface,
+                  ),
                   bottomAppBarTheme: const BottomAppBarTheme(
                     color: Colors.black,
                   ),

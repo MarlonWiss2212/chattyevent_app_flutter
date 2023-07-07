@@ -6,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/chat/chat_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/home_page/home_event/home_event_cubit.dart';
-import 'package:chattyevent_app_flutter/application/bloc/image/image_cubit.dart';
 import 'package:chattyevent_app_flutter/core/utils/injection.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
 
@@ -40,12 +39,6 @@ class BlocInitPage extends StatelessWidget {
             BlocProvider(
               create: (context) => ChatCubit(
                 chatUseCase: serviceLocator(param1: state),
-                notificationCubit: serviceLocator(),
-              ),
-            ),
-            BlocProvider(
-              create: (context) => ImageCubit(
-                imagePickerUseCases: serviceLocator(),
                 notificationCubit: serviceLocator(),
               ),
             ),

@@ -56,6 +56,7 @@ class _ChatMessageListState extends State<ChatMessageList> {
               ? const EdgeInsets.only(bottom: 50)
               : const EdgeInsets.all(0),
           child: ChatMessageContainer(
+            key: UniqueKey(),
             users: widget.users,
             message: message,
             messageToReactTo: message.messageToReactTo != null

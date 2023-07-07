@@ -32,7 +32,7 @@ class ChatMessageReadByBottomSheet extends StatelessWidget {
             ),
           ),
         ),
-        Expanded(
+        Flexible(
           child: ListView.builder(
             shrinkWrap: true,
             itemBuilder: (context, index) => UserListTile(
