@@ -49,11 +49,9 @@ class _PrivateEventTabChatState extends State<PrivateEventTabChat> {
       child: const Stack(
         fit: StackFit.expand,
         children: [
-          Expanded(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8.0),
-              child: TabChatMessageArea(),
-            ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 8.0),
+            child: TabChatMessageArea(),
           ),
           ChatMessageInput(),
         ],

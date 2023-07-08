@@ -98,11 +98,9 @@ class _ProfileChatPageState extends State<ProfileChatPage> {
               child: const Stack(
                 fit: StackFit.expand,
                 children: [
-                  Expanded(
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 8.0),
-                      child: ProfileChatPageMessageArea(),
-                    ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 8.0),
+                    child: ProfileChatPageMessageArea(),
                   ),
                   ChatMessageInput(),
                 ],
