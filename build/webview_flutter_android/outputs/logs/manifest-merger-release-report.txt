@@ -13,6 +13,12 @@ uses-sdk
 INJECTED from C:\Users\marlo\AppData\Local\Pub\Cache\hosted\pub.dev\webview_flutter_android-3.7.0\android\src\main\AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from C:\Users\marlo\AppData\Local\Pub\Cache\hosted\pub.dev\webview_flutter_android-3.7.0\android\src\main\AndroidManifest.xml
 INJECTED from C:\Users\marlo\AppData\Local\Pub\Cache\hosted\pub.dev\webview_flutter_android-3.7.0\android\src\main\AndroidManifest.xml
+INJECTED from C:\Users\marlo\AppData\Local\Pub\Cache\hosted\pub.dev\webview_flutter_android-3.7.0\android\src\main\AndroidManifest.xml
+INJECTED from C:\Users\marlo\AppData\Local\Pub\Cache\hosted\pub.dev\webview_flutter_android-3.7.0\android\src\main\AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from C:\Users\marlo\AppData\Local\Pub\Cache\hosted\pub.dev\webview_flutter_android-3.7.0\android\src\main\AndroidManifest.xml
+		ADDED from C:\Users\marlo\AppData\Local\Pub\Cache\hosted\pub.dev\webview_flutter_android-3.7.0\android\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\marlo\AppData\Local\Pub\Cache\hosted\pub.dev\webview_flutter_android-3.7.0\android\src\main\AndroidManifest.xml
 	android:minSdkVersion
 		INJECTED from C:\Users\marlo\AppData\Local\Pub\Cache\hosted\pub.dev\webview_flutter_android-3.7.0\android\src\main\AndroidManifest.xml
 		ADDED from C:\Users\marlo\AppData\Local\Pub\Cache\hosted\pub.dev\webview_flutter_android-3.7.0\android\src\main\AndroidManifest.xml

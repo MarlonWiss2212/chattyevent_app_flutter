@@ -17,10 +17,8 @@ class _AdPopUpState extends State<AdPopUp> {
       fc.ConsentInformation consentInfo =
           await fc.FlutterFundingChoices.requestConsentInformation();
       if (consentInfo.isConsentFormAvailable &&
-          consentInfo.consentStatus == fc.ConsentStatus.REQUIRED_ANDROID &&
-          consentInfo.consentStatus == fc.ConsentStatus.REQUIRED_IOS) {
+          consentInfo.consentStatus == fc.ConsentStatus.required) {
         await fc.FlutterFundingChoices.showConsentForm();
-        // You can check the result by calling `FlutterFundingChoices.requestConsentInformation()` again !
       }
     });
   }
