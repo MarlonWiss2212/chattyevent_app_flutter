@@ -29,6 +29,7 @@ import 'package:chattyevent_app_flutter/presentation/router/verify_email_page_gu
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
 import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:chattyevent_app_flutter/core/utils/graphql_utils.dart';
@@ -200,7 +201,6 @@ class InjectionUtils {
     serviceLocator.registerLazySingleton<ImagePickerRepository>(
       () => ImagePickerRepositoryImpl(
         imagePickerDatasource: serviceLocator(),
-        imageCropper: ImageCropper(),
       ),
     );
     serviceLocator.registerLazySingleton<PermissionRepository>(
@@ -290,7 +290,10 @@ class InjectionUtils {
       return LocationDatasourceImpl();
     });
     serviceLocator.registerLazySingleton<ImagePickerDatasource>(() {
-      return ImagePickerDatasourceImpl();
+      return ImagePickerDatasourceImpl(
+        imageCropper: ImageCropper(), 
+        imagePicker: ImagePicker(),
+      );
     });
   }
 }

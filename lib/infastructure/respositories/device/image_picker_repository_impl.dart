@@ -8,10 +8,8 @@ import 'package:image_cropper/image_cropper.dart';
 
 class ImagePickerRepositoryImpl implements ImagePickerRepository {
   final ImagePickerDatasource imagePickerDatasource;
-  final ImageCropper imageCropper;
   ImagePickerRepositoryImpl({
     required this.imagePickerDatasource,
-    required this.imageCropper,
   });
 
   @override
@@ -55,7 +53,7 @@ class ImagePickerRepositoryImpl implements ImagePickerRepository {
     required CropAspectRatio aspectRatio,
   }) async {
     try {
-      final croppedFile = await imageCropper.cropImage(
+      final croppedFile = await imagePickerDatasource.cropImage(
         sourcePath: sourcePath,
         compressQuality: compressQuality,
         aspectRatio: aspectRatio,

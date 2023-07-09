@@ -25,7 +25,7 @@ class SettingsUseCases {
     return settingsRepository.getDarkModeFromStorage();
   }
 
-  Future<Either<NotificationAlert, Unit>> openDatasecurityPage() async {
+  Future<Either<NotificationAlert, Unit>> openTermsOfUsePage() async {
     try {
       final worked = await launchUrlString(
         "https://info.chattyevent.com/terms-of-use",
@@ -51,7 +51,7 @@ class SettingsUseCases {
     }
   }
 
-  Future<Either<NotificationAlert, Unit>> openTermsOfUsePage() async {
+  Future<Either<NotificationAlert, Unit>> openDatasecurityPage() async {
     try {
       final worked = await launchUrlString(
         "https://info.chattyevent.com/eu-dataprotection",
