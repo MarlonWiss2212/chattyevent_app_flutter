@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:chattyevent_app_flutter/presentation/widgets/general/custom_tab_bar.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -53,28 +54,22 @@ class ProfileUserRelationsTabPage extends StatelessWidget {
                     children: [
                       Padding(
                         padding: const EdgeInsets.all(8),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                            color: Theme.of(context).colorScheme.surface,
-                          ),
-                          child: TabBar(
-                            controller: tabController,
-                            tabs: [
+                        child: CustomTabBar(
+                          controller: tabController,
+                          tabs: [
+                            const Tab(
+                                text: "Followers", icon: Icon(Icons.person)),
+                            const Tab(
+                                text: "Gefolgt",
+                                icon: Icon(Icons.person_2_outlined)),
+                            if (state.user.id == authState.currentUser.id ||
+                                userId == null) ...{
                               const Tab(
-                                  text: "Followers", icon: Icon(Icons.person)),
-                              const Tab(
-                                  text: "Gefolgt",
-                                  icon: Icon(Icons.person_2_outlined)),
-                              if (state.user.id == authState.currentUser.id ||
-                                  userId == null) ...{
-                                const Tab(
-                                  text: "Anfragen",
-                                  icon: Icon(Icons.front_hand),
-                                ),
-                              }
-                            ],
-                          ),
+                                text: "Anfragen",
+                                icon: Icon(Icons.front_hand),
+                              ),
+                            }
+                          ],
                         ),
                       ),
                       Expanded(child: child),

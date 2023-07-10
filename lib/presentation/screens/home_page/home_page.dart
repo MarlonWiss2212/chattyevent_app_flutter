@@ -46,9 +46,8 @@ class HomePage extends StatelessWidget {
                   return Row(
                     children: [
                       NavigationRail(
-                        backgroundColor:
-                            Theme.of(context).scaffoldBackgroundColor,
                         selectedIndex: tabsRouter.activeIndex,
+                        labelType: NavigationRailLabelType.selected,
                         selectedIconTheme: IconThemeData(
                           color: Theme.of(context).colorScheme.onBackground,
                         ),
@@ -58,12 +57,12 @@ class HomePage extends StatelessWidget {
                           NavigationRailDestination(
                             icon: Icon(Ionicons.chatbubble_outline),
                             selectedIcon: Icon(Ionicons.chatbubble),
-                            label: Text('Chat'),
+                            label: Text('Chats'),
                           ),
                           NavigationRailDestination(
                             icon: Icon(Icons.celebration_outlined),
                             selectedIcon: Icon(Icons.celebration),
-                            label: Text('Party'),
+                            label: Text('Events'),
                           ),
                           NavigationRailDestination(
                             icon: Icon(Ionicons.search_outline),
@@ -100,10 +99,10 @@ class HomePage extends StatelessWidget {
                 return BottomNavigationBar(
                   currentIndex: tabsRouter.activeIndex,
                   type: BottomNavigationBarType.fixed,
-                  backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                   onTap: (value) => tabsRouter.setActiveIndex(value),
                   showUnselectedLabels: false,
                   showSelectedLabels: false,
+                  elevation: 0,
                   selectedItemColor: Theme.of(context).colorScheme.onBackground,
                   unselectedItemColor:
                       Theme.of(context).colorScheme.onBackground,

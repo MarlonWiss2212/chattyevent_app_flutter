@@ -141,7 +141,7 @@ class _ChatListState extends State<ChatList> {
             leading: CircleAvatar(
               backgroundImage: backgroundImage,
               backgroundColor: backgroundImage == null
-                  ? Theme.of(context).colorScheme.secondaryContainer
+                  ? Theme.of(context).colorScheme.surface
                   : null,
             ),
             title: Hero(

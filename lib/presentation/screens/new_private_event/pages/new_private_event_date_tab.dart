@@ -35,7 +35,7 @@ class NewPrivateEventDateTab extends StatelessWidget {
                   SizedBox(
                     width: double.infinity,
                     child: Button(
-                      color: Theme.of(context).colorScheme.secondaryContainer,
+                      color: Theme.of(context).colorScheme.surface,
                       text:
                           "Datum wählen*: ${state.eventDate != null ? DateFormat.yMd().add_jm().format(state.eventDate!) : ""}",
                       onTap: () async {
@@ -76,7 +76,7 @@ class NewPrivateEventDateTab extends StatelessWidget {
                   SizedBox(
                     width: double.infinity,
                     child: Button(
-                      color: Theme.of(context).colorScheme.secondaryContainer,
+                      color: Theme.of(context).colorScheme.surface,
                       text:
                           "End Datum wählen: ${state.eventEndDate != null ? DateFormat.yMd().add_jm().format(state.eventEndDate!) : ""}",
                       onTap: () async {

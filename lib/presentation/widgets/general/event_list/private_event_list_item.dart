@@ -16,7 +16,7 @@ class PrivateEventListItem extends StatelessWidget {
             ? NetworkImage(privateEventState.privateEvent.coverImageLink!)
             : null,
         backgroundColor: privateEventState.privateEvent.coverImageLink == null
-            ? Theme.of(context).colorScheme.secondaryContainer
+            ? Theme.of(context).colorScheme.surface
             : null,
       ),
       title: Hero(

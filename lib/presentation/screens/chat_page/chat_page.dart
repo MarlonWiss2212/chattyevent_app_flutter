@@ -45,7 +45,7 @@ class _ChatPageState extends State<ChatPage> {
                         : null,
                     backgroundColor: state.currentChat.profileImageLink != null
                         ? null
-                        : Theme.of(context).colorScheme.secondaryContainer,
+                        : Theme.of(context).colorScheme.surface,
                   ),
                   const SizedBox(width: 8),
                   Hero(

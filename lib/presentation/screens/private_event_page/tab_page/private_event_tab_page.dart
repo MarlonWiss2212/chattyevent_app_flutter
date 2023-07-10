@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:chattyevent_app_flutter/core/enums/private_event/private_event_user/private_event_user_role_enum.dart';
+import 'package:chattyevent_app_flutter/presentation/widgets/general/custom_tab_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/current_private_event/current_private_event_cubit.dart';
@@ -64,26 +65,20 @@ class PrivateEventTabPage extends StatelessWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.all(8),
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    color: Theme.of(context).colorScheme.surface,
-                  ),
-                  child: TabBar(
-                    controller: tabController,
-                    tabs: [
-                      const Tab(icon: Icon(Icons.celebration)),
-                      if (BlocProvider.of<CurrentPrivateEventCubit>(context)
-                              .state
-                              .privateEvent
-                              .groupchatTo ==
-                          null) ...{
-                        const Tab(icon: Icon(Ionicons.chatbubble)),
-                      },
-                      const Tab(icon: Icon(Icons.person)),
-                      const Tab(icon: Icon(Icons.shopping_cart)),
-                    ],
-                  ),
+                child: CustomTabBar(
+                  controller: tabController,
+                  tabs: [
+                    const Tab(icon: Icon(Icons.celebration)),
+                    if (BlocProvider.of<CurrentPrivateEventCubit>(context)
+                            .state
+                            .privateEvent
+                            .groupchatTo ==
+                        null) ...{
+                      const Tab(icon: Icon(Ionicons.chatbubble)),
+                    },
+                    const Tab(icon: Icon(Icons.person)),
+                    const Tab(icon: Icon(Icons.shopping_cart)),
+                  ],
                 ),
               ),
               BlocBuilder<CurrentPrivateEventCubit, CurrentPrivateEventState>(

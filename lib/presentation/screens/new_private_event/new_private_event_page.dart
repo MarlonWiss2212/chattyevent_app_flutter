@@ -107,7 +107,7 @@ class NewPrivateEventPage extends StatelessWidget {
                           pageController.jumpToPage(index);
                         },
                         effect: ExpandingDotsEffect(
-                          activeDotColor: Theme.of(context).colorScheme.primary,
+                          activeDotColor: Theme.of(context).colorScheme.surface,
                         ),
                       ),
                       const SizedBox(height: 8),

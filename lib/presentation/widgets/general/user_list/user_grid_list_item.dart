@@ -44,7 +44,7 @@ class UserGridListItem extends StatelessWidget {
                 : Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
-                      color: Theme.of(context).colorScheme.primaryContainer,
+                      color: Theme.of(context).colorScheme.surface,
                     ),
                   ),
             Container(

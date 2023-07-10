@@ -51,7 +51,7 @@ class _SelectableUserGridListState extends State<SelectableUserGridList> {
             width: double.infinity,
             child: Button(
               text: "Neu Laden",
-              color: Theme.of(context).colorScheme.secondaryContainer,
+              color: Theme.of(context).colorScheme.surface,
               onTap: () => widget.reloadRequest(),
             ),
           ),
@@ -61,7 +61,7 @@ class _SelectableUserGridListState extends State<SelectableUserGridList> {
           width: double.infinity,
           child: Button(
             text: "Mehr Laden",
-            color: Theme.of(context).colorScheme.secondaryContainer,
+            color: Theme.of(context).colorScheme.surface,
             onTap: () => widget.loadMoreRequest(text: userSearch.text),
           ),
         ),

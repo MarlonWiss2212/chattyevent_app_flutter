@@ -46,7 +46,7 @@ class _UserListTileState extends State<UserListTile> {
               ? NetworkImage(widget.user.profileImageLink!)
               : null,
           backgroundColor: widget.user.profileImageLink == null
-              ? Theme.of(context).colorScheme.secondaryContainer
+              ? Theme.of(context).colorScheme.surface
               : null,
         ),
         title: Hero(

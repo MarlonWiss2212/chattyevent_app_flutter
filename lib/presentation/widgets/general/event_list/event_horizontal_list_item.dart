@@ -27,80 +27,71 @@ class EventHorizontalListItem extends StatelessWidget {
       child: Ink(
         width: width,
         height: height,
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8),
-            color: Theme.of(context).colorScheme.primaryContainer,
-          ),
-          child: Stack(
-            fit: StackFit.expand,
-            children: [
-              privateEvent.coverImageLink != null
-                  ? Container(
-                      decoration: const BoxDecoration(shape: BoxShape.circle),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(8.0),
-                        child: Hero(
-                          tag: "${privateEvent.id} coverImage",
-                          child: Image.network(
-                            privateEvent.coverImageLink!,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                    )
-                  : Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        color: Theme.of(context).colorScheme.tertiaryContainer,
-                      ),
-                    ),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8),
+          color: Theme.of(context).colorScheme.surface,
+        ),
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            if (privateEvent.coverImageLink != null) ...{
               Container(
-                height: height,
-                width: width,
-                decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      Color(0x00000000),
-                      Color(0x00000000),
-                      Color(0xCC000000),
-                    ],
+                decoration: const BoxDecoration(shape: BoxShape.circle),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(8.0),
+                  child: Hero(
+                    tag: "${privateEvent.id} coverImage",
+                    child: Image.network(
+                      privateEvent.coverImageLink!,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(8),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Hero(
-                      tag: "${privateEvent.id} title",
-                      child: Text(
-                        privateEvent.title ?? "Kein Titel",
-                        style: Theme.of(context).textTheme.titleLarge?.apply(
-                              color: Colors.white,
-                            ),
-                      ),
-                    ),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: Text(
-                        DateFormat.yMd()
-                            .add_jm()
-                            .format(privateEvent.eventDate),
-                        style: Theme.of(context).textTheme.bodySmall?.apply(
-                              color: Colors.white,
-                            ),
-                      ),
-                    ),
+            },
+            Container(
+              height: height,
+              width: width,
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Color(0x00000000),
+                    Color(0x00000000),
+                    Color(0xCC000000),
                   ],
                 ),
               ),
-            ],
-          ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Hero(
+                    tag: "${privateEvent.id} title",
+                    child: Text(
+                      privateEvent.title ?? "Kein Titel",
+                      style: Theme.of(context).textTheme.titleLarge?.apply(
+                            color: Colors.white,
+                          ),
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: Text(
+                      DateFormat.yMd().add_jm().format(privateEvent.eventDate),
+                      style: Theme.of(context).textTheme.bodySmall?.apply(
+                            color: Colors.white,
+                          ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );

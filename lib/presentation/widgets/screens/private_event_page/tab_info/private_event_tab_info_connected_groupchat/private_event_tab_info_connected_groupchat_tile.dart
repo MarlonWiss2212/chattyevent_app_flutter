@@ -18,7 +18,7 @@ class PrivateEventTabInfoGroupchatToTile extends StatelessWidget {
             ? NetworkImage(groupchat.profileImageLink!)
             : null,
         backgroundColor: groupchat.profileImageLink == null
-            ? Theme.of(context).colorScheme.secondaryContainer
+            ? Theme.of(context).colorScheme.surface
             : null,
       ),
       title: groupchat.title != null

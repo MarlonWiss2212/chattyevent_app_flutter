@@ -37,7 +37,7 @@ class SelectCoverImage extends StatelessWidget {
         );
       },
       child: image != null
-          ? Container(
+          ? Ink(
               decoration: const BoxDecoration(
                 shape: BoxShape.circle,
               ),
@@ -49,13 +49,14 @@ class SelectCoverImage extends StatelessWidget {
                 ),
               ),
             )
-          : Container(
+          : Ink(
               width: size.width,
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(
-                    color: Theme.of(context).colorScheme.onBackground,
-                  )),
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(
+                  color: Theme.of(context).colorScheme.onBackground,
+                ),
+              ),
               height: (size.width / 4 * 3) - 16,
               child: const Icon(Icons.add),
             ),

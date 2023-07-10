@@ -61,7 +61,7 @@ class GroupchatGridListItem extends StatelessWidget {
                               width: 4,
                             )
                           : null,
-                      color: Theme.of(context).colorScheme.secondaryContainer,
+                      color: Theme.of(context).colorScheme.surface,
                     ),
                   ),
             Padding(

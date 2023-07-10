@@ -47,12 +47,12 @@ class CircleImage extends StatelessWidget {
               ),
             ),
           )
-        : Container(
+        : Ink(
             height: height,
             width: width,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: Theme.of(context).colorScheme.primaryContainer,
+              color: Theme.of(context).colorScheme.surface,
             ),
             child: InkWell(
               onTap: onTap,

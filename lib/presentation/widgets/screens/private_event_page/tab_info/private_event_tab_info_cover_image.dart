@@ -76,7 +76,7 @@ class PrivateEventTabInfoCoverImage extends StatelessWidget {
               } else {
                 return SizedBox(
                   child: Card(
-                    color: Theme.of(context).colorScheme.secondaryContainer,
+                    color: Theme.of(context).colorScheme.surface,
                   ),
                 );
               }

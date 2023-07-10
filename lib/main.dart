@@ -159,54 +159,53 @@ class _AppState extends State<App> {
                   );
                 },
                 theme: ThemeData(
-                  appBarTheme: const AppBarTheme(
-                    backgroundColor: Colors.white,
-                    foregroundColor: Colors.black87,
-                    shadowColor: Colors.transparent,
-                  ),
+                  useMaterial3: true,
                   tabBarTheme: TabBarTheme(
                     indicatorColor: lightColorScheme.primary,
+                    indicatorSize: TabBarIndicatorSize.tab,
                     labelColor: lightColorScheme.primary,
-                    dividerColor: lightColorScheme.primary,
+                    dividerColor: Colors.transparent,
                     indicator: BoxDecoration(
                       borderRadius: BorderRadius.circular(12),
                       color: lightColorScheme.primaryContainer,
                     ),
                   ),
-                  bottomAppBarTheme: const BottomAppBarTheme(
+                  appBarTheme: const AppBarTheme(
+                    centerTitle: true,
                     color: Colors.white,
+                    surfaceTintColor: Colors.white,
                   ),
-                  scaffoldBackgroundColor: Colors.white,
-                  colorScheme: lightColorScheme,
+                  navigationRailTheme: const NavigationRailThemeData(
+                    backgroundColor: Colors.white,
+                  ),
+                  colorScheme: lightColorScheme.copyWith(
+                    background: Colors.white,
+                    surface: const Color.fromARGB(255, 230, 230, 230),
+                  ),
                 ),
                 darkTheme: ThemeData(
-                  appBarTheme: const AppBarTheme(
-                    backgroundColor: Colors.black87,
-                    foregroundColor: Colors.white,
-                    shadowColor: Colors.transparent,
-                  ),
+                  useMaterial3: true,
                   tabBarTheme: TabBarTheme(
                     indicatorColor: darkColorScheme.primary,
+                    indicatorSize: TabBarIndicatorSize.tab,
                     labelColor: darkColorScheme.primary,
-                    dividerColor: darkColorScheme.primary,
+                    dividerColor: Colors.transparent,
                     indicator: BoxDecoration(
                       borderRadius: BorderRadius.circular(12),
                       color: darkColorScheme.primaryContainer,
                     ),
                   ),
-                  bottomSheetTheme: BottomSheetThemeData(
-                    backgroundColor: darkColorScheme.surface,
-                  ),
-                  bottomAppBarTheme: const BottomAppBarTheme(
+                  appBarTheme: const AppBarTheme(
+                    centerTitle: true,
                     color: Colors.black,
+                    surfaceTintColor: Colors.black,
                   ),
-                  checkboxTheme: CheckboxThemeData(
-                    fillColor: MaterialStateProperty.all(
-                      darkColorScheme.secondaryContainer,
-                    ),
+                  navigationRailTheme: const NavigationRailThemeData(
+                    backgroundColor: Colors.black,
                   ),
-                  scaffoldBackgroundColor: Colors.black,
-                  colorScheme: darkColorScheme,
+                  colorScheme: darkColorScheme.copyWith(
+                    background: Colors.black,
+                  ),
                 ),
                 themeMode: value.autoDarkMode == true
                     ? ThemeMode.system

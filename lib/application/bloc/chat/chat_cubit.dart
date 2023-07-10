@@ -69,10 +69,10 @@ class ChatCubit extends Cubit<ChatState> {
   Future getChatsViaApi() async {
     emit(ChatState(chats: state.chats, status: ChatStateStatus.loading));
 
-    final Either<NotificationAlert, List<ChatEntity>> groupchatsOrFailure =
+    final Either<NotificationAlert, List<ChatEntity>> chatsOrFailure =
         await chatUseCase.getChatsViaApi();
 
-    groupchatsOrFailure.fold(
+    chatsOrFailure.fold(
       (alert) {
         ChatState(chats: state.chats, status: ChatStateStatus.initial);
         notificationCubit.newAlert(notificationAlert: alert);

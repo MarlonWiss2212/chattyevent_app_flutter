@@ -28,7 +28,7 @@ class CurrentShoppingListItemPagePrivateEventTile extends StatelessWidget {
                         )
                       : null,
                   backgroundColor: state.privateEvent.coverImageLink == null
-                      ? Theme.of(context).colorScheme.secondaryContainer
+                      ? Theme.of(context).colorScheme.surface
                       : null,
                 ),
                 title: state.privateEvent.title != null

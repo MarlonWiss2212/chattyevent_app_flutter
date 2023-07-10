@@ -44,7 +44,7 @@ class ShoppingListItemTile extends StatelessWidget {
             ? NetworkImage(userToBuyItem.profileImageLink!)
             : null,
         backgroundColor: userToBuyItem.profileImageLink == null
-            ? Theme.of(context).colorScheme.secondaryContainer
+            ? Theme.of(context).colorScheme.surface
             : null,
       ),
       subtitle: Row(

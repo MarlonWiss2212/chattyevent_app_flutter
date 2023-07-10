@@ -49,7 +49,7 @@ class _ProfileChatPageState extends State<ProfileChatPage> {
                         : null,
                     backgroundColor: state.user.profileImageLink != null
                         ? null
-                        : Theme.of(context).colorScheme.secondaryContainer,
+                        : Theme.of(context).colorScheme.surface,
                   ),
                   const SizedBox(width: 8),
                   Hero(
