@@ -1,4 +1,3 @@
-import 'package:chattyevent_app_flutter/core/enums/groupchat/groupchat_user/groupchat_user_role_enum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/current_groupchat/current_chat_cubit.dart';
@@ -53,8 +52,10 @@ class ChatInfoPageProfileImage extends StatelessWidget {
           borderRadius: const BorderRadius.all(
             Radius.circular(8.0),
           ),
-          onTap: state.getCurrentGroupchatUser()?.role ==
-                  GroupchatUserRoleEnum.admin
+          onTap: state.currentUserAllowedWithPermission(
+            permissionCheckValue:
+                state.currentChat.permissions?.changeProfileImage,
+          )
               ? () => _onTapSetImageFunction(context)
               : null,
           child: state.currentChat.profileImageLink == null

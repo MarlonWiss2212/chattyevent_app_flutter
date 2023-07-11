@@ -1,5 +1,4 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:chattyevent_app_flutter/core/enums/private_event/private_event_user/private_event_user_role_enum.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/private_event_page/tab_info/private_event_tab_info_location/private_event_tab_info_location_remove_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,8 +14,9 @@ class PrivateEventTabInfoLocationData extends StatelessWidget {
     return BlocBuilder<CurrentPrivateEventCubit, CurrentPrivateEventState>(
       builder: (context, state) {
         return InkWell(
-          onTap: state.getCurrentPrivateEventUser()?.role ==
-                  PrivateEventUserRoleEnum.organizer
+          onTap: state.currentUserAllowedWithPermission(
+            permissionCheckValue: state.privateEvent.permissions?.changeAddress,
+          )
               ? () => AutoRouter.of(context).push(
                     const PrivateEventUpdateLocationPageRoute(),
                   )
@@ -52,8 +52,10 @@ class PrivateEventTabInfoLocationData extends StatelessWidget {
                             style: Theme.of(context).textTheme.bodyMedium,
                           ),
                           const SizedBox(height: 8),
-                          if (state.getCurrentPrivateEventUser()?.role ==
-                              PrivateEventUserRoleEnum.organizer) ...{
+                          if (state.currentUserAllowedWithPermission(
+                            permissionCheckValue:
+                                state.privateEvent.permissions?.changeAddress,
+                          )) ...{
                             const PrivateEventTabInfoLocationRemoveIcon(),
                           },
                         ],

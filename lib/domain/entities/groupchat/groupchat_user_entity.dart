@@ -1,3 +1,4 @@
+import 'package:chattyevent_app_flutter/core/enums/groupchat/groupchat_permission_enum.dart';
 import 'package:chattyevent_app_flutter/core/enums/groupchat/groupchat_user/groupchat_user_role_enum.dart';
 import 'package:chattyevent_app_flutter/domain/entities/user-relation/user_relations_count_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/user/user_entity.dart';
@@ -28,6 +29,22 @@ class GroupchatUserEntity extends UserEntity {
     super.userRelationCounts,
     super.username,
   });
+
+  bool currentUserAllowedWithPermission({
+    GroupchatPermissionEnum? permissionCheckValue,
+  }) {
+    switch (permissionCheckValue) {
+      case GroupchatPermissionEnum.everyone:
+        return true;
+      case GroupchatPermissionEnum.adminsonly:
+        if (role == GroupchatUserRoleEnum.admin) {
+          return true;
+        }
+        return false;
+      default:
+        return false;
+    }
+  }
 
   factory GroupchatUserEntity.merge({
     bool removeMyUserRelation = false,

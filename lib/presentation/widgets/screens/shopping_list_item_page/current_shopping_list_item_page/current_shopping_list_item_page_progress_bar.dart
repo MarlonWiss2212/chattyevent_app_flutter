@@ -1,3 +1,4 @@
+import 'package:chattyevent_app_flutter/application/bloc/current_private_event/current_private_event_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -35,79 +36,110 @@ class CurrentShoppingListItemPageWithProgressBar extends StatelessWidget {
             height: 100,
             width: double.infinity,
             child: Center(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "${state.shoppingListItem.boughtAmount ?? 0} von ",
-                    style: Theme.of(context).textTheme.labelLarge?.apply(
-                          color: Theme.of(context).colorScheme.primary,
+              child: BlocBuilder<CurrentPrivateEventCubit,
+                  CurrentPrivateEventState>(
+                builder: (context, privateEventState) {
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "${state.shoppingListItem.boughtAmount ?? 0} von ",
+                        style: Theme.of(context).textTheme.labelLarge?.apply(
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      Container(
+                        constraints: const BoxConstraints(maxWidth: 100),
+                        child: EditInputTextField(
+                          text:
+                              state.shoppingListItem.amount?.toString() ?? "0",
+                          onSaved: privateEventState
+                                  .currentUserAllowedWithPermission(
+                                      permissionCheckValue: privateEventState
+                                          .privateEvent
+                                          .permissions
+                                          ?.updateShoppingListItem)
+                              ? (text) async {
+                                  final textAsDouble = double.tryParse(text);
+                                  if (textAsDouble == null) {
+                                    if (textAsDouble == null) {
+                                      return await showDialog(
+                                        context: context,
+                                        builder: (c) {
+                                          return CustomAlertDialog(
+                                            notificationAlert:
+                                                NotificationAlert(
+                                              title: "Menge Fehler",
+                                              message:
+                                                  "Die eingegebene Menge muss eine Zahl sein",
+                                            ),
+                                            context: c,
+                                          );
+                                        },
+                                      );
+                                    }
+                                  }
+                                  BlocProvider.of<CurrentShoppingListItemCubit>(
+                                          context)
+                                      .updateShoppingListItemViaApi(
+                                    updateShoppingListItemDto:
+                                        UpdateShoppingListItemDto(
+                                      amount: textAsDouble,
+                                    ),
+                                  );
+                                }
+                              : null,
+                          textStyle: Theme.of(context)
+                              .textTheme
+                              .labelLarge
+                              ?.apply(
+                                color: Theme.of(context).colorScheme.primary,
+                              ),
                         ),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  Container(
-                    constraints: const BoxConstraints(maxWidth: 100),
-                    child: EditInputTextField(
-                      text: state.shoppingListItem.amount?.toString() ?? "0",
-                      onSaved: (text) async {
-                        final textAsDouble = double.tryParse(text);
-                        if (textAsDouble == null) {
-                          if (textAsDouble == null) {
-                            return await showDialog(
-                              context: context,
-                              builder: (c) {
-                                return CustomAlertDialog(
-                                  notificationAlert: NotificationAlert(
-                                    title: "Menge Fehler",
-                                    message:
-                                        "Die eingegebene Menge muss eine Zahl sein",
-                                  ),
-                                  context: c,
-                                );
-                              },
-                            );
-                          }
-                        }
-                        BlocProvider.of<CurrentShoppingListItemCubit>(context)
-                            .updateShoppingListItemViaApi(
-                          updateShoppingListItemDto: UpdateShoppingListItemDto(
-                            amount: textAsDouble,
-                          ),
-                        );
-                      },
-                      textStyle: Theme.of(context).textTheme.labelLarge?.apply(
-                            color: Theme.of(context).colorScheme.primary,
-                          ),
-                    ),
-                  ),
-                  Container(
-                    constraints: const BoxConstraints(maxWidth: 100),
-                    child: EditInputTextField(
-                      text: state.shoppingListItem.unit == null ||
-                              state.shoppingListItem.unit!.isEmpty
-                          ? " (einheit)"
-                          : state.shoppingListItem.unit!,
-                      onSaved: (text) async {
-                        BlocProvider.of<CurrentShoppingListItemCubit>(context)
-                            .updateShoppingListItemViaApi(
-                          updateShoppingListItemDto: UpdateShoppingListItemDto(
-                            unit: text,
-                          ),
-                        );
-                      },
-                      textStyle: Theme.of(context).textTheme.labelLarge?.apply(
-                            color: Theme.of(context).colorScheme.primary,
-                          ),
-                    ),
-                  ),
-                  Text(
-                    " gekauft",
-                    style: Theme.of(context).textTheme.labelLarge?.apply(
-                          color: Theme.of(context).colorScheme.primary,
+                      ),
+                      Container(
+                        constraints: const BoxConstraints(maxWidth: 100),
+                        child: EditInputTextField(
+                          text: state.shoppingListItem.unit == null ||
+                                  state.shoppingListItem.unit!.isEmpty
+                              ? " (einheit)"
+                              : state.shoppingListItem.unit!,
+                          onSaved: privateEventState
+                                  .currentUserAllowedWithPermission(
+                                      permissionCheckValue: privateEventState
+                                          .privateEvent
+                                          .permissions
+                                          ?.updateShoppingListItem)
+                              ? (text) async {
+                                  BlocProvider.of<CurrentShoppingListItemCubit>(
+                                          context)
+                                      .updateShoppingListItemViaApi(
+                                    updateShoppingListItemDto:
+                                        UpdateShoppingListItemDto(
+                                      unit: text,
+                                    ),
+                                  );
+                                }
+                              : null,
+                          textStyle: Theme.of(context)
+                              .textTheme
+                              .labelLarge
+                              ?.apply(
+                                color: Theme.of(context).colorScheme.primary,
+                              ),
                         ),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ],
+                      ),
+                      Text(
+                        " gekauft",
+                        style: Theme.of(context).textTheme.labelLarge?.apply(
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  );
+                },
               ),
             ),
           ),

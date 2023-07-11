@@ -38,6 +38,7 @@ class _NewPrivateEventSearchGroupchatTabState
               }
 
               return GroupchatGridList(
+                // TODO: check for permissions to filter out || load groupchats from api
                 groupchats: chatState.chats
                     .where((element) => element.groupchat != null)
                     .map((e) => e.groupchat!)

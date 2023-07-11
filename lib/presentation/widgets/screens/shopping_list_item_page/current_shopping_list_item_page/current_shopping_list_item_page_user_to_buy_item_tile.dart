@@ -12,45 +12,56 @@ class CurrentShoppingListItemPageUserToBuyItemTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CurrentShoppingListItemCubit,
-        CurrentShoppingListItemState>(
-      builder: (context, state) {
-        return BlocBuilder<CurrentPrivateEventCubit, CurrentPrivateEventState>(
-          builder: (context, privateEventState) {
-            final PrivateEventUserEntity userToBuyItem =
-                privateEventState.privateEventUsers.firstWhere(
-              (element) => element.id == state.shoppingListItem.userToBuyItem,
-              orElse: () => PrivateEventUserEntity(
-                authId: "",
-                id: "",
-                privateEventUserId: "",
-              ),
-            );
+    return BlocBuilder<CurrentPrivateEventCubit, CurrentPrivateEventState>(
+      builder: (context, privateEventState) {
+        return BlocBuilder<CurrentShoppingListItemCubit,
+            CurrentShoppingListItemState>(
+          builder: (context, state) {
+            return BlocBuilder<CurrentPrivateEventCubit,
+                CurrentPrivateEventState>(
+              builder: (context, privateEventState) {
+                final PrivateEventUserEntity userToBuyItem =
+                    privateEventState.privateEventUsers.firstWhere(
+                  (element) =>
+                      element.id == state.shoppingListItem.userToBuyItem,
+                  orElse: () => PrivateEventUserEntity(
+                    authId: "",
+                    id: "",
+                    privateEventUserId: "",
+                  ),
+                );
 
-            return UserListTile(
-              user: userToBuyItem,
-              items: [
-                PopupMenuItem(
-                  child: const Text("ändern"),
-                  onTap: () {
-                    BlocProvider.of<CurrentShoppingListItemCubit>(context)
-                        .shoppingListCubitOrPrivateEventCubit
-                        .fold(
-                          (l) => AutoRouter.of(context).push(
-                            const ShoppingListItemChangeUserPageRoute(),
-                          ),
-                          (r) => AutoRouter.of(context).push(
-                            const PrivateEventShoppingListItemChangeUserPageRoute(),
-                          ),
-                        );
-                  },
-                )
-              ],
-              subtitle: const Text(
-                "Benutzer der es kaufen soll",
-                softWrap: true,
-                overflow: TextOverflow.ellipsis,
-              ),
+                return UserListTile(
+                  user: userToBuyItem,
+                  items: privateEventState.currentUserAllowedWithPermission(
+                          permissionCheckValue: privateEventState
+                              .privateEvent.permissions?.updateShoppingListItem)
+                      ? [
+                          PopupMenuItem(
+                            child: const Text("ändern"),
+                            onTap: () {
+                              BlocProvider.of<CurrentShoppingListItemCubit>(
+                                      context)
+                                  .shoppingListCubitOrPrivateEventCubit
+                                  .fold(
+                                    (l) => AutoRouter.of(context).push(
+                                      const ShoppingListItemChangeUserPageRoute(),
+                                    ),
+                                    (r) => AutoRouter.of(context).push(
+                                      const PrivateEventShoppingListItemChangeUserPageRoute(),
+                                    ),
+                                  );
+                            },
+                          )
+                        ]
+                      : null,
+                  subtitle: const Text(
+                    "Benutzer der es kaufen soll",
+                    softWrap: true,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                );
+              },
             );
           },
         );

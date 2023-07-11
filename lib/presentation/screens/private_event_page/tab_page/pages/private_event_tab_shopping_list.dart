@@ -38,12 +38,21 @@ class PrivateEventTabShoppingList extends StatelessWidget {
           ),
         ),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.add),
-            onPressed: () => AutoRouter.of(context).push(
-              PrivateEventCreateShoppingListItemPageRoute(),
-            ),
-          ),
+          BlocBuilder<CurrentPrivateEventCubit, CurrentPrivateEventState>(
+            builder: (context, state) {
+              if (state.currentUserAllowedWithPermission(
+                  permissionCheckValue:
+                      state.privateEvent.permissions?.addShoppingListItem)) {
+                return IconButton(
+                  icon: const Icon(Icons.add),
+                  onPressed: () => AutoRouter.of(context).push(
+                    PrivateEventCreateShoppingListItemPageRoute(),
+                  ),
+                );
+              }
+              return const SizedBox();
+            },
+          )
         ],
       ),
       CupertinoSliverRefreshControl(

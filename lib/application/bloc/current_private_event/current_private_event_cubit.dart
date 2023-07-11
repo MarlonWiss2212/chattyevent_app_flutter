@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:chattyevent_app_flutter/core/enums/private_event/private_event_permission_enum.dart';
 import 'package:chattyevent_app_flutter/core/enums/private_event/private_event_user/private_event_user_role_enum.dart';
 import 'package:chattyevent_app_flutter/core/enums/private_event/private_event_user_status_enum.dart';
 import 'package:chattyevent_app_flutter/infastructure/filter/message/added_message_filter.dart';

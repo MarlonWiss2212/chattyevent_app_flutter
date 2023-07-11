@@ -1,3 +1,4 @@
+import 'package:chattyevent_app_flutter/core/enums/private_event/private_event_permission_enum.dart';
 import 'package:chattyevent_app_flutter/core/enums/private_event/private_event_user/private_event_user_role_enum.dart';
 import 'package:chattyevent_app_flutter/core/enums/private_event/private_event_user_status_enum.dart';
 import 'package:chattyevent_app_flutter/domain/entities/user-relation/user_relations_count_entity.dart';
@@ -29,6 +30,25 @@ class PrivateEventUserEntity extends UserEntity {
     super.userRelationCounts,
     super.username,
   });
+
+  bool currentUserAllowedWithPermission({
+    PrivateEventPermissionEnum? permissionCheckValue,
+    String? createdById,
+  }) {
+    switch (permissionCheckValue) {
+      case PrivateEventPermissionEnum.everyone:
+        return true;
+      case PrivateEventPermissionEnum.organizersonly:
+        if (role == null || role != PrivateEventUserRoleEnum.organizer) {
+          return false;
+        }
+        return true;
+      case PrivateEventPermissionEnum.createronly:
+        return id == createdById;
+      default:
+        return false;
+    }
+  }
 
   factory PrivateEventUserEntity.merge({
     bool removeMyUserRelation = false,

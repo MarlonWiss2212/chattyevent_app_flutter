@@ -1,12 +1,11 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:chattyevent_app_flutter/presentation/widgets/screens/shopping_list_item_page/current_shopping_list_item_page/current_shopping_list_item_page_title.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/current_private_event/current_private_event_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/shopping_list/current_shopping_list_item_cubit.dart';
-import 'package:chattyevent_app_flutter/infastructure/dto/shopping_list_item/update_shopping_list_item_dto.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/custom_divider.dart';
-import 'package:chattyevent_app_flutter/presentation/widgets/general/input_fields/edit_input_text_field.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/shopping_list_item_page/current_shopping_list_item_page/current_shopping_list_item_page_bought_amount_list.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/shopping_list_item_page/current_shopping_list_item_page/current_shopping_list_item_page_create_bought_amount_tile.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/shopping_list_item_page/current_shopping_list_item_page/current_shopping_list_item_page_private_event_tile.dart';
@@ -28,36 +27,26 @@ class StandardShoppingListItemPage extends StatelessWidget {
             expandedHeight: 100,
             leading: const AutoLeadingButton(),
             centerTitle: true,
-            flexibleSpace: FlexibleSpaceBar(
+            flexibleSpace: const FlexibleSpaceBar(
               centerTitle: true,
-              title: BlocBuilder<CurrentShoppingListItemCubit,
-                  CurrentShoppingListItemState>(
-                buildWhen: (previous, current) =>
-                    previous.shoppingListItem.itemName !=
-                    current.shoppingListItem.itemName,
-                builder: (context, state) => EditInputTextField(
-                  text: state.shoppingListItem.itemName ?? "",
-                  textStyle: Theme.of(context).textTheme.titleLarge?.apply(
-                        color: Theme.of(context).colorScheme.onBackground,
-                      ),
-                  onSaved: (text) {
-                    BlocProvider.of<CurrentShoppingListItemCubit>(context)
-                        .updateShoppingListItemViaApi(
-                      updateShoppingListItemDto: UpdateShoppingListItemDto(
-                        itemName: text,
-                      ),
-                    );
-                  },
-                ),
-              ),
+              title: CurrentShoppingListItemPageTitle(),
             ),
             actions: [
-              IconButton(
-                onPressed: () {
-                  BlocProvider.of<CurrentShoppingListItemCubit>(context)
-                      .deleteShoppingListItemViaApi();
+              BlocBuilder<CurrentPrivateEventCubit, CurrentPrivateEventState>(
+                builder: (context, state) {
+                  if (state.currentUserAllowedWithPermission(
+                      permissionCheckValue: state
+                          .privateEvent.permissions?.deleteShoppingListItem)) {
+                    return IconButton(
+                      onPressed: () {
+                        BlocProvider.of<CurrentShoppingListItemCubit>(context)
+                            .deleteShoppingListItemViaApi();
+                      },
+                      icon: const Icon(Icons.delete),
+                    );
+                  }
+                  return const SizedBox();
                 },
-                icon: const Icon(Icons.delete),
               ),
             ],
           ),

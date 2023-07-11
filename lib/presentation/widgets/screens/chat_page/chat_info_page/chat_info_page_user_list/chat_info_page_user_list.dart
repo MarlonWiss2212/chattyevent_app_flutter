@@ -1,5 +1,4 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:chattyevent_app_flutter/core/enums/groupchat/groupchat_user/groupchat_user_role_enum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletons/skeletons.dart';
@@ -24,8 +23,10 @@ class ChatInfoPageUserList extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
             ),
             const SizedBox(height: 8),
-            if (state.getCurrentGroupchatUser()?.role ==
-                GroupchatUserRoleEnum.admin) ...{
+            if (state.currentUserAllowedWithPermission(
+              permissionCheckValue:
+                  state.currentChat.permissions?.changeDescription,
+            )) ...{
               ListTile(
                 leading: const Icon(
                   Icons.person_add,

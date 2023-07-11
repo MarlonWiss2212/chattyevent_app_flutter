@@ -1,5 +1,4 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:chattyevent_app_flutter/core/enums/private_event/private_event_user/private_event_user_role_enum.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/custom_tab_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -44,8 +43,10 @@ class PrivateEventTabPage extends StatelessWidget {
                   tag: "$privateEventId title",
                   child: EditInputTextField(
                     text: state.privateEvent.title ?? "Kein Titel",
-                    editable: state.getCurrentPrivateEventUser()?.role ==
-                        PrivateEventUserRoleEnum.organizer,
+                    editable: state.currentUserAllowedWithPermission(
+                      permissionCheckValue:
+                          state.privateEvent.permissions?.changeTitle,
+                    ),
                     textStyle: Theme.of(context).textTheme.titleLarge,
                     onSaved: (text) {
                       BlocProvider.of<CurrentPrivateEventCubit>(context)

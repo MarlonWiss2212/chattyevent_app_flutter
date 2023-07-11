@@ -1,4 +1,3 @@
-import 'package:chattyevent_app_flutter/core/enums/private_event/private_event_user/private_event_user_role_enum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletons/skeletons.dart';
@@ -22,20 +21,21 @@ class PrivateEventTabInfoCoverImage extends StatelessWidget {
               context: context,
               builder: (c) {
                 return AcceptDeclineDialog(
-                    title: "Bild speichern",
-                    message: "Möchtest du das Bild als Cover Bild nehmen",
-                    onNoPress: () => Navigator.of(c).pop(),
-                    onYesPress: () {
-                      BlocProvider.of<CurrentPrivateEventCubit>(context)
-                          .updateCurrentPrivateEvent(
-                            updatePrivateEventDto: UpdatePrivateEventDto(
-                              updateCoverImage: newImage,
-                            ),
-                          )
-                          .then(
-                            (value) => Navigator.of(c).pop(),
-                          );
-                    });
+                  title: "Bild speichern",
+                  message: "Möchtest du das Bild als Cover Bild nehmen",
+                  onNoPress: () => Navigator.of(c).pop(),
+                  onYesPress: () {
+                    BlocProvider.of<CurrentPrivateEventCubit>(context)
+                        .updateCurrentPrivateEvent(
+                          updatePrivateEventDto: UpdatePrivateEventDto(
+                            updateCoverImage: newImage,
+                          ),
+                        )
+                        .then(
+                          (value) => Navigator.of(c).pop(),
+                        );
+                  },
+                );
               },
             );
           },
@@ -51,8 +51,9 @@ class PrivateEventTabInfoCoverImage extends StatelessWidget {
     return BlocBuilder<CurrentPrivateEventCubit, CurrentPrivateEventState>(
       builder: (context, state) {
         return InkWell(
-          onTap: state.getCurrentPrivateEventUser()?.role ==
-                  PrivateEventUserRoleEnum.organizer
+          onTap: state.currentUserAllowedWithPermission(
+                  permissionCheckValue:
+                      state.privateEvent.permissions?.changeCoverImage)
               ? () => _onTapSetImageFunction(context)
               : null,
           child: Builder(

@@ -24,6 +24,17 @@ class CurrentGroupchatState {
     return null;
   }
 
+  bool currentUserAllowedWithPermission({
+    GroupchatPermissionEnum? permissionCheckValue,
+  }) {
+    if (currentUserIndex != -1) {
+      users[currentUserIndex].currentUserAllowedWithPermission(
+        permissionCheckValue: permissionCheckValue,
+      );
+    }
+    return false;
+  }
+
   const CurrentGroupchatState({
     required this.currentUserIndex,
     required this.currentUserLeftChat,

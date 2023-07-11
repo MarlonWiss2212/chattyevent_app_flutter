@@ -28,6 +28,18 @@ class CurrentPrivateEventState {
     return null;
   }
 
+  bool currentUserAllowedWithPermission({
+    PrivateEventPermissionEnum? permissionCheckValue,
+  }) {
+    if (currentUserIndex != -1) {
+      privateEventUsers[currentUserIndex].currentUserAllowedWithPermission(
+        permissionCheckValue: permissionCheckValue,
+        createdById: privateEvent.createdBy,
+      );
+    }
+    return false;
+  }
+
   const CurrentPrivateEventState({
     required this.currentUserIndex,
     required this.messages,
