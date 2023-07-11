@@ -1,6 +1,7 @@
 import 'package:chattyevent_app_flutter/core/enums/private_event/private_event_status_enum.dart';
 import 'package:chattyevent_app_flutter/domain/entities/message/message_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/private_event/private_event_location_entity.dart';
+import 'package:chattyevent_app_flutter/domain/entities/private_event/private_event_permissions_entity.dart';
 
 class PrivateEventEntity {
   final String id;
@@ -8,6 +9,7 @@ class PrivateEventEntity {
   final String? description;
   final String? coverImageLink;
   final PrivateEventStatusEnum? status;
+  final PrivateEventPermissionsEntity? permissions;
   final DateTime eventDate;
   final DateTime? eventEndDate;
   final String? groupchatTo;
@@ -20,6 +22,7 @@ class PrivateEventEntity {
   PrivateEventEntity({
     required this.id,
     this.title,
+    this.permissions,
     this.latestMessage,
     this.status,
     this.description,

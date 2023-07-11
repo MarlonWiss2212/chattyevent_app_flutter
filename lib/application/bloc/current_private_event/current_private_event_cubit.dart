@@ -358,12 +358,10 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
       emitState(shoppingListItemStates: newShoppingListItemStates);
       return newShoppingListItemStates[foundIndex];
     } else if (addIfItsNotFound) {
-      emitState(
-        shoppingListItemStates: List.from([shoppingListItemState])
-          ..addAll(
-            state.shoppingListItemStates,
-          ),
-      );
+      emitState(shoppingListItemStates: [
+        ...state.shoppingListItemStates,
+        shoppingListItemState
+      ]);
     }
     return shoppingListItemState;
   }
@@ -519,7 +517,7 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
       (messages) {
         List<MessageEntity> newMessages = [];
         if (reload == false) {
-          newMessages = List.from(state.messages)..addAll(messages);
+          newMessages = [...state.messages, ...messages];
         } else {
           newMessages = messages;
         }

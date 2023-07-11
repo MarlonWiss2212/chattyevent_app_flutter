@@ -11,6 +11,7 @@ import 'package:chattyevent_app_flutter/presentation/screens/chat_page/chat_info
 import 'package:chattyevent_app_flutter/presentation/screens/chat_page/chat_add_user_page.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/chat_page/chat_page.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/chat_page/chat_page_wrapper.dart';
+import 'package:chattyevent_app_flutter/presentation/screens/chat_page/groupchat_update_permissions_page.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/create_user_page.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/future_events_page/future_events_page.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/home_page/home_page.dart';
@@ -20,18 +21,21 @@ import 'package:chattyevent_app_flutter/presentation/screens/home_page/pages/hom
 import 'package:chattyevent_app_flutter/presentation/screens/home_page/pages/home_search_page.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/login_page.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/new_groupchat/pages/new_groupchat_details_tab.dart';
+import 'package:chattyevent_app_flutter/presentation/screens/new_groupchat/pages/new_groupchat_permissions_tab.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/new_groupchat/pages/new_groupchat_select_user_tab.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/new_private_event/new_private_event_page.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/new_groupchat/new_groupchat_wrapper_page.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/new_private_event/pages/new_private_event_date_tab.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/new_private_event/pages/new_private_event_details_tab.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/new_private_event/pages/new_private_event_location_tab.dart';
+import 'package:chattyevent_app_flutter/presentation/screens/new_private_event/pages/new_private_event_permissions_tab.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/new_private_event/pages/new_private_event_search_tab.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/new_private_event/pages/new_private_event_type_tab.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/past_events_page/past_events_page.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/private_event_page/private_event_create_shopping_list_item_page.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/private_event_page/private_event_invite_user_page.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/private_event_page/private_event_update_loaction_page.dart';
+import 'package:chattyevent_app_flutter/presentation/screens/private_event_page/private_event_update_permissions_page.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/private_event_page/private_event_wrapper_page.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/private_event_page/shopping_list_item_page/private_event_shopping_list_change_user_page.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/private_event_page/shopping_list_item_page/private_event_shopping_list_item_page.dart';
@@ -174,6 +178,12 @@ import 'package:chattyevent_app_flutter/presentation/screens/shopping_list_page/
                   guards: [AuthGuard],
                   path: 'users',
                 ),
+                AutoRoute(
+                  page: NewGroupchatPermissionsTab,
+                  initial: false,
+                  guards: [AuthGuard],
+                  path: 'permssions',
+                ),
                 RedirectRoute(path: '*', redirectTo: '')
               ],
             ),
@@ -212,6 +222,12 @@ import 'package:chattyevent_app_flutter/presentation/screens/shopping_list_page/
                   initial: false,
                   guards: [AuthGuard],
                   path: 'location',
+                ),
+                AutoRoute(
+                  page: NewPrivateEventPermissionsTab,
+                  initial: false,
+                  guards: [AuthGuard],
+                  path: 'permssions',
                 ),
                 RedirectRoute(path: '*', redirectTo: '')
               ],
@@ -257,6 +273,11 @@ const groupchatRouter = AutoRoute(
       page: ChatAddUserPage,
       guards: [AuthGuard],
       path: 'add-user',
+    ),
+    AutoRoute(
+      page: GroupchatUpdatePermissionsPage,
+      guards: [AuthGuard],
+      path: 'update-permissions',
     ),
     RedirectRoute(path: '*', redirectTo: '')
   ],
@@ -304,6 +325,11 @@ const privateEventRouter = AutoRoute(
       initial: true,
       path: 'update-location',
       guards: [AuthGuard],
+    ),
+    AutoRoute(
+      page: PrivateEventUpdatePermissionsPage,
+      guards: [AuthGuard],
+      path: 'update-permissions',
     ),
     AutoRoute(
       page: PrivateEventInviteUserPage,

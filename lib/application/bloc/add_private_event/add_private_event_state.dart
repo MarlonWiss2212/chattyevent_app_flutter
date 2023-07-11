@@ -28,6 +28,8 @@ class AddPrivateEventState {
   final String? street;
   final String? housenumber;
 
+  final CreatePrivateEventPermissionsDto permissions;
+
   AddPrivateEventState({
     this.addedPrivateEvent,
     required this.calendarTimeUsers,
@@ -36,6 +38,7 @@ class AddPrivateEventState {
     this.title,
     required this.privateEventUsersDto,
     required this.isGroupchatEvent,
+    required this.permissions,
     this.description,
     this.coverImage,
     this.selectedGroupchat,

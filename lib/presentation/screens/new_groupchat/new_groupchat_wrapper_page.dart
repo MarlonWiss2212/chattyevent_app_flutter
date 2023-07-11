@@ -67,6 +67,7 @@ class NewGroupchatWrapperPage extends StatelessWidget {
                 routes: const [
                   NewGroupchatDetailsTabRoute(),
                   NewGroupchatSelectUserTabRoute(),
+                  NewGroupchatPermissionsTabRoute(),
                 ],
                 builder: (context, child, pageController) {
                   return Column(
@@ -83,7 +84,7 @@ class NewGroupchatWrapperPage extends StatelessWidget {
                       const SizedBox(height: 8),
                       SmoothPageIndicator(
                         controller: pageController,
-                        count: 2,
+                        count: 3,
                         onDotClicked: (index) {
                           pageController.jumpToPage(index);
                         },

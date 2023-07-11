@@ -1,6 +1,6 @@
 import 'dart:math';
-
 import 'package:auto_route/annotations.dart';
+import 'package:chattyevent_app_flutter/presentation/widgets/screens/private_event_page/tab_info/private_event_tab_info_update_permissions_list_tile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -54,6 +54,7 @@ class PrivateEventTabInfo extends StatelessWidget {
           const PrivateEventTabInfoStatus(),
           const CustomDivider(),
           const PrivateEventTabInfoLocation(),
+          const PrivateEventTabInfoUpdatePermissionsListTile(),
           const SizedBox(height: 8),
         ]),
       )

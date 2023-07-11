@@ -423,7 +423,7 @@ class CurrentGroupchatCubit extends Cubit<CurrentGroupchatState> {
       (messages) {
         List<MessageEntity> newMessages = [];
         if (reload == false) {
-          newMessages = List.from(state.messages)..addAll(messages);
+          newMessages = [...state.messages, ...messages];
         } else {
           newMessages = messages;
         }

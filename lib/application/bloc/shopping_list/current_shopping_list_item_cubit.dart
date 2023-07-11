@@ -198,8 +198,7 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
       },
       (boughtAmounts) {
         List<BoughtAmountEntity> newBoughtAmounts =
-            reload ? boughtAmounts : List.from(state.boughtAmounts)
-              ..addAll(boughtAmounts);
+            reload ? boughtAmounts : [...state.boughtAmounts, ...boughtAmounts];
 
         emitState(
           boughtAmounts: newBoughtAmounts,
@@ -234,11 +233,11 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
     boughtAmountOrFailure.fold(
       (alert) => notificationCubit.newAlert(notificationAlert: alert),
       (boughtAmount) {
-        final List<BoughtAmountEntity> newBoughtAmounts =
-            List.from([boughtAmount])
-              ..addAll(
-                state.boughtAmounts,
-              );
+        final List<BoughtAmountEntity> newBoughtAmounts = [
+          boughtAmount,
+          ...state.boughtAmounts
+        ];
+
         emitState(
           boughtAmounts: newBoughtAmounts,
           shoppingListItem: ShoppingListItemEntity.merge(

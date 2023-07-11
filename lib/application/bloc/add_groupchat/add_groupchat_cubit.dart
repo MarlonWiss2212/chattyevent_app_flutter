@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:chattyevent_app_flutter/domain/entities/chat_entity.dart';
+import 'package:chattyevent_app_flutter/infastructure/dto/groupchat/create_groupchat_permissions_dto.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:chattyevent_app_flutter/application/bloc/chat/chat_cubit.dart';
@@ -20,7 +21,10 @@ class AddGroupchatCubit extends Cubit<AddGroupchatState> {
     required this.chatCubit,
     required this.notificationCubit,
     required this.groupchatUseCases,
-  }) : super(AddGroupchatState(groupchatUsers: []));
+  }) : super(AddGroupchatState(
+          groupchatUsers: [],
+          permissions: CreateGroupchatPermissionsDto(),
+        ));
 
   Future createGroupchatViaApi() async {
     if (state.title == null) {
@@ -39,6 +43,7 @@ class AddGroupchatCubit extends Cubit<AddGroupchatState> {
       createGroupchatDto: CreateGroupchatDto(
         title: state.title!,
         profileImage: state.profileImage,
+        permissions: state.permissions,
         description: state.description,
         groupchatUsers: state.groupchatUsers,
       ),
@@ -56,6 +61,7 @@ class AddGroupchatCubit extends Cubit<AddGroupchatState> {
         emit(AddGroupchatState(
           groupchatUsers: [],
           addedChat: groupchat,
+          permissions: CreateGroupchatPermissionsDto(),
           status: AddGroupchatStateStatus.success,
         ));
       },
@@ -85,6 +91,7 @@ class AddGroupchatCubit extends Cubit<AddGroupchatState> {
     String? title,
     File? profileImage,
     String? description,
+    CreateGroupchatPermissionsDto? permissions,
     List<CreateGroupchatUserFromCreateGroupchatDtoWithUserEntity>?
         groupchatUsers,
     AddGroupchatStateStatus? status,
@@ -93,6 +100,7 @@ class AddGroupchatCubit extends Cubit<AddGroupchatState> {
     emit(AddGroupchatState(
       title: title ?? state.title,
       profileImage: profileImage ?? state.profileImage,
+      permissions: permissions ?? state.permissions,
       description: description ?? state.description,
       groupchatUsers: groupchatUsers ?? state.groupchatUsers,
       status: status ?? AddGroupchatStateStatus.initial,

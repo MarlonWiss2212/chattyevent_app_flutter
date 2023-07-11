@@ -57,7 +57,7 @@ class UserSearchCubit extends Cubit<UserSearchState> {
       },
       (users) => emit(
         UserSearchState(
-          users: loadMore ? (List.from(state.users)..addAll(users)) : users,
+          users: loadMore ? [...state.users, ...users] : users,
           status: UserSearchStateStatus.success,
         ),
       ),
@@ -103,7 +103,7 @@ class UserSearchCubit extends Cubit<UserSearchState> {
         ));
       },
       (users) => emit(UserSearchState(
-        users: loadMore ? (List.from(state.users)..addAll(users)) : users,
+        users: loadMore ? [...state.users, ...users] : users,
         status: UserSearchStateStatus.success,
       )),
     );
@@ -153,7 +153,7 @@ class UserSearchCubit extends Cubit<UserSearchState> {
         ));
       },
       (users) => emit(UserSearchState(
-        users: loadMore ? (List.from(state.users)..addAll(users)) : users,
+        users: loadMore ? [...state.users, ...users] : users,
         status: UserSearchStateStatus.success,
       )),
     );

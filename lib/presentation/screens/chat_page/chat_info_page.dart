@@ -1,4 +1,5 @@
 import 'package:auto_route/annotations.dart';
+import 'package:chattyevent_app_flutter/presentation/widgets/screens/chat_page/chat_info_page/chat_info_page_update_permissions_list_tile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -66,6 +67,7 @@ class _ChatInfoPageState extends State<ChatInfoPage> {
               CustomDivider(),
               ChatInfoPageLeftUserList(),
               CustomDivider(),
+              ChatInfoPageUpdatePermissionsListTile(),
               ChatInfoPageLeaveChat(),
             ]),
           )

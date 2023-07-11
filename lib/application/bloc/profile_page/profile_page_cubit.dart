@@ -104,8 +104,7 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
       (users) {
         emitState(
           followersStatus: ProfilePageStateFollowersStatus.success,
-          followers: reload ? users : List.from(state.followers)
-            ..addAll(users),
+          followers: reload ? users : [...state.followers, ...users],
         );
       },
     );
@@ -149,8 +148,7 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
       (users) {
         emitState(
           followRequestsStatus: ProfilePageStateFollowRequestsStatus.success,
-          followRequests: reload ? users : List.from(state.followRequests)
-            ..addAll(users),
+          followRequests: reload ? users : [...state.followRequests, ...users],
         );
       },
     );
@@ -182,8 +180,7 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
       (users) {
         emitState(
           followedStatus: ProfilePageStateFollowedStatus.success,
-          followed: reload ? users : List.from(state.followed)
-            ..addAll(users),
+          followed: reload ? users : [...state.followed, ...users],
         );
       },
     );
@@ -656,7 +653,7 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
       (messages) {
         List<MessageEntity> newMessages = [];
         if (reload == false) {
-          newMessages = List.from(state.messages)..addAll(messages);
+          newMessages = [...state.messages, ...messages];
         } else {
           newMessages = messages;
         }

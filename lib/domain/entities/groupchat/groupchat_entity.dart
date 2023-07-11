@@ -1,3 +1,4 @@
+import 'package:chattyevent_app_flutter/domain/entities/groupchat/groupchat_permissions_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/message/message_entity.dart';
 
 class GroupchatEntity {
@@ -7,6 +8,7 @@ class GroupchatEntity {
   final MessageEntity? latestMessage;
   final String? description;
   final String? createdBy;
+  final GroupchatPermissionsEntity? permissions;
   final DateTime? createdAt;
   final DateTime? updatedAt;
 
@@ -14,6 +16,7 @@ class GroupchatEntity {
     required this.id,
     this.title,
     this.latestMessage,
+    this.permissions,
     this.description,
     this.profileImageLink,
     this.createdBy,

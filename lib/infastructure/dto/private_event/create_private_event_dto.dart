@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:chattyevent_app_flutter/infastructure/dto/private_event/create_location_private_event_dto.dart';
+import 'package:chattyevent_app_flutter/infastructure/dto/private_event/create_private_event_permissions_dto.dart';
 import 'package:chattyevent_app_flutter/infastructure/dto/private_event/private_event_user/create_private_event_user_from_private_event_dto.dart';
 
 class CreatePrivateEventDto {
@@ -8,6 +9,7 @@ class CreatePrivateEventDto {
   final String? description;
   final File coverImage;
   final String? groupchatTo;
+  final CreatePrivateEventPermissionsDto? permissions;
   final DateTime eventDate;
   final DateTime? eventEndDate;
   final CreatePrivateEventLocationDto? eventLocation;
@@ -18,17 +20,22 @@ class CreatePrivateEventDto {
     required this.coverImage,
     required this.groupchatTo,
     required this.eventDate,
+    this.permissions,
     this.privateEventUsers,
     this.eventEndDate,
     this.description,
     this.eventLocation,
   });
+  
 
   Map<dynamic, dynamic> toMap() {
     Map<dynamic, dynamic> map = {
       "title": title,
       "eventDate": eventDate.toUtc().toIso8601String(),
     };
+    if (permissions != null) {
+      map.addAll({"permissions": permissions!.toMap()});
+    }
     if (groupchatTo != null) {
       map.addAll({"groupchatTo": groupchatTo});
     }

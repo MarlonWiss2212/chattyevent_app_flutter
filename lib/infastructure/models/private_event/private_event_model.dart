@@ -2,8 +2,10 @@ import 'package:chattyevent_app_flutter/core/enums/private_event/private_event_s
 import 'package:chattyevent_app_flutter/domain/entities/message/message_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/private_event/private_event_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/private_event/private_event_location_entity.dart';
+import 'package:chattyevent_app_flutter/domain/entities/private_event/private_event_permissions_entity.dart';
 import 'package:chattyevent_app_flutter/infastructure/models/message/message_model.dart';
 import 'package:chattyevent_app_flutter/infastructure/models/private_event/private_event_location_model.dart';
+import 'package:chattyevent_app_flutter/infastructure/models/private_event/private_event_permissions_model.dart';
 
 class PrivateEventModel extends PrivateEventEntity {
   PrivateEventModel({
@@ -15,6 +17,7 @@ class PrivateEventModel extends PrivateEventEntity {
     required DateTime eventDate,
     DateTime? eventEndDate,
     String? groupchatTo,
+    PrivateEventPermissionsEntity? permissions,
     String? createdBy,
     DateTime? createdAt,
     DateTime? updatedAt,
@@ -22,6 +25,7 @@ class PrivateEventModel extends PrivateEventEntity {
     MessageEntity? latestMessage,
   }) : super(
           id: id,
+          permissions: permissions,
           title: title,
           coverImageLink: coverImageLink,
           description: description,
@@ -58,6 +62,9 @@ class PrivateEventModel extends PrivateEventEntity {
       eventDate: eventDate,
       description: json["description"],
       eventEndDate: eventEndDate,
+      permissions: json["permissions"] != null
+          ? PrivateEventPermissionsModel.fromJson(json["permissions"])
+          : null,
       status: json["status"] != null
           ? PrivateEventStatusEnumExtension.fromValue(json["status"])
           : null,

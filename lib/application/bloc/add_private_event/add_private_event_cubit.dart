@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:chattyevent_app_flutter/infastructure/dto/private_event/create_private_event_permissions_dto.dart';
 import 'package:chattyevent_app_flutter/infastructure/filter/calendar/find_time_by_users_calendar_filter.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/calendar_usecases.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,6 +27,7 @@ class AddPrivateEventCubit extends Cubit<AddPrivateEventState> {
     required this.calendarUseCases,
     required this.notificationCubit,
   }) : super(AddPrivateEventState(
+          permissions: CreatePrivateEventPermissionsDto(),
           isGroupchatEvent: false,
           calendarTimeUsers: [],
           privateEventUsersDto: [],
@@ -82,6 +84,7 @@ class AddPrivateEventCubit extends Cubit<AddPrivateEventState> {
       (privateEvent) {
         homeEventCubit.getFuturePrivateEventsViaApi(reload: true);
         emit(AddPrivateEventState(
+          permissions: CreatePrivateEventPermissionsDto(),
           privateEventUsersDto: [],
           calendarTimeUsers: [],
           isGroupchatEvent: false,
@@ -175,9 +178,11 @@ class AddPrivateEventCubit extends Cubit<AddPrivateEventState> {
     AddPrivateEventStateStatus? status,
     PrivateEventEntity? addedPrivateEvent,
     List<CalendarTimeUserEntity>? calendarTimeUsers,
+    CreatePrivateEventPermissionsDto? permissions,
     bool? loadingCalendarTimeUsers,
   }) {
     emit(AddPrivateEventState(
+      permissions: permissions ?? state.permissions,
       isGroupchatEvent: isGroupchatEvent ?? state.isGroupchatEvent,
       privateEventUsersDto: privateEventUsersDto ?? state.privateEventUsersDto,
       title: title ?? state.title,

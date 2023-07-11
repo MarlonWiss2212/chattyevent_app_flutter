@@ -1,13 +1,16 @@
 import 'dart:io';
+import 'package:chattyevent_app_flutter/core/enums/private_event/private_event_status_enum.dart';
 import 'package:chattyevent_app_flutter/infastructure/dto/private_event/create_location_private_event_dto.dart';
+import 'package:chattyevent_app_flutter/infastructure/dto/private_event/update_private_event_permissions_dto.dart';
 
 class UpdatePrivateEventDto {
   final String? title;
   final String? description;
-  final String? status;
+  final PrivateEventStatusEnum? status;
   final File? updateCoverImage;
   final DateTime? eventDate;
   final DateTime? eventEndDate;
+  final UpdatePrivateEventPermissionsDto? permissions;
   final CreatePrivateEventLocationDto? eventLocation;
   final bool? removeEventLocation;
 
@@ -16,6 +19,7 @@ class UpdatePrivateEventDto {
     this.description,
     this.status,
     this.updateCoverImage,
+    this.permissions,
     this.eventDate,
     this.eventEndDate,
     this.removeEventLocation,
@@ -25,6 +29,9 @@ class UpdatePrivateEventDto {
   Map<dynamic, dynamic> toMap() {
     Map<dynamic, dynamic> map = {};
 
+    if (permissions != null) {
+      map.addAll({"permissions": permissions!.toMap()});
+    }
     if (title != null) {
       map.addAll({"title": title});
     }
@@ -32,7 +39,7 @@ class UpdatePrivateEventDto {
       map.addAll({"description": description});
     }
     if (status != null) {
-      map.addAll({"status": status});
+      map.addAll({"status": status!.value});
     }
     if (eventDate != null) {
       map.addAll({

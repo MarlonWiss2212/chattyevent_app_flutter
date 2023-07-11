@@ -37,10 +37,10 @@ class MyShoppingListCubit extends Cubit<MyShoppingListState> {
     } else if (addIfItsNotFound) {
       emit(
         MyShoppingListState(
-          shoppingListItemStates: List.from([shoppingListItemState])
-            ..addAll(
-              state.shoppingListItemStates,
-            ),
+          shoppingListItemStates: [
+            shoppingListItemState,
+            ...state.shoppingListItemStates
+          ],
         ),
       );
     }

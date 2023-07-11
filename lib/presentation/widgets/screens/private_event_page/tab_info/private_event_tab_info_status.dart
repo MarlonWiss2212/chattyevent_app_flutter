@@ -41,7 +41,7 @@ class _PrivateEventTabInfoStatusState extends State<PrivateEventTabInfoStatus> {
             onTap: () => BlocProvider.of<CurrentPrivateEventCubit>(context)
                 .updateCurrentPrivateEvent(
               updatePrivateEventDto: UpdatePrivateEventDto(
-                status: "TAKES_PLACE",
+                status: PrivateEventStatusEnum.takesplace,
               ),
             ),
           ),
@@ -52,7 +52,7 @@ class _PrivateEventTabInfoStatusState extends State<PrivateEventTabInfoStatus> {
             onTap: () => BlocProvider.of<CurrentPrivateEventCubit>(context)
                 .updateCurrentPrivateEvent(
               updatePrivateEventDto: UpdatePrivateEventDto(
-                status: "UNDECIDED",
+                status: PrivateEventStatusEnum.undecided,
               ),
             ),
           ),
@@ -63,7 +63,7 @@ class _PrivateEventTabInfoStatusState extends State<PrivateEventTabInfoStatus> {
             onTap: () => BlocProvider.of<CurrentPrivateEventCubit>(context)
                 .updateCurrentPrivateEvent(
               updatePrivateEventDto: UpdatePrivateEventDto(
-                status: "CANCELLED",
+                status: PrivateEventStatusEnum.cancelled,
               ),
             ),
           ),

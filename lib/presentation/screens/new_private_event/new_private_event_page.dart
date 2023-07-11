@@ -80,6 +80,7 @@ class NewPrivateEventPage extends StatelessWidget {
                   NewPrivateEventSearchTabRoute(),
                   NewPrivateEventDateTabRoute(),
                   NewPrivateEventLocationTabRoute(),
+                  NewPrivateEventPermissionsTabRoute(),
                 ],
                 builder: (context, child, pageController) {
                   return Column(
@@ -102,7 +103,7 @@ class NewPrivateEventPage extends StatelessWidget {
                       const SizedBox(height: 8),
                       SmoothPageIndicator(
                         controller: pageController,
-                        count: 5,
+                        count: 6,
                         onDotClicked: (index) {
                           pageController.jumpToPage(index);
                         },

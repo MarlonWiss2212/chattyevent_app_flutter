@@ -56,7 +56,10 @@ class ChatPageMessageArea extends StatelessWidget {
           currentUserId:
               BlocProvider.of<AuthCubit>(context).state.currentUser.id,
           loadMoreMessages: () {
-            if (state.loadingMessages == false) {
+            if (BlocProvider.of<CurrentGroupchatCubit>(context)
+                    .state
+                    .loadingMessages ==
+                false) {
               BlocProvider.of<CurrentGroupchatCubit>(context).loadMessages();
             }
           },

@@ -8,6 +8,7 @@ class AddGroupchatState {
 
   final String? title;
   final File? profileImage;
+  final CreateGroupchatPermissionsDto permissions;
   final String? description;
   final List<CreateGroupchatUserFromCreateGroupchatDtoWithUserEntity>
       groupchatUsers;
@@ -16,6 +17,7 @@ class AddGroupchatState {
     this.addedChat,
     this.status = AddGroupchatStateStatus.initial,
     this.title,
+    required this.permissions,
     this.profileImage,
     this.description,
     required this.groupchatUsers,
