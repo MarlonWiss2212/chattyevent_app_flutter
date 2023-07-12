@@ -1,6 +1,12 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
-    
-    <uses-permission android:name="android.permission.INTERNET"/>
+<manifest xmlns:tools="http://schemas.android.com/tools"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <uses-feature
+    android:name="android.hardware.camera"
+    android:required="false"
+    tools:targetApi="eclair" />
+
+  <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
     <uses-permission android:name="android.permission.CAMERA" />
     <!--uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /-->
@@ -11,9 +17,6 @@
         android:label="ChattyEvent"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
-        <meta-data
-          android:name="com.google.firebase.messaging.default_notification_icon"
-          android:resource="@mipmap/ic_launcher" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -48,5 +51,9 @@
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-6709565406365779~9911278912"/>
+
+       <meta-data
+         android:name="com.google.firebase.messaging.default_notification_icon"
+         android:resource="@mipmap/ic_launcher" />
     </application>
 </manifest>
