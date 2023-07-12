@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:math';
-
+import 'package:chattyevent_app_flutter/core/utils/injection.dart';
+import 'package:chattyevent_app_flutter/domain/usecases/auth_usecases.dart';
+import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
@@ -22,8 +24,11 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
   void initState() {
     timer = Timer.periodic(
       const Duration(seconds: 3),
-      (timer) => BlocProvider.of<AuthCubit>(context)
-          .checkIfEmailVerfiedIfSoGoToCreateUserPage(),
+      (timer) async {
+        if (await serviceLocator<AuthUseCases>().isEmailVerified()) {
+          serviceLocator<AppRouter>().replace(const CreateUserPageRoute());
+        }
+      },
     );
     super.initState();
   }

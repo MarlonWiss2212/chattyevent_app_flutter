@@ -129,7 +129,8 @@ class AddPrivateEventCubit extends Cubit<AddPrivateEventState> {
   }
 
   Future getCalendarTimeUsers() async {
-    if ((state.selectedGroupchat == null && state.privateEventUsersDto == []) ||
+    if ((state.selectedGroupchat == null &&
+            state.privateEventUsersDto.isEmpty) ||
         (state.eventDate == null)) {
       return;
     }

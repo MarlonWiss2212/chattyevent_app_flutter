@@ -68,6 +68,18 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
               street
               housenumber
             }
+            permissions {
+              changeTitle
+              changeDescription
+              changeCoverImage
+              changeAddress
+              changeDate
+              changeStatus
+              addUsers
+              addShoppingListItem
+              updateShoppingListItem
+              deleteShoppingListItem
+            }
             createdBy
             createdAt
           }
@@ -118,6 +130,18 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
               country
               street
               housenumber
+            }
+            permissions {
+              changeTitle
+              changeDescription
+              changeCoverImage
+              changeAddress
+              changeDate
+              changeStatus
+              addUsers
+              addShoppingListItem
+              updateShoppingListItem
+              deleteShoppingListItem
             }
             eventDate
             eventEndDate
@@ -201,6 +225,18 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
               country
               street
               housenumber
+            }
+            permissions {
+              changeTitle
+              changeDescription
+              changeCoverImage
+              changeAddress
+              changeDate
+              changeStatus
+              addUsers
+              addShoppingListItem
+              updateShoppingListItem
+              deleteShoppingListItem
             }
             eventDate
             eventEndDate
@@ -413,6 +449,18 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
               country
               street
               housenumber
+            }
+            permissions {
+              changeTitle
+              changeDescription
+              changeCoverImage
+              changeAddress
+              changeDate
+              changeStatus
+              addUsers
+              addShoppingListItem
+              updateShoppingListItem
+              deleteShoppingListItem
             }
             eventDate
             eventEndDate

@@ -28,7 +28,7 @@ class CurrentGroupchatState {
     GroupchatPermissionEnum? permissionCheckValue,
   }) {
     if (currentUserIndex != -1) {
-      users[currentUserIndex].currentUserAllowedWithPermission(
+      return users[currentUserIndex].currentUserAllowedWithPermission(
         permissionCheckValue: permissionCheckValue,
       );
     }

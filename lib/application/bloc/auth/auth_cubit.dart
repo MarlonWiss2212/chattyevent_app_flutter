@@ -258,19 +258,12 @@ class AuthCubit extends Cubit<AuthState> {
     );
   }
 
-  Future checkIfEmailVerfiedIfSoGoToCreateUserPage() async {
-    if (await authUseCases.isEmailVerified()) {
-      emitState(goOnCreateUserPage: true);
-    }
-  }
-
   void emitState({
     AuthStateStatus? status,
     String? token,
     UserEntity? currentUser,
     bool? sendedResetPasswordEmail,
     bool? sendedVerificationEmail,
-    bool? goOnCreateUserPage,
     bool? updatedPasswordSuccessfully,
     bool? dataprotectionCheckbox,
     OperationException? userException,
@@ -282,7 +275,6 @@ class AuthCubit extends Cubit<AuthState> {
       currentUser: currentUser ?? state.currentUser,
       sendedResetPasswordEmail: sendedResetPasswordEmail ?? false,
       sendedVerificationEmail: sendedVerificationEmail ?? false,
-      goOnCreateUserPage: goOnCreateUserPage ?? false,
       updatedPasswordSuccessfully: updatedPasswordSuccessfully ?? false,
       dataprotectionCheckbox:
           dataprotectionCheckbox ?? state.dataprotectionCheckbox,

@@ -19,15 +19,16 @@ class PrivateEventAddMePageUserList extends StatelessWidget {
         builder: (context, authState) {
           return BlocBuilder<UserSearchCubit, UserSearchState>(
             builder: (context, state) {
-              if (state.users.isEmpty) {
-                return const Center(child: Text("Keine User gefunden"));
-              }
               if (authState
                       .currentUser.permissions?.privateEventAddMe?.permission ==
                   PrivateEventAddMePermissionEnum.none) {
                 return const Center(
                     child: Text("Keine User können gewählt werden"));
               }
+              if (state.users.isEmpty) {
+                return const Center(child: Text("Keine User gefunden"));
+              }
+
               if (authState.currentUser.permissions?.privateEventAddMe
                           ?.permission ==
                       null ||

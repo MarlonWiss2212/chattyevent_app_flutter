@@ -19,7 +19,6 @@ class AuthState {
   final bool sendedVerificationEmail;
   final bool updatedPasswordSuccessfully;
 
-  final bool goOnCreateUserPage;
   final OperationException? userException;
 
   bool isUserCode404() {
@@ -43,7 +42,6 @@ class AuthState {
     this.sendedResetPasswordEmail = false,
     this.updatedPasswordSuccessfully = false,
     this.sendedVerificationEmail = false,
-    this.goOnCreateUserPage = false,
     this.userException,
   });
 }

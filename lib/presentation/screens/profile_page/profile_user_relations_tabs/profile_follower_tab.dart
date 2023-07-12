@@ -39,7 +39,7 @@ class _ProfileFollowerTabState extends State<ProfileFollowerTab> {
             return ProfileFollowersTabListView(
               followers: state.followers,
               loadMore: () {
-                BlocProvider.of<ProfilePageCubit>(context).getFollowRequests();
+                BlocProvider.of<ProfilePageCubit>(context).getFollowers();
               },
               profileUserId: state.user.id,
               loading: state.followRequestsStatus ==

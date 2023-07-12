@@ -58,6 +58,13 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
             profileImageLink
             createdBy
             createdAt
+            permissions {
+              changeTitle
+              changeDescription
+              changeProfileImage
+              createEventForGroupchat
+              addUsers
+            }
           }
         }
       """,
@@ -91,6 +98,13 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
             profileImageLink
             createdBy
             createdAt
+            permissions {
+              changeTitle
+              changeDescription
+              changeProfileImage
+              createEventForGroupchat
+              addUsers
+            }
           }
         }
         """,
@@ -126,6 +140,13 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
               profileImageLink
               createdBy
               createdAt
+              permissions {
+                changeTitle
+                changeDescription
+                changeProfileImage
+                createEventForGroupchat
+                addUsers
+              }
             }
 
             findGroupchatLeftUsers(filter: \$findGroupchatLeftUsersInput, limitOffsetInput: \$limitOffsetInput) {
@@ -326,6 +347,13 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
             profileImageLink
             createdBy
             createdAt
+            permissions {
+              changeTitle
+              changeDescription
+              changeProfileImage
+              createEventForGroupchat
+              addUsers
+            }
           }
         }
       """,

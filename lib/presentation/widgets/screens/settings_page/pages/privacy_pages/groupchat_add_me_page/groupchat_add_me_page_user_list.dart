@@ -19,15 +19,16 @@ class GroupchatAddMePageUserList extends StatelessWidget {
         builder: (context, authState) {
           return BlocBuilder<UserSearchCubit, UserSearchState>(
             builder: (context, state) {
-              if (state.users.isEmpty) {
-                return const Center(child: Text("Keine User gefunden"));
-              }
               if (authState
                       .currentUser.permissions?.groupchatAddMe?.permission ==
                   GroupchatAddMePermissionEnum.none) {
                 return const Center(
                     child: Text("Keine User können gewählt werden"));
               }
+              if (state.users.isEmpty) {
+                return const Center(child: Text("Keine User gefunden"));
+              }
+
               if (authState.currentUser.permissions?.groupchatAddMe
                           ?.permission ==
                       null ||

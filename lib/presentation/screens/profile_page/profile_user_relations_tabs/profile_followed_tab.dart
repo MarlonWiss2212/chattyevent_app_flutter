@@ -39,7 +39,7 @@ class _ProfileFollowedTabState extends State<ProfileFollowedTab> {
             return ProfileFollowedTabListView(
               followed: state.followed,
               loadMore: () {
-                BlocProvider.of<ProfilePageCubit>(context).getFollowRequests();
+                BlocProvider.of<ProfilePageCubit>(context).getFollowed();
               },
               loading: state.followRequestsStatus ==
                   ProfilePageStateFollowRequestsStatus.loading,

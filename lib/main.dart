@@ -42,26 +42,15 @@ Future<void> main() async {
         return MultiBlocListener(
           listeners: [
             BlocListener<AuthCubit, AuthState>(
-              listenWhen: (p, c) => p.userException != c.userException,
               listener: (context, state) {
                 if (state.isUserCode404()) {
                   serviceLocator<AppRouter>().root.popUntilRoot();
                   serviceLocator<AppRouter>().root.replace(
                         const AuthorizedPageRoute(
-                            children: [CreateUserPageRoute()]),
+                          children: [CreateUserPageRoute()],
+                        ),
                       );
                 }
-              },
-            ),
-            BlocListener<AuthCubit, AuthState>(
-              listenWhen: (p, c) =>
-                  p.goOnCreateUserPage != c.goOnCreateUserPage,
-              listener: (context, state) {
-                if (state.goOnCreateUserPage == false) return;
-                serviceLocator<AppRouter>().root.popUntilRoot();
-                serviceLocator<AppRouter>().root.replace(
-                    const AuthorizedPageRoute(
-                        children: [CreateUserPageRoute()]));
               },
             ),
             BlocListener<AuthCubit, AuthState>(

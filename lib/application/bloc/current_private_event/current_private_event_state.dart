@@ -32,7 +32,8 @@ class CurrentPrivateEventState {
     PrivateEventPermissionEnum? permissionCheckValue,
   }) {
     if (currentUserIndex != -1) {
-      privateEventUsers[currentUserIndex].currentUserAllowedWithPermission(
+      return privateEventUsers[currentUserIndex]
+          .currentUserAllowedWithPermission(
         permissionCheckValue: permissionCheckValue,
         createdById: privateEvent.createdBy,
       );
