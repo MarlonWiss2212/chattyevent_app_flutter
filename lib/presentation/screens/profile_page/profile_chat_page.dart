@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:chattyevent_app_flutter/application/bloc/add_message/add_message_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/profile_page/profile_page_cubit.dart';
+import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/chat_message_input/chat_message_input.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/profile_page/profile_chat_page/profile_chat_page_message_area.dart';
 import 'package:flutter/material.dart';
@@ -9,10 +10,10 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:chattyevent_app_flutter/core/utils/injection.dart';
-import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
 import 'package:dartz/dartz.dart' as dz;
 import 'package:ionicons/ionicons.dart';
 
+@RoutePage()
 class ProfileChatPage extends StatefulWidget {
   const ProfileChatPage({
     @PathParam('id') required this.userId,
@@ -67,7 +68,7 @@ class _ProfileChatPageState extends State<ProfileChatPage> {
         actions: [
           PlatformIconButton(
             icon: const Icon(Ionicons.ellipsis_vertical),
-            onPressed: () => AutoRouter.of(context).push(ProfilePageRoute()),
+            onPressed: () => AutoRouter.of(context).push(ProfileRoute()),
           )
         ],
       ),

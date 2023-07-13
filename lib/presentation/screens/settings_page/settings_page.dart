@@ -1,10 +1,11 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
-import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
 import 'package:ionicons/ionicons.dart';
 
+@RoutePage()
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
 
@@ -41,9 +42,7 @@ class SettingsPage extends StatelessWidget {
                   ),
                   trailing: const Icon(Ionicons.arrow_forward),
                   onTap: () {
-                    AutoRouter.of(context).push(
-                      const ThemeModePageRoute(),
-                    );
+                    AutoRouter.of(context).push(const ThemeModeRoute());
                   },
                 ),
                 ListTile(
@@ -55,9 +54,7 @@ class SettingsPage extends StatelessWidget {
                   ),
                   trailing: const Icon(Ionicons.arrow_forward),
                   onTap: () {
-                    AutoRouter.of(context).push(
-                      const SettingsPrivacyPageRoute(),
-                    );
+                    AutoRouter.of(context).push(const SettingsPrivacyRoute());
                   },
                 ),
                 ListTile(
@@ -69,9 +66,7 @@ class SettingsPage extends StatelessWidget {
                   ),
                   trailing: const Icon(Ionicons.arrow_forward),
                   onTap: () {
-                    AutoRouter.of(context).push(
-                      const UpdatePasswordPageRoute(),
-                    );
+                    AutoRouter.of(context).push(const UpdatePasswordRoute());
                   },
                 ),
                 ListTile(
@@ -83,9 +78,7 @@ class SettingsPage extends StatelessWidget {
                   ),
                   trailing: const Icon(Ionicons.arrow_forward),
                   onTap: () {
-                    AutoRouter.of(context).push(
-                      const SettingsInfoPageRoute(),
-                    );
+                    AutoRouter.of(context).push(const SettingsInfoRoute());
                   },
                 ),
                 ListTile(

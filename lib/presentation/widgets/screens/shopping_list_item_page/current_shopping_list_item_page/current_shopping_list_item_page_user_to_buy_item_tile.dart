@@ -45,10 +45,10 @@ class CurrentShoppingListItemPageUserToBuyItemTile extends StatelessWidget {
                                   .shoppingListCubitOrPrivateEventCubit
                                   .fold(
                                     (l) => AutoRouter.of(context).push(
-                                      const ShoppingListItemChangeUserPageRoute(),
+                                      const ShoppingListItemChangeUserRoute(),
                                     ),
                                     (r) => AutoRouter.of(context).push(
-                                      const PrivateEventShoppingListItemChangeUserPageRoute(),
+                                      const PrivateEventShoppingListItemChangeUserRoute(),
                                     ),
                                   );
                             },

@@ -23,9 +23,8 @@ class HomePage extends StatelessWidget {
           userId: BlocProvider.of<AuthCubit>(context).state.currentUser.id,
         )
       ],
-      builder: (context, child, animation) {
+      builder: (context, child) {
         final TabsRouter tabsRouter = AutoTabsRouter.of(context);
-
         return Scaffold(
           body: BlocListener<NotificationCubit, NotificationState>(
             listener: (context, state) async {

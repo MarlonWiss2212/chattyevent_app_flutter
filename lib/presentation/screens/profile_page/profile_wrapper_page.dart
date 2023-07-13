@@ -7,6 +7,7 @@ import 'package:chattyevent_app_flutter/application/bloc/profile_page/profile_pa
 import 'package:chattyevent_app_flutter/core/utils/injection.dart';
 import 'package:chattyevent_app_flutter/domain/entities/user/user_entity.dart';
 
+@RoutePage()
 class ProfileWrapperPage extends StatelessWidget {
   final String userId;
   final UserEntity? user;

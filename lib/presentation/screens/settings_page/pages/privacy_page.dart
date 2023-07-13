@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ionicons/ionicons.dart';
 
+@RoutePage()
 class SettingsPrivacyPage extends StatefulWidget {
   const SettingsPrivacyPage({super.key});
 
@@ -80,14 +81,14 @@ class _SettingsPrivacyPageState extends State<SettingsPrivacyPage> {
                   ListTile(
                     title: const Text("Gruppenchat hinzufügen"),
                     onTap: () => AutoRouter.of(context).push(
-                      const GroupchatAddMePageRoute(),
+                      const GroupchatAddMeRoute(),
                     ),
                     trailing: const Icon(Ionicons.arrow_forward),
                   ),
                   ListTile(
                     title: const Text("Privates Event hinzufügen"),
                     onTap: () => AutoRouter.of(context).push(
-                      const PrivateEventAddMePageRoute(),
+                      const PrivateEventAddMeRoute(),
                     ),
                     trailing: const Icon(Ionicons.arrow_forward),
                   ),

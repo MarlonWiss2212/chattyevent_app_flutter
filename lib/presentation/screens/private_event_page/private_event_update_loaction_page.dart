@@ -8,6 +8,7 @@ import 'package:chattyevent_app_flutter/infastructure/dto/private_event/create_l
 import 'package:chattyevent_app_flutter/infastructure/dto/private_event/update_private_event_dto.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/button.dart';
 
+@RoutePage()
 class PrivateEventUpdateLocationPage extends StatefulWidget {
   const PrivateEventUpdateLocationPage({super.key});
 

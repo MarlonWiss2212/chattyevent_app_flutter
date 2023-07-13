@@ -37,7 +37,7 @@ class ChatInfoPageUserList extends StatelessWidget {
                 ),
                 onTap: () {
                   AutoRouter.of(context).push(
-                    ChatAddUserPageRoute(),
+                    GroupchatAddUserRoute(groupchatId: state.currentChat.id),
                   );
                 },
               )

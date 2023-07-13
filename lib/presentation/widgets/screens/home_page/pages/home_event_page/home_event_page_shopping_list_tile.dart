@@ -13,8 +13,8 @@ class HomeEventPageShoppingListTile extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
         onTap: () {
           AutoRouter.of(context).push(
-            const ShoppingListWrapperPageRoute(
-              children: [ShoppingListPageRoute()],
+            const ShoppingListWrapperRoute(
+              children: [ShoppingListRoute()],
             ),
           );
         },

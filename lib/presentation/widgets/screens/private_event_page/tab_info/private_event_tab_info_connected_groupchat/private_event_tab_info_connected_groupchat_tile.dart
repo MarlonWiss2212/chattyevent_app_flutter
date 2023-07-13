@@ -40,7 +40,7 @@ class PrivateEventTabInfoGroupchatToTile extends StatelessWidget {
       ),
       onTap: () {
         AutoRouter.of(context).root.push(
-              ChatPageWrapperRoute(
+              GroupchatRouteWrapper(
                 groupchat: groupchat,
                 groupchatId: groupchat.id,
               ),

@@ -1,5 +1,4 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:chattyevent_app_flutter/presentation/screens/private_event_page/private_event_wrapper_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -57,7 +56,7 @@ class NewPrivateEventPage extends StatelessWidget {
                   if (state.status == AddPrivateEventStateStatus.success &&
                       state.addedPrivateEvent != null) {
                     AutoRouter.of(context).root.replace(
-                          PrivateEventWrapperPage(
+                          PrivateEventWrapperRoute(
                             privateEventId: state.addedPrivateEvent!.id,
                             privateEventStateToSet:
                                 CurrentPrivateEventState.fromPrivateEvent(

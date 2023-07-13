@@ -17,8 +17,8 @@ class ProfilePageTrailingFollowRequestIconButton extends StatelessWidget {
             if (authState.currentUser.id == state.user.id) {
               return IconButton(
                 onPressed: () => AutoRouter.of(context).push(
-                  ProfileUserRelationsTabPageRoute(children: const [
-                    ProfileFollowRequestsTabRoute(),
+                  ProfileUserRelationsTabRoute(children: const [
+                    ProfileFollowRequestsTab(),
                   ]),
                 ),
                 icon: Badge(

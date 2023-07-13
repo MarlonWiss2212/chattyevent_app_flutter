@@ -1,12 +1,12 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/custom_tab_bar.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/profile_page/profile_page_cubit.dart';
-import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
 
+@RoutePage()
 class ProfileUserRelationsTabPage extends StatelessWidget {
   final String? userId;
 
@@ -24,11 +24,12 @@ class ProfileUserRelationsTabPage extends StatelessWidget {
           builder: (context, state) {
             return AutoTabsRouter.tabBar(
               routes: [
-                const ProfileFollowerTabRoute(),
-                const ProfileFollowedTabRoute(),
+                // had route before
+                const ProfileFollowerTab(),
+                const ProfileFollowedTab(),
                 if (state.user.id == authState.currentUser.id ||
                     userId == null) ...{
-                  const ProfileFollowRequestsTabRoute(),
+                  const ProfileFollowRequestsTab(),
                 }
               ],
               builder: (context, child, tabController) {

@@ -2,10 +2,10 @@ import 'package:auto_route/auto_route.dart';
 import 'package:chattyevent_app_flutter/application/bloc/current_private_event/current_private_event_cubit.dart';
 import 'package:chattyevent_app_flutter/domain/entities/chat_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/message/message_entity.dart';
+import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:chattyevent_app_flutter/core/utils/ad_helper.dart';
-import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
 
 class ChatList extends StatefulWidget {
   final List<ChatEntity> chats;
@@ -166,32 +166,42 @@ class _ChatListState extends State<ChatList> {
             onTap: () {
               if (widget.chats[index].groupchat != null) {
                 AutoRouter.of(context).push(
-                  ChatPageWrapperRoute(
+                  GroupchatRouteWrapper(
                     groupchat: widget.chats[index].groupchat!,
                     groupchatId: widget.chats[index].groupchat!.id,
                   ),
                 );
               } else if (widget.chats[index].privateEvent != null) {
                 AutoRouter.of(context).push(
-                  PrivateEventWrapperPageRoute(
+                  PrivateEventWrapperRoute(
                     privateEventId: widget.chats[index].privateEvent!.id,
                     privateEventStateToSet:
                         CurrentPrivateEventState.fromPrivateEvent(
                       privateEvent: widget.chats[index].privateEvent!,
                     ),
                     children: [
-                      PrivateEventTabPageRoute(
-                        children: [PrivateEventTabChatRoute()],
+                      PrivateEventTabRoute(
+                        privateEventId: widget.chats[index].privateEvent!.id,
+                        children: [
+                          PrivateEventTabChat(
+                            privateEventId:
+                                widget.chats[index].privateEvent!.id,
+                          ),
+                        ],
                       )
                     ],
                   ),
                 );
               } else if (widget.chats[index].user != null) {
                 AutoRouter.of(context).push(
-                  ProfileWrapperPageRoute(
+                  ProfileWrapperRoute(
                     user: widget.chats[index].user!,
                     userId: widget.chats[index].user!.id,
-                    children: [ProfileChatPageRoute()],
+                    children: [
+                      ProfileChatRoute(
+                        userId: widget.chats[index].user!.id,
+                      ),
+                    ],
                   ),
                 );
                 // push user page

@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/user_search/user_search_cubit.dart';
@@ -8,6 +9,7 @@ import 'package:chattyevent_app_flutter/presentation/widgets/screens/settings_pa
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+@RoutePage()
 class PrivateEventAddMePage extends StatelessWidget {
   const PrivateEventAddMePage({super.key});
 

@@ -38,7 +38,7 @@ class PrivateEventTabUsersUserList extends StatelessWidget {
                 ),
                 onTap: () {
                   AutoRouter.of(context).push(
-                    const PrivateEventInviteUserPageRoute(),
+                    const PrivateEventInviteUserRoute(),
                   );
                 },
               )

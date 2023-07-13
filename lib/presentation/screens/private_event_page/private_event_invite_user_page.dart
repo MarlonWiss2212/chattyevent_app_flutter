@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,6 +8,7 @@ import 'package:chattyevent_app_flutter/domain/entities/private_event/private_ev
 import 'package:chattyevent_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/user_list/selectable_user_grid_list.dart';
 
+@RoutePage()
 class PrivateEventInviteUserPage extends StatefulWidget {
   const PrivateEventInviteUserPage({super.key});
 

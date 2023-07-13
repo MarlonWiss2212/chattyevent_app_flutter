@@ -24,8 +24,6 @@ class AddShoppingListItemCubit extends Cubit<AddShoppingListItemState> {
   });
 
   Future createShoppingListItemViaApi() async {
-    emitState(status: AddShoppingListItemStateStatus.loading);
-
     if (state.itemName == null ||
         state.amount == null ||
         state.userToBuyItemEntity == null ||
@@ -37,6 +35,7 @@ class AddShoppingListItemCubit extends Cubit<AddShoppingListItemState> {
         ),
       );
     }
+    emitState(status: AddShoppingListItemStateStatus.loading);
 
     final Either<NotificationAlert, ShoppingListItemEntity>
         shoppingListItemOrFailure =

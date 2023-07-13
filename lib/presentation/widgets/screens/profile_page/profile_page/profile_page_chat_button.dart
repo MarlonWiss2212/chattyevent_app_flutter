@@ -24,7 +24,8 @@ class ProfilePageChatButton extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 8),
           child: InkWell(
             borderRadius: BorderRadius.circular(8),
-            onTap: () => AutoRouter.of(context).push(ProfileChatPageRoute()),
+            onTap: () => AutoRouter.of(context)
+                .push(ProfileChatRoute(userId: state.user.id)),
             child: Ink(
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.surface,

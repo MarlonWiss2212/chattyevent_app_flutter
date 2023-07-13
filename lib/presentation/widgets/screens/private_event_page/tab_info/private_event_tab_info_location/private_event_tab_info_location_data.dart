@@ -18,7 +18,7 @@ class PrivateEventTabInfoLocationData extends StatelessWidget {
             permissionCheckValue: state.privateEvent.permissions?.changeAddress,
           )
               ? () => AutoRouter.of(context).push(
-                    const PrivateEventUpdateLocationPageRoute(),
+                    const PrivateEventUpdateLocationRoute(),
                   )
               : null,
           child: Column(

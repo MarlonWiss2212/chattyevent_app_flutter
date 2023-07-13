@@ -5,7 +5,9 @@ import 'package:chattyevent_app_flutter/infastructure/dto/private_event/update_p
 import 'package:chattyevent_app_flutter/presentation/widgets/general/private_event_permissions_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:auto_route/auto_route.dart';
 
+@RoutePage()
 class PrivateEventUpdatePermissionsPage extends StatelessWidget {
   const PrivateEventUpdatePermissionsPage({super.key});
 

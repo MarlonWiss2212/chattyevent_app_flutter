@@ -9,6 +9,7 @@ import 'package:chattyevent_app_flutter/presentation/widgets/general/input_field
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/private_event_page/tab_info/private_event_tab_info_delete_button.dart';
 import 'package:ionicons/ionicons.dart';
 
+@RoutePage()
 class PrivateEventTabPage extends StatelessWidget {
   final String privateEventId;
   const PrivateEventTabPage({
@@ -20,16 +21,16 @@ class PrivateEventTabPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return AutoTabsRouter.tabBar(
       routes: [
-        PrivateEventTabInfoRoute(),
+        const PrivateEventTabInfo(),
         if (BlocProvider.of<CurrentPrivateEventCubit>(context)
                 .state
                 .privateEvent
                 .groupchatTo ==
             null) ...{
-          PrivateEventTabChatRoute(),
+          PrivateEventTabChat(privateEventId: privateEventId),
         },
-        const PrivateEventTabUserListRoute(),
-        PrivateEventTabShoppingListRoute(),
+        const PrivateEventTabUserList(),
+        const PrivateEventTabShoppingList(),
       ],
       builder: (context, child, tabController) {
         return Scaffold(

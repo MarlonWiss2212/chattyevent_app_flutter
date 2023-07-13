@@ -1,19 +1,16 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletons/skeletons.dart';
 import 'package:chattyevent_app_flutter/application/bloc/current_private_event/current_private_event_cubit.dart';
 import 'package:chattyevent_app_flutter/domain/entities/private_event/private_event_user_entity.dart';
-import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/shopping_list_item_page/shopping_list_page/shopping_list_item_tile.dart';
 
+@RoutePage()
 class PrivateEventTabShoppingList extends StatelessWidget {
-  final String privateEventId;
-  const PrivateEventTabShoppingList({
-    @PathParam('id') required this.privateEventId,
-    super.key,
-  });
+  const PrivateEventTabShoppingList({super.key});
   @override
   Widget build(BuildContext context) {
     BlocProvider.of<CurrentPrivateEventCubit>(context)
@@ -46,7 +43,7 @@ class PrivateEventTabShoppingList extends StatelessWidget {
                 return IconButton(
                   icon: const Icon(Icons.add),
                   onPressed: () => AutoRouter.of(context).push(
-                    PrivateEventCreateShoppingListItemPageRoute(),
+                    PrivateEventCreateShoppingListItemRoute(),
                   ),
                 );
               }
@@ -120,7 +117,7 @@ class PrivateEventTabShoppingList extends StatelessWidget {
                         userToBuyItem: userToBuyItem,
                         onTap: () {
                           AutoRouter.of(context).push(
-                            PrivateEventShoppingListItemWrapperPageRoute(
+                            PrivateEventShoppingListItemWrapperRoute(
                               shoppingListItemId: state
                                   .shoppingListItemStates[index]
                                   .shoppingListItem

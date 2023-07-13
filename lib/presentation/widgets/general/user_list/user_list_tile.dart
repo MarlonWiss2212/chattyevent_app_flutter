@@ -59,7 +59,7 @@ class _UserListTileState extends State<UserListTile> {
         subtitle: widget.subtitle,
         onTap: () {
           AutoRouter.of(context).root.push(
-                ProfileWrapperPageRoute(
+                ProfileWrapperRoute(
                   userId: widget.user.id,
                   user: widget.user,
                 ),

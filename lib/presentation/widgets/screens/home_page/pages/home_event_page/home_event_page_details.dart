@@ -38,7 +38,7 @@ class HomeEventPageDetails extends StatelessWidget {
                           ),
                           TextButton(
                             onPressed: () => AutoRouter.of(context).push(
-                              const FutureEventsPageRoute(),
+                              const FutureEventsRoute(),
                             ),
                             child: const Text("Alle Anzeigen"),
                           )
@@ -62,7 +62,7 @@ class HomeEventPageDetails extends StatelessWidget {
                           ),
                           TextButton(
                             onPressed: () => AutoRouter.of(context).push(
-                              const PastEventsPageRoute(),
+                              const PastEventsRoute(),
                             ),
                             child: const Text("Alle Anzeigen"),
                           )

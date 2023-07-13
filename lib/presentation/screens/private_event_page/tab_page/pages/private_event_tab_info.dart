@@ -14,12 +14,9 @@ import 'package:chattyevent_app_flutter/presentation/widgets/screens/private_eve
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/private_event_page/tab_info/private_event_tab_info_location/private_event_tab_info_location.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/private_event_page/tab_info/private_event_tab_info_status.dart';
 
+@RoutePage()
 class PrivateEventTabInfo extends StatelessWidget {
-  final String privateEventId;
-  const PrivateEventTabInfo({
-    @PathParam('id') required this.privateEventId,
-    super.key,
-  });
+  const PrivateEventTabInfo({super.key});
 
   @override
   Widget build(BuildContext context) {

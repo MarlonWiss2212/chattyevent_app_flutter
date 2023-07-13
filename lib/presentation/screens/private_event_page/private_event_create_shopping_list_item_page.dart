@@ -10,12 +10,9 @@ import 'package:chattyevent_app_flutter/presentation/widgets/general/button.dart
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/private_event_page/create_shopping_list_item_page/create_shopping_list_item_page_detail.dart';
 import '../../../application/bloc/shopping_list/add_shopping_list_item_cubit.dart';
 
+@RoutePage()
 class PrivateEventCreateShoppingListItemPage extends StatelessWidget {
-  final String privateEventId;
-  const PrivateEventCreateShoppingListItemPage({
-    super.key,
-    @PathParam('id') required this.privateEventId,
-  });
+  const PrivateEventCreateShoppingListItemPage({super.key});
 
   @override
   Widget build(BuildContext context) {

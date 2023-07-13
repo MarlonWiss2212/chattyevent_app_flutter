@@ -65,7 +65,7 @@ class ChatInfoPageUserListItem extends StatelessWidget {
           PopupMenuItem(
             child: const Text("Chat username ändern"),
             onTap: () => AutoRouter.of(context).push(
-              const ChatChangeChatUsernamePageRoute(),
+              const GroupchatChangeUsernameRoute(),
             ),
           )
         ]

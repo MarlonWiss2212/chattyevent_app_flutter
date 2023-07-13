@@ -71,7 +71,7 @@ import 'package:chattyevent_app_flutter/infastructure/respositories/user_reposit
 final serviceLocator = GetIt.I;
 
 class InjectionUtils {
-  static Future init() async {
+  static Future initialize() async {
     serviceLocator.registerLazySingleton(() => FirebaseAuth.instance);
 
     // cubit

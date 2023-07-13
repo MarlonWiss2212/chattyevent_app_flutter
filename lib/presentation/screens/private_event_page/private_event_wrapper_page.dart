@@ -10,6 +10,7 @@ import 'package:chattyevent_app_flutter/application/bloc/current_private_event/c
 import 'package:chattyevent_app_flutter/application/bloc/user_search/user_search_cubit.dart';
 import 'package:chattyevent_app_flutter/core/utils/injection.dart';
 
+@RoutePage()
 class PrivateEventWrapperPage extends StatelessWidget {
   final String privateEventId;
   final CurrentPrivateEventState? privateEventStateToSet;

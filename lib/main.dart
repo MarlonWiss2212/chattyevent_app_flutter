@@ -23,13 +23,16 @@ import 'core/utils/one_signal_utils.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  await dotenv.load(fileName: '.dev.env');
-  await InjectionUtils.init();
-
+  await Future.wait([
+    dotenv.load(fileName: '.env'),
+    InjectionUtils.initialize(),
+  ]);
   if (!kIsWeb) {
     if (Platform.isAndroid || Platform.isIOS) {
-      await MobileAds.instance.initialize();
-      await OneSignalUtils.initialize();
+      Future.wait([
+        MobileAds.instance.initialize(),
+        OneSignalUtils.initialize(),
+      ]);
     }
   }
 
@@ -47,8 +50,8 @@ Future<void> main() async {
                 if (state.isUserCode404()) {
                   serviceLocator<AppRouter>().root.popUntilRoot();
                   serviceLocator<AppRouter>().root.replace(
-                        const AuthorizedPageRoute(
-                          children: [CreateUserPageRoute()],
+                        const AuthorizedRoute(
+                          children: [CreateUserRoute()],
                         ),
                       );
                 }
@@ -61,14 +64,12 @@ Future<void> main() async {
                     state.token != null) {
                   serviceLocator<AppRouter>()
                       .root
-                      .replace(const AuthorizedPageRoute(children: [
-                        BlocInitPageRoute(children: [HomePageRoute()])
+                      .replace(const AuthorizedRoute(children: [
+                        BlocInitRoute(children: [HomeRoute()])
                       ]));
                 } else if (state.status == AuthStateStatus.logout) {
                   serviceLocator<AppRouter>().root.popUntilRoot();
-                  serviceLocator<AppRouter>().root.replace(
-                        const LoginPageRoute(),
-                      );
+                  serviceLocator<AppRouter>().root.replace(const LoginRoute());
                 }
               },
             ),
@@ -137,9 +138,7 @@ class _AppState extends State<App> {
             builder: (context, value, child) {
               return MaterialApp.router(
                 title: 'ChattyEvent',
-                routeInformationParser:
-                    serviceLocator<AppRouter>().defaultRouteParser(),
-                routerDelegate: serviceLocator<AppRouter>().delegate(),
+                routerConfig: serviceLocator<AppRouter>().config(),
                 builder: (context, widget) {
                   return SafeArea(
                     child: ScrollConfiguration(

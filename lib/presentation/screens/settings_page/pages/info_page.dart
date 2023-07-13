@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
 import 'package:ionicons/ionicons.dart';
 
+@RoutePage()
 class SettingsInfoPage extends StatefulWidget {
   const SettingsInfoPage({super.key});
 
@@ -72,7 +73,7 @@ class _SettingsInfoPageState extends State<SettingsInfoPage> {
                   trailing: const Icon(Ionicons.arrow_forward),
                   onTap: () {
                     AutoRouter.of(context).push(
-                      const ImprintPageRoute(),
+                      const ImprintRoute(),
                     );
                   },
                 ),
@@ -100,7 +101,7 @@ class _SettingsInfoPageState extends State<SettingsInfoPage> {
                   trailing: const Icon(Ionicons.arrow_forward),
                   onTap: () {
                     AutoRouter.of(context).push(
-                      const RightOnDeletionPageRoute(),
+                      const RightOnDeletionRoute(),
                     );
                   },
                 ),

@@ -9,6 +9,7 @@ import 'package:chattyevent_app_flutter/domain/entities/private_event/private_ev
 import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/shopping_list_item_page/shopping_list_page/shopping_list_item_tile.dart';
 
+@RoutePage()
 class ShoppingListPage extends StatefulWidget {
   const ShoppingListPage({super.key});
 
@@ -100,7 +101,7 @@ class _ShoppingListPageState extends State<ShoppingListPage> {
                         ),
                         onTap: () {
                           AutoRouter.of(context).push(
-                            ShoppingListItemWrapperPageRoute(
+                            ShoppingListItemWrapperRoute(
                               currentShoppingListItemStateToSet:
                                   state.shoppingListItemStates[index],
                               shoppingListItemId: state

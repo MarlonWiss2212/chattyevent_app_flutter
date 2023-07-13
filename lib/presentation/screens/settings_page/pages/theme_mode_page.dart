@@ -1,7 +1,9 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:chattyevent_app_flutter/application/provider/darkMode.dart';
 
+@RoutePage()
 class ThemeModePage extends StatelessWidget {
   const ThemeModePage({super.key});
 

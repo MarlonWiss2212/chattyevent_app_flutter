@@ -63,7 +63,7 @@ class ChatInfoPagePrivateEventList extends StatelessWidget {
               trailing: const Icon(Ionicons.arrow_forward),
               onTap: () {
                 AutoRouter.of(context).push(
-                  const ChatFuturePrivateEventsPageRoute(),
+                  const GroupchatFuturePrivateEventsRoute(),
                 );
               },
             ),

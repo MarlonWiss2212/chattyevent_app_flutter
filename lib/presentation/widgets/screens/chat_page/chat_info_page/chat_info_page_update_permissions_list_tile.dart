@@ -27,7 +27,7 @@ class ChatInfoPageUpdatePermissionsListTile extends StatelessWidget {
         trailing: const Icon(Ionicons.arrow_forward),
         onTap: () {
           AutoRouter.of(context).push(
-            const GroupchatUpdatePermissionsPageRoute(),
+            const GroupchatUpdatePermissionsRoute(),
           );
         },
       );

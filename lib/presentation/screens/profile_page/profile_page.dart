@@ -12,6 +12,7 @@ import 'package:chattyevent_app_flutter/presentation/widgets/screens/profile_pag
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/profile_page/profile_page/profile_page_trailing_buttons/profile_page_trailing_follow_request_icon_button.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/profile_page/profile_page/profile_page_trailing_buttons/profile_page_trailing_settings_button.dart';
 
+@RoutePage()
 class ProfilePage extends StatelessWidget {
   final String? userId;
 
