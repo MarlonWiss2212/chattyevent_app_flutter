@@ -8,16 +8,17 @@ import 'package:chattyevent_app_flutter/infastructure/dto/groupchat/groupchat_us
 import 'package:chattyevent_app_flutter/presentation/widgets/general/button.dart';
 
 //TODO: optimize this page and add deleting groupchat username name
-class ChatChangeChatUsernamePage extends StatefulWidget {
-  const ChatChangeChatUsernamePage({super.key});
+@RoutePage()
+class GroupchatChangeUsernamePage extends StatefulWidget {
+  const GroupchatChangeUsernamePage({super.key});
 
   @override
-  State<ChatChangeChatUsernamePage> createState() =>
-      _ChatChangeChatUsernamePageState();
+  State<GroupchatChangeUsernamePage> createState() =>
+      _GroupchatChangeUsernamePageState();
 }
 
-class _ChatChangeChatUsernamePageState
-    extends State<ChatChangeChatUsernamePage> {
+class _GroupchatChangeUsernamePageState
+    extends State<GroupchatChangeUsernamePage> {
   TextEditingController newUsernameController = TextEditingController();
 
   @override

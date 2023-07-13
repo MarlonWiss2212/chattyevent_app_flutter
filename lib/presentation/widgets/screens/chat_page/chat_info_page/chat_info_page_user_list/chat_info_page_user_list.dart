@@ -24,8 +24,7 @@ class ChatInfoPageUserList extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             if (state.currentUserAllowedWithPermission(
-              permissionCheckValue:
-                  state.currentChat.permissions?.changeDescription,
+              permissionCheckValue: state.currentChat.permissions?.addUsers,
             )) ...{
               ListTile(
                 leading: const Icon(

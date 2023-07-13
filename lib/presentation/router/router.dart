@@ -1,16 +1,18 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:chattyevent_app_flutter/core/utils/injection.dart';
+import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/authorized_page/authorized_page.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/bloc_init_page.dart';
 import 'package:chattyevent_app_flutter/presentation/router/auth_guard.dart';
 import 'package:chattyevent_app_flutter/presentation/router/auth_pages_guard.dart';
 import 'package:chattyevent_app_flutter/presentation/router/create_user_page_guard.dart';
 import 'package:chattyevent_app_flutter/presentation/router/verify_email_page_guard.dart';
-import 'package:chattyevent_app_flutter/presentation/screens/chat_page/chat_change_chat_username_page.dart';
-import 'package:chattyevent_app_flutter/presentation/screens/chat_page/chat_future_private_events_page.dart';
-import 'package:chattyevent_app_flutter/presentation/screens/chat_page/chat_info_page.dart';
-import 'package:chattyevent_app_flutter/presentation/screens/chat_page/chat_add_user_page.dart';
-import 'package:chattyevent_app_flutter/presentation/screens/chat_page/chat_page.dart';
-import 'package:chattyevent_app_flutter/presentation/screens/chat_page/chat_page_wrapper.dart';
+import 'package:chattyevent_app_flutter/presentation/screens/chat_page/groupchat_change_chat_username_page.dart';
+import 'package:chattyevent_app_flutter/presentation/screens/chat_page/groupchat_future_private_events_page.dart';
+import 'package:chattyevent_app_flutter/presentation/screens/chat_page/groupchat_info_page.dart';
+import 'package:chattyevent_app_flutter/presentation/screens/chat_page/groupchat_add_user_page.dart';
+import 'package:chattyevent_app_flutter/presentation/screens/chat_page/groupchat_page.dart';
+import 'package:chattyevent_app_flutter/presentation/screens/chat_page/groupchat_page_wrapper.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/chat_page/groupchat_update_permissions_page.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/create_user_page.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/future_events_page/future_events_page.dart';
@@ -71,83 +73,106 @@ import 'package:chattyevent_app_flutter/presentation/screens/shopping_list_page/
 import 'package:chattyevent_app_flutter/presentation/screens/verify_email_page.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/shopping_list_page/shopping_list_page.dart';
 
-@AdaptiveAutoRouter(
-  routes: <AutoRoute>[
+@AutoRouterConfig()
+class AppRouter extends $AppRouter {
+  final AuthPagesGuard authPagesGuard;
+  final VerifyEmailPageGuard verifyEmailPageGuard;
+  final AuthGuard authGuard;
+  final CreateUserPageGuard createUserPageGuard;
+
+  AppRouter({
+    required this.authPagesGuard,
+    required this.authGuard,required this.createUserPageGuard,required this.verifyEmailPageGuard,
+  });
+
+  @override      
+  List<AutoRoute> get routes => [      
     AutoRoute(
-      page: LoginPage,
+      page: LoginRoute.page,
       initial: false,
-      guards: [AuthPagesGuard],
+      guards: [authPagesGuard],
     ),
     AutoRoute(
-      page: ResetPasswordPage,
+      page: ResetPasswordRoute.page,
       initial: false,
-      guards: [AuthPagesGuard],
+      guards: [authPagesGuard],
     ),
     AutoRoute(
-      page: RegisterPage,
+      page: RegisterRoute.page,
       initial: false,
-      guards: [AuthPagesGuard],
+      guards: [authPagesGuard],
     ),
-    AutoRoute(
-      page: AuthorizedPage,
+    CustomRoute(
+      transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
+      page: AuthorizedRoute.page,
       path: '/',
       initial: true,
       children: [
-        AutoRoute(
-          page: VerifyEmailPage,
+        CustomRoute(
+          transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
+          page: VerifyEmailRoute.page,
           initial: false,
-          guards: [VerifyEmailPageGuard],
+          guards: [verifyEmailPageGuard],
         ),
-        AutoRoute(
-          page: CreateUserPage,
+        CustomRoute(
+          transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
+          page: CreateUserRoute.page,
           initial: false,
-          guards: [CreateUserPageGuard],
+          guards: [createUserPageGuard],
         ),
-        AutoRoute(
-          page: BlocInitPage,
+        CustomRoute(
+          transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
+          page: BlocInitRoute.page,
           path: '',
           initial: true,
-          guards: [AuthGuard],
+          guards: [authGuard],
           children: [
             homePageRouter,
             ...settingRoutes,
 
             // future and past events
-            AutoRoute(
+            CustomRoute(
+              transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
               page: FutureEventsPage,
-              guards: [AuthGuard],
+              guards: [authGuard],
               path: 'future-events',
             ),
-            AutoRoute(
+            CustomRoute(
+              transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
               page: PastEventsPage,
-              guards: [AuthGuard],
+              guards: [authGuard],
               path: 'past-events',
             ),
 
             //Shopping List page
-            AutoRoute(
+            CustomRoute(
+              transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
               page: ShoppingListWrapperPage,
-              guards: [AuthGuard],
+              guards: [authGuard],
               path: 'shopping-list',
               children: [
-                AutoRoute(
+                CustomRoute(
+                  transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
                   page: ShoppingListPage,
-                  guards: [AuthGuard],
+                  guards: [authGuard],
                   path: '',
                 ),
-                AutoRoute(
+                CustomRoute(
+                  transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
                   page: ShoppingListItemWrapperPage,
-                  guards: [AuthGuard],
+                  guards: [authGuard],
                   path: ':shoppingListItemId',
                   children: [
-                    AutoRoute(
+                    CustomRoute(
+                      transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
                       page: ShoppingListItemPage,
-                      guards: [AuthGuard],
+                      guards: [authGuard],
                       path: '',
                     ),
-                    AutoRoute(
+                    CustomRoute(
+                      transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
                       page: ShoppingListItemChangeUserPage,
-                      guards: [AuthGuard],
+                      guards: [authGuard],
                       path: 'change-user-to-buy-item',
                     ),
                   ],
@@ -156,32 +181,33 @@ import 'package:chattyevent_app_flutter/presentation/screens/shopping_list_page/
               ],
             ),
 
-            groupchatRouter,
-            privateEventRouter,
+            _groupchatRouter,
+            _privateEventRouter,
             profileRouter,
 
             // new groupchat
-            AutoRoute(
+            CustomRoute(
+              transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
               page: NewGroupchatWrapperPage,
-              guards: [AuthGuard],
+              guards: [authGuard],
               path: 'new-groupchat',
               children: [
                 AutoRoute(
                   page: NewGroupchatDetailsTab,
                   initial: true,
-                  guards: [AuthGuard],
+                  guards: [authGuard],
                   path: '',
                 ),
                 AutoRoute(
                   page: NewGroupchatSelectUserTab,
                   initial: false,
-                  guards: [AuthGuard],
+                  guards: [authGuard],
                   path: 'users',
                 ),
                 AutoRoute(
                   page: NewGroupchatPermissionsTab,
                   initial: false,
-                  guards: [AuthGuard],
+                  guards: [authGuard],
                   path: 'permssions',
                 ),
                 RedirectRoute(path: '*', redirectTo: '')
@@ -189,45 +215,46 @@ import 'package:chattyevent_app_flutter/presentation/screens/shopping_list_page/
             ),
 
             // new private event
-            AutoRoute(
+            CustomRoute(
+              transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
               page: NewPrivateEventPage,
-              guards: [AuthGuard],
+              guards: [authGuard],
               path: 'new-private-event',
               children: [
                 AutoRoute(
                   page: NewPrivateEventDetailsTab,
                   initial: true,
-                  guards: [AuthGuard],
+                  guards: [authGuard],
                   path: '',
                 ),
                 AutoRoute(
                   page: NewPrivateEventTypeTab,
                   initial: true,
-                  guards: [AuthGuard],
+                  guards: [authGuard],
                   path: 'type',
                 ),
                 AutoRoute(
                   page: NewPrivateEventSearchTab,
                   initial: true,
-                  guards: [AuthGuard],
+                  guards: [authGuard],
                   path: 'search',
                 ),
                 AutoRoute(
                   page: NewPrivateEventDateTab,
-                  guards: [AuthGuard],
+                  guards: [authGuard],
                   path: 'date',
                 ),
                 AutoRoute(
                   page: NewPrivateEventLocationTab,
                   initial: false,
-                  guards: [AuthGuard],
+                  guards: [authGuard],
                   path: 'location',
                 ),
                 AutoRoute(
                   page: NewPrivateEventPermissionsTab,
                   initial: false,
-                  guards: [AuthGuard],
-                  path: 'permssions',
+                  guards: [authGuard],
+                  path: 'permissions',
                 ),
                 RedirectRoute(path: '*', redirectTo: '')
               ],
@@ -238,124 +265,142 @@ import 'package:chattyevent_app_flutter/presentation/screens/shopping_list_page/
     ),
     RedirectRoute(path: '*', redirectTo: '/chats')
   ],
-)
-class $AppRouter {}
 
-const groupchatRouter = AutoRoute(
-  page: ChatPageWrapper,
-  guards: [AuthGuard],
+  CustomRoute get _groupchatRouter => CustomRoute(
+  transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
+  page: GroupchatRouteWrapper.page,
+  guards: [authGuard],
   path: 'groupchat/:id',
   initial: true,
   children: [
-    AutoRoute(
-      page: ChatPage,
-      guards: [AuthGuard],
+    CustomRoute(
+      transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
+      page: GroupchatRoute.page,
+      guards: [authGuard],
       path: '',
       initial: true,
     ),
-    AutoRoute(
-      page: ChatInfoPage,
-      guards: [AuthGuard],
+    CustomRoute(
+      transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
+      page: GroupchatInfoRoute.page,
+      guards: [authGuard],
       path: 'info',
     ),
-    AutoRoute(
-      page: ChatChangeChatUsernamePage,
-      guards: [AuthGuard],
+    CustomRoute(
+      transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
+      page: GroupchatChangeUsernameRoute.page,
+      guards: [authGuard],
       path: 'change-chat-username',
       fullscreenDialog: true,
     ),
-    AutoRoute(
-      page: ChatFuturePrivateEventsPage,
-      guards: [AuthGuard],
+    CustomRoute(
+      transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
+      page: GroupchatFuturePrivateEventsRoute.page,
+      guards: [authGuard],
       path: 'private-events',
     ),
-    AutoRoute(
-      page: ChatAddUserPage,
-      guards: [AuthGuard],
+    CustomRoute(
+      transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
+      page: GroupchatAddUserRoute.page,
+      guards: [authGuard],
       path: 'add-user',
     ),
-    AutoRoute(
-      page: GroupchatUpdatePermissionsPage,
-      guards: [AuthGuard],
+    CustomRoute(
+      transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
+      page: GroupchatUpdatePermissionsRoute.page,
+      guards: [authGuard],
       path: 'update-permissions',
     ),
     RedirectRoute(path: '*', redirectTo: '')
   ],
 );
 
-const privateEventRouter = AutoRoute(
+  CustomRoute get _privateEventRouter => CustomRoute(
+  transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
   page: PrivateEventWrapperPage,
-  guards: [AuthGuard],
+  guards: [authGuard],
   path: 'private-event/:id',
   children: [
-    AutoRoute(
+    CustomRoute(
+      transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
       page: PrivateEventTabPage,
       initial: true,
       path: '',
-      guards: [AuthGuard],
+      guards: [authGuard],
       children: [
-        AutoRoute(
+        CustomRoute(
+          transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
           page: PrivateEventTabInfo,
           initial: true,
           path: 'info',
-          guards: [AuthGuard],
+          guards: [authGuard],
         ),
-        AutoRoute(
+        CustomRoute(
+          transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
           page: PrivateEventTabChat,
           initial: true,
           path: 'chat',
-          guards: [AuthGuard],
+          guards: [authGuard],
         ),
-        AutoRoute(
+        CustomRoute(
+          transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
           page: PrivateEventTabUserList,
           initial: false,
           path: 'users',
-          guards: [AuthGuard],
+          guards: [authGuard],
         ),
-        AutoRoute(
+        CustomRoute(
+          transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
           page: PrivateEventTabShoppingList,
           initial: false,
           path: 'shopping-list',
-          guards: [AuthGuard],
+          guards: [authGuard],
         )
       ],
     ),
-    AutoRoute(
+    CustomRoute(
+      transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
       page: PrivateEventUpdateLocationPage,
       initial: true,
       path: 'update-location',
-      guards: [AuthGuard],
+      guards: [authGuard],
     ),
-    AutoRoute(
+    CustomRoute(
+      transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
       page: PrivateEventUpdatePermissionsPage,
-      guards: [AuthGuard],
+      guards: [authGuard],
       path: 'update-permissions',
     ),
-    AutoRoute(
+    CustomRoute(
+      transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
       page: PrivateEventInviteUserPage,
       initial: true,
       path: 'invite',
-      guards: [AuthGuard],
+      guards: [authGuard],
     ),
-    AutoRoute(
+    CustomRoute(
+      transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
       page: PrivateEventCreateShoppingListItemPage,
       initial: true,
       path: 'create-shopping-list-item',
-      guards: [AuthGuard],
+      guards: [authGuard],
     ),
-    AutoRoute(
+    CustomRoute(
+      transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
       page: PrivateEventShoppingListItemWrapperPage,
-      guards: [AuthGuard],
+      guards: [authGuard],
       path: 'shopping-list/:shoppingListItemId',
       children: [
-        AutoRoute(
+        CustomRoute(
+          transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
           page: PrivateEventShoppingListItemPage,
-          guards: [AuthGuard],
+          guards: [authGuard],
           path: '',
         ),
-        AutoRoute(
+        CustomRoute(
+          transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
           page: PrivateEventShoppingListItemChangeUserPage,
-          guards: [AuthGuard],
+          guards: [authGuard],
           path: 'change-user-to-buy-item',
         ),
         RedirectRoute(path: '*', redirectTo: ''),
@@ -364,41 +409,45 @@ const privateEventRouter = AutoRoute(
     RedirectRoute(path: '*', redirectTo: 'info'),
   ],
 );
+}
 
-const profileRouter = AutoRoute(
+const profileRouter = CustomRoute(
+  transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
   page: ProfileWrapperPage,
   initial: false,
-  guards: [AuthGuard],
+  guards: [authGuard],
   path: 'profile/:id',
   children: [
-    AutoRoute(
+    CustomRoute(
+      transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
       page: ProfilePage,
-      guards: [AuthGuard],
+      guards: [authGuard],
       path: '',
     ),
-    AutoRoute(
+    CustomRoute(
+      transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
       page: ProfileChatPage,
-      guards: [AuthGuard],
+      guards: [authGuard],
       path: 'chat',
     ),
     AutoRoute(
       page: ProfileUserRelationsTabPage,
-      guards: [AuthGuard],
+      guards: [authGuard],
       path: 'user-relations',
       children: [
         AutoRoute(
           page: ProfileFollowerTab,
-          guards: [AuthGuard],
+          guards: [authGuard],
           path: 'follower',
         ),
         AutoRoute(
           page: ProfileFollowedTab,
-          guards: [AuthGuard],
+          guards: [authGuard],
           path: 'followed',
         ),
         AutoRoute(
           page: ProfileFollowRequestsTab,
-          guards: [AuthGuard],
+          guards: [authGuard],
           path: 'follow-requests',
         ),
       ],
@@ -407,50 +456,51 @@ const profileRouter = AutoRoute(
   ],
 );
 
-const homePageRouter = AutoRoute(
+const homePageRouter = CustomRoute(
+  transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
   page: HomePage,
   initial: true,
-  guards: [AuthGuard],
+  guards: [authGuard],
   path: '',
   children: [
     AutoRoute(
       page: HomeChatPage,
-      guards: [AuthGuard],
+      guards: [authGuard],
       path: 'chats',
       initial: true,
     ),
-    AutoRoute(page: HomeEventPage, guards: [AuthGuard], path: 'events'),
-    AutoRoute(page: HomeSearchPage, guards: [AuthGuard], path: 'search'),
+    AutoRoute(page: HomeEventPage, guards: [authGuard], path: 'events'),
+    AutoRoute(page: HomeSearchPage, guards: [authGuard], path: 'search'),
     AutoRoute(
       page: HomeProfilePage,
-      guards: [AuthGuard],
+      guards: [authGuard],
       path: 'current-profile/:id',
       children: [
         AutoRoute(
           page: ProfilePage,
-          guards: [AuthGuard],
+          guards: [authGuard],
           path: '',
         ),
         //Doesnt need settings page because current user hasnt relation to change
         AutoRoute(
           page: ProfileUserRelationsTabPage,
-          guards: [AuthGuard],
+          guards: [authGuard],
           path: 'user-relations',
           fullscreenDialog: true,
           children: [
             AutoRoute(
               page: ProfileFollowerTab,
-              guards: [AuthGuard],
+              guards: [authGuard],
               path: 'follower',
             ),
             AutoRoute(
               page: ProfileFollowedTab,
-              guards: [AuthGuard],
+              guards: [authGuard],
               path: 'followed',
             ),
             AutoRoute(
               page: ProfileFollowRequestsTab,
-              guards: [AuthGuard],
+              guards: [authGuard],
               path: 'follow-requests',
             ),
           ],
@@ -463,48 +513,61 @@ const homePageRouter = AutoRoute(
 );
 
 const settingRoutes = [
-  AutoRoute(
+  CustomRoute(
+    transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
     page: SettingsPage,
-    guards: [AuthGuard],
+    guards: [authGuard],
     path: 'settings',
   ),
-  AutoRoute(
+  CustomRoute(
+    transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
     page: ThemeModePage,
-    guards: [AuthGuard],
+    guards: [authGuard],
     path: 'settings/theme',
   ),
-  AutoRoute(
+  CustomRoute(
+    transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
     page: UpdatePasswordPage,
-    guards: [AuthGuard],
+    guards: [authGuard],
     path: 'settings/update-password',
   ),
-  AutoRoute(page: SettingsInfoPage, guards: [AuthGuard], path: 'settings/info'),
-  AutoRoute(
+  CustomRoute(
+      transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
+      page: SettingsInfoPage,
+      guards: [authGuard],
+      path: 'settings/info'),
+  CustomRoute(
+      transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
       page: RightOnInsightPage,
-      guards: [AuthGuard],
+      guards: [authGuard],
       path: 'settings/info/right-on-insight'),
-  AutoRoute(
+  CustomRoute(
+      transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
       page: RightOnDeletionPage,
-      guards: [AuthGuard],
+      guards: [authGuard],
       path: 'settings/info/right-on-deletion'),
-  AutoRoute(
+  CustomRoute(
+    transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
     page: ImprintPage,
-    guards: [AuthGuard],
+    guards: [authGuard],
     path: 'settings/info/imprint',
   ),
-  AutoRoute(
+  CustomRoute(
+    transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
     page: SettingsPrivacyPage,
-    guards: [AuthGuard],
+    guards: [authGuard],
     path: 'settings/privacy',
   ),
-  AutoRoute(
+  CustomRoute(
+    transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
     page: GroupchatAddMePage,
-    guards: [AuthGuard],
+    guards: [authGuard],
     path: 'settings/privacy/groupchat-add-me-permission',
   ),
-  AutoRoute(
+  CustomRoute(
+    transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
     page: PrivateEventAddMePage,
-    guards: [AuthGuard],
+    guards: [authGuard],
     path: 'settings/privacy/private-event-add-me-permission',
   ),
 ];

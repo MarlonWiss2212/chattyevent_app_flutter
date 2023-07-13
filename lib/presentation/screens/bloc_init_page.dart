@@ -9,6 +9,7 @@ import 'package:chattyevent_app_flutter/application/bloc/home_page/home_event/ho
 import 'package:chattyevent_app_flutter/core/utils/injection.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
 
+@RoutePage()
 class BlocInitPage extends StatelessWidget {
   const BlocInitPage({super.key});
 

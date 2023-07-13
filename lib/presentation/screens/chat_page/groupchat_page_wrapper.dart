@@ -9,11 +9,12 @@ import 'package:chattyevent_app_flutter/application/bloc/notification/notificati
 import 'package:chattyevent_app_flutter/application/bloc/user_search/user_search_cubit.dart';
 import 'package:chattyevent_app_flutter/core/utils/injection.dart';
 
-class ChatPageWrapper extends StatelessWidget {
+@RoutePage()
+class GroupchatPageWrapper extends StatelessWidget {
   final String groupchatId;
   final GroupchatEntity? groupchat;
 
-  const ChatPageWrapper({
+  const GroupchatPageWrapper({
     super.key,
     @PathParam('id') required this.groupchatId,
     this.groupchat,

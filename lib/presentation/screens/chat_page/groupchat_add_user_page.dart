@@ -5,18 +5,19 @@ import 'package:chattyevent_app_flutter/application/bloc/current_groupchat/curre
 import 'package:chattyevent_app_flutter/application/bloc/user_search/user_search_cubit.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/chat_page/chat_add_user_page/add_user_groupchat_list_with_searchbar.dart';
 
-class ChatAddUserPage extends StatefulWidget {
+@RoutePage()
+class GroupchatAddUserPage extends StatefulWidget {
   final String groupchatId;
-  const ChatAddUserPage({
+  const GroupchatAddUserPage({
     @PathParam('id') required this.groupchatId,
     super.key,
   });
 
   @override
-  State<ChatAddUserPage> createState() => _ChatAddUserPageState();
+  State<GroupchatAddUserPage> createState() => _GroupchatAddUserPageState();
 }
 
-class _ChatAddUserPageState extends State<ChatAddUserPage> {
+class _GroupchatAddUserPageState extends State<GroupchatAddUserPage> {
   @override
   void initState() {
     BlocProvider.of<UserSearchCubit>(context).getFollowedViaApi(

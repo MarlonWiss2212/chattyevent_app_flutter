@@ -5,9 +5,11 @@ import 'package:chattyevent_app_flutter/application/bloc/current_groupchat/curre
 import 'package:chattyevent_app_flutter/application/bloc/current_private_event/current_private_event_cubit.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/event_list/private_event_list_item.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/chat_page/chat_future_private_event_page/chat_future_private_event_page_skeleton_list.dart';
+import 'package:auto_route/auto_route.dart';
 
-class ChatFuturePrivateEventsPage extends StatelessWidget {
-  const ChatFuturePrivateEventsPage({super.key});
+@RoutePage()
+class GroupchatFuturePrivateEventsPage extends StatelessWidget {
+  const GroupchatFuturePrivateEventsPage({super.key});
 
   @override
   Widget build(BuildContext context) {

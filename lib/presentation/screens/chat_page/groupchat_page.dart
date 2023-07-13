@@ -13,15 +13,16 @@ import 'package:chattyevent_app_flutter/presentation/widgets/screens/chat_page/c
 import 'package:dartz/dartz.dart' as dz;
 import 'package:ionicons/ionicons.dart';
 
-class ChatPage extends StatefulWidget {
-  const ChatPage({@PathParam('id') required this.groupchatId, super.key});
+@RoutePage()
+class GroupchatPage extends StatefulWidget {
+  const GroupchatPage({@PathParam('id') required this.groupchatId, super.key});
   final String groupchatId;
 
   @override
-  State<ChatPage> createState() => _ChatPageState();
+  State<GroupchatPage> createState() => _GroupchatPageState();
 }
 
-class _ChatPageState extends State<ChatPage> {
+class _GroupchatPageState extends State<GroupchatPage> {
   @override
   void initState() {
     BlocProvider.of<CurrentGroupchatCubit>(context).loadMessages(reload: true);

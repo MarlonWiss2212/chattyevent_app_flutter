@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:math';
+import 'package:auto_route/auto_route.dart';
 import 'package:chattyevent_app_flutter/core/utils/injection.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/auth_usecases.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
@@ -10,6 +11,7 @@ import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/dialog/alert_dialog.dart';
 
+@RoutePage()
 class VerifyEmailPage extends StatefulWidget {
   const VerifyEmailPage({super.key});
 

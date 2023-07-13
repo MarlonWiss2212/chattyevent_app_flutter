@@ -17,12 +17,12 @@ class CreateUserPageGuard extends AutoRouteGuard {
           currentUser.emailVerified && authCubit.state.currentUser.id == "") {
         resolver.next(true);
       } else if (currentUser.emailVerified == false) {
-        router.replace(const VerifyEmailPageRoute());
+        resolver.redirect(const VerifyEmailRoute());
       } else {
-        router.replace(const BlocInitPageRoute(children: [HomePageRoute()]));
+        resolver.redirect(const BlocInitRoute(children: [HomeRoute()]));
       }
     } else {
-      router.replace(const LoginPageRoute());
+      resolver.redirect(const LoginRoute());
     }
   }
 }

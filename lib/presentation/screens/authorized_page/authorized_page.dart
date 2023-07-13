@@ -4,6 +4,7 @@ import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+@RoutePage()
 class AuthorizedPage extends StatefulWidget {
   const AuthorizedPage({super.key});
 

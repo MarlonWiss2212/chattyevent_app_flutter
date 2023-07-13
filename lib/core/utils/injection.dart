@@ -24,7 +24,7 @@ import 'package:chattyevent_app_flutter/infastructure/respositories/message_repo
 import 'package:chattyevent_app_flutter/presentation/router/auth_guard.dart';
 import 'package:chattyevent_app_flutter/presentation/router/auth_pages_guard.dart';
 import 'package:chattyevent_app_flutter/presentation/router/create_user_page_guard.dart';
-import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
+import 'package:chattyevent_app_flutter/presentation/router/router.dart';
 import 'package:chattyevent_app_flutter/presentation/router/verify_email_page_guard.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
@@ -291,7 +291,7 @@ class InjectionUtils {
     });
     serviceLocator.registerLazySingleton<ImagePickerDatasource>(() {
       return ImagePickerDatasourceImpl(
-        imageCropper: ImageCropper(), 
+        imageCropper: ImageCropper(),
         imagePicker: ImagePicker(),
       );
     });

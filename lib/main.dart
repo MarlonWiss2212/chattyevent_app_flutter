@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:chattyevent_app_flutter/ad_pop_up_form.dart';
 import 'package:chattyevent_app_flutter/core/utils/material_theme_utils.dart';
+import 'package:chattyevent_app_flutter/presentation/router/router.dart';
 import 'package:chattyevent_app_flutter/scroll_bahaviour.dart';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/foundation.dart';
@@ -22,7 +23,7 @@ import 'core/utils/one_signal_utils.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  await dotenv.load(fileName: '.env');
+  await dotenv.load(fileName: '.dev.env');
   await InjectionUtils.init();
 
   if (!kIsWeb) {

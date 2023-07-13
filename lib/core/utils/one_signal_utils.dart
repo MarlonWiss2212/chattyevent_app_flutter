@@ -1,5 +1,5 @@
 import 'package:chattyevent_app_flutter/core/enums/notification/notification_type_enum.dart';
-import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
+import 'package:chattyevent_app_flutter/presentation/router/router.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 

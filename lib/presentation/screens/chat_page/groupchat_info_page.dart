@@ -12,16 +12,21 @@ import 'package:chattyevent_app_flutter/presentation/widgets/screens/chat_page/c
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/chat_page/chat_info_page/chat_info_page_profile_image.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/chat_page/chat_info_page/chat_info_page_title.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/chat_page/chat_info_page/chat_info_page_user_list/chat_info_page_user_list.dart';
+import 'package:auto_route/auto_route.dart';
 
-class ChatInfoPage extends StatefulWidget {
-  const ChatInfoPage({@PathParam('id') required this.groupchatId, super.key});
+@RoutePage()
+class GroupchatInfoPage extends StatefulWidget {
+  const GroupchatInfoPage({
+    @PathParam('id') required this.groupchatId,
+    super.key,
+  });
   final String groupchatId;
 
   @override
-  State<ChatInfoPage> createState() => _ChatInfoPageState();
+  State<GroupchatInfoPage> createState() => _GroupchatInfoPageState();
 }
 
-class _ChatInfoPageState extends State<ChatInfoPage> {
+class _GroupchatInfoPageState extends State<GroupchatInfoPage> {
   @override
   void initState() {
     BlocProvider.of<CurrentGroupchatCubit>(context)

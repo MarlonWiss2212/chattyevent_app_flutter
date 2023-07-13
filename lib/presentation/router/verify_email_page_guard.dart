@@ -9,11 +9,11 @@ class VerifyEmailPageGuard extends AutoRouteGuard {
     final currentUser = serviceLocator<FirebaseAuth>().currentUser;
 
     if (currentUser == null) {
-      router.replace(const LoginPageRoute());
+      resolver.redirect(const LoginRoute());
     } else if (currentUser.emailVerified == false) {
       resolver.next(true);
     } else {
-      router.replace(const BlocInitPageRoute(children: [HomePageRoute()]));
+      resolver.redirect(const BlocInitRoute(children: [HomeRoute()]));
     }
   }
 }

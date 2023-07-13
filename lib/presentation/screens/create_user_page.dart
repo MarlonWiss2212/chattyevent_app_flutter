@@ -12,6 +12,7 @@ import 'package:chattyevent_app_flutter/presentation/widgets/general/dialog/aler
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/create_user_page/create_user_page_birthdate_button.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/create_user_page/create_user_page_profile_image.dart';
 
+@RoutePage()
 class CreateUserPage extends StatelessWidget {
   const CreateUserPage({super.key});
 

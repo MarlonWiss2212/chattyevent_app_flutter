@@ -5,7 +5,9 @@ import 'package:chattyevent_app_flutter/infastructure/dto/groupchat/update_group
 import 'package:chattyevent_app_flutter/presentation/widgets/general/groupchat_permissions_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:auto_route/auto_route.dart';
 
+@RoutePage()
 class GroupchatUpdatePermissionsPage extends StatelessWidget {
   const GroupchatUpdatePermissionsPage({super.key});
 
@@ -81,7 +83,7 @@ class GroupchatUpdatePermissionsPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   GroupchatPermissionsMenu(
-                    text: "User hinzufügen ändern",
+                    text: "User hinzufügen",
                     value: state.currentChat.permissions?.addUsers,
                     changePermission: (GroupchatPermissionEnum value) =>
                         BlocProvider.of<CurrentGroupchatCubit>(context)
