@@ -7,6 +7,7 @@ import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/home_page/pages/home_chat_page/chat_list.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/home_page/pages/home_chat_page/home_chat_page_skeleton.dart';
 
+@RoutePage()
 class HomeChatPage extends StatefulWidget {
   const HomeChatPage({super.key});
 
@@ -45,7 +46,7 @@ class _HomeChatPageState extends State<HomeChatPage> {
               IconButton(
                 icon: const Icon(Icons.add),
                 onPressed: () => AutoRouter.of(context).push(
-                  const NewGroupchatWrapperPageRoute(),
+                  const NewGroupchatWrapperRoute(),
                 ),
               ),
             ],

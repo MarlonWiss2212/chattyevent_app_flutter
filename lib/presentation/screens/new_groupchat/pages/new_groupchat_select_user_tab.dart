@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/add_groupchat/add_groupchat_cubit.dart';
@@ -7,6 +8,7 @@ import 'package:chattyevent_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/user_list/selectable_user_grid_list.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/user_list/selected_user_list.dart';
 
+@RoutePage()
 class NewGroupchatSelectUserTab extends StatefulWidget {
   const NewGroupchatSelectUserTab({super.key});
 

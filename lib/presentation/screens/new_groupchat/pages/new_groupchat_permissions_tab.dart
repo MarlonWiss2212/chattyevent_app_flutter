@@ -1,9 +1,11 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:chattyevent_app_flutter/application/bloc/add_groupchat/add_groupchat_cubit.dart';
 import 'package:chattyevent_app_flutter/core/enums/groupchat/groupchat_permission_enum.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/groupchat_permissions_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+@RoutePage()
 class NewGroupchatPermissionsTab extends StatelessWidget {
   const NewGroupchatPermissionsTab({super.key});
 

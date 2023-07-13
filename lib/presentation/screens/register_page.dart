@@ -101,7 +101,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       PlatformTextButton(
                         onPressed: () {
                           AutoRouter.of(context)
-                              .replace(const LoginPageRoute());
+                              .replace(const LoginRoute());
                         },
                         child: const Text("Login?"),
                       ),

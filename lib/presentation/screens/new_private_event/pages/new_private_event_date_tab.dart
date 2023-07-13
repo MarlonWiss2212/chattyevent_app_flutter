@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:chattyevent_app_flutter/core/enums/calendar/calendar_status_enum.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/user_list/user_list_tile.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,6 +9,7 @@ import 'package:intl/intl.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:skeletons/skeletons.dart';
 
+@RoutePage()
 class NewPrivateEventDateTab extends StatelessWidget {
   const NewPrivateEventDateTab({super.key});
 

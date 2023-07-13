@@ -122,8 +122,8 @@ class CreateUserPage extends StatelessWidget {
                             if (state.status ==
                                 AddCurrentUserStateStatus.created) {
                               AutoRouter.of(context).replace(
-                                const BlocInitPageRoute(
-                                  children: [HomePageRoute()],
+                                const BlocInitRoute(
+                                  children: [HomeRoute()],
                                 ),
                               );
                             }

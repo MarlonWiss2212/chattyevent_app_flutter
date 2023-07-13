@@ -7,6 +7,7 @@ import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/event_list/event_horizontal_list_skeleton.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/home_page/pages/home_event_page/home_event_page_details.dart';
 
+@RoutePage()
 class HomeEventPage extends StatefulWidget {
   const HomeEventPage({super.key});
 
@@ -46,7 +47,7 @@ class _HomeEventPageState extends State<HomeEventPage> {
               IconButton(
                 icon: const Icon(Icons.add),
                 onPressed: () => AutoRouter.of(context).push(
-                  const NewPrivateEventPageRoute(),
+                  const NewPrivateEventRoute(),
                 ),
               ),
             ],

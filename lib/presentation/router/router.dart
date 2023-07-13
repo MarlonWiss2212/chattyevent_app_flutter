@@ -1,39 +1,10 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:chattyevent_app_flutter/core/utils/injection.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
-import 'package:chattyevent_app_flutter/presentation/screens/authorized_page/authorized_page.dart';
-import 'package:chattyevent_app_flutter/presentation/screens/bloc_init_page.dart';
 import 'package:chattyevent_app_flutter/presentation/router/auth_guard.dart';
 import 'package:chattyevent_app_flutter/presentation/router/auth_pages_guard.dart';
 import 'package:chattyevent_app_flutter/presentation/router/create_user_page_guard.dart';
 import 'package:chattyevent_app_flutter/presentation/router/verify_email_page_guard.dart';
-import 'package:chattyevent_app_flutter/presentation/screens/chat_page/groupchat_change_chat_username_page.dart';
-import 'package:chattyevent_app_flutter/presentation/screens/chat_page/groupchat_future_private_events_page.dart';
-import 'package:chattyevent_app_flutter/presentation/screens/chat_page/groupchat_info_page.dart';
-import 'package:chattyevent_app_flutter/presentation/screens/chat_page/groupchat_add_user_page.dart';
-import 'package:chattyevent_app_flutter/presentation/screens/chat_page/groupchat_page.dart';
-import 'package:chattyevent_app_flutter/presentation/screens/chat_page/groupchat_page_wrapper.dart';
-import 'package:chattyevent_app_flutter/presentation/screens/chat_page/groupchat_update_permissions_page.dart';
-import 'package:chattyevent_app_flutter/presentation/screens/create_user_page.dart';
-import 'package:chattyevent_app_flutter/presentation/screens/future_events_page/future_events_page.dart';
-import 'package:chattyevent_app_flutter/presentation/screens/home_page/home_page.dart';
-import 'package:chattyevent_app_flutter/presentation/screens/home_page/pages/home_chat_page.dart';
-import 'package:chattyevent_app_flutter/presentation/screens/home_page/pages/home_event_page.dart';
-import 'package:chattyevent_app_flutter/presentation/screens/home_page/pages/home_profile_page.dart';
-import 'package:chattyevent_app_flutter/presentation/screens/home_page/pages/home_search_page.dart';
-import 'package:chattyevent_app_flutter/presentation/screens/login_page.dart';
-import 'package:chattyevent_app_flutter/presentation/screens/new_groupchat/pages/new_groupchat_details_tab.dart';
-import 'package:chattyevent_app_flutter/presentation/screens/new_groupchat/pages/new_groupchat_permissions_tab.dart';
-import 'package:chattyevent_app_flutter/presentation/screens/new_groupchat/pages/new_groupchat_select_user_tab.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/new_private_event/new_private_event_page.dart';
-import 'package:chattyevent_app_flutter/presentation/screens/new_groupchat/new_groupchat_wrapper_page.dart';
-import 'package:chattyevent_app_flutter/presentation/screens/new_private_event/pages/new_private_event_date_tab.dart';
-import 'package:chattyevent_app_flutter/presentation/screens/new_private_event/pages/new_private_event_details_tab.dart';
-import 'package:chattyevent_app_flutter/presentation/screens/new_private_event/pages/new_private_event_location_tab.dart';
-import 'package:chattyevent_app_flutter/presentation/screens/new_private_event/pages/new_private_event_permissions_tab.dart';
-import 'package:chattyevent_app_flutter/presentation/screens/new_private_event/pages/new_private_event_search_tab.dart';
-import 'package:chattyevent_app_flutter/presentation/screens/new_private_event/pages/new_private_event_type_tab.dart';
-import 'package:chattyevent_app_flutter/presentation/screens/past_events_page/past_events_page.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/private_event_page/private_event_create_shopping_list_item_page.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/private_event_page/private_event_invite_user_page.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/private_event_page/private_event_update_loaction_page.dart';
@@ -54,8 +25,6 @@ import 'package:chattyevent_app_flutter/presentation/screens/profile_page/profil
 import 'package:chattyevent_app_flutter/presentation/screens/profile_page/profile_user_relations_tabs/profile_followed_tab.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/profile_page/profile_user_relations_tabs/profile_follower_tab.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/profile_page/profile_wrapper_page.dart';
-import 'package:chattyevent_app_flutter/presentation/screens/register_page.dart';
-import 'package:chattyevent_app_flutter/presentation/screens/reset_password_page.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/settings_page/pages/info_page.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/settings_page/pages/info_pages/imprint_page.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/settings_page/pages/info_pages/right_on_deletion_page.dart';
@@ -70,7 +39,6 @@ import 'package:chattyevent_app_flutter/presentation/screens/shopping_list_page/
 import 'package:chattyevent_app_flutter/presentation/screens/shopping_list_page/shopping_list_item_page/shopping_list_item_page.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/shopping_list_page/shopping_list_item_page/shopping_list_item_wrapper_page.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/shopping_list_page/shopping_list_wrapper_page.dart';
-import 'package:chattyevent_app_flutter/presentation/screens/verify_email_page.dart';
 import 'package:chattyevent_app_flutter/presentation/screens/shopping_list_page/shopping_list_page.dart';
 
 @AutoRouterConfig()
@@ -127,19 +95,22 @@ class AppRouter extends $AppRouter {
           initial: true,
           guards: [authGuard],
           children: [
-            homePageRouter,
+            _homePageRoute,
+            _groupchatRouter,
+            _privateEventRouter,
+            profileRouter,
             ...settingRoutes,
 
             // future and past events
             CustomRoute(
               transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
-              page: FutureEventsPage,
+              page: FutureEventsRoute.page,
               guards: [authGuard],
               path: 'future-events',
             ),
             CustomRoute(
               transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
-              page: PastEventsPage,
+              page: PastEventsRoute.page,
               guards: [authGuard],
               path: 'past-events',
             ),
@@ -181,31 +152,27 @@ class AppRouter extends $AppRouter {
               ],
             ),
 
-            _groupchatRouter,
-            _privateEventRouter,
-            profileRouter,
-
             // new groupchat
             CustomRoute(
               transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
-              page: NewGroupchatWrapperPage,
+              page: NewGroupchatWrapperRoute.page,
               guards: [authGuard],
               path: 'new-groupchat',
               children: [
                 AutoRoute(
-                  page: NewGroupchatDetailsTab,
+                  page: NewGroupchatDetailsTab.page,
                   initial: true,
                   guards: [authGuard],
                   path: '',
                 ),
                 AutoRoute(
-                  page: NewGroupchatSelectUserTab,
+                  page: NewGroupchatSelectUserTab.page,
                   initial: false,
                   guards: [authGuard],
                   path: 'users',
                 ),
                 AutoRoute(
-                  page: NewGroupchatPermissionsTab,
+                  page: NewGroupchatPermissionsTab.page,
                   initial: false,
                   guards: [authGuard],
                   path: 'permssions',
@@ -217,41 +184,41 @@ class AppRouter extends $AppRouter {
             // new private event
             CustomRoute(
               transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
-              page: NewPrivateEventPage,
+              page: NewPrivateEventRoute.page,
               guards: [authGuard],
               path: 'new-private-event',
               children: [
                 AutoRoute(
-                  page: NewPrivateEventDetailsTab,
+                  page: NewPrivateEventDetailsTab.page,
                   initial: true,
                   guards: [authGuard],
                   path: '',
                 ),
                 AutoRoute(
-                  page: NewPrivateEventTypeTab,
+                  page: NewPrivateEventTypeTab.page,
                   initial: true,
                   guards: [authGuard],
                   path: 'type',
                 ),
                 AutoRoute(
-                  page: NewPrivateEventSearchTab,
+                  page: NewPrivateEventSearchTab.page,
                   initial: true,
                   guards: [authGuard],
                   path: 'search',
                 ),
                 AutoRoute(
-                  page: NewPrivateEventDateTab,
+                  page: NewPrivateEventDateTab.page,
                   guards: [authGuard],
                   path: 'date',
                 ),
                 AutoRoute(
-                  page: NewPrivateEventLocationTab,
+                  page: NewPrivateEventLocationTab.page,
                   initial: false,
                   guards: [authGuard],
                   path: 'location',
                 ),
                 AutoRoute(
-                  page: NewPrivateEventPermissionsTab,
+                  page: NewPrivateEventPermissionsTab.page,
                   initial: false,
                   guards: [authGuard],
                   path: 'permissions',
@@ -264,7 +231,7 @@ class AppRouter extends $AppRouter {
       ],
     ),
     RedirectRoute(path: '*', redirectTo: '/chats')
-  ],
+  ];
 
   CustomRoute get _groupchatRouter => CustomRoute(
   transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
@@ -409,6 +376,62 @@ class AppRouter extends $AppRouter {
     RedirectRoute(path: '*', redirectTo: 'info'),
   ],
 );
+
+  CustomRoute get _homePageRoute => CustomRoute(
+  transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
+  page: HomeRoute.page,
+  initial: true,
+  guards: [authGuard],
+  path: '',
+  children: [
+    AutoRoute(
+      page: HomeChatRoute.page,
+      guards: [authGuard],
+      path: 'chats',
+      initial: true,
+    ),
+    AutoRoute(page: HomeEventRoute.page, guards: [authGuard], path: 'events'),
+    AutoRoute(page: HomeSearchRoute.page, guards: [authGuard], path: 'search'),
+    AutoRoute(
+      page: HomeProfileRoute.page,
+      guards: [authGuard],
+      path: 'current-profile/:id',
+      children: [
+        AutoRoute(
+          page: ProfileRoute.page,
+          guards: [authGuard],
+          path: '',
+        ),
+        //Doesnt need settings page because current user hasnt relation to change
+        AutoRoute(
+          page: ProfileUserRelationsTabPage,
+          guards: [authGuard],
+          path: 'user-relations',
+          fullscreenDialog: true,
+          children: [
+            AutoRoute(
+              page: ProfileFollowerTab,
+              guards: [authGuard],
+              path: 'follower',
+            ),
+            AutoRoute(
+              page: ProfileFollowedTab,
+              guards: [authGuard],
+              path: 'followed',
+            ),
+            AutoRoute(
+              page: ProfileFollowRequestsTab,
+              guards: [authGuard],
+              path: 'follow-requests',
+            ),
+          ],
+        ),
+        RedirectRoute(path: '*', redirectTo: '')
+      ],
+    ),
+    RedirectRoute(path: '*', redirectTo: 'chats')
+  ],
+);
 }
 
 const profileRouter = CustomRoute(
@@ -453,62 +476,6 @@ const profileRouter = CustomRoute(
       ],
     ),
     RedirectRoute(path: '*', redirectTo: '')
-  ],
-);
-
-const homePageRouter = CustomRoute(
-  transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
-  page: HomePage,
-  initial: true,
-  guards: [authGuard],
-  path: '',
-  children: [
-    AutoRoute(
-      page: HomeChatPage,
-      guards: [authGuard],
-      path: 'chats',
-      initial: true,
-    ),
-    AutoRoute(page: HomeEventPage, guards: [authGuard], path: 'events'),
-    AutoRoute(page: HomeSearchPage, guards: [authGuard], path: 'search'),
-    AutoRoute(
-      page: HomeProfilePage,
-      guards: [authGuard],
-      path: 'current-profile/:id',
-      children: [
-        AutoRoute(
-          page: ProfilePage,
-          guards: [authGuard],
-          path: '',
-        ),
-        //Doesnt need settings page because current user hasnt relation to change
-        AutoRoute(
-          page: ProfileUserRelationsTabPage,
-          guards: [authGuard],
-          path: 'user-relations',
-          fullscreenDialog: true,
-          children: [
-            AutoRoute(
-              page: ProfileFollowerTab,
-              guards: [authGuard],
-              path: 'follower',
-            ),
-            AutoRoute(
-              page: ProfileFollowedTab,
-              guards: [authGuard],
-              path: 'followed',
-            ),
-            AutoRoute(
-              page: ProfileFollowRequestsTab,
-              guards: [authGuard],
-              path: 'follow-requests',
-            ),
-          ],
-        ),
-        RedirectRoute(path: '*', redirectTo: '')
-      ],
-    ),
-    RedirectRoute(path: '*', redirectTo: 'chats')
   ],
 );
 

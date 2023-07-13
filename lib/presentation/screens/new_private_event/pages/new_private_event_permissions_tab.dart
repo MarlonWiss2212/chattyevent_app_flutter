@@ -1,8 +1,10 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:chattyevent_app_flutter/application/bloc/add_private_event/add_private_event_cubit.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/private_event_permissions_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+@RoutePage()
 class NewPrivateEventPermissionsTab extends StatelessWidget {
   const NewPrivateEventPermissionsTab({super.key});
 

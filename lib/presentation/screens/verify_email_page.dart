@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:auto_route/auto_route.dart';
 import 'package:chattyevent_app_flutter/core/utils/injection.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/auth_usecases.dart';
+import 'package:chattyevent_app_flutter/presentation/router/router.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -28,7 +29,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
       const Duration(seconds: 3),
       (timer) async {
         if (await serviceLocator<AuthUseCases>().isEmailVerified()) {
-          serviceLocator<AppRouter>().replace(const CreateUserPageRoute());
+          serviceLocator<AppRouter>().replace(const CreateUserRoute());
         }
       },
     );

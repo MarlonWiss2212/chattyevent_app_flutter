@@ -8,6 +8,7 @@ import 'package:chattyevent_app_flutter/presentation/widgets/general/dialog/aler
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/home_page/mini_profile_image.dart';
 import 'package:ionicons/ionicons.dart';
 
+@RoutePage()
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
@@ -15,10 +16,10 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return AutoTabsRouter(
       routes: [
-        const HomeChatPageRoute(),
-        const HomeEventPageRoute(),
-        const HomeSearchPageRoute(),
-        HomeProfilePageRoute(
+        const HomeChatRoute(),
+        const HomeEventRoute(),
+        const HomeSearchRoute(),
+        HomeProfileRoute(
           userId: BlocProvider.of<AuthCubit>(context).state.currentUser.id,
         )
       ],

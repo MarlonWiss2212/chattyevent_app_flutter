@@ -1,5 +1,5 @@
 import 'package:auto_route/auto_route.dart';
-
+import 'package:chattyevent_app_flutter/presentation/screens/private_event_page/private_event_wrapper_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -13,6 +13,7 @@ import 'package:chattyevent_app_flutter/core/utils/injection.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/button.dart';
 
+@RoutePage()
 class NewPrivateEventPage extends StatelessWidget {
   const NewPrivateEventPage({
     super.key,
@@ -56,7 +57,7 @@ class NewPrivateEventPage extends StatelessWidget {
                   if (state.status == AddPrivateEventStateStatus.success &&
                       state.addedPrivateEvent != null) {
                     AutoRouter.of(context).root.replace(
-                          PrivateEventWrapperPageRoute(
+                          PrivateEventWrapperPage(
                             privateEventId: state.addedPrivateEvent!.id,
                             privateEventStateToSet:
                                 CurrentPrivateEventState.fromPrivateEvent(
@@ -75,12 +76,13 @@ class NewPrivateEventPage extends StatelessWidget {
               ),
               body: AutoTabsRouter.pageView(
                 routes: const [
-                  NewPrivateEventDetailsTabRoute(),
-                  NewPrivateEventTypeTabRoute(),
-                  NewPrivateEventSearchTabRoute(),
-                  NewPrivateEventDateTabRoute(),
-                  NewPrivateEventLocationTabRoute(),
-                  NewPrivateEventPermissionsTabRoute(),
+                  // had a route word after tab before
+                  NewPrivateEventDetailsTab(),
+                  NewPrivateEventTypeTab(),
+                  NewPrivateEventSearchTab(),
+                  NewPrivateEventDateTab(),
+                  NewPrivateEventLocationTab(),
+                  NewPrivateEventPermissionsTab(),
                 ],
                 builder: (context, child, pageController) {
                   return Column(

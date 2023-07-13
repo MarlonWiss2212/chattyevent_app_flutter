@@ -92,7 +92,7 @@ class _LoginPageState extends State<LoginPage> {
                       PlatformTextButton(
                         onPressed: () {
                           AutoRouter.of(context).push(
-                            ResetPasswordPageRoute(
+                            ResetPasswordRoute(
                               standardEmail: emailFieldController.text,
                             ),
                           );
@@ -103,7 +103,7 @@ class _LoginPageState extends State<LoginPage> {
                       PlatformTextButton(
                         onPressed: () {
                           AutoRouter.of(context).replace(
-                            const RegisterPageRoute(),
+                            const RegisterRoute(),
                           );
                         },
                         child: const Text("Registrieren?"),

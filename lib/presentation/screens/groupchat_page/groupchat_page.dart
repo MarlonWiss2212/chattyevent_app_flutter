@@ -65,7 +65,7 @@ class _GroupchatPageState extends State<GroupchatPage> {
           PlatformIconButton(
             icon: const Icon(Ionicons.ellipsis_vertical),
             onPressed: () => AutoRouter.of(context).push(
-              ChatInfoPageRoute(),
+              GroupchatInfoRoute(groupchatId: widget.groupchatId),
             ),
           )
         ],

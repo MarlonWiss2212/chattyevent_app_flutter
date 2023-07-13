@@ -6,6 +6,7 @@ import 'package:chattyevent_app_flutter/application/bloc/notification/notificati
 import 'package:chattyevent_app_flutter/application/bloc/profile_page/profile_page_cubit.dart';
 import 'package:chattyevent_app_flutter/core/utils/injection.dart';
 
+@RoutePage()
 class HomeProfilePage extends StatelessWidget {
   final String? userId;
 

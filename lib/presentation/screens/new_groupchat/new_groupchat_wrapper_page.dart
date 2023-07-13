@@ -11,6 +11,7 @@ import 'package:chattyevent_app_flutter/core/utils/injection.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/button.dart';
 
+@RoutePage()
 class NewGroupchatWrapperPage extends StatelessWidget {
   const NewGroupchatWrapperPage({super.key});
 
@@ -49,7 +50,7 @@ class NewGroupchatWrapperPage extends StatelessWidget {
                   if (state.status == AddGroupchatStateStatus.success &&
                       state.addedChat != null) {
                     AutoRouter.of(context).root.replace(
-                          ChatPageWrapperRoute(
+                          GroupchatRouteWrapper(
                             groupchatId: state.addedChat!.id,
                             groupchat: state.addedChat!,
                           ),
@@ -65,9 +66,10 @@ class NewGroupchatWrapperPage extends StatelessWidget {
               ),
               body: AutoTabsRouter.pageView(
                 routes: const [
-                  NewGroupchatDetailsTabRoute(),
-                  NewGroupchatSelectUserTabRoute(),
-                  NewGroupchatPermissionsTabRoute(),
+                  // had a route word after tab before
+                  NewGroupchatDetailsTab(),
+                  NewGroupchatSelectUserTab(),
+                  NewGroupchatPermissionsTab(),
                 ],
                 builder: (context, child, pageController) {
                   return Column(
