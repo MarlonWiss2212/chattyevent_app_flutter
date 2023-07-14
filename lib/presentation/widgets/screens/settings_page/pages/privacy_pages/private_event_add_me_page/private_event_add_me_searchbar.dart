@@ -8,16 +8,19 @@ class PrivateEventAddMeSearchbar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IntrinsicHeight(
-      child: DebouceInputField(
-        searchController: TextEditingController(),
-        onSearchChanged: ({required String text}) {
-          BlocProvider.of<UserSearchCubit>(context).getFollowersViaApi(
-            sortForPrivateEventAddMeAllowedUsersFirst: true,
-            search: text,
-          );
-        },
-        hintText: "User Suche: ",
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      child: IntrinsicHeight(
+        child: DebouceInputField(
+          searchController: TextEditingController(),
+          onSearchChanged: ({required String text}) {
+            BlocProvider.of<UserSearchCubit>(context).getFollowersViaApi(
+              sortForPrivateEventAddMeAllowedUsersFirst: true,
+              search: text,
+            );
+          },
+          hintText: "User Suche: ",
+        ),
       ),
     );
   }

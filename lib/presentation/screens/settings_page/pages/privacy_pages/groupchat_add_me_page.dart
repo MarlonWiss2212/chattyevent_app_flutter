@@ -38,16 +38,13 @@ class GroupchatAddMePage extends StatelessWidget {
           centerTitle: true,
           title: const Text("Gruppenchat Hinzufüge Berechtigung"),
         ),
-        body: const Padding(
-          padding: EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              GroupchatAddMePageChipList(),
-              GroupchatAddMeSearchbar(),
-              SizedBox(height: 8),
-              GroupchatAddMePageUserList(),
-            ],
-          ),
+        body: const Column(
+          children: [
+            GroupchatAddMePageChipList(),
+            GroupchatAddMeSearchbar(),
+            SizedBox(height: 8),
+            GroupchatAddMePageUserList(),
+          ],
         ),
       ),
     );

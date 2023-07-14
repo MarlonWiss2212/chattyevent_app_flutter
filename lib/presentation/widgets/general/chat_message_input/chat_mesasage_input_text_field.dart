@@ -22,40 +22,50 @@ class _ChatMessageInputTextFieldState extends State<ChatMessageInputTextField> {
               ? textEditingController.clear()
               : null,
       builder: (context, state) {
-        final borderRadius = state.messageToReactToWithUser != null
+        final borderRadius = state.messageToReactToWithUser != null ||
+                state.status == AddMessageStateStatus.loading
             ? const BorderRadius.only(
                 bottomLeft: Radius.circular(8),
                 bottomRight: Radius.circular(8),
               )
             : BorderRadius.circular(8);
-        return ClipRRect(
-          borderRadius: borderRadius,
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
-            child: Container(
-              constraints: const BoxConstraints(minHeight: 40),
-              alignment: Alignment.centerLeft,
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                borderRadius: borderRadius,
-                color: Theme.of(context).colorScheme.surface.withOpacity(.5),
-              ),
-              child: TextField(
-                controller: textEditingController,
-                keyboardType: TextInputType.multiline,
-                minLines: 1,
-                maxLines: 6,
-                style: Theme.of(context).textTheme.bodyMedium,
-                decoration: const InputDecoration.collapsed(
-                  hintText: "Nachricht",
-                ),
-                onChanged: (p0) =>
-                    BlocProvider.of<AddMessageCubit>(context).emitState(
-                  message: p0,
+
+        return Column(
+          children: [
+            if (state.status == AddMessageStateStatus.loading) ...{
+              const LinearProgressIndicator(),
+            },
+            ClipRRect(
+              borderRadius: borderRadius,
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: borderRadius,
+                    color:
+                        Theme.of(context).colorScheme.surface.withOpacity(.5),
+                  ),
+                  constraints: const BoxConstraints(minHeight: 40),
+                  alignment: Alignment.centerLeft,
+                  padding: const EdgeInsets.all(8),
+                  child: TextField(
+                    controller: textEditingController,
+                    keyboardType: TextInputType.multiline,
+                    minLines: 1,
+                    maxLines: 6,
+                    style: Theme.of(context).textTheme.bodyMedium,
+                    decoration: const InputDecoration.collapsed(
+                      hintText: "Nachricht",
+                    ),
+                    onChanged: (p0) =>
+                        BlocProvider.of<AddMessageCubit>(context).emitState(
+                      message: p0,
+                    ),
+                  ),
                 ),
               ),
             ),
-          ),
+          ],
         );
       },
     );

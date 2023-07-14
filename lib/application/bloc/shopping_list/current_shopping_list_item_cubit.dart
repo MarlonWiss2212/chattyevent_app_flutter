@@ -314,10 +314,20 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
       (alert) => notificationCubit.newAlert(notificationAlert: alert),
       (deleted) {
         if (deleted) {
+          final newBoughtAmounts = state.boughtAmounts
+              .where((element) => element.id != boughtAmountId)
+              .toList();
           emitState(
-            boughtAmounts: state.boughtAmounts
-                .where((element) => element.id != boughtAmountId)
-                .toList(),
+            boughtAmounts: newBoughtAmounts,
+            shoppingListItem: ShoppingListItemEntity.merge(
+              newEntity: ShoppingListItemEntity(
+                id: state.shoppingListItem.id,
+                boughtAmount: newBoughtAmounts
+                    .map((e) => e.boughtAmount!)
+                    .reduce((a, b) => a + b),
+              ),
+              oldEntity: state.shoppingListItem,
+            ),
           );
           shoppingListCubitOrPrivateEventCubit.fold(
             (l) => l.replaceOrAdd(

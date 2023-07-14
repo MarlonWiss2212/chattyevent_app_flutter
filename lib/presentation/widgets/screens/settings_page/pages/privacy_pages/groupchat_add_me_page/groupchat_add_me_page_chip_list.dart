@@ -31,7 +31,8 @@ class GroupchatAddMePageChipList extends StatelessWidget {
             state.currentUser.permissions?.groupchatAddMe?.permission ==
                 GroupchatAddMePermissionEnum.followersExcept;
 
-        return SizedBox(
+        return Container(
+          padding: const EdgeInsets.symmetric(horizontal: 8),
           height: 40,
           child: SingleChildScrollView(
             scrollDirection: Axis.horizontal,

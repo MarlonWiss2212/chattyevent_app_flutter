@@ -31,7 +31,8 @@ class PrivateEventAddMePageChipList extends StatelessWidget {
             state.currentUser.permissions?.privateEventAddMe?.permission ==
                 PrivateEventAddMePermissionEnum.followersExcept;
 
-        return SizedBox(
+        return Container(
+          padding: const EdgeInsets.symmetric(horizontal: 8),
           height: 40,
           child: SingleChildScrollView(
             scrollDirection: Axis.horizontal,

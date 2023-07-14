@@ -34,7 +34,7 @@ class AddMessageCubit extends Cubit<AddMessageState> {
   Future reactToMessage({
     required MessageAndUserEntity messageToReactToWithUser,
   }) async {
-    final vibrate = await vibrationUseCases.vibrate(duration: 20);
+    final vibrate = await vibrationUseCases.vibrate(duration: 10);
     vibrate.fold(
       (alert) => notificationCubit.newAlert(notificationAlert: alert),
       (r) => null,

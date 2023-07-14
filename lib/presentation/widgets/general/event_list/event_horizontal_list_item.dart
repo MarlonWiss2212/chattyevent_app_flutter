@@ -1,3 +1,4 @@
+import 'package:chattyevent_app_flutter/core/enums/private_event/private_event_status_enum.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:chattyevent_app_flutter/domain/entities/private_event/private_event_entity.dart';
@@ -35,16 +36,13 @@ class EventHorizontalListItem extends StatelessWidget {
           fit: StackFit.expand,
           children: [
             if (privateEvent.coverImageLink != null) ...{
-              Container(
-                decoration: const BoxDecoration(shape: BoxShape.circle),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8.0),
-                  child: Hero(
-                    tag: "${privateEvent.id} coverImage",
-                    child: Image.network(
-                      privateEvent.coverImageLink!,
-                      fit: BoxFit.cover,
-                    ),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(8.0),
+                child: Hero(
+                  tag: "${privateEvent.id} coverImage",
+                  child: Image.network(
+                    privateEvent.coverImageLink!,
+                    fit: BoxFit.cover,
                   ),
                 ),
               ),
@@ -70,15 +68,35 @@ class EventHorizontalListItem extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Hero(
-                    tag: "${privateEvent.id} title",
-                    child: Text(
-                      privateEvent.title ?? "Kein Titel",
-                      style: Theme.of(context).textTheme.titleLarge?.apply(
-                            color: Colors.white,
-                          ),
+                  Row(children: [
+                    Container(
+                      width: 15,
+                      height: 15,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: privateEvent.status ==
+                                PrivateEventStatusEnum.takesplace
+                            ? Colors.green
+                            : privateEvent.status ==
+                                    PrivateEventStatusEnum.undecided
+                                ? Colors.red
+                                : privateEvent.status ==
+                                        PrivateEventStatusEnum.undecided
+                                    ? Colors.grey
+                                    : null,
+                      ),
                     ),
-                  ),
+                    const SizedBox(width: 8),
+                    Hero(
+                      tag: "${privateEvent.id} title",
+                      child: Text(
+                        privateEvent.title ?? "Kein Titel",
+                        style: Theme.of(context).textTheme.titleLarge?.apply(
+                              color: Colors.white,
+                            ),
+                      ),
+                    ),
+                  ]),
                   Align(
                     alignment: Alignment.centerRight,
                     child: Text(

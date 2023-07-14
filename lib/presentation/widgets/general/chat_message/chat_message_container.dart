@@ -1,17 +1,21 @@
 import 'package:chattyevent_app_flutter/application/bloc/add_message/add_message_cubit.dart';
+import 'package:chattyevent_app_flutter/core/utils/injection.dart';
 import 'package:chattyevent_app_flutter/domain/entities/message/message_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/user/user_entity.dart';
+import 'package:chattyevent_app_flutter/domain/usecases/vibration_usecases.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/chat_message/chat_message_react_message_container.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/chat_message/chat_message_read_by_bottom_sheet.dart';
+import 'package:chattyevent_app_flutter/presentation/widgets/general/dialog/image_fullscreen_dialog.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:swipe_to/swipe_to.dart';
 import 'package:chattyevent_app_flutter/domain/entities/message/message_and_user_entity.dart';
 
-class ChatMessageContainer extends StatelessWidget {
+class ChatMessageContainer extends StatefulWidget {
   final List<UserEntity> users;
   final MessageEntity message;
   final String currentUserId;
@@ -25,69 +29,99 @@ class ChatMessageContainer extends StatelessWidget {
     this.messageToReactTo,
   });
 
-  UserEntity? findUser(String id) =>
-      users.firstWhereOrNull((element) => element.id == id);
+  @override
+  State<ChatMessageContainer> createState() => _ChatMessageContainerState();
+}
+
+class _ChatMessageContainerState extends State<ChatMessageContainer> {
+  double scale = 1;
+  UserEntity? findUser(String id) => widget.users.firstWhereOrNull(
+        (element) => element.id == id,
+      );
 
   @override
   Widget build(BuildContext context) {
-    final UserEntity? foundUser =
-        message.createdBy != null ? findUser(message.createdBy!) : null;
+    final UserEntity? foundUser = widget.message.createdBy != null
+        ? findUser(widget.message.createdBy!)
+        : null;
 
-    final isCurrentUser = foundUser?.id == currentUserId;
+    final isCurrentUser = foundUser?.id == widget.currentUserId;
     final isDarkMode =
         MediaQuery.of(context).platformBrightness == Brightness.dark;
 
-    return SwipeTo(
-      iconColor: Theme.of(context).colorScheme.onBackground,
-      onRightSwipe: () {
-        if (foundUser != null) {
-          BlocProvider.of<AddMessageCubit>(context).reactToMessage(
-            messageToReactToWithUser: MessageAndUserEntity(
-              message: message,
-              user: foundUser,
-            ),
-          );
-        }
-      },
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8.0),
-        child: Align(
-          alignment:
-              isCurrentUser ? Alignment.centerRight : Alignment.centerLeft,
-          child: Column(
-            crossAxisAlignment: isCurrentUser
-                ? CrossAxisAlignment.end
-                : CrossAxisAlignment.start,
-            children: [
-              if (!isCurrentUser) ...[
-                Text(
-                  foundUser?.username ?? "",
-                  style: Theme.of(context).textTheme.labelLarge,
+    return AnimatedScale(
+      scale: scale,
+      duration: const Duration(milliseconds: 100),
+      child: SwipeTo(
+        iconColor: Theme.of(context).colorScheme.onBackground,
+        onRightSwipe: () {
+          if (foundUser != null) {
+            BlocProvider.of<AddMessageCubit>(context).reactToMessage(
+              messageToReactToWithUser: MessageAndUserEntity(
+                message: widget.message,
+                user: foundUser,
+              ),
+            );
+          }
+        },
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          child: Align(
+            alignment:
+                isCurrentUser ? Alignment.centerRight : Alignment.centerLeft,
+            child: Column(
+              crossAxisAlignment: isCurrentUser
+                  ? CrossAxisAlignment.end
+                  : CrossAxisAlignment.start,
+              children: [
+                if (!isCurrentUser) ...[
+                  Text(
+                    foundUser?.username ?? "",
+                    style: Theme.of(context).textTheme.labelLarge,
+                  ),
+                  const SizedBox(height: 4),
+                ],
+                GestureDetector(
+                  onTapDown: (details) async {
+                    setState(() {
+                      scale = .9;
+                    });
+                  },
+                  onTapUp: (details) => setState(() {
+                    scale = 1;
+                  }),
+                  onTapCancel: () => setState(() {
+                    scale = 1;
+                  }),
+                  onLongPress: () async {
+                    await serviceLocator<VibrationUseCases>()
+                        .vibrate(
+                          duration: 10,
+                        )
+                        .then(
+                          (value) async => showModalBottomSheet(
+                            backgroundColor:
+                                Theme.of(context).colorScheme.surface,
+                            context: context,
+                            builder: (context) {
+                              return ChatMessageReadByBottomSheet(
+                                users: widget.users,
+                                readByIds: widget.message.readBy ?? [],
+                              );
+                            },
+                          ),
+                        );
+                  },
+                  child: messageWithFilesAndReactMessage(
+                    context,
+                    isCurrentUser,
+                    isDarkMode,
+                  ),
                 ),
                 const SizedBox(height: 4),
+                bottomContainer(context, isCurrentUser, isDarkMode),
               ],
-              GestureDetector(
-                onLongPress: () async {
-                  await showModalBottomSheet(
-                    backgroundColor: Theme.of(context).colorScheme.surface,
-                    context: context,
-                    builder: (context) {
-                      return ChatMessageReadByBottomSheet(
-                        users: users,
-                        readByIds: message.readBy ?? [],
-                      );
-                    },
-                  );
-                },
-                child: messageWithFilesAndReactMessage(
-                  context,
-                  isCurrentUser,
-                  isDarkMode,
-                ),
-              ),
-              const SizedBox(height: 4),
-              bottomContainer(context, isCurrentUser, isDarkMode),
-            ],
+            ),
           ),
         ),
       ),
@@ -110,51 +144,63 @@ class ChatMessageContainer extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (messageToReactTo != null) ...{
+          if (widget.messageToReactTo != null) ...{
             Padding(
               padding: const EdgeInsets.only(bottom: 8),
               child: ChatMessageReactMessageContainer(
                 messageAndUser: MessageAndUserEntity(
-                  message: messageToReactTo!,
+                  message: widget.messageToReactTo!,
                   user: findUser(
-                        messageToReactTo!.createdBy ?? "",
+                        widget.messageToReactTo!.createdBy ?? "",
                       ) ??
                       UserEntity(
                         id: "",
                         authId: "",
                       ),
                 ),
-                currentUserId: currentUserId,
+                currentUserId: widget.currentUserId,
                 isInput: false,
               ),
             ),
           },
-          if (message.fileLinks != null && message.fileLinks!.isNotEmpty) ...{
+          if (widget.message.fileLinks != null &&
+              widget.message.fileLinks!.isNotEmpty) ...{
             //TODO: as list of documents
             Container(
               constraints: BoxConstraints(
                 maxHeight: MediaQuery.of(context).size.height / 2,
               ),
-              child: Container(
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
+              decoration: const BoxDecoration(
+                shape: BoxShape.circle,
+              ),
+              child: InkWell(
+                onTap: () => showAnimatedDialog(
+                  context: context,
+                  curve: Curves.fastOutSlowIn,
+                  animationType: DialogTransitionType.slideFromBottomFade,
+                  builder: (c) => ImageFullscreenDialog(
+                    src: widget.message.fileLinks![0],
+                  ),
                 ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8.0),
-                  child: Image.network(
-                    message.fileLinks![0],
-                    fit: BoxFit.contain,
+                child: Ink(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8.0),
+                    child: Image.network(
+                      widget.message.fileLinks![0],
+                      fit: BoxFit.contain,
+                    ),
                   ),
                 ),
               ),
             ),
           },
-          if (message.message != null) ...{
-            if (message.fileLinks != null && message.fileLinks!.isNotEmpty) ...{
+          if (widget.message.message != null) ...{
+            if (widget.message.fileLinks != null &&
+                widget.message.fileLinks!.isNotEmpty) ...{
               const SizedBox(height: 8),
             },
             Text(
-              message.message!,
+              widget.message.message!,
               overflow: TextOverflow.clip,
               style: Theme.of(context).textTheme.bodyMedium,
             ),
@@ -171,7 +217,7 @@ class ChatMessageContainer extends StatelessWidget {
           isCurrentUser ? MainAxisAlignment.end : MainAxisAlignment.start,
       children: [
         Text(
-          "${DateFormat.jm().format(message.createdAt)}, ",
+          "${DateFormat.jm().format(widget.message.createdAt)}, ",
           style: Theme.of(context)
               .textTheme
               .labelMedium
@@ -179,9 +225,9 @@ class ChatMessageContainer extends StatelessWidget {
         ),
         const SizedBox(width: 8),
         if (isCurrentUser &&
-            message.readBy != null &&
-            message.readBy!.isNotEmpty &&
-            message.readBy!.length == users.length) ...[
+            widget.message.readBy != null &&
+            widget.message.readBy!.isNotEmpty &&
+            widget.message.readBy!.length == widget.users.length) ...[
           Stack(
             children: [
               Icon(

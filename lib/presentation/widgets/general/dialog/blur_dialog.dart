@@ -11,28 +11,33 @@ class BlurDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BackdropFilter(
-      filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
-      child: Dialog(
-        backgroundColor: Colors.transparent,
-        insetPadding: const EdgeInsets.all(20),
-        child: Padding(
-          padding: const EdgeInsets.all(12),
-          child: Align(
-            alignment: Alignment.topLeft,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                IconButton(
-                  onPressed: () => Navigator.of(context).pop(),
-                  icon: const Icon(Ionicons.close),
-                ),
-                const SizedBox(height: 20),
-                SingleChildScrollView(
-                  child: child,
-                ),
-              ],
+    return Dismissible(
+      key: UniqueKey(),
+      direction: DismissDirection.down,
+      onDismissed: (direction) => Navigator.of(context).pop(),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
+        child: Dialog(
+          backgroundColor: Colors.transparent,
+          insetPadding: const EdgeInsets.all(20),
+          child: Padding(
+            padding: const EdgeInsets.all(12),
+            child: Align(
+              alignment: Alignment.topLeft,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  IconButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    icon: const Icon(Ionicons.close),
+                  ),
+                  const SizedBox(height: 20),
+                  SingleChildScrollView(
+                    child: child,
+                  ),
+                ],
+              ),
             ),
           ),
         ),

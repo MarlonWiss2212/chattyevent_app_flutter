@@ -8,16 +8,19 @@ class GroupchatAddMeSearchbar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IntrinsicHeight(
-      child: DebouceInputField(
-        searchController: TextEditingController(),
-        onSearchChanged: ({required String text}) {
-          BlocProvider.of<UserSearchCubit>(context).getFollowersViaApi(
-            search: text,
-            sortForGroupchatAddMeAllowedUsersFirst: true,
-          );
-        },
-        hintText: "User Suche: ",
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      child: IntrinsicHeight(
+        child: DebouceInputField(
+          searchController: TextEditingController(),
+          onSearchChanged: ({required String text}) {
+            BlocProvider.of<UserSearchCubit>(context).getFollowersViaApi(
+              search: text,
+              sortForGroupchatAddMeAllowedUsersFirst: true,
+            );
+          },
+          hintText: "User Suche: ",
+        ),
       ),
     );
   }

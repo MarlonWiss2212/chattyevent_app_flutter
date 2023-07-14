@@ -12,31 +12,31 @@ class ChatMessageInputReactMessageContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<AddMessageCubit, AddMessageState>(
       builder: (context, state) {
-        if (state.messageToReactToWithUser == null) {
-          return const SizedBox();
-        }
-        return AnimatedContainer(
-          //TODO animate position
-          duration: const Duration(seconds: 1),
-          curve: Curves.elasticIn,
-          child: Container(
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surface,
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(8),
-                topRight: Radius.circular(8),
-              ),
-            ),
-            child: ChatMessageReactMessageContainer(
-              messageAndUser: MessageAndUserEntity(
-                message: state.messageToReactToWithUser!.message,
-                user: state.messageToReactToWithUser!.user,
-              ),
-              isInput: true,
-              currentUserId:
-                  BlocProvider.of<AuthCubit>(context).state.currentUser.id,
-            ),
-          ),
+        return AnimatedSize(
+          duration: const Duration(milliseconds: 200),
+          curve: Curves.easeInOut,
+          child: state.messageToReactToWithUser != null
+              ? Container(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.surface,
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(8),
+                      topRight: Radius.circular(8),
+                    ),
+                  ),
+                  child: ChatMessageReactMessageContainer(
+                    messageAndUser: MessageAndUserEntity(
+                      message: state.messageToReactToWithUser!.message,
+                      user: state.messageToReactToWithUser!.user,
+                    ),
+                    isInput: true,
+                    currentUserId: BlocProvider.of<AuthCubit>(context)
+                        .state
+                        .currentUser
+                        .id,
+                  ),
+                )
+              : const SizedBox(),
         );
       },
     );
