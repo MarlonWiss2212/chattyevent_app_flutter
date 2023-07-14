@@ -78,7 +78,7 @@ class EventHorizontalListItem extends StatelessWidget {
                                 PrivateEventStatusEnum.takesplace
                             ? Colors.green
                             : privateEvent.status ==
-                                    PrivateEventStatusEnum.undecided
+                                    PrivateEventStatusEnum.cancelled
                                 ? Colors.red
                                 : privateEvent.status ==
                                         PrivateEventStatusEnum.undecided
