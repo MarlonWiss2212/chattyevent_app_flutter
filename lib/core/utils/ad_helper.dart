@@ -27,4 +27,13 @@ class AdHelper {
     }
     throw UnsupportedError("Unsupported platform");
   }
+
+  static String get discoverPAgeNativeAdUnitId {
+    if (Platform.isIOS) {
+      return 'ca-app-pub-6709565406365779/6815317334';
+    } else if (Platform.isAndroid) {
+      return 'ca-app-pub-6709565406365779/7374554681';
+    }
+    throw UnsupportedError("Unsupported platform");
+  }
 }

@@ -91,7 +91,7 @@ class _ChatListState extends State<ChatList> {
                 minWidth: MediaQuery.of(context).size.width,
                 minHeight: 80,
                 maxWidth: MediaQuery.of(context).size.width,
-                maxHeight: 90,
+                maxHeight: 130,
               ),
               child: AdWidget(ad: _ad!),
             );

@@ -15,47 +15,48 @@ class GroupchatPermissionsMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              text,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
-              overflow: TextOverflow.ellipsis,
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            text,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
             ),
-            PopupMenuButton(
-              initialValue: value,
-              onSelected: (value) => changePermission(value),
-              itemBuilder: (context) => const [
-                PopupMenuItem(
-                  value:GroupchatPermissionEnum.adminsonly,
-                  child: Text("Nur Admins"),
-                ),
-                PopupMenuItem(
-                  value: GroupchatPermissionEnum.everyone,
-                  child: Text("Alle"),
-                ),
-              ],
-              child: Row(
-                children: [
-                  Text(value == null
+            overflow: TextOverflow.ellipsis,
+          ),
+          PopupMenuButton(
+            initialValue: value,
+            onSelected: changePermission,
+            itemBuilder: (context) => const [
+              PopupMenuItem(
+                value: GroupchatPermissionEnum.adminsonly,
+                child: Text("Nur Admins"),
+              ),
+              PopupMenuItem(
+                value: GroupchatPermissionEnum.everyone,
+                child: Text("Alle"),
+              ),
+            ],
+            child: Row(
+              children: [
+                Text(
+                  value == null
                       ? "Standarddaten"
                       : value == GroupchatPermissionEnum.adminsonly
                           ? "Nur Admins"
                           : value == GroupchatPermissionEnum.everyone
                               ? "Alle"
-                              : "Keine Info",),
-                  const SizedBox(width: 4),
-                  const Icon(Icons.arrow_drop_down, size: 14)
-                ],
-              ),
+                              : "Keine Info",
+                ),
+                const SizedBox(width: 4),
+                const Icon(Icons.arrow_drop_down, size: 14)
+              ],
             ),
-          ],
-        ),
-      
+          ),
+        ],
+      ),
     );
   }
 }

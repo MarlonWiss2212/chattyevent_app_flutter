@@ -24,7 +24,5 @@ class _AdPopUpState extends State<AdPopUp> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return widget.child;
-  }
+  Widget build(BuildContext context) => widget.child;
 }

@@ -84,7 +84,7 @@ class HomeEventPageDetails extends StatelessWidget {
               adUnitId: AdHelper.privateEventListNativeAdUnitId,
               maxWidth: MediaQuery.of(context).size.width - 16,
               minWidth: MediaQuery.of(context).size.width - 16,
-              maxHeight: 320,
+              maxHeight: 400,
               minHeight: 320,
               templateType: TemplateType.medium,
             ),

@@ -1,4 +1,6 @@
 import 'package:auto_route/annotations.dart';
+import 'package:chattyevent_app_flutter/core/utils/ad_helper.dart';
+import 'package:chattyevent_app_flutter/presentation/widgets/ads/custom_native_ad.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/input_fields/debounce_input_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,6 +10,7 @@ import 'package:chattyevent_app_flutter/application/bloc/notification/notificati
 import 'package:chattyevent_app_flutter/application/bloc/user_search/user_search_cubit.dart';
 import 'package:chattyevent_app_flutter/infastructure/filter/user/find_users_filter.dart';
 import 'package:chattyevent_app_flutter/core/utils/injection.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import '../../../widgets/screens/home_page/pages/home_search_page/user_horizontal_list.dart';
 
 @RoutePage()
@@ -73,6 +76,15 @@ class HomeSearchPage extends StatelessWidget {
                           return UserHorizontalList(users: state.users);
                         },
                       ),
+                      const SizedBox(height: 8),
+                      CustomNativeAd(
+                        adUnitId: AdHelper.discoverPAgeNativeAdUnitId,
+                        maxHeight: 400,
+                        maxWidth: MediaQuery.of(context).size.width - 16,
+                        minHeight: 320,
+                        minWidth: MediaQuery.of(context).size.width - 16,
+                        templateType: TemplateType.medium,
+                      )
                     ],
                   ),
                 ),

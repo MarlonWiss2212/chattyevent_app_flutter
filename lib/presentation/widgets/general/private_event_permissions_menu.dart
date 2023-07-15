@@ -15,55 +15,54 @@ class PrivateEventPermissionsMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              text,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
-              overflow: TextOverflow.ellipsis,
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            text,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
             ),
-            PopupMenuButton(
-              initialValue: value,
-              onSelected: (value) => changePermission(value),
-              itemBuilder: (context) => const [
-                PopupMenuItem(
-                  value: PrivateEventPermissionEnum.createronly,
-                  child: Text("Nur Ersteller"),
+            overflow: TextOverflow.ellipsis,
+          ),
+          PopupMenuButton(
+            initialValue: value,
+            onSelected: changePermission,
+            itemBuilder: (context) => const [
+              PopupMenuItem(
+                value: PrivateEventPermissionEnum.createronly,
+                child: Text("Nur Ersteller"),
+              ),
+              PopupMenuItem(
+                value: PrivateEventPermissionEnum.organizersonly,
+                child: Text("Nur Organisatoren"),
+              ),
+              PopupMenuItem(
+                value: PrivateEventPermissionEnum.everyone,
+                child: Text("Alle"),
+              ),
+            ],
+            child: Row(
+              children: [
+                Text(
+                  value == null
+                      ? "Standarddaten"
+                      : value == PrivateEventPermissionEnum.createronly
+                          ? "Nur Ersteller"
+                          : value == PrivateEventPermissionEnum.organizersonly
+                              ? "Nur Organisatoren"
+                              : value == PrivateEventPermissionEnum.everyone
+                                  ? "Alle"
+                                  : "Keine Info",
                 ),
-                PopupMenuItem(
-                  value: PrivateEventPermissionEnum.organizersonly,
-                  child: Text("Nur Organisatoren"),
-                ),
-                PopupMenuItem(
-                  value: PrivateEventPermissionEnum.everyone,
-                  child: Text("Alle"),
-                ),
+                const SizedBox(width: 4),
+                const Icon(Icons.arrow_drop_down, size: 14)
               ],
-              child: Row(
-                children: [
-                  Text(
-              value == null
-                  ? "Standarddaten"
-                  : value == PrivateEventPermissionEnum.createronly
-                      ? "Nur Ersteller"
-                      : value ==
-                              PrivateEventPermissionEnum.organizersonly
-                          ? "Nur Organisatoren"
-                          : value == PrivateEventPermissionEnum.everyone
-                              ? "Alle"
-                              : "Keine Info"),
-                  const SizedBox(width: 4),
-                  const Icon(Icons.arrow_drop_down, size: 14)
-                ],
-              ),
             ),
-          ],
-        ),
-      
+          ),
+        ],
+      ),
     );
   }
 }

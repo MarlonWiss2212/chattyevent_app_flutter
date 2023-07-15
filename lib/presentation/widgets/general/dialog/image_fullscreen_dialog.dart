@@ -20,12 +20,7 @@ class ImageFullscreenDialog extends StatelessWidget {
         child: Stack(
           alignment: Alignment.topLeft,
           children: [
-            Flexible(
-              child: Image.network(
-                src,
-                fit: BoxFit.contain,
-              ),
-            ),
+            Image.network(src, fit: BoxFit.contain),
             Material(
               color: Colors.transparent,
               child: Padding(
