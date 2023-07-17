@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:chattyevent_app_flutter/domain/repositories/device/permission_repository.dart';
 import 'package:dartz/dartz.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:chattyevent_app_flutter/core/failures/location_failures.dart';
@@ -47,11 +48,12 @@ class LocationUseCases {
   }
 
   Future<Either<NotificationAlert, Unit>> openMaps({
-    required String query,
+    String? query,
+    LatLng? LatLng,
   }) async {
     try {
       final String url =
-          "https://www.google.com/maps/search/?api=1&query=$query";
+          "https://www.google.com/maps/search/?api=1${LatLng != null ? "&query=${LatLng.latitude},${LatLng.longitude}" : ''}${query != null ? '&query=$query' : ''}";
 
       final worked = await launchUrlString(
         url,

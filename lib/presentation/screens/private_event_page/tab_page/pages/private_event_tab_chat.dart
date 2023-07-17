@@ -38,6 +38,7 @@ class _PrivateEventTabChatState extends State<PrivateEventTabChat> {
       create: (context) => AddMessageCubit(
         AddMessageState(privateEventTo: widget.privateEventId),
         notificationCubit: BlocProvider.of<NotificationCubit>(context),
+        locationUseCases: serviceLocator(),
         vibrationUseCases: serviceLocator(),
         messageUseCases: serviceLocator(
           param1: BlocProvider.of<AuthCubit>(context).state,

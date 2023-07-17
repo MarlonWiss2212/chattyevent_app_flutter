@@ -23,12 +23,14 @@ class PrivateEventTabInfoLocationData extends StatelessWidget {
               : null,
           child: Column(
             children: [
-              if (state.privateEvent.eventLocation != null &&
-                  state.privateEvent.eventLocation!.city != null &&
-                  state.privateEvent.eventLocation!.street != null &&
-                  state.privateEvent.eventLocation!.housenumber != null &&
-                  state.privateEvent.eventLocation!.zip != null &&
-                  state.privateEvent.eventLocation!.country != null) ...[
+              if (state.privateEvent.eventLocation?.address != null &&
+                  state.privateEvent.eventLocation!.address!.city != null &&
+                  state.privateEvent.eventLocation!.address!.street != null &&
+                  state.privateEvent.eventLocation!.address!.housenumber !=
+                      null &&
+                  state.privateEvent.eventLocation!.address!.zip != null &&
+                  state.privateEvent.eventLocation!.address!.country !=
+                      null) ...[
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
                   child: Row(
@@ -44,11 +46,11 @@ class PrivateEventTabInfoLocationData extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           Text(
-                            "${state.privateEvent.eventLocation!.country}, ${state.privateEvent.eventLocation!.city}, ${state.privateEvent.eventLocation!.zip}",
+                            "${state.privateEvent.eventLocation!.address!.country}, ${state.privateEvent.eventLocation!.address!.city}, ${state.privateEvent.eventLocation!.address!.zip}",
                             style: Theme.of(context).textTheme.bodyMedium,
                           ),
                           Text(
-                            "${state.privateEvent.eventLocation!.street} ${state.privateEvent.eventLocation!.housenumber}",
+                            "${state.privateEvent.eventLocation!.address!.street} ${state.privateEvent.eventLocation!.address!.housenumber}",
                             style: Theme.of(context).textTheme.bodyMedium,
                           ),
                           const SizedBox(height: 8),

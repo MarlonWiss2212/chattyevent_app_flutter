@@ -88,6 +88,7 @@ class _ProfileChatPageState extends State<ProfileChatPage> {
                 AddMessageState(userTo: widget.userId),
                 vibrationUseCases: serviceLocator(),
                 imagePickerUseCases: serviceLocator(),
+                locationUseCases: serviceLocator(),
                 notificationCubit: BlocProvider.of<NotificationCubit>(context),
                 cubitToAddMessageTo: dz.Right(
                   BlocProvider.of<ProfilePageCubit>(context),

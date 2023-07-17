@@ -161,13 +161,21 @@ class AuthRepositoryImpl implements AuthRepository {
     if (auth.currentUser == null) {
       return Left(
         NotificationAlert(
-          title: "Fehler User Löschen",
-          message: "Fehler beim Identifizierens des gerdigen Users",
+          title: "Fehler Refresh Token",
+          message: "Fehler beim erneuern der Auth Daten",
         ),
       );
     }
     try {
       final token = await auth.currentUser!.getIdToken();
+      if (token == null) {
+        return Left(
+          NotificationAlert(
+            title: "Fehler Refresh Token",
+            message: "Fehler beim erneuern der Auth Daten",
+          ),
+        );
+      }
       return Right(token);
     } catch (e) {
       return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));

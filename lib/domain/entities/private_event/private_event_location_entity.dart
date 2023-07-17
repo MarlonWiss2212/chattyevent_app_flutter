@@ -1,20 +1,13 @@
-import 'package:chattyevent_app_flutter/domain/entities/geo_json/geo_json_entity.dart';
+import 'package:chattyevent_app_flutter/domain/entities/geocoding/address_entity.dart';
+import 'package:chattyevent_app_flutter/domain/entities/geocoding/geo_json_entity.dart';
 
 class PrivateEventLocationEntity {
-  final GeoJsonEntity? geoJsonLocation;
-  final String? country;
-  final String? zip;
-  final String? city;
-  final String? street;
-  final String? housenumber;
+  final GeoJsonEntity? geoJson;
+  final AddressEntity? address;
 
   PrivateEventLocationEntity({
-    this.geoJsonLocation,
-    this.country,
-    this.zip,
-    this.city,
-    this.street,
-    this.housenumber,
+    this.geoJson,
+    this.address,
   });
 
   factory PrivateEventLocationEntity.merge({
@@ -22,12 +15,8 @@ class PrivateEventLocationEntity {
     required PrivateEventLocationEntity oldEntity,
   }) {
     return PrivateEventLocationEntity(
-      geoJsonLocation: newEntity.geoJsonLocation ?? oldEntity.geoJsonLocation,
-      country: newEntity.country ?? oldEntity.country,
-      zip: newEntity.zip ?? oldEntity.zip,
-      city: newEntity.city ?? oldEntity.city,
-      street: newEntity.street ?? oldEntity.street,
-      housenumber: newEntity.housenumber ?? oldEntity.housenumber,
+      geoJson: newEntity.geoJson ?? oldEntity.geoJson,
+      address: newEntity.address ?? oldEntity.address,
     );
   }
 }

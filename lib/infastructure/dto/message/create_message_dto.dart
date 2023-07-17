@@ -1,11 +1,13 @@
 import 'dart:io';
 import 'package:chattyevent_app_flutter/core/utils/encryption_utils.dart';
+import 'package:chattyevent_app_flutter/infastructure/dto/message/create_message_location_dto.dart';
 
 class CreateMessageDto {
   final String message;
   final String? messageToReactTo;
   final String? groupchatTo;
   final String? privateEventTo;
+  final CreateMessageLocationDto? currentLocation;
   final String? userTo;
   // TODO: multiple files
   final File? file;
@@ -13,6 +15,7 @@ class CreateMessageDto {
   CreateMessageDto({
     required this.message,
     this.groupchatTo,
+    this.currentLocation,
     this.userTo,
     this.privateEventTo,
     this.file,
@@ -24,6 +27,10 @@ class CreateMessageDto {
     map.addAll({
       'message': EncryptionUtils.encrypt(text: message),
     });
+
+    if (currentLocation != null) {
+      map.addAll({"currentLocation": currentLocation!.toMap()});
+    }
 
     if (messageToReactTo != null) {
       map.addAll({'messageToReactTo': messageToReactTo});

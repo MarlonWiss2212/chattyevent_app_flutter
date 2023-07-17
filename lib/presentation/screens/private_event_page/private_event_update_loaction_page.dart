@@ -1,10 +1,11 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:chattyevent_app_flutter/infastructure/dto/geocoding/create_address_dto.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:chattyevent_app_flutter/application/bloc/current_private_event/current_private_event_cubit.dart';
-import 'package:chattyevent_app_flutter/infastructure/dto/private_event/create_location_private_event_dto.dart';
+import 'package:chattyevent_app_flutter/infastructure/dto/private_event/create_private_event_location_dto.dart';
 import 'package:chattyevent_app_flutter/infastructure/dto/private_event/update_private_event_dto.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/button.dart';
 
@@ -109,11 +110,13 @@ class _PrivateEventUpdateLocationPageState
                         .updateCurrentPrivateEvent(
                       updatePrivateEventDto: UpdatePrivateEventDto(
                         eventLocation: CreatePrivateEventLocationDto(
-                          city: cityController.text,
-                          zip: zipController.text,
-                          housenumber: housenumberController.text,
-                          street: streetController.text,
-                          country: "DE",
+                          address: CreateAddressDto(
+                            city: cityController.text,
+                            zip: zipController.text,
+                            housenumber: housenumberController.text,
+                            street: streetController.text,
+                            country: "DE",
+                          ),
                         ),
                       ),
                     );

@@ -97,10 +97,20 @@ class ChatMessageReactMessageContainer extends StatelessWidget {
                         ],
                       ),
                     ],
-                    if (messageAndUser.message.fileLinks != null &&
-                        messageAndUser.message.fileLinks!.isNotEmpty) ...{
+                    if (messageAndUser.message.currentLocation != null) ...[
                       const SizedBox(height: 8),
-                    },
+                      Row(
+                        children: [
+                          const Icon(Ionicons.map),
+                          const SizedBox(width: 2),
+                          Text(
+                            "Geradiger Standort",
+                            overflow: TextOverflow.ellipsis,
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                        ],
+                      ),
+                    ],
                     if (messageAndUser.message.message != null) ...{
                       Text(
                         messageAndUser.message.message!,

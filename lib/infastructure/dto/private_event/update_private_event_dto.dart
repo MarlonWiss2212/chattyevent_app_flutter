@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:chattyevent_app_flutter/core/enums/private_event/private_event_status_enum.dart';
-import 'package:chattyevent_app_flutter/infastructure/dto/private_event/create_location_private_event_dto.dart';
+import 'package:chattyevent_app_flutter/infastructure/dto/private_event/create_private_event_location_dto.dart';
 import 'package:chattyevent_app_flutter/infastructure/dto/private_event/update_private_event_permissions_dto.dart';
 
 class UpdatePrivateEventDto {

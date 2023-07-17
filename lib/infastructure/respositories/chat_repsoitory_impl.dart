@@ -40,7 +40,7 @@ class ChatRepositoryImpl implements ChatRepository {
               eventDate
               eventEndDate
               eventLocation {
-                geoJsonLocation {
+                geoJson {
                   type
                   coordinates
                 }

@@ -11,6 +11,7 @@ class ImageFullscreenDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dismissible(
+      resizeDuration: null,
       key: UniqueKey(),
       direction: DismissDirection.down,
       onDismissed: (direction) => Navigator.of(context).pop(),

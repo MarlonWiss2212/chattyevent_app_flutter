@@ -1,11 +1,15 @@
 import 'dart:io';
 import 'package:chattyevent_app_flutter/application/bloc/current_private_event/current_private_event_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/profile_page/profile_page_cubit.dart';
+import 'package:chattyevent_app_flutter/core/enums/geo_json/geo_json_type_enum.dart';
 import 'package:chattyevent_app_flutter/domain/entities/message/message_and_user_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/message/message_entity.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/image_picker_usecases.dart';
+import 'package:chattyevent_app_flutter/domain/usecases/location_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/message_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/vibration_usecases.dart';
+import 'package:chattyevent_app_flutter/infastructure/dto/geocoding/create_geo_json_dto.dart';
+import 'package:chattyevent_app_flutter/infastructure/dto/message/create_message_location_dto.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:chattyevent_app_flutter/application/bloc/current_groupchat/current_chat_cubit.dart';
@@ -21,6 +25,7 @@ class AddMessageCubit extends Cubit<AddMessageState> {
   final ImagePickerUseCases imagePickerUseCases;
   final NotificationCubit notificationCubit;
   final VibrationUseCases vibrationUseCases;
+  final LocationUseCases locationUseCases;
 
   AddMessageCubit(
     super.initialState, {
@@ -28,6 +33,7 @@ class AddMessageCubit extends Cubit<AddMessageState> {
     required this.messageUseCases,
     required this.notificationCubit,
     required this.imagePickerUseCases,
+    required this.locationUseCases,
     required this.vibrationUseCases,
   });
 
@@ -46,10 +52,9 @@ class AddMessageCubit extends Cubit<AddMessageState> {
     if (state.status == AddMessageStateStatus.loading) return;
     emitState(status: AddMessageStateStatus.loading);
 
-    if (state.message == null ||
-        (state.groupchatTo == null &&
-            state.privateEventTo == null &&
-            state.userTo == null)) {
+    if ((state.groupchatTo == null &&
+        state.privateEventTo == null &&
+        state.userTo == null)) {
       notificationCubit.newAlert(
         notificationAlert: NotificationAlert(
           title: "Ausfüll Fehler",
@@ -62,9 +67,17 @@ class AddMessageCubit extends Cubit<AddMessageState> {
     final Either<NotificationAlert, MessageEntity> messageOrFailure =
         await messageUseCases.createMessageViaApi(
       createMessageDto: CreateMessageDto(
-        message: state.message!,
+        message: state.message ?? "",
         groupchatTo: state.groupchatTo,
         userTo: state.userTo,
+        currentLocation: state.lat != null && state.lon != null
+            ? CreateMessageLocationDto(
+                geoJson: CreateGeoJsonDto(
+                  coordinates: [state.lon!, state.lat!],
+                  type: GeoJsonTypeEnum.point,
+                ),
+              )
+            : null,
         privateEventTo: state.privateEventTo,
         messageToReactTo: state.messageToReactToWithUser?.message.id,
         file: state.file,
@@ -116,19 +129,39 @@ class AddMessageCubit extends Cubit<AddMessageState> {
     );
   }
 
+  Future setCurrentLocation() async {
+    final positionOrAlert =
+        await locationUseCases.getCurrentLocationWithPermissions();
+
+    positionOrAlert.fold(
+      (alert) => notificationCubit.newAlert(notificationAlert: alert),
+      (position) {
+        emitState(
+          lat: position.latitude,
+          lon: position.longitude,
+        );
+      },
+    );
+  }
+
   void emitState({
     AddMessageStateStatus? status,
     MessageEntity? addedMessage,
     File? file,
     bool removeFile = false,
     bool removeMessageToReactTo = false,
+    bool removeCurrentLocation = false,
     String? message,
     String? groupchatTo,
     MessageAndUserEntity? messageToReactToWithUser,
     String? userTo,
+    double? lon,
+    double? lat,
     String? privateEventTo,
   }) {
     emit(AddMessageState(
+      lat: removeCurrentLocation ? null : lat ?? state.lat,
+      lon: removeCurrentLocation ? null : lon ?? state.lon,
       message: message ?? state.message,
       messageToReactToWithUser: removeMessageToReactTo
           ? null

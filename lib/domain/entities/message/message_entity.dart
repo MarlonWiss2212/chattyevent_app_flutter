@@ -1,3 +1,5 @@
+import 'package:chattyevent_app_flutter/domain/entities/message/message_location_entity.dart';
+
 class MessageEntity {
   final String id;
   final String? message;
@@ -9,12 +11,14 @@ class MessageEntity {
   final String? groupchatTo;
   final String? privateEventTo;
   final String? userTo;
+  final MessageLocationEntity? currentLocation;
   final List<String>? readBy;
 
   MessageEntity({
     required this.id,
     this.groupchatTo,
     this.privateEventTo,
+    this.currentLocation,
     this.userTo,
     required this.createdAt,
     this.readBy,
@@ -31,6 +35,7 @@ class MessageEntity {
   }) {
     return MessageEntity(
       id: newEntity.id,
+      currentLocation: newEntity.currentLocation ?? oldEntity.currentLocation,
       message: newEntity.message ?? oldEntity.message,
       fileLinks: newEntity.fileLinks ?? oldEntity.fileLinks,
       readBy: newEntity.readBy ?? oldEntity.readBy,

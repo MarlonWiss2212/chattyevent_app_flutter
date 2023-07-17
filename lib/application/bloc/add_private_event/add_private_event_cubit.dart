@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:chattyevent_app_flutter/infastructure/dto/geocoding/create_address_dto.dart';
 import 'package:chattyevent_app_flutter/infastructure/dto/private_event/create_private_event_permissions_dto.dart';
 import 'package:chattyevent_app_flutter/infastructure/filter/calendar/find_time_by_users_calendar_filter.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/calendar_usecases.dart';
@@ -6,7 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:chattyevent_app_flutter/application/bloc/home_page/home_event/home_event_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
-import 'package:chattyevent_app_flutter/infastructure/dto/private_event/create_location_private_event_dto.dart';
+import 'package:chattyevent_app_flutter/infastructure/dto/private_event/create_private_event_location_dto.dart';
 import 'package:chattyevent_app_flutter/infastructure/dto/private_event/create_private_event_dto.dart';
 import 'package:chattyevent_app_flutter/infastructure/dto/private_event/private_event_user/create_private_event_user_from_private_event_dto.dart';
 import 'package:chattyevent_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
@@ -66,11 +67,13 @@ class AddPrivateEventCubit extends Cubit<AddPrivateEventState> {
                 state.housenumber!.isNotEmpty &&
                 state.street!.isNotEmpty
             ? CreatePrivateEventLocationDto(
-                city: state.city!,
-                country: "DE",
-                housenumber: state.housenumber!,
-                street: state.street!,
-                zip: state.zip!,
+                address: CreateAddressDto(
+                  city: state.city!,
+                  country: "DE",
+                  housenumber: state.housenumber!,
+                  street: state.street!,
+                  zip: state.zip!,
+                ),
               )
             : null,
       ),

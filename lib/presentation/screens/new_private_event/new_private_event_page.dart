@@ -75,7 +75,6 @@ class NewPrivateEventPage extends StatelessWidget {
               ),
               body: AutoTabsRouter.pageView(
                 routes: const [
-                  // had a route word after tab before
                   NewPrivateEventDetailsTab(),
                   NewPrivateEventTypeTab(),
                   NewPrivateEventSearchTab(),

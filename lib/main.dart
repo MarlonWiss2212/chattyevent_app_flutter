@@ -24,7 +24,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await Future.wait([
-    dotenv.load(fileName: '.env'),
+    dotenv.load(fileName: '.dev.env'),
     InjectionUtils.initialize(),
   ]);
   if (!kIsWeb) {
@@ -155,7 +155,7 @@ class _AppState extends State<App> {
                     labelColor: lightColorScheme.primary,
                     dividerColor: Colors.transparent,
                     indicator: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(8),
                       color: lightColorScheme.primaryContainer,
                     ),
                   ),
@@ -180,7 +180,7 @@ class _AppState extends State<App> {
                     labelColor: darkColorScheme.primary,
                     dividerColor: Colors.transparent,
                     indicator: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(8),
                       color: darkColorScheme.primaryContainer,
                     ),
                   ),

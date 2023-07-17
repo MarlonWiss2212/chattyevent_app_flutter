@@ -58,15 +58,17 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
             eventEndDate
             groupchatTo
             eventLocation {
-              geoJsonLocation {
+              geoJson {
                 type
                 coordinates
               }
-              zip
-              city
-              country
-              street
-              housenumber
+              address {
+                zip
+                city
+                country
+                street
+                housenumber
+              }
             }
             permissions {
               changeTitle
@@ -121,15 +123,17 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
             coverImageLink
             description
             eventLocation {
-              geoJsonLocation {
+              geoJson {
                 type
                 coordinates
               }
-              zip
-              city
-              country
-              street
-              housenumber
+              address {
+                zip
+                city
+                country
+                street
+                housenumber
+              }
             }
             permissions {
               changeTitle
@@ -216,15 +220,17 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
             coverImageLink
             description
             eventLocation {
-              geoJsonLocation {
+              geoJson {
                 type
                 coordinates
               }
-              zip
-              city
-              country
-              street
-              housenumber
+              address {
+                zip
+                city
+                country
+                street
+                housenumber
+              }
             }
             permissions {
               changeTitle
@@ -377,7 +383,7 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
             eventDate
             eventEndDate
             eventLocation {
-              geoJsonLocation {
+              geoJson {
                 type
                 coordinates
               }
@@ -440,15 +446,17 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
             coverImageLink
             description
             eventLocation {
-              geoJsonLocation {
+              geoJson {
                 type
                 coordinates
               }
-              zip
-              city
-              country
-              street
-              housenumber
+              address {
+                zip
+                city
+                country
+                street
+                housenumber
+              }
             }
             permissions {
               changeTitle

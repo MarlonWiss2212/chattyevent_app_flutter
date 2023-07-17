@@ -17,30 +17,16 @@ class ChatMessageInputFiles extends StatelessWidget {
           if (state.file != null) {
             return Column(
               children: [
-                SizedBox(
-                  height: 100,
-                  child: InkWell(
-                    onTap: () {
-                      BlocProvider.of<AddMessageCubit>(context).emitState(
-                        removeFile: true,
-                      );
-                    },
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: SizedBox(
+                    height: 100,
                     child: Stack(
                       fit: StackFit.expand,
                       children: [
-                        Container(
-                          decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                          ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(8),
-                            child: Image.file(
-                              BlocProvider.of<AddMessageCubit>(context)
-                                  .state
-                                  .file!,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
+                        Image.file(
+                          BlocProvider.of<AddMessageCubit>(context).state.file!,
+                          fit: BoxFit.cover,
                         ),
                         Container(
                           decoration: const BoxDecoration(

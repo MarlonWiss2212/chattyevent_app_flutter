@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:chattyevent_app_flutter/infastructure/dto/private_event/create_location_private_event_dto.dart';
+import 'package:chattyevent_app_flutter/infastructure/dto/private_event/create_private_event_location_dto.dart';
 import 'package:chattyevent_app_flutter/infastructure/dto/private_event/create_private_event_permissions_dto.dart';
 import 'package:chattyevent_app_flutter/infastructure/dto/private_event/private_event_user/create_private_event_user_from_private_event_dto.dart';
 
@@ -26,7 +26,6 @@ class CreatePrivateEventDto {
     this.description,
     this.eventLocation,
   });
-  
 
   Map<dynamic, dynamic> toMap() {
     Map<dynamic, dynamic> map = {

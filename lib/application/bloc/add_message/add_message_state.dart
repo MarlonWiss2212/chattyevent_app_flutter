@@ -13,7 +13,13 @@ class AddMessageState {
   final String? userTo;
   final MessageAndUserEntity? messageToReactToWithUser;
 
+  // current message location
+  final double? lat;
+  final double? lon;
+
   AddMessageState({
+    this.lat,
+    this.lon,
     this.addedMessage,
     this.message,
     this.messageToReactToWithUser,

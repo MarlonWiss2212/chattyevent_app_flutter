@@ -49,6 +49,19 @@ class MessageRepositoryImpl implements MessageRepository {
             readBy
             fileLinks
             groupchatTo
+            currentLocation {
+              geoJson {
+                type
+                coordinates
+              }
+              address {
+                zip
+                city
+                country
+                street
+                housenumber
+              }
+            }
             privateEventTo
             userTo
             createdBy
@@ -84,6 +97,19 @@ class MessageRepositoryImpl implements MessageRepository {
             _id
             message
             messageToReactTo
+            currentLocation {
+              geoJson {
+                type
+                coordinates
+              }
+              address {
+                zip
+                city
+                country
+                street
+                housenumber
+              }
+            }
             fileLinks
             readBy
             groupchatTo
@@ -131,6 +157,19 @@ class MessageRepositoryImpl implements MessageRepository {
             _id
             message
             readBy
+            currentLocation {
+              geoJson {
+                type
+                coordinates
+              }
+              address {
+                zip
+                city
+                country
+                street
+                housenumber
+              }
+            }
             messageToReactTo
             groupchatTo
             privateEventTo

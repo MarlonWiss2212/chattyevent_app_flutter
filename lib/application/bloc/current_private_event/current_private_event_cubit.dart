@@ -331,7 +331,7 @@ class CurrentPrivateEventCubit extends Cubit<CurrentPrivateEventState> {
     final Either<NotificationAlert, Unit> openedOrFailure =
         await locationUseCases.openMaps(
       query:
-          "${state.privateEvent.eventLocation!.street} ${state.privateEvent.eventLocation!.housenumber}, ${state.privateEvent.eventLocation!.city}, ${state.privateEvent.eventLocation!.zip}, ${state.privateEvent.eventLocation!.country}",
+          "${state.privateEvent.eventLocation?.address?.street} ${state.privateEvent.eventLocation?.address?.housenumber}, ${state.privateEvent.eventLocation?.address?.city}, ${state.privateEvent.eventLocation?.address?.zip}, ${state.privateEvent.eventLocation?.address?.country}",
     );
 
     openedOrFailure.fold(

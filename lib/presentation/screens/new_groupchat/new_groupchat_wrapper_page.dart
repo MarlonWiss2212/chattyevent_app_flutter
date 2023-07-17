@@ -66,7 +66,6 @@ class NewGroupchatWrapperPage extends StatelessWidget {
               ),
               body: AutoTabsRouter.pageView(
                 routes: const [
-                  // had a route word after tab before
                   NewGroupchatDetailsTab(),
                   NewGroupchatSelectUserTab(),
                   NewGroupchatPermissionsTab(),

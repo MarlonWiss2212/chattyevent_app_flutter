@@ -1,5 +1,7 @@
 import 'package:chattyevent_app_flutter/core/utils/encryption_utils.dart';
 import 'package:chattyevent_app_flutter/domain/entities/message/message_entity.dart';
+import 'package:chattyevent_app_flutter/domain/entities/message/message_location_entity.dart';
+import 'package:chattyevent_app_flutter/infastructure/models/message/message_location_model.dart';
 
 class MessageModel extends MessageEntity {
   MessageModel({
@@ -12,11 +14,13 @@ class MessageModel extends MessageEntity {
     String? privateEventTo,
     String? userTo,
     required DateTime createdAt,
+    MessageLocationEntity? currentLocation,
     List<String>? readBy,
     DateTime? updatedAt,
   }) : super(
           id: id,
           readBy: readBy,
+          currentLocation: currentLocation,
           message: message,
           fileLinks: fileLinks,
           groupchatTo: groupchatTo,
@@ -57,6 +61,9 @@ class MessageModel extends MessageEntity {
           ? EncryptionUtils.decrypt(encryptedText: json['message'])
           : null,
       fileLinks: fileLinks,
+      currentLocation: json['currentLocation'] != null
+          ? MessageLocationModel.fromJson(json['currentLocation'])
+          : null,
       readBy: readBy,
       messageToReactTo: json["messageToReactTo"],
       createdBy: json["createdBy"],

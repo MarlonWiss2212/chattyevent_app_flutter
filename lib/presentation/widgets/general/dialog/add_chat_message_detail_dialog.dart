@@ -58,6 +58,26 @@ class AddChatMessageDetailDialog extends StatelessWidget {
               ),
             ),
           ),
+          InkWell(
+            borderRadius: BorderRadius.circular(8),
+            onTap: () {
+              BlocProvider.of<AddMessageCubit>(c).setCurrentLocation();
+              Navigator.of(context).pop();
+            },
+            child: Ink(
+              padding: const EdgeInsets.all(10),
+              child: Row(
+                children: [
+                  const Icon(Ionicons.location, size: 32),
+                  const SizedBox(width: 32),
+                  Text(
+                    "Dein Standort",
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                ],
+              ),
+            ),
+          ),
         ],
       ),
     );

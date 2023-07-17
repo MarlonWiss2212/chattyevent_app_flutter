@@ -1,17 +1,22 @@
 import 'package:chattyevent_app_flutter/application/bloc/add_message/add_message_cubit.dart';
+import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:chattyevent_app_flutter/core/utils/injection.dart';
 import 'package:chattyevent_app_flutter/domain/entities/message/message_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/user/user_entity.dart';
+import 'package:chattyevent_app_flutter/domain/usecases/location_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/vibration_usecases.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/chat_message/chat_message_react_message_container.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/chat_message/chat_message_read_by_bottom_sheet.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/dialog/image_fullscreen_dialog.dart';
 import 'package:collection/collection.dart';
+import 'package:dartz/dartz.dart' as dz;
 import 'package:flutter/material.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_map/flutter_map.dart';
 import 'package:intl/intl.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:swipe_to/swipe_to.dart';
 import 'package:chattyevent_app_flutter/domain/entities/message/message_and_user_entity.dart';
 
@@ -95,9 +100,7 @@ class _ChatMessageContainerState extends State<ChatMessageContainer> {
                   }),
                   onLongPress: () async {
                     await serviceLocator<VibrationUseCases>()
-                        .vibrate(
-                          duration: 10,
-                        )
+                        .vibrate(duration: 10)
                         .then(
                           (value) async => showModalBottomSheet(
                             backgroundColor:
@@ -112,7 +115,7 @@ class _ChatMessageContainerState extends State<ChatMessageContainer> {
                           ),
                         );
                   },
-                  child: messageWithFilesAndReactMessage(
+                  child: data(
                     context,
                     isCurrentUser,
                     isDarkMode,
@@ -128,8 +131,11 @@ class _ChatMessageContainerState extends State<ChatMessageContainer> {
     );
   }
 
-  Widget messageWithFilesAndReactMessage(
-      BuildContext context, bool isCurrentUser, bool isDarkMode) {
+  Widget data(
+    BuildContext context,
+    bool isCurrentUser,
+    bool isDarkMode,
+  ) {
     return Container(
       constraints: BoxConstraints(
         maxWidth: MediaQuery.of(context).size.width * 0.7,
@@ -164,7 +170,7 @@ class _ChatMessageContainerState extends State<ChatMessageContainer> {
             ),
           },
           if (widget.message.fileLinks != null &&
-              widget.message.fileLinks!.isNotEmpty) ...{
+              widget.message.fileLinks!.isNotEmpty) ...[
             //TODO: as list of documents
             Container(
               constraints: BoxConstraints(
@@ -193,7 +199,112 @@ class _ChatMessageContainerState extends State<ChatMessageContainer> {
                 ),
               ),
             ),
-          },
+            if (widget.message.message != null ||
+                widget.message.currentLocation?.address != null ||
+                widget.message.currentLocation?.geoJson?.coordinates !=
+                    null) ...{
+              const SizedBox(height: 8),
+            }
+          ],
+          if (widget.message.currentLocation?.geoJson?.coordinates != null) ...[
+            ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: SizedBox(
+                height: 200,
+                child: Stack(
+                  children: [
+                    FlutterMap(
+                      options: MapOptions(
+                        interactiveFlags: InteractiveFlag.none,
+                        center: LatLng(
+                          widget.message.currentLocation!.geoJson!
+                              .coordinates![1],
+                          widget.message.currentLocation!.geoJson!
+                              .coordinates![0],
+                        ),
+                      ),
+                      children: [
+                        TileLayer(
+                          urlTemplate:
+                              'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                        ),
+                        MarkerLayer(
+                          markers: [
+                            Marker(
+                              point: LatLng(
+                                widget.message.currentLocation!.geoJson!
+                                    .coordinates![1],
+                                widget.message.currentLocation!.geoJson!
+                                    .coordinates![0],
+                              ),
+                              builder: (context) {
+                                return Icon(
+                                  Ionicons.location,
+                                  color:
+                                      Theme.of(context).colorScheme.background,
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Material(
+                        color: Colors.transparent,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8),
+                          child: InkWell(
+                            onTap: () => openMaps(
+                              LatLng(
+                                widget.message.currentLocation!.geoJson!
+                                    .coordinates![1],
+                                widget.message.currentLocation!.geoJson!
+                                    .coordinates![0],
+                              ),
+                            ),
+                            child: Ink(
+                              padding: const EdgeInsets.all(16),
+                              decoration: BoxDecoration(
+                                color: const Color.fromARGB(100, 0, 0, 0),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Row(
+                                children: [
+                                  const Icon(Ionicons.map),
+                                  const SizedBox(width: 16),
+                                  Text(
+                                    "In Maps öffnen",
+                                    style:
+                                        Theme.of(context).textTheme.labelLarge,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 4),
+            if (widget.message.message != null ||
+                widget.message.currentLocation?.address != null) ...{
+              const SizedBox(height: 8),
+            }
+          ],
+          if (widget.message.currentLocation?.address != null) ...[
+            Text(
+              "${widget.message.currentLocation!.address?.country}, ${widget.message.currentLocation!.address?.city}, ${widget.message.currentLocation!.address?.zip}, ${widget.message.currentLocation!.address?.street} ${widget.message.currentLocation!.address?.housenumber}",
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+            if (widget.message.message != null) ...{
+              const SizedBox(height: 8),
+            }
+          ],
           if (widget.message.message != null) ...{
             if (widget.message.fileLinks != null &&
                 widget.message.fileLinks!.isNotEmpty) ...{
@@ -207,6 +318,18 @@ class _ChatMessageContainerState extends State<ChatMessageContainer> {
           },
         ],
       ),
+    );
+  }
+
+  Future openMaps(LatLng latLon) async {
+    final dz.Either<NotificationAlert, dz.Unit> openedOrFailure =
+        await serviceLocator<LocationUseCases>().openMaps(LatLng: latLon);
+
+    openedOrFailure.fold(
+      (alert) => BlocProvider.of<NotificationCubit>(context).newAlert(
+        notificationAlert: alert,
+      ),
+      (_) => null,
     );
   }
 
