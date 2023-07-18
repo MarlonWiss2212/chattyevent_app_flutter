@@ -7,6 +7,9 @@ class AddMessageState {
   final AddMessageStateStatus status;
 
   final File? file;
+  final File? voiceMessage;
+  final Stream<RecordingDisposition>? isRecordingVoiceMessageStream;
+
   final String? message;
   final String? groupchatTo;
   final String? privateEventTo;
@@ -18,6 +21,8 @@ class AddMessageState {
   final double? lon;
 
   AddMessageState({
+    this.voiceMessage,
+    this.isRecordingVoiceMessageStream,
     this.lat,
     this.lon,
     this.addedMessage,

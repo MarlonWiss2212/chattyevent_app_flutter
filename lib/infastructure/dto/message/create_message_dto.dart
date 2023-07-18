@@ -11,6 +11,7 @@ class CreateMessageDto {
   final String? userTo;
   // TODO: multiple files
   final File? file;
+  final File? voiceMessage;
 
   CreateMessageDto({
     required this.message,
@@ -19,6 +20,7 @@ class CreateMessageDto {
     this.userTo,
     this.privateEventTo,
     this.file,
+    this.voiceMessage,
     this.messageToReactTo,
   });
 

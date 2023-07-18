@@ -7,6 +7,7 @@ import 'package:chattyevent_app_flutter/domain/entities/message/message_entity.d
 import 'package:chattyevent_app_flutter/domain/usecases/image_picker_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/location_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/message_usecases.dart';
+import 'package:chattyevent_app_flutter/domain/usecases/microphone_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/vibration_usecases.dart';
 import 'package:chattyevent_app_flutter/infastructure/dto/geocoding/create_geo_json_dto.dart';
 import 'package:chattyevent_app_flutter/infastructure/dto/message/create_message_location_dto.dart';
@@ -15,6 +16,7 @@ import 'package:dartz/dartz.dart';
 import 'package:chattyevent_app_flutter/application/bloc/current_groupchat/current_chat_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:chattyevent_app_flutter/infastructure/dto/message/create_message_dto.dart';
+import 'package:flutter_sound/flutter_sound.dart';
 
 part 'add_message_state.dart';
 
@@ -26,6 +28,7 @@ class AddMessageCubit extends Cubit<AddMessageState> {
   final NotificationCubit notificationCubit;
   final VibrationUseCases vibrationUseCases;
   final LocationUseCases locationUseCases;
+  final MicrophoneUseCases microphoneUseCases;
 
   AddMessageCubit(
     super.initialState, {
@@ -35,6 +38,7 @@ class AddMessageCubit extends Cubit<AddMessageState> {
     required this.imagePickerUseCases,
     required this.locationUseCases,
     required this.vibrationUseCases,
+    required this.microphoneUseCases,
   });
 
   Future reactToMessage({
@@ -70,6 +74,7 @@ class AddMessageCubit extends Cubit<AddMessageState> {
         message: state.message ?? "",
         groupchatTo: state.groupchatTo,
         userTo: state.userTo,
+        voiceMessage: state.voiceMessage,
         currentLocation: state.lat != null && state.lon != null
             ? CreateMessageLocationDto(
                 geoJson: CreateGeoJsonDto(
@@ -105,6 +110,41 @@ class AddMessageCubit extends Cubit<AddMessageState> {
           ),
           (profileCubit) => profileCubit.addMessage(message: message),
         );
+      },
+    );
+  }
+
+  Future<bool> startRecordingVoiceMessage() async {
+    await microphoneUseCases.stopRecording();
+    final alertOrVoid = await microphoneUseCases.startRecording();
+
+    return alertOrVoid.fold(
+      (alert) {
+        notificationCubit.newAlert(notificationAlert: alert);
+        return false;
+      },
+      (unit) {
+        return microphoneUseCases.isRecordingStream().fold(
+          (alert) {
+            notificationCubit.newAlert(notificationAlert: alert);
+            return false;
+          },
+          (stream) {
+            emitState(isRecordingVoiceMessageStream: stream);
+            return true;
+          },
+        );
+      },
+    );
+  }
+
+  Future stopRecordingVoiceMessageAndEmitIt() async {
+    emitState(removeVoiceMessageStream: true);
+    final alertOrPath = await microphoneUseCases.stopRecording();
+    alertOrPath.fold(
+      (alert) => notificationCubit.newAlert(notificationAlert: alert),
+      (path) {
+        emitState(voiceMessage: File(path));
       },
     );
   }
@@ -148,7 +188,11 @@ class AddMessageCubit extends Cubit<AddMessageState> {
     AddMessageStateStatus? status,
     MessageEntity? addedMessage,
     File? file,
+    File? voiceMessage,
+    Stream<RecordingDisposition>? isRecordingVoiceMessageStream,
+    bool removeVoiceMessageStream = false,
     bool removeFile = false,
+    bool removeVoiceMessage = false,
     bool removeMessageToReactTo = false,
     bool removeCurrentLocation = false,
     String? message,
@@ -160,6 +204,12 @@ class AddMessageCubit extends Cubit<AddMessageState> {
     String? privateEventTo,
   }) {
     emit(AddMessageState(
+      isRecordingVoiceMessageStream: removeVoiceMessageStream
+          ? null
+          : isRecordingVoiceMessageStream ??
+              state.isRecordingVoiceMessageStream,
+      voiceMessage:
+          removeVoiceMessage ? null : voiceMessage ?? state.voiceMessage,
       lat: removeCurrentLocation ? null : lat ?? state.lat,
       lon: removeCurrentLocation ? null : lon ?? state.lon,
       message: message ?? state.message,

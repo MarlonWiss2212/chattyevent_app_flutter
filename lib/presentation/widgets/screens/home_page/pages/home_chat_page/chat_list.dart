@@ -89,9 +89,9 @@ class _ChatListState extends State<ChatList> {
             return ConstrainedBox(
               constraints: BoxConstraints(
                 minWidth: MediaQuery.of(context).size.width,
-                minHeight: 80,
+                minHeight: 90,
                 maxWidth: MediaQuery.of(context).size.width,
-                maxHeight: 130,
+                maxHeight: 90,
               ),
               child: AdWidget(ad: _ad!),
             );

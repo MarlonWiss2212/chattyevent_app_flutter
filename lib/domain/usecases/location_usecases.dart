@@ -26,7 +26,7 @@ class LocationUseCases {
     PermissionStatus permissionStatus =
         await permissionRepository.getLocationPermissionStatus();
 
-    if (await locationServiceIsEnabled() == false) {
+    if (await locationRepository.locationServiceIsEnabled() == false) {
       return Left(mapLocationFailureToNotificationAlert(
         ServiceLocationFailure(),
       ));

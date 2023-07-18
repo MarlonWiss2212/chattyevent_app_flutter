@@ -85,7 +85,7 @@ class HomeEventPageDetails extends StatelessWidget {
               maxWidth: MediaQuery.of(context).size.width - 16,
               minWidth: MediaQuery.of(context).size.width - 16,
               maxHeight: 400,
-              minHeight: 320,
+              minHeight: 400,
               templateType: TemplateType.medium,
             ),
           ),

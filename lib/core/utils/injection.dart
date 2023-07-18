@@ -2,6 +2,7 @@ import 'package:chattyevent_app_flutter/application/bloc/notification/notificati
 import 'package:chattyevent_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/calendar_repository.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/chat_repository.dart';
+import 'package:chattyevent_app_flutter/domain/repositories/device/microphone_repository.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/device/permission_repository.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/device/vibration_repository.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/imprint_repository.dart';
@@ -10,13 +11,16 @@ import 'package:chattyevent_app_flutter/domain/usecases/calendar_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/chat_usecase.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/imprint_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/message_usecases.dart';
+import 'package:chattyevent_app_flutter/domain/usecases/microphone_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/permission_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/vibration_usecases.dart';
+import 'package:chattyevent_app_flutter/infastructure/datasources/device/microphone.dart';
 import 'package:chattyevent_app_flutter/infastructure/datasources/device/permission.dart';
 import 'package:chattyevent_app_flutter/infastructure/datasources/device/vibration.dart';
 import 'package:chattyevent_app_flutter/infastructure/datasources/remote/http.dart';
 import 'package:chattyevent_app_flutter/infastructure/respositories/calendar_repository_impl.dart';
 import 'package:chattyevent_app_flutter/infastructure/respositories/chat_repsoitory_impl.dart';
+import 'package:chattyevent_app_flutter/infastructure/respositories/device/microphone_repository_impl.dart';
 import 'package:chattyevent_app_flutter/infastructure/respositories/device/permission_repository_impl.dart';
 import 'package:chattyevent_app_flutter/infastructure/respositories/device/vibration_repository_impl.dart';
 import 'package:chattyevent_app_flutter/infastructure/respositories/imprint_repository_impl.dart';
@@ -27,6 +31,7 @@ import 'package:chattyevent_app_flutter/presentation/router/create_user_page_gua
 import 'package:chattyevent_app_flutter/presentation/router/router.dart';
 import 'package:chattyevent_app_flutter/presentation/router/verify_email_page_guard.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_sound/flutter_sound.dart';
 import 'package:get_it/get_it.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
@@ -129,6 +134,12 @@ class InjectionUtils {
         permissionRepository: serviceLocator(),
       ),
     );
+    serviceLocator.registerLazySingleton<MicrophoneUseCases>(
+      () => MicrophoneUseCases(
+        microphoneRepository: serviceLocator(),
+        permissionRepository: serviceLocator(),
+      ),
+    );
     serviceLocator.registerLazySingleton<ImagePickerUseCases>(
       () => ImagePickerUseCases(
         imagePickerRepository: serviceLocator(),
@@ -197,6 +208,9 @@ class InjectionUtils {
     );
     serviceLocator.registerLazySingleton<LocationRepository>(
       () => LocationRepositoryImpl(locationDatasource: serviceLocator()),
+    );
+    serviceLocator.registerLazySingleton<MicrophoneRepository>(
+      () => MicrophoneRepositoryImpl(microphoneDatasource: serviceLocator()),
     );
     serviceLocator.registerLazySingleton<ImagePickerRepository>(
       () => ImagePickerRepositoryImpl(
@@ -275,6 +289,12 @@ class InjectionUtils {
     );
     serviceLocator.registerLazySingleton<PermissionDatasource>(
       () => PermissionDatasourceImpl(),
+    );
+    serviceLocator.registerLazySingleton<MicrophoneDatasource>(
+      () => MicrophoneDatasourceImpl(
+        recorder: FlutterSoundRecorder(),
+        player: FlutterSoundPlayer(),
+      ),
     );
     serviceLocator.registerLazySingleton<HttpDatasource>(
       () => HttpDatasourceImpl(),

@@ -8,44 +8,54 @@ class PermissionRepositoryImpl implements PermissionRepository {
 
   @override
   Future<PermissionStatus> getNotificationPermissionStatus() async {
-    return await Permission.notification.status;
+    return await permissionDatasource.getNotificationPermissionStatus();
   }
 
   @override
   Future<PermissionStatus> requestNotificationPermission() async {
-    return await Permission.notification.request();
+    return await permissionDatasource.requestNotificationPermission();
   }
 
   //Location
   @override
   Future<PermissionStatus> getLocationPermissionStatus() async {
-    return await Permission.location.status;
+    return await permissionDatasource.getLocationPermissionStatus();
   }
 
   @override
   Future<PermissionStatus> requestLocationPermission() async {
-    return await Permission.location.request();
+    return await permissionDatasource.requestLocationPermission();
   }
 
   //Camera
   @override
   Future<PermissionStatus> requestCameraPermission() async {
-    return await Permission.camera.request();
+    return await permissionDatasource.requestCameraPermission();
   }
 
   @override
   Future<PermissionStatus> getCameraPermissionStatus() async {
-    return await Permission.camera.status;
+    return await permissionDatasource.getCameraPermissionStatus();
   }
 
   //Photos
   @override
   Future<PermissionStatus> requestPhotosPermission() async {
-    return await Permission.photos.request();
+    return await permissionDatasource.requestPhotosPermission();
   }
 
   @override
   Future<PermissionStatus> getPhotosPermissionStatus() async {
-    return await Permission.photos.status;
+    return await permissionDatasource.getPhotosPermissionStatus();
+  }
+
+  @override
+  Future<PermissionStatus> requestMicrophonePermission() async {
+    return await permissionDatasource.requestMicrophonePermission();
+  }
+
+  @override
+  Future<PermissionStatus> getMicrophonePermissionStatus() async {
+    return await permissionDatasource.getMicrophonePermissionStatus();
   }
 }

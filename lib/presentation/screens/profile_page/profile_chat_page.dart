@@ -86,6 +86,7 @@ class _ProfileChatPageState extends State<ProfileChatPage> {
             child: BlocProvider(
               create: (context) => AddMessageCubit(
                 AddMessageState(userTo: widget.userId),
+                microphoneUseCases: serviceLocator(),
                 vibrationUseCases: serviceLocator(),
                 imagePickerUseCases: serviceLocator(),
                 locationUseCases: serviceLocator(),

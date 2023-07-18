@@ -16,6 +16,7 @@ class MessageModel extends MessageEntity {
     required DateTime createdAt,
     MessageLocationEntity? currentLocation,
     List<String>? readBy,
+    String? voiceMessageLink,
     DateTime? updatedAt,
   }) : super(
           id: id,
@@ -23,6 +24,7 @@ class MessageModel extends MessageEntity {
           currentLocation: currentLocation,
           message: message,
           fileLinks: fileLinks,
+          voiceMessageLink: voiceMessageLink,
           groupchatTo: groupchatTo,
           userTo: userTo,
           privateEventTo: privateEventTo,
@@ -61,6 +63,7 @@ class MessageModel extends MessageEntity {
           ? EncryptionUtils.decrypt(encryptedText: json['message'])
           : null,
       fileLinks: fileLinks,
+      voiceMessageLink: json['voiceMessageLink'],
       currentLocation: json['currentLocation'] != null
           ? MessageLocationModel.fromJson(json['currentLocation'])
           : null,

@@ -13,6 +13,7 @@ import 'package:chattyevent_app_flutter/core/utils/failure_helper.dart';
 import 'package:dartz/dartz.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/message_repository.dart';
 import 'package:chattyevent_app_flutter/infastructure/datasources/remote/graphql.dart';
+import 'package:mime/mime.dart';
 
 class MessageRepositoryImpl implements MessageRepository {
   final GraphQlDatasource graphQlDatasource;
@@ -28,26 +29,44 @@ class MessageRepositoryImpl implements MessageRepository {
       };
 
       /// TODO: should accapt other files than jpg too
-      /// TODO: limit size and scale down
       if (createMessageDto.file != null) {
-        final MultipartFile file = MultipartFile.fromBytes(
-          'photo',
-          createMessageDto.file!.readAsBytesSync(),
-          filename: '1.jpg',
-          contentType: MediaType("image", "jpg"),
-        );
-        variables.addAll({'file': file});
+        final type = lookupMimeType(createMessageDto.file!.path);
+        if (type != null) {
+          final MultipartFile file = MultipartFile.fromBytes(
+            'photo',
+            createMessageDto.file!.readAsBytesSync(),
+            filename: '1.${createMessageDto.file!.uri.pathSegments.last}',
+            contentType: MediaType.parse(type),
+          );
+          variables.addAll({'file': file});
+        }
+      }
+
+      if (createMessageDto.voiceMessage != null) {
+        final type = lookupMimeType(createMessageDto.voiceMessage!.path);
+        print(type);
+        if (type != null) {
+          final MultipartFile file = MultipartFile.fromBytes(
+            'audio',
+            createMessageDto.voiceMessage!.readAsBytesSync(),
+            filename:
+                'voiceMessage.${createMessageDto.voiceMessage!.uri.pathSegments.last}',
+            contentType: MediaType.parse(type),
+          );
+          variables.addAll({'voiceMessage': file});
+        }
       }
 
       final response = await graphQlDatasource.mutation(
         """
-        mutation createMessage(\$input: CreateMessageInput!, \$file: Upload) {
-          createMessage(createMessageInput: \$input, file: \$file) {
+        mutation createMessage(\$input: CreateMessageInput!, \$file: Upload \$voiceMessage: Upload) {
+          createMessage(createMessageInput: \$input, file: \$file, voiceMessage: \$voiceMessage) {
             _id
             message
             messageToReactTo
             readBy
             fileLinks
+            voiceMessageLink
             groupchatTo
             currentLocation {
               geoJson {
@@ -111,6 +130,7 @@ class MessageRepositoryImpl implements MessageRepository {
               }
             }
             fileLinks
+            voiceMessageLink
             readBy
             groupchatTo
             privateEventTo
@@ -175,6 +195,7 @@ class MessageRepositoryImpl implements MessageRepository {
             privateEventTo
             userTo
             fileLinks
+            voiceMessageLink
             createdBy
             createdAt
           }

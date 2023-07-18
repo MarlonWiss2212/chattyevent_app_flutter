@@ -13,4 +13,7 @@ abstract class PermissionRepository {
   //Photos
   Future<PermissionStatus> requestPhotosPermission();
   Future<PermissionStatus> getPhotosPermissionStatus();
+  //Microphone
+  Future<PermissionStatus> requestMicrophonePermission();
+  Future<PermissionStatus> getMicrophonePermissionStatus();
 }

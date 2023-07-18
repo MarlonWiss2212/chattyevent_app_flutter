@@ -81,7 +81,7 @@ class HomeSearchPage extends StatelessWidget {
                         adUnitId: AdHelper.discoverPAgeNativeAdUnitId,
                         maxHeight: 400,
                         maxWidth: MediaQuery.of(context).size.width - 16,
-                        minHeight: 320,
+                        minHeight: 400,
                         minWidth: MediaQuery.of(context).size.width - 16,
                         templateType: TemplateType.medium,
                       )

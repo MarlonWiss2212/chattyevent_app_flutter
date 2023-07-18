@@ -4,6 +4,7 @@ class MessageEntity {
   final String id;
   final String? message;
   final List<String>? fileLinks;
+  final String? voiceMessageLink;
   final String? messageToReactTo;
   final String? createdBy;
   final DateTime? updatedAt;
@@ -19,6 +20,7 @@ class MessageEntity {
     this.groupchatTo,
     this.privateEventTo,
     this.currentLocation,
+    this.voiceMessageLink,
     this.userTo,
     required this.createdAt,
     this.readBy,
@@ -35,6 +37,8 @@ class MessageEntity {
   }) {
     return MessageEntity(
       id: newEntity.id,
+      voiceMessageLink:
+          newEntity.voiceMessageLink ?? oldEntity.voiceMessageLink,
       currentLocation: newEntity.currentLocation ?? oldEntity.currentLocation,
       message: newEntity.message ?? oldEntity.message,
       fileLinks: newEntity.fileLinks ?? oldEntity.fileLinks,

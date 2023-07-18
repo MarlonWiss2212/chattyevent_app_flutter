@@ -13,6 +13,9 @@ abstract class PermissionDatasource {
   //Photos
   Future<PermissionStatus> requestPhotosPermission();
   Future<PermissionStatus> getPhotosPermissionStatus();
+  //Microphone
+  Future<PermissionStatus> requestMicrophonePermission();
+  Future<PermissionStatus> getMicrophonePermissionStatus();
 }
 
 class PermissionDatasourceImpl implements PermissionDatasource {
@@ -57,5 +60,16 @@ class PermissionDatasourceImpl implements PermissionDatasource {
   @override
   Future<PermissionStatus> getPhotosPermissionStatus() async {
     return await Permission.photos.status;
+  }
+
+  ////Photos
+  @override
+  Future<PermissionStatus> requestMicrophonePermission() async {
+    return await Permission.microphone.request();
+  }
+
+  @override
+  Future<PermissionStatus> getMicrophonePermissionStatus() async {
+    return await Permission.microphone.status;
   }
 }

@@ -85,6 +85,7 @@ class _GroupchatPageState extends State<GroupchatPage> {
               create: (context) => AddMessageCubit(
                 AddMessageState(groupchatTo: widget.groupchatId),
                 imagePickerUseCases: serviceLocator(),
+                microphoneUseCases: serviceLocator(),
                 locationUseCases: serviceLocator(),
                 vibrationUseCases: serviceLocator(),
                 notificationCubit: BlocProvider.of<NotificationCubit>(context),
