@@ -1,5 +1,5 @@
+import 'package:chattyevent_app_flutter/core/utils/directory_utils.dart';
 import 'package:flutter_sound/flutter_sound.dart';
-import 'package:path_provider/path_provider.dart';
 
 abstract class MicrophoneDatasource {
   Future<void> openRecorder();
@@ -12,11 +12,7 @@ abstract class MicrophoneDatasource {
 
 class MicrophoneDatasourceImpl implements MicrophoneDatasource {
   FlutterSoundRecorder recorder;
-  FlutterSoundPlayer player;
-  MicrophoneDatasourceImpl({
-    required this.recorder,
-    required this.player,
-  });
+  MicrophoneDatasourceImpl({required this.recorder});
 
   @override
   Future<void> openRecorder() {
@@ -40,10 +36,9 @@ class MicrophoneDatasourceImpl implements MicrophoneDatasource {
 
   @override
   Future<void> startRecording() async {
-    //TODO: make get TemporaryDirecatory better
-    var tempDir = await getTemporaryDirectory();
+    final path = await DirectoryUtils.getTemporaryPath();
     return recorder.startRecorder(
-      toFile: "${tempDir.path}/audio.aac",
+      toFile: "$path/audio.aac",
       codec: Codec.aacADTS,
     );
   }

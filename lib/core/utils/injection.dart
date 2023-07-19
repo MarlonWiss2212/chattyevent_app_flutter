@@ -1,12 +1,15 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:chattyevent_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/calendar_repository.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/chat_repository.dart';
+import 'package:chattyevent_app_flutter/domain/repositories/device/audio_player_repository.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/device/microphone_repository.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/device/permission_repository.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/device/vibration_repository.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/imprint_repository.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/message_repository.dart';
+import 'package:chattyevent_app_flutter/domain/usecases/audio_player_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/calendar_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/chat_usecase.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/imprint_usecases.dart';
@@ -14,12 +17,14 @@ import 'package:chattyevent_app_flutter/domain/usecases/message_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/microphone_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/permission_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/vibration_usecases.dart';
+import 'package:chattyevent_app_flutter/infastructure/datasources/device/audio_player.dart';
 import 'package:chattyevent_app_flutter/infastructure/datasources/device/microphone.dart';
 import 'package:chattyevent_app_flutter/infastructure/datasources/device/permission.dart';
 import 'package:chattyevent_app_flutter/infastructure/datasources/device/vibration.dart';
 import 'package:chattyevent_app_flutter/infastructure/datasources/remote/http.dart';
 import 'package:chattyevent_app_flutter/infastructure/respositories/calendar_repository_impl.dart';
 import 'package:chattyevent_app_flutter/infastructure/respositories/chat_repsoitory_impl.dart';
+import 'package:chattyevent_app_flutter/infastructure/respositories/device/audio_player_repository_impl.dart';
 import 'package:chattyevent_app_flutter/infastructure/respositories/device/microphone_repository_impl.dart';
 import 'package:chattyevent_app_flutter/infastructure/respositories/device/permission_repository_impl.dart';
 import 'package:chattyevent_app_flutter/infastructure/respositories/device/vibration_repository_impl.dart';
@@ -31,6 +36,7 @@ import 'package:chattyevent_app_flutter/presentation/router/create_user_page_gua
 import 'package:chattyevent_app_flutter/presentation/router/router.dart';
 import 'package:chattyevent_app_flutter/presentation/router/verify_email_page_guard.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:get_it/get_it.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -192,6 +198,11 @@ class InjectionUtils {
         userRelationRepository: serviceLocator(param1: param1),
       ),
     );
+    serviceLocator.registerFactory<AudioPlayerUseCases>(
+      () => AudioPlayerUseCases(
+        audioPlayerRepository: serviceLocator(),
+      ),
+    );
     serviceLocator
         .registerFactoryParam<ShoppingListItemUseCases, AuthState?, void>(
       (param1, param2) => ShoppingListItemUseCases(
@@ -270,6 +281,11 @@ class InjectionUtils {
         graphQlDatasource: serviceLocator(param1: param1),
       ),
     );
+    serviceLocator.registerFactory<AudioPlayerRepository>(
+      () => AudioPlayerRepositoryImpl(
+        audioPlayerDataource: serviceLocator(),
+      ),
+    );
     serviceLocator
         .registerFactoryParam<ShoppingListItemRepository, AuthState?, void>(
       (param1, param2) => ShoppingListItemRepositoryImpl(
@@ -293,7 +309,11 @@ class InjectionUtils {
     serviceLocator.registerLazySingleton<MicrophoneDatasource>(
       () => MicrophoneDatasourceImpl(
         recorder: FlutterSoundRecorder(),
-        player: FlutterSoundPlayer(),
+      ),
+    );
+    serviceLocator.registerFactory<AudioPlayerDatasource>(
+      () => AudioPlayerDatasourceImpl(
+        audioPlayer: AudioPlayer(playerId: UniqueKey().toString()),
       ),
     );
     serviceLocator.registerLazySingleton<HttpDatasource>(

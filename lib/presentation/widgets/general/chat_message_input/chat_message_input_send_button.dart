@@ -43,31 +43,25 @@ class ChatMessageInputSendButton extends StatelessWidget {
                         return Ink(
                           width: snapshot.connectionState ==
                                   ConnectionState.waiting
-                              ? 70
+                              ? 100
                               : 50,
                           height: snapshot.connectionState ==
                                   ConnectionState.waiting
-                              ? 70
+                              ? 100
                               : 50,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: snapshot.connectionState ==
-                                    ConnectionState.waiting
-                                ? Theme.of(context)
-                                    .colorScheme
-                                    .surface
-                                    .withOpacity(.7)
-                                : Theme.of(context)
-                                    .colorScheme
-                                    .surface
-                                    .withOpacity(.4),
+                            color: Theme.of(context)
+                                .colorScheme
+                                .surface
+                                .withOpacity(.6),
                           ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: snapshot.connectionState ==
                                     ConnectionState.waiting
                                 ? const [
-                                    Icon(Ionicons.mic, size: 30),
+                                    Icon(Ionicons.mic, size: 50),
                                   ]
                                 : const [
                                     Icon(Ionicons.send, size: 10),

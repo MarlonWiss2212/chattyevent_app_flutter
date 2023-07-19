@@ -71,7 +71,7 @@ class ChatMessageInput extends StatelessWidget {
               height: 50,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: Theme.of(context).colorScheme.surface.withOpacity(.4),
+                color: Theme.of(context).colorScheme.surface.withOpacity(.6),
               ),
               child: const Icon(Ionicons.add, size: 20),
             ),

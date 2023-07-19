@@ -11,9 +11,12 @@ class AuthPagesGuard extends AutoRouteGuard {
     if (currentUser == null) {
       resolver.next(true);
     } else {
-      resolver.redirect(const AuthorizedRoute(children: [
-        BlocInitRoute(children: [HomeRoute()])
-      ]));
+      resolver.redirect(
+        const AuthorizedRoute(children: [
+          BlocInitRoute(children: [HomeRoute()])
+        ]),
+        replace: true,
+      );
     }
   }
 }

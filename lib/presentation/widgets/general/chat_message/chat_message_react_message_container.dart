@@ -38,16 +38,16 @@ class ChatMessageReactMessageContainer extends StatelessWidget {
             children: [
               Container(
                 width: 4,
-                height: 40,
+                height: 50,
                 color: messageAndUser.user.id == currentUserId
                     ? Theme.of(context).colorScheme.primaryContainer
                     : Theme.of(context).colorScheme.surface,
               ),
-              const SizedBox(width: 4),
-              Expanded(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+              const SizedBox(width: 8),
+              Flexible(
+                child: Wrap(
+                  runSpacing: 8,
+                  crossAxisAlignment: WrapCrossAlignment.start,
                   children: [
                     Row(
                       mainAxisSize:
@@ -85,7 +85,6 @@ class ChatMessageReactMessageContainer extends StatelessWidget {
                     ),
                     if (messageAndUser.message.fileLinks != null &&
                         messageAndUser.message.fileLinks!.isNotEmpty) ...[
-                      const SizedBox(height: 8),
                       Row(
                         children: [
                           const Icon(Icons.file_copy),
@@ -98,7 +97,6 @@ class ChatMessageReactMessageContainer extends StatelessWidget {
                       ),
                     ],
                     if (messageAndUser.message.currentLocation != null) ...[
-                      const SizedBox(height: 8),
                       Row(
                         children: [
                           const Icon(Ionicons.map),
@@ -111,6 +109,19 @@ class ChatMessageReactMessageContainer extends StatelessWidget {
                         ],
                       ),
                     ],
+                    if (messageAndUser.message.voiceMessageLink != null) ...{
+                      Row(
+                        children: [
+                          const Icon(Ionicons.play),
+                          const SizedBox(width: 2),
+                          Text(
+                            "Audio",
+                            overflow: TextOverflow.ellipsis,
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                        ],
+                      ),
+                    },
                     if (messageAndUser.message.message != null) ...{
                       Text(
                         messageAndUser.message.message!,

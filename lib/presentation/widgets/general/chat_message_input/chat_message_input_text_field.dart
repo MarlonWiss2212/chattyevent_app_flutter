@@ -43,7 +43,7 @@ class _ChatMessageInputTextFieldState extends State<ChatMessageInputTextField> {
                   decoration: BoxDecoration(
                     borderRadius: borderRadius,
                     color:
-                        Theme.of(context).colorScheme.surface.withOpacity(.4),
+                        Theme.of(context).colorScheme.surface.withOpacity(.6),
                   ),
                   constraints: const BoxConstraints(minHeight: 50),
                   alignment: Alignment.centerLeft,

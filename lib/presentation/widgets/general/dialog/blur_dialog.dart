@@ -19,8 +19,9 @@ class BlurDialog extends StatelessWidget {
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
         child: Dialog(
+          surfaceTintColor: Colors.transparent,
           backgroundColor: Colors.transparent,
-          insetPadding: const EdgeInsets.all(20),
+          insetPadding: const EdgeInsets.all(0),
           child: Padding(
             padding: const EdgeInsets.all(12),
             child: Align(
@@ -34,8 +35,10 @@ class BlurDialog extends StatelessWidget {
                     icon: const Icon(Ionicons.close),
                   ),
                   const SizedBox(height: 20),
-                  SingleChildScrollView(
-                    child: child,
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: child,
+                    ),
                   ),
                 ],
               ),
