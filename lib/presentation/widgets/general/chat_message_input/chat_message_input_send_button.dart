@@ -23,7 +23,7 @@ class ChatMessageInputSendButton extends StatelessWidget {
           BlocProvider.of<AddMessageCubit>(context)
               .stopRecordingVoiceMessageAndEmitIt();
         },
-        onLongPressEnd: (details) {
+        onLongPressCancel: () {
           BlocProvider.of<AddMessageCubit>(context)
               .stopRecordingVoiceMessageAndEmitIt();
         },
@@ -51,10 +51,16 @@ class ChatMessageInputSendButton extends StatelessWidget {
                               : 50,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: Theme.of(context)
-                                .colorScheme
-                                .surface
-                                .withOpacity(.6),
+                            color: snapshot.connectionState ==
+                                    ConnectionState.waiting
+                                ? Theme.of(context)
+                                    .colorScheme
+                                    .primary
+                                    .withOpacity(.6)
+                                : Theme.of(context)
+                                    .colorScheme
+                                    .surface
+                                    .withOpacity(.6),
                           ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,

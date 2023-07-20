@@ -10,19 +10,9 @@ class VibrationUseCases {
     int duration = 500,
     int amplitude = -1,
   }) async {
-    final hasVibrator = await vibrationRepository.hasVibrator();
-
-    return await hasVibrator.fold(
-      (alert) => Left(alert),
-      (boolean) async {
-        if (boolean == false) return const Right(unit);
-        final vibrate = await vibrationRepository.vibrate(
-          duration: duration,
-          amplitude: amplitude,
-        );
-
-        return vibrate;
-      },
+    return await vibrationRepository.vibrate(
+      duration: duration,
+      amplitude: amplitude,
     );
   }
 }

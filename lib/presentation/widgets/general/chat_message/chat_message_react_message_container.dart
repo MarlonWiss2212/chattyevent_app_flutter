@@ -34,105 +34,104 @@ class ChatMessageReactMessageContainer extends StatelessWidget {
                 ? const Color.fromARGB(40, 255, 255, 255)
                 : const Color.fromARGB(40, 0, 0, 0),
           ),
-          child: Row(
-            children: [
-              Container(
-                width: 4,
-                height: 50,
-                color: messageAndUser.user.id == currentUserId
-                    ? Theme.of(context).colorScheme.primaryContainer
-                    : Theme.of(context).colorScheme.surface,
-              ),
-              const SizedBox(width: 8),
-              Flexible(
-                child: Wrap(
-                  runSpacing: 8,
-                  crossAxisAlignment: WrapCrossAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisSize:
-                          isInput ? MainAxisSize.max : MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          messageAndUser.user.username ?? "",
-                          style: Theme.of(context).textTheme.labelLarge,
-                        ),
-                        const SizedBox(width: 8),
-                        Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              DateFormat.jm().format(
-                                messageAndUser.message.createdAt,
-                              ),
-                              style: Theme.of(context).textTheme.labelMedium,
-                            ),
-                            const SizedBox(width: 8),
-                            if (isInput) ...{
-                              GestureDetector(
-                                onTap: () =>
-                                    BlocProvider.of<AddMessageCubit>(context)
-                                        .emitState(
-                                  removeMessageToReactTo: true,
-                                ),
-                                child: const Icon(Ionicons.close),
-                              )
-                            }
-                          ],
-                        )
-                      ],
-                    ),
-                    if (messageAndUser.message.fileLinks != null &&
-                        messageAndUser.message.fileLinks!.isNotEmpty) ...[
-                      Row(
-                        children: [
-                          const Icon(Icons.file_copy),
-                          const SizedBox(width: 2),
-                          Text(
-                            "Dateien",
-                            style: Theme.of(context).textTheme.bodyMedium,
-                          ),
-                        ],
-                      ),
-                    ],
-                    if (messageAndUser.message.currentLocation != null) ...[
-                      Row(
-                        children: [
-                          const Icon(Ionicons.map),
-                          const SizedBox(width: 2),
-                          Text(
-                            "Geradiger Standort",
-                            overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context).textTheme.bodyMedium,
-                          ),
-                        ],
-                      ),
-                    ],
-                    if (messageAndUser.message.voiceMessageLink != null) ...{
-                      Row(
-                        children: [
-                          const Icon(Ionicons.play),
-                          const SizedBox(width: 2),
-                          Text(
-                            "Audio",
-                            overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context).textTheme.bodyMedium,
-                          ),
-                        ],
-                      ),
-                    },
-                    if (messageAndUser.message.message != null) ...{
-                      Text(
-                        messageAndUser.message.message!,
-                        overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
-                    },
-                  ],
+          child: IntrinsicHeight(
+            child: Row(
+              children: [
+                Container(
+                  width: 4,
+                  color: messageAndUser.user.id == currentUserId
+                      ? Theme.of(context).colorScheme.primaryContainer
+                      : Theme.of(context).colorScheme.surface,
                 ),
-              ),
-            ],
+                const SizedBox(width: 8),
+                Flexible(
+                  child: Wrap(
+                    runSpacing: 8,
+                    crossAxisAlignment: WrapCrossAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            messageAndUser.user.username ?? "",
+                            style: Theme.of(context).textTheme.labelLarge,
+                          ),
+                          const SizedBox(width: 8),
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                DateFormat.jm().format(
+                                  messageAndUser.message.createdAt,
+                                ),
+                                style: Theme.of(context).textTheme.labelMedium,
+                              ),
+                              const SizedBox(width: 8),
+                              if (isInput) ...{
+                                GestureDetector(
+                                  onTap: () =>
+                                      BlocProvider.of<AddMessageCubit>(context)
+                                          .emitState(
+                                    removeMessageToReactTo: true,
+                                  ),
+                                  child: const Icon(Ionicons.close),
+                                )
+                              }
+                            ],
+                          )
+                        ],
+                      ),
+                      if (messageAndUser.message.fileLinks != null &&
+                          messageAndUser.message.fileLinks!.isNotEmpty) ...[
+                        Row(
+                          children: [
+                            const Icon(Icons.file_copy),
+                            const SizedBox(width: 2),
+                            Text(
+                              "Dateien",
+                              style: Theme.of(context).textTheme.bodyMedium,
+                            ),
+                          ],
+                        ),
+                      ],
+                      if (messageAndUser.message.currentLocation != null) ...[
+                        Row(
+                          children: [
+                            const Icon(Ionicons.map),
+                            const SizedBox(width: 2),
+                            Text(
+                              "Geradiger Standort",
+                              overflow: TextOverflow.ellipsis,
+                              style: Theme.of(context).textTheme.bodyMedium,
+                            ),
+                          ],
+                        ),
+                      ],
+                      if (messageAndUser.message.voiceMessageLink != null) ...{
+                        Row(
+                          children: [
+                            const Icon(Ionicons.play),
+                            const SizedBox(width: 2),
+                            Text(
+                              "Audio",
+                              overflow: TextOverflow.ellipsis,
+                              style: Theme.of(context).textTheme.bodyMedium,
+                            ),
+                          ],
+                        ),
+                      },
+                      if (messageAndUser.message.message != null) ...{
+                        Text(
+                          messageAndUser.message.message!,
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
+                      },
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         );
       },

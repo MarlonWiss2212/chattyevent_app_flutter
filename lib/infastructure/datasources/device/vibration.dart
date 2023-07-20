@@ -5,13 +5,19 @@ abstract class VibrationDatasource {
     required int duration,
     required int amplitude,
   });
-  Future<bool?> hasVibrator();
+  Future<bool> hasVibrator();
+  Future<bool> hasAmplitute();
 }
 
 class VibrationDatasourceImpl implements VibrationDatasource {
   @override
-  Future<bool?> hasVibrator() async {
-    return await Vibration.hasVibrator();
+  Future<bool> hasVibrator() async {
+    return await Vibration.hasVibrator() ?? false;
+  }
+
+  @override
+  Future<bool> hasAmplitute() async {
+    return await Vibration.hasAmplitudeControl() ?? false;
   }
 
   @override

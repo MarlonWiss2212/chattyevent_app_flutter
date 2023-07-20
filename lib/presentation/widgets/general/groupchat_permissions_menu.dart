@@ -43,7 +43,7 @@ class GroupchatPermissionsMenu extends StatelessWidget {
               children: [
                 Text(
                   value == null
-                      ? "Standarddaten"
+                      ? "Standartdaten"
                       : value == GroupchatPermissionEnum.adminsonly
                           ? "Nur Admins"
                           : value == GroupchatPermissionEnum.everyone

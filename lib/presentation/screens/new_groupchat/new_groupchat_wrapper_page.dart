@@ -90,7 +90,7 @@ class NewGroupchatWrapperPage extends StatelessWidget {
                           pageController.jumpToPage(index);
                         },
                         effect: ExpandingDotsEffect(
-                          activeDotColor: Theme.of(context).colorScheme.surface,
+                          activeDotColor: Theme.of(context).colorScheme.primary,
                         ),
                       ),
                       const SizedBox(height: 8),

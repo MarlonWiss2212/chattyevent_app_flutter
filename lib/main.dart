@@ -23,18 +23,18 @@ import 'core/utils/one_signal_utils.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  await Future.wait([
+  final List<Future> futures = [
     dotenv.load(fileName: '.env'),
     InjectionUtils.initialize(),
-  ]);
+  ];
   if (!kIsWeb) {
     if (Platform.isAndroid || Platform.isIOS) {
-      Future.wait([
-        MobileAds.instance.initialize(),
-        OneSignalUtils.initialize(),
-      ]);
+      futures.add(MobileAds.instance.initialize());
     }
   }
+
+  await Future.wait(futures);
+  await OneSignalUtils.initialize();
 
   runApp(
     MultiBlocProvider(

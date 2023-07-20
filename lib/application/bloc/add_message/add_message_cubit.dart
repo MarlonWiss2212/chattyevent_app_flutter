@@ -44,9 +44,12 @@ class AddMessageCubit extends Cubit<AddMessageState> {
   Future reactToMessage({
     required MessageAndUserEntity messageToReactToWithUser,
   }) async {
-    final vibrate = await vibrationUseCases.vibrate(duration: 10);
+    final vibrate = await vibrationUseCases.vibrate(
+      duration: 50,
+      amplitude: 50,
+    );
     vibrate.fold(
-      (alert) => notificationCubit.newAlert(notificationAlert: alert),
+      (alert) => null, //notificationCubit.newAlert(notificationAlert: alert),
       (r) => null,
     );
     emitState(messageToReactToWithUser: messageToReactToWithUser);
@@ -115,8 +118,16 @@ class AddMessageCubit extends Cubit<AddMessageState> {
   }
 
   Future<bool> startRecordingVoiceMessage() async {
-    await microphoneUseCases.stopRecording();
     final alertOrVoid = await microphoneUseCases.startRecording();
+
+    final vibrate = await vibrationUseCases.vibrate(
+      duration: 50,
+      amplitude: 80,
+    );
+    vibrate.fold(
+      (alert) => null, //notificationCubit.newAlert(notificationAlert: alert),
+      (r) => null,
+    );
 
     return alertOrVoid.fold(
       (alert) {
@@ -140,6 +151,15 @@ class AddMessageCubit extends Cubit<AddMessageState> {
 
   Future stopRecordingVoiceMessageAndEmitIt() async {
     emitState(removeVoiceMessageStream: true);
+    final vibrate = await vibrationUseCases.vibrate(
+      duration: 50,
+      amplitude: 80,
+    );
+    vibrate.fold(
+      (alert) => null, //notificationCubit.newAlert(notificationAlert: alert),
+      (r) => null,
+    );
+
     final alertOrPath = await microphoneUseCases.stopRecording();
     alertOrPath.fold(
       (alert) => notificationCubit.newAlert(notificationAlert: alert),

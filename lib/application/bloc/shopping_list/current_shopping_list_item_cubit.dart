@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
@@ -322,9 +323,7 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
             shoppingListItem: ShoppingListItemEntity.merge(
               newEntity: ShoppingListItemEntity(
                 id: state.shoppingListItem.id,
-                boughtAmount: newBoughtAmounts
-                    .map((e) => e.boughtAmount!)
-                    .reduce((a, b) => a + b),
+                boughtAmount: newBoughtAmounts.map((e) => e.boughtAmount!).sum,
               ),
               oldEntity: state.shoppingListItem,
             ),

@@ -6,5 +6,4 @@ abstract class VibrationRepository {
     int duration = 500,
     int amplitude = -1,
   });
-  Future<Either<NotificationAlert, bool>> hasVibrator();
 }

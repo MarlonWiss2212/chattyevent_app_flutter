@@ -47,7 +47,7 @@ class PrivateEventPermissionsMenu extends StatelessWidget {
               children: [
                 Text(
                   value == null
-                      ? "Standarddaten"
+                      ? "Standartdaten"
                       : value == PrivateEventPermissionEnum.createronly
                           ? "Nur Ersteller"
                           : value == PrivateEventPermissionEnum.organizersonly

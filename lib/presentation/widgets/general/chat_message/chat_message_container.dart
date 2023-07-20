@@ -89,21 +89,21 @@ class _ChatMessageContainerState extends State<ChatMessageContainer> {
                     scale = 1;
                   }),
                   onLongPress: () async {
-                    await serviceLocator<VibrationUseCases>()
-                        .vibrate(duration: 10)
-                        .then(
-                          (value) async => showModalBottomSheet(
-                            backgroundColor:
-                                Theme.of(context).colorScheme.surface,
-                            context: context,
-                            builder: (context) {
-                              return ChatMessageReadByBottomSheet(
-                                users: widget.users,
-                                readByIds: widget.message.readBy ?? [],
-                              );
-                            },
-                          ),
+                    await serviceLocator<VibrationUseCases>().vibrate(
+                      duration: 50,
+                      amplitude: 80,
+                    );
+                    // ignore: use_build_context_synchronously
+                    showModalBottomSheet(
+                      backgroundColor: Theme.of(context).colorScheme.surface,
+                      context: context,
+                      builder: (context) {
+                        return ChatMessageReadByBottomSheet(
+                          users: widget.users,
+                          readByIds: widget.message.readBy ?? [],
                         );
+                      },
+                    );
                   },
                   child: ChatMessageContainerMainContainer(
                     currentUserId: widget.currentUserId,
