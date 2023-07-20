@@ -10,7 +10,7 @@ class UserRelationModel extends UserRelationEntity {
     DateTime? updatedAt,
     String? targetUserId,
     String? requesterUserId,
-    UserRelationStatusEnum? statusOnRelatedUser,
+    UserRelationStatusEnum? status,
     UserRelationFollowDataEntity? followData,
   }) : super(
           id: id,
@@ -18,7 +18,7 @@ class UserRelationModel extends UserRelationEntity {
           updatedAt: updatedAt,
           targetUserId: targetUserId,
           requesterUserId: requesterUserId,
-          statusOnRelatedUser: statusOnRelatedUser,
+          status: status,
           followData: followData,
         );
 
@@ -35,9 +35,9 @@ class UserRelationModel extends UserRelationEntity {
       id: json['_id'],
       targetUserId: json['targetUserId'],
       requesterUserId: json['requesterUserId'],
-      statusOnRelatedUser: json['statusOnRelatedUser'] != null
+      status: json['status'] != null
           ? UserRelationStatusEnumExtension.fromValue(
-              json['statusOnRelatedUser'],
+              json['status'],
             )
           : null,
       followData: json['followData'] != null

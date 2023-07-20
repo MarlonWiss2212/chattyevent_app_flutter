@@ -12,8 +12,8 @@ class ProfilePageFollowButton extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: BlocBuilder<ProfilePageCubit, ProfilePageState>(
         buildWhen: (previous, current) =>
-            previous.user.myUserRelationToOtherUser?.statusOnRelatedUser !=
-            current.user.myUserRelationToOtherUser?.statusOnRelatedUser,
+            previous.user.myUserRelationToOtherUser?.status !=
+            current.user.myUserRelationToOtherUser?.status,
         builder: (context, state) {
           return FollowButton(
             user: state.user,

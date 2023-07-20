@@ -82,10 +82,9 @@ class UserRelationUseCases {
     required FindOneUserRelationFilter findOneUserRelationFilter,
     required UserRelationEntity? myUserRelationToOtherUser,
   }) async {
-    if (myUserRelationToOtherUser?.statusOnRelatedUser == null ||
-        myUserRelationToOtherUser?.statusOnRelatedUser !=
-                UserRelationStatusEnum.follower &&
-            myUserRelationToOtherUser?.statusOnRelatedUser !=
+    if (myUserRelationToOtherUser?.status == null ||
+        myUserRelationToOtherUser?.status != UserRelationStatusEnum.follower &&
+            myUserRelationToOtherUser?.status !=
                 UserRelationStatusEnum.requesttofollow) {
       final userRelationOrNotificationAlert =
           await userRelationRepository.createUserRelationViaApi(

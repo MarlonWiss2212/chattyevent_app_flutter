@@ -61,7 +61,7 @@ class UserRepositoryImpl implements UserRepository {
               _id
               createdAt
               updatedAt
-              statusOnRelatedUser
+              status
               followData {
                 followedUserAt
               }
@@ -70,7 +70,7 @@ class UserRepositoryImpl implements UserRepository {
               _id
               createdAt
               updatedAt
-              statusOnRelatedUser
+              status
               followData {
                 followedUserAt
               }
@@ -111,7 +111,7 @@ class UserRepositoryImpl implements UserRepository {
             profileImageLink
             myUserRelationToOtherUser {
               _id
-              statusOnRelatedUser
+              status
             }
           }
         }

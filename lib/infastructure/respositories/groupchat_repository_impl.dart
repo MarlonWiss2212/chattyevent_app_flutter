@@ -171,7 +171,7 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
                 _id
                 createdAt
                 updatedAt
-                statusOnRelatedUser
+                status
                 followData {
                   followedUserAt
                 }
@@ -180,7 +180,7 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
                 _id
                 createdAt
                 updatedAt
-                statusOnRelatedUser
+                status
                 followData {
                   followedUserAt
                 }
@@ -210,7 +210,7 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
                 _id
                 createdAt
                 updatedAt
-                statusOnRelatedUser
+                status
                 followData {
                   followedUserAt
                 }
@@ -219,7 +219,7 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
                 _id
                 createdAt
                 updatedAt
-                statusOnRelatedUser
+                status
                 followData {
                   followedUserAt
                 }
@@ -404,7 +404,7 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
               _id
               createdAt
               updatedAt
-              statusOnRelatedUser
+              status
               followData {
                 followedUserAt
               }
@@ -413,7 +413,7 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
               _id
               createdAt
               updatedAt
-              statusOnRelatedUser
+              status
               followData {
                 followedUserAt
               }
@@ -473,7 +473,7 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
               _id
               createdAt
               updatedAt
-              statusOnRelatedUser
+              status
               followData {
                 followedUserAt
               }
@@ -482,7 +482,7 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
               _id
               createdAt
               updatedAt
-              statusOnRelatedUser
+              status
               followData {
                 followedUserAt
               }
@@ -546,7 +546,7 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
               _id
               createdAt
               updatedAt
-              statusOnRelatedUser
+              status
               followData {
                 followedUserAt
               }
@@ -555,7 +555,7 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
               _id
               createdAt
               updatedAt
-              statusOnRelatedUser
+              status
               followData {
                 followedUserAt
               }
@@ -615,7 +615,7 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
                 _id
                 createdAt
                 updatedAt
-                statusOnRelatedUser
+                status
                 followData {
                   followedUserAt
                 }
@@ -624,7 +624,7 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
                 _id
                 createdAt
                 updatedAt
-                statusOnRelatedUser
+                status
                 followData {
                   followedUserAt
                 }
@@ -654,7 +654,7 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
                 _id
                 createdAt
                 updatedAt
-                statusOnRelatedUser
+                status
                 followData {
                   followedUserAt
                 }
@@ -663,7 +663,7 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
                 _id
                 createdAt
                 updatedAt
-                statusOnRelatedUser
+                status
                 followData {
                   followedUserAt
                 }

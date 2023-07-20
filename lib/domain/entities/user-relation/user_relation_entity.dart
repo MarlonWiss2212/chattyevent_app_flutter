@@ -7,7 +7,7 @@ class UserRelationEntity {
   final DateTime? updatedAt;
   final String? targetUserId;
   final String? requesterUserId;
-  final UserRelationStatusEnum? statusOnRelatedUser;
+  final UserRelationStatusEnum? status;
   final UserRelationFollowDataEntity? followData;
 
   UserRelationEntity({
@@ -16,7 +16,7 @@ class UserRelationEntity {
     this.updatedAt,
     this.targetUserId,
     this.requesterUserId,
-    this.statusOnRelatedUser,
+    this.status,
     this.followData,
   });
 
@@ -30,8 +30,7 @@ class UserRelationEntity {
       updatedAt: newEntity.updatedAt ?? oldEntity.updatedAt,
       targetUserId: newEntity.targetUserId ?? oldEntity.targetUserId,
       requesterUserId: newEntity.requesterUserId ?? oldEntity.requesterUserId,
-      statusOnRelatedUser:
-          newEntity.statusOnRelatedUser ?? oldEntity.statusOnRelatedUser,
+      status: newEntity.status ?? oldEntity.status,
       followData: newEntity.followData,
     );
   }

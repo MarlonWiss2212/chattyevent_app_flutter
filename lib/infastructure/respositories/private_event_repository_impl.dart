@@ -273,7 +273,7 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
               _id
               createdAt
               updatedAt
-              statusOnRelatedUser
+              status
               followData {
                 followedUserAt
               }
@@ -282,7 +282,7 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
               _id
               createdAt
               updatedAt
-              statusOnRelatedUser
+              status
               followData {
                 followedUserAt
               }
@@ -313,7 +313,7 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
               _id
               createdAt
               updatedAt
-              statusOnRelatedUser
+              status
               followData {
                 followedUserAt
               }
@@ -322,7 +322,7 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
               _id
               createdAt
               updatedAt
-              statusOnRelatedUser
+              status
               followData {
                 followedUserAt
               }
@@ -558,7 +558,7 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
                 _id
                 createdAt
                 updatedAt
-                statusOnRelatedUser
+                status
                 followData {
                   followedUserAt
                 }
@@ -567,7 +567,7 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
                 _id
                 createdAt
                 updatedAt
-                statusOnRelatedUser
+                status
                 followData {
                   followedUserAt
                 }
@@ -630,7 +630,7 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
                 _id
                 createdAt
                 updatedAt
-                statusOnRelatedUser
+                status
                 followData {
                   followedUserAt
                 }
@@ -639,7 +639,7 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
                 _id
                 createdAt
                 updatedAt
-                statusOnRelatedUser
+                status
                 followData {
                   followedUserAt
                 }
@@ -697,7 +697,7 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
                 _id
                 createdAt
                 updatedAt
-                statusOnRelatedUser
+                status
                 followData {
                   followedUserAt
                 }
@@ -706,7 +706,7 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
                 _id
                 createdAt
                 updatedAt
-                statusOnRelatedUser
+                status
                 followData {
                   followedUserAt
                 }
@@ -767,7 +767,7 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
                 _id
                 createdAt
                 updatedAt
-                statusOnRelatedUser
+                status
                 followData {
                   followedUserAt
                 }
@@ -776,7 +776,7 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
                 _id
                 createdAt
                 updatedAt
-                statusOnRelatedUser
+                status
                 followData {
                   followedUserAt
                 }
@@ -807,7 +807,7 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
                 _id
                 createdAt
                 updatedAt
-                statusOnRelatedUser
+                status
                 followData {
                   followedUserAt
                 }
@@ -816,7 +816,7 @@ class PrivateEventRepositoryImpl implements PrivateEventRepository {
                 _id
                 createdAt
                 updatedAt
-                statusOnRelatedUser
+                status
                 followData {
                   followedUserAt
                 }

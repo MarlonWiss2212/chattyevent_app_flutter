@@ -32,7 +32,7 @@ class UserRelationRepositoryImpl extends UserRelationRepository {
             updatedAt
             targetUserId
             requesterUserId
-            statusOnRelatedUser
+            status
             followData {
               followedUserAt
             }
@@ -71,7 +71,7 @@ class UserRelationRepositoryImpl extends UserRelationRepository {
             updatedAt
             targetUserId
             requesterUserId
-            statusOnRelatedUser
+            status
             followData {
               followedUserAt
             }
@@ -124,7 +124,7 @@ class UserRelationRepositoryImpl extends UserRelationRepository {
               _id
               createdAt
               updatedAt
-              statusOnRelatedUser
+              status
               followData {
                 followedUserAt
               }
@@ -133,7 +133,7 @@ class UserRelationRepositoryImpl extends UserRelationRepository {
               _id
               createdAt
               updatedAt
-              statusOnRelatedUser
+              status
               followData {
                 followedUserAt
               }
@@ -192,7 +192,7 @@ class UserRelationRepositoryImpl extends UserRelationRepository {
               _id
               createdAt
               updatedAt
-              statusOnRelatedUser
+              status
               followData {
                 followedUserAt
               }
@@ -201,7 +201,7 @@ class UserRelationRepositoryImpl extends UserRelationRepository {
               _id
               createdAt
               updatedAt
-              statusOnRelatedUser
+              status
               followData {
                 followedUserAt
               }
@@ -259,7 +259,7 @@ class UserRelationRepositoryImpl extends UserRelationRepository {
               _id
               createdAt
               updatedAt
-              statusOnRelatedUser
+              status
               followData {
                 followedUserAt
               }
@@ -268,7 +268,7 @@ class UserRelationRepositoryImpl extends UserRelationRepository {
               _id
               createdAt
               updatedAt
-              statusOnRelatedUser
+              status
               followData {
                 followedUserAt
               }
@@ -312,7 +312,7 @@ class UserRelationRepositoryImpl extends UserRelationRepository {
             _id
             createdAt
             updatedAt            
-            statusOnRelatedUser
+            status
             followData {
               followedUserAt
             }                

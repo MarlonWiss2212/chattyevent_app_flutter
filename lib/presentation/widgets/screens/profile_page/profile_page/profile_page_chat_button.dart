@@ -13,10 +13,10 @@ class ProfilePageChatButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ProfilePageCubit, ProfilePageState>(
       buildWhen: (previous, current) =>
-          previous.user.myUserRelationToOtherUser?.statusOnRelatedUser !=
-          current.user.myUserRelationToOtherUser?.statusOnRelatedUser,
+          previous.user.myUserRelationToOtherUser?.status !=
+          current.user.myUserRelationToOtherUser?.status,
       builder: (context, state) {
-        if (state.user.myUserRelationToOtherUser?.statusOnRelatedUser !=
+        if (state.user.myUserRelationToOtherUser?.status !=
             UserRelationStatusEnum.follower) {
           return const SizedBox();
         }
