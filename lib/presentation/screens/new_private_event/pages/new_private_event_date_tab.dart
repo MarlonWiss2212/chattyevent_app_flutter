@@ -17,6 +17,12 @@ class NewPrivateEventDateTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        const SizedBox(height: 20),
+        Text(
+          "Datum Seite",
+          style: Theme.of(context).textTheme.titleLarge,
+        ),
+        const SizedBox(height: 20),
         Padding(
           padding: const EdgeInsets.all(8),
           child: BlocBuilder<AddPrivateEventCubit, AddPrivateEventState>(
@@ -43,6 +49,9 @@ class NewPrivateEventDateTab extends StatelessWidget {
                       onTap: () async {
                         DateTime currentDate = DateTime.now();
                         DateTime? newDate = await showDatePicker(
+                          keyboardType: const TextInputType.numberWithOptions(
+                            decimal: true,
+                          ),
                           context: context,
                           initialDate: state.eventDate ?? currentDate,
                           firstDate: currentDate,
@@ -84,6 +93,9 @@ class NewPrivateEventDateTab extends StatelessWidget {
                       onTap: () async {
                         DateTime currentDate = DateTime.now();
                         DateTime? newDate = await showDatePicker(
+                          keyboardType: const TextInputType.numberWithOptions(
+                            decimal: true,
+                          ),
                           context: context,
                           initialDate: state.eventEndDate ?? currentDate,
                           firstDate: currentDate,

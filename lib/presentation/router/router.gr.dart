@@ -125,8 +125,6 @@ import 'package:chattyevent_app_flutter/presentation/screens/settings_page/pages
     as _i53;
 import 'package:chattyevent_app_flutter/presentation/screens/settings_page/pages/info_pages/right_on_deletion_page.dart'
     as _i54;
-import 'package:chattyevent_app_flutter/presentation/screens/settings_page/pages/info_pages/right_on_insight.dart'
-    as _i55;
 import 'package:chattyevent_app_flutter/presentation/screens/settings_page/pages/privacy_page.dart'
     as _i56;
 import 'package:chattyevent_app_flutter/presentation/screens/settings_page/pages/privacy_pages/groupchat_add_me_page.dart'
@@ -579,12 +577,6 @@ abstract class $AppRouter extends _i68.RootStackRouter {
       return _i68.AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const _i54.RightOnDeletionPage(),
-      );
-    },
-    RightOnInsightRoute.name: (routeData) {
-      return _i68.AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const _i55.RightOnInsightPage(),
       );
     },
     SettingsPrivacyRoute.name: (routeData) {

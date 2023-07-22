@@ -37,20 +37,33 @@ class _NewPrivateEventSearchGroupchatTabState
                     .getCalendarTimeUsers();
               }
 
-              return GroupchatGridList(
-                // TODO: check for permissions to filter out || load groupchats from api
-                groupchats: chatState.chats
-                    .where((element) => element.groupchat != null)
-                    .map((e) => e.groupchat!)
-                    .toList(),
-                highlightIds: state.selectedGroupchat != null
-                    ? [state.selectedGroupchat!.id]
-                    : null,
-                onPress: (groupchat) {
-                  BlocProvider.of<AddPrivateEventCubit>(context).emitState(
-                    selectedGroupchat: groupchat,
-                  );
-                },
+              return Column(
+                children: [
+                  const SizedBox(height: 20),
+                  Text(
+                    "Verbundenen Gruppenchat wählen",
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
+                  const SizedBox(height: 20),
+                  Expanded(
+                    child: GroupchatGridList(
+                      // TODO: check for permissions to filter out || load groupchats from api
+                      groupchats: chatState.chats
+                          .where((element) => element.groupchat != null)
+                          .map((e) => e.groupchat!)
+                          .toList(),
+                      highlightIds: state.selectedGroupchat != null
+                          ? [state.selectedGroupchat!.id]
+                          : null,
+                      onPress: (groupchat) {
+                        BlocProvider.of<AddPrivateEventCubit>(context)
+                            .emitState(
+                          selectedGroupchat: groupchat,
+                        );
+                      },
+                    ),
+                  ),
+                ],
               );
             },
           );

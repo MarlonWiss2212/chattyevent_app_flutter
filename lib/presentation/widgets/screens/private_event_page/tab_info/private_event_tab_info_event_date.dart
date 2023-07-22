@@ -10,6 +10,9 @@ class PrivateEventTabInfoEventDate extends StatelessWidget {
   _onChangeDatePress(BuildContext context, DateTime initialDate) async {
     DateTime currentDate = DateTime.now();
     DateTime? newDate = await showDatePicker(
+      keyboardType: const TextInputType.numberWithOptions(
+        decimal: true,
+      ),
       context: context,
       initialDate: initialDate,
       firstDate: currentDate,

@@ -15,36 +15,27 @@ class ChatState {
     required List<ChatEntity> chats,
     ChatStateStatus status = ChatStateStatus.initial,
   }) {
-    /*
-    chatStates.sort((a, b) {
-      if ((a.groupchat?.latestMessage == null &&
-              b.groupchat?.latestMessage == null) &&
-          (a.privateEvent?.latestMessage == null &&
-              b.privateEvent?.latestMessage == null) &&
-          (a.user?.latestMessage == null && b.user?.latestMessage == null)) {
+    chats.sort((a, b) {
+      final latestMessageA = a.groupchat?.latestMessage ??
+          a.privateEvent?.latestMessage ??
+          a.user?.latestMessage;
+
+      final latestMessageB = a.groupchat?.latestMessage ??
+          a.privateEvent?.latestMessage ??
+          a.user?.latestMessage;
+
+      if (latestMessageA == null && latestMessageB == null) {
         return 0;
-      } else if (b.groupchat?.latestMessage == null &&
-          b.privateEvent?.latestMessage == null &&
-          b.user?.latestMessage == null) {
+      } else if (latestMessageB == null) {
         return -1;
-      } else if (a.groupchat?.latestMessage == null &&
-          a.privateEvent?.latestMessage == null &&
-          a.user?.latestMessage == null) {
+      } else if (latestMessageA == null) {
         return 1;
-      } else if (a.groupchat?.latestMessage?.createdAt
-              ?.isAfter(b.groupchat?.latestMessage?.createdAt) ??
-          false ||
-              a.privateEvent.latestMessage?.createdAt
-                  ?.isAfter(b.privateEvent.latestMessage?.createdAt) ??
-          false ||
-              a.user.latestMessage?.createdAt
-                  ?.isAfter(b.user.latestMessage?.createdAt) ??
-          false) {
+      } else if (latestMessageA.createdAt.isAfter(latestMessageB.createdAt)) {
         return -1;
       } else {
         return 1;
       }
-    });*/
+    });
 
     return ChatState(chats: chats, status: status);
   }

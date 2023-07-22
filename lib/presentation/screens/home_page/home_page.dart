@@ -1,4 +1,6 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:chattyevent_app_flutter/core/utils/injection.dart';
+import 'package:chattyevent_app_flutter/domain/usecases/settings_usecases.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
@@ -9,8 +11,23 @@ import 'package:chattyevent_app_flutter/presentation/widgets/screens/home_page/m
 import 'package:ionicons/ionicons.dart';
 
 @RoutePage()
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  final SettingsUseCases settingsUseCases = serviceLocator();
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await settingsUseCases.showAdMobPopUpIfRequired();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

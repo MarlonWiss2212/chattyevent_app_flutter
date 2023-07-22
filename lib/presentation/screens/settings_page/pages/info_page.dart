@@ -77,20 +77,18 @@ class _SettingsInfoPageState extends State<SettingsInfoPage> {
                     );
                   },
                 ),
-                /*ListTile(
+                ListTile(
                   leading: const Icon(Icons.text_snippet),
                   title: Text(
-                    "Recht auf Einsicht",
+                    "Recht auf Auskunft",
                     style: Theme.of(context).textTheme.titleMedium,
                     overflow: TextOverflow.ellipsis,
                   ),
                   trailing: const Icon(Ionicons.arrow_forward),
-                  onTap: () {
-                    AutoRouter.of(context).push(
-                      const RightOnInsightPageRoute(),
-                    );
+                  onTap: () async {
+                    await settingsUseCases.openRightOnDataAccessPage();
                   },
-                ),*/
+                ),
                 ListTile(
                   leading: const Icon(Icons.delete),
                   title: Text(

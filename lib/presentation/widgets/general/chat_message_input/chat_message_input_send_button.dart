@@ -23,7 +23,7 @@ class ChatMessageInputSendButton extends StatelessWidget {
           BlocProvider.of<AddMessageCubit>(context)
               .stopRecordingVoiceMessageAndEmitIt();
         },
-        onLongPressCancel: () {
+        onLongPressEnd: (_) {
           BlocProvider.of<AddMessageCubit>(context)
               .stopRecordingVoiceMessageAndEmitIt();
         },

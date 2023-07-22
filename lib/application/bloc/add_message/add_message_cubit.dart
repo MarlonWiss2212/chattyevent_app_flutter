@@ -118,6 +118,7 @@ class AddMessageCubit extends Cubit<AddMessageState> {
   }
 
   Future<bool> startRecordingVoiceMessage() async {
+    await microphoneUseCases.stopRecording();
     final alertOrVoid = await microphoneUseCases.startRecording();
 
     final vibrate = await vibrationUseCases.vibrate(

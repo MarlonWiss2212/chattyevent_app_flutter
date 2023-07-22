@@ -31,7 +31,7 @@ class PrivateEventPermissionsMenu extends StatelessWidget {
             onSelected: changePermission,
             itemBuilder: (context) => const [
               PopupMenuItem(
-                value: PrivateEventPermissionEnum.createronly,
+                value: PrivateEventPermissionEnum.creatoronly,
                 child: Text("Nur Ersteller"),
               ),
               PopupMenuItem(
@@ -48,7 +48,7 @@ class PrivateEventPermissionsMenu extends StatelessWidget {
                 Text(
                   value == null
                       ? "Standartdaten"
-                      : value == PrivateEventPermissionEnum.createronly
+                      : value == PrivateEventPermissionEnum.creatoronly
                           ? "Nur Ersteller"
                           : value == PrivateEventPermissionEnum.organizersonly
                               ? "Nur Organisatoren"

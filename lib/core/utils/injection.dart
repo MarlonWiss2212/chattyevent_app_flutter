@@ -1,6 +1,7 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:chattyevent_app_flutter/domain/entities/user/user_entity.dart';
+import 'package:chattyevent_app_flutter/domain/repositories/ad_mob_repository.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/calendar_repository.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/chat_repository.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/device/audio_player_repository.dart';
@@ -21,7 +22,9 @@ import 'package:chattyevent_app_flutter/infastructure/datasources/device/audio_p
 import 'package:chattyevent_app_flutter/infastructure/datasources/device/microphone.dart';
 import 'package:chattyevent_app_flutter/infastructure/datasources/device/permission.dart';
 import 'package:chattyevent_app_flutter/infastructure/datasources/device/vibration.dart';
+import 'package:chattyevent_app_flutter/infastructure/datasources/remote/ad_mob.dart';
 import 'package:chattyevent_app_flutter/infastructure/datasources/remote/http.dart';
+import 'package:chattyevent_app_flutter/infastructure/respositories/ad_mob_repository_impl.dart';
 import 'package:chattyevent_app_flutter/infastructure/respositories/calendar_repository_impl.dart';
 import 'package:chattyevent_app_flutter/infastructure/respositories/chat_repsoitory_impl.dart';
 import 'package:chattyevent_app_flutter/infastructure/respositories/device/audio_player_repository_impl.dart';
@@ -153,7 +156,10 @@ class InjectionUtils {
       ),
     );
     serviceLocator.registerLazySingleton<SettingsUseCases>(
-      () => SettingsUseCases(settingsRepository: serviceLocator()),
+      () => SettingsUseCases(
+        settingsRepository: serviceLocator(),
+        adMobRepository: serviceLocator(),
+      ),
     );
     serviceLocator.registerLazySingleton<AuthUseCases>(
       () => AuthUseCases(authRepository: serviceLocator()),
@@ -213,6 +219,9 @@ class InjectionUtils {
     // repositories
     serviceLocator.registerLazySingleton<ImprintRepository>(
       () => ImprintRepositoryImpl(httpDatasource: serviceLocator()),
+    );
+    serviceLocator.registerLazySingleton<AdMobRepository>(
+      () => AdMobRepositoryImpl(adMobDatasource: serviceLocator()),
     );
     serviceLocator.registerLazySingleton<VibrationRepository>(
       () => VibrationRepositoryImpl(vibrationDatasource: serviceLocator()),
@@ -299,6 +308,9 @@ class InjectionUtils {
       () => SharedPreferencesDatasourceImpl(
         sharedPreferences: sharedPrefs,
       ),
+    );
+    serviceLocator.registerLazySingleton<AdMobDatasource>(
+      () => AdMobDatasourceImpl(),
     );
     serviceLocator.registerLazySingleton<VibrationDatasource>(
       () => VibrationDatasourceImpl(),

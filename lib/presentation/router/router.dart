@@ -464,11 +464,6 @@ class AppRouter extends $AppRouter {
             path: 'settings/info'),
         CustomRoute(
             transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
-            page: RightOnInsightRoute.page,
-            guards: [authGuard],
-            path: 'settings/info/right-on-insight'),
-        CustomRoute(
-            transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
             page: RightOnDeletionRoute.page,
             guards: [authGuard],
             path: 'settings/info/right-on-deletion'),

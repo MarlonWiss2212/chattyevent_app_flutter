@@ -1,7 +1,7 @@
 enum PrivateEventPermissionEnum {
   everyone,
   organizersonly,
-  createronly,
+  creatoronly,
 }
 
 extension PrivateEventPermissionEnumExtension on PrivateEventPermissionEnum {
@@ -11,10 +11,10 @@ extension PrivateEventPermissionEnumExtension on PrivateEventPermissionEnum {
         return 'EVERYONE';
       case PrivateEventPermissionEnum.organizersonly:
         return 'ORGANIZERS_ONLY';
-      case PrivateEventPermissionEnum.createronly:
-        return 'CREATER_ONLY';
+      case PrivateEventPermissionEnum.creatoronly:
+        return 'CREATOR_ONLY';
       default:
-        return 'CREATER_ONLY';
+        return 'CREATOR_ONLY';
     }
   }
 
@@ -24,10 +24,10 @@ extension PrivateEventPermissionEnumExtension on PrivateEventPermissionEnum {
         return PrivateEventPermissionEnum.everyone;
       case 'ORGANIZERS_ONLY':
         return PrivateEventPermissionEnum.organizersonly;
-      case 'CREATER_ONLY':
-        return PrivateEventPermissionEnum.createronly;
+      case 'CREATOR_ONLY':
+        return PrivateEventPermissionEnum.creatoronly;
       default:
-        return PrivateEventPermissionEnum.createronly;
+        return PrivateEventPermissionEnum.creatoronly;
     }
   }
 }

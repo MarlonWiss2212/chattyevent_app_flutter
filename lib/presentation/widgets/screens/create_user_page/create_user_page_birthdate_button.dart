@@ -24,6 +24,9 @@ class CreateUserPageBirthdayButton extends StatelessWidget {
                 lastDate.day,
               );
               DateTime? newDate = await showDatePicker(
+                keyboardType: const TextInputType.numberWithOptions(
+                  decimal: true,
+                ),
                 context: context,
                 initialDate: BlocProvider.of<AddCurrentUserCubit>(context)
                         .state

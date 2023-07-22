@@ -43,7 +43,7 @@ class PrivateEventUserEntity extends UserEntity {
           return false;
         }
         return true;
-      case PrivateEventPermissionEnum.createronly:
+      case PrivateEventPermissionEnum.creatoronly:
         return id == createdById;
       default:
         return false;

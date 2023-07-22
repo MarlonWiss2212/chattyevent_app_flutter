@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:chattyevent_app_flutter/ad_pop_up_form.dart';
 import 'package:chattyevent_app_flutter/core/utils/material_theme_utils.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.dart';
 import 'package:chattyevent_app_flutter/scroll_bahaviour.dart';
@@ -42,41 +41,45 @@ Future<void> main() async {
         BlocProvider(create: (context) => serviceLocator<NotificationCubit>()),
         BlocProvider(create: (context) => serviceLocator<AuthCubit>()),
       ],
-      child: Builder(builder: (context) {
-        return MultiBlocListener(
-          listeners: [
-            BlocListener<AuthCubit, AuthState>(
-              listener: (context, state) {
-                if (state.isUserCode404()) {
-                  serviceLocator<AppRouter>().root.popUntilRoot();
-                  serviceLocator<AppRouter>().root.replace(
-                        const AuthorizedRoute(
-                          children: [CreateUserRoute()],
-                        ),
-                      );
-                }
-              },
-            ),
-            BlocListener<AuthCubit, AuthState>(
-              listenWhen: (p, c) => p.status != c.status,
-              listener: (context, state) {
-                if (state.status == AuthStateStatus.loggedIn &&
-                    state.token != null) {
-                  serviceLocator<AppRouter>()
-                      .root
-                      .replace(const AuthorizedRoute(children: [
-                        BlocInitRoute(children: [HomeRoute()])
-                      ]));
-                } else if (state.status == AuthStateStatus.logout) {
-                  serviceLocator<AppRouter>().root.popUntilRoot();
-                  serviceLocator<AppRouter>().root.replace(const LoginRoute());
-                }
-              },
-            ),
-          ],
-          child: const App(),
-        );
-      }),
+      child: Builder(
+        builder: (context) {
+          return MultiBlocListener(
+            listeners: [
+              BlocListener<AuthCubit, AuthState>(
+                listener: (context, state) {
+                  if (state.isUserCode404()) {
+                    serviceLocator<AppRouter>().root.popUntilRoot();
+                    serviceLocator<AppRouter>().root.replace(
+                          const AuthorizedRoute(
+                            children: [CreateUserRoute()],
+                          ),
+                        );
+                  }
+                },
+              ),
+              BlocListener<AuthCubit, AuthState>(
+                listenWhen: (p, c) => p.status != c.status,
+                listener: (context, state) {
+                  if (state.status == AuthStateStatus.loggedIn &&
+                      state.token != null) {
+                    serviceLocator<AppRouter>()
+                        .root
+                        .replace(const AuthorizedRoute(children: [
+                          BlocInitRoute(children: [HomeRoute()])
+                        ]));
+                  } else if (state.status == AuthStateStatus.logout) {
+                    serviceLocator<AppRouter>().root.popUntilRoot();
+                    serviceLocator<AppRouter>()
+                        .root
+                        .replace(const LoginRoute());
+                  }
+                },
+              ),
+            ],
+            child: const App(),
+          );
+        },
+      ),
     ),
   );
 }
@@ -143,7 +146,7 @@ class _AppState extends State<App> {
                   return SafeArea(
                     child: ScrollConfiguration(
                       behavior: const ScrollBehaviorModified(),
-                      child: AdPopUp(child: widget!),
+                      child: widget!,
                     ),
                   );
                 },
