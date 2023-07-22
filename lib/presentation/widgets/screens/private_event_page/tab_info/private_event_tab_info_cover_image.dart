@@ -15,28 +15,34 @@ class PrivateEventTabInfoCoverImage extends StatelessWidget {
       curve: Curves.fastOutSlowIn,
       animationType: DialogTransitionType.slideFromBottomFade,
       context: context,
-      builder: (context) {
+      builder: (context1) {
         return ImagePickerDialog(
           ratioX: 4,
           ratioY: 3,
           imageChanged: (newImage) async {
             await showDialog(
-              context: context,
+              context: context1,
               builder: (c) {
                 return AcceptDeclineDialog(
                   title: "Bild speichern",
                   message: "Möchtest du das Bild als Cover Bild nehmen",
-                  onNoPress: () => Navigator.of(c).pop(),
+                  onNoPress: () {
+                    Navigator.of(c).pop();
+                    Navigator.of(context1).pop();
+                  },
                   onYesPress: () {
                     BlocProvider.of<CurrentPrivateEventCubit>(context)
                         .updateCurrentPrivateEvent(
-                          updatePrivateEventDto: UpdatePrivateEventDto(
-                            updateCoverImage: newImage,
-                          ),
-                        )
+                      updatePrivateEventDto: UpdatePrivateEventDto(
+                        updateCoverImage: newImage,
+                      ),
+                    )
                         .then(
-                          (value) => Navigator.of(c).pop(),
-                        );
+                      (value) {
+                        Navigator.of(c).pop();
+                        Navigator.of(context1).pop();
+                      },
+                    );
                   },
                 );
               },

@@ -16,28 +16,34 @@ class ProfilePageCircleImage extends StatelessWidget {
       curve: Curves.fastOutSlowIn,
       animationType: DialogTransitionType.slideFromBottomFade,
       context: context,
-      builder: (context) {
+      builder: (context1) {
         return ImagePickerDialog(
           ratioX: 1,
           ratioY: 1,
           imageChanged: (newImage) async {
             await showDialog(
-              context: context,
+              context: context1,
               builder: (c) {
                 return AcceptDeclineDialog(
                   title: "Bild speichern",
                   message: "Möchtest du das Bild als Profilbild nehmen",
-                  onNoPress: () => Navigator.of(c).pop(),
+                  onNoPress: () {
+                    Navigator.of(c).pop();
+                    Navigator.of(context1).pop();
+                  },
                   onYesPress: () {
                     BlocProvider.of<ProfilePageCubit>(context)
                         .updateUser(
-                          updateUserDto: UpdateUserDto(
-                            updateProfileImage: newImage,
-                          ),
-                        )
+                      updateUserDto: UpdateUserDto(
+                        updateProfileImage: newImage,
+                      ),
+                    )
                         .then(
-                          (value) => Navigator.of(c).pop(),
-                        );
+                      (value) {
+                        Navigator.of(c).pop();
+                        Navigator.of(context1).pop();
+                      },
+                    );
                   },
                 );
               },

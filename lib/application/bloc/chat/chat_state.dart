@@ -20,9 +20,9 @@ class ChatState {
           a.privateEvent?.latestMessage ??
           a.user?.latestMessage;
 
-      final latestMessageB = a.groupchat?.latestMessage ??
-          a.privateEvent?.latestMessage ??
-          a.user?.latestMessage;
+      final latestMessageB = b.groupchat?.latestMessage ??
+          b.privateEvent?.latestMessage ??
+          b.user?.latestMessage;
 
       if (latestMessageA == null && latestMessageB == null) {
         return 0;

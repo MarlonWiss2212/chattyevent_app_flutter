@@ -458,6 +458,7 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
                 newEntity: UserEntity(
                   id: state.user.id,
                   authId: state.user.authId,
+                  // TODO rewrite this cause follower count only is relevant when user relation was follower but it could be anything
                   userRelationCounts: UserRelationsCountEntity(
                     followerCount: state.user.userRelationCounts != null &&
                             state.user.userRelationCounts!.followerCount !=
@@ -512,7 +513,7 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
             final foundIndexFollowers = followers.indexWhere(
               (element) => element.id == user.id,
             );
-            if (foundIndex != -1) {
+            if (foundIndexFollowers != -1) {
               followers[foundIndexFollowers] = UserEntity.merge(
                 newEntity: UserEntity(
                   id: user.id,
@@ -541,53 +542,24 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
                 newEntity: UserEntity(
                   id: followed[foundIndex].id,
                   authId: followed[foundIndex].authId,
-                  userRelationCounts: UserRelationsCountEntity(
-                    followerCount:
-                        followed[foundIndex].userRelationCounts != null &&
-                                followed[foundIndex]
-                                        .userRelationCounts!
-                                        .followerCount !=
-                                    null &&
-                                followed[foundIndex]
-                                        .userRelationCounts!
-                                        .followerCount! >
-                                    0
-                            ? user.userRelationCounts!.followerCount! - 1
-                            : null,
-                  ),
                 ),
                 oldEntity: followed[foundIndex],
               );
-
-              final foundIndexFollowers = followers.indexWhere(
-                (element) => element.id == user.id,
-              );
-              if (foundIndex != -1) {
-                followers[foundIndexFollowers] = UserEntity.merge(
-                  removeMyUserRelation: true,
-                  newEntity: UserEntity(
-                    id: followers[foundIndexFollowers].id,
-                    authId: followers[foundIndexFollowers].authId,
-                    userRelationCounts: UserRelationsCountEntity(
-                      followerCount:
-                          followers[foundIndexFollowers].userRelationCounts !=
-                                      null &&
-                                  followers[foundIndexFollowers]
-                                          .userRelationCounts!
-                                          .followerCount !=
-                                      null &&
-                                  followers[foundIndexFollowers]
-                                          .userRelationCounts!
-                                          .followerCount! >
-                                      0
-                              ? user.userRelationCounts!.followerCount! - 1
-                              : null,
-                    ),
-                  ),
-                  oldEntity: followers[foundIndex],
-                );
-              }
             }
+            final foundIndexFollowers = followers.indexWhere(
+              (element) => element.id == user.id,
+            );
+            if (foundIndexFollowers != -1) {
+              followers[foundIndexFollowers] = UserEntity.merge(
+                removeMyUserRelation: true,
+                newEntity: UserEntity(
+                  id: followers[foundIndexFollowers].id,
+                  authId: followers[foundIndexFollowers].authId,
+                ),
+                oldEntity: followers[foundIndexFollowers],
+              );
+            }
+
             emitState(followed: followed, followers: followers);
           },
         );
