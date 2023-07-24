@@ -28,7 +28,7 @@ class MessageRepositoryImpl implements MessageRepository {
         "input": createMessageDto.toMap(),
       };
 
-      /// TODO: should accapt other files than jpg too
+      /// TODO: should accept other files than jpg too
       if (createMessageDto.file != null) {
         final type = lookupMimeType(createMessageDto.file!.path);
         if (type != null) {

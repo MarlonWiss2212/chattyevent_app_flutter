@@ -152,6 +152,11 @@ class _AppState extends State<App> {
                 },
                 theme: ThemeData(
                   useMaterial3: true,
+                  listTileTheme: ListTileThemeData(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
                   tabBarTheme: TabBarTheme(
                     indicatorColor: lightColorScheme.primary,
                     indicatorSize: TabBarIndicatorSize.tab,
@@ -177,6 +182,11 @@ class _AppState extends State<App> {
                 ),
                 darkTheme: ThemeData(
                   useMaterial3: true,
+                  listTileTheme: ListTileThemeData(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
                   tabBarTheme: TabBarTheme(
                     indicatorColor: darkColorScheme.primary,
                     indicatorSize: TabBarIndicatorSize.tab,

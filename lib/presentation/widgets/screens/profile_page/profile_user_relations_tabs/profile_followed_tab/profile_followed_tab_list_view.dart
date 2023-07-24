@@ -1,3 +1,4 @@
+import 'package:chattyevent_app_flutter/core/enums/user_relation/user_relation_status_enum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/profile_page/profile_page_cubit.dart';
@@ -29,10 +30,11 @@ class ProfileFollowedTabListView extends StatelessWidget {
                 height: 40,
                 child: FollowButton(
                   user: followed[index],
-                  onTap: () {
+                  onTap: (UserRelationStatusEnum? value) {
                     BlocProvider.of<ProfilePageCubit>(context)
-                        .followOrUnfollowUserViaApi(
+                        .createUpdateUserOrDeleteRelationViaApi(
                       user: followed[index],
+                      value: value,
                     );
                   },
                 ),

@@ -53,7 +53,7 @@ class ProfileFollowRequestsTabListView extends StatelessWidget {
                   InkWell(
                     onTap: () {
                       BlocProvider.of<ProfilePageCubit>(context)
-                          .deleteFollowRequest(
+                          .deleteFollowerOrRequest(
                         userId: followRequests[index].id,
                       );
                     },

@@ -23,7 +23,6 @@ class UserRepositoryImpl implements UserRepository {
     required bool currentUser,
   }) async {
     try {
-      // TODO new perrmission schema
       // firstname
       // lastname
       // birthdate

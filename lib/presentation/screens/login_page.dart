@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:chattyevent_app_flutter/presentation/widgets/general/chatty_event_logo_and_text_auth_pages.dart';
 
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/auth_pages/dataprotection_checkbox.dart';
 import 'package:flutter/material.dart';
@@ -59,7 +60,11 @@ class _LoginPageState extends State<LoginPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      const SizedBox(height: 8),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 10),
+                        child: ChattyEventLogoAndTextAuthPages(),
+                      ),
+                      const SizedBox(height: 50),
                       PlatformTextFormField(
                         controller: emailFieldController,
                         hintText: 'E-Mail',

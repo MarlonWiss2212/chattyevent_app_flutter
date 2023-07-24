@@ -1,3 +1,4 @@
+import 'package:chattyevent_app_flutter/core/enums/user_relation/user_relation_status_enum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
@@ -34,7 +35,8 @@ class ProfileFollowersTabListView extends StatelessWidget {
                   PopupMenuItem(
                     child: const Text("Entfernen"),
                     onTap: () {
-                      BlocProvider.of<ProfilePageCubit>(context).deleteFollower(
+                      BlocProvider.of<ProfilePageCubit>(context)
+                          .deleteFollowerOrRequest(
                         userId: followers[index].id,
                       );
                     },
@@ -46,8 +48,12 @@ class ProfileFollowersTabListView extends StatelessWidget {
                 height: 40,
                 child: FollowButton(
                   user: followers[index],
-                  onTap: () => BlocProvider.of<ProfilePageCubit>(context)
-                      .followOrUnfollowUserViaApi(user: followers[index]),
+                  onTap: (UserRelationStatusEnum? value) =>
+                      BlocProvider.of<ProfilePageCubit>(context)
+                          .createUpdateUserOrDeleteRelationViaApi(
+                    user: followers[index],
+                    value: value,
+                  ),
                 ),
               ),
             );

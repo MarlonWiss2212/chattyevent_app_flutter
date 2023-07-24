@@ -1,4 +1,6 @@
 import 'package:chattyevent_app_flutter/core/enums/user_relation/user_relation_status_enum.dart';
+import 'package:chattyevent_app_flutter/infastructure/dto/user_relation/update_user_relation_dto.dart';
+import 'package:chattyevent_app_flutter/infastructure/filter/user_relation/target_user_id_filter.dart';
 import 'package:dartz/dartz.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:chattyevent_app_flutter/infastructure/dto/user_relation/create_user_relation_dto.dart';
@@ -61,6 +63,17 @@ class UserRelationUseCases {
   }
 
   Future<Either<NotificationAlert, UserRelationEntity>>
+      updateUserRelationViaApi({
+    required UpdateUserRelationDto updateUserRelationDto,
+    required TargetUserIdFilter targetUserIdFilter,
+  }) async {
+    return await userRelationRepository.updateUserRelationViaApi(
+      updateUserRelationDto: updateUserRelationDto,
+      targetUserIdFilter: targetUserIdFilter,
+    );
+  }
+
+  Future<Either<NotificationAlert, UserRelationEntity>>
       acceptFollowRequestViaApi({
     required String requesterUserId,
   }) async {
@@ -78,24 +91,22 @@ class UserRelationUseCases {
   }
 
   Future<Either<NotificationAlert, Either<UserRelationEntity, bool>>>
-      followOrUnfollowUserViaApi({
+      createUpdateUserOrDeleteRelationViaApi({
     required FindOneUserRelationFilter findOneUserRelationFilter,
-    required UserRelationEntity? myUserRelationToOtherUser,
+    required UserRelationStatusEnum? value,
+    required bool createUserRelation,
   }) async {
-    if (myUserRelationToOtherUser?.status == null ||
-        myUserRelationToOtherUser?.status != UserRelationStatusEnum.follower &&
-            myUserRelationToOtherUser?.status !=
-                UserRelationStatusEnum.requesttofollow) {
-      final userRelationOrNotificationAlert =
-          await userRelationRepository.createUserRelationViaApi(
-              createUserRelationDto: CreateUserRelationDto(
-        targetUserId: findOneUserRelationFilter.targetUserId,
-      ));
-      return userRelationOrNotificationAlert.fold(
-        (error) => Left(error),
-        (userRelation) => Right(Left(userRelation)),
+    if (value == UserRelationStatusEnum.follower) {
+      return Left(
+        NotificationAlert(
+          title: "Fehler",
+          message:
+              "Du kannst die Relation zu dem User nicht einfach ändern du kannst ihn oder sie z.B. Blockieren",
+        ),
       );
-    } else {
+    }
+    if (value == null) {
+      print("tesdgdergders");
       final booleanOrNotificationAlert =
           await userRelationRepository.deleteUserRelationViaApi(
         findOneUserRelationFilter: findOneUserRelationFilter,
@@ -104,6 +115,33 @@ class UserRelationUseCases {
       return booleanOrNotificationAlert.fold(
         (error) => Left(error),
         (boolean) => Right(Right(boolean)),
+      );
+    }
+    if (createUserRelation) {
+      final userRelationOrNotificationAlert =
+          await userRelationRepository.createUserRelationViaApi(
+        createUserRelationDto: CreateUserRelationDto(
+          targetUserId: findOneUserRelationFilter.targetUserId,
+          status: value,
+        ),
+      );
+      return userRelationOrNotificationAlert.fold(
+        (error) => Left(error),
+        (userRelation) => Right(Left(userRelation)),
+      );
+    } else {
+      final userRelationOrNotificationAlert =
+          await userRelationRepository.updateUserRelationViaApi(
+        targetUserIdFilter: TargetUserIdFilter(
+          targetUserId: findOneUserRelationFilter.targetUserId,
+        ),
+        updateUserRelationDto: UpdateUserRelationDto(
+          status: value,
+        ),
+      );
+      return userRelationOrNotificationAlert.fold(
+        (error) => Left(error),
+        (userRelation) => Right(Left(userRelation)),
       );
     }
   }

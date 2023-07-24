@@ -1,3 +1,5 @@
+import 'package:chattyevent_app_flutter/infastructure/dto/user_relation/update_user_relation_dto.dart';
+import 'package:chattyevent_app_flutter/infastructure/filter/user_relation/target_user_id_filter.dart';
 import 'package:dartz/dartz.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:chattyevent_app_flutter/infastructure/dto/user_relation/create_user_relation_dto.dart';
@@ -27,6 +29,11 @@ abstract class UserRelationRepository {
   Future<Either<NotificationAlert, List<UserEntity>>> getFollowedViaApi({
     required LimitOffsetFilter limitOffsetFilter,
     required FindFollowedFilter findFollowedFilter,
+  });
+  Future<Either<NotificationAlert, UserRelationEntity>>
+      updateUserRelationViaApi({
+    required UpdateUserRelationDto updateUserRelationDto,
+    required TargetUserIdFilter targetUserIdFilter,
   });
   Future<Either<NotificationAlert, UserRelationEntity>>
       acceptFollowRequestViaApi({

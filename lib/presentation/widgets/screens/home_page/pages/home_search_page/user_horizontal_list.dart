@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:auto_route/auto_route.dart';
+import 'package:chattyevent_app_flutter/core/enums/user_relation/user_relation_status_enum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/user_search/user_search_cubit.dart';
@@ -40,10 +41,11 @@ class UserHorizontalList extends StatelessWidget {
                 user: users[index],
                 button: FollowButton(
                   user: users[index],
-                  onTap: () {
+                  onTap: (UserRelationStatusEnum? value) {
                     BlocProvider.of<UserSearchCubit>(context)
-                        .followOrUnfollowUserViaApi(
+                        .createUpdateUserOrDeleteRelationViaApi(
                       user: users[index],
+                      value: value,
                     );
                   },
                 ),

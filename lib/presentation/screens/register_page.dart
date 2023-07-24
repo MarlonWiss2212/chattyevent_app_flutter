@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:chattyevent_app_flutter/presentation/widgets/general/chatty_event_logo_and_text_auth_pages.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/auth_pages/dataprotection_checkbox.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -59,7 +60,11 @@ class _RegisterPageState extends State<RegisterPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      const SizedBox(height: 8),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 10),
+                        child: ChattyEventLogoAndTextAuthPages(),
+                      ),
+                      const SizedBox(height: 50),
                       PlatformTextFormField(
                         controller: emailFieldController,
                         hintText: 'E-Mail',
@@ -100,8 +105,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       const SizedBox(height: 16),
                       PlatformTextButton(
                         onPressed: () {
-                          AutoRouter.of(context)
-                              .replace(const LoginRoute());
+                          AutoRouter.of(context).replace(const LoginRoute());
                         },
                         child: const Text("Login?"),
                       ),

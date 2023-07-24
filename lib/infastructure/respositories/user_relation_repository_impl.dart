@@ -1,4 +1,5 @@
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
+import 'package:chattyevent_app_flutter/infastructure/dto/user_relation/update_user_relation_dto.dart';
 import 'package:chattyevent_app_flutter/infastructure/filter/limit_offset_filter.dart';
 import 'package:chattyevent_app_flutter/infastructure/filter/user_relation/find_followed_filter.dart';
 import 'package:chattyevent_app_flutter/infastructure/filter/user_relation/find_followers_filter.dart';
@@ -6,6 +7,7 @@ import 'package:chattyevent_app_flutter/core/utils/failure_helper.dart';
 import 'package:chattyevent_app_flutter/domain/entities/user-relation/user_relation_entity.dart';
 import 'package:chattyevent_app_flutter/infastructure/filter/user_relation/find_one_user_relation_filter.dart';
 import 'package:chattyevent_app_flutter/infastructure/dto/user_relation/create_user_relation_dto.dart';
+import 'package:chattyevent_app_flutter/infastructure/filter/user_relation/target_user_id_filter.dart';
 import 'package:dartz/dartz.dart';
 import 'package:chattyevent_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/user_relation_repository.dart';
@@ -294,6 +296,50 @@ class UserRelationRepositoryImpl extends UserRelationRepository {
       }
 
       return Right(users);
+    } catch (e) {
+      return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
+    }
+  }
+
+  @override
+  Future<Either<NotificationAlert, UserRelationEntity>>
+      updateUserRelationViaApi({
+    required UpdateUserRelationDto updateUserRelationDto,
+    required TargetUserIdFilter targetUserIdFilter,
+  }) async {
+    try {
+      final response = await graphQlDatasource.query(
+        """
+        mutation UpdateUserRelation(\$filter: TargetUserIdInput!, \$input: UpdateUserRelationInput!) {
+          updateUserRelation(filter: \$filter, updateUserRelationInput: \$input) {  
+            _id
+            createdAt
+            updatedAt            
+            status
+            targetUserId
+            requesterUserId
+            followData {
+              followedUserAt
+            }                
+          }
+        }
+        """,
+        variables: {
+          "filter": targetUserIdFilter.toMap(),
+          "input": updateUserRelationDto.toMap(),
+        },
+      );
+
+      if (response.hasException) {
+        return Left(FailureHelper.graphqlFailureToNotificationAlert(
+          title: "Updaten Anfrage Fehler",
+          response: response,
+        ));
+      }
+
+      return Right(
+        UserRelationModel.fromJson(response.data!["updateUserRelation"]),
+      );
     } catch (e) {
       return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
     }

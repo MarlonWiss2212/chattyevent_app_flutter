@@ -7,7 +7,6 @@ import 'package:chattyevent_app_flutter/application/bloc/current_groupchat/curre
 import 'package:chattyevent_app_flutter/infastructure/dto/groupchat/groupchat_user/update_groupchat_user_dto.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/button.dart';
 
-//TODO: optimize this page and add deleting groupchat username name
 @RoutePage()
 class GroupchatChangeUsernamePage extends StatefulWidget {
   const GroupchatChangeUsernamePage({super.key});
@@ -67,7 +66,6 @@ class _GroupchatChangeUsernamePageState
                       ),
                     )
                     .then(
-                      /// TODO optimize this later
                       (value) => AutoRouter.of(context).pop(),
                     ),
                 text: "Chat Namen Löschen",
@@ -88,7 +86,6 @@ class _GroupchatChangeUsernamePageState
                       ),
                     )
                     .then(
-                      /// TODO optimize this later
                       (value) => AutoRouter.of(context).pop(),
                     ),
                 text: "Speichern",

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:chattyevent_app_flutter/core/enums/user_relation/user_relation_status_enum.dart';
 import 'package:chattyevent_app_flutter/infastructure/filter/message/added_message_filter.dart';
 import 'package:chattyevent_app_flutter/infastructure/filter/message/find_messages_filter.dart';
 import 'package:chattyevent_app_flutter/domain/entities/message/message_entity.dart';
@@ -13,7 +14,6 @@ import 'package:chattyevent_app_flutter/infastructure/filter/user/find_one_user_
 import 'package:chattyevent_app_flutter/infastructure/filter/user_relation/find_followed_filter.dart';
 import 'package:chattyevent_app_flutter/infastructure/filter/user_relation/find_followers_filter.dart';
 import 'package:chattyevent_app_flutter/infastructure/filter/user_relation/find_one_user_relation_filter.dart';
-import 'package:chattyevent_app_flutter/domain/entities/user-relation/user_relations_count_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/user_relation_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/user_usecases.dart';
@@ -186,7 +186,7 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
     );
   }
 
-  /// this four can only be made if the profile user is the current user // replace later with auth cubit . listen
+  /// this 3 can only be made if the profile user is the current user // replace later with auth cubit . listen
   Future updateUser({
     required UpdateUserDto updateUserDto,
   }) async {
@@ -244,16 +244,8 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
           newEntity: UserEntity(
             id: state.user.id,
             authId: state.user.authId,
-            userRelationCounts: UserRelationsCountEntity(
-              followerCount: state.user.userRelationCounts != null &&
-                      state.user.userRelationCounts!.followerCount != null
-                  ? state.user.userRelationCounts!.followerCount! + 1
-                  : 1,
-              followRequestCount: state.user.userRelationCounts != null &&
-                      state.user.userRelationCounts!.followRequestCount != null
-                  ? state.user.userRelationCounts!.followRequestCount! - 1
-                  : null,
-            ),
+            //TODO:
+            //userRelationCounts:,
           ),
           oldEntity: state.user,
         );
@@ -267,76 +259,9 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
     );
   }
 
-  Future deleteFollowRequest({
+  Future deleteFollowerOrRequest({
     required String userId,
   }) async {
-    if (state.user.id != authCubit.state.currentUser.id) {
-      notificationCubit.newAlert(
-        notificationAlert: NotificationAlert(
-          title: "Delete User Relation Request Fehler",
-          message:
-              "Du kannst keine Freundschaftsanfragen von anderen Profilen ablehnen",
-        ),
-      );
-      return;
-    }
-    final userRelationOrFailure =
-        await userRelationUseCases.deleteUserRelationViaApi(
-      findOneUserRelationFilter: FindOneUserRelationFilter(
-        targetUserId: state.user.id,
-        requesterUserId: userId,
-      ),
-    );
-
-    userRelationOrFailure.fold(
-      (alert) => notificationCubit.newAlert(notificationAlert: alert),
-      (boolean) {
-        if (boolean == false) {
-          notificationCubit.newAlert(
-            notificationAlert: NotificationAlert(
-              title: "Delete User Relation Fehler",
-              message: "Fehler beim Löschen der Relation",
-            ),
-          );
-          return;
-        }
-        final user = UserEntity.merge(
-          newEntity: UserEntity(
-            id: state.user.id,
-            authId: state.user.authId,
-            userRelationCounts: UserRelationsCountEntity(
-              followRequestCount: state.user.userRelationCounts != null &&
-                      state.user.userRelationCounts!.followRequestCount != null
-                  ? state.user.userRelationCounts!.followRequestCount! - 1
-                  : null,
-            ),
-          ),
-          oldEntity: state.user,
-        );
-        emitState(
-          followRequests: List.from(state.followRequests)
-            ..removeWhere((user) => user.id == userId),
-          user: user,
-        );
-        authCubit.emitState(currentUser: user);
-      },
-    );
-  }
-
-  Future deleteFollower({
-    required String userId,
-  }) async {
-    if (state.user.id != authCubit.state.currentUser.id &&
-        state.user.id != userId) {
-      notificationCubit.newAlert(
-        notificationAlert: NotificationAlert(
-          title: "Delete Follower",
-          message: "Du kannst keinen Follower eines anderen Profiles löschen",
-        ),
-      );
-      return;
-    }
-
     final userRelationOrFailure =
         await userRelationUseCases.deleteUserRelationViaApi(
       findOneUserRelationFilter: FindOneUserRelationFilter(
@@ -352,7 +277,7 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
           notificationCubit.newAlert(
             notificationAlert: NotificationAlert(
               title: "Delete Follower",
-              message: "Fehler bein löschen eines Followers",
+              message: "Fehler bein löschen einer User Relation",
             ),
           );
           return;
@@ -360,76 +285,48 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
 
         // when deleting profile user as my follower
         if (state.user.id == userId) {
-          emitState(
-            user: UserEntity.merge(
-              removeOtherUserRelationToMe: true,
-              newEntity: UserEntity(
-                id: state.user.id,
-                authId: state.user.authId,
-                userRelationCounts: UserRelationsCountEntity(
-                  followedCount: state.user.userRelationCounts != null &&
-                          state.user.userRelationCounts!.followedCount != null
-                      ? state.user.userRelationCounts!.followedCount! - 1
-                      : null,
-                ),
-              ),
-              oldEntity: state.user,
-            ),
-          );
-          // make count less for deleting follower
-          authCubit.emitState(
-            currentUser: UserEntity.merge(
-              newEntity: UserEntity(
-                id: authCubit.state.currentUser.id,
-                authId: authCubit.state.currentUser.authId,
-                userRelationCounts: UserRelationsCountEntity(
-                  followerCount: state.user.userRelationCounts != null &&
-                          state.user.userRelationCounts!.followerCount != null
-                      ? state.user.userRelationCounts!.followerCount! - 1
-                      : null,
-                ),
-              ),
-              oldEntity: authCubit.state.currentUser,
-            ),
-          );
-        }
-        // when deleting my followers
-        else {
-          final user = UserEntity.merge(
+          final newUser = UserEntity.merge(
+            removeOtherUserRelationToMe: true,
             newEntity: UserEntity(
               id: state.user.id,
               authId: state.user.authId,
-              userRelationCounts: UserRelationsCountEntity(
-                followerCount: state.user.userRelationCounts != null &&
-                        state.user.userRelationCounts!.followerCount != null
-                    ? state.user.userRelationCounts!.followerCount! - 1
-                    : null,
-              ),
+              //TODO:
+              //   userRelationCounts:
             ),
             oldEntity: state.user,
           );
+          emitState(user: newUser);
+          authCubit.emitState(currentUser: newUser);
+        }
+        // when deleting my followers
+        else {
           emitState(
-            followers: List.from(state.followRequests)
+            followers: List.from(state.followers)
               ..removeWhere(
                 (user) => user.id == userId,
               ),
-            user: user,
+            followRequests: List.from(state.followRequests)
+              ..removeWhere(
+                (user) => user.id == userId,
+              ),
           );
-          authCubit.emitState(currentUser: user);
         }
       },
     );
   }
 
-  /// this is then you try to follow or unfollow the current profile user
-  Future followOrUnfollowCurrentProfileUserViaApi() async {
+  /// this is then you try to change relation to the current profile user
+  Future createUpdateUserOrDeleteCurrentProfileUserRelationViaApi({
+    UserRelationStatusEnum? value,
+  }) async {
     final userRelationOrFailure =
-        await userRelationUseCases.followOrUnfollowUserViaApi(
+        await userRelationUseCases.createUpdateUserOrDeleteRelationViaApi(
       findOneUserRelationFilter: FindOneUserRelationFilter(
         requesterUserId: authCubit.state.currentUser.id,
         targetUserId: state.user.id,
       ),
-      myUserRelationToOtherUser: state.user.myUserRelationToOtherUser,
+      value: value,
+      createUserRelation: state.user.myUserRelationToOtherUser == null,
     );
 
     userRelationOrFailure.fold(
@@ -459,14 +356,7 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
                   id: state.user.id,
                   authId: state.user.authId,
                   // TODO rewrite this cause follower count only is relevant when user relation was follower but it could be anything
-                  userRelationCounts: UserRelationsCountEntity(
-                    followerCount: state.user.userRelationCounts != null &&
-                            state.user.userRelationCounts!.followerCount !=
-                                null &&
-                            state.user.userRelationCounts!.followerCount! > 0
-                        ? state.user.userRelationCounts!.followerCount! - 1
-                        : null,
-                  ),
+                  //userRelationCounts:
                 ),
                 oldEntity: state.user,
               ),
@@ -477,15 +367,19 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
     );
   }
 
-  /// this is when you try to follow any user and not the current profile user
-  Future followOrUnfollowUserViaApi({required UserEntity user}) async {
+  /// this is when you to change relation to any user and not the current profile user
+  Future createUpdateUserOrDeleteRelationViaApi({
+    required UserEntity user,
+    UserRelationStatusEnum? value,
+  }) async {
     final userRelationOrFailure =
-        await userRelationUseCases.followOrUnfollowUserViaApi(
+        await userRelationUseCases.createUpdateUserOrDeleteRelationViaApi(
       findOneUserRelationFilter: FindOneUserRelationFilter(
         requesterUserId: authCubit.state.currentUser.id,
         targetUserId: user.id,
       ),
-      myUserRelationToOtherUser: user.myUserRelationToOtherUser,
+      value: value,
+      createUserRelation: user.myUserRelationToOtherUser == null,
     );
 
     userRelationOrFailure.fold(
@@ -523,12 +417,13 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
                 oldEntity: user,
               );
             }
-            emitState(followers: followers, followed: followed);
+            emitState(
+              followers: followers,
+              followed: followed,
+            );
           },
           (boolean) {
-            if (boolean == false) {
-              return;
-            }
+            if (boolean == false) return;
             List<UserEntity>? followed = state.followed;
             List<UserEntity>? followers = state.followers;
 
@@ -559,8 +454,10 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
                 oldEntity: followers[foundIndexFollowers],
               );
             }
-
-            emitState(followed: followed, followers: followers);
+            emitState(
+              followers: followers,
+              followed: followed,
+            );
           },
         );
       },
@@ -568,7 +465,6 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
   }
 
   // messages only if follow the other user
-
   void listenToMessages() {
     final eitherAlertOrStream = messageUseCases.getMessagesRealtimeViaApi(
       addedMessageFilter: AddedMessageFilter(userTo: state.user.id),

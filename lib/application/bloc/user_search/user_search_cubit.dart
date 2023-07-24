@@ -1,3 +1,4 @@
+import 'package:chattyevent_app_flutter/core/enums/user_relation/user_relation_status_enum.dart';
 import 'package:chattyevent_app_flutter/infastructure/filter/user_relation/find_followers_filter.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,7 +8,6 @@ import 'package:chattyevent_app_flutter/infastructure/filter/limit_offset_filter
 import 'package:chattyevent_app_flutter/infastructure/filter/user/find_users_filter.dart';
 import 'package:chattyevent_app_flutter/infastructure/filter/user_relation/find_followed_filter.dart';
 import 'package:chattyevent_app_flutter/infastructure/filter/user_relation/find_one_user_relation_filter.dart';
-import 'package:chattyevent_app_flutter/domain/entities/user-relation/user_relations_count_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/user_relation_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/user_usecases.dart';
@@ -159,14 +159,18 @@ class UserSearchCubit extends Cubit<UserSearchState> {
     );
   }
 
-  Future followOrUnfollowUserViaApi({required UserEntity user}) async {
+  Future createUpdateUserOrDeleteRelationViaApi({
+    required UserEntity user,
+    UserRelationStatusEnum? value,
+  }) async {
     final userRelationOrFailure =
-        await userRelationUseCases.followOrUnfollowUserViaApi(
+        await userRelationUseCases.createUpdateUserOrDeleteRelationViaApi(
       findOneUserRelationFilter: FindOneUserRelationFilter(
         requesterUserId: authCubit.state.currentUser.id,
         targetUserId: user.id,
       ),
-      myUserRelationToOtherUser: user.myUserRelationToOtherUser,
+      value: value,
+      createUserRelation: user.myUserRelationToOtherUser == null,
     );
 
     userRelationOrFailure.fold(
@@ -217,20 +221,8 @@ class UserSearchCubit extends Cubit<UserSearchState> {
                 newEntity: UserEntity(
                   id: users[foundIndex].id,
                   authId: users[foundIndex].authId,
-                  userRelationCounts: UserRelationsCountEntity(
-                    followerCount:
-                        users[foundIndex].userRelationCounts != null &&
-                                users[foundIndex]
-                                        .userRelationCounts!
-                                        .followerCount !=
-                                    null &&
-                                users[foundIndex]
-                                        .userRelationCounts!
-                                        .followerCount! >
-                                    0
-                            ? user.userRelationCounts!.followerCount! - 1
-                            : null,
-                  ),
+                  //TODO: count isnt right check if it was a follower before changing count
+                  //userRelationCounts:,
                 ),
                 oldEntity: users[foundIndex],
               );

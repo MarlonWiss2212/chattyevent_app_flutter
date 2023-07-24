@@ -24,7 +24,7 @@ class ChatMessageContainerBottomContainer extends StatelessWidget {
           isCurrentUser ? MainAxisAlignment.end : MainAxisAlignment.start,
       children: [
         Text(
-          "${DateFormat.jm().format(message.createdAt)}, ",
+          DateFormat.jm().format(message.createdAt),
           style: Theme.of(context)
               .textTheme
               .labelMedium
