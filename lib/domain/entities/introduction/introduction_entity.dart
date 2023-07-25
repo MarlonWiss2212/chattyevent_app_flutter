@@ -3,44 +3,29 @@ import 'package:chattyevent_app_flutter/domain/entities/introduction/app_permiss
 
 class IntroductionEntity {
   final AppFeatureIntroductionEntity appFeatureIntroduction;
-  final bool finishedAppFeatureIntroductionPage;
-  final AppPermissionIntroductionEntity appPermissionIntroductionEntity;
-  final bool finishedAppPermissionIntroductionPage;
+  final AppPermissionIntroductionEntity appPermissionIntroduction;
 
   IntroductionEntity({
     required this.appFeatureIntroduction,
-    required this.finishedAppFeatureIntroductionPage,
-    required this.appPermissionIntroductionEntity,
-    required this.finishedAppPermissionIntroductionPage,
+    required this.appPermissionIntroduction,
   });
 
   IntroductionEntity copyWith({
     AppFeatureIntroductionEntity? appFeatureIntroduction,
-    bool? finishedAppFeatureIntroductionPage,
-    AppPermissionIntroductionEntity? appPermissionIntroductionEntity,
-    bool? finishedAppPermissionIntroductionPage,
+    AppPermissionIntroductionEntity? appPermissionIntroduction,
   }) {
     return IntroductionEntity(
       appFeatureIntroduction:
           appFeatureIntroduction ?? this.appFeatureIntroduction,
-      finishedAppFeatureIntroductionPage: finishedAppFeatureIntroductionPage ??
-          this.finishedAppFeatureIntroductionPage,
-      appPermissionIntroductionEntity: appPermissionIntroductionEntity ??
-          this.appPermissionIntroductionEntity,
-      finishedAppPermissionIntroductionPage:
-          finishedAppPermissionIntroductionPage ??
-              this.finishedAppPermissionIntroductionPage,
+      appPermissionIntroduction:
+          appPermissionIntroduction ?? this.appPermissionIntroduction,
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       'appFeatureIntroduction': appFeatureIntroduction.toJson(),
-      'finishedAppFeatureIntroductionPage': finishedAppFeatureIntroductionPage,
-      'appPermissionIntroductionEntity':
-          appPermissionIntroductionEntity.toJson(),
-      'finishedAppPermissionIntroductionPage':
-          finishedAppPermissionIntroductionPage,
+      'appPermissionIntroduction': appPermissionIntroduction.toJson(),
     };
   }
 }

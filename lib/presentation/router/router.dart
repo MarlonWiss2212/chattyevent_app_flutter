@@ -67,6 +67,7 @@ class AppRouter extends $AppRouter {
               _privateEventRouter,
               _profileRouter,
               ..._settingsRoutes,
+              ..._introductionRoutes,
 
               // future and past events
               CustomRoute(
@@ -490,6 +491,44 @@ class AppRouter extends $AppRouter {
           page: PrivateEventAddMeRoute.page,
           guards: [authGuard],
           path: 'settings/privacy/private-event-add-me-permission',
+        ),
+      ];
+
+  List<CustomRoute> get _introductionRoutes => [
+        CustomRoute(
+          transitionsBuilder: TransitionsBuilders.fadeIn,
+          page: AppPermissionIntroductionRoutesNotificationRoute.page,
+          guards: [authGuard],
+          fullscreenDialog: true,
+          path: 'introduction/permissions/notification',
+        ),
+        CustomRoute(
+          transitionsBuilder: TransitionsBuilders.fadeIn,
+          page: AppPermissionIntroductionRoutesMicrophoneRoute.page,
+          guards: [authGuard],
+          fullscreenDialog: true,
+          path: 'introduction/permissions/microphone',
+        ),
+        CustomRoute(
+          transitionsBuilder: TransitionsBuilders.fadeIn,
+          page: AppFeatureIntroductionRoutesUsersRoute.page,
+          guards: [authGuard],
+          fullscreenDialog: true,
+          path: 'introduction/features/users',
+        ),
+        CustomRoute(
+          transitionsBuilder: TransitionsBuilders.fadeIn,
+          page: AppFeatureIntroductionRoutesPrivateEventRoute.page,
+          guards: [authGuard],
+          fullscreenDialog: true,
+          path: 'introduction/features/private-event',
+        ),
+        CustomRoute(
+          transitionsBuilder: TransitionsBuilders.fadeIn,
+          page: AppFeatureIntroductionRoutesGroupchatRoute.page,
+          guards: [authGuard],
+          fullscreenDialog: true,
+          path: 'introduction/features/groupchat',
         ),
       ];
 }

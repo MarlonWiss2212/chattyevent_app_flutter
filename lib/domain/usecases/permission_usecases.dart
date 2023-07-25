@@ -6,6 +6,10 @@ class PermissionUseCases {
   PermissionUseCases({required this.permissionRepository});
 
   Future<PermissionStatus> requestNotificationPermission() async {
-    return await Permission.notification.request();
+    return await permissionRepository.requestNotificationPermission();
+  }
+
+  Future<PermissionStatus> requestMicrophonePermission() async {
+    return await permissionRepository.requestMicrophonePermission();
   }
 }

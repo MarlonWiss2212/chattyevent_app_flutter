@@ -4,9 +4,7 @@ import 'package:chattyevent_app_flutter/infastructure/models/introduction/app_pe
 
 class IntroductionModel extends IntroductionEntity {
   IntroductionModel({
-    required super.finishedAppFeatureIntroductionPage,
-    required super.finishedAppPermissionIntroductionPage,
-    required super.appPermissionIntroductionEntity,
+    required super.appPermissionIntroduction,
     required super.appFeatureIntroduction,
   });
 
@@ -15,13 +13,9 @@ class IntroductionModel extends IntroductionEntity {
       appFeatureIntroduction: AppFeatureIntroductionModel.fromJson(
         json['appFeatureIntroduction'],
       ),
-      finishedAppFeatureIntroductionPage:
-          json['finishedAppFeatureIntroductionPage'],
-      appPermissionIntroductionEntity: AppPermissionIntroductionModel.fromJson(
-        json['appFeatureIntroduction'],
+      appPermissionIntroduction: AppPermissionIntroductionModel.fromJson(
+        json['appPermissionIntroduction'],
       ),
-      finishedAppPermissionIntroductionPage:
-          json['finishedAppPermissionIntroductionPage'],
     );
   }
 }

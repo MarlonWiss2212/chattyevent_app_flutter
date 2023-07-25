@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:chattyevent_app_flutter/application/bloc/introduction/introduction_cubit.dart';
 import 'package:chattyevent_app_flutter/core/utils/material_theme_utils.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.dart';
 import 'package:chattyevent_app_flutter/scroll_bahaviour.dart';
@@ -40,6 +41,7 @@ Future<void> main() async {
       providers: [
         BlocProvider(create: (context) => serviceLocator<NotificationCubit>()),
         BlocProvider(create: (context) => serviceLocator<AuthCubit>()),
+        BlocProvider(create: (context) => serviceLocator<IntroductionCubit>()),
       ],
       child: Builder(
         builder: (context) {

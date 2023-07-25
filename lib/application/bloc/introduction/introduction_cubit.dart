@@ -19,13 +19,14 @@ class IntroductionCubit extends Cubit<IntroductionState> {
     emit(IntroductionState(introduction: introduction));
   }
 
-  Future<void> getFromStorage({
-    required IntroductionEntity introduction,
-  }) async {
-    final response = await introductionUseCases.getIntroductionFromStorage();
+  Future<void> getFromStorageOrCreateIfNull() async {
+    final response =
+        await introductionUseCases.getIntroductionFromStorageIfNullCreateNew();
     response.fold(
       (alert) => notificationCubit.newAlert(notificationAlert: alert),
-      (value) => emit(IntroductionState(introduction: introduction)),
+      (value) {
+        emit(IntroductionState(introduction: value));
+      },
     );
   }
 }

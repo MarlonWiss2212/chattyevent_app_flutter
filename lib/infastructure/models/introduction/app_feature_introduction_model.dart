@@ -4,7 +4,6 @@ class AppFeatureIntroductionModel extends AppFeatureIntroductionEntity {
   AppFeatureIntroductionModel({
     required super.finishedUsersPage,
     required super.finishedPrivateEventPage,
-    required super.finishedShoppingListPage,
     required super.finishedGroupchatsPage,
   });
 
@@ -12,7 +11,6 @@ class AppFeatureIntroductionModel extends AppFeatureIntroductionEntity {
     return AppFeatureIntroductionModel(
       finishedUsersPage: json['finishedUsersPage'],
       finishedPrivateEventPage: json['finishedPrivateEventPage'],
-      finishedShoppingListPage: json['finishedShoppingListPage'],
       finishedGroupchatsPage: json['finishedGroupchatsPage'],
     );
   }

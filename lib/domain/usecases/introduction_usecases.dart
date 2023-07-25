@@ -1,4 +1,6 @@
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
+import 'package:chattyevent_app_flutter/domain/entities/introduction/app_feature_introduction_entity.dart';
+import 'package:chattyevent_app_flutter/domain/entities/introduction/app_permission_introduction_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/introduction/introduction_entity.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/introduction_repository.dart';
 import 'package:dartz/dartz.dart';
@@ -16,7 +18,26 @@ class IntroductionUseCases {
   }
 
   Future<Either<NotificationAlert, IntroductionEntity>>
-      getIntroductionFromStorage() {
-    return introductionRepository.getIntroductionFromStorage();
+      getIntroductionFromStorageIfNullCreateNew() async {
+    final response = await introductionRepository.getIntroductionFromStorage();
+    return response.fold(
+      (alert) async {
+        await introductionRepository.saveIntroductionInStorage(
+          introduction: IntroductionEntity(
+            appFeatureIntroduction: AppFeatureIntroductionEntity(
+              finishedUsersPage: false,
+              finishedPrivateEventPage: false,
+              finishedGroupchatsPage: false,
+            ),
+            appPermissionIntroduction: AppPermissionIntroductionEntity(
+              finishedMicrophonePage: false,
+              finishedNotificationPage: false,
+            ),
+          ),
+        );
+        return await introductionRepository.getIntroductionFromStorage();
+      },
+      (r) => Right(r),
+    );
   }
 }

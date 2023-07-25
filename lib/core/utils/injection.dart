@@ -1,4 +1,5 @@
 import 'package:audioplayers/audioplayers.dart';
+import 'package:chattyevent_app_flutter/application/bloc/introduction/introduction_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:chattyevent_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/ad_mob_repository.dart';
@@ -92,6 +93,12 @@ class InjectionUtils {
     serviceLocator.registerLazySingleton(() => FirebaseAuth.instance);
 
     // cubit
+    serviceLocator.registerLazySingleton<IntroductionCubit>(
+      () => IntroductionCubit(
+        introductionUseCases: serviceLocator(),
+        notificationCubit: serviceLocator(),
+      )..getFromStorageOrCreateIfNull(),
+    );
     serviceLocator.registerLazySingleton<NotificationCubit>(
       () => NotificationCubit(),
     );
