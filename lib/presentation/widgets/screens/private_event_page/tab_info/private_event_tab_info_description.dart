@@ -19,27 +19,31 @@ class PrivateEventTabInfoDescription extends StatelessWidget {
         }
 
         final String? description = state.privateEvent.description;
-        return Center(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
-            child: EditInputTextField(
-              text: description != null && description.isNotEmpty
-                  ? description
-                  : "Keine Beschreibung",
-              textStyle: Theme.of(context).textTheme.titleMedium,
-              editable: state.getCurrentPrivateEventUser()?.role ==
-                  PrivateEventUserRoleEnum.organizer,
-              onSaved: (text) {
-                BlocProvider.of<CurrentPrivateEventCubit>(context)
-                    .updateCurrentPrivateEvent(
-                  updatePrivateEventDto: UpdatePrivateEventDto(
-                    description: text,
-                  ),
-                );
-              },
-            ),
+        final Widget widget = Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          child: EditInputTextField(
+            text: description != null && description.isNotEmpty
+                ? description
+                : "Keine Beschreibung",
+            keyboardType: TextInputType.multiline,
+            maxLines: 10,
+            textStyle: Theme.of(context).textTheme.titleMedium,
+            editable: state.getCurrentPrivateEventUser()?.role ==
+                PrivateEventUserRoleEnum.organizer,
+            onSaved: (text) {
+              BlocProvider.of<CurrentPrivateEventCubit>(context)
+                  .updateCurrentPrivateEvent(
+                updatePrivateEventDto: UpdatePrivateEventDto(
+                  description: text,
+                ),
+              );
+            },
           ),
         );
+        if (description == null || description.isEmpty) {
+          return Center(child: widget);
+        }
+        return widget;
       },
     );
   }

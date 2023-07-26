@@ -1,13 +1,19 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:chattyevent_app_flutter/application/bloc/add_groupchat/add_groupchat_cubit.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/circle_image/select_circle_image.dart';
 
 @RoutePage()
-class NewGroupchatDetailsTab extends StatelessWidget {
+class NewGroupchatDetailsTab extends StatefulWidget {
   const NewGroupchatDetailsTab({super.key});
+
+  @override
+  State<NewGroupchatDetailsTab> createState() => _NewGroupchatDetailsTabState();
+}
+
+class _NewGroupchatDetailsTabState extends State<NewGroupchatDetailsTab> {
+  FocusNode descriptionFocusNode = FocusNode();
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +37,7 @@ class NewGroupchatDetailsTab extends StatelessWidget {
                   image: state.profileImage,
                 ),
                 const SizedBox(height: 20),
-                PlatformTextFormField(
+                TextField(
                   controller: TextEditingController(
                     text: state.title,
                   ),
@@ -39,19 +45,33 @@ class NewGroupchatDetailsTab extends StatelessWidget {
                       BlocProvider.of<AddGroupchatCubit>(context).emitState(
                     title: value,
                   ),
-                  hintText: 'Name*',
+                  decoration: const InputDecoration(
+                    hintText: "Name*",
+                  ),
                   textInputAction: TextInputAction.next,
                 ),
                 const SizedBox(height: 8),
-                PlatformTextFormField(
-                  controller: TextEditingController(
-                    text: state.description,
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    color: Theme.of(context).colorScheme.surface,
                   ),
-                  onChanged: (value) =>
-                      BlocProvider.of<AddGroupchatCubit>(context).emitState(
-                    description: value,
+                  child: TextField(
+                    controller: TextEditingController(text: state.description),
+                    focusNode: descriptionFocusNode,
+                    keyboardType: TextInputType.multiline,
+                    minLines: 1,
+                    maxLines: 10,
+                    decoration: const InputDecoration.collapsed(
+                      hintText: "Beschreibung",
+                    ),
+                    onTapOutside: (event) => descriptionFocusNode.unfocus(),
+                    onChanged: (value) =>
+                        BlocProvider.of<AddGroupchatCubit>(context).emitState(
+                      description: value,
+                    ),
                   ),
-                  hintText: 'Beschreibung',
                 ),
               ],
             );

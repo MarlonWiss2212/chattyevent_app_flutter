@@ -17,29 +17,33 @@ class ChatInfoPageDescription extends StatelessWidget {
         }
 
         final String? description = state.currentChat.description;
-        return Center(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
-            child: EditInputTextField(
-              text: description != null && description.isNotEmpty
-                  ? description
-                  : "Keine Beschreibung",
-              textStyle: Theme.of(context).textTheme.titleMedium,
-              editable: state.currentUserAllowedWithPermission(
-                permissionCheckValue:
-                    state.currentChat.permissions?.changeDescription,
-              ),
-              onSaved: (text) {
-                BlocProvider.of<CurrentGroupchatCubit>(context)
-                    .updateCurrentGroupchatViaApi(
-                  updateGroupchatDto: UpdateGroupchatDto(
-                    description: text,
-                  ),
-                );
-              },
+        final Widget widget = Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          child: EditInputTextField(
+            text: description != null && description.isNotEmpty
+                ? description
+                : "Keine Beschreibung",
+            textStyle: Theme.of(context).textTheme.titleMedium,
+            keyboardType: TextInputType.multiline,
+            maxLines: 10,
+            editable: state.currentUserAllowedWithPermission(
+              permissionCheckValue:
+                  state.currentChat.permissions?.changeDescription,
             ),
+            onSaved: (text) {
+              BlocProvider.of<CurrentGroupchatCubit>(context)
+                  .updateCurrentGroupchatViaApi(
+                updateGroupchatDto: UpdateGroupchatDto(
+                  description: text,
+                ),
+              );
+            },
           ),
         );
+        if (description == null || description.isEmpty) {
+          return Center(child: widget);
+        }
+        return widget;
       },
     );
   }

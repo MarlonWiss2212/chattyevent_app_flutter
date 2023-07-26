@@ -5,6 +5,8 @@ class EditInputTextField extends StatefulWidget {
   final TextStyle? textStyle;
   final bool editable;
   final String? hintText;
+  final TextInputType? keyboardType;
+  final int? maxLines;
   final void Function(String text)? onSaved;
 
   const EditInputTextField({
@@ -12,6 +14,8 @@ class EditInputTextField extends StatefulWidget {
     required this.text,
     this.editable = true,
     this.onSaved,
+    this.maxLines,
+    this.keyboardType,
     this.hintText,
     this.textStyle,
   });
@@ -39,6 +43,9 @@ class _EditInputTextFieldState extends State<EditInputTextField> {
     } else {
       return IntrinsicWidth(
         child: TextField(
+          keyboardType: widget.keyboardType,
+          minLines: 1,
+          maxLines: widget.maxLines,
           controller: TextEditingController(text: widget.text),
           textInputAction: TextInputAction.done,
           autofocus: true,

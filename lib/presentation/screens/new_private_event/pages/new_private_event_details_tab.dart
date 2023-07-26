@@ -6,8 +6,16 @@ import 'package:chattyevent_app_flutter/application/bloc/add_private_event/add_p
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/new_private_event/new_private_event_details_tab/select_cover_image.dart';
 
 @RoutePage()
-class NewPrivateEventDetailsTab extends StatelessWidget {
+class NewPrivateEventDetailsTab extends StatefulWidget {
   const NewPrivateEventDetailsTab({super.key});
+
+  @override
+  State<NewPrivateEventDetailsTab> createState() =>
+      _NewPrivateEventDetailsTabState();
+}
+
+class _NewPrivateEventDetailsTabState extends State<NewPrivateEventDetailsTab> {
+  FocusNode descriptionFocusNode = FocusNode();
 
   @override
   Widget build(BuildContext context) {
@@ -48,15 +56,27 @@ class NewPrivateEventDetailsTab extends StatelessWidget {
                 textInputAction: TextInputAction.next,
               ),
               const SizedBox(height: 8),
-              PlatformTextFormField(
-                controller: TextEditingController(
-                  text: state.description,
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  color: Theme.of(context).colorScheme.surface,
                 ),
-                onChanged: (value) =>
-                    BlocProvider.of<AddPrivateEventCubit>(context).emitState(
-                  description: value,
+                child: TextField(
+                  controller: TextEditingController(text: state.description),
+                  focusNode: descriptionFocusNode,
+                  keyboardType: TextInputType.multiline,
+                  minLines: 1,
+                  maxLines: 10,
+                  decoration: const InputDecoration.collapsed(
+                    hintText: "Beschreibung",
+                  ),
+                  onTapOutside: (event) => descriptionFocusNode.unfocus(),
+                  onChanged: (value) =>
+                      BlocProvider.of<AddPrivateEventCubit>(context).emitState(
+                    description: value,
+                  ),
                 ),
-                hintText: 'Beschreibung',
               ),
               const SizedBox(height: 8),
             ],
