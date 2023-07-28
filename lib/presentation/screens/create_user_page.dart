@@ -8,7 +8,6 @@ import 'package:chattyevent_app_flutter/application/bloc/notification/notificati
 import 'package:chattyevent_app_flutter/core/utils/injection.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/button.dart';
-import 'package:chattyevent_app_flutter/presentation/widgets/general/dialog/alert_dialog.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/create_user_page/create_user_page_birthdate_button.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/create_user_page/create_user_page_profile_image.dart';
 
@@ -40,112 +39,94 @@ class CreateUserPage extends StatelessWidget {
               ),
             ],
           ),
-          body: BlocListener<NotificationCubit, NotificationState>(
-            listener: (context, state) async {
-              if (state is NotificationAlert) {
-                return await showDialog(
-                  context: context,
-                  builder: (c) {
-                    return CustomAlertDialog(
-                      notificationAlert: state,
-                      context: c,
-                    );
-                  },
-                );
-              }
-            },
-            child: Column(
-              children: [
-                BlocBuilder<AddCurrentUserCubit, AddCurrentUserState>(
-                  builder: (context, state) {
-                    if (state.status == AddCurrentUserStateStatus.loading) {
-                      return const LinearProgressIndicator();
-                    }
-                    return const SizedBox();
-                  },
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Column(
-                      children: [
-                        Expanded(
-                          child: SingleChildScrollView(
-                            child: Column(
-                              children: [
-                                const SizedBox(height: 20),
-                                const CreateUserPageProfileImage(),
-                                const SizedBox(height: 20),
-                                PlatformTextFormField(
-                                  onChanged: (value) {
-                                    BlocProvider.of<AddCurrentUserCubit>(
-                                            context)
-                                        .emitState(
-                                      username: value,
-                                    );
-                                  },
-                                  hintText: 'Benutzername',
-                                  textInputAction: TextInputAction.next,
-                                ),
-                                const SizedBox(height: 8),
-                                PlatformTextFormField(
-                                  onChanged: (value) {
-                                    BlocProvider.of<AddCurrentUserCubit>(
-                                            context)
-                                        .emitState(
-                                      firstname: value,
-                                    );
-                                  },
-                                  textInputAction: TextInputAction.next,
-                                  hintText: 'Vorname',
-                                ),
-                                const SizedBox(height: 8),
-                                PlatformTextFormField(
-                                  onChanged: (value) {
-                                    BlocProvider.of<AddCurrentUserCubit>(
-                                            context)
-                                        .emitState(
-                                      lastname: value,
-                                    );
-                                  },
-                                  hintText: 'Nachname',
-                                ),
-                                const SizedBox(height: 8),
-                                const CreateUserPageBirthdayButton()
-                              ],
-                            ),
+          body: Column(
+            children: [
+              BlocBuilder<AddCurrentUserCubit, AddCurrentUserState>(
+                builder: (context, state) {
+                  if (state.status == AddCurrentUserStateStatus.loading) {
+                    return const LinearProgressIndicator();
+                  }
+                  return const SizedBox();
+                },
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              const SizedBox(height: 20),
+                              const CreateUserPageProfileImage(),
+                              const SizedBox(height: 20),
+                              PlatformTextFormField(
+                                onChanged: (value) {
+                                  BlocProvider.of<AddCurrentUserCubit>(context)
+                                      .emitState(
+                                    username: value,
+                                  );
+                                },
+                                hintText: 'Benutzername',
+                                textInputAction: TextInputAction.next,
+                              ),
+                              const SizedBox(height: 8),
+                              PlatformTextFormField(
+                                onChanged: (value) {
+                                  BlocProvider.of<AddCurrentUserCubit>(context)
+                                      .emitState(
+                                    firstname: value,
+                                  );
+                                },
+                                textInputAction: TextInputAction.next,
+                                hintText: 'Vorname',
+                              ),
+                              const SizedBox(height: 8),
+                              PlatformTextFormField(
+                                onChanged: (value) {
+                                  BlocProvider.of<AddCurrentUserCubit>(context)
+                                      .emitState(
+                                    lastname: value,
+                                  );
+                                },
+                                hintText: 'Nachname',
+                              ),
+                              const SizedBox(height: 8),
+                              const CreateUserPageBirthdayButton()
+                            ],
                           ),
                         ),
-                        const SizedBox(height: 8),
-                        BlocListener<AddCurrentUserCubit, AddCurrentUserState>(
-                          listener: (context, state) async {
-                            if (state.status ==
-                                AddCurrentUserStateStatus.created) {
-                              AutoRouter.of(context).replace(
-                                const BlocInitRoute(
-                                  children: [HomeRoute()],
-                                ),
-                              );
-                            }
-                          },
-                          child: SizedBox(
-                            width: double.infinity,
-                            child: Button(
-                              onTap: () {
-                                BlocProvider.of<AddCurrentUserCubit>(context)
-                                    .createCurrentUser();
-                              },
-                              text: "User Erstellen",
-                            ),
+                      ),
+                      const SizedBox(height: 8),
+                      BlocListener<AddCurrentUserCubit, AddCurrentUserState>(
+                        listener: (context, state) async {
+                          if (state.status ==
+                              AddCurrentUserStateStatus.created) {
+                            AutoRouter.of(context).replace(
+                              const BlocInitRoute(
+                                children: [HomeRoute()],
+                              ),
+                            );
+                          }
+                        },
+                        child: SizedBox(
+                          width: double.infinity,
+                          child: Button(
+                            onTap: () {
+                              BlocProvider.of<AddCurrentUserCubit>(context)
+                                  .createCurrentUser();
+                            },
+                            text: "User Erstellen",
                           ),
                         ),
-                        const SizedBox(height: 8),
-                      ],
-                    ),
+                      ),
+                      const SizedBox(height: 8),
+                    ],
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         );
       }),

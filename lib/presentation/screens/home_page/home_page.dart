@@ -5,9 +5,7 @@ import 'package:chattyevent_app_flutter/domain/usecases/settings_usecases.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
-import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
-import 'package:chattyevent_app_flutter/presentation/widgets/general/dialog/alert_dialog.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/home_page/mini_profile_image.dart';
 import 'package:ionicons/ionicons.dart';
 
@@ -72,72 +70,57 @@ class _HomePageState extends State<HomePage> {
         builder: (context, child) {
           final TabsRouter tabsRouter = AutoTabsRouter.of(context);
           return Scaffold(
-            body: BlocListener<NotificationCubit, NotificationState>(
-              listener: (context, state) async {
-                if (state is NotificationAlert) {
-                  return await showDialog(
-                    context: context,
-                    builder: (c) {
-                      return CustomAlertDialog(
-                        notificationAlert: state,
-                        context: c,
-                      );
-                    },
+            body: LayoutBuilder(
+              builder: (context, constraints) {
+                if (constraints.maxWidth > 600) {
+                  return Row(
+                    children: [
+                      NavigationRail(
+                        selectedIndex: tabsRouter.activeIndex,
+                        labelType: NavigationRailLabelType.selected,
+                        selectedIconTheme: IconThemeData(
+                          color: Theme.of(context).colorScheme.onBackground,
+                        ),
+                        onDestinationSelected: (value) =>
+                            tabsRouter.setActiveIndex(value),
+                        destinations: const [
+                          NavigationRailDestination(
+                            icon: Icon(Ionicons.chatbubble_outline),
+                            selectedIcon: Icon(Ionicons.chatbubble),
+                            label: Text('Chats'),
+                          ),
+                          NavigationRailDestination(
+                            icon: Icon(Icons.celebration_outlined),
+                            selectedIcon: Icon(Icons.celebration),
+                            label: Text('Events'),
+                          ),
+                          NavigationRailDestination(
+                            icon: Icon(Ionicons.search_outline),
+                            selectedIcon: Icon(Ionicons.search),
+                            label: Text('Entdecken'),
+                          ),
+                          NavigationRailDestination(
+                            icon: MiniProfileImage(),
+                            selectedIcon: MiniProfileImage(),
+                            label: Text('Profil'),
+                          )
+                        ],
+                      ),
+                      Expanded(
+                        child: HeroControllerScope(
+                          controller: HeroController(),
+                          child: child,
+                        ),
+                      ),
+                    ],
+                  );
+                } else {
+                  return HeroControllerScope(
+                    controller: HeroController(),
+                    child: child,
                   );
                 }
               },
-              child: LayoutBuilder(
-                builder: (context, constraints) {
-                  if (constraints.maxWidth > 600) {
-                    return Row(
-                      children: [
-                        NavigationRail(
-                          selectedIndex: tabsRouter.activeIndex,
-                          labelType: NavigationRailLabelType.selected,
-                          selectedIconTheme: IconThemeData(
-                            color: Theme.of(context).colorScheme.onBackground,
-                          ),
-                          onDestinationSelected: (value) =>
-                              tabsRouter.setActiveIndex(value),
-                          destinations: const [
-                            NavigationRailDestination(
-                              icon: Icon(Ionicons.chatbubble_outline),
-                              selectedIcon: Icon(Ionicons.chatbubble),
-                              label: Text('Chats'),
-                            ),
-                            NavigationRailDestination(
-                              icon: Icon(Icons.celebration_outlined),
-                              selectedIcon: Icon(Icons.celebration),
-                              label: Text('Events'),
-                            ),
-                            NavigationRailDestination(
-                              icon: Icon(Ionicons.search_outline),
-                              selectedIcon: Icon(Ionicons.search),
-                              label: Text('Entdecken'),
-                            ),
-                            NavigationRailDestination(
-                              icon: MiniProfileImage(),
-                              selectedIcon: MiniProfileImage(),
-                              label: Text('Profil'),
-                            )
-                          ],
-                        ),
-                        Expanded(
-                          child: HeroControllerScope(
-                            controller: HeroController(),
-                            child: child,
-                          ),
-                        ),
-                      ],
-                    );
-                  } else {
-                    return HeroControllerScope(
-                      controller: HeroController(),
-                      child: child,
-                    );
-                  }
-                },
-              ),
             ),
             bottomNavigationBar: LayoutBuilder(
               builder: (context, constraints) {

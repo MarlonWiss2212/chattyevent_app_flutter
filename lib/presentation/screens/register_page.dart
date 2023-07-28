@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/chatty_event_logo_and_text_auth_pages.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/auth_pages/dataprotection_checkbox.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
@@ -33,7 +34,9 @@ class _RegisterPageState extends State<RegisterPage> {
       body: BlocListener<NotificationCubit, NotificationState>(
         listener: (context, state) async {
           if (state is NotificationAlert) {
-            return await showDialog(
+            await showAnimatedDialog(
+              curve: Curves.fastEaseInToSlowEaseOut,
+              animationType: DialogTransitionType.slideFromBottomFade,
               context: context,
               builder: (c) {
                 return CustomAlertDialog(
