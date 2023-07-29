@@ -37,14 +37,14 @@ class SettingsUseCases {
   Future<Either<NotificationAlert, Unit>> openTermsOfUsePage() async {
     try {
       final worked = await launchUrlString(
-        "https://info.chattyevent.com/terms-of-use",
+        "https://chattyevent.com/datasecurity/terms-of-use",
       );
       if (worked == false) {
         return Left(
           NotificationAlert(
             message: "Konnte Nutzungsbedingugen nicht öffnen",
             title:
-                "Sie können sie unter folgender URL finden: https://info.chattyevent.com/eu-dataprotection",
+                "Sie können sie unter folgender URL finden: https://chattyevent.com/datasecurity/eu-dataprotection",
           ),
         );
       }
@@ -54,7 +54,7 @@ class SettingsUseCases {
         NotificationAlert(
           message: "Konnte Nutzungsbedingugen nicht öffnen",
           title:
-              "Sie können sie unter folgender URL finden: https://info.chattyevent.com/eu-dataprotection",
+              "Sie können sie unter folgender URL finden: https://chattyevent.com/datasecurity/eu-dataprotection",
         ),
       );
     }
@@ -63,14 +63,14 @@ class SettingsUseCases {
   Future<Either<NotificationAlert, Unit>> openRightOnDataAccessPage() async {
     try {
       final worked = await launchUrlString(
-        "https://info.chattyevent.com/right-on-data-access",
+        "https://chattyevent.com/datasecurity/right-on-data-access",
       );
       if (worked == false) {
         return Left(
           NotificationAlert(
-            message: "Konnte Nutzungsbedingugen nicht öffnen",
+            message: "Konnte Recht auf Auskunft nicht öffnen",
             title:
-                "Sie können sie unter folgender URL finden: https://info.chattyevent.com/eu-dataprotection",
+                "Sie können sie unter folgender URL finden: https://chattyevent.com/datasecurity/eu-dataprotection",
           ),
         );
       }
@@ -78,9 +78,9 @@ class SettingsUseCases {
     } catch (e) {
       return Left(
         NotificationAlert(
-          message: "Konnte Nutzungsbedingugen nicht öffnen",
+          message: "Konnte Recht auf Auskunft nicht öffnen",
           title:
-              "Sie können sie unter folgender URL finden: https://info.chattyevent.com/eu-dataprotection",
+              "Sie können sie unter folgender URL finden: https://chattyevent.com/datasecurity/eu-dataprotection",
         ),
       );
     }
@@ -89,14 +89,14 @@ class SettingsUseCases {
   Future<Either<NotificationAlert, Unit>> openDatasecurityPage() async {
     try {
       final worked = await launchUrlString(
-        "https://info.chattyevent.com/eu-dataprotection",
+        "https://chattyevent.com/datasecurity/eu-dataprotection",
       );
       if (worked == false) {
         return Left(
           NotificationAlert(
-            message: "Konnte Nutzungsbedingugen nicht öffnen",
+            message: "Konnte Datenschutzerklärung nicht öffnen",
             title:
-                "Sie können sie unter folgender URL finden: https://info.chattyevent.com/eu-dataprotection",
+                "Sie können sie unter folgender URL finden: https://chattyevent.com/datasecurity/eu-dataprotection",
           ),
         );
       }
@@ -104,9 +104,9 @@ class SettingsUseCases {
     } catch (e) {
       return Left(
         NotificationAlert(
-          message: "Konnte Nutzungsbedingugen nicht öffnen",
+          message: "Konnte Datenschutzerklärung nicht öffnen",
           title:
-              "Sie können sie unter folgender URL finden: https://info.chattyevent.com/eu-dataprotection",
+              "Sie können sie unter folgender URL finden: https://chattyevent.com/datasecurity/eu-dataprotection",
         ),
       );
     }
