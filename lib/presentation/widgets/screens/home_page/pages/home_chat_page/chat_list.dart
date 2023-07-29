@@ -6,8 +6,6 @@ import 'package:chattyevent_app_flutter/domain/entities/message/message_entity.d
 import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:chattyevent_app_flutter/core/utils/ad_helper.dart';
 
 class ChatList extends StatefulWidget {
   final List<ChatEntity> chats;
@@ -18,18 +16,7 @@ class ChatList extends StatefulWidget {
 }
 
 class _ChatListState extends State<ChatList> {
-  final int _kAdIndex = 1;
-  NativeAd? _ad;
-
-  int _getDestinationItemIndex(int rawIndex) {
-    if (rawIndex >= _kAdIndex && _ad != null) {
-      return rawIndex - 1;
-    }
-    return rawIndex;
-  }
-
   Widget messageLitTile(int index) {
-    index = _getDestinationItemIndex(index);
     final MessageEntity? message = widget.chats[index].groupchat != null
         ? widget.chats[index].groupchat!.latestMessage
         : widget.chats[index].privateEvent != null
@@ -147,63 +134,9 @@ class _ChatListState extends State<ChatList> {
               ],
             ),
           );
-          // push user page
         }
       },
     );
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    if (widget.chats.length < _kAdIndex) {
-      return;
-    }
-    Future.delayed(Duration.zero, () {
-      NativeAd(
-        adUnitId: AdHelper.chatListNativeAdUnitId,
-        listener: NativeAdListener(
-          onAdLoaded: (ad) {
-            setState(() {
-              _ad = ad as NativeAd;
-            });
-          },
-          onAdFailedToLoad: (ad, error) {
-            ad.dispose();
-          },
-        ),
-        request: const AdRequest(),
-        nativeTemplateStyle: NativeTemplateStyle(
-          templateType: TemplateType.small,
-          mainBackgroundColor: Theme.of(context).colorScheme.background,
-          cornerRadius: 8,
-          callToActionTextStyle: NativeTemplateTextStyle(
-            textColor: Theme.of(context).colorScheme.onBackground,
-            backgroundColor: Theme.of(context).colorScheme.background,
-            style: NativeTemplateFontStyle.monospace,
-            size: 16.0,
-          ),
-          primaryTextStyle: NativeTemplateTextStyle(
-            textColor: Theme.of(context).colorScheme.onBackground,
-            backgroundColor: Theme.of(context).colorScheme.background,
-            style: NativeTemplateFontStyle.italic,
-            size: 16.0,
-          ),
-          secondaryTextStyle: NativeTemplateTextStyle(
-            textColor: Theme.of(context).colorScheme.onBackground,
-            backgroundColor: Theme.of(context).colorScheme.background,
-            style: NativeTemplateFontStyle.bold,
-            size: 16.0,
-          ),
-          tertiaryTextStyle: NativeTemplateTextStyle(
-            textColor: Theme.of(context).colorScheme.onBackground,
-            backgroundColor: Theme.of(context).colorScheme.background,
-            style: NativeTemplateFontStyle.normal,
-            size: 16.0,
-          ),
-        ),
-      ).load();
-    });
   }
 
   @override
@@ -212,20 +145,9 @@ class _ChatListState extends State<ChatList> {
     return SliverList(
       delegate: SliverChildBuilderDelegate(
         (context, index) {
-          if (_ad != null && index == _kAdIndex) {
-            return ConstrainedBox(
-              constraints: BoxConstraints(
-                minWidth: MediaQuery.of(context).size.width,
-                minHeight: 90,
-                maxWidth: MediaQuery.of(context).size.width,
-                maxHeight: 90,
-              ),
-              child: AdWidget(ad: _ad!),
-            );
-          }
           return messageLitTile(index);
         },
-        childCount: widget.chats.length + (_ad != null ? 1 : 0),
+        childCount: widget.chats.length,
       ),
     );
   }

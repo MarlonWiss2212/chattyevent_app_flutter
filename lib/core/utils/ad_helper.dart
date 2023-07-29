@@ -1,15 +1,6 @@
 import 'dart:io';
 
 class AdHelper {
-  static String get chatListNativeAdUnitId {
-    if (Platform.isIOS) {
-      return 'ca-app-pub-6709565406365779/4889214965';
-    } else if (Platform.isAndroid) {
-      return 'ca-app-pub-6709565406365779/3959276679';
-    }
-    throw UnsupportedError("Unsupported platform");
-  }
-
   static String get mapTabNativeAdUnitId {
     if (Platform.isIOS) {
       return 'ca-app-pub-6709565406365779/5938572755';
