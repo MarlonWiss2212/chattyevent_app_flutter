@@ -64,7 +64,7 @@ class PrivateEventTabInfoLocationMap extends StatelessWidget {
               ),
             ),
           );
-        } else if (state.loadingPrivateEvent) {
+        } else if (state.loadingEvent) {
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: SkeletonAvatar(

@@ -13,7 +13,7 @@ class PrivateEventTabInfoDescription extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<CurrentEventCubit, CurrentEventState>(
       builder: (context, state) {
-        if (state.event.description == null && state.loadingPrivateEvent) {
+        if (state.event.description == null && state.loadingEvent) {
           return const SkeletonLine();
         }
 

@@ -36,7 +36,7 @@ class CreateShoppingListItemPageSelectUserList extends StatelessWidget {
               itemCount: state.eventUsers.length,
               separatorBuilder: (context, index) => const SizedBox(width: 8),
             );
-          } else if (state.eventUsers.isEmpty && state.loadingPrivateEvent) {
+          } else if (state.eventUsers.isEmpty && state.loadingEvent) {
             return const Center(
               child: CircularProgressIndicator.adaptive(),
             );

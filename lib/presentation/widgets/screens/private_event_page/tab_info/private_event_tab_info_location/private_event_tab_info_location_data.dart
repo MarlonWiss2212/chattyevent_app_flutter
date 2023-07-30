@@ -71,7 +71,7 @@ class PrivateEventTabInfoLocationData extends StatelessWidget {
                     BlocProvider.of<CurrentEventCubit>(context).openMaps();
                   },
                 ),
-              ] else if (state.loadingPrivateEvent) ...[
+              ] else if (state.loadingEvent) ...[
                 const SkeletonLine(),
                 const SizedBox(height: 8),
                 SkeletonListTile(

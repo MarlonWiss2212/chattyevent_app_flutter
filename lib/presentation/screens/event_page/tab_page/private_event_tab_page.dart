@@ -87,14 +87,13 @@ class PrivateEventTabPage extends StatelessWidget {
                   if (previous.loadingGroupchat != current.loadingGroupchat) {
                     return true;
                   }
-                  if (previous.loadingPrivateEvent !=
-                      current.loadingPrivateEvent) {
+                  if (previous.loadingEvent != current.loadingEvent) {
                     return true;
                   }
                   return false;
                 },
                 builder: (context, state) {
-                  if (state.loadingGroupchat || state.loadingPrivateEvent) {
+                  if (state.loadingGroupchat || state.loadingEvent) {
                     const LinearProgressIndicator();
                   }
                   return const SizedBox();

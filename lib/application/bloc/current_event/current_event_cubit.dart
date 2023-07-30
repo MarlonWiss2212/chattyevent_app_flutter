@@ -75,7 +75,7 @@ class CurrentEventCubit extends Cubit<CurrentEventState> {
   }
 
   Future reloadEventStandardDataViaApi() async {
-    emitState(loadingGroupchat: true, loadingPrivateEvent: true);
+    emitState(loadingGroupchat: true, loadingEvent: true);
 
     final Either<NotificationAlert, EventDataResponse>
         privateEventDataOrFailure = await eventUseCases.getEventDataViaApi(
@@ -87,13 +87,13 @@ class CurrentEventCubit extends Cubit<CurrentEventState> {
 
     privateEventDataOrFailure.fold(
       (alert) {
-        emitState(loadingGroupchat: false, loadingPrivateEvent: false);
+        emitState(loadingGroupchat: false, loadingEvent: false);
         notificationCubit.newAlert(notificationAlert: alert);
       },
       (data) {
         emitState(
           loadingGroupchat: false,
-          loadingPrivateEvent: false,
+          loadingEvent: false,
           event: data.event,
           eventUsers: data.eventUsers,
           currentUserIndex: data.eventUsers.indexWhere(
@@ -166,7 +166,7 @@ class CurrentEventCubit extends Cubit<CurrentEventState> {
   }
 
   Future getCurrentEvent() async {
-    emitState(loadingPrivateEvent: true);
+    emitState(loadingEvent: true);
 
     final Either<NotificationAlert, EventEntity> eventOrFailure =
         await eventUseCases.getEventViaApi(
@@ -178,10 +178,10 @@ class CurrentEventCubit extends Cubit<CurrentEventState> {
     eventOrFailure.fold(
       (alert) {
         notificationCubit.newAlert(notificationAlert: alert);
-        emitState(loadingPrivateEvent: false);
+        emitState(loadingEvent: false);
       },
       (event) {
-        emitState(event: event, loadingPrivateEvent: false);
+        emitState(event: event, loadingEvent: false);
       },
     );
   }
@@ -200,12 +200,12 @@ class CurrentEventCubit extends Cubit<CurrentEventState> {
     eventOrFailure.fold(
       (alert) {
         notificationCubit.newAlert(notificationAlert: alert);
-        emitState(loadingPrivateEvent: false);
+        emitState(loadingEvent: false);
       },
       (event) {
         emitState(
           event: event,
-          loadingPrivateEvent: false,
+          loadingEvent: false,
           status: CurrentPrivateEventStateStatus.updated,
         );
       },
@@ -532,7 +532,7 @@ class CurrentEventCubit extends Cubit<CurrentEventState> {
     List<MessageEntity>? messages,
     GroupchatEntity? groupchat,
     int? currentUserIndex,
-    bool? loadingPrivateEvent,
+    bool? loadingEvent,
     bool? loadingGroupchat,
     bool? loadingMessages,
     bool? loadingShoppingList,
@@ -553,7 +553,7 @@ class CurrentEventCubit extends Cubit<CurrentEventState> {
       eventLeftUsers: eventLeftUsers ?? state.eventLeftUsers,
       eventUsers: eventUsers ?? state.eventUsers,
       groupchat: groupchat ?? state.groupchat,
-      loadingPrivateEvent: loadingPrivateEvent ?? state.loadingPrivateEvent,
+      loadingEvent: loadingEvent ?? state.loadingEvent,
       loadingGroupchat: loadingGroupchat ?? state.loadingGroupchat,
       status: status ?? CurrentPrivateEventStateStatus.initial,
     );

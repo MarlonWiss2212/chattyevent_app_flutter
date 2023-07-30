@@ -43,7 +43,7 @@ class PrivateEventTabUsersUserList extends StatelessWidget {
                 },
               )
             },
-            if (state.eventUsers.isEmpty && state.loadingPrivateEvent) ...[
+            if (state.eventUsers.isEmpty && state.loadingEvent) ...[
               SkeletonListTile(
                 padding: const EdgeInsets.all(8),
                 hasSubtitle: true,

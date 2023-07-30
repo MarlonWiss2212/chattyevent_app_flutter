@@ -33,7 +33,7 @@ class PrivateEventTabInfoStatus extends StatelessWidget {
       builder: (context, state) {
         return Padding(
           padding: const EdgeInsets.all(8.0),
-          child: state.event.status == null && state.loadingPrivateEvent
+          child: state.event.status == null && state.loadingEvent
               ? const SkeletonLine()
               : Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

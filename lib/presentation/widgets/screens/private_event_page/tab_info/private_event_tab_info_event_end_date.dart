@@ -45,7 +45,7 @@ class PrivateEventTabInfoEventEndDate extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<CurrentEventCubit, CurrentEventState>(
       builder: (context, state) {
-        if (state.event.eventEndDate == null && state.loadingPrivateEvent) {
+        if (state.event.eventEndDate == null && state.loadingEvent) {
           return const Padding(
             padding: EdgeInsets.symmetric(horizontal: 8.0),
             child: SkeletonLine(),

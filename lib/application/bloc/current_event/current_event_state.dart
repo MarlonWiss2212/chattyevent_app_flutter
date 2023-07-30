@@ -10,7 +10,7 @@ class CurrentEventState {
   final List<MessageEntity> messages;
   final bool loadingMessages;
 
-  final bool loadingPrivateEvent;
+  final bool loadingEvent;
   final bool loadingGroupchat;
   final bool loadingShoppingList;
 
@@ -50,7 +50,7 @@ class CurrentEventState {
     required this.shoppingListItemStates,
     required this.loadingShoppingList,
     this.groupchat,
-    required this.loadingPrivateEvent,
+    required this.loadingEvent,
     required this.loadingGroupchat,
     this.status = CurrentPrivateEventStateStatus.initial,
   });
@@ -61,7 +61,7 @@ class CurrentEventState {
     return CurrentEventState(
       event: event,
       loadingGroupchat: false,
-      loadingPrivateEvent: false,
+      loadingEvent: false,
       loadingShoppingList: false,
       currentUserIndex: -1,
       eventUsers: [],

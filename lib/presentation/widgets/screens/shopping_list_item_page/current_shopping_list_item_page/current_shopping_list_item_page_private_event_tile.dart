@@ -57,7 +57,7 @@ class CurrentShoppingListItemPagePrivateEventTile extends StatelessWidget {
                       );
                 },
               );
-            } else if (state.event.id == "" && state.loadingPrivateEvent) {
+            } else if (state.event.id == "" && state.loadingEvent) {
               return SkeletonListTile(
                 padding: const EdgeInsets.symmetric(horizontal: 8),
                 hasSubtitle: true,

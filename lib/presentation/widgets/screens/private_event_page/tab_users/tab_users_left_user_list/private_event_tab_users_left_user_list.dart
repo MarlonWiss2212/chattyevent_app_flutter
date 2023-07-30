@@ -11,7 +11,7 @@ class PrivateEventTabUsersLeftUserList extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<CurrentEventCubit, CurrentEventState>(
       builder: (context, state) {
-        if (state.eventLeftUsers.isEmpty && state.loadingPrivateEvent) {
+        if (state.eventLeftUsers.isEmpty && state.loadingEvent) {
           return SkeletonListTile(
             padding: const EdgeInsets.all(8),
             hasSubtitle: true,

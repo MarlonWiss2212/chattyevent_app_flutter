@@ -76,7 +76,7 @@ class PrivateEventTabInfoCoverImage extends StatelessWidget {
                   ),
                 );
               } else if (state.event.coverImageLink == null &&
-                  state.loadingPrivateEvent) {
+                  state.loadingEvent) {
                 return SkeletonAvatar(
                   style: SkeletonAvatarStyle(
                     width: size.width,

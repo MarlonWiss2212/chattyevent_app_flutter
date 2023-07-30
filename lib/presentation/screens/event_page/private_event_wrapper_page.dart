@@ -11,20 +11,20 @@ import 'package:chattyevent_app_flutter/application/bloc/user_search/user_search
 import 'package:chattyevent_app_flutter/core/utils/injection.dart';
 
 @RoutePage()
-class PrivateEventWrapperPage extends StatelessWidget {
+class EventWrapperPage extends StatelessWidget {
   final String eventId;
-  final CurrentEventState? privateEventStateToSet;
+  final CurrentEventState? eventStateToSet;
 
-  const PrivateEventWrapperPage({
+  const EventWrapperPage({
     @PathParam('id') required this.eventId,
-    this.privateEventStateToSet,
+    this.eventStateToSet,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
     CurrentEventCubit currentPrivateEventCubit = CurrentEventCubit(
-      privateEventStateToSet ??
+      eventStateToSet ??
           CurrentEventState.fromPrivateEvent(
             event: EventEntity(
               id: eventId,
