@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:chattyevent_app_flutter/application/bloc/current_private_event/current_private_event_cubit.dart';
+import 'package:chattyevent_app_flutter/application/bloc/current_event/current_event_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/profile_page/profile_page_cubit.dart';
 import 'package:chattyevent_app_flutter/core/enums/geo_json/geo_json_type_enum.dart';
 import 'package:chattyevent_app_flutter/domain/entities/message/message_and_user_entity.dart';
@@ -21,7 +21,7 @@ import 'package:flutter_sound/flutter_sound.dart';
 part 'add_message_state.dart';
 
 class AddMessageCubit extends Cubit<AddMessageState> {
-  final Either<Either<CurrentPrivateEventCubit, CurrentGroupchatCubit>,
+  final Either<Either<CurrentEventCubit, CurrentGroupchatCubit>,
       ProfilePageCubit> cubitToAddMessageTo;
   final MessageUseCases messageUseCases;
   final ImagePickerUseCases imagePickerUseCases;
@@ -60,7 +60,7 @@ class AddMessageCubit extends Cubit<AddMessageState> {
     emitState(status: AddMessageStateStatus.loading);
 
     if ((state.groupchatTo == null &&
-        state.privateEventTo == null &&
+        state.eventTo == null &&
         state.userTo == null)) {
       notificationCubit.newAlert(
         notificationAlert: NotificationAlert(
@@ -86,7 +86,7 @@ class AddMessageCubit extends Cubit<AddMessageState> {
                 ),
               )
             : null,
-        privateEventTo: state.privateEventTo,
+        eventTo: state.eventTo,
         messageToReactTo: state.messageToReactToWithUser?.message.id,
         file: state.file,
       ),
@@ -100,7 +100,7 @@ class AddMessageCubit extends Cubit<AddMessageState> {
       (message) {
         emit(AddMessageState(
           groupchatTo: state.groupchatTo,
-          privateEventTo: state.privateEventTo,
+          eventTo: state.eventTo,
           userTo: state.userTo,
           status: AddMessageStateStatus.success,
           addedMessage: message,
@@ -222,7 +222,7 @@ class AddMessageCubit extends Cubit<AddMessageState> {
     String? userTo,
     double? lon,
     double? lat,
-    String? privateEventTo,
+    String? eventTo,
   }) {
     emit(AddMessageState(
       isRecordingVoiceMessageStream: removeVoiceMessageStream
@@ -242,7 +242,7 @@ class AddMessageCubit extends Cubit<AddMessageState> {
       status: status ?? AddMessageStateStatus.initial,
       addedMessage: addedMessage ?? state.addedMessage,
       userTo: userTo ?? state.userTo,
-      privateEventTo: privateEventTo ?? state.privateEventTo,
+      eventTo: eventTo ?? state.eventTo,
     ));
   }
 }

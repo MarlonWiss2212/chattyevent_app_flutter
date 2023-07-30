@@ -1,15 +1,15 @@
 class FindShoppingListItemsFilter {
-  final String? privateEventTo;
+  final String? eventTo;
 
   FindShoppingListItemsFilter({
-    this.privateEventTo,
+    this.eventTo,
   });
 
   Map<dynamic, dynamic> toMap() {
     Map<dynamic, dynamic> map = {};
-    if (privateEventTo != null) {
+    if (eventTo != null) {
       map.addAll({
-        "privateEventTo": privateEventTo,
+        "eventTo": eventTo,
       });
     }
     return map;

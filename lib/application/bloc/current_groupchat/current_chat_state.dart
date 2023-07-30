@@ -9,7 +9,7 @@ class CurrentGroupchatState {
 
   final List<MessageEntity> messages;
 
-  final List<PrivateEventEntity> futureConnectedPrivateEvents;
+  final List<EventEntity> futureConnectedPrivateEvents;
   final bool loadingPrivateEvents;
 
   final bool currentUserLeftChat;
@@ -71,7 +71,7 @@ class CurrentGroupchatState {
     List<GroupchatUserEntity>? users,
     int? currentUserIndex,
     List<GroupchatLeftUserEntity>? leftUsers,
-    List<PrivateEventEntity>? futureConnectedPrivateEvents,
+    List<EventEntity>? futureConnectedPrivateEvents,
     List<MessageEntity>? messages,
     bool? loadingPrivateEvents,
     bool? currentUserLeftChat,

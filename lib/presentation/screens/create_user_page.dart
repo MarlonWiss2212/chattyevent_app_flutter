@@ -1,7 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/add_current_user_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
@@ -61,18 +60,23 @@ class CreateUserPage extends StatelessWidget {
                               const SizedBox(height: 20),
                               const CreateUserPageProfileImage(),
                               const SizedBox(height: 20),
-                              PlatformTextFormField(
+                              TextFormField(
+                                decoration: const InputDecoration(
+                                  labelText: "Benutzername",
+                                ),
                                 onChanged: (value) {
                                   BlocProvider.of<AddCurrentUserCubit>(context)
                                       .emitState(
                                     username: value,
                                   );
                                 },
-                                hintText: 'Benutzername',
                                 textInputAction: TextInputAction.next,
                               ),
                               const SizedBox(height: 8),
-                              PlatformTextFormField(
+                              TextFormField(
+                                decoration: const InputDecoration(
+                                  labelText: "Vorname",
+                                ),
                                 onChanged: (value) {
                                   BlocProvider.of<AddCurrentUserCubit>(context)
                                       .emitState(
@@ -80,17 +84,18 @@ class CreateUserPage extends StatelessWidget {
                                   );
                                 },
                                 textInputAction: TextInputAction.next,
-                                hintText: 'Vorname',
                               ),
                               const SizedBox(height: 8),
-                              PlatformTextFormField(
+                              TextFormField(
+                                decoration: const InputDecoration(
+                                  labelText: "Nachname",
+                                ),
                                 onChanged: (value) {
                                   BlocProvider.of<AddCurrentUserCubit>(context)
                                       .emitState(
                                     lastname: value,
                                   );
                                 },
-                                hintText: 'Nachname',
                               ),
                               const SizedBox(height: 8),
                               const CreateUserPageBirthdayButton()

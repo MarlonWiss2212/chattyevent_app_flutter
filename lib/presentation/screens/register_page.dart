@@ -4,7 +4,6 @@ import 'package:chattyevent_app_flutter/presentation/widgets/screens/auth_pages/
 import 'package:flutter/material.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
@@ -68,23 +67,29 @@ class _RegisterPageState extends State<RegisterPage> {
                         child: ChattyEventLogoAndTextAuthPages(),
                       ),
                       const SizedBox(height: 50),
-                      PlatformTextFormField(
+                      TextFormField(
+                        decoration: const InputDecoration(
+                          labelText: "E-Mail",
+                        ),
                         controller: emailFieldController,
-                        hintText: 'E-Mail',
                         textInputAction: TextInputAction.next,
                       ),
                       const SizedBox(height: 8),
-                      PlatformTextFormField(
+                      TextFormField(
+                        decoration: const InputDecoration(
+                          labelText: "Passwort",
+                        ),
                         controller: passwordFieldController,
                         obscureText: true,
-                        hintText: 'Passwort',
                         textInputAction: TextInputAction.next,
                       ),
                       const SizedBox(height: 8),
-                      PlatformTextFormField(
+                      TextFormField(
+                        decoration: const InputDecoration(
+                          labelText: "Passwort Bestätigen",
+                        ),
                         controller: verifyPasswordFieldController,
                         obscureText: true,
-                        hintText: 'Passwort Bestätigen',
                         textInputAction: TextInputAction.next,
                       ),
                       const SizedBox(height: 16),
@@ -106,7 +111,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         ),
                       ),
                       const SizedBox(height: 16),
-                      PlatformTextButton(
+                      TextButton(
                         onPressed: () {
                           AutoRouter.of(context).replace(const LoginRoute());
                         },

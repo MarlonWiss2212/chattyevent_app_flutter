@@ -67,16 +67,20 @@ class _LoginPageState extends State<LoginPage> {
                         child: ChattyEventLogoAndTextAuthPages(),
                       ),
                       const SizedBox(height: 50),
-                      PlatformTextFormField(
+                      TextFormField(
+                        decoration: const InputDecoration(
+                          labelText: "E-Mail",
+                        ),
                         controller: emailFieldController,
-                        hintText: 'E-Mail',
                         textInputAction: TextInputAction.next,
                       ),
                       const SizedBox(height: 8),
-                      PlatformTextFormField(
+                      TextFormField(
+                        decoration: const InputDecoration(
+                          labelText: "Passwort",
+                        ),
                         controller: passwordFieldController,
                         obscureText: true,
-                        hintText: 'Passwort',
                         textInputAction: TextInputAction.next,
                       ),
                       const SizedBox(height: 16),

@@ -2,8 +2,8 @@ import 'package:auto_route/auto_route.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/custom_tab_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:chattyevent_app_flutter/application/bloc/current_private_event/current_private_event_cubit.dart';
-import 'package:chattyevent_app_flutter/infastructure/dto/private_event/update_private_event_dto.dart';
+import 'package:chattyevent_app_flutter/application/bloc/current_event/current_event_cubit.dart';
+import 'package:chattyevent_app_flutter/infastructure/dto/event/update_event_dto.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/input_fields/edit_input_text_field.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/private_event_page/tab_info/private_event_tab_info_delete_button.dart';
@@ -11,10 +11,10 @@ import 'package:ionicons/ionicons.dart';
 
 @RoutePage()
 class PrivateEventTabPage extends StatelessWidget {
-  final String privateEventId;
+  final String eventId;
   const PrivateEventTabPage({
     super.key,
-    @PathParam('id') required this.privateEventId,
+    @PathParam('id') required this.eventId,
   });
 
   @override
@@ -22,12 +22,12 @@ class PrivateEventTabPage extends StatelessWidget {
     return AutoTabsRouter.tabBar(
       routes: [
         const PrivateEventTabInfo(),
-        if (BlocProvider.of<CurrentPrivateEventCubit>(context)
+        if (BlocProvider.of<CurrentEventCubit>(context)
                 .state
-                .privateEvent
+                .event
                 .groupchatTo ==
             null) ...{
-          PrivateEventTabChat(privateEventId: privateEventId),
+          PrivateEventTabChat(eventId: eventId),
         },
         const PrivateEventTabUserList(),
         const PrivateEventTabShoppingList(),
@@ -37,22 +37,21 @@ class PrivateEventTabPage extends StatelessWidget {
           appBar: AppBar(
             centerTitle: true,
             leading: const AutoLeadingButton(),
-            title:
-                BlocBuilder<CurrentPrivateEventCubit, CurrentPrivateEventState>(
+            title: BlocBuilder<CurrentEventCubit, CurrentEventState>(
               builder: (context, state) {
                 return Hero(
-                  tag: "$privateEventId title",
+                  tag: "$eventId title",
                   child: EditInputTextField(
-                    text: state.privateEvent.title ?? "Kein Titel",
+                    text: state.event.title ?? "Kein Titel",
                     editable: state.currentUserAllowedWithPermission(
                       permissionCheckValue:
-                          state.privateEvent.permissions?.changeTitle,
+                          state.event.permissions?.changeTitle,
                     ),
                     textStyle: Theme.of(context).textTheme.titleLarge,
                     onSaved: (text) {
-                      BlocProvider.of<CurrentPrivateEventCubit>(context)
-                          .updateCurrentPrivateEvent(
-                        updatePrivateEventDto: UpdatePrivateEventDto(
+                      BlocProvider.of<CurrentEventCubit>(context)
+                          .updateCurrentEvent(
+                        updateEventDto: UpdateEventDto(
                           title: text,
                         ),
                       );
@@ -71,9 +70,9 @@ class PrivateEventTabPage extends StatelessWidget {
                   controller: tabController,
                   tabs: [
                     const Tab(icon: Icon(Icons.celebration)),
-                    if (BlocProvider.of<CurrentPrivateEventCubit>(context)
+                    if (BlocProvider.of<CurrentEventCubit>(context)
                             .state
-                            .privateEvent
+                            .event
                             .groupchatTo ==
                         null) ...{
                       const Tab(icon: Icon(Ionicons.chatbubble)),
@@ -83,7 +82,7 @@ class PrivateEventTabPage extends StatelessWidget {
                   ],
                 ),
               ),
-              BlocBuilder<CurrentPrivateEventCubit, CurrentPrivateEventState>(
+              BlocBuilder<CurrentEventCubit, CurrentEventState>(
                 buildWhen: (previous, current) {
                   if (previous.loadingGroupchat != current.loadingGroupchat) {
                     return true;

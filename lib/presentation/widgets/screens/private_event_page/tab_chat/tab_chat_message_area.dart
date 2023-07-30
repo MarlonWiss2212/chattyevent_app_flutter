@@ -1,5 +1,5 @@
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
-import 'package:chattyevent_app_flutter/application/bloc/current_private_event/current_private_event_cubit.dart';
+import 'package:chattyevent_app_flutter/application/bloc/current_event/current_event_cubit.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/chat_message/chat_message_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,7 +10,7 @@ class TabChatMessageArea extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CurrentPrivateEventCubit, CurrentPrivateEventState>(
+    return BlocBuilder<CurrentEventCubit, CurrentEventState>(
       buildWhen: (previous, current) {
         if (previous.messages.length != current.messages.length) {
           return true;
@@ -18,12 +18,10 @@ class TabChatMessageArea extends StatelessWidget {
         if (previous.loadingMessages != current.loadingMessages) {
           return true;
         }
-        if (previous.privateEventUsers.length !=
-            current.privateEventUsers.length) {
+        if (previous.eventUsers.length != current.eventUsers.length) {
           return true;
         }
-        if (previous.privateEventLeftUsers.length !=
-            current.privateEventLeftUsers.length) {
+        if (previous.eventLeftUsers.length != current.eventLeftUsers.length) {
           return true;
         }
         return false;
@@ -53,15 +51,15 @@ class TabChatMessageArea extends StatelessWidget {
         }
         return ChatMessageList(
           messages: state.messages,
-          users: [...state.privateEventUsers, ...state.privateEventLeftUsers],
+          users: [...state.eventUsers, ...state.eventLeftUsers],
           currentUserId:
               BlocProvider.of<AuthCubit>(context).state.currentUser.id,
           loadMoreMessages: () {
-            if (BlocProvider.of<CurrentPrivateEventCubit>(context)
+            if (BlocProvider.of<CurrentEventCubit>(context)
                     .state
                     .loadingMessages ==
                 false) {
-              BlocProvider.of<CurrentPrivateEventCubit>(context).loadMessages();
+              BlocProvider.of<CurrentEventCubit>(context).loadMessages();
             }
           },
         );

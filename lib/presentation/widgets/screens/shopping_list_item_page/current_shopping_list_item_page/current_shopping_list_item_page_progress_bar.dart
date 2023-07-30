@@ -1,4 +1,4 @@
-import 'package:chattyevent_app_flutter/application/bloc/current_private_event/current_private_event_cubit.dart';
+import 'package:chattyevent_app_flutter/application/bloc/current_event/current_event_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -36,8 +36,7 @@ class CurrentShoppingListItemPageWithProgressBar extends StatelessWidget {
             height: 100,
             width: double.infinity,
             child: Center(
-              child: BlocBuilder<CurrentPrivateEventCubit,
-                  CurrentPrivateEventState>(
+              child: BlocBuilder<CurrentEventCubit, CurrentEventState>(
                 builder: (context, privateEventState) {
                   return Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -57,7 +56,7 @@ class CurrentShoppingListItemPageWithProgressBar extends StatelessWidget {
                           onSaved: privateEventState
                                   .currentUserAllowedWithPermission(
                                       permissionCheckValue: privateEventState
-                                          .privateEvent
+                                          .event
                                           .permissions
                                           ?.updateShoppingListItem)
                               ? (text) async {
@@ -108,7 +107,7 @@ class CurrentShoppingListItemPageWithProgressBar extends StatelessWidget {
                           onSaved: privateEventState
                                   .currentUserAllowedWithPermission(
                                       permissionCheckValue: privateEventState
-                                          .privateEvent
+                                          .event
                                           .permissions
                                           ?.updateShoppingListItem)
                               ? (text) async {

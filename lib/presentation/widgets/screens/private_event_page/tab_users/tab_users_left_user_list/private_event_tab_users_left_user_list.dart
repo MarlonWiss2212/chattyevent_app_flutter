@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletons/skeletons.dart';
-import 'package:chattyevent_app_flutter/application/bloc/current_private_event/current_private_event_cubit.dart';
+import 'package:chattyevent_app_flutter/application/bloc/current_event/current_event_cubit.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/private_event_page/tab_users/tab_users_left_user_list/private_event_tab_users_user_left_list_item.dart';
 
 class PrivateEventTabUsersLeftUserList extends StatelessWidget {
@@ -9,9 +9,9 @@ class PrivateEventTabUsersLeftUserList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CurrentPrivateEventCubit, CurrentPrivateEventState>(
+    return BlocBuilder<CurrentEventCubit, CurrentEventState>(
       builder: (context, state) {
-        if (state.privateEventLeftUsers.isEmpty && state.loadingPrivateEvent) {
+        if (state.eventLeftUsers.isEmpty && state.loadingPrivateEvent) {
           return SkeletonListTile(
             padding: const EdgeInsets.all(8),
             hasSubtitle: true,
@@ -22,18 +22,18 @@ class PrivateEventTabUsersLeftUserList extends StatelessWidget {
               shape: BoxShape.circle,
             ),
           );
-        } else if (state.privateEventLeftUsers.isNotEmpty) {
+        } else if (state.eventLeftUsers.isNotEmpty) {
           return ListView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             itemBuilder: (context, index) {
               return PrivateEventTabUsersLeftUserListItem(
-                currentPrivatEventUser: state.getCurrentPrivateEventUser(),
-                leftPrivateEventUser: state.privateEventLeftUsers[index],
-                privateEvent: state.privateEvent,
+                currentEventUser: state.getCurrentEventUser(),
+                leftPrivateEventUser: state.eventLeftUsers[index],
+                event: state.event,
               );
             },
-            itemCount: state.privateEventLeftUsers.length,
+            itemCount: state.eventLeftUsers.length,
           );
         } else {
           return const SizedBox();

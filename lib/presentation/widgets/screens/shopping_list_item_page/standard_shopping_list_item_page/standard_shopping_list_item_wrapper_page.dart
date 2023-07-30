@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
-import 'package:chattyevent_app_flutter/application/bloc/current_private_event/current_private_event_cubit.dart';
+import 'package:chattyevent_app_flutter/application/bloc/current_event/current_event_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/shopping_list/current_shopping_list_item_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/shopping_list/my_shopping_list_cubit.dart';
 import 'package:chattyevent_app_flutter/core/utils/injection.dart';
-import 'package:chattyevent_app_flutter/domain/entities/private_event/private_event_entity.dart';
+import 'package:chattyevent_app_flutter/domain/entities/event/event_entity.dart';
 
 class StandardShoppingListItemWrapperPage extends StatelessWidget {
   final String shoppingListItemId;
@@ -32,7 +32,7 @@ class StandardShoppingListItemWrapperPage extends StatelessWidget {
         ),
         shoppingListCubitOrPrivateEventCubit: setCurrentPrivateEvent
             ? Left(BlocProvider.of<MyShoppingListCubit>(context))
-            : Right(BlocProvider.of<CurrentPrivateEventCubit>(context)),
+            : Right(BlocProvider.of<CurrentEventCubit>(context)),
         shoppingListItemUseCases: serviceLocator(
           param1: BlocProvider.of<AuthCubit>(context).state,
         ),
@@ -41,32 +41,28 @@ class StandardShoppingListItemWrapperPage extends StatelessWidget {
       child: Builder(
         builder: (context) {
           if (setCurrentPrivateEvent) {
-            BlocProvider.of<CurrentPrivateEventCubit>(context)
+            BlocProvider.of<CurrentEventCubit>(context)
                 .setGroupchatFromChatCubit();
-            BlocProvider.of<CurrentPrivateEventCubit>(context)
-                .reloadPrivateEventStandardDataViaApi();
+            BlocProvider.of<CurrentEventCubit>(context)
+                .reloadEventStandardDataViaApi();
           }
 
           return BlocListener<CurrentShoppingListItemCubit,
               CurrentShoppingListItemState>(
             listener: (context, state) async {
-              if (BlocProvider.of<CurrentPrivateEventCubit>(context)
-                      .state
-                      .privateEvent
-                      .id ==
+              if (BlocProvider.of<CurrentEventCubit>(context).state.event.id ==
                   "") {
-                BlocProvider.of<CurrentPrivateEventCubit>(context).emitState(
-                  privateEvent: PrivateEventEntity(
-                    id: shoppingListItemStateToSet
-                            .shoppingListItem.privateEventTo ??
+                BlocProvider.of<CurrentEventCubit>(context).emitState(
+                  event: EventEntity(
+                    id: shoppingListItemStateToSet.shoppingListItem.eventTo ??
                         "",
                     eventDate: DateTime.now(),
                   ),
                 );
-                BlocProvider.of<CurrentPrivateEventCubit>(context)
+                BlocProvider.of<CurrentEventCubit>(context)
                     .setGroupchatFromChatCubit();
-                BlocProvider.of<CurrentPrivateEventCubit>(context)
-                    .reloadPrivateEventStandardDataViaApi();
+                BlocProvider.of<CurrentEventCubit>(context)
+                    .reloadEventStandardDataViaApi();
               }
               if (state.status == CurrentShoppingListItemStateStatus.deleted) {
                 AutoRouter.of(context).pop();

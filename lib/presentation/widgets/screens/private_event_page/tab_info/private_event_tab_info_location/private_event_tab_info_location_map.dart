@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:chattyevent_app_flutter/application/bloc/current_private_event/current_private_event_cubit.dart';
+import 'package:chattyevent_app_flutter/application/bloc/current_event/current_event_cubit.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/circle_image/cirlce_image.dart';
 import 'package:skeletons/skeletons.dart';
 
@@ -13,11 +13,11 @@ class PrivateEventTabInfoLocationMap extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return BlocBuilder<CurrentPrivateEventCubit, CurrentPrivateEventState>(
+    return BlocBuilder<CurrentEventCubit, CurrentEventState>(
       builder: (context, state) {
-        if (state.privateEvent.eventLocation != null &&
-            state.privateEvent.eventLocation!.geoJson != null &&
-            state.privateEvent.eventLocation!.geoJson!.coordinates != null) {
+        if (state.event.eventLocation != null &&
+            state.event.eventLocation!.geoJson != null &&
+            state.event.eventLocation!.geoJson!.coordinates != null) {
           return Container(
             width: size.width,
             padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -31,8 +31,8 @@ class PrivateEventTabInfoLocationMap extends StatelessWidget {
                 options: MapOptions(
                   interactiveFlags: InteractiveFlag.none,
                   center: LatLng(
-                    state.privateEvent.eventLocation!.geoJson!.coordinates![1],
-                    state.privateEvent.eventLocation!.geoJson!.coordinates![0],
+                    state.event.eventLocation!.geoJson!.coordinates![1],
+                    state.event.eventLocation!.geoJson!.coordinates![0],
                   ),
                 ),
                 children: [
@@ -44,17 +44,15 @@ class PrivateEventTabInfoLocationMap extends StatelessWidget {
                     markers: [
                       Marker(
                         point: LatLng(
-                          state.privateEvent.eventLocation!.geoJson!
-                              .coordinates![1],
-                          state.privateEvent.eventLocation!.geoJson!
-                              .coordinates![0],
+                          state.event.eventLocation!.geoJson!.coordinates![1],
+                          state.event.eventLocation!.geoJson!.coordinates![0],
                         ),
                         builder: (context) {
                           return CircleImage(
                             width: 40,
                             height: 40,
-                            imageLink: state.privateEvent.coverImageLink,
-                            icon: state.privateEvent.coverImageLink == null
+                            imageLink: state.event.coverImageLink,
+                            icon: state.event.coverImageLink == null
                                 ? const Icon(Icons.celebration)
                                 : null,
                           );

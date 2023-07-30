@@ -1,8 +1,8 @@
 part of 'home_event_cubit.dart';
 
 class HomeEventState {
-  final List<CurrentPrivateEventState> futurePrivateEvents;
-  final List<CurrentPrivateEventState> pastPrivateEvents;
+  final List<CurrentEventState> futurePrivateEvents;
+  final List<CurrentEventState> pastPrivateEvents;
 
   final bool loadingFutureEvents;
   final bool loadingPastEvents;

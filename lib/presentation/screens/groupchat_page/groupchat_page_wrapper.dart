@@ -34,7 +34,7 @@ class GroupchatPageWrapper extends StatelessWidget {
             messageUseCases: serviceLocator(
               param1: BlocProvider.of<AuthCubit>(context).state,
             ),
-            privateEventUseCases: serviceLocator(
+            eventUseCases: serviceLocator(
               param1: BlocProvider.of<AuthCubit>(context).state,
             ),
             chatCubit: BlocProvider.of<ChatCubit>(context),

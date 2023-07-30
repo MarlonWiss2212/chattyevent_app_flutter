@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'package:chattyevent_app_flutter/application/bloc/current_private_event/current_private_event_cubit.dart';
+import 'package:chattyevent_app_flutter/application/bloc/current_event/current_event_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/shopping_list/add_shopping_list_item_cubit.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/user_list/user_grid_list_item.dart';
 
@@ -12,9 +12,9 @@ class CreateShoppingListItemPageSelectUserList extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       height: 100,
-      child: BlocBuilder<CurrentPrivateEventCubit, CurrentPrivateEventState>(
+      child: BlocBuilder<CurrentEventCubit, CurrentEventState>(
         builder: (context, state) {
-          if (state.privateEventUsers.isNotEmpty) {
+          if (state.eventUsers.isNotEmpty) {
             return ListView.separated(
               shrinkWrap: true,
               scrollDirection: Axis.horizontal,
@@ -23,21 +23,20 @@ class CreateShoppingListItemPageSelectUserList extends StatelessWidget {
                   width: 100,
                   height: 100,
                   child: UserGridListItem(
-                    user: state.privateEventUsers[index],
+                    user: state.eventUsers[index],
                     onPress: () {
                       BlocProvider.of<AddShoppingListItemCubit>(context)
                           .emitState(
-                        userToBuyItemEntity: state.privateEventUsers[index],
+                        userToBuyItemEntity: state.eventUsers[index],
                       );
                     },
                   ),
                 );
               },
-              itemCount: state.privateEventUsers.length,
+              itemCount: state.eventUsers.length,
               separatorBuilder: (context, index) => const SizedBox(width: 8),
             );
-          } else if (state.privateEventUsers.isEmpty &&
-              state.loadingPrivateEvent) {
+          } else if (state.eventUsers.isEmpty && state.loadingPrivateEvent) {
             return const Center(
               child: CircularProgressIndicator.adaptive(),
             );
@@ -47,9 +46,8 @@ class CreateShoppingListItemPageSelectUserList extends StatelessWidget {
                 child: const Text(
                   "Private Event User Laden",
                 ),
-                onPressed: () =>
-                    BlocProvider.of<CurrentPrivateEventCubit>(context)
-                        .getPrivateEventUsersAndLeftUsersViaApi(),
+                onPressed: () => BlocProvider.of<CurrentEventCubit>(context)
+                    .getEventUsersAndLeftUsersViaApi(),
               ),
             );
           }

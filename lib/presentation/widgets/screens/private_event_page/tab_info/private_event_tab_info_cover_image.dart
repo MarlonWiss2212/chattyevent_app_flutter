@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletons/skeletons.dart';
-import 'package:chattyevent_app_flutter/application/bloc/current_private_event/current_private_event_cubit.dart';
-import 'package:chattyevent_app_flutter/infastructure/dto/private_event/update_private_event_dto.dart';
+import 'package:chattyevent_app_flutter/application/bloc/current_event/current_event_cubit.dart';
+import 'package:chattyevent_app_flutter/infastructure/dto/event/update_event_dto.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/dialog/image_picker_dialog.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/dialog/accept_decline_dialog.dart';
 
@@ -31,9 +31,9 @@ class PrivateEventTabInfoCoverImage extends StatelessWidget {
                     Navigator.of(context1).pop();
                   },
                   onYesPress: () {
-                    BlocProvider.of<CurrentPrivateEventCubit>(context)
-                        .updateCurrentPrivateEvent(
-                      updatePrivateEventDto: UpdatePrivateEventDto(
+                    BlocProvider.of<CurrentEventCubit>(context)
+                        .updateCurrentEvent(
+                      updateEventDto: UpdateEventDto(
                         updateCoverImage: newImage,
                       ),
                     )
@@ -57,25 +57,25 @@ class PrivateEventTabInfoCoverImage extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
 
-    return BlocBuilder<CurrentPrivateEventCubit, CurrentPrivateEventState>(
+    return BlocBuilder<CurrentEventCubit, CurrentEventState>(
       builder: (context, state) {
         return InkWell(
           onTap: state.currentUserAllowedWithPermission(
                   permissionCheckValue:
-                      state.privateEvent.permissions?.changeCoverImage)
+                      state.event.permissions?.changeCoverImage)
               ? () => _onTapSetImageFunction(context)
               : null,
           child: Builder(
             builder: (context) {
-              if (state.privateEvent.coverImageLink != null) {
+              if (state.event.coverImageLink != null) {
                 return Hero(
-                  tag: "${state.privateEvent.id} coverImage",
+                  tag: "${state.event.id} coverImage",
                   child: Image.network(
-                    state.privateEvent.coverImageLink!,
+                    state.event.coverImageLink!,
                     fit: BoxFit.fitWidth,
                   ),
                 );
-              } else if (state.privateEvent.coverImageLink == null &&
+              } else if (state.event.coverImageLink == null &&
                   state.loadingPrivateEvent) {
                 return SkeletonAvatar(
                   style: SkeletonAvatarStyle(

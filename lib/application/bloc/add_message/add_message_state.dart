@@ -12,7 +12,7 @@ class AddMessageState {
 
   final String? message;
   final String? groupchatTo;
-  final String? privateEventTo;
+  final String? eventTo;
   final String? userTo;
   final MessageAndUserEntity? messageToReactToWithUser;
 
@@ -29,7 +29,7 @@ class AddMessageState {
     this.message,
     this.messageToReactToWithUser,
     this.groupchatTo,
-    this.privateEventTo,
+    this.eventTo,
     this.userTo,
     this.file,
     this.status = AddMessageStateStatus.initial,

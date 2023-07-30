@@ -2,7 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/button.dart';
@@ -57,9 +56,11 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const SizedBox(height: 8),
-                PlatformTextFormField(
+                TextFormField(
+                  decoration: const InputDecoration(
+                    labelText: 'E-Mail',
+                  ),
                   controller: emailFieldController,
-                  hintText: 'E-Mail',
                   textInputAction: TextInputAction.done,
                   onFieldSubmitted: (newValue) {
                     BlocProvider.of<AuthCubit>(context).sendResetPasswordEmail(

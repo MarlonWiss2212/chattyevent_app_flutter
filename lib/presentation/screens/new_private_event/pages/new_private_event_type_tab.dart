@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:chattyevent_app_flutter/application/bloc/add_private_event/add_private_event_cubit.dart';
+import 'package:chattyevent_app_flutter/application/bloc/add_event/add_event_cubit.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/custom_divider.dart';
 
 @RoutePage()
@@ -10,7 +10,7 @@ class NewPrivateEventTypeTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AddPrivateEventCubit, AddPrivateEventState>(
+    return BlocBuilder<AddEventCubit, AddEventState>(
       buildWhen: (p, c) => p.isGroupchatEvent != c.isGroupchatEvent,
       builder: (context, state) {
         return Padding(
@@ -20,7 +20,7 @@ class NewPrivateEventTypeTab extends StatelessWidget {
             children: [
               Expanded(
                 child: InkWell(
-                  onTap: () => BlocProvider.of<AddPrivateEventCubit>(context)
+                  onTap: () => BlocProvider.of<AddEventCubit>(context)
                       .setIsGroupchatEvent(isGroupchatEvent: true),
                   borderRadius: BorderRadius.circular(8),
                   child: Container(
@@ -56,7 +56,7 @@ class NewPrivateEventTypeTab extends StatelessWidget {
               const CustomDivider(),
               Expanded(
                 child: InkWell(
-                  onTap: () => BlocProvider.of<AddPrivateEventCubit>(context)
+                  onTap: () => BlocProvider.of<AddEventCubit>(context)
                       .setIsGroupchatEvent(isGroupchatEvent: false),
                   borderRadius: BorderRadius.circular(8),
                   child: Container(

@@ -1,6 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
-import 'package:chattyevent_app_flutter/application/bloc/current_private_event/current_private_event_cubit.dart';
+import 'package:chattyevent_app_flutter/application/bloc/current_event/current_event_cubit.dart';
 import 'package:chattyevent_app_flutter/domain/entities/chat_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/message/message_entity.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
@@ -19,8 +19,8 @@ class _ChatListState extends State<ChatList> {
   Widget messageLitTile(int index) {
     final MessageEntity? message = widget.chats[index].groupchat != null
         ? widget.chats[index].groupchat!.latestMessage
-        : widget.chats[index].privateEvent != null
-            ? widget.chats[index].privateEvent!.latestMessage
+        : widget.chats[index].event != null
+            ? widget.chats[index].event!.latestMessage
             : widget.chats[index].user != null
                 ? widget.chats[index].user!.latestMessage
                 : null;
@@ -30,9 +30,9 @@ class _ChatListState extends State<ChatList> {
             ? NetworkImage(
                 widget.chats[index].groupchat!.profileImageLink!,
               )
-            : widget.chats[index].privateEvent?.coverImageLink != null
+            : widget.chats[index].event?.coverImageLink != null
                 ? NetworkImage(
-                    widget.chats[index].privateEvent!.coverImageLink!,
+                    widget.chats[index].event!.coverImageLink!,
                   )
                 : widget.chats[index].user?.profileImageLink != null
                     ? NetworkImage(
@@ -42,16 +42,16 @@ class _ChatListState extends State<ChatList> {
 
     final String? title = widget.chats[index].groupchat?.title != null
         ? widget.chats[index].groupchat!.title!
-        : widget.chats[index].privateEvent?.title != null
-            ? widget.chats[index].privateEvent!.title!
+        : widget.chats[index].event?.title != null
+            ? widget.chats[index].event!.title!
             : widget.chats[index].user?.username != null
                 ? widget.chats[index].user!.username!
                 : null;
 
     final String? id = widget.chats[index].groupchat?.id != null
         ? widget.chats[index].groupchat!.id
-        : widget.chats[index].privateEvent?.id != null
-            ? widget.chats[index].privateEvent!.id
+        : widget.chats[index].event?.id != null
+            ? widget.chats[index].event!.id
             : widget.chats[index].user?.id != null
                 ? widget.chats[index].user!.id
                 : null;
@@ -103,19 +103,19 @@ class _ChatListState extends State<ChatList> {
               groupchatId: widget.chats[index].groupchat!.id,
             ),
           );
-        } else if (widget.chats[index].privateEvent != null) {
+        } else if (widget.chats[index].event != null) {
           AutoRouter.of(context).push(
             PrivateEventWrapperRoute(
-              privateEventId: widget.chats[index].privateEvent!.id,
-              privateEventStateToSet: CurrentPrivateEventState.fromPrivateEvent(
-                privateEvent: widget.chats[index].privateEvent!,
+              eventId: widget.chats[index].event!.id,
+              privateEventStateToSet: CurrentEventState.fromPrivateEvent(
+                event: widget.chats[index].event!,
               ),
               children: [
                 PrivateEventTabRoute(
-                  privateEventId: widget.chats[index].privateEvent!.id,
+                  eventId: widget.chats[index].event!.id,
                   children: [
                     PrivateEventTabChat(
-                      privateEventId: widget.chats[index].privateEvent!.id,
+                      eventId: widget.chats[index].event!.id,
                     ),
                   ],
                 )

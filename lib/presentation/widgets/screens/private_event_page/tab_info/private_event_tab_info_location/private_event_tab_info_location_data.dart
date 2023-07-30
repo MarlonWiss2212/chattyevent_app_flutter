@@ -3,7 +3,7 @@ import 'package:chattyevent_app_flutter/presentation/widgets/screens/private_eve
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletons/skeletons.dart';
-import 'package:chattyevent_app_flutter/application/bloc/current_private_event/current_private_event_cubit.dart';
+import 'package:chattyevent_app_flutter/application/bloc/current_event/current_event_cubit.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
 
 class PrivateEventTabInfoLocationData extends StatelessWidget {
@@ -11,11 +11,11 @@ class PrivateEventTabInfoLocationData extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CurrentPrivateEventCubit, CurrentPrivateEventState>(
+    return BlocBuilder<CurrentEventCubit, CurrentEventState>(
       builder: (context, state) {
         return InkWell(
           onTap: state.currentUserAllowedWithPermission(
-            permissionCheckValue: state.privateEvent.permissions?.changeAddress,
+            permissionCheckValue: state.event.permissions?.changeAddress,
           )
               ? () => AutoRouter.of(context).push(
                     const PrivateEventUpdateLocationRoute(),
@@ -23,14 +23,12 @@ class PrivateEventTabInfoLocationData extends StatelessWidget {
               : null,
           child: Column(
             children: [
-              if (state.privateEvent.eventLocation?.address != null &&
-                  state.privateEvent.eventLocation!.address!.city != null &&
-                  state.privateEvent.eventLocation!.address!.street != null &&
-                  state.privateEvent.eventLocation!.address!.housenumber !=
-                      null &&
-                  state.privateEvent.eventLocation!.address!.zip != null &&
-                  state.privateEvent.eventLocation!.address!.country !=
-                      null) ...[
+              if (state.event.eventLocation?.address != null &&
+                  state.event.eventLocation!.address!.city != null &&
+                  state.event.eventLocation!.address!.street != null &&
+                  state.event.eventLocation!.address!.housenumber != null &&
+                  state.event.eventLocation!.address!.zip != null &&
+                  state.event.eventLocation!.address!.country != null) ...[
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
                   child: Row(
@@ -46,17 +44,17 @@ class PrivateEventTabInfoLocationData extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           Text(
-                            "${state.privateEvent.eventLocation!.address!.country}, ${state.privateEvent.eventLocation!.address!.city}, ${state.privateEvent.eventLocation!.address!.zip}",
+                            "${state.event.eventLocation!.address!.country}, ${state.event.eventLocation!.address!.city}, ${state.event.eventLocation!.address!.zip}",
                             style: Theme.of(context).textTheme.bodyMedium,
                           ),
                           Text(
-                            "${state.privateEvent.eventLocation!.address!.street} ${state.privateEvent.eventLocation!.address!.housenumber}",
+                            "${state.event.eventLocation!.address!.street} ${state.event.eventLocation!.address!.housenumber}",
                             style: Theme.of(context).textTheme.bodyMedium,
                           ),
                           const SizedBox(height: 8),
                           if (state.currentUserAllowedWithPermission(
                             permissionCheckValue:
-                                state.privateEvent.permissions?.changeAddress,
+                                state.event.permissions?.changeAddress,
                           )) ...{
                             const PrivateEventTabInfoLocationRemoveIcon(),
                           },
@@ -70,8 +68,7 @@ class PrivateEventTabInfoLocationData extends StatelessWidget {
                   leading: const Icon(Icons.map),
                   title: const Text("Zur Addresse navigieren"),
                   onTap: () {
-                    BlocProvider.of<CurrentPrivateEventCubit>(context)
-                        .openMaps();
+                    BlocProvider.of<CurrentEventCubit>(context).openMaps();
                   },
                 ),
               ] else if (state.loadingPrivateEvent) ...[

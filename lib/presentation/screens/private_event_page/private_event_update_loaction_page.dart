@@ -1,12 +1,10 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:chattyevent_app_flutter/infastructure/dto/geocoding/create_address_dto.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'package:chattyevent_app_flutter/application/bloc/current_private_event/current_private_event_cubit.dart';
-import 'package:chattyevent_app_flutter/infastructure/dto/private_event/create_private_event_location_dto.dart';
-import 'package:chattyevent_app_flutter/infastructure/dto/private_event/update_private_event_dto.dart';
+import 'package:chattyevent_app_flutter/application/bloc/current_event/current_event_cubit.dart';
+import 'package:chattyevent_app_flutter/infastructure/dto/event/create_event_location_dto.dart';
+import 'package:chattyevent_app_flutter/infastructure/dto/event/update_event_dto.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/button.dart';
 
 @RoutePage()
@@ -32,7 +30,7 @@ class _PrivateEventUpdateLocationPageState
         centerTitle: true,
         title: const Text("Location Aktualisieren"),
       ),
-      body: BlocListener<CurrentPrivateEventCubit, CurrentPrivateEventState>(
+      body: BlocListener<CurrentEventCubit, CurrentEventState>(
         listener: (context, state) {
           if (state.status == CurrentPrivateEventStateStatus.updated) {
             AutoRouter.of(context).pop();
@@ -50,8 +48,10 @@ class _PrivateEventUpdateLocationPageState
                         horizontal: 8,
                         vertical: 4,
                       ),
-                      child: PlatformTextField(
-                        hintText: "Stadt",
+                      child: TextField(
+                        decoration: const InputDecoration(
+                          labelText: "Stadt",
+                        ),
                         controller: cityController,
                         textInputAction: TextInputAction.next,
                       ),
@@ -61,8 +61,10 @@ class _PrivateEventUpdateLocationPageState
                         horizontal: 8,
                         vertical: 4,
                       ),
-                      child: PlatformTextField(
-                        hintText: "Postleitzahl",
+                      child: TextField(
+                        decoration: const InputDecoration(
+                          labelText: "Postleitzahl",
+                        ),
                         controller: zipController,
                         keyboardType: TextInputType.number,
                         textInputAction: TextInputAction.next,
@@ -77,9 +79,11 @@ class _PrivateEventUpdateLocationPageState
                       child: Row(
                         children: [
                           Expanded(
-                            child: PlatformTextFormField(
+                            child: TextFormField(
+                              decoration: const InputDecoration(
+                                labelText: 'Straße',
+                              ),
                               controller: streetController,
-                              hintText: "Straße",
                               keyboardType: TextInputType.streetAddress,
                               textInputAction: TextInputAction.next,
                             ),
@@ -87,9 +91,11 @@ class _PrivateEventUpdateLocationPageState
                           const SizedBox(width: 8.0),
                           SizedBox(
                             width: 100,
-                            child: PlatformTextFormField(
+                            child: TextFormField(
+                              decoration: const InputDecoration(
+                                labelText: 'Nr.',
+                              ),
                               controller: housenumberController,
-                              hintText: "Nr.",
                             ),
                           ),
                         ],
@@ -106,10 +112,10 @@ class _PrivateEventUpdateLocationPageState
                 child: Button(
                   text: "Ändern",
                   onTap: () {
-                    BlocProvider.of<CurrentPrivateEventCubit>(context)
-                        .updateCurrentPrivateEvent(
-                      updatePrivateEventDto: UpdatePrivateEventDto(
-                        eventLocation: CreatePrivateEventLocationDto(
+                    BlocProvider.of<CurrentEventCubit>(context)
+                        .updateCurrentEvent(
+                      updateEventDto: UpdateEventDto(
+                        eventLocation: CreateEventLocationDto(
                           address: CreateAddressDto(
                             city: cityController.text,
                             zip: zipController.text,

@@ -5,7 +5,7 @@ import 'package:chattyevent_app_flutter/presentation/widgets/screens/private_eve
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:chattyevent_app_flutter/application/bloc/current_private_event/current_private_event_cubit.dart';
+import 'package:chattyevent_app_flutter/application/bloc/current_event/current_event_cubit.dart';
 import 'package:auto_route/auto_route.dart';
 
 @RoutePage()
@@ -33,10 +33,10 @@ class PrivateEventTabUserList extends StatelessWidget {
           ),
         ),
         CupertinoSliverRefreshControl(
-          onRefresh: () => BlocProvider.of<CurrentPrivateEventCubit>(context)
-              .getPrivateEventUsersAndLeftUsersViaApi(),
+          onRefresh: () => BlocProvider.of<CurrentEventCubit>(context)
+              .getEventUsersAndLeftUsersViaApi(),
         ),
-        BlocBuilder<CurrentPrivateEventCubit, CurrentPrivateEventState>(
+        BlocBuilder<CurrentEventCubit, CurrentEventState>(
           builder: (context, state) {
             return SliverList(
               delegate: SliverChildListDelegate(

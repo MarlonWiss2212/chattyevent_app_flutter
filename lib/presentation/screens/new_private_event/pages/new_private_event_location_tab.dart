@@ -1,8 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'package:chattyevent_app_flutter/application/bloc/add_private_event/add_private_event_cubit.dart';
+import 'package:chattyevent_app_flutter/application/bloc/add_event/add_event_cubit.dart';
 
 @RoutePage()
 class NewPrivateEventLocationTab extends StatelessWidget {
@@ -11,7 +10,7 @@ class NewPrivateEventLocationTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: BlocBuilder<AddPrivateEventCubit, AddPrivateEventState>(
+      child: BlocBuilder<AddEventCubit, AddEventState>(
         buildWhen: (previous, current) => false,
         builder: (context, state) {
           return Column(
@@ -27,30 +26,32 @@ class NewPrivateEventLocationTab extends StatelessWidget {
                   horizontal: 8,
                   vertical: 4,
                 ),
-                child: PlatformTextField(
-                  hintText: "Stadt",
+                child: TextField(
+                  decoration: const InputDecoration(
+                    labelText: "Stadt",
+                  ),
                   controller: TextEditingController(
                     text: state.city,
                   ),
                   onChanged: (value) =>
-                      BlocProvider.of<AddPrivateEventCubit>(context).emitState(
+                      BlocProvider.of<AddEventCubit>(context).emitState(
                     city: value,
                   ),
                   textInputAction: TextInputAction.next,
                 ),
               ),
-              Container(
+              Padding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 8,
                   vertical: 4,
                 ),
-                child: PlatformTextField(
-                  hintText: "Postleitzahl",
-                  controller: TextEditingController(
-                    text: state.zip,
+                child: TextField(
+                  decoration: const InputDecoration(
+                    labelText: "Postleitzahl",
                   ),
+                  controller: TextEditingController(text: state.zip),
                   onChanged: (value) =>
-                      BlocProvider.of<AddPrivateEventCubit>(context).emitState(
+                      BlocProvider.of<AddEventCubit>(context).emitState(
                     zip: value,
                   ),
                   keyboardType: TextInputType.number,
@@ -66,16 +67,17 @@ class NewPrivateEventLocationTab extends StatelessWidget {
                 child: Row(
                   children: [
                     Expanded(
-                      child: PlatformTextFormField(
+                      child: TextField(
+                        decoration: const InputDecoration(
+                          labelText: "Straße",
+                        ),
                         controller: TextEditingController(
                           text: state.street,
                         ),
                         onChanged: (value) =>
-                            BlocProvider.of<AddPrivateEventCubit>(context)
-                                .emitState(
+                            BlocProvider.of<AddEventCubit>(context).emitState(
                           street: value,
                         ),
-                        hintText: "Straße",
                         keyboardType: TextInputType.streetAddress,
                         textInputAction: TextInputAction.next,
                       ),
@@ -83,16 +85,17 @@ class NewPrivateEventLocationTab extends StatelessWidget {
                     const SizedBox(width: 8.0),
                     SizedBox(
                       width: 100,
-                      child: PlatformTextFormField(
+                      child: TextField(
+                        decoration: const InputDecoration(
+                          labelText: "Nr.",
+                        ),
                         controller: TextEditingController(
                           text: state.housenumber,
                         ),
                         onChanged: (value) =>
-                            BlocProvider.of<AddPrivateEventCubit>(context)
-                                .emitState(
+                            BlocProvider.of<AddEventCubit>(context).emitState(
                           housenumber: value,
                         ),
-                        hintText: "Nr.",
                       ),
                     ),
                   ],

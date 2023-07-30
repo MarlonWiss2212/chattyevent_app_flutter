@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletons/skeletons.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/shopping_list/my_shopping_list_cubit.dart';
-import 'package:chattyevent_app_flutter/domain/entities/private_event/private_event_user_entity.dart';
+import 'package:chattyevent_app_flutter/domain/entities/event/event_user_entity.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/shopping_list_item_page/shopping_list_page/shopping_list_item_tile.dart';
 
@@ -92,12 +92,12 @@ class _ShoppingListPageState extends State<ShoppingListPage> {
                       return ShoppingListItemTile(
                         shoppingListItem: state
                             .shoppingListItemStates[index].shoppingListItem,
-                        userToBuyItem: PrivateEventUserEntity(
+                        userToBuyItem: EventUserEntity(
                           id: currentUser.id,
                           authId: currentUser.authId,
                           username: currentUser.username,
                           profileImageLink: currentUser.profileImageLink,
-                          privateEventUserId: "",
+                          eventUserId: "",
                         ),
                         onTap: () {
                           AutoRouter.of(context).push(

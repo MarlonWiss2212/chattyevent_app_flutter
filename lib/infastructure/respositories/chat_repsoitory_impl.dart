@@ -32,7 +32,7 @@ class ChatRepositoryImpl implements ChatRepository {
                 createdAt
               }
             }
-            privateEvent {
+            event {
               _id
               status
               title
@@ -52,7 +52,7 @@ class ChatRepositoryImpl implements ChatRepository {
                 message
                 messageToReactTo
                 fileLinks
-                privateEventTo
+                eventTo
                 createdBy
                 createdAt
               }

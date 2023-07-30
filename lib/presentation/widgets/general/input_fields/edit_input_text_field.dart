@@ -51,7 +51,7 @@ class _EditInputTextFieldState extends State<EditInputTextField> {
           autofocus: true,
           style: widget.textStyle,
           decoration: InputDecoration(
-            hintText: widget.hintText,
+            labelText: widget.hintText,
           ),
           onSubmitted: (value) {
             if (value != widget.text) {

@@ -41,75 +41,73 @@ class FollowButton extends StatelessWidget {
       text = "Folgen";
       color = Theme.of(context).colorScheme.primaryContainer;
     }
-    return PopupMenuButton<Either<Unit, UserRelationStatusEnum>>(
-      initialValue: user.myUserRelationToOtherUser?.status != null
-          ? Right(user.myUserRelationToOtherUser!.status!)
-          : const Left(unit),
-      onSelected: onTap != null
-          ? (value) {
-              value.fold((l) => onTap!(null), (r) => onTap!(r));
-            }
-          : null,
-      itemBuilder: (context) => [
-        if (user.myUserRelationToOtherUser?.status !=
-            UserRelationStatusEnum.follower) ...{
-          const PopupMenuItem<Either<Unit, UserRelationStatusEnum>>(
-            value: Right(UserRelationStatusEnum.requesttofollow),
-            child: Text("Folgen"),
-          ),
-        },
-        if (user.myUserRelationToOtherUser?.status ==
-            UserRelationStatusEnum.requesttofollow) ...{
-          const PopupMenuItem<Either<Unit, UserRelationStatusEnum>>(
-            value: Left(unit),
-            child: Text("Anfrage zurücknehmen"),
-          ),
-        },
-        if (user.myUserRelationToOtherUser?.status ==
-            UserRelationStatusEnum.follower) ...{
-          const PopupMenuItem<Either<Unit, UserRelationStatusEnum>>(
-            value: Left(unit),
-            child: Text("Nicht mehr Folgen"),
-          ),
-        },
-        if (user.myUserRelationToOtherUser?.status !=
-            UserRelationStatusEnum.blocked) ...{
-          const PopupMenuItem<Either<Unit, UserRelationStatusEnum>>(
-            value: Right(UserRelationStatusEnum.blocked),
-            child: Text("Blockieren"),
-          ),
-        },
-        if (user.myUserRelationToOtherUser?.status ==
-            UserRelationStatusEnum.blocked) ...{
-          const PopupMenuItem<Either<Unit, UserRelationStatusEnum>>(
-            value: Left(unit),
-            child: Text("Nicht mehr Blockieren"),
-          ),
-        },
-      ],
-      child: Material(
-        color: Colors.transparent,
-        child: Container(
-          decoration: BoxDecoration(
-            color: color,
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const SizedBox(),
-                Text(
-                  text,
-                  style: Theme.of(context).textTheme.labelMedium,
-                ),
-                const Icon(
-                  Ionicons.arrow_down,
-                  size: 10,
-                )
-              ],
+    return Material(
+      color: color,
+      borderRadius: BorderRadius.circular(8),
+      child: PopupMenuButton<Either<Unit, UserRelationStatusEnum>>(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+        initialValue: user.myUserRelationToOtherUser?.status != null
+            ? Right(user.myUserRelationToOtherUser!.status!)
+            : const Left(unit),
+        onSelected: onTap != null
+            ? (value) {
+                value.fold((l) => onTap!(null), (r) => onTap!(r));
+              }
+            : null,
+        itemBuilder: (context) => [
+          if (user.myUserRelationToOtherUser?.status !=
+              UserRelationStatusEnum.follower) ...{
+            const PopupMenuItem<Either<Unit, UserRelationStatusEnum>>(
+              value: Right(UserRelationStatusEnum.requesttofollow),
+              child: Text("Folgen"),
             ),
+          },
+          if (user.myUserRelationToOtherUser?.status ==
+              UserRelationStatusEnum.requesttofollow) ...{
+            const PopupMenuItem<Either<Unit, UserRelationStatusEnum>>(
+              value: Left(unit),
+              child: Text("Anfrage zurücknehmen"),
+            ),
+          },
+          if (user.myUserRelationToOtherUser?.status ==
+              UserRelationStatusEnum.follower) ...{
+            const PopupMenuItem<Either<Unit, UserRelationStatusEnum>>(
+              value: Left(unit),
+              child: Text("Nicht mehr Folgen"),
+            ),
+          },
+          if (user.myUserRelationToOtherUser?.status !=
+              UserRelationStatusEnum.blocked) ...{
+            const PopupMenuItem<Either<Unit, UserRelationStatusEnum>>(
+              value: Right(UserRelationStatusEnum.blocked),
+              child: Text("Blockieren"),
+            ),
+          },
+          if (user.myUserRelationToOtherUser?.status ==
+              UserRelationStatusEnum.blocked) ...{
+            const PopupMenuItem<Either<Unit, UserRelationStatusEnum>>(
+              value: Left(unit),
+              child: Text("Nicht mehr Blockieren"),
+            ),
+          },
+        ],
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const SizedBox(),
+              Text(
+                text,
+                style: Theme.of(context).textTheme.labelMedium,
+              ),
+              const Icon(
+                Ionicons.arrow_down,
+                size: 10,
+              )
+            ],
           ),
         ),
       ),

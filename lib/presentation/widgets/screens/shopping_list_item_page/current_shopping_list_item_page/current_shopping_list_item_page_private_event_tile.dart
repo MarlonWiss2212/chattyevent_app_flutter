@@ -2,7 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletons/skeletons.dart';
-import 'package:chattyevent_app_flutter/application/bloc/current_private_event/current_private_event_cubit.dart';
+import 'package:chattyevent_app_flutter/application/bloc/current_event/current_event_cubit.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
 
 class CurrentShoppingListItemPagePrivateEventTile extends StatelessWidget {
@@ -17,25 +17,25 @@ class CurrentShoppingListItemPagePrivateEventTile extends StatelessWidget {
           style: Theme.of(context).textTheme.titleMedium,
         ),
         const SizedBox(height: 8),
-        BlocBuilder<CurrentPrivateEventCubit, CurrentPrivateEventState>(
+        BlocBuilder<CurrentEventCubit, CurrentEventState>(
           builder: (context, state) {
-            if (state.privateEvent.id != "") {
+            if (state.event.id != "") {
               return ListTile(
                 leading: CircleAvatar(
-                  backgroundImage: state.privateEvent.coverImageLink != null
+                  backgroundImage: state.event.coverImageLink != null
                       ? NetworkImage(
-                          state.privateEvent.coverImageLink!,
+                          state.event.coverImageLink!,
                         )
                       : null,
-                  backgroundColor: state.privateEvent.coverImageLink == null
+                  backgroundColor: state.event.coverImageLink == null
                       ? Theme.of(context).colorScheme.surface
                       : null,
                 ),
-                title: state.privateEvent.title != null
+                title: state.event.title != null
                     ? Hero(
-                        tag: "${state.privateEvent.title} title",
+                        tag: "${state.event.title} title",
                         child: Text(
-                          state.privateEvent.title!,
+                          state.event.title!,
                           style: Theme.of(context).textTheme.titleMedium,
                         ),
                       )
@@ -48,17 +48,16 @@ class CurrentShoppingListItemPagePrivateEventTile extends StatelessWidget {
                 onTap: () {
                   AutoRouter.of(context).root.push(
                         PrivateEventWrapperRoute(
-                          privateEventId: state.privateEvent.id,
+                          eventId: state.event.id,
                           privateEventStateToSet:
-                              CurrentPrivateEventState.fromPrivateEvent(
-                            privateEvent: state.privateEvent,
+                              CurrentEventState.fromPrivateEvent(
+                            event: state.event,
                           ),
                         ),
                       );
                 },
               );
-            } else if (state.privateEvent.id == "" &&
-                state.loadingPrivateEvent) {
+            } else if (state.event.id == "" && state.loadingPrivateEvent) {
               return SkeletonListTile(
                 padding: const EdgeInsets.symmetric(horizontal: 8),
                 hasSubtitle: true,

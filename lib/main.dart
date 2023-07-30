@@ -154,6 +154,9 @@ class _AppState extends State<App> {
                 },
                 theme: ThemeData(
                   useMaterial3: true,
+                  inputDecorationTheme: const InputDecorationTheme(
+                    border: OutlineInputBorder(),
+                  ),
                   listTileTheme: ListTileThemeData(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
@@ -184,6 +187,11 @@ class _AppState extends State<App> {
                 ),
                 darkTheme: ThemeData(
                   useMaterial3: true,
+                  inputDecorationTheme: InputDecorationTheme(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
                   listTileTheme: ListTileThemeData(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),

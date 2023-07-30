@@ -6,7 +6,7 @@ class CreateMessageDto {
   final String message;
   final String? messageToReactTo;
   final String? groupchatTo;
-  final String? privateEventTo;
+  final String? eventTo;
   final CreateMessageLocationDto? currentLocation;
   final String? userTo;
   // TODO: multiple files
@@ -18,7 +18,7 @@ class CreateMessageDto {
     this.groupchatTo,
     this.currentLocation,
     this.userTo,
-    this.privateEventTo,
+    this.eventTo,
     this.file,
     this.voiceMessage,
     this.messageToReactTo,
@@ -40,8 +40,8 @@ class CreateMessageDto {
     if (groupchatTo != null) {
       map.addAll({'groupchatTo': groupchatTo});
     }
-    if (privateEventTo != null) {
-      map.addAll({'privateEventTo': privateEventTo});
+    if (eventTo != null) {
+      map.addAll({'eventTo': eventTo});
     }
     if (userTo != null) {
       map.addAll({'userTo': userTo});

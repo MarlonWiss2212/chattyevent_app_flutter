@@ -1,11 +1,11 @@
 class FindMessagesFilter {
   final String? groupchatTo;
-  final String? privateEventTo;
+  final String? eventTo;
   final String? userTo;
 
   FindMessagesFilter({
     this.groupchatTo,
-    this.privateEventTo,
+    this.eventTo,
     this.userTo,
   });
 
@@ -14,8 +14,8 @@ class FindMessagesFilter {
     if (groupchatTo != null) {
       map.addAll({"groupchatTo": groupchatTo});
     }
-    if (privateEventTo != null) {
-      map.addAll({"privateEventTo": privateEventTo});
+    if (eventTo != null) {
+      map.addAll({"eventTo": eventTo});
     }
     if (userTo != null) {
       map.addAll({"userTo": userTo});

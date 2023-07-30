@@ -1,7 +1,6 @@
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:chattyevent_app_flutter/application/bloc/shopping_list/add_shopping_list_item_cubit.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/dialog/alert_dialog.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/private_event_page/create_shopping_list_item_page/create_shopping_list_item_page_select_user_list.dart';
@@ -21,7 +20,10 @@ class CreateShoppingListItemPageDetail extends StatelessWidget {
             children: [
               SizedBox(
                 width: double.infinity,
-                child: PlatformTextFormField(
+                child: TextFormField(
+                  decoration: const InputDecoration(
+                    labelText: "Item name",
+                  ),
                   controller: TextEditingController(
                     text: state.itemName,
                   ),
@@ -31,7 +33,6 @@ class CreateShoppingListItemPageDetail extends StatelessWidget {
                       itemName: value,
                     );
                   },
-                  hintText: "Item name",
                   textInputAction: TextInputAction.next,
                 ),
               ),
@@ -42,7 +43,10 @@ class CreateShoppingListItemPageDetail extends StatelessWidget {
                   children: [
                     Flexible(
                       flex: 1,
-                      child: PlatformTextFormField(
+                      child: TextFormField(
+                        decoration: const InputDecoration(
+                          labelText: "Menge",
+                        ),
                         keyboardType: const TextInputType.numberWithOptions(
                           decimal: true,
                         ),
@@ -76,14 +80,16 @@ class CreateShoppingListItemPageDetail extends StatelessWidget {
                             amount: amountAsDouble,
                           );
                         },
-                        hintText: "Menge",
                         textInputAction: TextInputAction.next,
                       ),
                     ),
                     const SizedBox(width: 8.0),
                     Flexible(
                       flex: 1,
-                      child: PlatformTextFormField(
+                      child: TextFormField(
+                        decoration: const InputDecoration(
+                          labelText: "Einheit",
+                        ),
                         controller: TextEditingController(
                           text: state.unit,
                         ),
@@ -93,7 +99,6 @@ class CreateShoppingListItemPageDetail extends StatelessWidget {
                             unit: value,
                           );
                         },
-                        hintText: "Einheit",
                         textInputAction: TextInputAction.next,
                       ),
                     ),

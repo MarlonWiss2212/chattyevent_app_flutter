@@ -1,16 +1,16 @@
 import 'package:chattyevent_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
-import 'package:chattyevent_app_flutter/domain/entities/private_event/private_event_entity.dart';
+import 'package:chattyevent_app_flutter/domain/entities/event/event_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/user/user_entity.dart';
 
 class ChatEntity {
   final UserEntity? user;
-  final PrivateEventEntity? privateEvent;
+  final EventEntity? event;
   final GroupchatEntity? groupchat;
 
   ChatEntity({
     this.user,
     this.groupchat,
-    this.privateEvent,
+    this.event,
   });
 
   factory ChatEntity.merge({
@@ -19,7 +19,7 @@ class ChatEntity {
   }) {
     return ChatEntity(
       groupchat: newEntity.groupchat ?? oldEntity.groupchat,
-      privateEvent: newEntity.privateEvent ?? oldEntity.privateEvent,
+      event: newEntity.event ?? oldEntity.event,
       user: newEntity.user ?? oldEntity.user,
     );
   }

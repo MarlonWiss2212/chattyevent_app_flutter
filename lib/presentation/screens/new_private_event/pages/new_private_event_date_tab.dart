@@ -3,7 +3,7 @@ import 'package:chattyevent_app_flutter/core/enums/calendar/calendar_status_enum
 import 'package:chattyevent_app_flutter/presentation/widgets/general/user_list/user_list_tile.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:chattyevent_app_flutter/application/bloc/add_private_event/add_private_event_cubit.dart';
+import 'package:chattyevent_app_flutter/application/bloc/add_event/add_event_cubit.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/button.dart';
 import 'package:intl/intl.dart';
 import 'package:ionicons/ionicons.dart';
@@ -25,7 +25,7 @@ class NewPrivateEventDateTab extends StatelessWidget {
         const SizedBox(height: 20),
         Padding(
           padding: const EdgeInsets.all(8),
-          child: BlocBuilder<AddPrivateEventCubit, AddPrivateEventState>(
+          child: BlocBuilder<AddEventCubit, AddEventState>(
             buildWhen: (previous, current) {
               if (previous.eventEndDate != current.eventEndDate) {
                 return true;
@@ -36,8 +36,7 @@ class NewPrivateEventDateTab extends StatelessWidget {
               return false;
             },
             builder: (context, state) {
-              BlocProvider.of<AddPrivateEventCubit>(context)
-                  .getCalendarTimeUsers();
+              BlocProvider.of<AddEventCubit>(context).getCalendarTimeUsers();
               return Column(
                 children: [
                   SizedBox(
@@ -70,8 +69,7 @@ class NewPrivateEventDateTab extends StatelessWidget {
                         );
 
                         if (newDate == null || newTime == null) return;
-                        BlocProvider.of<AddPrivateEventCubit>(context)
-                            .emitState(
+                        BlocProvider.of<AddEventCubit>(context).emitState(
                           eventDate: DateTime(
                             newDate.year,
                             newDate.month,
@@ -114,8 +112,7 @@ class NewPrivateEventDateTab extends StatelessWidget {
                         );
 
                         if (newDate == null || newTime == null) return;
-                        BlocProvider.of<AddPrivateEventCubit>(context)
-                            .emitState(
+                        BlocProvider.of<AddEventCubit>(context).emitState(
                           eventEndDate: DateTime(
                             newDate.year,
                             newDate.month,
@@ -133,7 +130,7 @@ class NewPrivateEventDateTab extends StatelessWidget {
             },
           ),
         ),
-        BlocBuilder<AddPrivateEventCubit, AddPrivateEventState>(
+        BlocBuilder<AddEventCubit, AddEventState>(
           builder: (context, state) {
             return Expanded(
               child: state.loadingCalendarTimeUsers

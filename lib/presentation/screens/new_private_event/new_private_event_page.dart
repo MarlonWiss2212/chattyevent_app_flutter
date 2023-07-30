@@ -5,8 +5,8 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/home_page/home_event/home_event_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
-import 'package:chattyevent_app_flutter/application/bloc/add_private_event/add_private_event_cubit.dart';
-import 'package:chattyevent_app_flutter/application/bloc/current_private_event/current_private_event_cubit.dart';
+import 'package:chattyevent_app_flutter/application/bloc/add_event/add_event_cubit.dart';
+import 'package:chattyevent_app_flutter/application/bloc/current_event/current_event_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/user_search/user_search_cubit.dart';
 import 'package:chattyevent_app_flutter/core/utils/injection.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
@@ -23,13 +23,13 @@ class NewPrivateEventPage extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => AddPrivateEventCubit(
+          create: (context) => AddEventCubit(
             homeEventCubit: BlocProvider.of<HomeEventCubit>(context),
             notificationCubit: BlocProvider.of<NotificationCubit>(context),
             calendarUseCases: serviceLocator(
               param1: BlocProvider.of<AuthCubit>(context).state,
             ),
-            privateEventUseCases: serviceLocator(
+            eventUseCases: serviceLocator(
               param1: BlocProvider.of<AuthCubit>(context).state,
             ),
           ),
@@ -51,16 +51,16 @@ class NewPrivateEventPage extends StatelessWidget {
         builder: (context) {
           return MultiBlocListener(
             listeners: [
-              BlocListener<AddPrivateEventCubit, AddPrivateEventState>(
+              BlocListener<AddEventCubit, AddEventState>(
                 listener: (context, state) async {
-                  if (state.status == AddPrivateEventStateStatus.success &&
+                  if (state.status == AddEventStateStatus.success &&
                       state.addedPrivateEvent != null) {
                     AutoRouter.of(context).root.replace(
                           PrivateEventWrapperRoute(
-                            privateEventId: state.addedPrivateEvent!.id,
+                            eventId: state.addedPrivateEvent!.id,
                             privateEventStateToSet:
-                                CurrentPrivateEventState.fromPrivateEvent(
-                              privateEvent: state.addedPrivateEvent!,
+                                CurrentEventState.fromPrivateEvent(
+                              event: state.addedPrivateEvent!,
                             ),
                           ),
                         );
@@ -85,10 +85,9 @@ class NewPrivateEventPage extends StatelessWidget {
                 builder: (context, child, pageController) {
                   return Column(
                     children: [
-                      BlocBuilder<AddPrivateEventCubit, AddPrivateEventState>(
+                      BlocBuilder<AddEventCubit, AddEventState>(
                         builder: (context, state) {
-                          if (state.status ==
-                              AddPrivateEventStateStatus.loading) {
+                          if (state.status == AddEventStateStatus.loading) {
                             return const LinearProgressIndicator();
                           }
                           return Container();
@@ -118,8 +117,8 @@ class NewPrivateEventPage extends StatelessWidget {
                           width: double.infinity,
                           child: Button(
                             onTap: () {
-                              BlocProvider.of<AddPrivateEventCubit>(context)
-                                  .createPrivateEventViaApi();
+                              BlocProvider.of<AddEventCubit>(context)
+                                  .createEventViaApi();
                             },
                             text: "Erstellen",
                           ),

@@ -1,12 +1,12 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
-import 'package:chattyevent_app_flutter/application/bloc/current_private_event/current_private_event_cubit.dart';
+import 'package:chattyevent_app_flutter/application/bloc/current_event/current_event_cubit.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/event_list/event_horizontal_list_item.dart';
 
 class EventHorizontalList extends StatelessWidget {
-  final List<CurrentPrivateEventState> privateEventStates;
+  final List<CurrentEventState> privateEventStates;
   const EventHorizontalList({super.key, required this.privateEventStates});
 
   @override
@@ -30,12 +30,12 @@ class EventHorizontalList extends StatelessWidget {
         return EventHorizontalListItem(
           height: height,
           width: width,
-          privateEvent: privateEventStates[index].privateEvent,
+          event: privateEventStates[index].event,
           onPress: () {
             AutoRouter.of(context).push(
               PrivateEventWrapperRoute(
                 privateEventStateToSet: privateEventStates[index],
-                privateEventId: privateEventStates[index].privateEvent.id,
+                eventId: privateEventStates[index].event.id,
               ),
             );
           },

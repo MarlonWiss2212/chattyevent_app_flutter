@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:chattyevent_app_flutter/application/bloc/current_private_event/current_private_event_cubit.dart';
-import 'package:chattyevent_app_flutter/infastructure/dto/private_event/update_private_event_dto.dart';
+import 'package:chattyevent_app_flutter/application/bloc/current_event/current_event_cubit.dart';
+import 'package:chattyevent_app_flutter/infastructure/dto/event/update_event_dto.dart';
 
 class PrivateEventTabInfoEventDate extends StatelessWidget {
   const PrivateEventTabInfoEventDate({super.key});
@@ -27,9 +27,8 @@ class PrivateEventTabInfoEventDate extends StatelessWidget {
     );
 
     if (newDate == null || newTime == null) return;
-    BlocProvider.of<CurrentPrivateEventCubit>(context)
-        .updateCurrentPrivateEvent(
-      updatePrivateEventDto: UpdatePrivateEventDto(
+    BlocProvider.of<CurrentEventCubit>(context).updateCurrentEvent(
+      updateEventDto: UpdateEventDto(
         eventDate: DateTime(
           newDate.year,
           newDate.month,
@@ -43,15 +42,15 @@ class PrivateEventTabInfoEventDate extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CurrentPrivateEventCubit, CurrentPrivateEventState>(
+    return BlocBuilder<CurrentEventCubit, CurrentEventState>(
         builder: (context, state) {
       return InkWell(
         onTap: state.currentUserAllowedWithPermission(
-          permissionCheckValue: state.privateEvent.permissions?.changeDate,
+          permissionCheckValue: state.event.permissions?.changeDate,
         )
             ? () => _onChangeDatePress(
                   context,
-                  state.privateEvent.eventDate,
+                  state.event.eventDate,
                 )
             : null,
         child: Padding(
@@ -66,7 +65,7 @@ class PrivateEventTabInfoEventDate extends StatelessWidget {
                 ),
               ),
               Text(
-                DateFormat.yMd().add_jm().format(state.privateEvent.eventDate),
+                DateFormat.yMd().add_jm().format(state.event.eventDate),
               )
             ],
           ),

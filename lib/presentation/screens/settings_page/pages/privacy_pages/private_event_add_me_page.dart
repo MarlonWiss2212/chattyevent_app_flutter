@@ -39,13 +39,13 @@ class PrivateEventAddMePage extends StatelessWidget {
           title: const Text("Privates Event Hinzufüge Berechtigung"),
         ),
         body: const Column(
-            children: [
-              PrivateEventAddMePageChipList(),
-              PrivateEventAddMeSearchbar(),
-              SizedBox(height: 8),
-              PrivateEventAddMePageUserList(),
-            ],
-          
+          children: [
+            PrivateEventAddMePageChipList(),
+            SizedBox(height: 8),
+            PrivateEventAddMeSearchbar(),
+            SizedBox(height: 8),
+            PrivateEventAddMePageUserList(),
+          ],
         ),
       ),
     );

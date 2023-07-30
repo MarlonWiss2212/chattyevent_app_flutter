@@ -9,7 +9,7 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:auto_route/auto_route.dart' as _i72;
-import 'package:chattyevent_app_flutter/application/bloc/current_private_event/current_private_event_cubit.dart'
+import 'package:chattyevent_app_flutter/application/bloc/current_event/current_event_cubit.dart'
     as _i76;
 import 'package:chattyevent_app_flutter/application/bloc/shopping_list/current_shopping_list_item_cubit.dart'
     as _i77;
@@ -405,11 +405,11 @@ abstract class $AppRouter extends _i72.RootStackRouter {
       final pathParams = routeData.inheritedPathParams;
       final args = routeData.argsAs<PrivateEventWrapperRouteArgs>(
           orElse: () => PrivateEventWrapperRouteArgs(
-              privateEventId: pathParams.getString('id')));
+              eventId: pathParams.getString('id')));
       return _i72.AutoRoutePage<dynamic>(
         routeData: routeData,
         child: _i34.PrivateEventWrapperPage(
-          privateEventId: args.privateEventId,
+          eventId: args.eventId,
           privateEventStateToSet: args.privateEventStateToSet,
           key: args.key,
         ),
@@ -443,12 +443,12 @@ abstract class $AppRouter extends _i72.RootStackRouter {
     PrivateEventTabChat.name: (routeData) {
       final pathParams = routeData.inheritedPathParams;
       final args = routeData.argsAs<PrivateEventTabChatArgs>(
-          orElse: () => PrivateEventTabChatArgs(
-              privateEventId: pathParams.getString('id')));
+          orElse: () =>
+              PrivateEventTabChatArgs(eventId: pathParams.getString('id')));
       return _i72.AutoRoutePage<dynamic>(
         routeData: routeData,
         child: _i38.PrivateEventTabChat(
-          privateEventId: args.privateEventId,
+          eventId: args.eventId,
           key: args.key,
         ),
       );
@@ -474,13 +474,13 @@ abstract class $AppRouter extends _i72.RootStackRouter {
     PrivateEventTabRoute.name: (routeData) {
       final pathParams = routeData.inheritedPathParams;
       final args = routeData.argsAs<PrivateEventTabRouteArgs>(
-          orElse: () => PrivateEventTabRouteArgs(
-              privateEventId: pathParams.getString('id')));
+          orElse: () =>
+              PrivateEventTabRouteArgs(eventId: pathParams.getString('id')));
       return _i72.AutoRoutePage<dynamic>(
         routeData: routeData,
         child: _i42.PrivateEventTabPage(
           key: args.key,
-          privateEventId: args.privateEventId,
+          eventId: args.eventId,
         ),
       );
     },
@@ -1300,18 +1300,18 @@ class PrivateEventUpdatePermissionsRoute extends _i72.PageRouteInfo<void> {
 class PrivateEventWrapperRoute
     extends _i72.PageRouteInfo<PrivateEventWrapperRouteArgs> {
   PrivateEventWrapperRoute({
-    required String privateEventId,
-    _i76.CurrentPrivateEventState? privateEventStateToSet,
+    required String eventId,
+    _i76.CurrentEventState? privateEventStateToSet,
     _i73.Key? key,
     List<_i72.PageRouteInfo>? children,
   }) : super(
           PrivateEventWrapperRoute.name,
           args: PrivateEventWrapperRouteArgs(
-            privateEventId: privateEventId,
+            eventId: eventId,
             privateEventStateToSet: privateEventStateToSet,
             key: key,
           ),
-          rawPathParams: {'id': privateEventId},
+          rawPathParams: {'id': eventId},
           initialChildren: children,
         );
 
@@ -1323,20 +1323,20 @@ class PrivateEventWrapperRoute
 
 class PrivateEventWrapperRouteArgs {
   const PrivateEventWrapperRouteArgs({
-    required this.privateEventId,
+    required this.eventId,
     this.privateEventStateToSet,
     this.key,
   });
 
-  final String privateEventId;
+  final String eventId;
 
-  final _i76.CurrentPrivateEventState? privateEventStateToSet;
+  final _i76.CurrentEventState? privateEventStateToSet;
 
   final _i73.Key? key;
 
   @override
   String toString() {
-    return 'PrivateEventWrapperRouteArgs{privateEventId: $privateEventId, privateEventStateToSet: $privateEventStateToSet, key: $key}';
+    return 'PrivateEventWrapperRouteArgs{eventId: $eventId, privateEventStateToSet: $privateEventStateToSet, key: $key}';
   }
 }
 
@@ -1424,16 +1424,16 @@ class PrivateEventShoppingListItemWrapperRouteArgs {
 /// [_i38.PrivateEventTabChat]
 class PrivateEventTabChat extends _i72.PageRouteInfo<PrivateEventTabChatArgs> {
   PrivateEventTabChat({
-    required String privateEventId,
+    required String eventId,
     _i74.Key? key,
     List<_i72.PageRouteInfo>? children,
   }) : super(
           PrivateEventTabChat.name,
           args: PrivateEventTabChatArgs(
-            privateEventId: privateEventId,
+            eventId: eventId,
             key: key,
           ),
-          rawPathParams: {'id': privateEventId},
+          rawPathParams: {'id': eventId},
           initialChildren: children,
         );
 
@@ -1445,17 +1445,17 @@ class PrivateEventTabChat extends _i72.PageRouteInfo<PrivateEventTabChatArgs> {
 
 class PrivateEventTabChatArgs {
   const PrivateEventTabChatArgs({
-    required this.privateEventId,
+    required this.eventId,
     this.key,
   });
 
-  final String privateEventId;
+  final String eventId;
 
   final _i74.Key? key;
 
   @override
   String toString() {
-    return 'PrivateEventTabChatArgs{privateEventId: $privateEventId, key: $key}';
+    return 'PrivateEventTabChatArgs{eventId: $eventId, key: $key}';
   }
 }
 
@@ -1507,15 +1507,15 @@ class PrivateEventTabRoute
     extends _i72.PageRouteInfo<PrivateEventTabRouteArgs> {
   PrivateEventTabRoute({
     _i73.Key? key,
-    required String privateEventId,
+    required String eventId,
     List<_i72.PageRouteInfo>? children,
   }) : super(
           PrivateEventTabRoute.name,
           args: PrivateEventTabRouteArgs(
             key: key,
-            privateEventId: privateEventId,
+            eventId: eventId,
           ),
-          rawPathParams: {'id': privateEventId},
+          rawPathParams: {'id': eventId},
           initialChildren: children,
         );
 
@@ -1528,16 +1528,16 @@ class PrivateEventTabRoute
 class PrivateEventTabRouteArgs {
   const PrivateEventTabRouteArgs({
     this.key,
-    required this.privateEventId,
+    required this.eventId,
   });
 
   final _i73.Key? key;
 
-  final String privateEventId;
+  final String eventId;
 
   @override
   String toString() {
-    return 'PrivateEventTabRouteArgs{key: $key, privateEventId: $privateEventId}';
+    return 'PrivateEventTabRouteArgs{key: $key, eventId: $eventId}';
   }
 }
 

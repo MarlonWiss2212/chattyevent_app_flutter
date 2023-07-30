@@ -41,6 +41,7 @@ class GroupchatAddMePage extends StatelessWidget {
         body: const Column(
           children: [
             GroupchatAddMePageChipList(),
+            SizedBox(height: 8),
             GroupchatAddMeSearchbar(),
             SizedBox(height: 8),
             GroupchatAddMePageUserList(),

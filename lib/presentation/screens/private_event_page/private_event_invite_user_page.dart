@@ -2,9 +2,9 @@ import 'package:auto_route/auto_route.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:chattyevent_app_flutter/application/bloc/current_private_event/current_private_event_cubit.dart';
+import 'package:chattyevent_app_flutter/application/bloc/current_event/current_event_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/user_search/user_search_cubit.dart';
-import 'package:chattyevent_app_flutter/domain/entities/private_event/private_event_user_entity.dart';
+import 'package:chattyevent_app_flutter/domain/entities/event/event_user_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/user_list/selectable_user_grid_list.dart';
 
@@ -36,7 +36,7 @@ class _PrivateEventInviteUserPageState
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: BlocBuilder<CurrentPrivateEventCubit, CurrentPrivateEventState>(
+        child: BlocBuilder<CurrentEventCubit, CurrentEventState>(
           builder: (context, state) {
             return SelectableUserGridList(
               showTextSearch: true,
@@ -56,8 +56,8 @@ class _PrivateEventInviteUserPageState
               userButton: (user) => Button(
                 color: Theme.of(context).colorScheme.primaryContainer,
                 onTap: () {
-                  BlocProvider.of<CurrentPrivateEventCubit>(context)
-                      .addUserToPrivateEventViaApi(
+                  BlocProvider.of<CurrentEventCubit>(context)
+                      .addUserToEventViaApi(
                     userId: user.id,
                   );
                 },
@@ -69,8 +69,7 @@ class _PrivateEventInviteUserPageState
                 // checks if user is already in chat if not it should be visible
                 for (final user in users) {
                   bool pushUser = true;
-                  for (PrivateEventUserEntity privateEventUser
-                      in state.privateEventUsers) {
+                  for (EventUserEntity privateEventUser in state.eventUsers) {
                     if (privateEventUser.id == user.id) {
                       pushUser = false;
                       break;

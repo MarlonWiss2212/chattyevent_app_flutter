@@ -45,32 +45,23 @@ class _NewGroupchatDetailsTabState extends State<NewGroupchatDetailsTab> {
                       BlocProvider.of<AddGroupchatCubit>(context).emitState(
                     title: value,
                   ),
-                  decoration: const InputDecoration(
-                    hintText: "Name*",
-                  ),
+                  decoration: const InputDecoration(labelText: "Name*"),
                   textInputAction: TextInputAction.next,
                 ),
                 const SizedBox(height: 8),
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    color: Theme.of(context).colorScheme.surface,
+                TextField(
+                  controller: TextEditingController(text: state.description),
+                  focusNode: descriptionFocusNode,
+                  keyboardType: TextInputType.multiline,
+                  minLines: 1,
+                  maxLines: 10,
+                  decoration: const InputDecoration(
+                    labelText: "Beschreibung (optional)",
                   ),
-                  child: TextField(
-                    controller: TextEditingController(text: state.description),
-                    focusNode: descriptionFocusNode,
-                    keyboardType: TextInputType.multiline,
-                    minLines: 1,
-                    maxLines: 10,
-                    decoration: const InputDecoration.collapsed(
-                      hintText: "Beschreibung",
-                    ),
-                    onTapOutside: (event) => descriptionFocusNode.unfocus(),
-                    onChanged: (value) =>
-                        BlocProvider.of<AddGroupchatCubit>(context).emitState(
-                      description: value,
-                    ),
+                  onTapOutside: (event) => descriptionFocusNode.unfocus(),
+                  onChanged: (value) =>
+                      BlocProvider.of<AddGroupchatCubit>(context).emitState(
+                    description: value,
                   ),
                 ),
               ],

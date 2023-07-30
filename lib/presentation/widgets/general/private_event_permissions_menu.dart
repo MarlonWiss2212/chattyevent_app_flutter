@@ -1,10 +1,10 @@
-import 'package:chattyevent_app_flutter/core/enums/private_event/private_event_permission_enum.dart';
+import 'package:chattyevent_app_flutter/core/enums/event/event_permission_enum.dart';
 import 'package:flutter/material.dart';
 
 class PrivateEventPermissionsMenu extends StatelessWidget {
   final String text;
-  final void Function(PrivateEventPermissionEnum value) changePermission;
-  final PrivateEventPermissionEnum? value;
+  final void Function(EventPermissionEnum value) changePermission;
+  final EventPermissionEnum? value;
   const PrivateEventPermissionsMenu({
     super.key,
     required this.text,
@@ -31,15 +31,15 @@ class PrivateEventPermissionsMenu extends StatelessWidget {
             onSelected: changePermission,
             itemBuilder: (context) => const [
               PopupMenuItem(
-                value: PrivateEventPermissionEnum.creatoronly,
+                value: EventPermissionEnum.creatoronly,
                 child: Text("Nur Ersteller"),
               ),
               PopupMenuItem(
-                value: PrivateEventPermissionEnum.organizersonly,
+                value: EventPermissionEnum.organizersonly,
                 child: Text("Nur Organisatoren"),
               ),
               PopupMenuItem(
-                value: PrivateEventPermissionEnum.everyone,
+                value: EventPermissionEnum.everyone,
                 child: Text("Alle"),
               ),
             ],
@@ -48,11 +48,11 @@ class PrivateEventPermissionsMenu extends StatelessWidget {
                 Text(
                   value == null
                       ? "Standartdaten"
-                      : value == PrivateEventPermissionEnum.creatoronly
+                      : value == EventPermissionEnum.creatoronly
                           ? "Nur Ersteller"
-                          : value == PrivateEventPermissionEnum.organizersonly
+                          : value == EventPermissionEnum.organizersonly
                               ? "Nur Organisatoren"
-                              : value == PrivateEventPermissionEnum.everyone
+                              : value == EventPermissionEnum.everyone
                                   ? "Alle"
                                   : "Keine Info",
                 ),

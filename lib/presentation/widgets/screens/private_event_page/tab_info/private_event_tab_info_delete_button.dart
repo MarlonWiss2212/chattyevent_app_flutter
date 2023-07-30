@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:chattyevent_app_flutter/application/bloc/current_private_event/current_private_event_cubit.dart';
+import 'package:chattyevent_app_flutter/application/bloc/current_event/current_event_cubit.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/dialog/accept_decline_dialog.dart';
 
 class PrivateEventTabInfoDeleteButton extends StatelessWidget {
@@ -8,10 +8,9 @@ class PrivateEventTabInfoDeleteButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CurrentPrivateEventCubit, CurrentPrivateEventState>(
+    return BlocBuilder<CurrentEventCubit, CurrentEventState>(
       builder: (context, state) {
-        if (state.getCurrentPrivateEventUser()?.id ==
-            state.privateEvent.createdBy) {
+        if (state.getCurrentEventUser()?.id == state.event.createdBy) {
           return IconButton(
             onPressed: () async {
               await showDialog(
@@ -22,8 +21,8 @@ class PrivateEventTabInfoDeleteButton extends StatelessWidget {
                     message: "Möchtest du das Private Event wirklich löschen",
                     onNoPress: () => Navigator.of(c).pop(),
                     onYesPress: () =>
-                        BlocProvider.of<CurrentPrivateEventCubit>(context)
-                            .deleteCurrentPrivateEventViaApi(),
+                        BlocProvider.of<CurrentEventCubit>(context)
+                            .deleteCurrentEventViaApi(),
                   );
                 },
               );

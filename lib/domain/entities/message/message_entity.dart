@@ -10,7 +10,7 @@ class MessageEntity {
   final DateTime? updatedAt;
   final DateTime createdAt;
   final String? groupchatTo;
-  final String? privateEventTo;
+  final String? eventTo;
   final String? userTo;
   final MessageLocationEntity? currentLocation;
   final List<String>? readBy;
@@ -18,7 +18,7 @@ class MessageEntity {
   MessageEntity({
     required this.id,
     this.groupchatTo,
-    this.privateEventTo,
+    this.eventTo,
     this.currentLocation,
     this.voiceMessageLink,
     this.userTo,
@@ -45,7 +45,7 @@ class MessageEntity {
       readBy: newEntity.readBy ?? oldEntity.readBy,
       groupchatTo: newEntity.groupchatTo ?? oldEntity.groupchatTo,
       userTo: newEntity.userTo ?? oldEntity.userTo,
-      privateEventTo: newEntity.privateEventTo ?? oldEntity.privateEventTo,
+      eventTo: newEntity.eventTo ?? oldEntity.eventTo,
       messageToReactTo:
           newEntity.messageToReactTo ?? oldEntity.messageToReactTo,
       createdBy: newEntity.createdBy ?? oldEntity.createdBy,

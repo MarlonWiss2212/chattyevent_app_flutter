@@ -81,7 +81,7 @@ class MessageRepositoryImpl implements MessageRepository {
                 housenumber
               }
             }
-            privateEventTo
+            eventTo
             userTo
             createdBy
             createdAt
@@ -133,7 +133,7 @@ class MessageRepositoryImpl implements MessageRepository {
             voiceMessageLink
             readBy
             groupchatTo
-            privateEventTo
+            eventTo
             userTo
             createdBy
             createdAt
@@ -192,7 +192,7 @@ class MessageRepositoryImpl implements MessageRepository {
             }
             messageToReactTo
             groupchatTo
-            privateEventTo
+            eventTo
             userTo
             fileLinks
             voiceMessageLink

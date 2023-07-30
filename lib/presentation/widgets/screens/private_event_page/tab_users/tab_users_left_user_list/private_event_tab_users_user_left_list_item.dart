@@ -1,22 +1,22 @@
-import 'package:chattyevent_app_flutter/core/enums/private_event/private_event_user/private_event_user_role_enum.dart';
+import 'package:chattyevent_app_flutter/core/enums/event/event_user/event_user_role_enum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:chattyevent_app_flutter/application/bloc/current_private_event/current_private_event_cubit.dart';
-import 'package:chattyevent_app_flutter/domain/entities/private_event/private_event_entity.dart';
-import 'package:chattyevent_app_flutter/domain/entities/private_event/private_event_left_user_entity.dart';
-import 'package:chattyevent_app_flutter/domain/entities/private_event/private_event_user_entity.dart';
+import 'package:chattyevent_app_flutter/application/bloc/current_event/current_event_cubit.dart';
+import 'package:chattyevent_app_flutter/domain/entities/event/event_entity.dart';
+import 'package:chattyevent_app_flutter/domain/entities/event/event_left_user_entity.dart';
+import 'package:chattyevent_app_flutter/domain/entities/event/event_user_entity.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/user_list/user_list_tile.dart';
 
 class PrivateEventTabUsersLeftUserListItem extends StatelessWidget {
-  final PrivateEventLeftUserEntity leftPrivateEventUser;
-  final PrivateEventUserEntity? currentPrivatEventUser;
-  final PrivateEventEntity privateEvent;
+  final EventLeftUserEntity leftPrivateEventUser;
+  final EventUserEntity? currentEventUser;
+  final EventEntity event;
   const PrivateEventTabUsersLeftUserListItem({
     super.key,
     required this.leftPrivateEventUser,
-    required this.privateEvent,
-    this.currentPrivatEventUser,
+    required this.event,
+    this.currentEventUser,
   });
 
   @override
@@ -35,19 +35,16 @@ class PrivateEventTabUsersLeftUserListItem extends StatelessWidget {
             ),
       user: leftPrivateEventUser,
       items: [
-        if (currentPrivatEventUser != null &&
-                currentPrivatEventUser!.role ==
-                    PrivateEventUserRoleEnum.organizer &&
-                privateEvent.groupchatTo == null ||
-            currentPrivatEventUser != null &&
-                currentPrivatEventUser!.role ==
-                    PrivateEventUserRoleEnum.organizer &&
-                privateEvent.groupchatTo == "") ...{
+        if (currentEventUser != null &&
+                currentEventUser!.role == EventUserRoleEnum.organizer &&
+                event.groupchatTo == null ||
+            currentEventUser != null &&
+                currentEventUser!.role == EventUserRoleEnum.organizer &&
+                event.groupchatTo == "") ...{
           PopupMenuItem<void Function(void)>(
             child: const Text("Hinzufügen"),
             onTap: () {
-              BlocProvider.of<CurrentPrivateEventCubit>(context)
-                  .addUserToPrivateEventViaApi(
+              BlocProvider.of<CurrentEventCubit>(context).addUserToEventViaApi(
                 userId: leftPrivateEventUser.id,
               );
             },

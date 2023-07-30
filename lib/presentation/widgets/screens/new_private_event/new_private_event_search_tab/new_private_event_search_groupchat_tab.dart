@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/chat/chat_cubit.dart';
-import 'package:chattyevent_app_flutter/application/bloc/add_private_event/add_private_event_cubit.dart';
+import 'package:chattyevent_app_flutter/application/bloc/add_event/add_event_cubit.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/groupchat_list/groupchat_grid_list.dart';
 
 class NewPrivateEventSearchGroupchatTab extends StatefulWidget {
@@ -28,13 +28,12 @@ class _NewPrivateEventSearchGroupchatTabState
       padding: const EdgeInsets.symmetric(horizontal: 8),
       child: BlocBuilder<ChatCubit, ChatState>(
         builder: (context, chatState) {
-          return BlocBuilder<AddPrivateEventCubit, AddPrivateEventState>(
+          return BlocBuilder<AddEventCubit, AddEventState>(
             buildWhen: (previous, current) =>
                 previous.selectedGroupchat?.id != current.selectedGroupchat?.id,
             builder: (context, state) {
               if (state.selectedGroupchat?.id != null) {
-                BlocProvider.of<AddPrivateEventCubit>(context)
-                    .getCalendarTimeUsers();
+                BlocProvider.of<AddEventCubit>(context).getCalendarTimeUsers();
               }
 
               return Column(
@@ -56,8 +55,7 @@ class _NewPrivateEventSearchGroupchatTabState
                           ? [state.selectedGroupchat!.id]
                           : null,
                       onPress: (groupchat) {
-                        BlocProvider.of<AddPrivateEventCubit>(context)
-                            .emitState(
+                        BlocProvider.of<AddEventCubit>(context).emitState(
                           selectedGroupchat: groupchat,
                         );
                       },

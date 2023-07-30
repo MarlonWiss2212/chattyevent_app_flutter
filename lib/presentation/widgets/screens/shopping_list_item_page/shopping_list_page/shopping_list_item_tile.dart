@@ -1,10 +1,10 @@
-import 'package:chattyevent_app_flutter/core/enums/private_event/private_event_user_status_enum.dart';
+import 'package:chattyevent_app_flutter/core/enums/event/event_user/event_user_status_enum.dart';
 import 'package:flutter/material.dart';
-import 'package:chattyevent_app_flutter/domain/entities/private_event/private_event_user_entity.dart';
+import 'package:chattyevent_app_flutter/domain/entities/event/event_user_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/shopping_list_item/shopping_list_item_entity.dart';
 
 class ShoppingListItemTile extends StatelessWidget {
-  final PrivateEventUserEntity userToBuyItem;
+  final EventUserEntity userToBuyItem;
   final ShoppingListItemEntity shoppingListItem;
   final void Function() onTap;
   const ShoppingListItemTile({
@@ -22,11 +22,11 @@ class ShoppingListItemTile extends StatelessWidget {
       title: Wrap(
         spacing: 8,
         children: [
-          if (userToBuyItem.status == PrivateEventUserStatusEnum.rejected ||
-              userToBuyItem.status == PrivateEventUserStatusEnum.invited) ...{
+          if (userToBuyItem.status == EventUserStatusEnum.rejected ||
+              userToBuyItem.status == EventUserStatusEnum.invited) ...{
             Badge(
               backgroundColor:
-                  userToBuyItem.status == PrivateEventUserStatusEnum.invited
+                  userToBuyItem.status == EventUserStatusEnum.invited
                       ? Colors.yellow
                       : Colors.red,
             ),

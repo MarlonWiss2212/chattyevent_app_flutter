@@ -57,7 +57,7 @@ import 'package:chattyevent_app_flutter/domain/repositories/device/image_picker_
 import 'package:chattyevent_app_flutter/domain/repositories/device/location_repository.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/settings_repository.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/groupchat_repository.dart';
-import 'package:chattyevent_app_flutter/domain/repositories/private_event_repository.dart';
+import 'package:chattyevent_app_flutter/domain/repositories/event_repository.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/shopping_list_item_repository.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/user_relation_repository.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/user_repository.dart';
@@ -66,7 +66,7 @@ import 'package:chattyevent_app_flutter/domain/usecases/bought_amount_usecases.d
 import 'package:chattyevent_app_flutter/domain/usecases/groupchat_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/image_picker_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/location_usecases.dart';
-import 'package:chattyevent_app_flutter/domain/usecases/private_event_usecases.dart';
+import 'package:chattyevent_app_flutter/domain/usecases/event_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/settings_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/shopping_list_item_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/user_relation_usecases.dart';
@@ -81,7 +81,7 @@ import 'package:chattyevent_app_flutter/infastructure/respositories/device/image
 import 'package:chattyevent_app_flutter/infastructure/respositories/device/location_repository_impl.dart';
 import 'package:chattyevent_app_flutter/infastructure/respositories/device/settings_repository_impl.dart';
 import 'package:chattyevent_app_flutter/infastructure/respositories/groupchat_repository_impl.dart';
-import 'package:chattyevent_app_flutter/infastructure/respositories/private_event_repository_impl.dart';
+import 'package:chattyevent_app_flutter/infastructure/respositories/event_repository_impl.dart';
 import 'package:chattyevent_app_flutter/infastructure/respositories/shopping_list_item_repository_impl.dart';
 import 'package:chattyevent_app_flutter/infastructure/respositories/user_relation_repository_impl.dart';
 import 'package:chattyevent_app_flutter/infastructure/respositories/user_repository_impl.dart';
@@ -202,8 +202,8 @@ class InjectionUtils {
         messageRepository: serviceLocator(param1: param1),
       ),
     );
-    serviceLocator.registerFactoryParam<PrivateEventUseCases, AuthState?, void>(
-      (param1, param2) => PrivateEventUseCases(
+    serviceLocator.registerFactoryParam<EventUseCases, AuthState?, void>(
+      (param1, param2) => EventUseCases(
         privateEventRepository: serviceLocator(param1: param1),
       ),
     );
@@ -302,9 +302,8 @@ class InjectionUtils {
         graphQlDatasource: serviceLocator(param1: param1),
       ),
     );
-    serviceLocator
-        .registerFactoryParam<PrivateEventRepository, AuthState?, void>(
-      (param1, param2) => PrivateEventRepositoryImpl(
+    serviceLocator.registerFactoryParam<EventRepository, AuthState?, void>(
+      (param1, param2) => EventRepositoryImpl(
         graphQlDatasource: serviceLocator(param1: param1),
       ),
     );

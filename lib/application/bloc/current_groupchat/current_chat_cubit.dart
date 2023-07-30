@@ -13,7 +13,7 @@ import 'package:chattyevent_app_flutter/infastructure/dto/groupchat/groupchat_us
 import 'package:chattyevent_app_flutter/infastructure/filter/groupchat/find_one_groupchat_filter.dart';
 import 'package:chattyevent_app_flutter/infastructure/filter/groupchat/find_one_groupchat_to_filter.dart';
 import 'package:chattyevent_app_flutter/infastructure/filter/message/added_message_filter.dart';
-import 'package:chattyevent_app_flutter/infastructure/filter/private_event/find_private_events_filter.dart';
+import 'package:chattyevent_app_flutter/infastructure/filter/event/find_events_filter.dart';
 import 'package:chattyevent_app_flutter/infastructure/filter/message/find_messages_filter.dart';
 import 'package:chattyevent_app_flutter/infastructure/filter/groupchat/groupchat_user/find_one_groupchat_user_filter.dart';
 import 'package:chattyevent_app_flutter/infastructure/filter/limit_offset_filter.dart';
@@ -22,10 +22,10 @@ import 'package:chattyevent_app_flutter/core/response/groupchat/groupchat-users-
 import 'package:chattyevent_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/groupchat/groupchat_left_user_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
-import 'package:chattyevent_app_flutter/domain/entities/private_event/private_event_entity.dart';
+import 'package:chattyevent_app_flutter/domain/entities/event/event_entity.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/message_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/groupchat_usecases.dart';
-import 'package:chattyevent_app_flutter/domain/usecases/private_event_usecases.dart';
+import 'package:chattyevent_app_flutter/domain/usecases/event_usecases.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 part 'current_chat_state.dart';
 
@@ -36,7 +36,7 @@ class CurrentGroupchatCubit extends Cubit<CurrentGroupchatState> {
 
   final GroupchatUseCases groupchatUseCases;
   final MessageUseCases messageUseCases;
-  final PrivateEventUseCases privateEventUseCases;
+  final EventUseCases eventUseCases;
 
   StreamSubscription<Either<NotificationAlert, MessageEntity>>? _subscription;
 
@@ -44,7 +44,7 @@ class CurrentGroupchatCubit extends Cubit<CurrentGroupchatState> {
     super.initialState, {
     required this.authCubit,
     required this.groupchatUseCases,
-    required this.privateEventUseCases,
+    required this.eventUseCases,
     required this.chatCubit,
     required this.notificationCubit,
     required this.messageUseCases,
@@ -124,8 +124,7 @@ class CurrentGroupchatCubit extends Cubit<CurrentGroupchatState> {
     emit(CurrentGroupchatState.merge(
         oldState: state, loadingPrivateEvents: true));
 
-    final privateEventsOrFailure =
-        await privateEventUseCases.getPrivateEventsViaApi(
+    final privateEventsOrFailure = await eventUseCases.getEventsViaApi(
       limitOffsetFilter: LimitOffsetFilter(
         limit: reload
             ? state.futureConnectedPrivateEvents.length > 20
@@ -134,7 +133,7 @@ class CurrentGroupchatCubit extends Cubit<CurrentGroupchatState> {
             : 20,
         offset: reload ? 0 : state.futureConnectedPrivateEvents.length,
       ),
-      findPrivateEventsFilter: FindPrivateEventsFilter(
+      findEventsFilter: FindEventsFilter(
         onlyFutureEvents: true,
         sortNewestDateFirst: false,
         groupchatTo: state.currentChat.id,
@@ -154,24 +153,23 @@ class CurrentGroupchatCubit extends Cubit<CurrentGroupchatState> {
           oldState: state,
           loadingPrivateEvents: false,
         ));
-        for (final privateEvent in privateEvents) {
-          replaceOrAddFutureConnectedPrivateEvent(privateEvent: privateEvent);
+        for (final event in privateEvents) {
+          replaceOrAddFutureConnectedPrivateEvent(event: event);
         }
       },
     );
   }
 
-  PrivateEventEntity replaceOrAddFutureConnectedPrivateEvent({
-    required PrivateEventEntity privateEvent,
+  EventEntity replaceOrAddFutureConnectedPrivateEvent({
+    required EventEntity event,
   }) {
     int foundIndex = state.futureConnectedPrivateEvents.indexWhere(
-      (element) => element.id == privateEvent.id,
+      (element) => element.id == event.id,
     );
 
     if (foundIndex != -1) {
-      List<PrivateEventEntity> newPrivateEvents =
-          state.futureConnectedPrivateEvents;
-      newPrivateEvents[foundIndex] = privateEvent;
+      List<EventEntity> newPrivateEvents = state.futureConnectedPrivateEvents;
+      newPrivateEvents[foundIndex] = event;
 
       emit(CurrentGroupchatState.merge(
         oldState: state,
@@ -180,8 +178,8 @@ class CurrentGroupchatCubit extends Cubit<CurrentGroupchatState> {
       chatCubit.replaceOrAdd(chat: ChatEntity(groupchat: state.currentChat));
       return newPrivateEvents[foundIndex];
     } else {
-      List<PrivateEventEntity> newPrivateEvents =
-          List.from(state.futureConnectedPrivateEvents)..add(privateEvent);
+      List<EventEntity> newPrivateEvents =
+          List.from(state.futureConnectedPrivateEvents)..add(event);
       newPrivateEvents.sort((a, b) => a.eventDate.compareTo(b.eventDate));
       emit(CurrentGroupchatState.merge(
         oldState: state,
@@ -189,7 +187,7 @@ class CurrentGroupchatCubit extends Cubit<CurrentGroupchatState> {
       ));
       chatCubit.replaceOrAdd(chat: ChatEntity(groupchat: state.currentChat));
     }
-    return privateEvent;
+    return event;
   }
 
   Future getCurrentChatViaApi() async {

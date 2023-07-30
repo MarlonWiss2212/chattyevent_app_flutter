@@ -3,7 +3,7 @@ import 'package:chattyevent_app_flutter/presentation/widgets/screens/shopping_li
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:chattyevent_app_flutter/application/bloc/current_private_event/current_private_event_cubit.dart';
+import 'package:chattyevent_app_flutter/application/bloc/current_event/current_event_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/shopping_list/current_shopping_list_item_cubit.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/custom_divider.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/shopping_list_item_page/current_shopping_list_item_page/current_shopping_list_item_page_bought_amount_list.dart';
@@ -32,11 +32,11 @@ class StandardShoppingListItemPage extends StatelessWidget {
               title: CurrentShoppingListItemPageTitle(),
             ),
             actions: [
-              BlocBuilder<CurrentPrivateEventCubit, CurrentPrivateEventState>(
+              BlocBuilder<CurrentEventCubit, CurrentEventState>(
                 builder: (context, state) {
                   if (state.currentUserAllowedWithPermission(
-                      permissionCheckValue: state
-                          .privateEvent.permissions?.deleteShoppingListItem)) {
+                      permissionCheckValue:
+                          state.event.permissions?.deleteShoppingListItem)) {
                     return IconButton(
                       onPressed: () {
                         BlocProvider.of<CurrentShoppingListItemCubit>(context)
@@ -53,8 +53,8 @@ class StandardShoppingListItemPage extends StatelessWidget {
           CupertinoSliverRefreshControl(
             onRefresh: () async {
               await Future.wait([
-                BlocProvider.of<CurrentPrivateEventCubit>(context)
-                    .reloadPrivateEventStandardDataViaApi(),
+                BlocProvider.of<CurrentEventCubit>(context)
+                    .reloadEventStandardDataViaApi(),
                 BlocProvider.of<CurrentShoppingListItemCubit>(context)
                     .reloadShoppingListItemStandardDataViaApi()
               ]);

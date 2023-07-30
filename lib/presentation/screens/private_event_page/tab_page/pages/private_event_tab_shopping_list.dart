@@ -4,8 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletons/skeletons.dart';
-import 'package:chattyevent_app_flutter/application/bloc/current_private_event/current_private_event_cubit.dart';
-import 'package:chattyevent_app_flutter/domain/entities/private_event/private_event_user_entity.dart';
+import 'package:chattyevent_app_flutter/application/bloc/current_event/current_event_cubit.dart';
+import 'package:chattyevent_app_flutter/domain/entities/event/event_user_entity.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/shopping_list_item_page/shopping_list_page/shopping_list_item_tile.dart';
 
 @RoutePage()
@@ -13,8 +13,7 @@ class PrivateEventTabShoppingList extends StatelessWidget {
   const PrivateEventTabShoppingList({super.key});
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<CurrentPrivateEventCubit>(context)
-        .getShoppingListItemsViaApi(
+    BlocProvider.of<CurrentEventCubit>(context).getShoppingListItemsViaApi(
       reload: false,
     );
 
@@ -35,11 +34,11 @@ class PrivateEventTabShoppingList extends StatelessWidget {
           ),
         ),
         actions: [
-          BlocBuilder<CurrentPrivateEventCubit, CurrentPrivateEventState>(
+          BlocBuilder<CurrentEventCubit, CurrentEventState>(
             builder: (context, state) {
               if (state.currentUserAllowedWithPermission(
                   permissionCheckValue:
-                      state.privateEvent.permissions?.addShoppingListItem)) {
+                      state.event.permissions?.addShoppingListItem)) {
                 return IconButton(
                   icon: const Icon(Icons.add),
                   onPressed: () => AutoRouter.of(context).push(
@@ -53,12 +52,12 @@ class PrivateEventTabShoppingList extends StatelessWidget {
         ],
       ),
       CupertinoSliverRefreshControl(
-        onRefresh: () => BlocProvider.of<CurrentPrivateEventCubit>(context)
+        onRefresh: () => BlocProvider.of<CurrentEventCubit>(context)
             .getShoppingListItemsViaApi(
           reload: true,
         ),
       ),
-      BlocBuilder<CurrentPrivateEventCubit, CurrentPrivateEventState>(
+      BlocBuilder<CurrentEventCubit, CurrentEventState>(
         builder: (context, state) {
           if (state.shoppingListItemStates.isEmpty &&
               state.loadingShoppingList == false) {
@@ -89,25 +88,24 @@ class PrivateEventTabShoppingList extends StatelessWidget {
             );
           }
 
-          return BlocBuilder<CurrentPrivateEventCubit,
-              CurrentPrivateEventState>(
+          return BlocBuilder<CurrentEventCubit, CurrentEventState>(
             builder: (context, currentPrivateEventState) {
               return SliverList(
                 delegate: SliverChildBuilderDelegate(
                   (context, index) {
                     if (index < state.shoppingListItemStates.length) {
-                      PrivateEventUserEntity userToBuyItem =
-                          currentPrivateEventState.privateEventUsers.firstWhere(
+                      EventUserEntity userToBuyItem =
+                          currentPrivateEventState.eventUsers.firstWhere(
                         (element) =>
                             element.id ==
                             state.shoppingListItemStates[index].shoppingListItem
                                 .userToBuyItem,
-                        orElse: () => PrivateEventUserEntity(
+                        orElse: () => EventUserEntity(
                           id: state.shoppingListItemStates[index]
                                   .shoppingListItem.userToBuyItem ??
                               "",
                           authId: "",
-                          privateEventUserId: "",
+                          eventUserId: "",
                         ),
                       );
 
@@ -136,7 +134,7 @@ class PrivateEventTabShoppingList extends StatelessWidget {
                     } else {
                       return IconButton(
                         onPressed: () {
-                          BlocProvider.of<CurrentPrivateEventCubit>(context)
+                          BlocProvider.of<CurrentEventCubit>(context)
                               .getShoppingListItemsViaApi();
                         },
                         icon: const Icon(Icons.add_circle),

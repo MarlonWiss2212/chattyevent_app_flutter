@@ -20,8 +20,8 @@ class ChatCubit extends Cubit<ChatState> {
     int foundIndex = state.chats.indexWhere((element) {
       if (element.groupchat != null && chat.groupchat != null) {
         return element.groupchat!.id == chat.groupchat!.id;
-      } else if (element.privateEvent != null && chat.privateEvent != null) {
-        return element.privateEvent!.id == chat.privateEvent!.id;
+      } else if (element.event != null && chat.event != null) {
+        return element.event!.id == chat.event!.id;
       } else if (element.user != null && chat.user != null) {
         return element.user!.id == chat.user!.id;
       }
@@ -52,15 +52,15 @@ class ChatCubit extends Cubit<ChatState> {
 
   void delete({
     String? groupchatId,
-    String? privateEventId,
+    String? eventId,
     String? userId,
   }) {
     List<ChatEntity> newChats = state.chats;
     newChats.removeWhere(
       (element) => groupchatId != null
           ? element.groupchat?.id == groupchatId
-          : privateEventId != null
-              ? element.privateEvent?.id == privateEventId
+          : eventId != null
+              ? element.event?.id == eventId
               : element.user?.id == userId,
     );
     emit(ChatState.merge(chats: newChats));

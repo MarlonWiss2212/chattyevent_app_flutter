@@ -37,7 +37,7 @@ class ShoppingListItemRepositoryImpl implements ShoppingListItemRepository {
             amount
             boughtAmount
             userToBuyItem
-            privateEventTo
+            eventTo
             createdBy
           }
         }
@@ -83,7 +83,7 @@ class ShoppingListItemRepositoryImpl implements ShoppingListItemRepository {
             amount
             boughtAmount
             userToBuyItem
-            privateEventTo
+            eventTo
             createdBy
           }
         }
@@ -128,7 +128,7 @@ class ShoppingListItemRepositoryImpl implements ShoppingListItemRepository {
             amount
             boughtAmount
             userToBuyItem
-            privateEventTo
+            eventTo
             createdBy
           }
         }
@@ -172,7 +172,7 @@ class ShoppingListItemRepositoryImpl implements ShoppingListItemRepository {
             amount
             boughtAmount
             userToBuyItem
-            privateEventTo
+            eventTo
             createdBy
           }
           
@@ -238,7 +238,7 @@ class ShoppingListItemRepositoryImpl implements ShoppingListItemRepository {
             amount
             boughtAmount
             userToBuyItem
-            privateEventTo
+            eventTo
             createdBy
           }
         }

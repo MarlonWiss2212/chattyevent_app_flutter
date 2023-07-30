@@ -4,10 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
 import 'package:skeletons/skeletons.dart';
-import 'package:chattyevent_app_flutter/application/bloc/current_private_event/current_private_event_cubit.dart';
+import 'package:chattyevent_app_flutter/application/bloc/current_event/current_event_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/shopping_list/current_shopping_list_item_cubit.dart';
 import 'package:chattyevent_app_flutter/domain/entities/bought_amount_entity.dart';
-import 'package:chattyevent_app_flutter/domain/entities/private_event/private_event_user_entity.dart';
+import 'package:chattyevent_app_flutter/domain/entities/event/event_user_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/user_list/user_list_tile.dart';
 
@@ -38,7 +38,7 @@ class CurrentShoppingListItemPageBoughtAmountList extends StatelessWidget {
           );
         }
 
-        return BlocBuilder<CurrentPrivateEventCubit, CurrentPrivateEventState>(
+        return BlocBuilder<CurrentEventCubit, CurrentEventState>(
           builder: (context, privateEventState) {
             return ListView.builder(
               shrinkWrap: true,
@@ -46,14 +46,14 @@ class CurrentShoppingListItemPageBoughtAmountList extends StatelessWidget {
               itemBuilder: (context, index) {
                 BoughtAmountEntity boughtAmount = state.boughtAmounts[index];
 
-                PrivateEventUserEntity? user =
-                    privateEventState.privateEventUsers.firstWhereOrNull(
+                EventUserEntity? user =
+                    privateEventState.eventUsers.firstWhereOrNull(
                   (element) => element.id == boughtAmount.createdBy,
                 );
 
                 return Slidable(
-                  enabled: user?.id ==
-                      privateEventState.getCurrentPrivateEventUser()?.id,
+                  enabled:
+                      user?.id == privateEventState.getCurrentEventUser()?.id,
                   endActionPane: ActionPane(
                     motion: const ScrollMotion(),
                     children: [

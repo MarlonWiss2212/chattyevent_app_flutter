@@ -1,34 +1,33 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:chattyevent_app_flutter/domain/entities/private_event/private_event_entity.dart';
+import 'package:chattyevent_app_flutter/domain/entities/event/event_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/chat/chat_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/home_page/home_event/home_event_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
-import 'package:chattyevent_app_flutter/application/bloc/current_private_event/current_private_event_cubit.dart';
+import 'package:chattyevent_app_flutter/application/bloc/current_event/current_event_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/user_search/user_search_cubit.dart';
 import 'package:chattyevent_app_flutter/core/utils/injection.dart';
 
 @RoutePage()
 class PrivateEventWrapperPage extends StatelessWidget {
-  final String privateEventId;
-  final CurrentPrivateEventState? privateEventStateToSet;
+  final String eventId;
+  final CurrentEventState? privateEventStateToSet;
 
   const PrivateEventWrapperPage({
-    @PathParam('id') required this.privateEventId,
+    @PathParam('id') required this.eventId,
     this.privateEventStateToSet,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    CurrentPrivateEventCubit currentPrivateEventCubit =
-        CurrentPrivateEventCubit(
+    CurrentEventCubit currentPrivateEventCubit = CurrentEventCubit(
       privateEventStateToSet ??
-          CurrentPrivateEventState.fromPrivateEvent(
-            privateEvent: PrivateEventEntity(
-              id: privateEventId,
+          CurrentEventState.fromPrivateEvent(
+            event: EventEntity(
+              id: eventId,
               eventDate: DateTime.now(),
             ),
           ),
@@ -46,13 +45,13 @@ class PrivateEventWrapperPage extends StatelessWidget {
         param1: BlocProvider.of<AuthCubit>(context).state,
       ),
       homeEventCubit: BlocProvider.of<HomeEventCubit>(context),
-      privateEventUseCases: serviceLocator(
+      eventUseCases: serviceLocator(
         param1: BlocProvider.of<AuthCubit>(context).state,
       ),
     )
-          ..setGroupchatFromChatCubit()
-          ..reloadPrivateEventStandardDataViaApi()
-          ..listenToMessages();
+      ..setGroupchatFromChatCubit()
+      ..reloadEventStandardDataViaApi()
+      ..listenToMessages();
 
     return MultiBlocProvider(
       providers: [
@@ -76,7 +75,7 @@ class PrivateEventWrapperPage extends StatelessWidget {
         builder: (context) {
           return MultiBlocListener(
             listeners: [
-              BlocListener<CurrentPrivateEventCubit, CurrentPrivateEventState>(
+              BlocListener<CurrentEventCubit, CurrentEventState>(
                 listener: (context, state) async {
                   if (state.status == CurrentPrivateEventStateStatus.deleted) {
                     AutoRouter.of(context).popUntilRoot();

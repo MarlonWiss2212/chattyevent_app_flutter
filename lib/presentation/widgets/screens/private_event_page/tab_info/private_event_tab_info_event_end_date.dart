@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:skeletons/skeletons.dart';
-import 'package:chattyevent_app_flutter/application/bloc/current_private_event/current_private_event_cubit.dart';
-import 'package:chattyevent_app_flutter/infastructure/dto/private_event/update_private_event_dto.dart';
+import 'package:chattyevent_app_flutter/application/bloc/current_event/current_event_cubit.dart';
+import 'package:chattyevent_app_flutter/infastructure/dto/event/update_event_dto.dart';
 
 class PrivateEventTabInfoEventEndDate extends StatelessWidget {
   const PrivateEventTabInfoEventEndDate({super.key});
@@ -28,9 +28,8 @@ class PrivateEventTabInfoEventEndDate extends StatelessWidget {
     );
 
     if (newDate == null || newTime == null) return;
-    BlocProvider.of<CurrentPrivateEventCubit>(context)
-        .updateCurrentPrivateEvent(
-      updatePrivateEventDto: UpdatePrivateEventDto(
+    BlocProvider.of<CurrentEventCubit>(context).updateCurrentEvent(
+      updateEventDto: UpdateEventDto(
         eventEndDate: DateTime(
           newDate.year,
           newDate.month,
@@ -44,10 +43,9 @@ class PrivateEventTabInfoEventEndDate extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CurrentPrivateEventCubit, CurrentPrivateEventState>(
+    return BlocBuilder<CurrentEventCubit, CurrentEventState>(
       builder: (context, state) {
-        if (state.privateEvent.eventEndDate == null &&
-            state.loadingPrivateEvent) {
+        if (state.event.eventEndDate == null && state.loadingPrivateEvent) {
           return const Padding(
             padding: EdgeInsets.symmetric(horizontal: 8.0),
             child: SkeletonLine(),
@@ -55,11 +53,11 @@ class PrivateEventTabInfoEventEndDate extends StatelessWidget {
         } else {
           return InkWell(
             onTap: state.currentUserAllowedWithPermission(
-              permissionCheckValue: state.privateEvent.permissions?.changeDate,
+              permissionCheckValue: state.event.permissions?.changeDate,
             )
                 ? () => _onChangeDatePress(
                       context,
-                      state.privateEvent.eventEndDate ?? DateTime.now(),
+                      state.event.eventEndDate ?? DateTime.now(),
                     )
                 : null,
             child: Padding(
@@ -74,10 +72,10 @@ class PrivateEventTabInfoEventEndDate extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    state.privateEvent.eventEndDate != null
+                    state.event.eventEndDate != null
                         ? DateFormat.yMd()
                             .add_jm()
-                            .format(state.privateEvent.eventEndDate!)
+                            .format(state.event.eventEndDate!)
                         : "",
                   )
                 ],

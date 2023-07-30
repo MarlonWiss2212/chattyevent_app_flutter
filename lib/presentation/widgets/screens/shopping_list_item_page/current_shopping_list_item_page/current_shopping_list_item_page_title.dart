@@ -1,4 +1,4 @@
-import 'package:chattyevent_app_flutter/application/bloc/current_private_event/current_private_event_cubit.dart';
+import 'package:chattyevent_app_flutter/application/bloc/current_event/current_event_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/shopping_list/current_shopping_list_item_cubit.dart';
 import 'package:chattyevent_app_flutter/infastructure/dto/shopping_list_item/update_shopping_list_item_dto.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/input_fields/edit_input_text_field.dart';
@@ -10,7 +10,7 @@ class CurrentShoppingListItemPageTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CurrentPrivateEventCubit, CurrentPrivateEventState>(
+    return BlocBuilder<CurrentEventCubit, CurrentEventState>(
       builder: (context, privateEventState) {
         return BlocBuilder<CurrentShoppingListItemCubit,
             CurrentShoppingListItemState>(
@@ -23,8 +23,8 @@ class CurrentShoppingListItemPageTitle extends StatelessWidget {
                   color: Theme.of(context).colorScheme.onBackground,
                 ),
             editable: privateEventState.currentUserAllowedWithPermission(
-              permissionCheckValue: privateEventState
-                  .privateEvent.permissions?.updateShoppingListItem,
+              permissionCheckValue:
+                  privateEventState.event.permissions?.updateShoppingListItem,
             ),
             onSaved: (text) {
               BlocProvider.of<CurrentShoppingListItemCubit>(context)

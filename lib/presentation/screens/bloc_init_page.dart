@@ -27,7 +27,7 @@ class BlocInitPage extends StatelessWidget {
           providers: [
             BlocProvider(
               create: (context) => HomeEventCubit(
-                privateEventUseCases: serviceLocator(param1: state),
+                eventUseCases: serviceLocator(param1: state),
                 notificationCubit: serviceLocator(),
               ),
             ),

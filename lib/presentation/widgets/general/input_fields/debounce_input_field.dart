@@ -1,7 +1,5 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 
 class DebouceInputField extends StatefulWidget {
   final void Function({required String text}) onSearchChanged;
@@ -37,10 +35,12 @@ class _DebouceInputFieldState extends State<DebouceInputField> {
 
   @override
   Widget build(BuildContext context) {
-    return PlatformTextFormField(
+    return TextFormField(
+      decoration: InputDecoration(
+        labelText: widget.hintText,
+      ),
       controller: widget.searchController,
       onChanged: (text) => _onSearchChanged(text: text),
-      hintText: widget.hintText,
     );
   }
 }
