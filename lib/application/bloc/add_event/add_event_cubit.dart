@@ -95,7 +95,7 @@ class AddEventCubit extends Cubit<AddEventState> {
           calendarTimeUsers: [],
           isGroupchatEvent: false,
           status: AddEventStateStatus.success,
-          addedPrivateEvent: event,
+          addedEvent: event,
         ));
       },
     );
@@ -181,7 +181,7 @@ class AddEventCubit extends Cubit<AddEventState> {
     String? housenumber,
     bool? isGroupchatEvent,
     AddEventStateStatus? status,
-    EventEntity? addedPrivateEvent,
+    EventEntity? addedEvent,
     List<CalendarTimeUserEntity>? calendarTimeUsers,
     CreateEventPermissionsDto? permissions,
     bool? loadingCalendarTimeUsers,
@@ -205,7 +205,7 @@ class AddEventCubit extends Cubit<AddEventState> {
       housenumber: housenumber ?? state.housenumber,
       status: status ?? AddEventStateStatus.initial,
       calendarTimeUsers: calendarTimeUsers ?? state.calendarTimeUsers,
-      addedPrivateEvent: addedPrivateEvent,
+      addedEvent: addedEvent,
       loadingCalendarTimeUsers:
           loadingCalendarTimeUsers ?? state.loadingCalendarTimeUsers,
     ));

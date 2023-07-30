@@ -47,7 +47,7 @@ class CurrentShoppingListItemPageUserToBuyItemTile extends StatelessWidget {
                                       const ShoppingListItemChangeUserRoute(),
                                     ),
                                     (r) => AutoRouter.of(context).push(
-                                      const PrivateEventShoppingListItemChangeUserRoute(),
+                                      const EventShoppingListItemChangeUserRoute(),
                                     ),
                                   );
                             },

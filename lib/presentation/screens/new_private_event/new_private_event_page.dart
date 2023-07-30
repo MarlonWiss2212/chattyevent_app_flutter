@@ -54,13 +54,12 @@ class NewPrivateEventPage extends StatelessWidget {
               BlocListener<AddEventCubit, AddEventState>(
                 listener: (context, state) async {
                   if (state.status == AddEventStateStatus.success &&
-                      state.addedPrivateEvent != null) {
+                      state.addedEvent != null) {
                     AutoRouter.of(context).root.replace(
-                          PrivateEventWrapperRoute(
-                            eventId: state.addedPrivateEvent!.id,
-                            privateEventStateToSet:
-                                CurrentEventState.fromPrivateEvent(
-                              event: state.addedPrivateEvent!,
+                          EventWrapperRoute(
+                            eventId: state.addedEvent!.id,
+                            eventStateToSet: CurrentEventState.fromPrivateEvent(
+                              event: state.addedEvent!,
                             ),
                           ),
                         );

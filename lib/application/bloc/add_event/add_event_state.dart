@@ -3,7 +3,7 @@ part of 'add_event_cubit.dart';
 enum AddEventStateStatus { initial, loading, success }
 
 class AddEventState {
-  final EventEntity? addedPrivateEvent;
+  final EventEntity? addedEvent;
   final AddEventStateStatus status;
 
   final String? title;
@@ -30,7 +30,7 @@ class AddEventState {
   final CreateEventPermissionsDto permissions;
 
   AddEventState({
-    this.addedPrivateEvent,
+    this.addedEvent,
     required this.calendarTimeUsers,
     this.loadingCalendarTimeUsers = false,
     this.status = AddEventStateStatus.initial,

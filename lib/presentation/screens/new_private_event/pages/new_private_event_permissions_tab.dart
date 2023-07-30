@@ -1,6 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:chattyevent_app_flutter/application/bloc/add_event/add_event_cubit.dart';
-import 'package:chattyevent_app_flutter/presentation/widgets/general/private_event_permissions_menu.dart';
+import 'package:chattyevent_app_flutter/presentation/widgets/general/event_permissions_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -23,7 +23,7 @@ class NewPrivateEventPermissionsTab extends StatelessWidget {
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
                 const SizedBox(height: 20),
-                PrivateEventPermissionsMenu(
+                EventPermissionsMenu(
                   text: "Title ändern",
                   value: state.permissions.changeTitle,
                   changePermission: (value) =>
@@ -32,7 +32,7 @@ class NewPrivateEventPermissionsTab extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 8),
-                PrivateEventPermissionsMenu(
+                EventPermissionsMenu(
                   text: "Beschreibung ändern",
                   value: state.permissions.changeDescription,
                   changePermission: (value) =>
@@ -42,7 +42,7 @@ class NewPrivateEventPermissionsTab extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 8),
-                PrivateEventPermissionsMenu(
+                EventPermissionsMenu(
                   text: "Bild ändern",
                   value: state.permissions.changeCoverImage,
                   changePermission: (value) =>
@@ -52,7 +52,7 @@ class NewPrivateEventPermissionsTab extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 8),
-                PrivateEventPermissionsMenu(
+                EventPermissionsMenu(
                   text: "Datum ändern",
                   value: state.permissions.changeDate,
                   changePermission: (value) =>
@@ -61,7 +61,7 @@ class NewPrivateEventPermissionsTab extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 8),
-                PrivateEventPermissionsMenu(
+                EventPermissionsMenu(
                   text: "Addresse ändern",
                   value: state.permissions.changeAddress,
                   changePermission: (value) =>
@@ -71,7 +71,7 @@ class NewPrivateEventPermissionsTab extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 8),
-                PrivateEventPermissionsMenu(
+                EventPermissionsMenu(
                   text: "Stattfinde Status ändern",
                   value: state.permissions.changeStatus,
                   changePermission: (value) =>
@@ -81,7 +81,7 @@ class NewPrivateEventPermissionsTab extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 8),
-                PrivateEventPermissionsMenu(
+                EventPermissionsMenu(
                   text: "User hinzufügen",
                   value: state.permissions.addUsers,
                   changePermission: (value) =>
@@ -90,7 +90,7 @@ class NewPrivateEventPermissionsTab extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 8),
-                PrivateEventPermissionsMenu(
+                EventPermissionsMenu(
                   text: "Einkaufslisten-Item hinzufügen",
                   value: state.permissions.addShoppingListItem,
                   changePermission: (value) =>
@@ -100,7 +100,7 @@ class NewPrivateEventPermissionsTab extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 8),
-                PrivateEventPermissionsMenu(
+                EventPermissionsMenu(
                   text: "Einkaufslisten-Item bearbeiten",
                   value: state.permissions.updateShoppingListItem,
                   changePermission: (value) =>
@@ -110,7 +110,7 @@ class NewPrivateEventPermissionsTab extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 8),
-                PrivateEventPermissionsMenu(
+                EventPermissionsMenu(
                   text: "Einkaufslisten-Item löschen",
                   value: state.permissions.deleteShoppingListItem,
                   changePermission: (value) =>

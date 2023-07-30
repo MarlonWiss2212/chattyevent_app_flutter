@@ -230,7 +230,7 @@ class AppRouter extends $AppRouter {
             transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
             page: GroupchatFuturePrivateEventsRoute.page,
             guards: [authGuard],
-            path: 'private-events',
+            path: 'events',
           ),
           CustomRoute(
             transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
@@ -250,39 +250,39 @@ class AppRouter extends $AppRouter {
 
   CustomRoute get _privateEventRouter => CustomRoute(
         transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
-        page: PrivateEventWrapperRoute.page,
+        page: EventWrapperRoute.page,
         guards: [authGuard],
-        path: 'private-event/:id',
+        path: 'event/:id',
         children: [
           CustomRoute(
             transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
-            page: PrivateEventTabRoute.page,
+            page: EventTabRoute.page,
             path: '',
             initial: true,
             guards: [authGuard],
             children: [
               CustomRoute(
                 transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
-                page: PrivateEventTabInfo.page,
+                page: EventTabInfo.page,
                 initial: true,
                 path: 'info',
                 guards: [authGuard],
               ),
               CustomRoute(
                 transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
-                page: PrivateEventTabChat.page,
+                page: EventTabChat.page,
                 path: 'chat',
                 guards: [authGuard],
               ),
               CustomRoute(
                 transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
-                page: PrivateEventTabUserList.page,
+                page: EventTabUserList.page,
                 path: 'users',
                 guards: [authGuard],
               ),
               CustomRoute(
                 transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
-                page: PrivateEventTabShoppingList.page,
+                page: EventTabShoppingList.page,
                 path: 'shopping-list',
                 guards: [authGuard],
               )
@@ -290,43 +290,43 @@ class AppRouter extends $AppRouter {
           ),
           CustomRoute(
             transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
-            page: PrivateEventUpdateLocationRoute.page,
+            page: EventUpdateLocationRoute.page,
             path: 'update-location',
             guards: [authGuard],
           ),
           CustomRoute(
             transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
-            page: PrivateEventUpdatePermissionsRoute.page,
+            page: EventUpdatePermissionsRoute.page,
             guards: [authGuard],
             path: 'update-permissions',
           ),
           CustomRoute(
             transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
-            page: PrivateEventInviteUserRoute.page,
+            page: EventInviteUserRoute.page,
             path: 'invite',
             guards: [authGuard],
           ),
           CustomRoute(
             transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
-            page: PrivateEventCreateShoppingListItemRoute.page,
+            page: EventCreateShoppingListItemRoute.page,
             path: 'create-shopping-list-item',
             guards: [authGuard],
           ),
           CustomRoute(
             transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
-            page: PrivateEventShoppingListItemWrapperRoute.page,
+            page: EventShoppingListItemWrapperRoute.page,
             guards: [authGuard],
             path: 'shopping-list/:shoppingListItemId',
             children: [
               CustomRoute(
                 transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
-                page: PrivateEventShoppingListItemRoute.page,
+                page: EventShoppingListItemRoute.page,
                 guards: [authGuard],
                 path: '',
               ),
               CustomRoute(
                 transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
-                page: PrivateEventShoppingListItemChangeUserRoute.page,
+                page: EventShoppingListItemChangeUserRoute.page,
                 guards: [authGuard],
                 path: 'change-user-to-buy-item',
               ),

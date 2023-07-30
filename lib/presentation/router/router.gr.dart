@@ -10,19 +10,45 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:auto_route/auto_route.dart' as _i72;
 import 'package:chattyevent_app_flutter/application/bloc/current_event/current_event_cubit.dart'
-    as _i76;
+    as _i78;
 import 'package:chattyevent_app_flutter/application/bloc/shopping_list/current_shopping_list_item_cubit.dart'
     as _i77;
 import 'package:chattyevent_app_flutter/domain/entities/groupchat/groupchat_entity.dart'
     as _i75;
 import 'package:chattyevent_app_flutter/domain/entities/user/user_entity.dart'
-    as _i78;
+    as _i76;
 import 'package:chattyevent_app_flutter/presentation/screens/authorized_page/authorized_page.dart'
     as _i1;
 import 'package:chattyevent_app_flutter/presentation/screens/bloc_init_page.dart'
     as _i2;
 import 'package:chattyevent_app_flutter/presentation/screens/create_user_page.dart'
     as _i3;
+import 'package:chattyevent_app_flutter/presentation/screens/event_page/event_create_shopping_list_item_page.dart'
+    as _i59;
+import 'package:chattyevent_app_flutter/presentation/screens/event_page/event_invite_user_page.dart'
+    as _i60;
+import 'package:chattyevent_app_flutter/presentation/screens/event_page/event_update_loaction_page.dart'
+    as _i61;
+import 'package:chattyevent_app_flutter/presentation/screens/event_page/event_update_permissions_page.dart'
+    as _i62;
+import 'package:chattyevent_app_flutter/presentation/screens/event_page/event_wrapper_page.dart'
+    as _i63;
+import 'package:chattyevent_app_flutter/presentation/screens/event_page/shopping_list_item_page/event_shopping_list_change_user_page.dart'
+    as _i64;
+import 'package:chattyevent_app_flutter/presentation/screens/event_page/shopping_list_item_page/event_shopping_list_item_page.dart'
+    as _i65;
+import 'package:chattyevent_app_flutter/presentation/screens/event_page/shopping_list_item_page/event_shopping_list_item_wrapper_page.dart'
+    as _i66;
+import 'package:chattyevent_app_flutter/presentation/screens/event_page/tab_page/event_tab_page.dart'
+    as _i67;
+import 'package:chattyevent_app_flutter/presentation/screens/event_page/tab_page/pages/event_tab_chat.dart'
+    as _i68;
+import 'package:chattyevent_app_flutter/presentation/screens/event_page/tab_page/pages/event_tab_info.dart'
+    as _i69;
+import 'package:chattyevent_app_flutter/presentation/screens/event_page/tab_page/pages/event_tab_shopping_list.dart'
+    as _i70;
+import 'package:chattyevent_app_flutter/presentation/screens/event_page/tab_page/pages/event_tab_user_list.dart'
+    as _i71;
 import 'package:chattyevent_app_flutter/presentation/screens/future_events_page/future_events_page.dart'
     as _i4;
 import 'package:chattyevent_app_flutter/presentation/screens/groupchat_page/groupchat_add_user_page.dart'
@@ -50,15 +76,15 @@ import 'package:chattyevent_app_flutter/presentation/screens/home_page/pages/hom
 import 'package:chattyevent_app_flutter/presentation/screens/home_page/pages/home_search_page.dart'
     as _i16;
 import 'package:chattyevent_app_flutter/presentation/screens/introduction_pages/app_feature_introduction_pages/app_features_introduction_pages_groupchat_page.dart'
-    as _i71;
+    as _i58;
 import 'package:chattyevent_app_flutter/presentation/screens/introduction_pages/app_feature_introduction_pages/app_features_introduction_pages_private_event_page.dart'
-    as _i70;
+    as _i57;
 import 'package:chattyevent_app_flutter/presentation/screens/introduction_pages/app_feature_introduction_pages/app_features_introduction_pages_users_page.dart'
-    as _i67;
+    as _i54;
 import 'package:chattyevent_app_flutter/presentation/screens/introduction_pages/app_permission_introduction_pages/app_permission_introduction_pages_microphone_page.dart'
-    as _i68;
+    as _i55;
 import 'package:chattyevent_app_flutter/presentation/screens/introduction_pages/app_permission_introduction_pages/app_permission_introduction_pages_notification_page.dart'
-    as _i69;
+    as _i56;
 import 'package:chattyevent_app_flutter/presentation/screens/login_page.dart'
     as _i17;
 import 'package:chattyevent_app_flutter/presentation/screens/new_groupchat/new_groupchat_wrapper_page.dart'
@@ -85,80 +111,54 @@ import 'package:chattyevent_app_flutter/presentation/screens/new_private_event/p
     as _i28;
 import 'package:chattyevent_app_flutter/presentation/screens/past_events_page/past_events_page.dart'
     as _i29;
-import 'package:chattyevent_app_flutter/presentation/screens/event_page/private_event_create_shopping_list_item_page.dart'
-    as _i30;
-import 'package:chattyevent_app_flutter/presentation/screens/event_page/private_event_invite_user_page.dart'
-    as _i31;
-import 'package:chattyevent_app_flutter/presentation/screens/event_page/private_event_update_loaction_page.dart'
-    as _i32;
-import 'package:chattyevent_app_flutter/presentation/screens/event_page/private_event_update_permissions_page.dart'
-    as _i33;
-import 'package:chattyevent_app_flutter/presentation/screens/event_page/private_event_wrapper_page.dart'
-    as _i34;
-import 'package:chattyevent_app_flutter/presentation/screens/event_page/shopping_list_item_page/private_event_shopping_list_change_user_page.dart'
-    as _i35;
-import 'package:chattyevent_app_flutter/presentation/screens/event_page/shopping_list_item_page/private_event_shopping_list_item_page.dart'
-    as _i36;
-import 'package:chattyevent_app_flutter/presentation/screens/event_page/shopping_list_item_page/private_event_shopping_list_item_wrapper_page.dart'
-    as _i37;
-import 'package:chattyevent_app_flutter/presentation/screens/event_page/tab_page/pages/private_event_tab_chat.dart'
-    as _i38;
-import 'package:chattyevent_app_flutter/presentation/screens/event_page/tab_page/pages/private_event_tab_info.dart'
-    as _i39;
-import 'package:chattyevent_app_flutter/presentation/screens/event_page/tab_page/pages/private_event_tab_shopping_list.dart'
-    as _i40;
-import 'package:chattyevent_app_flutter/presentation/screens/event_page/tab_page/pages/private_event_tab_user_list.dart'
-    as _i41;
-import 'package:chattyevent_app_flutter/presentation/screens/event_page/tab_page/private_event_tab_page.dart'
-    as _i42;
 import 'package:chattyevent_app_flutter/presentation/screens/profile_page/profile_chat_page.dart'
-    as _i43;
+    as _i30;
 import 'package:chattyevent_app_flutter/presentation/screens/profile_page/profile_page.dart'
-    as _i44;
+    as _i31;
 import 'package:chattyevent_app_flutter/presentation/screens/profile_page/profile_user_relations_tabs/profile_follow_requests_tab.dart'
-    as _i47;
+    as _i34;
 import 'package:chattyevent_app_flutter/presentation/screens/profile_page/profile_user_relations_tabs/profile_followed_tab.dart'
-    as _i45;
+    as _i32;
 import 'package:chattyevent_app_flutter/presentation/screens/profile_page/profile_user_relations_tabs/profile_follower_tab.dart'
-    as _i46;
+    as _i33;
 import 'package:chattyevent_app_flutter/presentation/screens/profile_page/profile_user_relations_tabs/profile_user_relations_tab_page.dart'
-    as _i48;
+    as _i35;
 import 'package:chattyevent_app_flutter/presentation/screens/profile_page/profile_wrapper_page.dart'
-    as _i49;
+    as _i36;
 import 'package:chattyevent_app_flutter/presentation/screens/register_page.dart'
-    as _i50;
+    as _i37;
 import 'package:chattyevent_app_flutter/presentation/screens/reset_password_page.dart'
-    as _i51;
+    as _i38;
 import 'package:chattyevent_app_flutter/presentation/screens/settings_page/pages/info_page.dart'
-    as _i52;
+    as _i39;
 import 'package:chattyevent_app_flutter/presentation/screens/settings_page/pages/info_pages/imprint_page.dart'
-    as _i53;
+    as _i40;
 import 'package:chattyevent_app_flutter/presentation/screens/settings_page/pages/info_pages/right_on_deletion_page.dart'
-    as _i54;
+    as _i41;
 import 'package:chattyevent_app_flutter/presentation/screens/settings_page/pages/privacy_page.dart'
-    as _i55;
+    as _i42;
 import 'package:chattyevent_app_flutter/presentation/screens/settings_page/pages/privacy_pages/groupchat_add_me_page.dart'
-    as _i56;
+    as _i43;
 import 'package:chattyevent_app_flutter/presentation/screens/settings_page/pages/privacy_pages/private_event_add_me_page.dart'
-    as _i57;
+    as _i44;
 import 'package:chattyevent_app_flutter/presentation/screens/settings_page/pages/theme_mode_page.dart'
-    as _i58;
+    as _i45;
 import 'package:chattyevent_app_flutter/presentation/screens/settings_page/pages/update_password_page.dart'
-    as _i59;
+    as _i46;
 import 'package:chattyevent_app_flutter/presentation/screens/settings_page/settings_page.dart'
-    as _i60;
+    as _i47;
 import 'package:chattyevent_app_flutter/presentation/screens/shopping_list_page/shopping_list_item_page/shopping_list_item_change_user_page.dart'
-    as _i61;
+    as _i48;
 import 'package:chattyevent_app_flutter/presentation/screens/shopping_list_page/shopping_list_item_page/shopping_list_item_page.dart'
-    as _i62;
+    as _i49;
 import 'package:chattyevent_app_flutter/presentation/screens/shopping_list_page/shopping_list_item_page/shopping_list_item_wrapper_page.dart'
-    as _i63;
+    as _i50;
 import 'package:chattyevent_app_flutter/presentation/screens/shopping_list_page/shopping_list_page.dart'
-    as _i64;
+    as _i51;
 import 'package:chattyevent_app_flutter/presentation/screens/shopping_list_page/shopping_list_wrapper_page.dart'
-    as _i65;
+    as _i52;
 import 'package:chattyevent_app_flutter/presentation/screens/verify_email_page.dart'
-    as _i66;
+    as _i53;
 import 'package:flutter/cupertino.dart' as _i74;
 import 'package:flutter/material.dart' as _i73;
 
@@ -377,113 +377,6 @@ abstract class $AppRouter extends _i72.RootStackRouter {
         child: const _i29.PastEventsPage(),
       );
     },
-    PrivateEventCreateShoppingListItemRoute.name: (routeData) {
-      return _i72.AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const _i30.PrivateEventCreateShoppingListItemPage(),
-      );
-    },
-    PrivateEventInviteUserRoute.name: (routeData) {
-      return _i72.AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const _i31.PrivateEventInviteUserPage(),
-      );
-    },
-    PrivateEventUpdateLocationRoute.name: (routeData) {
-      return _i72.AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const _i32.PrivateEventUpdateLocationPage(),
-      );
-    },
-    PrivateEventUpdatePermissionsRoute.name: (routeData) {
-      return _i72.AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const _i33.PrivateEventUpdatePermissionsPage(),
-      );
-    },
-    PrivateEventWrapperRoute.name: (routeData) {
-      final pathParams = routeData.inheritedPathParams;
-      final args = routeData.argsAs<PrivateEventWrapperRouteArgs>(
-          orElse: () => PrivateEventWrapperRouteArgs(
-              eventId: pathParams.getString('id')));
-      return _i72.AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: _i34.PrivateEventWrapperPage(
-          eventId: args.eventId,
-          privateEventStateToSet: args.privateEventStateToSet,
-          key: args.key,
-        ),
-      );
-    },
-    PrivateEventShoppingListItemChangeUserRoute.name: (routeData) {
-      return _i72.AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const _i35.PrivateEventShoppingListItemChangeUserPage(),
-      );
-    },
-    PrivateEventShoppingListItemRoute.name: (routeData) {
-      return _i72.AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const _i36.PrivateEventShoppingListItemPage(),
-      );
-    },
-    PrivateEventShoppingListItemWrapperRoute.name: (routeData) {
-      final args =
-          routeData.argsAs<PrivateEventShoppingListItemWrapperRouteArgs>();
-      return _i72.AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: _i37.PrivateEventShoppingListItemWrapperPage(
-          key: args.key,
-          shoppingListItemId: args.shoppingListItemId,
-          shoppingListItemStateToSet: args.shoppingListItemStateToSet,
-          setCurrentPrivateEvent: args.setCurrentPrivateEvent,
-        ),
-      );
-    },
-    PrivateEventTabChat.name: (routeData) {
-      final pathParams = routeData.inheritedPathParams;
-      final args = routeData.argsAs<PrivateEventTabChatArgs>(
-          orElse: () =>
-              PrivateEventTabChatArgs(eventId: pathParams.getString('id')));
-      return _i72.AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: _i38.PrivateEventTabChat(
-          eventId: args.eventId,
-          key: args.key,
-        ),
-      );
-    },
-    PrivateEventTabInfo.name: (routeData) {
-      return _i72.AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const _i39.PrivateEventTabInfo(),
-      );
-    },
-    PrivateEventTabShoppingList.name: (routeData) {
-      return _i72.AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const _i40.PrivateEventTabShoppingList(),
-      );
-    },
-    PrivateEventTabUserList.name: (routeData) {
-      return _i72.AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const _i41.PrivateEventTabUserList(),
-      );
-    },
-    PrivateEventTabRoute.name: (routeData) {
-      final pathParams = routeData.inheritedPathParams;
-      final args = routeData.argsAs<PrivateEventTabRouteArgs>(
-          orElse: () =>
-              PrivateEventTabRouteArgs(eventId: pathParams.getString('id')));
-      return _i72.AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: _i42.PrivateEventTabPage(
-          key: args.key,
-          eventId: args.eventId,
-        ),
-      );
-    },
     ProfileChatRoute.name: (routeData) {
       final pathParams = routeData.inheritedPathParams;
       final args = routeData.argsAs<ProfileChatRouteArgs>(
@@ -491,7 +384,7 @@ abstract class $AppRouter extends _i72.RootStackRouter {
               ProfileChatRouteArgs(userId: pathParams.getString('id')));
       return _i72.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i43.ProfileChatPage(
+        child: _i30.ProfileChatPage(
           userId: args.userId,
           key: args.key,
         ),
@@ -503,7 +396,7 @@ abstract class $AppRouter extends _i72.RootStackRouter {
           orElse: () => ProfileRouteArgs(userId: pathParams.optString('id')));
       return _i72.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i44.ProfilePage(
+        child: _i31.ProfilePage(
           key: args.key,
           userId: args.userId,
         ),
@@ -512,19 +405,19 @@ abstract class $AppRouter extends _i72.RootStackRouter {
     ProfileFollowedTab.name: (routeData) {
       return _i72.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i45.ProfileFollowedTab(),
+        child: const _i32.ProfileFollowedTab(),
       );
     },
     ProfileFollowerTab.name: (routeData) {
       return _i72.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i46.ProfileFollowerTab(),
+        child: const _i33.ProfileFollowerTab(),
       );
     },
     ProfileFollowRequestsTab.name: (routeData) {
       return _i72.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i47.ProfileFollowRequestsTab(),
+        child: const _i34.ProfileFollowRequestsTab(),
       );
     },
     ProfileUserRelationsTabRoute.name: (routeData) {
@@ -534,7 +427,7 @@ abstract class $AppRouter extends _i72.RootStackRouter {
               userId: pathParams.optString('id')));
       return _i72.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i48.ProfileUserRelationsTabPage(
+        child: _i35.ProfileUserRelationsTabPage(
           key: args.key,
           userId: args.userId,
         ),
@@ -547,7 +440,7 @@ abstract class $AppRouter extends _i72.RootStackRouter {
               ProfileWrapperRouteArgs(userId: pathParams.getString('id')));
       return _i72.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i49.ProfileWrapperPage(
+        child: _i36.ProfileWrapperPage(
           key: args.key,
           user: args.user,
           userId: args.userId,
@@ -557,7 +450,7 @@ abstract class $AppRouter extends _i72.RootStackRouter {
     RegisterRoute.name: (routeData) {
       return _i72.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i50.RegisterPage(),
+        child: const _i37.RegisterPage(),
       );
     },
     ResetPasswordRoute.name: (routeData) {
@@ -565,7 +458,7 @@ abstract class $AppRouter extends _i72.RootStackRouter {
           orElse: () => const ResetPasswordRouteArgs());
       return _i72.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i51.ResetPasswordPage(
+        child: _i38.ResetPasswordPage(
           key: args.key,
           standardEmail: args.standardEmail,
         ),
@@ -574,74 +467,74 @@ abstract class $AppRouter extends _i72.RootStackRouter {
     SettingsInfoRoute.name: (routeData) {
       return _i72.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i52.SettingsInfoPage(),
+        child: const _i39.SettingsInfoPage(),
       );
     },
     ImprintRoute.name: (routeData) {
       return _i72.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i53.ImprintPage(),
+        child: const _i40.ImprintPage(),
       );
     },
     RightOnDeletionRoute.name: (routeData) {
       return _i72.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i54.RightOnDeletionPage(),
+        child: const _i41.RightOnDeletionPage(),
       );
     },
     SettingsPrivacyRoute.name: (routeData) {
       return _i72.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i55.SettingsPrivacyPage(),
+        child: const _i42.SettingsPrivacyPage(),
       );
     },
     GroupchatAddMeRoute.name: (routeData) {
       return _i72.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i56.GroupchatAddMePage(),
+        child: const _i43.GroupchatAddMePage(),
       );
     },
     PrivateEventAddMeRoute.name: (routeData) {
       return _i72.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i57.PrivateEventAddMePage(),
+        child: const _i44.PrivateEventAddMePage(),
       );
     },
     ThemeModeRoute.name: (routeData) {
       return _i72.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i58.ThemeModePage(),
+        child: const _i45.ThemeModePage(),
       );
     },
     UpdatePasswordRoute.name: (routeData) {
       return _i72.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i59.UpdatePasswordPage(),
+        child: const _i46.UpdatePasswordPage(),
       );
     },
     SettingsRoute.name: (routeData) {
       return _i72.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i60.SettingsPage(),
+        child: const _i47.SettingsPage(),
       );
     },
     ShoppingListItemChangeUserRoute.name: (routeData) {
       return _i72.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i61.ShoppingListItemChangeUserPage(),
+        child: const _i48.ShoppingListItemChangeUserPage(),
       );
     },
     ShoppingListItemRoute.name: (routeData) {
       return _i72.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i62.ShoppingListItemPage(),
+        child: const _i49.ShoppingListItemPage(),
       );
     },
     ShoppingListItemWrapperRoute.name: (routeData) {
       final args = routeData.argsAs<ShoppingListItemWrapperRouteArgs>();
       return _i72.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i63.ShoppingListItemWrapperPage(
+        child: _i50.ShoppingListItemWrapperPage(
           key: args.key,
           shoppingListItemId: args.shoppingListItemId,
           currentShoppingListItemStateToSet:
@@ -652,49 +545,153 @@ abstract class $AppRouter extends _i72.RootStackRouter {
     ShoppingListRoute.name: (routeData) {
       return _i72.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i64.ShoppingListPage(),
+        child: const _i51.ShoppingListPage(),
       );
     },
     ShoppingListWrapperRoute.name: (routeData) {
       return _i72.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i65.ShoppingListWrapperPage(),
+        child: const _i52.ShoppingListWrapperPage(),
       );
     },
     VerifyEmailRoute.name: (routeData) {
       return _i72.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i66.VerifyEmailPage(),
+        child: const _i53.VerifyEmailPage(),
       );
     },
     AppFeatureIntroductionRoutesUsersRoute.name: (routeData) {
       return _i72.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i67.AppFeatureIntroductionPagesUsersPage(),
+        child: const _i54.AppFeatureIntroductionPagesUsersPage(),
       );
     },
     AppPermissionIntroductionRoutesMicrophoneRoute.name: (routeData) {
       return _i72.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i68.AppPermissionIntroductionPagesMicrophonePage(),
+        child: const _i55.AppPermissionIntroductionPagesMicrophonePage(),
       );
     },
     AppPermissionIntroductionRoutesNotificationRoute.name: (routeData) {
       return _i72.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i69.AppPermissionIntroductionPagesNotificationPage(),
+        child: const _i56.AppPermissionIntroductionPagesNotificationPage(),
       );
     },
     AppFeatureIntroductionRoutesPrivateEventRoute.name: (routeData) {
       return _i72.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i70.AppFeatureIntroductionPagesPrivateEventPage(),
+        child: const _i57.AppFeatureIntroductionPagesPrivateEventPage(),
       );
     },
     AppFeatureIntroductionRoutesGroupchatRoute.name: (routeData) {
       return _i72.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i71.AppFeatureIntroductionPagesGroupchatPage(),
+        child: const _i58.AppFeatureIntroductionPagesGroupchatPage(),
+      );
+    },
+    EventCreateShoppingListItemRoute.name: (routeData) {
+      return _i72.AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const _i59.EventCreateShoppingListItemPage(),
+      );
+    },
+    EventInviteUserRoute.name: (routeData) {
+      return _i72.AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const _i60.EventInviteUserPage(),
+      );
+    },
+    EventUpdateLocationRoute.name: (routeData) {
+      return _i72.AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const _i61.EventUpdateLocationPage(),
+      );
+    },
+    EventUpdatePermissionsRoute.name: (routeData) {
+      return _i72.AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const _i62.EventUpdatePermissionsPage(),
+      );
+    },
+    EventWrapperRoute.name: (routeData) {
+      final pathParams = routeData.inheritedPathParams;
+      final args = routeData.argsAs<EventWrapperRouteArgs>(
+          orElse: () =>
+              EventWrapperRouteArgs(eventId: pathParams.getString('id')));
+      return _i72.AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: _i63.EventWrapperPage(
+          eventId: args.eventId,
+          eventStateToSet: args.eventStateToSet,
+          key: args.key,
+        ),
+      );
+    },
+    EventShoppingListItemChangeUserRoute.name: (routeData) {
+      return _i72.AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const _i64.EventShoppingListItemChangeUserPage(),
+      );
+    },
+    EventShoppingListItemRoute.name: (routeData) {
+      return _i72.AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const _i65.EventShoppingListItemPage(),
+      );
+    },
+    EventShoppingListItemWrapperRoute.name: (routeData) {
+      final args = routeData.argsAs<EventShoppingListItemWrapperRouteArgs>();
+      return _i72.AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: _i66.EventShoppingListItemWrapperPage(
+          key: args.key,
+          shoppingListItemId: args.shoppingListItemId,
+          shoppingListItemStateToSet: args.shoppingListItemStateToSet,
+          setCurrentPrivateEvent: args.setCurrentPrivateEvent,
+        ),
+      );
+    },
+    EventTabRoute.name: (routeData) {
+      final pathParams = routeData.inheritedPathParams;
+      final args = routeData.argsAs<EventTabRouteArgs>(
+          orElse: () => EventTabRouteArgs(eventId: pathParams.getString('id')));
+      return _i72.AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: _i67.EventTabPage(
+          key: args.key,
+          eventId: args.eventId,
+        ),
+      );
+    },
+    EventTabChat.name: (routeData) {
+      final pathParams = routeData.inheritedPathParams;
+      final args = routeData.argsAs<EventTabChatArgs>(
+          orElse: () => EventTabChatArgs(eventId: pathParams.getString('id')));
+      return _i72.AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: _i68.EventTabChat(
+          eventId: args.eventId,
+          key: args.key,
+        ),
+      );
+    },
+    EventTabInfo.name: (routeData) {
+      return _i72.AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const _i69.EventTabInfo(),
+      );
+    },
+    EventTabShoppingList.name: (routeData) {
+      return _i72.AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const _i70.EventTabShoppingList(),
+      );
+    },
+    EventTabUserList.name: (routeData) {
+      return _i72.AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const _i71.EventTabUserList(),
       );
     },
   };
@@ -1239,310 +1236,7 @@ class PastEventsRoute extends _i72.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i30.PrivateEventCreateShoppingListItemPage]
-class PrivateEventCreateShoppingListItemRoute extends _i72.PageRouteInfo<void> {
-  const PrivateEventCreateShoppingListItemRoute(
-      {List<_i72.PageRouteInfo>? children})
-      : super(
-          PrivateEventCreateShoppingListItemRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'PrivateEventCreateShoppingListItemRoute';
-
-  static const _i72.PageInfo<void> page = _i72.PageInfo<void>(name);
-}
-
-/// generated route for
-/// [_i31.PrivateEventInviteUserPage]
-class PrivateEventInviteUserRoute extends _i72.PageRouteInfo<void> {
-  const PrivateEventInviteUserRoute({List<_i72.PageRouteInfo>? children})
-      : super(
-          PrivateEventInviteUserRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'PrivateEventInviteUserRoute';
-
-  static const _i72.PageInfo<void> page = _i72.PageInfo<void>(name);
-}
-
-/// generated route for
-/// [_i32.PrivateEventUpdateLocationPage]
-class PrivateEventUpdateLocationRoute extends _i72.PageRouteInfo<void> {
-  const PrivateEventUpdateLocationRoute({List<_i72.PageRouteInfo>? children})
-      : super(
-          PrivateEventUpdateLocationRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'PrivateEventUpdateLocationRoute';
-
-  static const _i72.PageInfo<void> page = _i72.PageInfo<void>(name);
-}
-
-/// generated route for
-/// [_i33.PrivateEventUpdatePermissionsPage]
-class PrivateEventUpdatePermissionsRoute extends _i72.PageRouteInfo<void> {
-  const PrivateEventUpdatePermissionsRoute({List<_i72.PageRouteInfo>? children})
-      : super(
-          PrivateEventUpdatePermissionsRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'PrivateEventUpdatePermissionsRoute';
-
-  static const _i72.PageInfo<void> page = _i72.PageInfo<void>(name);
-}
-
-/// generated route for
-/// [_i34.PrivateEventWrapperPage]
-class PrivateEventWrapperRoute
-    extends _i72.PageRouteInfo<PrivateEventWrapperRouteArgs> {
-  PrivateEventWrapperRoute({
-    required String eventId,
-    _i76.CurrentEventState? privateEventStateToSet,
-    _i73.Key? key,
-    List<_i72.PageRouteInfo>? children,
-  }) : super(
-          PrivateEventWrapperRoute.name,
-          args: PrivateEventWrapperRouteArgs(
-            eventId: eventId,
-            privateEventStateToSet: privateEventStateToSet,
-            key: key,
-          ),
-          rawPathParams: {'id': eventId},
-          initialChildren: children,
-        );
-
-  static const String name = 'PrivateEventWrapperRoute';
-
-  static const _i72.PageInfo<PrivateEventWrapperRouteArgs> page =
-      _i72.PageInfo<PrivateEventWrapperRouteArgs>(name);
-}
-
-class PrivateEventWrapperRouteArgs {
-  const PrivateEventWrapperRouteArgs({
-    required this.eventId,
-    this.privateEventStateToSet,
-    this.key,
-  });
-
-  final String eventId;
-
-  final _i76.CurrentEventState? privateEventStateToSet;
-
-  final _i73.Key? key;
-
-  @override
-  String toString() {
-    return 'PrivateEventWrapperRouteArgs{eventId: $eventId, privateEventStateToSet: $privateEventStateToSet, key: $key}';
-  }
-}
-
-/// generated route for
-/// [_i35.PrivateEventShoppingListItemChangeUserPage]
-class PrivateEventShoppingListItemChangeUserRoute
-    extends _i72.PageRouteInfo<void> {
-  const PrivateEventShoppingListItemChangeUserRoute(
-      {List<_i72.PageRouteInfo>? children})
-      : super(
-          PrivateEventShoppingListItemChangeUserRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'PrivateEventShoppingListItemChangeUserRoute';
-
-  static const _i72.PageInfo<void> page = _i72.PageInfo<void>(name);
-}
-
-/// generated route for
-/// [_i36.PrivateEventShoppingListItemPage]
-class PrivateEventShoppingListItemRoute extends _i72.PageRouteInfo<void> {
-  const PrivateEventShoppingListItemRoute({List<_i72.PageRouteInfo>? children})
-      : super(
-          PrivateEventShoppingListItemRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'PrivateEventShoppingListItemRoute';
-
-  static const _i72.PageInfo<void> page = _i72.PageInfo<void>(name);
-}
-
-/// generated route for
-/// [_i37.PrivateEventShoppingListItemWrapperPage]
-class PrivateEventShoppingListItemWrapperRoute
-    extends _i72.PageRouteInfo<PrivateEventShoppingListItemWrapperRouteArgs> {
-  PrivateEventShoppingListItemWrapperRoute({
-    _i73.Key? key,
-    required String shoppingListItemId,
-    required _i77.CurrentShoppingListItemState shoppingListItemStateToSet,
-    bool setCurrentPrivateEvent = false,
-    List<_i72.PageRouteInfo>? children,
-  }) : super(
-          PrivateEventShoppingListItemWrapperRoute.name,
-          args: PrivateEventShoppingListItemWrapperRouteArgs(
-            key: key,
-            shoppingListItemId: shoppingListItemId,
-            shoppingListItemStateToSet: shoppingListItemStateToSet,
-            setCurrentPrivateEvent: setCurrentPrivateEvent,
-          ),
-          rawPathParams: {'shoppingListItemId': shoppingListItemId},
-          initialChildren: children,
-        );
-
-  static const String name = 'PrivateEventShoppingListItemWrapperRoute';
-
-  static const _i72.PageInfo<PrivateEventShoppingListItemWrapperRouteArgs>
-      page = _i72.PageInfo<PrivateEventShoppingListItemWrapperRouteArgs>(name);
-}
-
-class PrivateEventShoppingListItemWrapperRouteArgs {
-  const PrivateEventShoppingListItemWrapperRouteArgs({
-    this.key,
-    required this.shoppingListItemId,
-    required this.shoppingListItemStateToSet,
-    this.setCurrentPrivateEvent = false,
-  });
-
-  final _i73.Key? key;
-
-  final String shoppingListItemId;
-
-  final _i77.CurrentShoppingListItemState shoppingListItemStateToSet;
-
-  final bool setCurrentPrivateEvent;
-
-  @override
-  String toString() {
-    return 'PrivateEventShoppingListItemWrapperRouteArgs{key: $key, shoppingListItemId: $shoppingListItemId, shoppingListItemStateToSet: $shoppingListItemStateToSet, setCurrentPrivateEvent: $setCurrentPrivateEvent}';
-  }
-}
-
-/// generated route for
-/// [_i38.PrivateEventTabChat]
-class PrivateEventTabChat extends _i72.PageRouteInfo<PrivateEventTabChatArgs> {
-  PrivateEventTabChat({
-    required String eventId,
-    _i74.Key? key,
-    List<_i72.PageRouteInfo>? children,
-  }) : super(
-          PrivateEventTabChat.name,
-          args: PrivateEventTabChatArgs(
-            eventId: eventId,
-            key: key,
-          ),
-          rawPathParams: {'id': eventId},
-          initialChildren: children,
-        );
-
-  static const String name = 'PrivateEventTabChat';
-
-  static const _i72.PageInfo<PrivateEventTabChatArgs> page =
-      _i72.PageInfo<PrivateEventTabChatArgs>(name);
-}
-
-class PrivateEventTabChatArgs {
-  const PrivateEventTabChatArgs({
-    required this.eventId,
-    this.key,
-  });
-
-  final String eventId;
-
-  final _i74.Key? key;
-
-  @override
-  String toString() {
-    return 'PrivateEventTabChatArgs{eventId: $eventId, key: $key}';
-  }
-}
-
-/// generated route for
-/// [_i39.PrivateEventTabInfo]
-class PrivateEventTabInfo extends _i72.PageRouteInfo<void> {
-  const PrivateEventTabInfo({List<_i72.PageRouteInfo>? children})
-      : super(
-          PrivateEventTabInfo.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'PrivateEventTabInfo';
-
-  static const _i72.PageInfo<void> page = _i72.PageInfo<void>(name);
-}
-
-/// generated route for
-/// [_i40.PrivateEventTabShoppingList]
-class PrivateEventTabShoppingList extends _i72.PageRouteInfo<void> {
-  const PrivateEventTabShoppingList({List<_i72.PageRouteInfo>? children})
-      : super(
-          PrivateEventTabShoppingList.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'PrivateEventTabShoppingList';
-
-  static const _i72.PageInfo<void> page = _i72.PageInfo<void>(name);
-}
-
-/// generated route for
-/// [_i41.PrivateEventTabUserList]
-class PrivateEventTabUserList extends _i72.PageRouteInfo<void> {
-  const PrivateEventTabUserList({List<_i72.PageRouteInfo>? children})
-      : super(
-          PrivateEventTabUserList.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'PrivateEventTabUserList';
-
-  static const _i72.PageInfo<void> page = _i72.PageInfo<void>(name);
-}
-
-/// generated route for
-/// [_i42.PrivateEventTabPage]
-class PrivateEventTabRoute
-    extends _i72.PageRouteInfo<PrivateEventTabRouteArgs> {
-  PrivateEventTabRoute({
-    _i73.Key? key,
-    required String eventId,
-    List<_i72.PageRouteInfo>? children,
-  }) : super(
-          PrivateEventTabRoute.name,
-          args: PrivateEventTabRouteArgs(
-            key: key,
-            eventId: eventId,
-          ),
-          rawPathParams: {'id': eventId},
-          initialChildren: children,
-        );
-
-  static const String name = 'PrivateEventTabRoute';
-
-  static const _i72.PageInfo<PrivateEventTabRouteArgs> page =
-      _i72.PageInfo<PrivateEventTabRouteArgs>(name);
-}
-
-class PrivateEventTabRouteArgs {
-  const PrivateEventTabRouteArgs({
-    this.key,
-    required this.eventId,
-  });
-
-  final _i73.Key? key;
-
-  final String eventId;
-
-  @override
-  String toString() {
-    return 'PrivateEventTabRouteArgs{key: $key, eventId: $eventId}';
-  }
-}
-
-/// generated route for
-/// [_i43.ProfileChatPage]
+/// [_i30.ProfileChatPage]
 class ProfileChatRoute extends _i72.PageRouteInfo<ProfileChatRouteArgs> {
   ProfileChatRoute({
     required String userId,
@@ -1581,7 +1275,7 @@ class ProfileChatRouteArgs {
 }
 
 /// generated route for
-/// [_i44.ProfilePage]
+/// [_i31.ProfilePage]
 class ProfileRoute extends _i72.PageRouteInfo<ProfileRouteArgs> {
   ProfileRoute({
     _i74.Key? key,
@@ -1620,7 +1314,7 @@ class ProfileRouteArgs {
 }
 
 /// generated route for
-/// [_i45.ProfileFollowedTab]
+/// [_i32.ProfileFollowedTab]
 class ProfileFollowedTab extends _i72.PageRouteInfo<void> {
   const ProfileFollowedTab({List<_i72.PageRouteInfo>? children})
       : super(
@@ -1634,7 +1328,7 @@ class ProfileFollowedTab extends _i72.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i46.ProfileFollowerTab]
+/// [_i33.ProfileFollowerTab]
 class ProfileFollowerTab extends _i72.PageRouteInfo<void> {
   const ProfileFollowerTab({List<_i72.PageRouteInfo>? children})
       : super(
@@ -1648,7 +1342,7 @@ class ProfileFollowerTab extends _i72.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i47.ProfileFollowRequestsTab]
+/// [_i34.ProfileFollowRequestsTab]
 class ProfileFollowRequestsTab extends _i72.PageRouteInfo<void> {
   const ProfileFollowRequestsTab({List<_i72.PageRouteInfo>? children})
       : super(
@@ -1662,7 +1356,7 @@ class ProfileFollowRequestsTab extends _i72.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i48.ProfileUserRelationsTabPage]
+/// [_i35.ProfileUserRelationsTabPage]
 class ProfileUserRelationsTabRoute
     extends _i72.PageRouteInfo<ProfileUserRelationsTabRouteArgs> {
   ProfileUserRelationsTabRoute({
@@ -1702,11 +1396,11 @@ class ProfileUserRelationsTabRouteArgs {
 }
 
 /// generated route for
-/// [_i49.ProfileWrapperPage]
+/// [_i36.ProfileWrapperPage]
 class ProfileWrapperRoute extends _i72.PageRouteInfo<ProfileWrapperRouteArgs> {
   ProfileWrapperRoute({
     _i73.Key? key,
-    _i78.UserEntity? user,
+    _i76.UserEntity? user,
     required String userId,
     List<_i72.PageRouteInfo>? children,
   }) : super(
@@ -1735,7 +1429,7 @@ class ProfileWrapperRouteArgs {
 
   final _i73.Key? key;
 
-  final _i78.UserEntity? user;
+  final _i76.UserEntity? user;
 
   final String userId;
 
@@ -1746,7 +1440,7 @@ class ProfileWrapperRouteArgs {
 }
 
 /// generated route for
-/// [_i50.RegisterPage]
+/// [_i37.RegisterPage]
 class RegisterRoute extends _i72.PageRouteInfo<void> {
   const RegisterRoute({List<_i72.PageRouteInfo>? children})
       : super(
@@ -1760,7 +1454,7 @@ class RegisterRoute extends _i72.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i51.ResetPasswordPage]
+/// [_i38.ResetPasswordPage]
 class ResetPasswordRoute extends _i72.PageRouteInfo<ResetPasswordRouteArgs> {
   ResetPasswordRoute({
     _i73.Key? key,
@@ -1798,7 +1492,7 @@ class ResetPasswordRouteArgs {
 }
 
 /// generated route for
-/// [_i52.SettingsInfoPage]
+/// [_i39.SettingsInfoPage]
 class SettingsInfoRoute extends _i72.PageRouteInfo<void> {
   const SettingsInfoRoute({List<_i72.PageRouteInfo>? children})
       : super(
@@ -1812,7 +1506,7 @@ class SettingsInfoRoute extends _i72.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i53.ImprintPage]
+/// [_i40.ImprintPage]
 class ImprintRoute extends _i72.PageRouteInfo<void> {
   const ImprintRoute({List<_i72.PageRouteInfo>? children})
       : super(
@@ -1826,7 +1520,7 @@ class ImprintRoute extends _i72.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i54.RightOnDeletionPage]
+/// [_i41.RightOnDeletionPage]
 class RightOnDeletionRoute extends _i72.PageRouteInfo<void> {
   const RightOnDeletionRoute({List<_i72.PageRouteInfo>? children})
       : super(
@@ -1840,7 +1534,7 @@ class RightOnDeletionRoute extends _i72.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i55.SettingsPrivacyPage]
+/// [_i42.SettingsPrivacyPage]
 class SettingsPrivacyRoute extends _i72.PageRouteInfo<void> {
   const SettingsPrivacyRoute({List<_i72.PageRouteInfo>? children})
       : super(
@@ -1854,7 +1548,7 @@ class SettingsPrivacyRoute extends _i72.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i56.GroupchatAddMePage]
+/// [_i43.GroupchatAddMePage]
 class GroupchatAddMeRoute extends _i72.PageRouteInfo<void> {
   const GroupchatAddMeRoute({List<_i72.PageRouteInfo>? children})
       : super(
@@ -1868,7 +1562,7 @@ class GroupchatAddMeRoute extends _i72.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i57.PrivateEventAddMePage]
+/// [_i44.PrivateEventAddMePage]
 class PrivateEventAddMeRoute extends _i72.PageRouteInfo<void> {
   const PrivateEventAddMeRoute({List<_i72.PageRouteInfo>? children})
       : super(
@@ -1882,7 +1576,7 @@ class PrivateEventAddMeRoute extends _i72.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i58.ThemeModePage]
+/// [_i45.ThemeModePage]
 class ThemeModeRoute extends _i72.PageRouteInfo<void> {
   const ThemeModeRoute({List<_i72.PageRouteInfo>? children})
       : super(
@@ -1896,7 +1590,7 @@ class ThemeModeRoute extends _i72.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i59.UpdatePasswordPage]
+/// [_i46.UpdatePasswordPage]
 class UpdatePasswordRoute extends _i72.PageRouteInfo<void> {
   const UpdatePasswordRoute({List<_i72.PageRouteInfo>? children})
       : super(
@@ -1910,7 +1604,7 @@ class UpdatePasswordRoute extends _i72.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i60.SettingsPage]
+/// [_i47.SettingsPage]
 class SettingsRoute extends _i72.PageRouteInfo<void> {
   const SettingsRoute({List<_i72.PageRouteInfo>? children})
       : super(
@@ -1924,7 +1618,7 @@ class SettingsRoute extends _i72.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i61.ShoppingListItemChangeUserPage]
+/// [_i48.ShoppingListItemChangeUserPage]
 class ShoppingListItemChangeUserRoute extends _i72.PageRouteInfo<void> {
   const ShoppingListItemChangeUserRoute({List<_i72.PageRouteInfo>? children})
       : super(
@@ -1938,7 +1632,7 @@ class ShoppingListItemChangeUserRoute extends _i72.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i62.ShoppingListItemPage]
+/// [_i49.ShoppingListItemPage]
 class ShoppingListItemRoute extends _i72.PageRouteInfo<void> {
   const ShoppingListItemRoute({List<_i72.PageRouteInfo>? children})
       : super(
@@ -1952,7 +1646,7 @@ class ShoppingListItemRoute extends _i72.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i63.ShoppingListItemWrapperPage]
+/// [_i50.ShoppingListItemWrapperPage]
 class ShoppingListItemWrapperRoute
     extends _i72.PageRouteInfo<ShoppingListItemWrapperRouteArgs> {
   ShoppingListItemWrapperRoute({
@@ -1999,7 +1693,7 @@ class ShoppingListItemWrapperRouteArgs {
 }
 
 /// generated route for
-/// [_i64.ShoppingListPage]
+/// [_i51.ShoppingListPage]
 class ShoppingListRoute extends _i72.PageRouteInfo<void> {
   const ShoppingListRoute({List<_i72.PageRouteInfo>? children})
       : super(
@@ -2013,7 +1707,7 @@ class ShoppingListRoute extends _i72.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i65.ShoppingListWrapperPage]
+/// [_i52.ShoppingListWrapperPage]
 class ShoppingListWrapperRoute extends _i72.PageRouteInfo<void> {
   const ShoppingListWrapperRoute({List<_i72.PageRouteInfo>? children})
       : super(
@@ -2027,7 +1721,7 @@ class ShoppingListWrapperRoute extends _i72.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i66.VerifyEmailPage]
+/// [_i53.VerifyEmailPage]
 class VerifyEmailRoute extends _i72.PageRouteInfo<void> {
   const VerifyEmailRoute({List<_i72.PageRouteInfo>? children})
       : super(
@@ -2041,7 +1735,7 @@ class VerifyEmailRoute extends _i72.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i67.AppFeatureIntroductionPagesUsersPage]
+/// [_i54.AppFeatureIntroductionPagesUsersPage]
 class AppFeatureIntroductionRoutesUsersRoute extends _i72.PageRouteInfo<void> {
   const AppFeatureIntroductionRoutesUsersRoute(
       {List<_i72.PageRouteInfo>? children})
@@ -2056,7 +1750,7 @@ class AppFeatureIntroductionRoutesUsersRoute extends _i72.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i68.AppPermissionIntroductionPagesMicrophonePage]
+/// [_i55.AppPermissionIntroductionPagesMicrophonePage]
 class AppPermissionIntroductionRoutesMicrophoneRoute
     extends _i72.PageRouteInfo<void> {
   const AppPermissionIntroductionRoutesMicrophoneRoute(
@@ -2072,7 +1766,7 @@ class AppPermissionIntroductionRoutesMicrophoneRoute
 }
 
 /// generated route for
-/// [_i69.AppPermissionIntroductionPagesNotificationPage]
+/// [_i56.AppPermissionIntroductionPagesNotificationPage]
 class AppPermissionIntroductionRoutesNotificationRoute
     extends _i72.PageRouteInfo<void> {
   const AppPermissionIntroductionRoutesNotificationRoute(
@@ -2088,7 +1782,7 @@ class AppPermissionIntroductionRoutesNotificationRoute
 }
 
 /// generated route for
-/// [_i70.AppFeatureIntroductionPagesPrivateEventPage]
+/// [_i57.AppFeatureIntroductionPagesPrivateEventPage]
 class AppFeatureIntroductionRoutesPrivateEventRoute
     extends _i72.PageRouteInfo<void> {
   const AppFeatureIntroductionRoutesPrivateEventRoute(
@@ -2104,7 +1798,7 @@ class AppFeatureIntroductionRoutesPrivateEventRoute
 }
 
 /// generated route for
-/// [_i71.AppFeatureIntroductionPagesGroupchatPage]
+/// [_i58.AppFeatureIntroductionPagesGroupchatPage]
 class AppFeatureIntroductionRoutesGroupchatRoute
     extends _i72.PageRouteInfo<void> {
   const AppFeatureIntroductionRoutesGroupchatRoute(
@@ -2115,6 +1809,305 @@ class AppFeatureIntroductionRoutesGroupchatRoute
         );
 
   static const String name = 'AppFeatureIntroductionRoutesGroupchatRoute';
+
+  static const _i72.PageInfo<void> page = _i72.PageInfo<void>(name);
+}
+
+/// generated route for
+/// [_i59.EventCreateShoppingListItemPage]
+class EventCreateShoppingListItemRoute extends _i72.PageRouteInfo<void> {
+  const EventCreateShoppingListItemRoute({List<_i72.PageRouteInfo>? children})
+      : super(
+          EventCreateShoppingListItemRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'EventCreateShoppingListItemRoute';
+
+  static const _i72.PageInfo<void> page = _i72.PageInfo<void>(name);
+}
+
+/// generated route for
+/// [_i60.EventInviteUserPage]
+class EventInviteUserRoute extends _i72.PageRouteInfo<void> {
+  const EventInviteUserRoute({List<_i72.PageRouteInfo>? children})
+      : super(
+          EventInviteUserRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'EventInviteUserRoute';
+
+  static const _i72.PageInfo<void> page = _i72.PageInfo<void>(name);
+}
+
+/// generated route for
+/// [_i61.EventUpdateLocationPage]
+class EventUpdateLocationRoute extends _i72.PageRouteInfo<void> {
+  const EventUpdateLocationRoute({List<_i72.PageRouteInfo>? children})
+      : super(
+          EventUpdateLocationRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'EventUpdateLocationRoute';
+
+  static const _i72.PageInfo<void> page = _i72.PageInfo<void>(name);
+}
+
+/// generated route for
+/// [_i62.EventUpdatePermissionsPage]
+class EventUpdatePermissionsRoute extends _i72.PageRouteInfo<void> {
+  const EventUpdatePermissionsRoute({List<_i72.PageRouteInfo>? children})
+      : super(
+          EventUpdatePermissionsRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'EventUpdatePermissionsRoute';
+
+  static const _i72.PageInfo<void> page = _i72.PageInfo<void>(name);
+}
+
+/// generated route for
+/// [_i63.EventWrapperPage]
+class EventWrapperRoute extends _i72.PageRouteInfo<EventWrapperRouteArgs> {
+  EventWrapperRoute({
+    required String eventId,
+    _i78.CurrentEventState? eventStateToSet,
+    _i73.Key? key,
+    List<_i72.PageRouteInfo>? children,
+  }) : super(
+          EventWrapperRoute.name,
+          args: EventWrapperRouteArgs(
+            eventId: eventId,
+            eventStateToSet: eventStateToSet,
+            key: key,
+          ),
+          rawPathParams: {'id': eventId},
+          initialChildren: children,
+        );
+
+  static const String name = 'EventWrapperRoute';
+
+  static const _i72.PageInfo<EventWrapperRouteArgs> page =
+      _i72.PageInfo<EventWrapperRouteArgs>(name);
+}
+
+class EventWrapperRouteArgs {
+  const EventWrapperRouteArgs({
+    required this.eventId,
+    this.eventStateToSet,
+    this.key,
+  });
+
+  final String eventId;
+
+  final _i78.CurrentEventState? eventStateToSet;
+
+  final _i73.Key? key;
+
+  @override
+  String toString() {
+    return 'EventWrapperRouteArgs{eventId: $eventId, eventStateToSet: $eventStateToSet, key: $key}';
+  }
+}
+
+/// generated route for
+/// [_i64.EventShoppingListItemChangeUserPage]
+class EventShoppingListItemChangeUserRoute extends _i72.PageRouteInfo<void> {
+  const EventShoppingListItemChangeUserRoute(
+      {List<_i72.PageRouteInfo>? children})
+      : super(
+          EventShoppingListItemChangeUserRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'EventShoppingListItemChangeUserRoute';
+
+  static const _i72.PageInfo<void> page = _i72.PageInfo<void>(name);
+}
+
+/// generated route for
+/// [_i65.EventShoppingListItemPage]
+class EventShoppingListItemRoute extends _i72.PageRouteInfo<void> {
+  const EventShoppingListItemRoute({List<_i72.PageRouteInfo>? children})
+      : super(
+          EventShoppingListItemRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'EventShoppingListItemRoute';
+
+  static const _i72.PageInfo<void> page = _i72.PageInfo<void>(name);
+}
+
+/// generated route for
+/// [_i66.EventShoppingListItemWrapperPage]
+class EventShoppingListItemWrapperRoute
+    extends _i72.PageRouteInfo<EventShoppingListItemWrapperRouteArgs> {
+  EventShoppingListItemWrapperRoute({
+    _i73.Key? key,
+    required String shoppingListItemId,
+    required _i77.CurrentShoppingListItemState shoppingListItemStateToSet,
+    bool setCurrentPrivateEvent = false,
+    List<_i72.PageRouteInfo>? children,
+  }) : super(
+          EventShoppingListItemWrapperRoute.name,
+          args: EventShoppingListItemWrapperRouteArgs(
+            key: key,
+            shoppingListItemId: shoppingListItemId,
+            shoppingListItemStateToSet: shoppingListItemStateToSet,
+            setCurrentPrivateEvent: setCurrentPrivateEvent,
+          ),
+          rawPathParams: {'shoppingListItemId': shoppingListItemId},
+          initialChildren: children,
+        );
+
+  static const String name = 'EventShoppingListItemWrapperRoute';
+
+  static const _i72.PageInfo<EventShoppingListItemWrapperRouteArgs> page =
+      _i72.PageInfo<EventShoppingListItemWrapperRouteArgs>(name);
+}
+
+class EventShoppingListItemWrapperRouteArgs {
+  const EventShoppingListItemWrapperRouteArgs({
+    this.key,
+    required this.shoppingListItemId,
+    required this.shoppingListItemStateToSet,
+    this.setCurrentPrivateEvent = false,
+  });
+
+  final _i73.Key? key;
+
+  final String shoppingListItemId;
+
+  final _i77.CurrentShoppingListItemState shoppingListItemStateToSet;
+
+  final bool setCurrentPrivateEvent;
+
+  @override
+  String toString() {
+    return 'EventShoppingListItemWrapperRouteArgs{key: $key, shoppingListItemId: $shoppingListItemId, shoppingListItemStateToSet: $shoppingListItemStateToSet, setCurrentPrivateEvent: $setCurrentPrivateEvent}';
+  }
+}
+
+/// generated route for
+/// [_i67.EventTabPage]
+class EventTabRoute extends _i72.PageRouteInfo<EventTabRouteArgs> {
+  EventTabRoute({
+    _i73.Key? key,
+    required String eventId,
+    List<_i72.PageRouteInfo>? children,
+  }) : super(
+          EventTabRoute.name,
+          args: EventTabRouteArgs(
+            key: key,
+            eventId: eventId,
+          ),
+          rawPathParams: {'id': eventId},
+          initialChildren: children,
+        );
+
+  static const String name = 'EventTabRoute';
+
+  static const _i72.PageInfo<EventTabRouteArgs> page =
+      _i72.PageInfo<EventTabRouteArgs>(name);
+}
+
+class EventTabRouteArgs {
+  const EventTabRouteArgs({
+    this.key,
+    required this.eventId,
+  });
+
+  final _i73.Key? key;
+
+  final String eventId;
+
+  @override
+  String toString() {
+    return 'EventTabRouteArgs{key: $key, eventId: $eventId}';
+  }
+}
+
+/// generated route for
+/// [_i68.EventTabChat]
+class EventTabChat extends _i72.PageRouteInfo<EventTabChatArgs> {
+  EventTabChat({
+    required String eventId,
+    _i74.Key? key,
+    List<_i72.PageRouteInfo>? children,
+  }) : super(
+          EventTabChat.name,
+          args: EventTabChatArgs(
+            eventId: eventId,
+            key: key,
+          ),
+          rawPathParams: {'id': eventId},
+          initialChildren: children,
+        );
+
+  static const String name = 'EventTabChat';
+
+  static const _i72.PageInfo<EventTabChatArgs> page =
+      _i72.PageInfo<EventTabChatArgs>(name);
+}
+
+class EventTabChatArgs {
+  const EventTabChatArgs({
+    required this.eventId,
+    this.key,
+  });
+
+  final String eventId;
+
+  final _i74.Key? key;
+
+  @override
+  String toString() {
+    return 'EventTabChatArgs{eventId: $eventId, key: $key}';
+  }
+}
+
+/// generated route for
+/// [_i69.EventTabInfo]
+class EventTabInfo extends _i72.PageRouteInfo<void> {
+  const EventTabInfo({List<_i72.PageRouteInfo>? children})
+      : super(
+          EventTabInfo.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'EventTabInfo';
+
+  static const _i72.PageInfo<void> page = _i72.PageInfo<void>(name);
+}
+
+/// generated route for
+/// [_i70.EventTabShoppingList]
+class EventTabShoppingList extends _i72.PageRouteInfo<void> {
+  const EventTabShoppingList({List<_i72.PageRouteInfo>? children})
+      : super(
+          EventTabShoppingList.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'EventTabShoppingList';
+
+  static const _i72.PageInfo<void> page = _i72.PageInfo<void>(name);
+}
+
+/// generated route for
+/// [_i71.EventTabUserList]
+class EventTabUserList extends _i72.PageRouteInfo<void> {
+  const EventTabUserList({List<_i72.PageRouteInfo>? children})
+      : super(
+          EventTabUserList.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'EventTabUserList';
 
   static const _i72.PageInfo<void> page = _i72.PageInfo<void>(name);
 }

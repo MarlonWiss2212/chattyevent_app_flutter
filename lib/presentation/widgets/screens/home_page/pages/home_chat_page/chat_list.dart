@@ -105,16 +105,16 @@ class _ChatListState extends State<ChatList> {
           );
         } else if (widget.chats[index].event != null) {
           AutoRouter.of(context).push(
-            PrivateEventWrapperRoute(
+            EventWrapperRoute(
               eventId: widget.chats[index].event!.id,
-              privateEventStateToSet: CurrentEventState.fromPrivateEvent(
+              eventStateToSet: CurrentEventState.fromPrivateEvent(
                 event: widget.chats[index].event!,
               ),
               children: [
-                PrivateEventTabRoute(
+                EventTabRoute(
                   eventId: widget.chats[index].event!.id,
                   children: [
-                    PrivateEventTabChat(
+                    EventTabChat(
                       eventId: widget.chats[index].event!.id,
                     ),
                   ],

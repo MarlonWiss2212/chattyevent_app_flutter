@@ -242,12 +242,12 @@ class CurrentEventCubit extends Cubit<CurrentEventState> {
 
     privateEventUserOrFailure.fold(
       (alert) => notificationCubit.newAlert(notificationAlert: alert),
-      (privateEventUser) {
+      (eventUser) {
         emitState(
-          eventUsers: List.from(state.eventUsers)..add(privateEventUser),
+          eventUsers: List.from(state.eventUsers)..add(eventUser),
           eventLeftUsers: state.eventLeftUsers
               .where(
-                (element) => element.id != privateEventUser.id,
+                (element) => element.id != eventUser.id,
               )
               .toList(),
         );
@@ -274,16 +274,16 @@ class CurrentEventCubit extends Cubit<CurrentEventState> {
 
     eventOrFailure.fold(
       (alert) => notificationCubit.newAlert(notificationAlert: alert),
-      (privateEventUser) {
+      (eventUser) {
         List<EventUserEntity> eventUsers = state.eventUsers;
 
         final index = eventUsers.indexWhere(
           (element) => element.id == userId,
         );
         if (index == -1) {
-          eventUsers.add(privateEventUser);
+          eventUsers.add(eventUser);
         } else {
-          eventUsers[index] = privateEventUser;
+          eventUsers[index] = eventUser;
         }
 
         emitState(
