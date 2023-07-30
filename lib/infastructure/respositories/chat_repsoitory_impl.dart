@@ -36,7 +36,10 @@ class ChatRepositoryImpl implements ChatRepository {
               _id
               status
               title
-              groupchatTo
+              type
+              privateEventData {
+                groupchatTo
+              }
               eventDate
               eventEndDate
               eventLocation {

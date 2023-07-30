@@ -64,11 +64,11 @@ class HomeEventCubit extends Cubit<HomeEventState> {
   }
 
   List<CurrentEventState> replaceOrAddMultiple({
-    required List<CurrentEventState> privateEventStates,
+    required List<CurrentEventState> eventStates,
     bool onlyReplace = false,
   }) {
     List<CurrentEventState> mergedPrivateEventStates = [];
-    for (final privateEventState in privateEventStates) {
+    for (final privateEventState in eventStates) {
       final mergedPrivateEvent = replaceOrAdd(
         privateEventState: privateEventState,
         onlyReplace: onlyReplace,
@@ -134,7 +134,7 @@ class HomeEventCubit extends Cubit<HomeEventState> {
           );
         } else {
           replaceOrAddMultiple(
-            privateEventStates: privateEvents
+            eventStates: privateEvents
                 .map(
                   (e) => CurrentEventState.fromPrivateEvent(
                     event: e,
@@ -185,7 +185,7 @@ class HomeEventCubit extends Cubit<HomeEventState> {
           );
         } else {
           replaceOrAddMultiple(
-            privateEventStates: privateEvents
+            eventStates: privateEvents
                 .map(
                   (e) => CurrentEventState.fromPrivateEvent(
                     event: e,

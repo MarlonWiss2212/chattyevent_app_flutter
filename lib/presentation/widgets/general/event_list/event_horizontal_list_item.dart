@@ -5,26 +5,26 @@ import 'package:chattyevent_app_flutter/domain/entities/event/event_entity.dart'
 
 class EventHorizontalListItem extends StatelessWidget {
   final EventEntity event;
-  final Function? onLongPress;
-  final Function? onPress;
-  final double height;
-  final double width;
+  final Function()? onLongPress;
+  final Function()? onPress;
+  final double? height;
+  final double? width;
 
   const EventHorizontalListItem({
     super.key,
     required this.event,
     this.onLongPress,
     this.onPress,
-    required this.height,
-    required this.width,
+    this.height,
+    this.width,
   });
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       borderRadius: const BorderRadius.all(Radius.circular(8.0)),
-      onLongPress: onLongPress == null ? null : () => onLongPress!(),
-      onTap: onPress == null ? null : () => onPress!(),
+      onLongPress: onLongPress,
+      onTap: onPress,
       child: Ink(
         width: width,
         height: height,
@@ -33,7 +33,6 @@ class EventHorizontalListItem extends StatelessWidget {
           color: Theme.of(context).colorScheme.surface,
         ),
         child: Stack(
-          fit: StackFit.expand,
           children: [
             if (event.coverImageLink != null) ...{
               ClipRRect(
