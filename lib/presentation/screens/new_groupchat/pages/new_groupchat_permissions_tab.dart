@@ -19,11 +19,6 @@ class NewGroupchatPermissionsTab extends StatelessWidget {
             return Column(
               children: [
                 const SizedBox(height: 20),
-                Text(
-                  "Mitglieder Berechtigungen",
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
-                const SizedBox(height: 20),
                 GroupchatPermissionsMenu(
                   text: "Title ändern",
                   value: state.permissions.changeTitle,

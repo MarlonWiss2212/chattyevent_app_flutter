@@ -39,11 +39,6 @@ class _NewPrivateEventSearchGroupchatTabState
               return Column(
                 children: [
                   const SizedBox(height: 20),
-                  Text(
-                    "Verbundenen Gruppenchat wählen",
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
-                  const SizedBox(height: 20),
                   Expanded(
                     child: GroupchatGridList(
                       // TODO: check for permissions to filter out || load groupchats from api

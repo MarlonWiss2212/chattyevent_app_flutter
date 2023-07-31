@@ -73,6 +73,11 @@ class HomeSearchPage extends StatelessWidget {
                               child: PlatformCircularProgressIndicator(),
                             );
                           }
+                          if (state.users.isEmpty) {
+                            return const Center(
+                              child: Text("Keine User gefunden"),
+                            );
+                          }
                           return UserHorizontalList(users: state.users);
                         },
                       ),

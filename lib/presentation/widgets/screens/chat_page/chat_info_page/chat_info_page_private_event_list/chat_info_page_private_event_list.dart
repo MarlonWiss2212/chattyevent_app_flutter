@@ -59,10 +59,10 @@ class ChatInfoPagePrivateEventList extends StatelessWidget {
                 style: Theme.of(context).textTheme.titleMedium,
                 overflow: TextOverflow.ellipsis,
               ),
-              trailing: const Icon(Ionicons.arrow_forward),
+              trailing: const Icon(Ionicons.chevron_forward),
               onTap: () {
                 AutoRouter.of(context).push(
-                  const GroupchatFuturePrivateEventsRoute(),
+                  const GroupchatfutureEventsRoute(),
                 );
               },
             ),

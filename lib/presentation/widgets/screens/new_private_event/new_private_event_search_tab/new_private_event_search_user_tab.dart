@@ -36,11 +36,6 @@ class _NewPrivateEventSearchUserTabState
           return Column(
             children: [
               const SizedBox(height: 20),
-              Text(
-                "Mitglieder wählen",
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-              const SizedBox(height: 20),
               SelectedUsersList(
                 users: state.privateEventUsersDto.map((e) => e.user).toList(),
                 onPress: (user) => BlocProvider.of<AddEventCubit>(context)

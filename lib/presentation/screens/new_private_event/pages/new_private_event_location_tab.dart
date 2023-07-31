@@ -16,11 +16,6 @@ class NewPrivateEventLocationTab extends StatelessWidget {
           return Column(
             children: [
               const SizedBox(height: 20),
-              Text(
-                "Standort Wählen (optional)",
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-              const SizedBox(height: 20),
               Container(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 8,

@@ -8,8 +8,8 @@ import 'package:chattyevent_app_flutter/presentation/widgets/screens/chat_page/c
 import 'package:auto_route/auto_route.dart';
 
 @RoutePage()
-class GroupchatFuturePrivateEventsPage extends StatelessWidget {
-  const GroupchatFuturePrivateEventsPage({super.key});
+class GroupchatfutureEventsPage extends StatelessWidget {
+  const GroupchatfutureEventsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +46,19 @@ class GroupchatFuturePrivateEventsPage extends StatelessWidget {
                 return const SliverFillRemaining(
                   child: ChatFuturePrivateEventPageSkeletonList(),
                 );
+              }
+
+              if (state.loadingPrivateEvents == true &&
+                  state.futureConnectedPrivateEvents.isEmpty) {
+                return const SliverFillRemaining(
+                  child: ChatFuturePrivateEventPageSkeletonList(),
+                );
+              } else if (state.futureConnectedPrivateEvents.isEmpty) {
+                return const SliverFillRemaining(
+                    child: Center(
+                        child: Text(
+                  "Keine Privaten Event für diesen Gruppenchat",
+                )));
               }
 
               return SliverList(

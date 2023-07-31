@@ -18,11 +18,6 @@ class NewPrivateEventPermissionsTab extends StatelessWidget {
             return Column(
               children: [
                 const SizedBox(height: 20),
-                Text(
-                  "Mitglieder Berechtigungen",
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
-                const SizedBox(height: 20),
                 EventPermissionsMenu(
                   text: "Title ändern",
                   value: state.permissions.changeTitle,

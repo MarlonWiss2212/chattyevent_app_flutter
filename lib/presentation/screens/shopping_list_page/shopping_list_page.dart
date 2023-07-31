@@ -127,7 +127,7 @@ class _ShoppingListPageState extends State<ShoppingListPage> {
                       );
                     }
                   },
-                  childCount: state.shoppingListItemStates.length,
+                  childCount: state.shoppingListItemStates.length + 1,
                 ),
               );
             },

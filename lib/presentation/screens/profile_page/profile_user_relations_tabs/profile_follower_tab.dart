@@ -38,6 +38,12 @@ class _ProfileFollowerTabState extends State<ProfileFollowerTab> {
               return const ProfileFollowersTabSkeletonListView();
             }
 
+            if (state.followers.isEmpty) {
+              return const SliverFillRemaining(
+                child: Center(child: Text("Keinen Follower")),
+              );
+            }
+
             return ProfileFollowersTabListView(
               followers: state.followers,
               loadMore: () {

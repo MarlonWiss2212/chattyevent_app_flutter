@@ -33,12 +33,11 @@ class FutureEventsPage extends StatelessWidget {
           ),
           CupertinoSliverRefreshControl(
             onRefresh: () => BlocProvider.of<HomeEventCubit>(context)
-                .getFuturePrivateEventsViaApi(reload: true),
+                .getfutureEventsViaApi(reload: true),
           ),
           BlocBuilder<HomeEventCubit, HomeEventState>(
             builder: (context, state) {
-              if (state.loadingFutureEvents &&
-                  state.futurePrivateEvents.isEmpty) {
+              if (state.loadingFutureEvents && state.futureEvents.isEmpty) {
                 return SliverFillRemaining(
                   child: SkeletonListView(
                     itemBuilder: (p0, p1) {
@@ -57,7 +56,7 @@ class FutureEventsPage extends StatelessWidget {
                     },
                   ),
                 );
-              } else if (state.futurePrivateEvents.isEmpty) {
+              } else if (state.futureEvents.isEmpty) {
                 return const SliverFillRemaining(
                   child: Center(child: Text("Keine Zukünftigen Events")),
                 );
@@ -66,9 +65,9 @@ class FutureEventsPage extends StatelessWidget {
               return SliverList(
                 delegate: SliverChildBuilderDelegate(
                   (context, index) {
-                    if (index < state.futurePrivateEvents.length) {
+                    if (index < state.futureEvents.length) {
                       return PrivateEventListItem(
-                        privateEventState: state.futurePrivateEvents[index],
+                        privateEventState: state.futureEvents[index],
                       );
                     }
 
@@ -79,13 +78,13 @@ class FutureEventsPage extends StatelessWidget {
                       return IconButton(
                         onPressed: () {
                           BlocProvider.of<HomeEventCubit>(context)
-                              .getFuturePrivateEventsViaApi();
+                              .getfutureEventsViaApi();
                         },
                         icon: const Icon(Icons.add_circle),
                       );
                     }
                   },
-                  childCount: state.futurePrivateEvents.length + 1,
+                  childCount: state.futureEvents.length + 1,
                 ),
               );
             },

@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:chattyevent_app_flutter/core/enums/groupchat/groupchat_permission_enum.dart';
 import 'package:chattyevent_app_flutter/domain/entities/chat_entity.dart';
 import 'package:chattyevent_app_flutter/infastructure/dto/groupchat/create_groupchat_permissions_dto.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,8 +23,15 @@ class AddGroupchatCubit extends Cubit<AddGroupchatState> {
     required this.notificationCubit,
     required this.groupchatUseCases,
   }) : super(AddGroupchatState(
+          subtitle: "",
           groupchatUsers: [],
-          permissions: CreateGroupchatPermissionsDto(),
+          permissions: CreateGroupchatPermissionsDto(
+            addUsers: GroupchatPermissionEnum.adminsonly,
+            changeDescription: GroupchatPermissionEnum.everyone,
+            changeProfileImage: GroupchatPermissionEnum.everyone,
+            changeTitle: GroupchatPermissionEnum.everyone,
+            createEventForGroupchat: GroupchatPermissionEnum.adminsonly,
+          ),
         ));
 
   Future createGroupchatViaApi() async {
@@ -59,6 +67,7 @@ class AddGroupchatCubit extends Cubit<AddGroupchatState> {
           chat: ChatEntity(groupchat: groupchat),
         );
         emit(AddGroupchatState(
+          subtitle: "",
           groupchatUsers: [],
           addedChat: groupchat,
           permissions: CreateGroupchatPermissionsDto(),
@@ -96,8 +105,10 @@ class AddGroupchatCubit extends Cubit<AddGroupchatState> {
         groupchatUsers,
     AddGroupchatStateStatus? status,
     GroupchatEntity? addedChat,
+    String? subtitle,
   }) {
     emit(AddGroupchatState(
+      subtitle: subtitle ?? state.subtitle,
       title: title ?? state.title,
       profileImage: profileImage ?? state.profileImage,
       permissions: permissions ?? state.permissions,

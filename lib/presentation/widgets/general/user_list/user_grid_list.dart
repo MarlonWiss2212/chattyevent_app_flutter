@@ -51,9 +51,7 @@ class _UserGridListState extends State<UserGridList> {
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
-      //    controller: _scrollController,
       itemBuilder: (context, index) {
-        //  if (index < widget.users.length) {
         return UserGridListItem(
           user: widget.users[index],
           button: widget.button != null
@@ -66,11 +64,8 @@ class _UserGridListState extends State<UserGridList> {
               ? null
               : () => widget.onPress!(widget.users[index]),
         );
-        // }
-        //  return const CircularProgressIndicator.adaptive();
       },
-      itemCount: /* widget.loading ? widget.users.length + 1 :*/
-          widget.users.length,
+      itemCount: widget.users.length,
       shrinkWrap: true,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: max(

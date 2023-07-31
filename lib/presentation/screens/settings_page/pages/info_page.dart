@@ -46,7 +46,7 @@ class _SettingsInfoPageState extends State<SettingsInfoPage> {
                     style: Theme.of(context).textTheme.titleMedium,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  trailing: const Icon(Ionicons.arrow_forward),
+                  trailing: const Icon(Ionicons.chevron_forward),
                   onTap: () async {
                     await settingsUseCases.openDatasecurityPage();
                   },
@@ -58,7 +58,7 @@ class _SettingsInfoPageState extends State<SettingsInfoPage> {
                     style: Theme.of(context).textTheme.titleMedium,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  trailing: const Icon(Ionicons.arrow_forward),
+                  trailing: const Icon(Ionicons.chevron_forward),
                   onTap: () async {
                     await settingsUseCases.openTermsOfUsePage();
                   },
@@ -70,7 +70,7 @@ class _SettingsInfoPageState extends State<SettingsInfoPage> {
                     style: Theme.of(context).textTheme.titleMedium,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  trailing: const Icon(Ionicons.arrow_forward),
+                  trailing: const Icon(Ionicons.chevron_forward),
                   onTap: () {
                     AutoRouter.of(context).push(
                       const ImprintRoute(),
@@ -84,7 +84,7 @@ class _SettingsInfoPageState extends State<SettingsInfoPage> {
                     style: Theme.of(context).textTheme.titleMedium,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  trailing: const Icon(Ionicons.arrow_forward),
+                  trailing: const Icon(Ionicons.chevron_forward),
                   onTap: () async {
                     await settingsUseCases.openRightOnDataAccessPage();
                   },
@@ -96,7 +96,7 @@ class _SettingsInfoPageState extends State<SettingsInfoPage> {
                     style: Theme.of(context).textTheme.titleMedium,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  trailing: const Icon(Ionicons.arrow_forward),
+                  trailing: const Icon(Ionicons.chevron_forward),
                   onTap: () {
                     AutoRouter.of(context).push(
                       const RightOnDeletionRoute(),

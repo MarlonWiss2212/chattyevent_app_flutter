@@ -90,6 +90,34 @@ class EventTabShoppingList extends StatelessWidget {
 
           return BlocBuilder<CurrentEventCubit, CurrentEventState>(
             builder: (context, currentPrivateEventState) {
+              if (state.loadingShoppingList &&
+                  state.shoppingListItemStates.isEmpty) {
+                return SliverFillRemaining(
+                  child: SkeletonListView(
+                    itemBuilder: (p0, p1) {
+                      return SkeletonListTile(
+                        hasSubtitle: true,
+                        hasLeading: false,
+                        titleStyle: const SkeletonLineStyle(
+                          width: double.infinity,
+                          height: 22,
+                        ),
+                        subtitleStyle: const SkeletonLineStyle(
+                          width: double.infinity,
+                          height: 16,
+                        ),
+                      );
+                    },
+                  ),
+                );
+              } else if (state.shoppingListItemStates.isEmpty) {
+                return const SliverFillRemaining(
+                    child: Center(
+                        child: Text(
+                  "Keine Items die gekauft werden müssen",
+                )));
+              }
+
               return SliverList(
                 delegate: SliverChildBuilderDelegate(
                   (context, index) {
@@ -141,7 +169,7 @@ class EventTabShoppingList extends StatelessWidget {
                       );
                     }
                   },
-                  childCount: state.shoppingListItemStates.length,
+                  childCount: state.shoppingListItemStates.length + 1,
                 ),
               );
             },

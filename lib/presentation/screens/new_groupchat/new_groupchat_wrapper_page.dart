@@ -62,7 +62,20 @@ class NewGroupchatWrapperPage extends StatelessWidget {
             child: Scaffold(
               appBar: AppBar(
                 centerTitle: true,
-                title: const Text('Neuer Gruppenchat'),
+                title: Column(
+                  children: [
+                    const Text('Neuer Gruppenchat'),
+                    BlocBuilder<AddGroupchatCubit, AddGroupchatState>(
+                      buildWhen: (p, c) => p.subtitle != c.subtitle,
+                      builder: (context, state) {
+                        return Text(
+                          state.subtitle,
+                          style: Theme.of(context).textTheme.labelSmall,
+                        );
+                      },
+                    ),
+                  ],
+                ),
               ),
               body: AutoTabsRouter.pageView(
                 routes: const [
@@ -71,6 +84,9 @@ class NewGroupchatWrapperPage extends StatelessWidget {
                   NewGroupchatPermissionsTab(),
                 ],
                 builder: (context, child, pageController) {
+                  BlocProvider.of<AddGroupchatCubit>(context).emitState(
+                    subtitle: context.topRoute.title(context),
+                  );
                   return Column(
                     children: [
                       BlocBuilder<AddGroupchatCubit, AddGroupchatState>(

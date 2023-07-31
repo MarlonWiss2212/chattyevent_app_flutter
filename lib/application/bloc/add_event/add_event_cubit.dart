@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:chattyevent_app_flutter/core/enums/event/event_permission_enum.dart';
 import 'package:chattyevent_app_flutter/infastructure/dto/event/create_private_event_data_dto.dart';
 import 'package:chattyevent_app_flutter/infastructure/dto/geocoding/create_address_dto.dart';
 import 'package:chattyevent_app_flutter/infastructure/dto/event/create_event_permissions_dto.dart';
@@ -29,7 +30,19 @@ class AddEventCubit extends Cubit<AddEventState> {
     required this.calendarUseCases,
     required this.notificationCubit,
   }) : super(AddEventState(
-          permissions: CreateEventPermissionsDto(),
+          subtitle: "",
+          permissions: CreateEventPermissionsDto(
+            addUsers: EventPermissionEnum.organizersonly,
+            changeDescription: EventPermissionEnum.organizersonly,
+            changeAddress: EventPermissionEnum.creatoronly,
+            changeTitle: EventPermissionEnum.organizersonly,
+            changeCoverImage: EventPermissionEnum.creatoronly,
+            changeDate: EventPermissionEnum.creatoronly,
+            changeStatus: EventPermissionEnum.creatoronly,
+            addShoppingListItem: EventPermissionEnum.everyone,
+            updateShoppingListItem: EventPermissionEnum.everyone,
+            deleteShoppingListItem: EventPermissionEnum.everyone,
+          ),
           isGroupchatEvent: false,
           calendarTimeUsers: [],
           privateEventUsersDto: [],
@@ -88,8 +101,9 @@ class AddEventCubit extends Cubit<AddEventState> {
         emitState(status: AddEventStateStatus.initial);
       },
       (event) {
-        homeEventCubit.getFuturePrivateEventsViaApi(reload: true);
+        homeEventCubit.getfutureEventsViaApi(reload: true);
         emit(AddEventState(
+          subtitle: "",
           permissions: CreateEventPermissionsDto(),
           privateEventUsersDto: [],
           calendarTimeUsers: [],
@@ -185,8 +199,10 @@ class AddEventCubit extends Cubit<AddEventState> {
     List<CalendarTimeUserEntity>? calendarTimeUsers,
     CreateEventPermissionsDto? permissions,
     bool? loadingCalendarTimeUsers,
+    String? subtitle,
   }) {
     emit(AddEventState(
+      subtitle: subtitle ?? state.subtitle,
       permissions: permissions ?? state.permissions,
       isGroupchatEvent: isGroupchatEvent ?? state.isGroupchatEvent,
       privateEventUsersDto: privateEventUsersDto ?? state.privateEventUsersDto,

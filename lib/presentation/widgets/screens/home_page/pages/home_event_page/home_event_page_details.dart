@@ -24,7 +24,7 @@ class HomeEventPageDetails extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    if (state.futurePrivateEvents.isNotEmpty) ...[
+                    if (state.futureEvents.isNotEmpty) ...[
                       const SizedBox(height: 20),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -45,10 +45,9 @@ class HomeEventPageDetails extends StatelessWidget {
                         ],
                       ),
                       const SizedBox(height: 8),
-                      EventHorizontalList(
-                          eventStates: state.futurePrivateEvents),
+                      EventHorizontalList(eventStates: state.futureEvents),
                     ],
-                    if (state.pastPrivateEvents.isNotEmpty) ...[
+                    if (state.pastEvents.isNotEmpty) ...[
                       const SizedBox(height: 20),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -70,7 +69,7 @@ class HomeEventPageDetails extends StatelessWidget {
                       ),
                       const SizedBox(height: 8),
                       EventHorizontalList(
-                        eventStates: state.pastPrivateEvents,
+                        eventStates: state.pastEvents,
                       ),
                     ],
                     const SizedBox(height: 8),

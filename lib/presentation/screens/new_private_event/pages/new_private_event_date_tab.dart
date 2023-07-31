@@ -18,11 +18,6 @@ class NewPrivateEventDateTab extends StatelessWidget {
     return Column(
       children: [
         const SizedBox(height: 20),
-        Text(
-          "Datum Seite",
-          style: Theme.of(context).textTheme.titleLarge,
-        ),
-        const SizedBox(height: 20),
         Padding(
           padding: const EdgeInsets.all(8),
           child: BlocBuilder<AddEventCubit, AddEventState>(

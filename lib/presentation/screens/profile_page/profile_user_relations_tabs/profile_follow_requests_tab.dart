@@ -39,6 +39,12 @@ class _ProfileFollowRequestsTabState extends State<ProfileFollowRequestsTab> {
               return const ProfileFollowRequestsTabSkeletonListView();
             }
 
+            if (state.followRequests.isEmpty) {
+              return const SliverFillRemaining(
+                child: Center(child: Text("Keine Freundschaftsanfragen")),
+              );
+            }
+
             return ProfileFollowRequestsTabListView(
               followRequests: state.followRequests,
               loadMore: () {

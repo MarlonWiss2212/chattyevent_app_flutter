@@ -19,8 +19,8 @@ class _HomeEventPageState extends State<HomeEventPage> {
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<HomeEventCubit>(context).getFuturePrivateEventsViaApi();
-    BlocProvider.of<HomeEventCubit>(context).getPastPrivateEventsViaApi();
+    BlocProvider.of<HomeEventCubit>(context).getfutureEventsViaApi();
+    BlocProvider.of<HomeEventCubit>(context).getpastEventsViaApi();
   }
 
   @override
@@ -56,16 +56,16 @@ class _HomeEventPageState extends State<HomeEventPage> {
             onRefresh: () async {
               await Future.wait([
                 BlocProvider.of<HomeEventCubit>(context)
-                    .getFuturePrivateEventsViaApi(reload: true),
+                    .getfutureEventsViaApi(reload: true),
                 BlocProvider.of<HomeEventCubit>(context)
-                    .getPastPrivateEventsViaApi(reload: true),
+                    .getpastEventsViaApi(reload: true),
               ]);
             },
           ),
           BlocBuilder<HomeEventCubit, HomeEventState>(
             builder: (context, state) {
-              if (state.futurePrivateEvents.isEmpty &&
-                  state.pastPrivateEvents.isEmpty &&
+              if (state.futureEvents.isEmpty &&
+                  state.pastEvents.isEmpty &&
                   state.loadingFutureEvents == false &&
                   state.loadingPastEvents == false) {
                 return const SliverFillRemaining(
@@ -73,8 +73,8 @@ class _HomeEventPageState extends State<HomeEventPage> {
                 );
               }
 
-              if (state.futurePrivateEvents.isEmpty &&
-                  state.pastPrivateEvents.isEmpty &&
+              if (state.futureEvents.isEmpty &&
+                  state.pastEvents.isEmpty &&
                   (state.loadingFutureEvents == true ||
                       state.loadingPastEvents == true)) {
                 return const EventHorizontalListSkeleton();

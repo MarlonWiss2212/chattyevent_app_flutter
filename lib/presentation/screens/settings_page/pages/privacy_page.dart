@@ -83,14 +83,14 @@ class _SettingsPrivacyPageState extends State<SettingsPrivacyPage> {
                     onTap: () => AutoRouter.of(context).push(
                       const GroupchatAddMeRoute(),
                     ),
-                    trailing: const Icon(Ionicons.arrow_forward),
+                    trailing: const Icon(Ionicons.chevron_forward),
                   ),
                   ListTile(
                     title: const Text("Privates Event hinzufügen"),
                     onTap: () => AutoRouter.of(context).push(
                       const PrivateEventAddMeRoute(),
                     ),
-                    trailing: const Icon(Ionicons.arrow_forward),
+                    trailing: const Icon(Ionicons.chevron_forward),
                   ),
                   const PrivacyPageCalendarWatchIHaveTimeSwitch(),
                 ],

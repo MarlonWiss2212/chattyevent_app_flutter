@@ -36,11 +36,6 @@ class _NewGroupchatSelectUserTabState extends State<NewGroupchatSelectUserTab> {
           return Column(
             children: [
               const SizedBox(height: 20),
-              Text(
-                "Mitglieder hinzufügen",
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-              const SizedBox(height: 20),
               SelectedUsersList(
                 users: state.groupchatUsers.map((e) => e.user).toList(),
                 onPress: (user) => BlocProvider.of<AddGroupchatCubit>(context)

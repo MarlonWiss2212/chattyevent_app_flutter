@@ -134,60 +134,69 @@ class AppRouter extends $AppRouter {
                     initial: true,
                     guards: [authGuard],
                     path: '',
+                    title: (context, data) => "",
                   ),
                   AutoRoute(
                     page: NewGroupchatSelectUserTab.page,
                     initial: false,
                     guards: [authGuard],
                     path: 'users',
+                    title: (context, data) => "Mitglieder Wählen",
                   ),
                   AutoRoute(
                     page: NewGroupchatPermissionsTab.page,
                     initial: false,
                     guards: [authGuard],
-                    path: 'permssions',
+                    path: 'permissions',
+                    title: (context, data) => "Mitglieder Berechtigungen",
                   ),
                   RedirectRoute(path: '*', redirectTo: '')
                 ],
               ),
 
-              // new private event
+              // new event
               CustomRoute(
                 transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
                 page: NewPrivateEventRoute.page,
                 guards: [authGuard],
-                path: 'new-private-event',
+                path: 'new-event',
                 children: [
                   AutoRoute(
                     page: NewPrivateEventDetailsTab.page,
                     initial: true,
                     guards: [authGuard],
                     path: '',
+                    title: (context, data) => "",
                   ),
                   AutoRoute(
                     page: NewPrivateEventTypeTab.page,
                     guards: [authGuard],
                     path: 'type',
+                    title: (context, data) => "Typ",
                   ),
                   AutoRoute(
                     page: NewPrivateEventSearchTab.page,
                     guards: [authGuard],
                     path: 'search',
+                    title: (context, data) => "Suche",
                   ),
                   AutoRoute(
                     page: NewPrivateEventDateTab.page,
                     guards: [authGuard],
                     path: 'date',
+                    title: (context, data) => "Datum",
                   ),
                   AutoRoute(
                     page: NewPrivateEventLocationTab.page,
                     guards: [authGuard],
                     path: 'location',
+                    title: (context, data) => "Standort (optional)",
                   ),
                   AutoRoute(
                     page: NewPrivateEventPermissionsTab.page,
                     guards: [authGuard],
                     path: 'permissions',
+                    title: (context, data) => "Mitglieder Berechtigungen",
                   ),
                   RedirectRoute(path: '*', redirectTo: '')
                 ],
@@ -228,7 +237,7 @@ class AppRouter extends $AppRouter {
           ),
           CustomRoute(
             transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
-            page: GroupchatFuturePrivateEventsRoute.page,
+            page: GroupchatfutureEventsRoute.page,
             guards: [authGuard],
             path: 'events',
           ),

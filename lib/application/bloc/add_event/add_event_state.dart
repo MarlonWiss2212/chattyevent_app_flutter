@@ -6,6 +6,8 @@ class AddEventState {
   final EventEntity? addedEvent;
   final AddEventStateStatus status;
 
+  final String subtitle;
+
   final String? title;
   final String? description;
   final File? coverImage;
@@ -31,6 +33,7 @@ class AddEventState {
 
   AddEventState({
     this.addedEvent,
+    required this.subtitle,
     required this.calendarTimeUsers,
     this.loadingCalendarTimeUsers = false,
     this.status = AddEventStateStatus.initial,

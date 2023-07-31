@@ -16,46 +16,41 @@ class HomeEventCubit extends Cubit<HomeEventState> {
   HomeEventCubit({
     required this.eventUseCases,
     required this.notificationCubit,
-  }) : super(const HomeEventState(
-            pastPrivateEvents: [], futurePrivateEvents: []));
+  }) : super(const HomeEventState(pastEvents: [], futureEvents: []));
 
   CurrentEventState? replaceOrAdd({
     required CurrentEventState privateEventState,
     bool onlyReplace = false,
   }) {
-    int foundIndex = state.pastPrivateEvents.indexWhere(
+    int foundIndex = state.pastEvents.indexWhere(
       (element) => element.event.id == privateEventState.event.id,
     );
 
     if (foundIndex != -1) {
-      List<CurrentEventState> newPastPrivateEventStates =
-          state.pastPrivateEvents;
-      newPastPrivateEventStates[foundIndex] = privateEventState;
-      emitState(pastPrivateEvents: newPastPrivateEventStates);
-      return newPastPrivateEventStates[foundIndex];
+      List<CurrentEventState> newpastEventstates = state.pastEvents;
+      newpastEventstates[foundIndex] = privateEventState;
+      emitState(pastEvents: newpastEventstates);
+      return newpastEventstates[foundIndex];
     } else if (onlyReplace == false &&
         (privateEventState.event.eventDate.compareTo(DateTime.now()) == -1)) {
       emitState(
-        pastPrivateEvents: List.from(state.pastPrivateEvents)
-          ..add(privateEventState),
+        pastEvents: List.from(state.pastEvents)..add(privateEventState),
       );
       return privateEventState;
     }
 
-    int foundFutureIndex = state.futurePrivateEvents.indexWhere(
+    int foundFutureIndex = state.futureEvents.indexWhere(
       (element) => element.event.id == privateEventState.event.id,
     );
 
     if (foundFutureIndex != -1) {
-      List<CurrentEventState> newFuturePrivateEventStates =
-          state.futurePrivateEvents;
-      newFuturePrivateEventStates[foundFutureIndex] = privateEventState;
-      emitState(futurePrivateEvents: newFuturePrivateEventStates);
-      return newFuturePrivateEventStates[foundFutureIndex];
+      List<CurrentEventState> newfutureEventstates = state.futureEvents;
+      newfutureEventstates[foundFutureIndex] = privateEventState;
+      emitState(futureEvents: newfutureEventstates);
+      return newfutureEventstates[foundFutureIndex];
     } else if (onlyReplace == false) {
       emitState(
-        futurePrivateEvents: List.from(state.futurePrivateEvents)
-          ..add(privateEventState),
+        futureEvents: List.from(state.futureEvents)..add(privateEventState),
       );
       return privateEventState;
     }
@@ -81,22 +76,22 @@ class HomeEventCubit extends Cubit<HomeEventState> {
   }
 
   void delete({required String eventId}) {
-    List<CurrentEventState> newFuturePrivateEvents = state.futurePrivateEvents;
-    List<CurrentEventState> newPastPrivateEvents = state.pastPrivateEvents;
+    List<CurrentEventState> newfutureEvents = state.futureEvents;
+    List<CurrentEventState> newpastEvents = state.pastEvents;
 
-    newFuturePrivateEvents.removeWhere(
+    newfutureEvents.removeWhere(
       (element) => element.event.id == eventId,
     );
-    newPastPrivateEvents.removeWhere(
+    newpastEvents.removeWhere(
       (element) => element.event.id == eventId,
     );
     emitState(
-      futurePrivateEvents: newFuturePrivateEvents,
-      pastPrivateEvents: newPastPrivateEvents,
+      futureEvents: newfutureEvents,
+      pastEvents: newpastEvents,
     );
   }
 
-  Future getFuturePrivateEventsViaApi({
+  Future getfutureEventsViaApi({
     bool reload = false,
   }) async {
     emitState(loadingFutureEvents: true);
@@ -106,11 +101,11 @@ class HomeEventCubit extends Cubit<HomeEventState> {
       findEventsFilter: FindEventsFilter(onlyFutureEvents: true),
       limitOffsetFilter: LimitOffsetFilter(
         limit: reload
-            ? state.futurePrivateEvents.length > 20
-                ? state.futurePrivateEvents.length
+            ? state.futureEvents.length > 20
+                ? state.futureEvents.length
                 : 20
             : 20,
-        offset: reload ? 0 : state.futurePrivateEvents.length,
+        offset: reload ? 0 : state.futureEvents.length,
       ),
     );
 
@@ -124,7 +119,7 @@ class HomeEventCubit extends Cubit<HomeEventState> {
 
         if (reload) {
           emitState(
-            futurePrivateEvents: privateEvents
+            futureEvents: privateEvents
                 .map(
                   (e) => CurrentEventState.fromPrivateEvent(
                     event: e,
@@ -147,7 +142,7 @@ class HomeEventCubit extends Cubit<HomeEventState> {
     );
   }
 
-  Future getPastPrivateEventsViaApi({
+  Future getpastEventsViaApi({
     bool reload = false,
   }) async {
     emitState(loadingPastEvents: true);
@@ -157,11 +152,11 @@ class HomeEventCubit extends Cubit<HomeEventState> {
       findEventsFilter: FindEventsFilter(onlyPastEvents: true),
       limitOffsetFilter: LimitOffsetFilter(
         limit: reload
-            ? state.pastPrivateEvents.length > 20
-                ? state.pastPrivateEvents.length
+            ? state.pastEvents.length > 20
+                ? state.pastEvents.length
                 : 20
             : 20,
-        offset: reload ? 0 : state.pastPrivateEvents.length,
+        offset: reload ? 0 : state.pastEvents.length,
       ),
     );
 
@@ -175,7 +170,7 @@ class HomeEventCubit extends Cubit<HomeEventState> {
 
         if (reload) {
           emitState(
-            pastPrivateEvents: privateEvents
+            pastEvents: privateEvents
                 .map(
                   (e) => CurrentEventState.fromPrivateEvent(
                     event: e,
@@ -199,20 +194,20 @@ class HomeEventCubit extends Cubit<HomeEventState> {
   }
 
   emitState({
-    List<CurrentEventState>? futurePrivateEvents,
-    List<CurrentEventState>? pastPrivateEvents,
+    List<CurrentEventState>? futureEvents,
+    List<CurrentEventState>? pastEvents,
     bool? loadingFutureEvents,
     bool? loadingPastEvents,
   }) {
-    futurePrivateEvents?.sort(
+    futureEvents?.sort(
       (a, b) => a.event.eventDate.compareTo(b.event.eventDate),
     );
-    pastPrivateEvents?.sort(
+    pastEvents?.sort(
       (a, b) => a.event.eventDate.compareTo(b.event.eventDate),
     );
     emit(HomeEventState(
-      futurePrivateEvents: futurePrivateEvents ?? state.futurePrivateEvents,
-      pastPrivateEvents: pastPrivateEvents ?? state.pastPrivateEvents,
+      futureEvents: futureEvents ?? state.futureEvents,
+      pastEvents: pastEvents ?? state.pastEvents,
       loadingFutureEvents: loadingFutureEvents ?? state.loadingFutureEvents,
       loadingPastEvents: loadingPastEvents ?? state.loadingPastEvents,
     ));

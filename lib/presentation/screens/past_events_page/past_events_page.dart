@@ -33,12 +33,11 @@ class PastEventsPage extends StatelessWidget {
           ),
           CupertinoSliverRefreshControl(
             onRefresh: () => BlocProvider.of<HomeEventCubit>(context)
-                .getPastPrivateEventsViaApi(reload: true),
+                .getpastEventsViaApi(reload: true),
           ),
           BlocBuilder<HomeEventCubit, HomeEventState>(
             builder: (context, state) {
-              if (state.loadingPastEvents == true &&
-                  state.pastPrivateEvents.isEmpty) {
+              if (state.loadingPastEvents == true && state.pastEvents.isEmpty) {
                 return SliverFillRemaining(
                   child: SkeletonListView(
                     itemBuilder: (p0, p1) {
@@ -57,7 +56,7 @@ class PastEventsPage extends StatelessWidget {
                     },
                   ),
                 );
-              } else if (state.pastPrivateEvents.isEmpty) {
+              } else if (state.pastEvents.isEmpty) {
                 return const SliverFillRemaining(
                   child: Center(child: Text("Keine Vergangenen Events")),
                 );
@@ -66,25 +65,26 @@ class PastEventsPage extends StatelessWidget {
               return SliverList(
                 delegate: SliverChildBuilderDelegate(
                   (context, index) {
-                    if (index < state.pastPrivateEvents.length) {
+                    if (index < state.pastEvents.length) {
                       return PrivateEventListItem(
-                        privateEventState: state.pastPrivateEvents[index],
+                        privateEventState: state.pastEvents[index],
                       );
                     }
                     if (state.loadingPastEvents) {
                       return const Center(
-                          child: CircularProgressIndicator.adaptive());
+                        child: CircularProgressIndicator.adaptive(),
+                      );
                     } else {
                       return IconButton(
                         onPressed: () {
                           BlocProvider.of<HomeEventCubit>(context)
-                              .getPastPrivateEventsViaApi();
+                              .getpastEventsViaApi();
                         },
                         icon: const Icon(Icons.add_circle),
                       );
                     }
                   },
-                  childCount: state.pastPrivateEvents.length + 1,
+                  childCount: state.pastEvents.length + 1,
                 ),
               );
             },

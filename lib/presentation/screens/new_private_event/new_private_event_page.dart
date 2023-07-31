@@ -70,7 +70,20 @@ class NewPrivateEventPage extends StatelessWidget {
             child: Scaffold(
               appBar: AppBar(
                 centerTitle: true,
-                title: const Text('Neues Privates Event'),
+                title: Column(
+                  children: [
+                    const Text('Neues Event'),
+                    BlocBuilder<AddEventCubit, AddEventState>(
+                      buildWhen: (p, c) => p.subtitle != c.subtitle,
+                      builder: (context, state) {
+                        return Text(
+                          state.subtitle,
+                          style: Theme.of(context).textTheme.labelSmall,
+                        );
+                      },
+                    ),
+                  ],
+                ),
               ),
               body: AutoTabsRouter.pageView(
                 routes: const [
@@ -82,6 +95,9 @@ class NewPrivateEventPage extends StatelessWidget {
                   NewPrivateEventPermissionsTab(),
                 ],
                 builder: (context, child, pageController) {
+                  BlocProvider.of<AddEventCubit>(context).emitState(
+                    subtitle: context.topRoute.title(context),
+                  );
                   return Column(
                     children: [
                       BlocBuilder<AddEventCubit, AddEventState>(

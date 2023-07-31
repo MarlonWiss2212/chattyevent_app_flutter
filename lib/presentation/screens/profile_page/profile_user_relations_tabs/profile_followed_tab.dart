@@ -38,6 +38,12 @@ class _ProfileFollowedTabState extends State<ProfileFollowedTab> {
               return const ProfileFollowedTabSkeletonListView();
             }
 
+            if (state.followed.isEmpty) {
+              return const SliverFillRemaining(
+                child: Center(child: Text("Keinen Gefolgt")),
+              );
+            }
+
             return ProfileFollowedTabListView(
               followed: state.followed,
               loadMore: () {
