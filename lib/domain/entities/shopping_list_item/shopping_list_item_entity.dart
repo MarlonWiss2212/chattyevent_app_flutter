@@ -1,3 +1,5 @@
+import 'package:chattyevent_app_flutter/domain/entities/bought_amount_entity.dart';
+
 class ShoppingListItemEntity {
   final String id;
   final DateTime? createdAt;
@@ -5,7 +7,7 @@ class ShoppingListItemEntity {
   final String? itemName;
   final String? unit;
   final double? amount;
-  final double? boughtAmount;
+  final List<BoughtAmountEntity>? boughtAmounts;
   final String? userToBuyItem;
   final String? eventTo;
   final String? createdBy;
@@ -16,7 +18,7 @@ class ShoppingListItemEntity {
     this.amount,
     this.itemName,
     this.eventTo,
-    this.boughtAmount,
+    this.boughtAmounts,
     this.unit,
     this.createdBy,
     this.updatedAt,
@@ -32,7 +34,7 @@ class ShoppingListItemEntity {
       itemName: newEntity.itemName ?? oldEntity.itemName,
       unit: newEntity.unit ?? oldEntity.unit,
       amount: newEntity.amount ?? oldEntity.amount,
-      boughtAmount: newEntity.boughtAmount ?? oldEntity.boughtAmount,
+      boughtAmounts: newEntity.boughtAmounts ?? oldEntity.boughtAmounts,
       userToBuyItem: newEntity.userToBuyItem ?? oldEntity.userToBuyItem,
       eventTo: newEntity.eventTo ?? oldEntity.eventTo,
       createdBy: newEntity.createdBy ?? oldEntity.createdBy,

@@ -1,4 +1,5 @@
 import 'package:chattyevent_app_flutter/core/enums/event/event_user/event_user_status_enum.dart';
+import 'package:chattyevent_app_flutter/domain/entities/bought_amount_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:chattyevent_app_flutter/domain/entities/event/event_user_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/shopping_list_item/shopping_list_item_entity.dart';
@@ -16,8 +17,11 @@ class ShoppingListItemTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final gradientWidth =
-        ((shoppingListItem.boughtAmount ?? 0) / shoppingListItem.amount!);
+    double boughtAmount = 0;
+    for (BoughtAmountEntity b in shoppingListItem.boughtAmounts ?? []) {
+      boughtAmount += b.boughtAmount ?? 0;
+    }
+    final gradientWidth = (boughtAmount / (shoppingListItem.amount ?? 0.0));
     return ListTile(
       title: Wrap(
         spacing: 8,
@@ -50,7 +54,7 @@ class ShoppingListItemTile extends StatelessWidget {
       subtitle: Row(
         children: [
           Text(
-            shoppingListItem.boughtAmount?.toString() ?? "0",
+            boughtAmount.toString(),
             style: Theme.of(context).textTheme.labelMedium,
             softWrap: true,
             overflow: TextOverflow.ellipsis,

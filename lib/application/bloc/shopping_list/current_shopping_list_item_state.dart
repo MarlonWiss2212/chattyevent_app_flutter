@@ -8,18 +8,12 @@ enum CurrentShoppingListItemStateStatus {
 
 class CurrentShoppingListItemState {
   final CurrentShoppingListItemStateStatus status;
-
   final ShoppingListItemEntity shoppingListItem;
-  final List<BoughtAmountEntity> boughtAmounts;
-
-  final bool loadingBoughtAmounts;
-  final bool loadingShoppingListItem;
+  final bool loading;
 
   const CurrentShoppingListItemState({
     this.status = CurrentShoppingListItemStateStatus.initial,
-    required this.loadingShoppingListItem,
-    required this.loadingBoughtAmounts,
+    required this.loading,
     required this.shoppingListItem,
-    required this.boughtAmounts,
   });
 }

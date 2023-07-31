@@ -1,5 +1,6 @@
 import 'package:chattyevent_app_flutter/application/bloc/current_event/current_event_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
+import 'package:chattyevent_app_flutter/domain/entities/bought_amount_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/shopping_list/current_shopping_list_item_cubit.dart';
@@ -15,8 +16,13 @@ class CurrentShoppingListItemPageWithProgressBar extends StatelessWidget {
     return BlocBuilder<CurrentShoppingListItemCubit,
         CurrentShoppingListItemState>(
       builder: (context, state) {
-        final gradientWidth = ((state.shoppingListItem.boughtAmount ?? 0) /
-            state.shoppingListItem.amount!);
+        double boughtAmount = 0;
+        for (BoughtAmountEntity b
+            in state.shoppingListItem.boughtAmounts ?? []) {
+          boughtAmount += b.boughtAmount ?? 0;
+        }
+        final gradientWidth =
+            (boughtAmount / (state.shoppingListItem.amount ?? 0.0));
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8),
           child: Container(
@@ -42,7 +48,7 @@ class CurrentShoppingListItemPageWithProgressBar extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "${state.shoppingListItem.boughtAmount ?? 0} von ",
+                        "$boughtAmount von ",
                         style: Theme.of(context).textTheme.labelLarge?.apply(
                               color: Theme.of(context).colorScheme.primary,
                             ),

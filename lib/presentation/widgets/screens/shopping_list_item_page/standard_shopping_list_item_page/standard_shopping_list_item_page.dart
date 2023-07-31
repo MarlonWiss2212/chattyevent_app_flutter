@@ -56,7 +56,7 @@ class StandardShoppingListItemPage extends StatelessWidget {
                 BlocProvider.of<CurrentEventCubit>(context)
                     .reloadEventStandardDataViaApi(),
                 BlocProvider.of<CurrentShoppingListItemCubit>(context)
-                    .reloadShoppingListItemStandardDataViaApi()
+                    .getShoppingListItemViaApi()
               ]);
             },
           ),

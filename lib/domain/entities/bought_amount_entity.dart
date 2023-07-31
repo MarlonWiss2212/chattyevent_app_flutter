@@ -1,16 +1,14 @@
 class BoughtAmountEntity {
-  String id;
-  DateTime? createdAt;
-  DateTime? updatedAt;
-  double? boughtAmount;
-  String? shoppingListItemTo;
-  String? createdBy;
+  final String id;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
+  final double? boughtAmount;
+  final String? createdBy;
 
   BoughtAmountEntity({
     required this.id,
     this.createdAt,
     this.boughtAmount,
-    this.shoppingListItemTo,
     this.createdBy,
     this.updatedAt,
   });
@@ -22,8 +20,6 @@ class BoughtAmountEntity {
     return BoughtAmountEntity(
       id: newEntity.id,
       boughtAmount: newEntity.boughtAmount ?? oldEntity.boughtAmount,
-      shoppingListItemTo:
-          newEntity.shoppingListItemTo ?? oldEntity.shoppingListItemTo,
       createdBy: newEntity.createdBy ?? oldEntity.createdBy,
       createdAt: newEntity.createdAt ?? oldEntity.createdAt,
       updatedAt: newEntity.updatedAt ?? oldEntity.updatedAt,

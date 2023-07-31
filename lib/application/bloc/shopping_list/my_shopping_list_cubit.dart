@@ -115,10 +115,8 @@ class MyShoppingListCubit extends Cubit<MyShoppingListState> {
             shoppingListItemStates: shoppingListItems
                 .map(
                   (e) => CurrentShoppingListItemState(
-                    loadingShoppingListItem: false,
-                    loadingBoughtAmounts: false,
+                    loading: false,
                     shoppingListItem: e,
-                    boughtAmounts: [],
                   ),
                 )
                 .toList(),
@@ -129,10 +127,8 @@ class MyShoppingListCubit extends Cubit<MyShoppingListState> {
             shoppingListItemStates: shoppingListItems
                 .map(
                   (e) => CurrentShoppingListItemState(
-                    loadingShoppingListItem: false,
-                    loadingBoughtAmounts: false,
+                    loading: false,
                     shoppingListItem: e,
-                    boughtAmounts: [],
                   ),
                 )
                 .toList(),

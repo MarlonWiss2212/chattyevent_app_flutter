@@ -1,4 +1,3 @@
-import 'package:collection/collection.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
@@ -7,11 +6,8 @@ import 'package:chattyevent_app_flutter/application/bloc/shopping_list/my_shoppi
 import 'package:chattyevent_app_flutter/infastructure/dto/shopping_list_item/bought_amount/create_bought_amount_dto.dart';
 import 'package:chattyevent_app_flutter/infastructure/dto/shopping_list_item/bought_amount/update_bought_amount_dto.dart';
 import 'package:chattyevent_app_flutter/infastructure/dto/shopping_list_item/update_shopping_list_item_dto.dart';
-import 'package:chattyevent_app_flutter/infastructure/filter/limit_offset_filter.dart';
-import 'package:chattyevent_app_flutter/infastructure/filter/shopping_list_item/bought_amount/find_bought_amounts_filter.dart';
 import 'package:chattyevent_app_flutter/infastructure/filter/shopping_list_item/bought_amount/find_one_bought_amount_filter.dart';
 import 'package:chattyevent_app_flutter/infastructure/filter/shopping_list_item/find_one_shopping_list_item_filter.dart';
-import 'package:chattyevent_app_flutter/core/response/shopping-list-item-data.response.dart';
 import 'package:chattyevent_app_flutter/domain/entities/bought_amount_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/shopping_list_item/shopping_list_item_entity.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/bought_amount_usecases.dart';
@@ -35,50 +31,8 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
     required this.shoppingListItemUseCases,
   });
 
-  Future reloadShoppingListItemStandardDataViaApi() async {
-    emitState(loadingShoppingListItem: true, loadingBoughtAmounts: true);
-
-    final Either<NotificationAlert, ShoppingListItemDataResponse>
-        dataOrFailure =
-        await shoppingListItemUseCases.getShoppingListItemDataViaApi(
-      findOneShoppingListItemFilter: FindOneShoppingListItemFilter(
-        shoppingListItemTo: state.shoppingListItem.id,
-      ),
-      limitOffsetFilterBoughtAmounts: LimitOffsetFilter(
-        limit:
-            state.boughtAmounts.length > 20 ? state.boughtAmounts.length : 20,
-        offset: 0,
-      ),
-    );
-
-    dataOrFailure.fold(
-      (alert) {
-        notificationCubit.newAlert(notificationAlert: alert);
-        emitState(loadingShoppingListItem: false);
-      },
-      (data) {
-        emitState(
-          loadingShoppingListItem: false,
-          loadingBoughtAmounts: false,
-          shoppingListItem: data.shoppingListItem,
-          boughtAmounts: data.boughtAmounts,
-        );
-        shoppingListCubitOrPrivateEventCubit.fold(
-          (l) => l.replaceOrAdd(
-            addIfItsNotFound: false,
-            shoppingListItemState: state,
-          ),
-          (r) => r.replaceOrAddShoppingListItem(
-            addIfItsNotFound: false,
-            shoppingListItemState: state,
-          ),
-        );
-      },
-    );
-  }
-
   Future getShoppingListItemViaApi() async {
-    emitState(loadingShoppingListItem: true);
+    emitState(loading: true);
 
     final Either<NotificationAlert, ShoppingListItemEntity>
         shoppingListItemOrFailure =
@@ -90,11 +44,11 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
     shoppingListItemOrFailure.fold(
       (alert) {
         notificationCubit.newAlert(notificationAlert: alert);
-        emitState(loadingShoppingListItem: false);
+        emitState(loading: false);
       },
       (shoppingListItem) {
         emitState(
-          loadingShoppingListItem: false,
+          loading: false,
           shoppingListItem: shoppingListItem,
         );
         shoppingListCubitOrPrivateEventCubit.fold(
@@ -172,57 +126,7 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
     );
   }
 
-  Future getBoughtAmounts({
-    bool reload = false,
-  }) async {
-    emitState(loadingBoughtAmounts: true);
-    final Either<NotificationAlert, List<BoughtAmountEntity>>
-        boughtAmountOrFailure =
-        await boughtAmountUseCases.getBoughtAmountsViaApi(
-      findBoughtAmountsFilter: FindBoughtAmountsFilter(
-        shoppingListItemTo: state.shoppingListItem.id,
-      ),
-      limitOffsetFilter: LimitOffsetFilter(
-        limit: reload
-            ? state.boughtAmounts.length > 20
-                ? state.boughtAmounts.length
-                : 20
-            : 20,
-        offset: reload ? 0 : state.boughtAmounts.length,
-      ),
-    );
-
-    boughtAmountOrFailure.fold(
-      (alert) {
-        notificationCubit.newAlert(notificationAlert: alert);
-        emitState(loadingBoughtAmounts: false);
-      },
-      (boughtAmounts) {
-        List<BoughtAmountEntity> newBoughtAmounts =
-            reload ? boughtAmounts : [...state.boughtAmounts, ...boughtAmounts];
-
-        emitState(
-          boughtAmounts: newBoughtAmounts,
-          loadingBoughtAmounts: false,
-        );
-
-        shoppingListCubitOrPrivateEventCubit.fold(
-          (l) => l.replaceOrAdd(
-            addIfItsNotFound: false,
-            shoppingListItemState: state,
-          ),
-          (r) => r.replaceOrAddShoppingListItem(
-            addIfItsNotFound: false,
-            shoppingListItemState: state,
-          ),
-        );
-      },
-    );
-  }
-
-  Future addBoughtAmount({
-    required double boughtAmount,
-  }) async {
+  Future addBoughtAmount({required double boughtAmount}) async {
     final Either<NotificationAlert, BoughtAmountEntity> boughtAmountOrFailure =
         await boughtAmountUseCases.createBoughtAmountViaApi(
       createBoughtAmountDto: CreateBoughtAmountDto(
@@ -236,18 +140,15 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
       (boughtAmount) {
         final List<BoughtAmountEntity> newBoughtAmounts = [
           boughtAmount,
-          ...state.boughtAmounts
+          if (state.shoppingListItem.boughtAmounts != null) ...{
+            ...state.shoppingListItem.boughtAmounts!,
+          }
         ];
 
         emitState(
-          boughtAmounts: newBoughtAmounts,
           shoppingListItem: ShoppingListItemEntity.merge(
             newEntity: ShoppingListItemEntity(
-              id: state.shoppingListItem.id,
-              boughtAmount: newBoughtAmounts
-                  .map((e) => e.boughtAmount!)
-                  .reduce((a, b) => a + b),
-            ),
+                id: state.shoppingListItem.id, boughtAmounts: newBoughtAmounts),
             oldEntity: state.shoppingListItem,
           ),
         );
@@ -280,12 +181,19 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
     boughtAmountOrFailure.fold(
       (alert) => notificationCubit.newAlert(notificationAlert: alert),
       (boughtAmount) {
-        final newBoughtAmountList = state.boughtAmounts
-            .where((element) => element.id != boughtAmount.id)
-            .toList();
+        final newBoughtAmountList = state.shoppingListItem.boughtAmounts
+                ?.where((element) => element.id != boughtAmount.id)
+                .toList() ??
+            [];
         newBoughtAmountList.add(boughtAmount);
         emitState(
-          boughtAmounts: (newBoughtAmountList),
+          shoppingListItem: ShoppingListItemEntity.merge(
+            newEntity: ShoppingListItemEntity(
+              id: state.shoppingListItem.id,
+              boughtAmounts: newBoughtAmountList,
+            ),
+            oldEntity: state.shoppingListItem,
+          ),
         );
         shoppingListCubitOrPrivateEventCubit.fold(
           (l) => l.replaceOrAdd(
@@ -315,15 +223,14 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
       (alert) => notificationCubit.newAlert(notificationAlert: alert),
       (deleted) {
         if (deleted) {
-          final newBoughtAmounts = state.boughtAmounts
-              .where((element) => element.id != boughtAmountId)
+          final newBoughtAmounts = state.shoppingListItem.boughtAmounts
+              ?.where((element) => element.id != boughtAmountId)
               .toList();
           emitState(
-            boughtAmounts: newBoughtAmounts,
             shoppingListItem: ShoppingListItemEntity.merge(
               newEntity: ShoppingListItemEntity(
                 id: state.shoppingListItem.id,
-                boughtAmount: newBoughtAmounts.map((e) => e.boughtAmount!).sum,
+                boughtAmounts: newBoughtAmounts,
               ),
               oldEntity: state.shoppingListItem,
             ),
@@ -345,18 +252,13 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
 
   void emitState({
     ShoppingListItemEntity? shoppingListItem,
-    bool? loadingShoppingListItem,
-    bool? loadingBoughtAmounts,
+    bool? loading,
     CurrentShoppingListItemStateStatus? status,
-    List<BoughtAmountEntity>? boughtAmounts,
   }) {
     emit(CurrentShoppingListItemState(
       status: status ?? CurrentShoppingListItemStateStatus.initial,
-      boughtAmounts: boughtAmounts ?? state.boughtAmounts,
       shoppingListItem: shoppingListItem ?? state.shoppingListItem,
-      loadingBoughtAmounts: loadingBoughtAmounts ?? state.loadingBoughtAmounts,
-      loadingShoppingListItem:
-          loadingShoppingListItem ?? state.loadingShoppingListItem,
+      loading: loading ?? state.loading,
     ));
   }
 }

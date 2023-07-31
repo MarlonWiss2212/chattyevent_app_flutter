@@ -37,7 +37,7 @@ class StandardShoppingListItemWrapperPage extends StatelessWidget {
           param1: BlocProvider.of<AuthCubit>(context).state,
         ),
         notificationCubit: BlocProvider.of<NotificationCubit>(context),
-      )..reloadShoppingListItemStandardDataViaApi(),
+      )..getShoppingListItemViaApi(),
       child: Builder(
         builder: (context) {
           if (setCurrentPrivateEvent) {

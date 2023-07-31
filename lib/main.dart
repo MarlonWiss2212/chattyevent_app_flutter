@@ -24,7 +24,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   final List<Future> futures = [
-    dotenv.load(fileName: '.env'),
+    dotenv.load(fileName: '.dev.env'),
     InjectionUtils.initialize(),
   ];
   if (!kIsWeb) {

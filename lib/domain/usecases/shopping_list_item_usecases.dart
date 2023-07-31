@@ -5,7 +5,6 @@ import 'package:chattyevent_app_flutter/infastructure/dto/shopping_list_item/upd
 import 'package:chattyevent_app_flutter/infastructure/filter/limit_offset_filter.dart';
 import 'package:chattyevent_app_flutter/infastructure/filter/shopping_list_item/find_one_shopping_list_item_filter.dart';
 import 'package:chattyevent_app_flutter/infastructure/filter/shopping_list_item/find_shopping_list_items_filter.dart';
-import 'package:chattyevent_app_flutter/core/response/shopping-list-item-data.response.dart';
 import 'package:chattyevent_app_flutter/domain/entities/shopping_list_item/shopping_list_item_entity.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/shopping_list_item_repository.dart';
 
@@ -39,17 +38,6 @@ class ShoppingListItemUseCases {
   }) async {
     return await shoppingListItemRepository.getShoppingListItemViaApi(
       findOneShoppingListItemFilter: findOneShoppingListItemFilter,
-    );
-  }
-
-  Future<Either<NotificationAlert, ShoppingListItemDataResponse>>
-      getShoppingListItemDataViaApi({
-    required FindOneShoppingListItemFilter findOneShoppingListItemFilter,
-    required LimitOffsetFilter limitOffsetFilterBoughtAmounts,
-  }) async {
-    return await shoppingListItemRepository.getShoppingListItemDataViaApi(
-      findOneShoppingListItemFilter: findOneShoppingListItemFilter,
-      limitOffsetFilterBoughtAmounts: limitOffsetFilterBoughtAmounts,
     );
   }
 

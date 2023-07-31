@@ -27,7 +27,6 @@ class BoughtAmountRepositoryImpl implements BoughtAmountRepository {
           createBoughtAmount(createBoughtAmountInput: \$input) {
             _id
             boughtAmount
-            shoppingListItemTo
             createdAt
             updatedAt
             createdBy
@@ -67,7 +66,6 @@ class BoughtAmountRepositoryImpl implements BoughtAmountRepository {
           findBoughtAmounts(filter: \$filter, limitOffsetInput: \$limitOffsetInput) {
             _id
             boughtAmount
-            shoppingListItemTo
             createdAt
             updatedAt
             createdBy
@@ -110,7 +108,6 @@ class BoughtAmountRepositoryImpl implements BoughtAmountRepository {
           updateBoughtAmount(updateBoughtAmountInput: \$input, filter: filter) {
             _id
             boughtAmount
-            shoppingListItemTo
             createdAt
             updatedAt
             createdBy

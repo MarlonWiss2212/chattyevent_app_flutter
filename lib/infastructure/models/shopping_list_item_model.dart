@@ -1,4 +1,6 @@
+import 'package:chattyevent_app_flutter/domain/entities/bought_amount_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/shopping_list_item/shopping_list_item_entity.dart';
+import 'package:chattyevent_app_flutter/infastructure/models/bought_amount_model.dart';
 
 class ShoppingListItemModel extends ShoppingListItemEntity {
   ShoppingListItemModel({
@@ -8,7 +10,7 @@ class ShoppingListItemModel extends ShoppingListItemEntity {
     String? itemName,
     String? unit,
     double? amount,
-    double? boughtAmount,
+    List<BoughtAmountEntity>? boughtAmounts,
     String? userToBuyItem,
     String? createdBy,
     String? eventTo,
@@ -20,7 +22,7 @@ class ShoppingListItemModel extends ShoppingListItemEntity {
           createdBy: createdBy,
           unit: unit,
           amount: amount,
-          boughtAmount: boughtAmount,
+          boughtAmounts: boughtAmounts,
           userToBuyItem: userToBuyItem,
           eventTo: eventTo,
         );
@@ -39,11 +41,13 @@ class ShoppingListItemModel extends ShoppingListItemEntity {
             ? json["amount"]
             : double.tryParse(json["amount"].toString());
 
-    final boughtAmount = json["boughtAmount"] == null
-        ? null
-        : json["boughtAmount"] is double
-            ? json["boughtAmount"]
-            : double.tryParse(json["boughtAmount"].toString());
+    List<BoughtAmountEntity>? boughtAmounts;
+    if (json['boughtAmounts'] != null) {
+      boughtAmounts ??= [];
+      for (final boughtAmount in json['boughtAmounts']) {
+        boughtAmounts.add(BoughtAmountModel.fromJson(boughtAmount));
+      }
+    }
 
     return ShoppingListItemModel(
       id: json["_id"],
@@ -53,7 +57,7 @@ class ShoppingListItemModel extends ShoppingListItemEntity {
       unit: json["unit"],
       amount: amount,
       createdBy: json["createdBy"],
-      boughtAmount: boughtAmount,
+      boughtAmounts: boughtAmounts,
       userToBuyItem: json["userToBuyItem"],
       eventTo: json["eventTo"],
     );

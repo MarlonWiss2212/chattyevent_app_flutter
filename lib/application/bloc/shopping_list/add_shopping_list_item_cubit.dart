@@ -62,10 +62,8 @@ class AddShoppingListItemCubit extends Cubit<AddShoppingListItemState> {
         currentPrivateEventCubit.replaceOrAddShoppingListItem(
           addIfItsNotFound: true,
           shoppingListItemState: CurrentShoppingListItemState(
-            loadingShoppingListItem: false,
-            loadingBoughtAmounts: false,
+            loading: false,
             shoppingListItem: shoppingListItem,
-            boughtAmounts: [],
           ),
         );
       },

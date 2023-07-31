@@ -418,10 +418,8 @@ class CurrentEventCubit extends Cubit<CurrentEventState> {
             shoppingListItemStates: shoppingListItems
                 .map(
                   (e) => CurrentShoppingListItemState(
-                    loadingShoppingListItem: false,
-                    loadingBoughtAmounts: false,
+                    loading: false,
                     shoppingListItem: e,
-                    boughtAmounts: [],
                   ),
                 )
                 .toList(),
@@ -431,10 +429,8 @@ class CurrentEventCubit extends Cubit<CurrentEventState> {
             shoppingListItemStates: shoppingListItems
                 .map(
                   (e) => CurrentShoppingListItemState(
-                    loadingShoppingListItem: false,
-                    loadingBoughtAmounts: false,
                     shoppingListItem: e,
-                    boughtAmounts: [],
+                    loading: false,
                   ),
                 )
                 .toList(),

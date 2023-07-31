@@ -19,14 +19,17 @@ class CurrentShoppingListItemPageBoughtAmountList extends StatelessWidget {
     return BlocBuilder<CurrentShoppingListItemCubit,
         CurrentShoppingListItemState>(
       builder: (context, state) {
-        if (state.loadingBoughtAmounts == false &&
-            state.boughtAmounts.isEmpty) {
+        if (state.loading == false &&
+            (state.shoppingListItem.boughtAmounts == null ||
+                state.shoppingListItem.boughtAmounts!.isEmpty)) {
           return const Center(
             child: Text("Keine gekauften Elemente gefunden"),
           );
         }
 
-        if (state.loadingBoughtAmounts == true && state.boughtAmounts.isEmpty) {
+        if (state.loading == true &&
+            (state.shoppingListItem.boughtAmounts == null ||
+                state.shoppingListItem.boughtAmounts!.isEmpty)) {
           return SkeletonListTile(
             hasSubtitle: true,
             titleStyle: const SkeletonLineStyle(width: 100, height: 22),
@@ -44,7 +47,8 @@ class CurrentShoppingListItemPageBoughtAmountList extends StatelessWidget {
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               itemBuilder: (context, index) {
-                BoughtAmountEntity boughtAmount = state.boughtAmounts[index];
+                BoughtAmountEntity boughtAmount =
+                    state.shoppingListItem.boughtAmounts![index];
 
                 EventUserEntity? user =
                     privateEventState.eventUsers.firstWhereOrNull(
@@ -91,7 +95,7 @@ class CurrentShoppingListItemPageBoughtAmountList extends StatelessWidget {
                   ),
                 );
               },
-              itemCount: state.boughtAmounts.length,
+              itemCount: state.shoppingListItem.boughtAmounts!.length,
             );
           },
         );
