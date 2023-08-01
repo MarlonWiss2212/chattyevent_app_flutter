@@ -59,38 +59,45 @@ class EventTabInfoCoverImage extends StatelessWidget {
 
     return BlocBuilder<CurrentEventCubit, CurrentEventState>(
       builder: (context, state) {
-        return InkWell(
-          onTap: state.currentUserAllowedWithPermission(
-                  permissionCheckValue:
-                      state.event.permissions?.changeCoverImage)
-              ? () => _onTapSetImageFunction(context)
-              : null,
-          child: Builder(
-            builder: (context) {
-              if (state.event.coverImageLink != null) {
-                return Hero(
-                  tag: "${state.event.id} coverImage",
-                  child: Image.network(
-                    state.event.coverImageLink!,
-                    fit: BoxFit.fitWidth,
-                  ),
-                );
-              } else if (state.event.coverImageLink == null &&
-                  state.loadingEvent) {
-                return SkeletonAvatar(
-                  style: SkeletonAvatarStyle(
-                    width: size.width,
-                    height: size.width / 4 * 3,
-                  ),
-                );
-              } else {
-                return SizedBox(
-                  child: Card(
-                    color: Theme.of(context).colorScheme.surface,
-                  ),
-                );
-              }
-            },
+        return Container(
+          decoration: const BoxDecoration(shape: BoxShape.circle),
+          padding: const EdgeInsets.all(8.0),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(8),
+            child: InkWell(
+              onTap: state.currentUserAllowedWithPermission(
+                      permissionCheckValue:
+                          state.event.permissions?.changeCoverImage)
+                  ? () => _onTapSetImageFunction(context)
+                  : null,
+              child: Builder(
+                builder: (context) {
+                  if (state.event.coverImageLink != null) {
+                    return Hero(
+                      tag: "${state.event.id} coverImage",
+                      child: Image.network(
+                        state.event.coverImageLink!,
+                        fit: BoxFit.fitWidth,
+                      ),
+                    );
+                  } else if (state.event.coverImageLink == null &&
+                      state.loadingEvent) {
+                    return SkeletonAvatar(
+                      style: SkeletonAvatarStyle(
+                        width: size.width,
+                        height: size.width / 4 * 3,
+                      ),
+                    );
+                  } else {
+                    return SizedBox(
+                      child: Card(
+                        color: Theme.of(context).colorScheme.surface,
+                      ),
+                    );
+                  }
+                },
+              ),
+            ),
           ),
         );
       },

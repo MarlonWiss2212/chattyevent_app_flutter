@@ -22,7 +22,8 @@ class EventTabPage extends StatelessWidget {
         if (BlocProvider.of<CurrentEventCubit>(context)
                 .state
                 .event
-                .groupchatTo ==
+                .privateEventData
+                ?.groupchatTo ==
             null) ...{
           EventTabChat(eventId: eventId),
         },
@@ -70,7 +71,8 @@ class EventTabPage extends StatelessWidget {
                     if (BlocProvider.of<CurrentEventCubit>(context)
                             .state
                             .event
-                            .groupchatTo ==
+                            .privateEventData
+                            ?.groupchatTo ==
                         null) ...{
                       const Tab(icon: Icon(Ionicons.chatbubble)),
                     },

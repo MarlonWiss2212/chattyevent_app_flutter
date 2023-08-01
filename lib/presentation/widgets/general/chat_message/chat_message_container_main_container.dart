@@ -12,9 +12,8 @@ import 'package:dartz/dartz.dart' as dz;
 import 'package:flutter/material.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_map/flutter_map.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:ionicons/ionicons.dart';
-import 'package:latlong2/latlong.dart';
 
 class ChatMessageContainerMainContainer extends StatelessWidget {
   final List<UserEntity> users;
@@ -104,81 +103,54 @@ class ChatMessageContainerMainContainer extends StatelessWidget {
               borderRadius: BorderRadius.circular(8),
               child: SizedBox(
                 height: 200,
-                child: Stack(
-                  children: [
-                    FlutterMap(
-                      options: MapOptions(
-                        interactiveFlags: InteractiveFlag.none,
-                        center: LatLng(
-                          message.currentLocation!.geoJson!.coordinates![1],
-                          message.currentLocation!.geoJson!.coordinates![0],
-                        ),
-                      ),
-                      children: [
-                        TileLayer(
-                          urlTemplate:
-                              'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                        ),
-                        MarkerLayer(
-                          markers: [
-                            Marker(
-                              point: LatLng(
-                                message
-                                    .currentLocation!.geoJson!.coordinates![1],
-                                message
-                                    .currentLocation!.geoJson!.coordinates![0],
-                              ),
-                              builder: (context) {
-                                return Icon(
-                                  Ionicons.location,
-                                  color:
-                                      Theme.of(context).colorScheme.background,
-                                );
-                              },
-                            ),
-                          ],
-                        ),
-                      ],
+                child: GoogleMap(
+                  mapType: MapType.normal,
+                  initialCameraPosition: CameraPosition(
+                    target: LatLng(
+                      message.currentLocation!.geoJson!.coordinates![1],
+                      message.currentLocation!.geoJson!.coordinates![0],
                     ),
-                    Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Material(
-                        color: Colors.transparent,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8),
-                          child: InkWell(
-                            onTap: () => openMaps(
-                              context,
-                              LatLng(
-                                message
-                                    .currentLocation!.geoJson!.coordinates![1],
-                                message
-                                    .currentLocation!.geoJson!.coordinates![0],
-                              ),
-                            ),
-                            child: Ink(
-                              padding: const EdgeInsets.all(16),
-                              decoration: BoxDecoration(
-                                color: const Color.fromARGB(100, 0, 0, 0),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Row(
-                                children: [
-                                  const Icon(Ionicons.map),
-                                  const SizedBox(width: 16),
-                                  Text(
-                                    "In Maps öffnen",
-                                    style:
-                                        Theme.of(context).textTheme.labelLarge,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
+                    zoom: 12,
+                  ),
+                  markers: {
+                    Marker(
+                      markerId: const MarkerId("1"),
+                      position: LatLng(
+                        message.currentLocation!.geoJson!.coordinates![1],
+                        message.currentLocation!.geoJson!.coordinates![0],
                       ),
+                      icon: BitmapDescriptor.defaultMarker,
                     )
-                  ],
+                  },
+                ),
+              ),
+            ),
+            Material(
+              color: Colors.transparent,
+              child: InkWell(
+                onTap: () => openMaps(
+                  context,
+                  LatLng(
+                    message.currentLocation!.geoJson!.coordinates![1],
+                    message.currentLocation!.geoJson!.coordinates![0],
+                  ),
+                ),
+                child: Ink(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: const Color.fromARGB(100, 0, 0, 0),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Row(
+                    children: [
+                      const Icon(Ionicons.map),
+                      const SizedBox(width: 16),
+                      Text(
+                        "In Maps öffnen",
+                        style: Theme.of(context).textTheme.labelLarge,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

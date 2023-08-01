@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:chattyevent_app_flutter/domain/repositories/device/permission_repository.dart';
 import 'package:dartz/dartz.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:latlong2/latlong.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:chattyevent_app_flutter/core/failures/location_failures.dart';

@@ -23,7 +23,7 @@ class EventTabUsersUserList extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 8),
-            if (state.event.groupchatTo == null &&
+            if (state.event.privateEventData?.groupchatTo == null &&
                 state.currentUserAllowedWithPermission(
                     permissionCheckValue:
                         state.event.permissions?.addUsers)) ...{

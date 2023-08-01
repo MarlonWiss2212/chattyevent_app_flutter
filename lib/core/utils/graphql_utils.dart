@@ -4,7 +4,7 @@ import 'package:graphql/client.dart';
 class GraphQlUtils {
   static GraphQLClient getGraphQlClient({String? token}) {
     final HttpLink httpLink = HttpLink(
-      "http://${dotenv.get("API_BASE_URL")}/graphql",
+      "https://${dotenv.get("API_BASE_URL")}/graphql",
       defaultHeaders: {
         "Apollo-Require-Preflight": "true",
         "authorization": "Bearer $token"
@@ -12,7 +12,7 @@ class GraphQlUtils {
     );
 
     final WebSocketLink webSocketLink = WebSocketLink(
-      "ws://${dotenv.get("API_BASE_URL")}/graphql",
+      "wss://${dotenv.get("API_BASE_URL")}/graphql",
       subProtocol: GraphQLProtocol.graphqlTransportWs,
       config: SocketClientConfig(
         inactivityTimeout: const Duration(hours: 1),

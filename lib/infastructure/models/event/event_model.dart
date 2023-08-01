@@ -19,7 +19,6 @@ class EventModel extends EventEntity {
     String? coverImageLink,
     required DateTime eventDate,
     DateTime? eventEndDate,
-    String? groupchatTo,
     EventPermissionsEntity? permissions,
     String? createdBy,
     DateTime? createdAt,
@@ -39,7 +38,6 @@ class EventModel extends EventEntity {
           eventDate: eventDate,
           eventEndDate: eventEndDate,
           status: status,
-          groupchatTo: groupchatTo,
           createdAt: createdAt,
           updatedAt: updatedAt,
           createdBy: createdBy,
@@ -78,7 +76,6 @@ class EventModel extends EventEntity {
       latestMessage: json["latestMessage"] != null
           ? MessageModel.fromJson(json["latestMessage"])
           : null,
-      groupchatTo: json["groupchatTo"],
       createdBy: json["createdBy"],
       type: json["type"] != null
           ? EventTypeEnumExtension.fromValue(json["type"])

@@ -21,6 +21,7 @@ class EventTabInfoDescription extends StatelessWidget {
         final Widget widget = Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8),
           child: EditInputTextField(
+            textOverflow: TextOverflow.visible,
             text: description != null && description.isNotEmpty
                 ? description
                 : "Keine Beschreibung",

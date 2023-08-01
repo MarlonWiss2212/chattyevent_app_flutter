@@ -7,6 +7,7 @@ class EditInputTextField extends StatefulWidget {
   final String? hintText;
   final TextInputType? keyboardType;
   final int? maxLines;
+  final TextOverflow textOverflow;
   final void Function(String text)? onSaved;
 
   const EditInputTextField({
@@ -14,6 +15,7 @@ class EditInputTextField extends StatefulWidget {
     required this.text,
     this.editable = true,
     this.onSaved,
+    this.textOverflow = TextOverflow.ellipsis,
     this.maxLines,
     this.keyboardType,
     this.hintText,
@@ -37,7 +39,7 @@ class _EditInputTextFieldState extends State<EditInputTextField> {
         child: Text(
           widget.text,
           style: widget.textStyle,
-          overflow: TextOverflow.ellipsis,
+          overflow: widget.textOverflow,
         ),
       );
     } else {

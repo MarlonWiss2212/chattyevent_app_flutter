@@ -82,7 +82,7 @@ class CurrentEventCubit extends Cubit<CurrentEventState> {
       findOneEventFilter: FindOneEventFilter(
         eventId: state.event.id,
       ),
-      groupchatId: state.event.groupchatTo,
+      groupchatId: state.event.privateEventData?.groupchatTo,
     );
 
     privateEventDataOrFailure.fold(
@@ -132,14 +132,16 @@ class CurrentEventCubit extends Cubit<CurrentEventState> {
     emitState(
       groupchat: chatCubit.state.chats
           .firstWhereOrNull(
-            (element) => element.groupchat?.id == state.event.groupchatTo,
+            (element) =>
+                element.groupchat?.id ==
+                state.event.privateEventData?.groupchatTo,
           )
           ?.groupchat,
     );
   }
 
   Future getCurrentChatViaApi() async {
-    if (state.event.groupchatTo == null) {
+    if (state.event.privateEventData?.groupchatTo == null) {
       return;
     }
     emitState(loadingGroupchat: true);
@@ -147,7 +149,7 @@ class CurrentEventCubit extends Cubit<CurrentEventState> {
     final Either<NotificationAlert, GroupchatEntity> groupchatOrFailure =
         await groupchatUseCases.getGroupchatViaApi(
       findOneGroupchatFilter: FindOneGroupchatFilter(
-        groupchatId: state.event.groupchatTo!,
+        groupchatId: state.event.privateEventData!.groupchatTo!,
       ),
     );
 
@@ -445,7 +447,7 @@ class CurrentEventCubit extends Cubit<CurrentEventState> {
   // messages only for private events where no groupchat is connected
 
   void listenToMessages() {
-    if (state.event.groupchatTo != null) return;
+    if (state.event.privateEventData?.groupchatTo != null) return;
     final eitherAlertOrStream = messageUseCases.getMessagesRealtimeViaApi(
       addedMessageFilter: AddedMessageFilter(
         eventTo: state.event.id,
@@ -480,7 +482,7 @@ class CurrentEventCubit extends Cubit<CurrentEventState> {
   }
 
   Future loadMessages({bool reload = false}) async {
-    if (state.event.groupchatTo != null) return;
+    if (state.event.privateEventData?.groupchatTo != null) return;
     emitState(loadingMessages: true);
 
     final Either<NotificationAlert, List<MessageEntity>> messagesOrFailure =

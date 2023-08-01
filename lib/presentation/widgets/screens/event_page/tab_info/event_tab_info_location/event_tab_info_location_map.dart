@@ -1,10 +1,8 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_map/flutter_map.dart';
-import 'package:latlong2/latlong.dart';
 import 'package:chattyevent_app_flutter/application/bloc/current_event/current_event_cubit.dart';
-import 'package:chattyevent_app_flutter/presentation/widgets/general/circle_image/cirlce_image.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:skeletons/skeletons.dart';
 
 class EventTabInfoLocationMap extends StatelessWidget {
@@ -27,40 +25,25 @@ class EventTabInfoLocationMap extends StatelessWidget {
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(8.0),
-              child: FlutterMap(
-                options: MapOptions(
-                  interactiveFlags: InteractiveFlag.none,
-                  center: LatLng(
+              child: GoogleMap(
+                mapType: MapType.normal,
+                initialCameraPosition: CameraPosition(
+                  target: LatLng(
                     state.event.eventLocation!.geoJson!.coordinates![1],
                     state.event.eventLocation!.geoJson!.coordinates![0],
                   ),
+                  zoom: 12,
                 ),
-                children: [
-                  TileLayer(
-                    urlTemplate:
-                        'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                  ),
-                  MarkerLayer(
-                    markers: [
-                      Marker(
-                        point: LatLng(
-                          state.event.eventLocation!.geoJson!.coordinates![1],
-                          state.event.eventLocation!.geoJson!.coordinates![0],
-                        ),
-                        builder: (context) {
-                          return CircleImage(
-                            width: 40,
-                            height: 40,
-                            imageLink: state.event.coverImageLink,
-                            icon: state.event.coverImageLink == null
-                                ? const Icon(Icons.celebration)
-                                : null,
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                ],
+                markers: {
+                  Marker(
+                    markerId: const MarkerId("1"),
+                    position: LatLng(
+                      state.event.eventLocation!.geoJson!.coordinates![1],
+                      state.event.eventLocation!.geoJson!.coordinates![0],
+                    ),
+                    icon: BitmapDescriptor.defaultMarker,
+                  )
+                },
               ),
             ),
           );

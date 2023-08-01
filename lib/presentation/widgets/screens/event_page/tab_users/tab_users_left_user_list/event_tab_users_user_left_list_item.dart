@@ -37,10 +37,10 @@ class PrivateEventTabUsersLeftUserListItem extends StatelessWidget {
       items: [
         if (currentEventUser != null &&
                 currentEventUser!.role == EventUserRoleEnum.organizer &&
-                event.groupchatTo == null ||
+                event.privateEventData?.groupchatTo == null ||
             currentEventUser != null &&
                 currentEventUser!.role == EventUserRoleEnum.organizer &&
-                event.groupchatTo == "") ...{
+                event.privateEventData?.groupchatTo == "") ...{
           PopupMenuItem<void Function(void)>(
             child: const Text("Hinzufügen"),
             onTap: () {

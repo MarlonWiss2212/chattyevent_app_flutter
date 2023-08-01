@@ -1,9 +1,8 @@
 import 'package:chattyevent_app_flutter/application/bloc/add_message/add_message_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_map/flutter_map.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:ionicons/ionicons.dart';
-import 'package:latlong2/latlong.dart';
 
 class ChatMessageInputCurrentLocation extends StatelessWidget {
   const ChatMessageInputCurrentLocation({super.key});
@@ -26,32 +25,19 @@ class ChatMessageInputCurrentLocation extends StatelessWidget {
                     child: Stack(
                       fit: StackFit.expand,
                       children: [
-                        FlutterMap(
-                          options: MapOptions(
-                            interactiveFlags: InteractiveFlag.none,
-                            center: LatLng(state.lat!, state.lon!),
+                        GoogleMap(
+                          mapType: MapType.normal,
+                          initialCameraPosition: CameraPosition(
+                            target: LatLng(state.lat!, state.lon!),
+                            zoom: 12,
                           ),
-                          children: [
-                            TileLayer(
-                              urlTemplate:
-                                  'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                            ),
-                            MarkerLayer(
-                              markers: [
-                                Marker(
-                                  point: LatLng(state.lat!, state.lon!),
-                                  builder: (context) {
-                                    return Icon(
-                                      Ionicons.location,
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .background,
-                                    );
-                                  },
-                                ),
-                              ],
-                            ),
-                          ],
+                          markers: {
+                            Marker(
+                              markerId: const MarkerId("1"),
+                              position: LatLng(state.lat!, state.lon!),
+                              icon: BitmapDescriptor.defaultMarker,
+                            )
+                          },
                         ),
                         Container(
                           decoration: const BoxDecoration(

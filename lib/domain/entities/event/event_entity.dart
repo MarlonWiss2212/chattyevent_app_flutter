@@ -14,7 +14,6 @@ class EventEntity {
   final EventPermissionsEntity? permissions;
   final DateTime eventDate;
   final DateTime? eventEndDate;
-  final String? groupchatTo;
   final String? createdBy;
   final DateTime? createdAt;
   final DateTime? updatedAt;
@@ -35,7 +34,6 @@ class EventEntity {
     this.coverImageLink,
     required this.eventDate,
     this.eventEndDate,
-    this.groupchatTo,
     this.createdBy,
     this.createdAt,
     this.eventLocation,
@@ -55,7 +53,6 @@ class EventEntity {
       coverImageLink: newEntity.coverImageLink ?? oldEntity.coverImageLink,
       eventDate: newEntity.eventDate,
       eventEndDate: newEntity.eventEndDate ?? oldEntity.eventEndDate,
-      groupchatTo: newEntity.groupchatTo ?? oldEntity.groupchatTo,
       status: newEntity.status ?? oldEntity.status,
       latestMessage: newEntity.latestMessage ?? oldEntity.latestMessage,
       eventLocation: EventLocationEntity.merge(
