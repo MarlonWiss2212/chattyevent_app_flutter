@@ -7,8 +7,6 @@ class UserEntity {
   final String id;
   final String authId;
   final String? username;
-  final String? firstname;
-  final String? lastname;
   final String? profileImageLink;
   final String? birthdate;
   final UserRelationsCountEntity? userRelationCounts;
@@ -28,8 +26,6 @@ class UserEntity {
     this.latestMessage,
     this.username,
     this.profileImageLink,
-    this.firstname,
-    this.lastname,
     this.birthdate,
     this.createdAt,
     this.updatedAt,
@@ -58,14 +54,12 @@ class UserEntity {
               oldEntity.otherUserRelationToMyUser,
       profileImageLink:
           newEntity.profileImageLink ?? oldEntity.profileImageLink,
-      firstname: newEntity.firstname ?? oldEntity.firstname,
       latestMessage: newEntity.latestMessage ?? oldEntity.latestMessage,
       // TODO optimize this somehow
       userRelationCounts: UserRelationsCountEntity.merge(
         newEntity: newEntity.userRelationCounts ?? UserRelationsCountEntity(),
         oldEntity: oldEntity.userRelationCounts ?? UserRelationsCountEntity(),
       ),
-      lastname: newEntity.lastname ?? oldEntity.lastname,
       birthdate: newEntity.birthdate ?? oldEntity.birthdate,
       createdAt: newEntity.createdAt ?? oldEntity.createdAt,
       updatedAt: newEntity.updatedAt ?? oldEntity.updatedAt,

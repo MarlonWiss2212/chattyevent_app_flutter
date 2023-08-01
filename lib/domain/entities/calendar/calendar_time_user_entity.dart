@@ -11,8 +11,6 @@ class CalendarTimeUserEntity extends UserEntity {
     super.userRelationCounts,
     super.username,
     super.profileImageLink,
-    super.firstname,
-    super.lastname,
     super.birthdate,
     super.createdAt,
     super.updatedAt,

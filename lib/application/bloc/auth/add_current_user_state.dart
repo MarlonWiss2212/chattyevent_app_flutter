@@ -4,8 +4,6 @@ enum AddCurrentUserStateStatus { initial, loading, created }
 
 class AddCurrentUserState {
   final File? profileImage;
-  final String? firstname;
-  final String? lastname;
   final String? username;
   final DateTime? birthdate;
 
@@ -16,8 +14,6 @@ class AddCurrentUserState {
     this.status = AddCurrentUserStateStatus.initial,
     this.addedUser,
     this.birthdate,
-    this.firstname,
-    this.lastname,
     this.profileImage,
     this.username,
   });

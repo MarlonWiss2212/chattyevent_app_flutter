@@ -73,31 +73,6 @@ class CreateUserPage extends StatelessWidget {
                                 textInputAction: TextInputAction.next,
                               ),
                               const SizedBox(height: 8),
-                              TextFormField(
-                                decoration: const InputDecoration(
-                                  labelText: "Vorname",
-                                ),
-                                onChanged: (value) {
-                                  BlocProvider.of<AddCurrentUserCubit>(context)
-                                      .emitState(
-                                    firstname: value,
-                                  );
-                                },
-                                textInputAction: TextInputAction.next,
-                              ),
-                              const SizedBox(height: 8),
-                              TextFormField(
-                                decoration: const InputDecoration(
-                                  labelText: "Nachname",
-                                ),
-                                onChanged: (value) {
-                                  BlocProvider.of<AddCurrentUserCubit>(context)
-                                      .emitState(
-                                    lastname: value,
-                                  );
-                                },
-                              ),
-                              const SizedBox(height: 8),
                               const CreateUserPageBirthdayButton()
                             ],
                           ),

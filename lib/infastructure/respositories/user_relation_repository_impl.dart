@@ -105,8 +105,6 @@ class UserRelationRepositoryImpl extends UserRelationRepository {
   }) async {
     try {
       final response = await graphQlDatasource.query(
-        // firstname
-        // lastname
         // birthdate
         """
         query FindFollowers(\$limitOffsetFilter: LimitOffsetInput!, \$filter: FindFollowersInput!) {
@@ -173,8 +171,6 @@ class UserRelationRepositoryImpl extends UserRelationRepository {
   }) async {
     try {
       final response = await graphQlDatasource.query(
-        // firstname
-        // lastname
         // birthdate
         """
         query FindFollowRequests(\$limitOffsetFilter: LimitOffsetInput!) {
@@ -240,8 +236,6 @@ class UserRelationRepositoryImpl extends UserRelationRepository {
   }) async {
     try {
       final response = await graphQlDatasource.query(
-        // firstname
-        // lastname
         // birthdate
         """
         query FindFollowed(\$filter: FindFollowedInput!, \$limitOffsetFilter: LimitOffsetInput!) {

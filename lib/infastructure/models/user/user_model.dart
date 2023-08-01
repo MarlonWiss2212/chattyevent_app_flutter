@@ -13,8 +13,6 @@ class UserModel extends UserEntity {
     required String id,
     required String authId,
     String? username,
-    String? firstname,
-    String? lastname,
     String? profileImageLink,
     String? birthdate,
     UserRelationsCountEntity? userRelationCounts,
@@ -29,8 +27,6 @@ class UserModel extends UserEntity {
           authId: authId,
           permissions: permissions,
           username: username,
-          firstname: firstname,
-          lastname: lastname,
           profileImageLink: profileImageLink,
           birthdate: birthdate,
           userRelationCounts: userRelationCounts,
@@ -58,8 +54,6 @@ class UserModel extends UserEntity {
           ? UserPermissionsModel.fromJson(json["permissions"])
           : null,
       profileImageLink: json['profileImageLink'],
-      firstname: json["fistname"],
-      lastname: json["lastname"],
       latestMessage: json["latestMessage"] != null
           ? MessageModel.fromJson(json["latestMessage"])
           : null,

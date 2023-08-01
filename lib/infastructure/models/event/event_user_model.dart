@@ -16,8 +16,6 @@ class EventUserModel extends EventUserEntity {
     EventUserRoleEnum? role,
     DateTime? joinedEventAt,
     String? username,
-    String? firstname,
-    String? lastname,
     String? profileImageLink,
     String? birthdate,
     UserRelationsCountEntity? userRelationCounts,
@@ -34,8 +32,6 @@ class EventUserModel extends EventUserEntity {
           id: id,
           authId: authId,
           username: username,
-          firstname: firstname,
-          lastname: lastname,
           profileImageLink: profileImageLink,
           birthdate: birthdate,
           userRelationCounts: userRelationCounts,
@@ -71,8 +67,6 @@ class EventUserModel extends EventUserEntity {
       authId: json["authId"],
       username: json['username'],
       profileImageLink: json['profileImageLink'],
-      firstname: json["fistname"],
-      lastname: json["lastname"],
       birthdate: json["birthdate"],
       userRelationCounts: json['userRelationCounts'] != null
           ? UserRelationsCountModel.fromJson(

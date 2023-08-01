@@ -15,8 +15,6 @@ class GroupchatUserModel extends GroupchatUserEntity {
     DateTime? joinedGroupchatAt,
     String? usernameForChat,
     String? username,
-    String? firstname,
-    String? lastname,
     String? profileImageLink,
     String? birthdate,
     UserRelationsCountEntity? userRelationCounts,
@@ -33,8 +31,6 @@ class GroupchatUserModel extends GroupchatUserEntity {
           id: id,
           authId: authId,
           username: username,
-          firstname: firstname,
-          lastname: lastname,
           profileImageLink: profileImageLink,
           birthdate: birthdate,
           userRelationCounts: userRelationCounts,
@@ -68,8 +64,6 @@ class GroupchatUserModel extends GroupchatUserEntity {
       authId: json["authId"],
       username: json['username'],
       profileImageLink: json['profileImageLink'],
-      firstname: json["fistname"],
-      lastname: json["lastname"],
       birthdate: json["birthdate"],
       userRelationCounts: json['userRelationCounts'] != null
           ? UserRelationsCountModel.fromJson(

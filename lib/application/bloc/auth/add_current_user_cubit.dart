@@ -23,10 +23,7 @@ class AddCurrentUserCubit extends Cubit<AddCurrentUserState> {
   Future createCurrentUser() async {
     emitState(status: AddCurrentUserStateStatus.loading);
 
-    if (state.firstname == null ||
-        state.lastname == null ||
-        state.username == null ||
-        state.birthdate == null) {
+    if (state.username == null || state.birthdate == null) {
       notificationCubit.newAlert(
         notificationAlert: NotificationAlert(
           title: "Ausfüll Fehler",
@@ -38,8 +35,6 @@ class AddCurrentUserCubit extends Cubit<AddCurrentUserState> {
     final Either<NotificationAlert, UserEntity> userOrFailure =
         await userUseCases.createUserViaApi(
       createUserDto: CreateUserDto(
-        firstname: state.firstname!,
-        lastname: state.lastname!,
         username: state.username!,
         birthdate: state.birthdate!,
         profileImage: state.profileImage,
@@ -63,16 +58,12 @@ class AddCurrentUserCubit extends Cubit<AddCurrentUserState> {
 
   void emitState({
     File? profileImage,
-    String? firstname,
-    String? lastname,
     String? username,
     DateTime? birthdate,
     AddCurrentUserStateStatus? status,
   }) {
     emit(AddCurrentUserState(
       profileImage: profileImage ?? state.profileImage,
-      firstname: firstname ?? state.firstname,
-      lastname: lastname ?? state.lastname,
       username: username ?? state.username,
       birthdate: birthdate ?? state.birthdate,
       status: status ?? AddCurrentUserStateStatus.initial,

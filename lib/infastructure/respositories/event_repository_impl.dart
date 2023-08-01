@@ -261,10 +261,7 @@ class EventRepositoryImpl implements EventRepository {
             authId
             leftEventAt
             eventTo
-            birthdate
             createdAt
-            firstname
-            lastname
             profileImageLink
             updatedAt
             userRelationCounts {
@@ -301,10 +298,7 @@ class EventRepositoryImpl implements EventRepository {
             role
             joinedEventAt
             eventTo
-            birthdate
             createdAt
-            firstname
-            lastname
             profileImageLink
             updatedAt
             userRelationCounts {
@@ -543,10 +537,7 @@ class EventRepositoryImpl implements EventRepository {
               role
               joinedEventAt
               eventTo
-              birthdate
               createdAt
-              firstname
-              lastname
               profileImageLink
               updatedAt
               userRelationCounts {
@@ -610,10 +601,7 @@ class EventRepositoryImpl implements EventRepository {
               role
               joinedEventAt
               eventTo
-              birthdate
               createdAt
-              firstname
-              lastname
               profileImageLink
               updatedAt
               userRelationCounts {
@@ -673,10 +661,7 @@ class EventRepositoryImpl implements EventRepository {
               authId
               leftEventAt
               eventTo
-              birthdate
               createdAt
-              firstname
-              lastname
               profileImageLink
               updatedAt
               userRelationCounts {
@@ -739,10 +724,7 @@ class EventRepositoryImpl implements EventRepository {
               authId
               leftEventAt
               eventTo
-              birthdate
               createdAt
-              firstname
-              lastname
               profileImageLink
               updatedAt
               userRelationCounts {
@@ -779,10 +761,7 @@ class EventRepositoryImpl implements EventRepository {
               role
               joinedEventAt
               eventTo
-              birthdate
               createdAt
-              firstname
-              lastname
               profileImageLink
               updatedAt
               userRelationCounts {

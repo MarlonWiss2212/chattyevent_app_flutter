@@ -12,8 +12,6 @@ class EventLeftUserModel extends EventLeftUserEntity {
     String? eventTo,
     DateTime? leftEventAt,
     String? username,
-    String? firstname,
-    String? lastname,
     String? profileImageLink,
     String? birthdate,
     UserRelationsCountEntity? userRelationCounts,
@@ -28,8 +26,6 @@ class EventLeftUserModel extends EventLeftUserEntity {
           id: id,
           authId: authId,
           username: username,
-          firstname: firstname,
-          lastname: lastname,
           profileImageLink: profileImageLink,
           birthdate: birthdate,
           userRelationCounts: userRelationCounts,
@@ -59,8 +55,6 @@ class EventLeftUserModel extends EventLeftUserEntity {
       authId: json["authId"],
       username: json['username'],
       profileImageLink: json['profileImageLink'],
-      firstname: json["fistname"],
-      lastname: json["lastname"],
       birthdate: json["birthdate"],
       userRelationCounts: json['userRelationCounts'] != null
           ? UserRelationsCountModel.fromJson(

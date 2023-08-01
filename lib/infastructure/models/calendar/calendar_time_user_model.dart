@@ -12,8 +12,6 @@ class CalendarTimeUserModel extends CalendarTimeUserEntity {
     super.userRelationCounts,
     super.username,
     super.profileImageLink,
-    super.firstname,
-    super.lastname,
     super.birthdate,
     super.createdAt,
     super.updatedAt,
@@ -34,8 +32,6 @@ class CalendarTimeUserModel extends CalendarTimeUserEntity {
       authId: json["authId"],
       username: json['username'],
       profileImageLink: json['profileImageLink'],
-      firstname: json["fistname"],
-      lastname: json["lastname"],
       birthdate: json["birthdate"],
       userRelationCounts: json['userRelationCounts'] != null
           ? UserRelationsCountModel.fromJson(

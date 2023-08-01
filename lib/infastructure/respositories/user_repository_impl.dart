@@ -23,8 +23,6 @@ class UserRepositoryImpl implements UserRepository {
     required bool currentUser,
   }) async {
     try {
-      // firstname
-      // lastname
       // birthdate
       final response = await graphQlDatasource.query(
         """
@@ -157,8 +155,6 @@ class UserRepositoryImpl implements UserRepository {
       }
 
       final response = await graphQlDatasource.mutation(
-        // firstname
-        // lastname
         // birthdate
         """
         mutation UpdateUser(\$updateUserInput: UpdateUserInput!, \$updateProfileImage: Upload) {
@@ -246,10 +242,7 @@ class UserRepositoryImpl implements UserRepository {
             username
             _id
             authId
-            birthdate
             createdAt
-            firstname
-            lastname
             profileImageLink
             updatedAt
             permissions {

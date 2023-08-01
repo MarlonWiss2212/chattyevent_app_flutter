@@ -155,10 +155,7 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
               authId
               leftChatAt
               groupchatTo
-              birthdate
               createdAt
-              firstname
-              lastname
               profileImageLink
               updatedAt
               username
@@ -195,10 +192,7 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
               joinedChatAt
               groupchatTo
               usernameForChat
-              birthdate
               createdAt
-              firstname
-              lastname
               profileImageLink
               updatedAt
               userRelationCounts {
@@ -389,10 +383,7 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
             joinedChatAt
             groupchatTo
             usernameForChat
-            birthdate
             createdAt
-            firstname
-            lastname
             profileImageLink
             updatedAt
             userRelationCounts {
@@ -457,10 +448,7 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
             authId
             leftChatAt
             groupchatTo
-            birthdate
             createdAt
-            firstname
-            lastname
             profileImageLink
             updatedAt
             username
@@ -530,10 +518,7 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
             authId
             joinedChatAt
             groupchatTo
-            birthdate
             createdAt
-            firstname
-            lastname
             profileImageLink
             updatedAt
             username
@@ -599,10 +584,7 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
               authId
               leftChatAt
               groupchatTo
-              birthdate
               createdAt
-              firstname
-              lastname
               profileImageLink
               updatedAt
               username
@@ -639,10 +621,7 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
               joinedChatAt
               groupchatTo
               usernameForChat
-              birthdate
               createdAt
-              firstname
-              lastname
               profileImageLink
               updatedAt
               userRelationCounts {

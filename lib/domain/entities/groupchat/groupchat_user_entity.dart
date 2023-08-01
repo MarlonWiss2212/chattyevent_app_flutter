@@ -20,8 +20,6 @@ class GroupchatUserEntity extends UserEntity {
     this.usernameForChat,
     super.birthdate,
     super.createdAt,
-    super.firstname,
-    super.lastname,
     super.myUserRelationToOtherUser,
     super.otherUserRelationToMyUser,
     super.profileImageLink,
@@ -66,12 +64,10 @@ class GroupchatUserEntity extends UserEntity {
       otherUserRelationToMyUser: newEntity.otherUserRelationToMyUser,
       profileImageLink:
           newEntity.profileImageLink ?? oldEntity.profileImageLink,
-      firstname: newEntity.firstname ?? oldEntity.firstname,
       userRelationCounts: UserRelationsCountEntity.merge(
         newEntity: newEntity.userRelationCounts ?? UserRelationsCountEntity(),
         oldEntity: oldEntity.userRelationCounts ?? UserRelationsCountEntity(),
       ),
-      lastname: newEntity.lastname ?? oldEntity.lastname,
       birthdate: newEntity.birthdate ?? oldEntity.birthdate,
       createdAt: newEntity.createdAt ?? oldEntity.createdAt,
       updatedAt: newEntity.updatedAt ?? oldEntity.updatedAt,
