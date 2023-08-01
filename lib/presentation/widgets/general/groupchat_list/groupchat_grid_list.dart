@@ -33,6 +33,7 @@ class GroupchatGridList extends StatelessWidget {
           }
         }
         return GroupchatGridListItem(
+          key: ObjectKey(groupchats[index]),
           highlighted: highlighted,
           chat: groupchats[index],
           button: button != null ? button!(groupchats[index]) : null,

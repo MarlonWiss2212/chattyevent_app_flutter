@@ -163,7 +163,6 @@ class ChatMessageContainerMainContainer extends StatelessWidget {
           ],
           if (message.voiceMessageLink != null) ...[
             ChatMessageContainerVoiceMessage(
-              key: Key("message: ${message.id} voiceMessage"),
               voiceMessageLink: message.voiceMessageLink!,
             ),
           ],

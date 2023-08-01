@@ -62,6 +62,7 @@ class ChatInfoPageUserList extends StatelessWidget {
                 physics: const NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
                   return ChatInfoPageUserListItem(
+                    key: ObjectKey(state.users[index]),
                     currentUser: state.getCurrentGroupchatUser() ??
                         GroupchatUserEntity(
                           id: BlocProvider.of<AuthCubit>(context)

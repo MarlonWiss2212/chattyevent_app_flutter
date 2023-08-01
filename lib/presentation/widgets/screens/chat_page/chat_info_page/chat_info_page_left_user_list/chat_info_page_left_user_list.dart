@@ -41,6 +41,7 @@ class ChatInfoPageLeftUserList extends StatelessWidget {
                 physics: const NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
                   return ChatInfoPageLeftUserListItem(
+                    key: ObjectKey(state.leftUsers[index]),
                     currentUser: state.getCurrentGroupchatUser() ??
                         GroupchatUserEntity(
                           id: BlocProvider.of<AuthCubit>(context)

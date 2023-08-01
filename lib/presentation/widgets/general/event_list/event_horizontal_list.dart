@@ -21,6 +21,7 @@ class EventHorizontalList extends StatelessWidget {
         slideTransform: const RotateDownTransform(),
         slideBuilder: (index) {
           return EventHorizontalListItem(
+            key: ObjectKey(eventStates[index].event),
             height: height,
             width: width,
             event: eventStates[index].event,

@@ -43,6 +43,7 @@ class ChatInfoPagePrivateEventList extends StatelessWidget {
                 physics: const NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
                   return PrivateEventListItem(
+                    key: ObjectKey(state.futureConnectedPrivateEvents[index]),
                     privateEventState: CurrentEventState.fromPrivateEvent(
                       event: state.futureConnectedPrivateEvents[index],
                     ),

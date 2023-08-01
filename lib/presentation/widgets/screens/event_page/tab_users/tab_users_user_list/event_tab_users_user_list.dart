@@ -60,6 +60,7 @@ class EventTabUsersUserList extends StatelessWidget {
                 physics: const NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
                   return EventTabUsersUserListItem(
+                    key: ObjectKey(state.eventUsers[index]),
                     currentEventUser: state.getCurrentEventUser(),
                     eventUser: state.eventUsers[index],
                     event: state.event,

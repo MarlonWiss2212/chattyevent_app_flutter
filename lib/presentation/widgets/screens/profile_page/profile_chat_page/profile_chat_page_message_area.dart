@@ -46,7 +46,6 @@ class ProfileChatPageMessageArea extends StatelessWidget {
         final currentUser =
             BlocProvider.of<AuthCubit>(context).state.currentUser;
         return ChatMessageList(
-          key: Key("ChatMessageListComponent ${state.user.id}"),
           messages: state.messages,
           users: [state.user, currentUser],
           currentUserId: currentUser.id,

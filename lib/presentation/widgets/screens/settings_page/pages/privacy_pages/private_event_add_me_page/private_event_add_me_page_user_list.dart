@@ -118,6 +118,7 @@ class PrivateEventAddMePageUserList extends StatelessWidget {
         break;
     }
     return UserListTile(
+      key: ObjectKey(state.users[index]),
       user: state.users[index],
       trailing: Checkbox(
         value: value,

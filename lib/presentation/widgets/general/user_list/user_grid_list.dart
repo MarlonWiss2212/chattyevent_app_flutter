@@ -53,6 +53,7 @@ class _UserGridListState extends State<UserGridList> {
     return GridView.builder(
       itemBuilder: (context, index) {
         return UserGridListItem(
+          key: ObjectKey(widget.users[index]),
           user: widget.users[index],
           button: widget.button != null
               ? widget.button!(widget.users[index])

@@ -48,7 +48,6 @@ class _ChatMessageListState extends State<ChatMessageList> {
   @override
   Widget build(BuildContext context) {
     return GroupedListView<MessageEntity, String>(
-      key: Key("ChatList ${widget.key}"),
       controller: _scrollController,
       padding: const EdgeInsets.symmetric(vertical: 4),
       itemBuilder: (context, message) {
@@ -57,7 +56,7 @@ class _ChatMessageListState extends State<ChatMessageList> {
               ? const EdgeInsets.only(bottom: 50)
               : const EdgeInsets.all(0),
           child: ChatMessageContainer(
-            key: Key("message: ${message.id}"),
+            key: ObjectKey(message.id),
             users: widget.users,
             message: message,
             messageToReactTo: message.messageToReactTo != null

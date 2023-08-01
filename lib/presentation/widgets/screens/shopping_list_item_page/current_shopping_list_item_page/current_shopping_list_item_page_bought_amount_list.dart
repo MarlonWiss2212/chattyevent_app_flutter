@@ -56,6 +56,9 @@ class CurrentShoppingListItemPageBoughtAmountList extends StatelessWidget {
                 );
 
                 return Slidable(
+                  key: ObjectKey(
+                    state.shoppingListItem.boughtAmounts![index],
+                  ),
                   enabled:
                       user?.id == privateEventState.getCurrentEventUser()?.id,
                   endActionPane: ActionPane(

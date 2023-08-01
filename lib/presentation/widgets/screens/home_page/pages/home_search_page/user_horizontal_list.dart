@@ -33,6 +33,7 @@ class UserHorizontalList extends StatelessWidget {
         physics: const PageScrollPhysics(),
         itemBuilder: (context, index) {
           return FractionallySizedBox(
+            key: ObjectKey(users[index]),
             widthFactor: .95,
             alignment: Alignment.centerLeft,
             child: SizedBox(

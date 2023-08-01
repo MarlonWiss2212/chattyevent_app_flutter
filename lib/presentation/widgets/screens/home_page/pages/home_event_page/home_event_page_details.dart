@@ -45,7 +45,10 @@ class HomeEventPageDetails extends StatelessWidget {
                         ],
                       ),
                       const SizedBox(height: 8),
-                      EventHorizontalList(eventStates: state.futureEvents),
+                      EventHorizontalList(
+                        key: const Key("EventHorizontalListFuture"),
+                        eventStates: state.futureEvents,
+                      ),
                     ],
                     if (state.pastEvents.isNotEmpty) ...[
                       const SizedBox(height: 20),
@@ -69,6 +72,7 @@ class HomeEventPageDetails extends StatelessWidget {
                       ),
                       const SizedBox(height: 8),
                       EventHorizontalList(
+                        key: const Key("EventHorizontalListPast"),
                         eventStates: state.pastEvents,
                       ),
                     ],
