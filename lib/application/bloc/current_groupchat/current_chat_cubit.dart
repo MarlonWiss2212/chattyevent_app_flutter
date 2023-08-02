@@ -51,6 +51,17 @@ class CurrentGroupchatCubit extends Cubit<CurrentGroupchatState> {
   });
 
   @override
+  void emit(
+    CurrentGroupchatState state, {
+    bool replaceOrAddInOtherCubits = true,
+  }) {
+    if (replaceOrAddInOtherCubits) {
+      chatCubit.replaceOrAdd(chat: ChatEntity(groupchat: state.currentChat));
+    }
+    super.emit(state);
+  }
+
+  @override
   Future<void> close() {
     _subscription?.cancel();
     _subscription = null;
@@ -87,7 +98,6 @@ class CurrentGroupchatCubit extends Cubit<CurrentGroupchatState> {
           loadingChat: false,
           oldState: state,
         ));
-        chatCubit.replaceOrAdd(chat: ChatEntity(groupchat: state.currentChat));
       },
     );
   }
@@ -113,7 +123,6 @@ class CurrentGroupchatCubit extends Cubit<CurrentGroupchatState> {
             ),
           ),
         );
-        chatCubit.replaceOrAdd(chat: ChatEntity(groupchat: state.currentChat));
       },
     );
   }
@@ -122,7 +131,9 @@ class CurrentGroupchatCubit extends Cubit<CurrentGroupchatState> {
     bool reload = false,
   }) async {
     emit(CurrentGroupchatState.merge(
-        oldState: state, loadingPrivateEvents: true));
+      oldState: state,
+      loadingPrivateEvents: true,
+    ));
 
     final privateEventsOrFailure = await eventUseCases.getEventsViaApi(
       limitOffsetFilter: LimitOffsetFilter(
@@ -143,17 +154,17 @@ class CurrentGroupchatCubit extends Cubit<CurrentGroupchatState> {
     privateEventsOrFailure.fold(
       (alert) {
         notificationCubit.newAlert(notificationAlert: alert);
-        emit(
-          CurrentGroupchatState.merge(
-              oldState: state, loadingPrivateEvents: false),
-        );
-      },
-      (privateEvents) {
         emit(CurrentGroupchatState.merge(
           oldState: state,
           loadingPrivateEvents: false,
         ));
-        for (final event in privateEvents) {
+      },
+      (events) {
+        emit(CurrentGroupchatState.merge(
+          oldState: state,
+          loadingPrivateEvents: false,
+        ));
+        for (final event in events) {
           replaceOrAddFutureConnectedPrivateEvent(event: event);
         }
       },
@@ -175,7 +186,6 @@ class CurrentGroupchatCubit extends Cubit<CurrentGroupchatState> {
         oldState: state,
         futureConnectedPrivateEvents: newPrivateEvents,
       ));
-      chatCubit.replaceOrAdd(chat: ChatEntity(groupchat: state.currentChat));
       return newPrivateEvents[foundIndex];
     } else {
       List<EventEntity> newPrivateEvents =
@@ -185,7 +195,6 @@ class CurrentGroupchatCubit extends Cubit<CurrentGroupchatState> {
         oldState: state,
         futureConnectedPrivateEvents: newPrivateEvents,
       ));
-      chatCubit.replaceOrAdd(chat: ChatEntity(groupchat: state.currentChat));
     }
     return event;
   }
@@ -207,7 +216,6 @@ class CurrentGroupchatCubit extends Cubit<CurrentGroupchatState> {
       (alert) {
         notificationCubit.newAlert(notificationAlert: alert);
         emit(CurrentGroupchatState.merge(oldState: state, loadingChat: false));
-        chatCubit.replaceOrAdd(chat: ChatEntity(groupchat: state.currentChat));
       },
       (groupchat) async {
         emit(CurrentGroupchatState.merge(
@@ -215,7 +223,6 @@ class CurrentGroupchatCubit extends Cubit<CurrentGroupchatState> {
           loadingChat: false,
           oldState: state,
         ));
-        chatCubit.replaceOrAdd(chat: ChatEntity(groupchat: state.currentChat));
       },
     );
   }
@@ -234,9 +241,9 @@ class CurrentGroupchatCubit extends Cubit<CurrentGroupchatState> {
     groupchatOrFailure.fold(
       (alert) => notificationCubit.newAlert(notificationAlert: alert),
       (groupchat) {
-        emit(CurrentGroupchatState.merge(
-            currentChat: groupchat, oldState: state));
-        chatCubit.replaceOrAdd(chat: ChatEntity(groupchat: state.currentChat));
+        emit(
+          CurrentGroupchatState.merge(currentChat: groupchat, oldState: state),
+        );
       },
     );
   }
@@ -267,7 +274,6 @@ class CurrentGroupchatCubit extends Cubit<CurrentGroupchatState> {
           loadingChat: false,
           oldState: state,
         ));
-        chatCubit.replaceOrAdd(chat: ChatEntity(groupchat: state.currentChat));
       },
     );
   }
@@ -304,7 +310,6 @@ class CurrentGroupchatCubit extends Cubit<CurrentGroupchatState> {
           loadingChat: false,
           oldState: state,
         ));
-        chatCubit.replaceOrAdd(chat: ChatEntity(groupchat: state.currentChat));
       },
     );
   }
@@ -329,7 +334,6 @@ class CurrentGroupchatCubit extends Cubit<CurrentGroupchatState> {
         emit(
           CurrentGroupchatState.merge(oldState: state, loadingChat: false),
         );
-        chatCubit.replaceOrAdd(chat: ChatEntity(groupchat: state.currentChat));
       },
       (groupchatLeftUser) {
         if (groupchatLeftUser == null ||
@@ -348,8 +352,6 @@ class CurrentGroupchatCubit extends Cubit<CurrentGroupchatState> {
             loadingChat: false,
             oldState: state,
           ));
-          chatCubit.replaceOrAdd(
-              chat: ChatEntity(groupchat: state.currentChat));
         }
       },
     );
@@ -432,7 +434,6 @@ class CurrentGroupchatCubit extends Cubit<CurrentGroupchatState> {
           loadingMessages: false,
           oldState: state,
         ));
-        chatCubit.replaceOrAdd(chat: ChatEntity(groupchat: state.currentChat));
       },
     );
   }
@@ -442,7 +443,6 @@ class CurrentGroupchatCubit extends Cubit<CurrentGroupchatState> {
       messages: List.from(state.messages)..add(message),
       oldState: state,
     ));
-    chatCubit.replaceOrAdd(chat: ChatEntity(groupchat: state.currentChat));
     return message;
   }
 }

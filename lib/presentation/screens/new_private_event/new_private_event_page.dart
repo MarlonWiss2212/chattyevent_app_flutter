@@ -58,7 +58,7 @@ class NewPrivateEventPage extends StatelessWidget {
                     AutoRouter.of(context).root.replace(
                           EventWrapperRoute(
                             eventId: state.addedEvent!.id,
-                            eventStateToSet: CurrentEventState.fromPrivateEvent(
+                            eventStateToSet: CurrentEventState.fromEvent(
                               event: state.addedEvent!,
                             ),
                           ),

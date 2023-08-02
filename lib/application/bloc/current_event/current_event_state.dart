@@ -55,7 +55,7 @@ class CurrentEventState {
     this.status = CurrentPrivateEventStateStatus.initial,
   });
 
-  factory CurrentEventState.fromPrivateEvent({
+  factory CurrentEventState.fromEvent({
     required EventEntity event,
   }) {
     return CurrentEventState(

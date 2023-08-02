@@ -66,7 +66,7 @@ class GroupchatfutureEventsPage extends StatelessWidget {
                   (context, index) {
                     if (index < state.futureConnectedPrivateEvents.length) {
                       return PrivateEventListItem(
-                        privateEventState: CurrentEventState.fromPrivateEvent(
+                        privateEventState: CurrentEventState.fromEvent(
                           event: state.futureConnectedPrivateEvents[index],
                         ),
                       );

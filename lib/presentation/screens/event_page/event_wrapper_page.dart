@@ -25,7 +25,7 @@ class EventWrapperPage extends StatelessWidget {
   Widget build(BuildContext context) {
     CurrentEventCubit currentPrivateEventCubit = CurrentEventCubit(
       eventStateToSet ??
-          CurrentEventState.fromPrivateEvent(
+          CurrentEventState.fromEvent(
             event: EventEntity(
               id: eventId,
               eventDate: DateTime.now(),

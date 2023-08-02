@@ -107,7 +107,7 @@ class _ChatListState extends State<ChatList> {
           AutoRouter.of(context).push(
             EventWrapperRoute(
               eventId: widget.chats[index].event!.id,
-              eventStateToSet: CurrentEventState.fromPrivateEvent(
+              eventStateToSet: CurrentEventState.fromEvent(
                 event: widget.chats[index].event!,
               ),
               children: [

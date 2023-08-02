@@ -228,6 +228,7 @@ class CurrentEventCubit extends Cubit<CurrentEventState> {
         if (deleted) {
           emitState(status: CurrentPrivateEventStateStatus.deleted);
           homeEventCubit.delete(eventId: state.event.id);
+          chatCubit.delete(eventId: state.event.id);
         }
       },
     );
@@ -536,6 +537,7 @@ class CurrentEventCubit extends Cubit<CurrentEventState> {
     bool? loadingShoppingList,
     List<CurrentShoppingListItemState>? shoppingListItemStates,
     CurrentPrivateEventStateStatus? status,
+    bool replaceOrAddInOtherCubits = true,
   }) {
     final List<MessageEntity> allMessages = messages ?? state.messages;
     allMessages.sort((a, b) => b.createdAt.compareTo(a.createdAt));
@@ -557,9 +559,12 @@ class CurrentEventCubit extends Cubit<CurrentEventState> {
     );
 
     emit(newState);
-    homeEventCubit.replaceOrAdd(
-      privateEventState: newState,
-      onlyReplace: true,
-    );
+    if (replaceOrAddInOtherCubits) {
+      homeEventCubit.replaceOrAdd(
+        privateEventState: newState,
+        onlyReplace: true,
+      );
+      chatCubit.replaceOrAdd(chat: ChatEntity(event: state.event));
+    }
   }
 }

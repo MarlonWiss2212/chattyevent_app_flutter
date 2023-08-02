@@ -44,7 +44,7 @@ class ChatInfoPagePrivateEventList extends StatelessWidget {
                 itemBuilder: (context, index) {
                   return PrivateEventListItem(
                     key: ObjectKey(state.futureConnectedPrivateEvents[index]),
-                    privateEventState: CurrentEventState.fromPrivateEvent(
+                    privateEventState: CurrentEventState.fromEvent(
                       event: state.futureConnectedPrivateEvents[index],
                     ),
                   );

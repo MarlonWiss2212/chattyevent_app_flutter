@@ -121,7 +121,7 @@ class HomeEventCubit extends Cubit<HomeEventState> {
           emitState(
             futureEvents: privateEvents
                 .map(
-                  (e) => CurrentEventState.fromPrivateEvent(
+                  (e) => CurrentEventState.fromEvent(
                     event: e,
                   ),
                 )
@@ -131,7 +131,7 @@ class HomeEventCubit extends Cubit<HomeEventState> {
           replaceOrAddMultiple(
             eventStates: privateEvents
                 .map(
-                  (e) => CurrentEventState.fromPrivateEvent(
+                  (e) => CurrentEventState.fromEvent(
                     event: e,
                   ),
                 )
@@ -172,7 +172,7 @@ class HomeEventCubit extends Cubit<HomeEventState> {
           emitState(
             pastEvents: privateEvents
                 .map(
-                  (e) => CurrentEventState.fromPrivateEvent(
+                  (e) => CurrentEventState.fromEvent(
                     event: e,
                   ),
                 )
@@ -182,7 +182,7 @@ class HomeEventCubit extends Cubit<HomeEventState> {
           replaceOrAddMultiple(
             eventStates: privateEvents
                 .map(
-                  (e) => CurrentEventState.fromPrivateEvent(
+                  (e) => CurrentEventState.fromEvent(
                     event: e,
                   ),
                 )

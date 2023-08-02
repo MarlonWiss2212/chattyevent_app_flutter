@@ -49,7 +49,7 @@ class CurrentShoppingListItemPagePrivateEventTile extends StatelessWidget {
                   AutoRouter.of(context).root.push(
                         EventWrapperRoute(
                           eventId: state.event.id,
-                          eventStateToSet: CurrentEventState.fromPrivateEvent(
+                          eventStateToSet: CurrentEventState.fromEvent(
                             event: state.event,
                           ),
                         ),

@@ -25,7 +25,7 @@ class ShoppingListItemWrapperPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     CurrentEventCubit currentPrivateEventCubit = CurrentEventCubit(
-      CurrentEventState.fromPrivateEvent(
+      CurrentEventState.fromEvent(
         event: EventEntity(
           id: currentShoppingListItemStateToSet.shoppingListItem.eventTo ?? "",
           eventDate: DateTime.now(),
