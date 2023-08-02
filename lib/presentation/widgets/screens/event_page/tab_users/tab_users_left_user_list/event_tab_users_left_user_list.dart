@@ -11,34 +11,44 @@ class EventTabUsersLeftUserList extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<CurrentEventCubit, CurrentEventState>(
       builder: (context, state) {
-        if (state.eventLeftUsers.isEmpty && state.loadingEvent) {
-          return SkeletonListTile(
-            padding: const EdgeInsets.all(8),
-            hasSubtitle: true,
-            titleStyle: const SkeletonLineStyle(width: 100, height: 22),
-            subtitleStyle:
-                const SkeletonLineStyle(width: double.infinity, height: 16),
-            leadingStyle: const SkeletonAvatarStyle(
-              shape: BoxShape.circle,
+        return Column(
+          children: [
+            Center(
+              child: Text(
+                "Frühere Mitglieder: ${state.eventLeftUsers.length.toString()}",
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
             ),
-          );
-        } else if (state.eventLeftUsers.isNotEmpty) {
-          return ListView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemBuilder: (context, index) {
-              return PrivateEventTabUsersLeftUserListItem(
-                key: ObjectKey(state.eventLeftUsers[index]),
-                currentEventUser: state.getCurrentEventUser(),
-                leftPrivateEventUser: state.eventLeftUsers[index],
-                event: state.event,
-              );
-            },
-            itemCount: state.eventLeftUsers.length,
-          );
-        } else {
-          return const SizedBox();
-        }
+            if (state.eventUsers.isEmpty && state.loadingEvent) ...[
+              const SizedBox(height: 8),
+              SkeletonListTile(
+                padding: const EdgeInsets.all(8),
+                hasSubtitle: true,
+                titleStyle: const SkeletonLineStyle(width: 100, height: 22),
+                subtitleStyle:
+                    const SkeletonLineStyle(width: double.infinity, height: 16),
+                leadingStyle: const SkeletonAvatarStyle(
+                  shape: BoxShape.circle,
+                ),
+              ),
+            ] else if (state.eventUsers.isNotEmpty) ...[
+              const SizedBox(height: 8),
+              ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemBuilder: (context, index) {
+                  return PrivateEventTabUsersLeftUserListItem(
+                    key: ObjectKey(state.eventLeftUsers[index]),
+                    currentEventUser: state.getCurrentEventUser(),
+                    leftPrivateEventUser: state.eventLeftUsers[index],
+                    event: state.event,
+                  );
+                },
+                itemCount: state.eventLeftUsers.length,
+              ),
+            ]
+          ],
+        );
       },
     );
   }

@@ -17,6 +17,13 @@ class StandardShoppingListItemPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final showListTile = BlocProvider.of<CurrentShoppingListItemCubit>(context)
+        .shoppingListCubitOrPrivateEventCubit
+        .fold(
+          (myShoppingListCubit) => true,
+          (currentEventCubit) => false,
+        );
+
     return Scaffold(
       body: CustomScrollView(
         slivers: [
@@ -62,15 +69,17 @@ class StandardShoppingListItemPage extends StatelessWidget {
           ),
           SliverList(
             delegate: SliverChildListDelegate(
-              const [
-                CurrentShoppingListItemPageWithProgressBar(),
-                SizedBox(height: 20),
-                CurrentShoppingListItemPagePrivateEventTile(),
-                CustomDivider(),
-                CurrentShoppingListItemPageUserToBuyItemTile(),
-                CustomDivider(),
-                CurrentShoppingListItemPageCreateBoughtAmountTile(),
-                CurrentShoppingListItemPageBoughtAmountList(),
+              [
+                const CurrentShoppingListItemPageWithProgressBar(),
+                const SizedBox(height: 20),
+                if (showListTile) ...[
+                  const CurrentShoppingListItemPagePrivateEventTile(),
+                  const CustomDivider(),
+                ],
+                const CurrentShoppingListItemPageUserToBuyItemTile(),
+                const CustomDivider(),
+                const CurrentShoppingListItemPageCreateBoughtAmountTile(),
+                const CurrentShoppingListItemPageBoughtAmountList(),
               ],
             ),
           )
