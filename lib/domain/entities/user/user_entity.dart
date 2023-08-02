@@ -55,11 +55,8 @@ class UserEntity {
       profileImageLink:
           newEntity.profileImageLink ?? oldEntity.profileImageLink,
       latestMessage: newEntity.latestMessage ?? oldEntity.latestMessage,
-      // TODO optimize this somehow
-      userRelationCounts: UserRelationsCountEntity.merge(
-        newEntity: newEntity.userRelationCounts ?? UserRelationsCountEntity(),
-        oldEntity: oldEntity.userRelationCounts ?? UserRelationsCountEntity(),
-      ),
+      userRelationCounts:
+          newEntity.userRelationCounts ?? oldEntity.userRelationCounts,
       birthdate: newEntity.birthdate ?? oldEntity.birthdate,
       createdAt: newEntity.createdAt ?? oldEntity.createdAt,
       updatedAt: newEntity.updatedAt ?? oldEntity.updatedAt,

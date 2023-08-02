@@ -1,4 +1,5 @@
 import 'package:chattyevent_app_flutter/application/bloc/add_message/add_message_cubit.dart';
+import 'package:chattyevent_app_flutter/core/extensions/list_space_between_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -45,9 +46,8 @@ class ChatMessageReactMessageContainer extends StatelessWidget {
                 ),
                 const SizedBox(width: 8),
                 Flexible(
-                  child: Wrap(
-                    runSpacing: 8,
-                    crossAxisAlignment: WrapCrossAlignment.start,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -127,7 +127,7 @@ class ChatMessageReactMessageContainer extends StatelessWidget {
                           style: Theme.of(context).textTheme.bodyMedium,
                         ),
                       },
-                    ],
+                    ].withSpaceBetween(height: 8),
                   ),
                 ),
               ],

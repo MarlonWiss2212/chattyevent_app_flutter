@@ -1,4 +1,5 @@
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
+import 'package:chattyevent_app_flutter/core/extensions/list_space_between_extension.dart';
 import 'package:chattyevent_app_flutter/core/utils/injection.dart';
 import 'package:chattyevent_app_flutter/domain/entities/message/message_and_user_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/message/message_entity.dart';
@@ -48,9 +49,8 @@ class ChatMessageContainerMainContainer extends StatelessWidget {
             ? Theme.of(context).colorScheme.primaryContainer
             : Theme.of(context).colorScheme.surface,
       ),
-      child: Wrap(
-        runSpacing: 8,
-        crossAxisAlignment: WrapCrossAlignment.start,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (messageToReactTo != null) ...{
             ChatMessageReactMessageContainer(
@@ -70,28 +70,30 @@ class ChatMessageContainerMainContainer extends StatelessWidget {
           },
           if (message.fileLinks != null && message.fileLinks!.isNotEmpty) ...[
             //TODO: as list of documents
-            Container(
-              constraints: BoxConstraints(
-                maxHeight: MediaQuery.of(context).size.height / 2,
-              ),
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-              ),
-              child: InkWell(
-                onTap: () => showAnimatedDialog(
-                  context: context,
-                  curve: Curves.fastOutSlowIn,
-                  animationType: DialogTransitionType.slideFromBottomFade,
-                  builder: (c) => ImageFullscreenDialog(
-                    src: message.fileLinks![0],
-                  ),
+            Center(
+              child: Container(
+                constraints: BoxConstraints(
+                  maxHeight: MediaQuery.of(context).size.height / 2,
                 ),
-                child: Ink(
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(8.0),
-                    child: Image.network(
-                      message.fileLinks![0],
-                      fit: BoxFit.contain,
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                ),
+                child: InkWell(
+                  onTap: () => showAnimatedDialog(
+                    context: context,
+                    curve: Curves.fastOutSlowIn,
+                    animationType: DialogTransitionType.slideFromBottomFade,
+                    builder: (c) => ImageFullscreenDialog(
+                      src: message.fileLinks![0],
+                    ),
+                  ),
+                  child: Ink(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8.0),
+                      child: Image.network(
+                        message.fileLinks![0],
+                        fit: BoxFit.contain,
+                      ),
                     ),
                   ),
                 ),
@@ -128,6 +130,7 @@ class ChatMessageContainerMainContainer extends StatelessWidget {
             Material(
               color: Colors.transparent,
               child: InkWell(
+                borderRadius: BorderRadius.circular(8),
                 onTap: () => openMaps(
                   context,
                   LatLng(
@@ -173,7 +176,7 @@ class ChatMessageContainerMainContainer extends StatelessWidget {
               style: Theme.of(context).textTheme.bodyMedium,
             ),
           },
-        ],
+        ].withSpaceBetween(height: 8),
       ),
     );
   }

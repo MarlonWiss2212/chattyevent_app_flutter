@@ -28,7 +28,6 @@ class MessageRepositoryImpl implements MessageRepository {
         "input": createMessageDto.toMap(),
       };
 
-      /// TODO: should accept other files than jpg too
       if (createMessageDto.file != null) {
         final type = lookupMimeType(createMessageDto.file!.path);
         if (type != null) {
@@ -44,7 +43,6 @@ class MessageRepositoryImpl implements MessageRepository {
 
       if (createMessageDto.voiceMessage != null) {
         final type = lookupMimeType(createMessageDto.voiceMessage!.path);
-        print(type);
         if (type != null) {
           final MultipartFile file = MultipartFile.fromBytes(
             'audio',
