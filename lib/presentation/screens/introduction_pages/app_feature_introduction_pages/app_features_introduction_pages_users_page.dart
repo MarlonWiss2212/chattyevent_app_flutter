@@ -34,7 +34,7 @@ class AppFeatureIntroductionPagesUsersPage extends StatelessWidget {
             const SizedBox(),
             SingleChildScrollView(
               child: Text(
-                "ChattyEvent verfügt auch über ein Freundschaftssystem, das es Ihnen ermöglicht, die Berechtigungen Ihrer Freunde zu verwalten. Sie können bestimmte Freunde zu einer Gruppe hinzufügen und deren Zugriff auf die Gruppe steuern. Sie können auch individuelle Berechtigungen für jeden Freund festlegen, um sicherzustellen, dass Ihre Gruppe organisiert und sicher bleibt.",
+                "Ebenso stellt ChattyEvent ein ausgeklügeltes Freundschaftssystem bereit, das Ihnen erlaubt, die Befugnisse Ihrer Freunde gezielt zu verwalten. Das bedeutet, dass Sie gezielt auswählen können, welche Freunde Sie in eine Gruppe einbinden und wie weitreichend ihr Zugriff sein soll. Individuelle Berechtigungen lassen sich ganz nach Ihren Wünschen für jeden Freund anpassen – dies gewährleistet eine durchorganisierte und geschützte Gruppendynamik.",
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.titleMedium,
               ),

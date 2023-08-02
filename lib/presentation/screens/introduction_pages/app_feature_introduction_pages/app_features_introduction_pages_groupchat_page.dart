@@ -35,8 +35,10 @@ class AppFeatureIntroductionPagesGroupchatPage extends StatelessWidget {
             SingleChildScrollView(
               child: Text(
                 """
-ChattyEvent bietet Ihnen die Möglichkeit, Gruppenchats zu erstellen und mit Ihren Freunden, Familie oder Kollegen zu kommunizieren. Egal ob Sie ein Event planen oder einfach nur in Kontakt bleiben wollen, unsere App ermöglicht es Ihnen, alle Ihre Kontakte an einem Ort zu organisieren.
-                
+ChattyEvent ist die ultimative Lösung für Ihre Party- und Eventplanung! Unsere innovative App dreht sich rund um Gruppeninteraktion und erleichtert Ihnen die Kommunikation mit Ihren Freunden, Familie oder Kollegen. Egal, ob Sie eine epische Party organisieren oder einfach nur engeren Kontakt pflegen möchten – ChattyEvent ist der ideale Begleiter, um all Ihre Kontakte an einem zentralen Ort zu bündeln.
+
+ChattyEvent zeichnet sich durch seine mühelose Benutzerfreundlichkeit aus und hält sämtliche Tools bereit, die Sie für eine geschmeidige Gruppenkommunikation und eine tadellose Event-Planung benötigen. Warten Sie nicht länger – probieren Sie es noch heute aus und überzeugen Sie sich selbst von der Leichtigkeit und Effizienz unserer App. Steigern Sie das Potenzial Ihrer Partyplanung und Eventorganisation mit ChattyEvent!                       
+
 Viel Spaß mit ChattyEvent!
                 """,
                 textAlign: TextAlign.center,

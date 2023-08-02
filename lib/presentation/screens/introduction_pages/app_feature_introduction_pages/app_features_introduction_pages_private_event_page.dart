@@ -35,9 +35,9 @@ class AppFeatureIntroductionPagesPrivateEventPage extends StatelessWidget {
             SingleChildScrollView(
               child: Text(
                 """
-Mit der Event-Planungsfunktion können Sie schnell und einfach ein Event erstellen und die Details teilen. Sie können die Veranstaltung mit einem Gruppenchat verknüpfen oder auch ohne Chat planen. Mit dieser Funktion können Sie sicherstellen, dass jeder eingeladen ist und alle notwendigen Details auf einen Blick zur Verfügung stehen.
-                
-Um Ihre Event-Planung noch einfacher zu gestalten, haben wir eine Einkaufsliste hinzugefügt. Mit dieser Funktion können Sie angeben, was jeder Event-Teilnehmer mitbringen soll, so dass Sie nichts vergessen und alles im Voraus organisiert haben.
+Die spezielle Party-Planungsfunktion von ChattyEvent ermöglicht es Ihnen, Events rasch und mühelos auf die Beine zu stellen und sämtliche Details spielend zu teilen. Hierbei können Sie die Veranstaltung mit einem Gruppenchat verknüpfen oder auch unabhängig davon planen. Diese innovative Funktion gewährleistet, dass wirklich jeder eingeladen wird und dass sämtliche relevanten Einzelheiten auf einen Blick ersichtlich sind.
+
+Um die Event-Planung noch weiter zu vereinfachen, haben wir sogar eine praktische Einkaufslistenfunktion integriert. Auf diese Weise können Sie klipp und klar festlegen, welche Beiträge jeder Event-Teilnehmer beisteuern sollte. So verhindern Sie, dass irgendetwas vergessen wird, und können sämtliche Einzelheiten im Vorfeld perfekt koordinieren.
                 """,
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.titleMedium,
