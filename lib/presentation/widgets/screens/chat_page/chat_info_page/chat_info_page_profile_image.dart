@@ -50,6 +50,8 @@ class ChatInfoPageProfileImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CurrentGroupchatCubit, CurrentGroupchatState>(
+      buildWhen: (p, c) =>
+          p.currentChat.profileImageLink != c.currentChat.profileImageLink,
       builder: (context, state) {
         return InkWell(
           borderRadius: const BorderRadius.all(

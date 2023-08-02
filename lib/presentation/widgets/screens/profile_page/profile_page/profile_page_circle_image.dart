@@ -56,18 +56,16 @@ class ProfilePageCircleImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AuthCubit, AuthState>(
-      builder: (context, authState) {
-        return BlocBuilder<ProfilePageCubit, ProfilePageState>(
-          builder: (context, state) {
-            return CircleImage(
-              imageLink: state.user.profileImageLink,
-              heroTag: "${state.user.id} profileImage",
-              onTap: state.user.id == authState.currentUser.id
-                  ? () => _onTapSetImageFunction(context)
-                  : null,
-            );
-          },
+    return BlocBuilder<ProfilePageCubit, ProfilePageState>(
+      buildWhen: (p, c) => p.user.profileImageLink != c.user.profileImageLink,
+      builder: (context, state) {
+        return CircleImage(
+          imageLink: state.user.profileImageLink,
+          heroTag: "${state.user.id} profileImage",
+          onTap: state.user.id ==
+                  BlocProvider.of<AuthCubit>(context).state.currentUser.id
+              ? () => _onTapSetImageFunction(context)
+              : null,
         );
       },
     );
