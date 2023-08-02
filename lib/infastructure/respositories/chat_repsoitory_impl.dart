@@ -26,7 +26,7 @@ class ChatRepositoryImpl implements ChatRepository {
                 message
                 readBy
                 messageToReactTo {
-                  id
+                  _id
                 }
                 fileLinks
                 groupchatTo
@@ -56,7 +56,7 @@ class ChatRepositoryImpl implements ChatRepository {
                 readBy
                 message
                 messageToReactTo {
-                  id
+                  _id
                 }
                 fileLinks
                 eventTo
@@ -74,7 +74,7 @@ class ChatRepositoryImpl implements ChatRepository {
                 readBy
                 message
                 messageToReactTo {
-                  id
+                  _id
                 }
                 fileLinks
                 userTo

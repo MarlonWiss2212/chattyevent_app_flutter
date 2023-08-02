@@ -62,7 +62,7 @@ class MessageRepositoryImpl implements MessageRepository {
             _id
             message
             messageToReactTo {
-              id
+              _id
               message
               readBy
               fileLinks
@@ -139,7 +139,7 @@ class MessageRepositoryImpl implements MessageRepository {
             _id
             message
             messageToReactTo {
-              id
+              _id
               message
               readBy
               fileLinks
@@ -239,7 +239,7 @@ class MessageRepositoryImpl implements MessageRepository {
               }
             }
             messageToReactTo {
-              id
+              _id
               message
               readBy
               fileLinks

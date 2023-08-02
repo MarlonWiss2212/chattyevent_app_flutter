@@ -4,7 +4,7 @@ import 'package:chattyevent_app_flutter/infastructure/dto/message/create_message
 
 class CreateMessageDto {
   final String message;
-  final String? messageToReactTo;
+  final String? messageToReactToId;
   final String? groupchatTo;
   final String? eventTo;
   final CreateMessageLocationDto? currentLocation;
@@ -21,7 +21,7 @@ class CreateMessageDto {
     this.eventTo,
     this.file,
     this.voiceMessage,
-    this.messageToReactTo,
+    this.messageToReactToId,
   });
 
   Map toMap() {
@@ -34,8 +34,8 @@ class CreateMessageDto {
       map.addAll({"currentLocation": currentLocation!.toMap()});
     }
 
-    if (messageToReactTo != null) {
-      map.addAll({'messageToReactTo': messageToReactTo});
+    if (messageToReactToId != null) {
+      map.addAll({'messageToReactToId': messageToReactToId});
     }
     if (groupchatTo != null) {
       map.addAll({'groupchatTo': groupchatTo});

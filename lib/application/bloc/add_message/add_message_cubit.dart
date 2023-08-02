@@ -87,7 +87,7 @@ class AddMessageCubit extends Cubit<AddMessageState> {
               )
             : null,
         eventTo: state.eventTo,
-        messageToReactTo: state.messageToReactToWithUser?.message.id,
+        messageToReactToId: state.messageToReactToWithUser?.message.id,
         file: state.file,
       ),
     );
