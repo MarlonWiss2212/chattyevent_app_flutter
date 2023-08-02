@@ -550,11 +550,24 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
   }) {
     final List<MessageEntity> allMessages = messages ?? state.messages;
     allMessages.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+
+    UserEntity newUser = user ?? state.user;
+    allMessages.isNotEmpty
+        ? newUser = UserEntity.merge(
+            newEntity: UserEntity(
+              id: newUser.id,
+              authId: newUser.authId,
+              latestMessage: allMessages.first,
+            ),
+            oldEntity: newUser,
+          )
+        : null;
+
     emit(
       ProfilePageState(
         messages: allMessages,
         loadingMessages: loadingMessages ?? state.loadingMessages,
-        user: user ?? state.user,
+        user: newUser,
         status: status ?? state.status,
         followers: followers ?? state.followers,
         followersStatus: followersStatus ?? state.followersStatus,

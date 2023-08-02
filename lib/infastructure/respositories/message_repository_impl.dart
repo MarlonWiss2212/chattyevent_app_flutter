@@ -61,7 +61,32 @@ class MessageRepositoryImpl implements MessageRepository {
           createMessage(createMessageInput: \$input, file: \$file, voiceMessage: \$voiceMessage) {
             _id
             message
-            messageToReactTo
+            messageToReactTo {
+              id
+              message
+              readBy
+              fileLinks
+              voiceMessageLink
+              messageToReactToId
+              groupchatTo
+              currentLocation {
+                geoJson {
+                  type
+                  coordinates
+                }
+                address {
+                  zip
+                  city
+                  country
+                  street
+                  housenumber
+                }
+              }
+              eventTo
+              userTo
+              createdBy
+              createdAt
+            }
             readBy
             fileLinks
             voiceMessageLink
@@ -113,7 +138,32 @@ class MessageRepositoryImpl implements MessageRepository {
           findMessages(filter: \$input, limitOffsetInput: \$limitOffsetFilter) {
             _id
             message
-            messageToReactTo
+            messageToReactTo {
+              id
+              message
+              readBy
+              fileLinks
+              voiceMessageLink
+              messageToReactToId
+              groupchatTo
+              currentLocation {
+                geoJson {
+                  type
+                  coordinates
+                }
+                address {
+                  zip
+                  city
+                  country
+                  street
+                  housenumber
+                }
+              }
+              eventTo
+              userTo
+              createdBy
+              createdAt
+            }
             currentLocation {
               geoJson {
                 type
@@ -188,7 +238,32 @@ class MessageRepositoryImpl implements MessageRepository {
                 housenumber
               }
             }
-            messageToReactTo
+            messageToReactTo {
+              id
+              message
+              readBy
+              fileLinks
+              voiceMessageLink
+              messageToReactToId
+              groupchatTo
+              currentLocation {
+                geoJson {
+                  type
+                  coordinates
+                }
+                address {
+                  zip
+                  city
+                  country
+                  street
+                  housenumber
+                }
+              }
+              eventTo
+              userTo
+              createdBy
+              createdAt
+            }
             groupchatTo
             eventTo
             userTo

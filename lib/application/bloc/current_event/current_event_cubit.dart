@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:chattyevent_app_flutter/core/enums/event/event_permission_enum.dart';
 import 'package:chattyevent_app_flutter/core/enums/event/event_user/event_user_role_enum.dart';
 import 'package:chattyevent_app_flutter/core/enums/event/event_user/event_user_status_enum.dart';
@@ -542,6 +541,18 @@ class CurrentEventCubit extends Cubit<CurrentEventState> {
     final List<MessageEntity> allMessages = messages ?? state.messages;
     allMessages.sort((a, b) => b.createdAt.compareTo(a.createdAt));
 
+    EventEntity newEvent = event ?? state.event;
+    allMessages.isNotEmpty
+        ? newEvent = EventEntity.merge(
+            newEntity: EventEntity(
+              id: newEvent.id,
+              eventDate: newEvent.eventDate,
+              latestMessage: allMessages.first,
+            ),
+            oldEntity: newEvent,
+          )
+        : null;
+
     final CurrentEventState newState = CurrentEventState(
       messages: allMessages,
       loadingMessages: loadingMessages ?? state.loadingMessages,
@@ -549,7 +560,7 @@ class CurrentEventCubit extends Cubit<CurrentEventState> {
       shoppingListItemStates:
           shoppingListItemStates ?? state.shoppingListItemStates,
       loadingShoppingList: loadingShoppingList ?? state.loadingShoppingList,
-      event: event ?? state.event,
+      event: newEvent,
       eventLeftUsers: eventLeftUsers ?? state.eventLeftUsers,
       eventUsers: eventUsers ?? state.eventUsers,
       groupchat: groupchat ?? state.groupchat,

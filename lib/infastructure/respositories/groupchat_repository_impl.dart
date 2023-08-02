@@ -281,7 +281,9 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
               _id
               readBy
               message
-              messageToReactTo
+              messageToReactTo {
+                id
+              }
               fileLinks
               groupchatTo
               createdBy

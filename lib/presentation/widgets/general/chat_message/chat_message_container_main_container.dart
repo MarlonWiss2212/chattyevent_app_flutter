@@ -1,7 +1,6 @@
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:chattyevent_app_flutter/core/extensions/list_space_between_extension.dart';
 import 'package:chattyevent_app_flutter/core/utils/injection.dart';
-import 'package:chattyevent_app_flutter/domain/entities/message/message_and_user_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/message/message_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/location_usecases.dart';
@@ -20,7 +19,6 @@ class ChatMessageContainerMainContainer extends StatelessWidget {
   final List<UserEntity> users;
   final MessageEntity message;
   final String currentUserId;
-  final MessageEntity? messageToReactTo;
   final bool isCurrentUser;
 
   const ChatMessageContainerMainContainer({
@@ -28,7 +26,6 @@ class ChatMessageContainerMainContainer extends StatelessWidget {
     required this.currentUserId,
     required this.isCurrentUser,
     required this.message,
-    required this.messageToReactTo,
     required this.users,
   });
 
@@ -52,18 +49,16 @@ class ChatMessageContainerMainContainer extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (messageToReactTo != null) ...{
+          if (message.messageToReactTo != null) ...{
             ChatMessageReactMessageContainer(
-              messageAndUser: MessageAndUserEntity(
-                message: messageToReactTo!,
-                user: findUser(
-                      messageToReactTo!.createdBy ?? "",
-                    ) ??
-                    UserEntity(
-                      id: "",
-                      authId: "",
-                    ),
-              ),
+              messageToReactTo: message.messageToReactTo!,
+              user: findUser(
+                    message.messageToReactTo!.createdBy ?? "",
+                  ) ??
+                  UserEntity(
+                    id: "",
+                    authId: "",
+                  ),
               currentUserId: currentUserId,
               isInput: false,
             ),

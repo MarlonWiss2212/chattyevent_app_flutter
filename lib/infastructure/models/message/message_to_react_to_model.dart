@@ -1,16 +1,14 @@
 import 'package:chattyevent_app_flutter/core/utils/encryption_utils.dart';
-import 'package:chattyevent_app_flutter/domain/entities/message/message_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/message/message_location_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/message/message_to_react_to_entity.dart';
 import 'package:chattyevent_app_flutter/infastructure/models/message/message_location_model.dart';
-import 'package:chattyevent_app_flutter/infastructure/models/message/message_to_react_to_model.dart';
 
-class MessageModel extends MessageEntity {
-  MessageModel({
+class MessageToReactToModel extends MessageToReactToEntity {
+  MessageToReactToModel({
     required String id,
     String? message,
     List<String>? fileLinks,
-    MessageToReactToEntity? messageToReactTo,
+    String? messageToReactToId,
     String? createdBy,
     String? groupchatTo,
     String? eventTo,
@@ -30,13 +28,13 @@ class MessageModel extends MessageEntity {
           groupchatTo: groupchatTo,
           userTo: userTo,
           eventTo: eventTo,
-          messageToReactTo: messageToReactTo,
+          messageToReactToId: messageToReactToId,
           createdAt: createdAt,
           updatedAt: updatedAt,
           createdBy: createdBy,
         );
 
-  factory MessageModel.fromJson(Map<String, dynamic> json) {
+  factory MessageToReactToModel.fromJson(Map<String, dynamic> json) {
     final createdAt = DateTime.parse(json["createdAt"]).toLocal();
 
     final updatedAt = json["updatedAt"] != null
@@ -59,7 +57,7 @@ class MessageModel extends MessageEntity {
       }
     }
 
-    return MessageModel(
+    return MessageToReactToModel(
       id: json['_id'],
       message: json['message'] != null
           ? EncryptionUtils.decrypt(encryptedText: json['message'])
@@ -70,9 +68,7 @@ class MessageModel extends MessageEntity {
           ? MessageLocationModel.fromJson(json['currentLocation'])
           : null,
       readBy: readBy,
-      messageToReactTo: json["messageToReactTo"] != null
-          ? MessageToReactToModel.fromJson(json["messageToReactTo"])
-          : null,
+      messageToReactToId: json["messageToReactToId"],
       createdBy: json["createdBy"],
       groupchatTo: json['groupchatTo'],
       userTo: json['userTo'],

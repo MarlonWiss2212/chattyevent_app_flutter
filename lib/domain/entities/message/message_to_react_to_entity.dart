@@ -1,12 +1,12 @@
+import 'package:chattyevent_app_flutter/domain/entities/message/message_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/message/message_location_entity.dart';
-import 'package:chattyevent_app_flutter/domain/entities/message/message_to_react_to_entity.dart';
 
-class MessageEntity {
+class MessageToReactToEntity {
   final String id;
   final String? message;
   final List<String>? fileLinks;
   final String? voiceMessageLink;
-  final MessageToReactToEntity? messageToReactTo;
+  final String? messageToReactToId;
   final String? createdBy;
   final DateTime? updatedAt;
   final DateTime createdAt;
@@ -16,7 +16,7 @@ class MessageEntity {
   final MessageLocationEntity? currentLocation;
   final List<String>? readBy;
 
-  MessageEntity({
+  MessageToReactToEntity({
     required this.id,
     this.groupchatTo,
     this.eventTo,
@@ -27,16 +27,36 @@ class MessageEntity {
     this.readBy,
     this.message,
     this.fileLinks,
-    this.messageToReactTo,
+    this.messageToReactToId,
     this.createdBy,
     this.updatedAt,
   });
 
-  factory MessageEntity.merge({
-    required MessageEntity newEntity,
-    required MessageEntity oldEntity,
+  factory MessageToReactToEntity.fromMessageEntity({
+    required MessageEntity message,
   }) {
-    return MessageEntity(
+    return MessageToReactToEntity(
+      id: message.id,
+      voiceMessageLink: message.voiceMessageLink,
+      currentLocation: message.currentLocation,
+      message: message.message,
+      fileLinks: message.fileLinks,
+      readBy: message.readBy,
+      groupchatTo: message.groupchatTo,
+      userTo: message.userTo,
+      eventTo: message.eventTo,
+      messageToReactToId: message.messageToReactTo?.id,
+      createdBy: message.createdBy,
+      createdAt: message.createdAt,
+      updatedAt: message.updatedAt,
+    );
+  }
+
+  factory MessageToReactToEntity.merge({
+    required MessageToReactToEntity newEntity,
+    required MessageToReactToEntity oldEntity,
+  }) {
+    return MessageToReactToEntity(
       id: newEntity.id,
       voiceMessageLink:
           newEntity.voiceMessageLink ?? oldEntity.voiceMessageLink,
@@ -47,8 +67,8 @@ class MessageEntity {
       groupchatTo: newEntity.groupchatTo ?? oldEntity.groupchatTo,
       userTo: newEntity.userTo ?? oldEntity.userTo,
       eventTo: newEntity.eventTo ?? oldEntity.eventTo,
-      messageToReactTo:
-          newEntity.messageToReactTo ?? oldEntity.messageToReactTo,
+      messageToReactToId:
+          newEntity.messageToReactToId ?? oldEntity.messageToReactToId,
       createdBy: newEntity.createdBy ?? oldEntity.createdBy,
       createdAt: newEntity.createdAt,
       updatedAt: newEntity.updatedAt ?? oldEntity.updatedAt,

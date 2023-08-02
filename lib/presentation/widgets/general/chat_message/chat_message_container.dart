@@ -110,7 +110,6 @@ class _ChatMessageContainerState extends State<ChatMessageContainer> {
                     isCurrentUser: isCurrentUser,
                     message: widget.message,
                     users: widget.users,
-                    messageToReactTo: widget.messageToReactTo,
                   ),
                 ),
                 const SizedBox(height: 4),

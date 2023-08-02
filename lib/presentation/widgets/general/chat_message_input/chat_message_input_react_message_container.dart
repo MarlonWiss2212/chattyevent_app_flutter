@@ -1,9 +1,9 @@
 import 'package:chattyevent_app_flutter/application/bloc/add_message/add_message_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
+import 'package:chattyevent_app_flutter/domain/entities/message/message_to_react_to_entity.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/chat_message/chat_message_react_message_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:chattyevent_app_flutter/domain/entities/message/message_and_user_entity.dart';
 
 class ChatMessageInputReactMessageContainer extends StatelessWidget {
   const ChatMessageInputReactMessageContainer({super.key});
@@ -25,10 +25,10 @@ class ChatMessageInputReactMessageContainer extends StatelessWidget {
                     ),
                   ),
                   child: ChatMessageReactMessageContainer(
-                    messageAndUser: MessageAndUserEntity(
+                    messageToReactTo: MessageToReactToEntity.fromMessageEntity(
                       message: state.messageToReactToWithUser!.message,
-                      user: state.messageToReactToWithUser!.user,
                     ),
+                    user: state.messageToReactToWithUser!.user,
                     isInput: true,
                     currentUserId: BlocProvider.of<AuthCubit>(context)
                         .state
