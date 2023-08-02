@@ -13,14 +13,14 @@ class AppFeatureIntroductionPagesUsersPage extends StatelessWidget {
     final introduction = cubit.state.introduction;
     if (introduction == null) return;
 
-    cubit.saveToStorage(
+    cubit.saveToStorageAndNavigate(
+      context,
       introduction: introduction.copyWith(
         appFeatureIntroduction: introduction.appFeatureIntroduction.copyWith(
           finishedUsersPage: true,
         ),
       ),
     );
-    AutoRouter.of(context).pop();
   }
 
   @override

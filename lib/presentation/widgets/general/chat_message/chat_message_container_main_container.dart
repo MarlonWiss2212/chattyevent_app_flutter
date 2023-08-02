@@ -180,7 +180,7 @@ class ChatMessageContainerMainContainer extends StatelessWidget {
 
   Future openMaps(BuildContext context, LatLng latLon) async {
     final dz.Either<NotificationAlert, dz.Unit> openedOrFailure =
-        await serviceLocator<LocationUseCases>().openMaps(LatLng: latLon);
+        await serviceLocator<LocationUseCases>().openMaps(latLng: latLon);
 
     openedOrFailure.fold(
       (alert) => BlocProvider.of<NotificationCubit>(context).newAlert(

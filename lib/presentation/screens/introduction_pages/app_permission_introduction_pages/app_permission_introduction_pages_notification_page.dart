@@ -16,7 +16,8 @@ class AppPermissionIntroductionPagesNotificationPage extends StatelessWidget {
     final introduction = cubit.state.introduction;
     if (introduction == null) return;
 
-    cubit.saveToStorage(
+    cubit.saveToStorageAndNavigate(
+      context,
       introduction: introduction.copyWith(
         appPermissionIntroduction:
             introduction.appPermissionIntroduction.copyWith(
@@ -24,7 +25,6 @@ class AppPermissionIntroductionPagesNotificationPage extends StatelessWidget {
         ),
       ),
     );
-    AutoRouter.of(context).pop();
   }
 
   @override

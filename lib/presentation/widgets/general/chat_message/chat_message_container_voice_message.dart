@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:audioplayers/audioplayers.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:chattyevent_app_flutter/core/utils/injection.dart';
@@ -21,6 +23,9 @@ class ChatMessageContainerVoiceMessage extends StatefulWidget {
 class _ChatMessageContainerVoiceMessageState
     extends State<ChatMessageContainerVoiceMessage> {
   final AudioPlayerUseCases audioPlayerUseCases = serviceLocator();
+  StreamSubscription<PlayerState>? onPlayerChangedStream;
+  StreamSubscription<Duration>? onDurationChangedStream;
+  StreamSubscription<Duration>? onPositionChangedStream;
 
   bool isPlaying = false;
   Duration duration = Duration.zero;
@@ -38,7 +43,7 @@ class _ChatMessageContainerVoiceMessageState
           notificationAlert: alert,
         );
       },
-      (stream) => stream.listen((event) {
+      (stream) => onPlayerChangedStream = stream.listen((event) {
         setState(() {
           isPlaying = event == PlayerState.playing;
         });
@@ -51,7 +56,7 @@ class _ChatMessageContainerVoiceMessageState
           notificationAlert: alert,
         );
       },
-      (stream) => stream.listen((newDuration) {
+      (stream) => onDurationChangedStream = stream.listen((newDuration) {
         setState(() => duration = newDuration);
       }),
     );
@@ -62,7 +67,7 @@ class _ChatMessageContainerVoiceMessageState
           notificationAlert: alert,
         );
       },
-      (stream) => stream.listen((newPosition) {
+      (stream) => onPositionChangedStream = stream.listen((newPosition) {
         setState(() => position = newPosition);
       }),
     );
@@ -71,6 +76,9 @@ class _ChatMessageContainerVoiceMessageState
 
   @override
   void dispose() {
+    onPlayerChangedStream?.cancel();
+    onDurationChangedStream?.cancel();
+    onPositionChangedStream?.cancel();
     audioPlayerUseCases.closePlayer();
     super.dispose();
   }

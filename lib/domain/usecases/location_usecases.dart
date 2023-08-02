@@ -49,11 +49,11 @@ class LocationUseCases {
 
   Future<Either<NotificationAlert, Unit>> openMaps({
     String? query,
-    LatLng? LatLng,
+    LatLng? latLng,
   }) async {
     try {
       final String url =
-          "https://www.google.com/maps/search/?api=1${LatLng != null ? "&query=${LatLng.latitude},${LatLng.longitude}" : ''}${query != null ? '&query=$query' : ''}";
+          "https://www.google.com/maps/search/?api=1${latLng != null ? "&query=${latLng.latitude},${latLng.longitude}" : ''}${query != null ? '&query=$query' : ''}";
 
       final worked = await launchUrlString(
         url,

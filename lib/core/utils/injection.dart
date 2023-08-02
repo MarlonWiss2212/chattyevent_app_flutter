@@ -97,7 +97,7 @@ class InjectionUtils {
       () => IntroductionCubit(
         introductionUseCases: serviceLocator(),
         notificationCubit: serviceLocator(),
-      )..getFromStorageOrCreateIfNull(),
+      ),
     );
     serviceLocator.registerLazySingleton<NotificationCubit>(
       () => NotificationCubit(),
@@ -114,7 +114,7 @@ class InjectionUtils {
       status:
           token != null ? AuthStateStatus.loggedIn : AuthStateStatus.initial,
     );
-    print(token);
+    //print(token);
 
     serviceLocator.registerLazySingleton<AuthCubit>(
       () => AuthCubit(
