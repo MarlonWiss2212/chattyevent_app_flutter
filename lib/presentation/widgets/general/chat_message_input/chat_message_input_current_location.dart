@@ -1,4 +1,5 @@
 import 'package:chattyevent_app_flutter/application/bloc/add_message/add_message_cubit.dart';
+import 'package:chattyevent_app_flutter/core/utils/maps_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -26,6 +27,12 @@ class ChatMessageInputCurrentLocation extends StatelessWidget {
                       fit: StackFit.expand,
                       children: [
                         GoogleMap(
+                          onMapCreated: (controller) {
+                            if (MediaQuery.of(context).platformBrightness ==
+                                Brightness.dark) {
+                              controller.setMapStyle(MapsHelper.mapStyle());
+                            }
+                          },
                           mapType: MapType.normal,
                           initialCameraPosition: CameraPosition(
                             target: LatLng(state.lat!, state.lon!),

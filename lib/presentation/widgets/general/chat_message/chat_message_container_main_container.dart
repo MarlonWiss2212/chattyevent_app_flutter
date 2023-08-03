@@ -1,6 +1,7 @@
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:chattyevent_app_flutter/core/extensions/list_space_between_extension.dart';
 import 'package:chattyevent_app_flutter/core/utils/injection.dart';
+import 'package:chattyevent_app_flutter/core/utils/maps_helper.dart';
 import 'package:chattyevent_app_flutter/domain/entities/message/message_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/location_usecases.dart';
@@ -101,6 +102,12 @@ class ChatMessageContainerMainContainer extends StatelessWidget {
               child: SizedBox(
                 height: 200,
                 child: GoogleMap(
+                  onMapCreated: (controller) {
+                    if (MediaQuery.of(context).platformBrightness ==
+                        Brightness.dark) {
+                      controller.setMapStyle(MapsHelper.mapStyle());
+                    }
+                  },
                   mapType: MapType.normal,
                   initialCameraPosition: CameraPosition(
                     target: LatLng(

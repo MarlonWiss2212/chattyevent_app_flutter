@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:chattyevent_app_flutter/core/utils/maps_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/current_event/current_event_cubit.dart';
@@ -26,6 +27,12 @@ class EventTabInfoLocationMap extends StatelessWidget {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(8.0),
               child: GoogleMap(
+                onMapCreated: (controller) {
+                  if (MediaQuery.of(context).platformBrightness ==
+                      Brightness.dark) {
+                    controller.setMapStyle(MapsHelper.mapStyle());
+                  }
+                },
                 mapType: MapType.normal,
                 initialCameraPosition: CameraPosition(
                   target: LatLng(
