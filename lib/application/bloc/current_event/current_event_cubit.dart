@@ -575,7 +575,9 @@ class CurrentEventCubit extends Cubit<CurrentEventState> {
         privateEventState: newState,
         onlyReplace: true,
       );
-      chatCubit.replaceOrAdd(chat: ChatEntity(event: state.event));
+      if (state.event.privateEventData?.groupchatTo == null) {
+        chatCubit.replaceOrAdd(chat: ChatEntity(event: state.event));
+      }
     }
   }
 }
