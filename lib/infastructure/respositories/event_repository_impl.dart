@@ -528,7 +528,7 @@ class EventRepositoryImpl implements EventRepository {
       final response = await graphQlDatasource.mutation(
         """
           mutation UpdateEventUser(\$input: UpdateEventUserInput!, \$filter: FindOneEventUserInput!) {
-            updateUser(updateEventUserInput: \$input, filter: \$filter) {
+            updateEventUser(updateEventUserInput: \$input, filter: \$filter) {
               eventUserId
               username
               _id
