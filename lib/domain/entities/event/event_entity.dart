@@ -53,6 +53,7 @@ class EventEntity {
       coverImageLink: newEntity.coverImageLink ?? oldEntity.coverImageLink,
       eventDate: newEntity.eventDate,
       eventEndDate: newEntity.eventEndDate ?? oldEntity.eventEndDate,
+      permissions: newEntity.permissions ?? oldEntity.permissions,
       status: newEntity.status ?? oldEntity.status,
       latestMessage: newEntity.latestMessage ?? oldEntity.latestMessage,
       eventLocation: EventLocationEntity.merge(

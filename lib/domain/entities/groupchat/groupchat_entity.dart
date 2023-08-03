@@ -32,6 +32,7 @@ class GroupchatEntity {
       id: newEntity.id,
       title: newEntity.title ?? oldEntity.title,
       latestMessage: newEntity.latestMessage ?? oldEntity.latestMessage,
+      permissions: newEntity.permissions ?? oldEntity.permissions,
       profileImageLink:
           newEntity.profileImageLink ?? oldEntity.profileImageLink,
       description: newEntity.description ?? oldEntity.description,
