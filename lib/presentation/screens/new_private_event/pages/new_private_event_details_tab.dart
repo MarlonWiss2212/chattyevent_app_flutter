@@ -33,7 +33,6 @@ class _NewPrivateEventDetailsTabState extends State<NewPrivateEventDetailsTab> {
         builder: (context, state) {
           return Column(
             children: [
-              const SizedBox(height: 8),
               SelectCoverImage(
                 imageChanged: (newImage) {
                   BlocProvider.of<AddEventCubit>(context).emitState(
@@ -69,7 +68,6 @@ class _NewPrivateEventDetailsTabState extends State<NewPrivateEventDetailsTab> {
                   description: value,
                 ),
               ),
-              const SizedBox(height: 8),
             ],
           );
         },
