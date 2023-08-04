@@ -27,6 +27,7 @@ class ChatMessageInputCurrentLocation extends StatelessWidget {
                       fit: StackFit.expand,
                       children: [
                         GoogleMap(
+                          zoomControlsEnabled: false,
                           onMapCreated: (controller) {
                             if (MediaQuery.of(context).platformBrightness ==
                                 Brightness.dark) {
