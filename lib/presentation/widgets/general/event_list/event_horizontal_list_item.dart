@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chattyevent_app_flutter/core/enums/event/event_status_enum.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -39,8 +40,8 @@ class EventHorizontalListItem extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8.0),
                 child: Hero(
                   tag: "${event.id} coverImage",
-                  child: Image.network(
-                    event.coverImageLink!,
+                  child: CachedNetworkImage(
+                    imageUrl: event.coverImageLink!,
                     fit: BoxFit.cover,
                   ),
                 ),

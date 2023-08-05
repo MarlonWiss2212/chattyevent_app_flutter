@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:math';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class CircleImage extends StatelessWidget {
@@ -42,7 +43,10 @@ class CircleImage extends StatelessWidget {
                   tag: heroTag ?? "",
                   child: image != null
                       ? Image.file(image!, fit: BoxFit.cover)
-                      : Image.network(imageLink!, fit: BoxFit.cover),
+                      : CachedNetworkImage(
+                          imageUrl: imageLink!,
+                          fit: BoxFit.cover,
+                        ),
                 ),
               ),
             ),

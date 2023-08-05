@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,30 +15,34 @@ class ChatInfoPageProfileImage extends StatelessWidget {
       curve: Curves.fastOutSlowIn,
       animationType: DialogTransitionType.slideFromBottomFade,
       context: context,
-      builder: (
-        context,
-      ) {
+      builder: (context1) {
         return ImagePickerDialog(
           ratioX: 4,
           ratioY: 3,
           imageChanged: (newImage) async {
             await showDialog(
-              context: context,
+              context: context1,
               builder: (c) {
                 return AcceptDeclineDialog(
                   title: "Bild speichern",
                   message: "Möchtest du das Bild als Gruppenchat Bild nehmen",
-                  onNoPress: () => Navigator.of(c).pop(),
+                  onNoPress: () {
+                    Navigator.of(c).pop();
+                    Navigator.of(context1).pop();
+                  },
                   onYesPress: () =>
                       BlocProvider.of<CurrentGroupchatCubit>(context)
                           .updateCurrentGroupchatViaApi(
-                            updateGroupchatDto: UpdateGroupchatDto(
-                              updateProfileImage: newImage,
-                            ),
-                          )
+                    updateGroupchatDto: UpdateGroupchatDto(
+                      updateProfileImage: newImage,
+                    ),
+                  )
                           .then(
-                            (value) => Navigator.of(c).pop(),
-                          ),
+                    (value) {
+                      Navigator.of(c).pop();
+                      Navigator.of(context1).pop();
+                    },
+                  ),
                 );
               },
             );
@@ -65,8 +70,8 @@ class ChatInfoPageProfileImage extends StatelessWidget {
               : null,
           child: state.currentChat.profileImageLink == null
               ? const SizedBox()
-              : Image.network(
-                  state.currentChat.profileImageLink!,
+              : CachedNetworkImage(
+                  imageUrl: state.currentChat.profileImageLink!,
                   fit: BoxFit.cover,
                 ),
         );

@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chattyevent_app_flutter/application/bloc/add_message/add_message_cubit.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/chat_message_input/chat_message_input.dart';
 import 'package:flutter/material.dart';
@@ -42,7 +43,9 @@ class _GroupchatPageState extends State<GroupchatPage> {
                 children: [
                   CircleAvatar(
                     backgroundImage: state.currentChat.profileImageLink != null
-                        ? NetworkImage(state.currentChat.profileImageLink!)
+                        ? CachedNetworkImageProvider(
+                            state.currentChat.profileImageLink!,
+                          )
                         : null,
                     backgroundColor: state.currentChat.profileImageLink != null
                         ? null

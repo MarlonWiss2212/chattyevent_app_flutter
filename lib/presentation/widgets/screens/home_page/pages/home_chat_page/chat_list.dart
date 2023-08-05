@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/current_event/current_event_cubit.dart';
 import 'package:chattyevent_app_flutter/domain/entities/chat_entity.dart';
@@ -25,17 +26,17 @@ class _ChatListState extends State<ChatList> {
                 ? widget.chats[index].user!.latestMessage
                 : null;
 
-    final NetworkImage? backgroundImage =
+    final CachedNetworkImageProvider? backgroundImage =
         widget.chats[index].groupchat?.profileImageLink != null
-            ? NetworkImage(
+            ? CachedNetworkImageProvider(
                 widget.chats[index].groupchat!.profileImageLink!,
               )
             : widget.chats[index].event?.coverImageLink != null
-                ? NetworkImage(
+                ? CachedNetworkImageProvider(
                     widget.chats[index].event!.coverImageLink!,
                   )
                 : widget.chats[index].user?.profileImageLink != null
-                    ? NetworkImage(
+                    ? CachedNetworkImageProvider(
                         widget.chats[index].user!.profileImageLink!,
                       )
                     : null;

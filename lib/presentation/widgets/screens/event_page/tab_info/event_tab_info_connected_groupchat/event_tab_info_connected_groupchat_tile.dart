@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chattyevent_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
@@ -15,7 +16,7 @@ class EventTabInfoGroupchatToTile extends StatelessWidget {
     return ListTile(
       leading: CircleAvatar(
         backgroundImage: groupchat.profileImageLink != null
-            ? NetworkImage(groupchat.profileImageLink!)
+            ? CachedNetworkImageProvider(groupchat.profileImageLink!)
             : null,
         backgroundColor: groupchat.profileImageLink == null
             ? Theme.of(context).colorScheme.surface

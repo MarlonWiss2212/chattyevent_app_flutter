@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:chattyevent_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
@@ -43,7 +44,7 @@ class _UserListTileState extends State<UserListTile> {
       child: ListTile(
         leading: CircleAvatar(
           backgroundImage: widget.user.profileImageLink != null
-              ? NetworkImage(widget.user.profileImageLink!)
+              ? CachedNetworkImageProvider(widget.user.profileImageLink!)
               : null,
           backgroundColor: widget.user.profileImageLink == null
               ? Theme.of(context).colorScheme.surface

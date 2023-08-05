@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chattyevent_app_flutter/core/enums/event/event_user/event_user_status_enum.dart';
 import 'package:chattyevent_app_flutter/domain/entities/bought_amount_entity.dart';
 import 'package:flutter/material.dart';
@@ -45,7 +46,7 @@ class ShoppingListItemTile extends StatelessWidget {
       ),
       leading: CircleAvatar(
         backgroundImage: userToBuyItem.profileImageLink != null
-            ? NetworkImage(userToBuyItem.profileImageLink!)
+            ? CachedNetworkImageProvider(userToBuyItem.profileImageLink!)
             : null,
         backgroundColor: userToBuyItem.profileImageLink == null
             ? Theme.of(context).colorScheme.surface

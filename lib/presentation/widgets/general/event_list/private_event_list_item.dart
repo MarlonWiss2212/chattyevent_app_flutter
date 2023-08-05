@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:chattyevent_app_flutter/application/bloc/current_event/current_event_cubit.dart';
@@ -13,7 +14,9 @@ class PrivateEventListItem extends StatelessWidget {
     return ListTile(
       leading: CircleAvatar(
         backgroundImage: privateEventState.event.coverImageLink != null
-            ? NetworkImage(privateEventState.event.coverImageLink!)
+            ? CachedNetworkImageProvider(
+                privateEventState.event.coverImageLink!,
+              )
             : null,
         backgroundColor: privateEventState.event.coverImageLink == null
             ? Theme.of(context).colorScheme.surface

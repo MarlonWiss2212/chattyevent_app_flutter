@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:chattyevent_app_flutter/domain/entities/user/user_entity.dart';
 
@@ -34,8 +35,8 @@ class UserGridListItem extends StatelessWidget {
                       borderRadius: BorderRadius.circular(8.0),
                       child: Hero(
                         tag: "${user.id} profileImage",
-                        child: Image.network(
-                          user.profileImageLink!,
+                        child: CachedNetworkImage(
+                          imageUrl: user.profileImageLink!,
                           fit: BoxFit.cover,
                         ),
                       ),

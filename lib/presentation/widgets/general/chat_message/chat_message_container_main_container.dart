@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:chattyevent_app_flutter/core/extensions/list_space_between_extension.dart';
 import 'package:chattyevent_app_flutter/core/utils/injection.dart';
@@ -86,8 +87,8 @@ class ChatMessageContainerMainContainer extends StatelessWidget {
                   child: Ink(
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(8.0),
-                      child: Image.network(
-                        message.fileLinks![0],
+                      child: CachedNetworkImage(
+                        imageUrl: message.fileLinks![0],
                         fit: BoxFit.contain,
                       ),
                     ),

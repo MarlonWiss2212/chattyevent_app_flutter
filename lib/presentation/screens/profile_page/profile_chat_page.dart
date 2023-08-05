@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chattyevent_app_flutter/application/bloc/add_message/add_message_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/profile_page/profile_page_cubit.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
@@ -46,7 +47,9 @@ class _ProfileChatPageState extends State<ProfileChatPage> {
                 children: [
                   CircleAvatar(
                     backgroundImage: state.user.profileImageLink != null
-                        ? NetworkImage(state.user.profileImageLink!)
+                        ? CachedNetworkImageProvider(
+                            state.user.profileImageLink!,
+                          )
                         : null,
                     backgroundColor: state.user.profileImageLink != null
                         ? null

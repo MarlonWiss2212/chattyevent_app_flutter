@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -76,8 +77,8 @@ class EventTabInfoCoverImage extends StatelessWidget {
                   if (state.event.coverImageLink != null) {
                     return Hero(
                       tag: "${state.event.id} coverImage",
-                      child: Image.network(
-                        state.event.coverImageLink!,
+                      child: CachedNetworkImage(
+                        imageUrl: state.event.coverImageLink!,
                         fit: BoxFit.fitWidth,
                       ),
                     );

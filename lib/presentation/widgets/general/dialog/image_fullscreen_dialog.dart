@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 
@@ -21,7 +22,7 @@ class ImageFullscreenDialog extends StatelessWidget {
         child: Stack(
           alignment: Alignment.topLeft,
           children: [
-            Image.network(src, fit: BoxFit.contain),
+            CachedNetworkImage(imageUrl: src, fit: BoxFit.contain),
             Material(
               color: Colors.transparent,
               child: Padding(

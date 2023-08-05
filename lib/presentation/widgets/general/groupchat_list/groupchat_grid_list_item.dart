@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:chattyevent_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 
@@ -43,8 +44,8 @@ class GroupchatGridListItem extends StatelessWidget {
                       borderRadius: BorderRadius.circular(8.0),
                       child: Hero(
                         tag: "${chat.id} profileImage",
-                        child: Image.network(
-                          chat.profileImageLink!,
+                        child: CachedNetworkImage(
+                          imageUrl: chat.profileImageLink!,
                           fit: BoxFit.cover,
                         ),
                       ),
