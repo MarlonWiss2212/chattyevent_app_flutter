@@ -4,7 +4,6 @@ import 'package:chattyevent_app_flutter/application/bloc/add_message/add_message
 import 'package:chattyevent_app_flutter/presentation/widgets/general/chat_message_input/chat_message_input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/current_groupchat/current_chat_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
@@ -65,7 +64,7 @@ class _GroupchatPageState extends State<GroupchatPage> {
           },
         ),
         actions: [
-          PlatformIconButton(
+          IconButton(
             icon: const Icon(Ionicons.ellipsis_vertical),
             onPressed: () => AutoRouter.of(context).push(
               GroupchatInfoRoute(groupchatId: widget.groupchatId),

@@ -7,7 +7,6 @@ import 'package:chattyevent_app_flutter/presentation/widgets/general/chat_messag
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/profile_page/profile_chat_page/profile_chat_page_message_area.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:chattyevent_app_flutter/core/utils/injection.dart';
@@ -69,7 +68,7 @@ class _ProfileChatPageState extends State<ProfileChatPage> {
           },
         ),
         actions: [
-          PlatformIconButton(
+          IconButton(
             icon: const Icon(Ionicons.ellipsis_vertical),
             onPressed: () => AutoRouter.of(context).push(ProfileRoute()),
           )
