@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:chattyevent_app_flutter/domain/repositories/device/permission_repository.dart';
+import 'package:chattyevent_app_flutter/domain/usecases/launch_url_usecases.dart';
 import 'package:dartz/dartz.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -11,10 +12,12 @@ import 'package:url_launcher/url_launcher_string.dart';
 
 class LocationUseCases {
   final LocationRepository locationRepository;
+  final LaunchUrlUseCases launchUrlUseCases;
   final PermissionRepository permissionRepository;
   LocationUseCases({
     required this.locationRepository,
     required this.permissionRepository,
+    required this.launchUrlUseCases,
   });
 
   Future<bool> locationServiceIsEnabled() async {
@@ -51,32 +54,14 @@ class LocationUseCases {
     String? query,
     LatLng? latLng,
   }) async {
-    try {
-      final String url =
-          "https://www.google.com/maps/search/?api=1${latLng != null ? "&query=${latLng.latitude},${latLng.longitude}" : ''}${query != null ? '&query=$query' : ''}";
+    final String url =
+        "https://www.google.com/maps/search/?api=1${latLng != null ? "&query=${latLng.latitude},${latLng.longitude}" : ''}${query != null ? '&query=$query' : ''}";
 
-      final worked = await launchUrlString(
-        url,
-        mode: Platform.isAndroid || Platform.isIOS
-            ? LaunchMode.externalApplication
-            : LaunchMode.platformDefault,
-      );
-      if (worked == false) {
-        return Left(
-          NotificationAlert(
-            message: "Konnte google maps nicht öffnen",
-            title: "Google Maps Fehler",
-          ),
-        );
-      }
-      return const Right(unit);
-    } catch (e) {
-      return Left(
-        NotificationAlert(
-          message: "Konnte google maps nicht öffnen",
-          title: "Google Maps Fehler",
-        ),
-      );
-    }
+    return await launchUrlUseCases.launchUrl(
+      url: url,
+      launchMode: Platform.isAndroid || Platform.isIOS
+          ? LaunchMode.externalApplication
+          : LaunchMode.platformDefault,
+    );
   }
 }

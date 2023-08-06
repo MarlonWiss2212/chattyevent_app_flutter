@@ -60,11 +60,8 @@ class AudioPlayerRepositoryImpl implements AudioPlayerRepository {
   }
 
   @override
-  Future<Either<NotificationAlert, Unit>> resume({Duration? position}) async {
+  Future<Either<NotificationAlert, Unit>> resume() async {
     try {
-      if (position != null) {
-        await audioPlayerDataource.seek(position: position);
-      }
       await audioPlayerDataource.resume();
       return const Right(unit);
     } catch (e) {

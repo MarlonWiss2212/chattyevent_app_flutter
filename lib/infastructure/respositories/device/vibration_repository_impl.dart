@@ -16,31 +16,29 @@ class VibrationRepositoryImpl implements VibrationRepository {
     int amplitude = -1,
   }) async {
     try {
-      if (amplitude != -1) {
-        final hasAmplitute = await vibrationDatasource.hasAmplitute();
-        if (!hasAmplitute) {
-          return Left(
-            NotificationAlert(
-              title: "Kann nicht Vibrieren",
-              message:
-                  "Da der Vibrationsmotor keine erweiterte Steuerung unterstützt",
-            ),
-          );
-        }
-      }
-      if (await vibrationDatasource.hasVibrator()) {
-        await vibrationDatasource.vibrate(
-          duration: duration,
-          amplitude: amplitude,
-        );
-        return const Right(unit);
-      }
-      return Left(
-        NotificationAlert(
-          title: "Kann nicht Vibrieren",
-          message: "Da der Vibrationsmotor nicht angesteuert werden kann",
-        ),
+      await vibrationDatasource.vibrate(
+        duration: duration,
+        amplitude: amplitude,
       );
+      return const Right(unit);
+    } catch (e) {
+      return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
+    }
+  }
+
+  @override
+  Future<Either<NotificationAlert, bool>> hasAmplitute() async {
+    try {
+      return Right(await vibrationDatasource.hasAmplitute());
+    } catch (e) {
+      return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
+    }
+  }
+
+  @override
+  Future<Either<NotificationAlert, bool>> hasVibrator() async {
+    try {
+      return Right(await vibrationDatasource.hasVibrator());
     } catch (e) {
       return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
     }

@@ -10,9 +10,27 @@ class VibrationUseCases {
     int duration = 500,
     int amplitude = -1,
   }) async {
-    return await vibrationRepository.vibrate(
-      duration: duration,
-      amplitude: amplitude,
+    final hasAmplitute = (await vibrationRepository.hasAmplitute()).fold(
+      (alert) => false,
+      (boolean) => boolean,
+    );
+    final hasVibrator = (await vibrationRepository.hasVibrator()).fold(
+      (alert) => false,
+      (boolean) => boolean,
+    );
+
+    if (hasVibrator) {
+      await vibrationRepository.vibrate(
+        duration: duration,
+        amplitude: hasAmplitute == true ? amplitude : -1,
+      );
+      return const Right(unit);
+    }
+    return Left(
+      NotificationAlert(
+        title: "Kann nicht Vibrieren",
+        message: "Da der Vibrationsmotor nicht angesteuert werden kann",
+      ),
     );
   }
 }

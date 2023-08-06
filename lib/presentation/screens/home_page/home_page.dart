@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:chattyevent_app_flutter/application/bloc/introduction/introduction_cubit.dart';
 import 'package:chattyevent_app_flutter/core/utils/injection.dart';
-import 'package:chattyevent_app_flutter/domain/usecases/settings_usecases.dart';
+import 'package:chattyevent_app_flutter/domain/usecases/ad_mob_usecases.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
@@ -18,7 +18,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final SettingsUseCases settingsUseCases = serviceLocator();
+  final AdMobUseCases adMobUseCases = serviceLocator();
 
   @override
   void initState() {
@@ -26,7 +26,7 @@ class _HomePageState extends State<HomePage> {
     BlocProvider.of<IntroductionCubit>(context)
         .getFromStorageOrCreateIfNullAndNavigate(context);
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await settingsUseCases.showAdMobPopUpIfRequired();
+      await adMobUseCases.showAdMobPopUpIfRequired();
     });
   }
 

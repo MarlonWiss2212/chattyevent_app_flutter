@@ -1,4 +1,6 @@
-import 'package:chattyevent_app_flutter/domain/repositories/ad_mob_repository.dart';
+import 'dart:io';
+
+import 'package:chattyevent_app_flutter/domain/usecases/launch_url_usecases.dart';
 import 'package:dartz/dartz.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/settings_repository.dart';
@@ -6,15 +8,12 @@ import 'package:url_launcher/url_launcher_string.dart';
 
 class SettingsUseCases {
   final SettingsRepository settingsRepository;
-  final AdMobRepository adMobRepository;
+  final LaunchUrlUseCases launchUrlUseCases;
+
   SettingsUseCases({
     required this.settingsRepository,
-    required this.adMobRepository,
+    required this.launchUrlUseCases,
   });
-
-  Future<Either<NotificationAlert, Unit>> showAdMobPopUpIfRequired() async {
-    return await adMobRepository.showAdMobPopUpIfRequired();
-  }
 
   Future<void> saveAutoDarkModeInStorage({required bool autoDarkMode}) {
     return settingsRepository.saveAutoDarkModeInStorage(
@@ -35,80 +34,29 @@ class SettingsUseCases {
   }
 
   Future<Either<NotificationAlert, Unit>> openTermsOfUsePage() async {
-    try {
-      final worked = await launchUrlString(
-        "https://chattyevent.com/datasecurity/terms-of-use",
-      );
-      if (worked == false) {
-        return Left(
-          NotificationAlert(
-            message: "Konnte Nutzungsbedingugen nicht öffnen",
-            title:
-                "Sie können sie unter folgender URL finden: https://chattyevent.com/datasecurity/eu-dataprotection",
-          ),
-        );
-      }
-      return const Right(unit);
-    } catch (e) {
-      return Left(
-        NotificationAlert(
-          message: "Konnte Nutzungsbedingugen nicht öffnen",
-          title:
-              "Sie können sie unter folgender URL finden: https://chattyevent.com/datasecurity/eu-dataprotection",
-        ),
-      );
-    }
+    return await launchUrlUseCases.launchUrl(
+      url: "https://chattyevent.com/datasecurity/terms-of-use",
+      launchMode: Platform.isAndroid || Platform.isIOS
+          ? LaunchMode.externalApplication
+          : LaunchMode.platformDefault,
+    );
   }
 
   Future<Either<NotificationAlert, Unit>> openRightOnDataAccessPage() async {
-    try {
-      final worked = await launchUrlString(
-        "https://chattyevent.com/datasecurity/right-on-data-access",
-      );
-      if (worked == false) {
-        return Left(
-          NotificationAlert(
-            message: "Konnte Recht auf Auskunft nicht öffnen",
-            title:
-                "Sie können sie unter folgender URL finden: https://chattyevent.com/datasecurity/eu-dataprotection",
-          ),
-        );
-      }
-      return const Right(unit);
-    } catch (e) {
-      return Left(
-        NotificationAlert(
-          message: "Konnte Recht auf Auskunft nicht öffnen",
-          title:
-              "Sie können sie unter folgender URL finden: https://chattyevent.com/datasecurity/eu-dataprotection",
-        ),
-      );
-    }
+    return await launchUrlUseCases.launchUrl(
+      url: "https://chattyevent.com/datasecurity/right-on-data-access",
+      launchMode: Platform.isAndroid || Platform.isIOS
+          ? LaunchMode.externalApplication
+          : LaunchMode.platformDefault,
+    );
   }
 
   Future<Either<NotificationAlert, Unit>> openDatasecurityPage() async {
-    try {
-      final worked = await launchUrlString(
-        "https://chattyevent.com/datasecurity/eu-dataprotection",
-      );
-      if (worked == false) {
-        return Left(
-          NotificationAlert(
-            message: "Konnte Datenschutzerklärung nicht öffnen",
-            title:
-                "Sie können sie unter folgender URL finden: https://chattyevent.com/datasecurity/eu-dataprotection",
-          ),
-        );
-      }
-      return const Right(unit);
-    } catch (e) {
-      return Left(
-        NotificationAlert(
-          message: "Konnte Datenschutzerklärung nicht öffnen",
-          title:
-              "Sie können sie unter folgender URL finden: https://chattyevent.com/datasecurity/eu-dataprotection",
-        ),
-      );
-    }
+    return await launchUrlUseCases.launchUrl(
+      url: "https://chattyevent.com/datasecurity/eu-dataprotection",
+      launchMode: Platform.isAndroid || Platform.isIOS
+          ? LaunchMode.externalApplication
+          : LaunchMode.platformDefault,
+    );
   }
 }

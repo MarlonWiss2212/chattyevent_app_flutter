@@ -7,7 +7,7 @@ abstract class AudioPlayerRepository {
   Either<NotificationAlert, Stream<Duration>> onDurationChanged();
   Either<NotificationAlert, Stream<Duration>> onPositionChanged();
   Future<Either<NotificationAlert, void>> pausePlaying();
-  Future<Either<NotificationAlert, void>> resume({Duration? position});
+  Future<Either<NotificationAlert, void>> resume();
   Future<Either<NotificationAlert, void>> seek({
     required Duration position,
   });

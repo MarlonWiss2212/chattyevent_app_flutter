@@ -28,7 +28,10 @@ class AudioPlayerUseCases {
   }
 
   Future<Either<NotificationAlert, void>> resume({Duration? position}) async {
-    return audioPlayerRepository.resume(position: position);
+    if (position != null) {
+      audioPlayerRepository.seek(position: position);
+    }
+    return audioPlayerRepository.resume();
   }
 
   Future<Either<NotificationAlert, void>> setAudioViaUrl({
