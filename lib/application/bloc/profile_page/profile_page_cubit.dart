@@ -199,25 +199,8 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
       );
       return;
     }
-
-    final userOrFailure = await userUseCases.updateUserViaApi(
-      updateUserDto: updateUserDto,
-    );
-
-    userOrFailure.fold(
-      (alert) {
-        notificationCubit.newAlert(notificationAlert: alert);
-        authCubit.emitState(userException: alert.exception);
-      },
-      (user) {
-        final newUser = UserEntity.merge(
-          newEntity: user,
-          oldEntity: state.user,
-        );
-        emitState(user: newUser);
-        authCubit.emitState(currentUser: newUser);
-      },
-    );
+    await authCubit.updateUser(updateUserDto: updateUserDto);
+    emitState(user: authCubit.state.currentUser);
   }
 
   Future acceptFollowRequest({required String userId}) async {
@@ -367,7 +350,7 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
     );
   }
 
-  /// this is when you to change relation to any user and not the current profile user
+  /// this is when you try to change relation to any user and not the current profile user
   Future createUpdateUserOrDeleteRelationViaApi({
     required UserEntity user,
     UserRelationStatusEnum? value,
@@ -563,20 +546,17 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
           )
         : null;
 
-    emit(
-      ProfilePageState(
-        messages: allMessages,
-        loadingMessages: loadingMessages ?? state.loadingMessages,
-        user: newUser,
-        status: status ?? state.status,
-        followers: followers ?? state.followers,
-        followersStatus: followersStatus ?? state.followersStatus,
-        followRequests: followRequests ?? state.followRequests,
-        followRequestsStatus:
-            followRequestsStatus ?? state.followRequestsStatus,
-        followed: followed ?? state.followed,
-        followedStatus: followedStatus ?? state.followedStatus,
-      ),
-    );
+    emit(ProfilePageState(
+      messages: allMessages,
+      loadingMessages: loadingMessages ?? state.loadingMessages,
+      user: newUser,
+      status: status ?? state.status,
+      followers: followers ?? state.followers,
+      followersStatus: followersStatus ?? state.followersStatus,
+      followRequests: followRequests ?? state.followRequests,
+      followRequestsStatus: followRequestsStatus ?? state.followRequestsStatus,
+      followed: followed ?? state.followed,
+      followedStatus: followedStatus ?? state.followedStatus,
+    ));
   }
 }
