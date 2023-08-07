@@ -21,6 +21,10 @@ class CurrentEventState {
 
   final int currentUserIndex;
 
+  String getLocationQueryForMaps() {
+    return "${event.eventLocation?.address?.street} ${event.eventLocation?.address?.housenumber}, ${event.eventLocation?.address?.city}, ${event.eventLocation?.address?.zip}, ${event.eventLocation?.address?.country}";
+  }
+
   EventUserEntity? getCurrentEventUser() {
     if (currentUserIndex != -1) {
       return eventUsers[currentUserIndex];

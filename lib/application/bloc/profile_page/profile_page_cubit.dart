@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'package:chattyevent_app_flutter/application/bloc/chat/chat_cubit.dart';
 import 'package:chattyevent_app_flutter/core/enums/user_relation/user_relation_status_enum.dart';
+import 'package:chattyevent_app_flutter/domain/entities/chat_entity.dart';
 import 'package:chattyevent_app_flutter/infastructure/filter/message/added_message_filter.dart';
 import 'package:chattyevent_app_flutter/infastructure/filter/message/find_messages_filter.dart';
 import 'package:chattyevent_app_flutter/domain/entities/message/message_entity.dart';
@@ -22,6 +24,7 @@ part 'profile_page_state.dart';
 
 class ProfilePageCubit extends Cubit<ProfilePageState> {
   final AuthCubit authCubit;
+  final ChatCubit chatCubit;
   final NotificationCubit notificationCubit;
 
   final UserRelationUseCases userRelationUseCases;
@@ -33,6 +36,7 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
   ProfilePageCubit(
     super.initialState, {
     required this.authCubit,
+    required this.chatCubit,
     required this.notificationCubit,
     required this.userRelationUseCases,
     required this.userUseCases,
@@ -530,6 +534,7 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
     ProfilePageStateFollowedStatus? followedStatus,
     List<MessageEntity>? messages,
     bool? loadingMessages,
+    bool replaceOrAddInOtherCubits = true,
   }) {
     final List<MessageEntity> allMessages = messages ?? state.messages;
     allMessages.sort((a, b) => b.createdAt.compareTo(a.createdAt));
@@ -546,7 +551,7 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
           )
         : null;
 
-    emit(ProfilePageState(
+    final newState = ProfilePageState(
       messages: allMessages,
       loadingMessages: loadingMessages ?? state.loadingMessages,
       user: newUser,
@@ -557,6 +562,12 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
       followRequestsStatus: followRequestsStatus ?? state.followRequestsStatus,
       followed: followed ?? state.followed,
       followedStatus: followedStatus ?? state.followedStatus,
-    ));
+    );
+
+    emit(newState);
+
+    if (replaceOrAddInOtherCubits && allMessages.isNotEmpty) {
+      chatCubit.replaceOrAdd(chat: ChatEntity(user: newUser));
+    }
   }
 }

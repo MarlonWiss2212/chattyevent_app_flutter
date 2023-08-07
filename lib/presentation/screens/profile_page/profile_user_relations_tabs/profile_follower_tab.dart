@@ -50,8 +50,8 @@ class _ProfileFollowerTabState extends State<ProfileFollowerTab> {
                 BlocProvider.of<ProfilePageCubit>(context).getFollowers();
               },
               profileUserId: state.user.id,
-              loading: state.followRequestsStatus ==
-                  ProfilePageStateFollowRequestsStatus.loading,
+              loading: state.followersStatus ==
+                  ProfilePageStateFollowersStatus.loading,
             );
           },
         ),

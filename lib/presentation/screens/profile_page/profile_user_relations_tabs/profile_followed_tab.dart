@@ -49,8 +49,8 @@ class _ProfileFollowedTabState extends State<ProfileFollowedTab> {
               loadMore: () {
                 BlocProvider.of<ProfilePageCubit>(context).getFollowed();
               },
-              loading: state.followRequestsStatus ==
-                  ProfilePageStateFollowRequestsStatus.loading,
+              loading: state.followedStatus ==
+                  ProfilePageStateFollowedStatus.loading,
             );
           },
         ),

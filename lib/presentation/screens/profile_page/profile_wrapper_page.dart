@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:chattyevent_app_flutter/application/bloc/chat/chat_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
@@ -25,6 +26,7 @@ class ProfileWrapperPage extends StatelessWidget {
         ProfilePageState.fromUser(
           user: user ?? UserEntity(id: userId, authId: ""),
         ),
+        chatCubit: BlocProvider.of<ChatCubit>(context),
         userRelationUseCases: serviceLocator(
           param1: BlocProvider.of<AuthCubit>(context).state,
         ),

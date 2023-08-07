@@ -1,21 +1,16 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:chattyevent_app_flutter/core/extensions/list_space_between_extension.dart';
-import 'package:chattyevent_app_flutter/core/utils/injection.dart';
 import 'package:chattyevent_app_flutter/core/utils/maps_helper.dart';
 import 'package:chattyevent_app_flutter/domain/entities/message/message_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/user/user_entity.dart';
-import 'package:chattyevent_app_flutter/domain/usecases/location_usecases.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/chat_message/chat_message_container_voice_message.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/chat_message/chat_message_react_message_container.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/dialog/image_fullscreen_dialog.dart';
+import 'package:chattyevent_app_flutter/presentation/widgets/general/open_maps_button.dart';
 import 'package:collection/collection.dart';
-import 'package:dartz/dartz.dart' as dz;
 import 'package:flutter/material.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:ionicons/ionicons.dart';
 
 class ChatMessageContainerMainContainer extends StatelessWidget {
   final List<UserEntity> users;
@@ -130,34 +125,10 @@ class ChatMessageContainerMainContainer extends StatelessWidget {
                 ),
               ),
             ),
-            Material(
-              color: Colors.transparent,
-              child: InkWell(
-                borderRadius: BorderRadius.circular(8),
-                onTap: () => openMaps(
-                  context,
-                  LatLng(
-                    message.currentLocation!.geoJson!.coordinates![1],
-                    message.currentLocation!.geoJson!.coordinates![0],
-                  ),
-                ),
-                child: Ink(
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: const Color.fromARGB(100, 0, 0, 0),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Row(
-                    children: [
-                      const Icon(Ionicons.map),
-                      const SizedBox(width: 16),
-                      Text(
-                        "In Maps öffnen",
-                        style: Theme.of(context).textTheme.labelLarge,
-                      ),
-                    ],
-                  ),
-                ),
+            OpenMapsButton(
+              latLng: LatLng(
+                message.currentLocation!.geoJson!.coordinates![1],
+                message.currentLocation!.geoJson!.coordinates![0],
               ),
             ),
           ],
@@ -181,18 +152,6 @@ class ChatMessageContainerMainContainer extends StatelessWidget {
           },
         ].withSpaceBetween(height: 8),
       ),
-    );
-  }
-
-  Future openMaps(BuildContext context, LatLng latLon) async {
-    final dz.Either<NotificationAlert, dz.Unit> openedOrFailure =
-        await serviceLocator<LocationUseCases>().openMaps(latLng: latLon);
-
-    openedOrFailure.fold(
-      (alert) => BlocProvider.of<NotificationCubit>(context).newAlert(
-        notificationAlert: alert,
-      ),
-      (_) => null,
     );
   }
 }

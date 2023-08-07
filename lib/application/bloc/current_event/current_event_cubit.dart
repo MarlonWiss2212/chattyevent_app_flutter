@@ -321,19 +321,6 @@ class CurrentEventCubit extends Cubit<CurrentEventState> {
     );
   }
 
-  Future openMaps() async {
-    final Either<NotificationAlert, Unit> openedOrFailure =
-        await locationUseCases.openMaps(
-      query:
-          "${state.event.eventLocation?.address?.street} ${state.event.eventLocation?.address?.housenumber}, ${state.event.eventLocation?.address?.city}, ${state.event.eventLocation?.address?.zip}, ${state.event.eventLocation?.address?.country}",
-    );
-
-    openedOrFailure.fold(
-      (alert) => notificationCubit.newAlert(notificationAlert: alert),
-      (_) => null,
-    );
-  }
-
   // shopping list
 
   CurrentShoppingListItemState replaceOrAddShoppingListItem({
