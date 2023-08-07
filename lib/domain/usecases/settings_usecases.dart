@@ -33,6 +33,15 @@ class SettingsUseCases {
     return settingsRepository.getDarkModeFromStorage();
   }
 
+  Future<Either<NotificationAlert, Unit>> openFAQPage() async {
+    return await launchUrlUseCases.launchUrl(
+      url: "https://chattyevent.com/faq",
+      launchMode: Platform.isAndroid || Platform.isIOS
+          ? LaunchMode.externalApplication
+          : LaunchMode.platformDefault,
+    );
+  }
+
   Future<Either<NotificationAlert, Unit>> openTermsOfUsePage() async {
     return await launchUrlUseCases.launchUrl(
       url: "https://chattyevent.com/datasecurity/terms-of-use",

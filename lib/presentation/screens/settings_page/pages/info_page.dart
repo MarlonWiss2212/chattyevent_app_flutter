@@ -42,6 +42,18 @@ class _SettingsInfoPageState extends State<SettingsInfoPage> {
                 ListTile(
                   leading: const Icon(Icons.security),
                   title: Text(
+                    "FAQ",
+                    style: Theme.of(context).textTheme.titleMedium,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  trailing: const Icon(Ionicons.chevron_forward),
+                  onTap: () async {
+                    await settingsUseCases.openFAQPage();
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.security),
+                  title: Text(
                     "Datenschutzerklärung",
                     style: Theme.of(context).textTheme.titleMedium,
                     overflow: TextOverflow.ellipsis,
