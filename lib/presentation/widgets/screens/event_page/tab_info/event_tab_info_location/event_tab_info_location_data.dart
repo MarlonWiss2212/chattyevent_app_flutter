@@ -14,23 +14,23 @@ class EventTabInfoLocationData extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<CurrentEventCubit, CurrentEventState>(
       builder: (context, state) {
-        return Column(
-          children: [
-            if (state.event.eventLocation?.address != null &&
-                state.event.eventLocation!.address!.city != null &&
-                state.event.eventLocation!.address!.street != null &&
-                state.event.eventLocation!.address!.housenumber != null &&
-                state.event.eventLocation!.address!.zip != null &&
-                state.event.eventLocation!.address!.country != null) ...[
-              InkWell(
-                onTap: state.currentUserAllowedWithPermission(
-                  permissionCheckValue: state.event.permissions?.changeAddress,
-                )
-                    ? () => AutoRouter.of(context).push(
-                          const EventUpdateLocationRoute(),
-                        )
-                    : null,
-                child: Padding(
+        return InkWell(
+          onTap: state.currentUserAllowedWithPermission(
+            permissionCheckValue: state.event.permissions?.changeAddress,
+          )
+              ? () => AutoRouter.of(context).push(
+                    const EventUpdateLocationRoute(),
+                  )
+              : null,
+          child: Column(
+            children: [
+              if (state.event.eventLocation?.address != null &&
+                  state.event.eventLocation!.address!.city != null &&
+                  state.event.eventLocation!.address!.street != null &&
+                  state.event.eventLocation!.address!.housenumber != null &&
+                  state.event.eventLocation!.address!.zip != null &&
+                  state.event.eventLocation!.address!.country != null) ...[
+                Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -69,45 +69,45 @@ class EventTabInfoLocationData extends StatelessWidget {
                     ],
                   ),
                 ),
-              ),
-              const SizedBox(height: 8),
-              OpenMapsButton(
-                query: BlocProvider.of<CurrentEventCubit>(context)
-                    .state
-                    .getLocationQueryForMaps(),
-              ),
-            ] else if (state.loadingEvent) ...[
-              const SkeletonLine(),
-              const SizedBox(height: 8),
-              SkeletonListTile(
-                hasSubtitle: false,
-                titleStyle: const SkeletonLineStyle(width: 100, height: 22),
-                subtitleStyle: const SkeletonLineStyle(
-                  width: double.infinity,
-                  height: 16,
+                const SizedBox(height: 8),
+                OpenMapsButton(
+                  query: BlocProvider.of<CurrentEventCubit>(context)
+                      .state
+                      .getLocationQueryForMaps(),
                 ),
-                leadingStyle: const SkeletonAvatarStyle(
-                  shape: BoxShape.circle,
-                ),
-              )
-            ] else ...[
-              const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Addresse: ",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
+              ] else if (state.loadingEvent) ...[
+                const SkeletonLine(),
+                const SizedBox(height: 8),
+                SkeletonListTile(
+                  hasSubtitle: false,
+                  titleStyle: const SkeletonLineStyle(width: 100, height: 22),
+                  subtitleStyle: const SkeletonLineStyle(
+                    width: double.infinity,
+                    height: 16,
+                  ),
+                  leadingStyle: const SkeletonAvatarStyle(
+                    shape: BoxShape.circle,
+                  ),
+                )
+              ] else ...[
+                const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Addresse: ",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                    Text("Addresse hinzufügen")
-                  ],
+                      Text("Addresse hinzufügen")
+                    ],
+                  ),
                 ),
-              ),
+              ],
             ],
-          ],
+          ),
         );
       },
     );

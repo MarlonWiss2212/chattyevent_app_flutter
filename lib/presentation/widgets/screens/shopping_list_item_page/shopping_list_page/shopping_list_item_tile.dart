@@ -46,7 +46,10 @@ class ShoppingListItemTile extends StatelessWidget {
       ),
       leading: CircleAvatar(
         backgroundImage: userToBuyItem.profileImageLink != null
-            ? CachedNetworkImageProvider(userToBuyItem.profileImageLink!)
+            ? CachedNetworkImageProvider(
+                userToBuyItem.profileImageLink!,
+                cacheKey: userToBuyItem.profileImageLink!.split("?")[0],
+              )
             : null,
         backgroundColor: userToBuyItem.profileImageLink == null
             ? Theme.of(context).colorScheme.surface

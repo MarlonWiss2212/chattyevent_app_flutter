@@ -42,6 +42,7 @@ class EventHorizontalListItem extends StatelessWidget {
                   tag: "${event.id} coverImage",
                   child: CachedNetworkImage(
                     imageUrl: event.coverImageLink!,
+                    cacheKey: event.coverImageLink!.split("?")[0],
                     fit: BoxFit.cover,
                   ),
                 ),

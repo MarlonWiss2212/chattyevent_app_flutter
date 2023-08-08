@@ -16,6 +16,7 @@ class PrivateEventListItem extends StatelessWidget {
         backgroundImage: privateEventState.event.coverImageLink != null
             ? CachedNetworkImageProvider(
                 privateEventState.event.coverImageLink!,
+                cacheKey: privateEventState.event.coverImageLink!.split("?")[0],
               )
             : null,
         backgroundColor: privateEventState.event.coverImageLink == null

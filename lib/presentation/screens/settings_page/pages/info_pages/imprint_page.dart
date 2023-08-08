@@ -38,11 +38,10 @@ class _ImprintPageState extends State<ImprintPage> {
           if (state.imprint != null) {
             return SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
+                padding: const EdgeInsets.all(8),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(height: 8),
                     Text(state.imprint!.imprintDescription),
                     const SizedBox(height: 20),
                     Text("Name: ${state.imprint!.name}"),
@@ -78,11 +77,11 @@ class _ImprintPageState extends State<ImprintPage> {
           }
 
           if (state.imprintLoading) {
-            return SingleChildScrollView(
+            return const SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
+                padding: EdgeInsets.symmetric(horizontal: 8),
                 child: Column(
-                  children: const [
+                  children: [
                     SizedBox(height: 8),
                     SkeletonLine(
                       style: SkeletonLineStyle(width: 300),

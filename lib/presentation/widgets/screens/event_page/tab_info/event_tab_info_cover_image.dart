@@ -79,6 +79,7 @@ class EventTabInfoCoverImage extends StatelessWidget {
                       tag: "${state.event.id} coverImage",
                       child: CachedNetworkImage(
                         imageUrl: state.event.coverImageLink!,
+                        cacheKey: state.event.coverImageLink!.split("?")[0],
                         fit: BoxFit.fitWidth,
                       ),
                     );

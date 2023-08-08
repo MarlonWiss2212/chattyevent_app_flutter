@@ -44,7 +44,10 @@ class _UserListTileState extends State<UserListTile> {
       child: ListTile(
         leading: CircleAvatar(
           backgroundImage: widget.user.profileImageLink != null
-              ? CachedNetworkImageProvider(widget.user.profileImageLink!)
+              ? CachedNetworkImageProvider(
+                  widget.user.profileImageLink!,
+                  cacheKey: widget.user.profileImageLink!.split("?")[0],
+                )
               : null,
           backgroundColor: widget.user.profileImageLink == null
               ? Theme.of(context).colorScheme.surface

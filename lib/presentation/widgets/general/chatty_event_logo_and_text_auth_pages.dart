@@ -17,7 +17,7 @@ class ChattyEventLogoAndTextAuthPages extends StatelessWidget {
           ),
         ),
         Text(
-          "Chatty Event",
+          "ChattyEvent",
           style: Theme.of(context).textTheme.displayMedium,
           softWrap: true,
           overflow: TextOverflow.visible,

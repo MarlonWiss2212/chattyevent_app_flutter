@@ -40,6 +40,9 @@ class _ProfileChatPageState extends State<ProfileChatPage> {
         centerTitle: true,
         leading: const AutoLeadingButton(),
         title: BlocBuilder<ProfilePageCubit, ProfilePageState>(
+          buildWhen: (p, c) =>
+              p.user.profileImageLink != c.user.profileImageLink &&
+              p.user.username != c.user.username,
           builder: (context, state) {
             return Center(
               child: Row(
@@ -48,6 +51,8 @@ class _ProfileChatPageState extends State<ProfileChatPage> {
                     backgroundImage: state.user.profileImageLink != null
                         ? CachedNetworkImageProvider(
                             state.user.profileImageLink!,
+                            cacheKey:
+                                state.user.profileImageLink!.split("?")[0],
                           )
                         : null,
                     backgroundColor: state.user.profileImageLink != null

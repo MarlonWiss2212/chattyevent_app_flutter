@@ -16,7 +16,10 @@ class EventTabInfoGroupchatToTile extends StatelessWidget {
     return ListTile(
       leading: CircleAvatar(
         backgroundImage: groupchat.profileImageLink != null
-            ? CachedNetworkImageProvider(groupchat.profileImageLink!)
+            ? CachedNetworkImageProvider(
+                groupchat.profileImageLink!,
+                cacheKey: groupchat.profileImageLink!.split("?")[0],
+              )
             : null,
         backgroundColor: groupchat.profileImageLink == null
             ? Theme.of(context).colorScheme.surface

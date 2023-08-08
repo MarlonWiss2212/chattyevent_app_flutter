@@ -46,6 +46,7 @@ class GroupchatGridListItem extends StatelessWidget {
                         tag: "${chat.id} profileImage",
                         child: CachedNetworkImage(
                           imageUrl: chat.profileImageLink!,
+                          cacheKey: chat.profileImageLink!.split("?")[0],
                           fit: BoxFit.cover,
                         ),
                       ),

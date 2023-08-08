@@ -37,6 +37,7 @@ class UserGridListItem extends StatelessWidget {
                         tag: "${user.id} profileImage",
                         child: CachedNetworkImage(
                           imageUrl: user.profileImageLink!,
+                          cacheKey: user.profileImageLink!.split("?")[0],
                           fit: BoxFit.cover,
                         ),
                       ),

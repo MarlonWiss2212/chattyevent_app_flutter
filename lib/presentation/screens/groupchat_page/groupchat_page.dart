@@ -36,6 +36,10 @@ class _GroupchatPageState extends State<GroupchatPage> {
         centerTitle: true,
         leading: const AutoLeadingButton(),
         title: BlocBuilder<CurrentGroupchatCubit, CurrentGroupchatState>(
+          buildWhen: (p, c) =>
+              p.currentChat.profileImageLink !=
+                  c.currentChat.profileImageLink &&
+              p.currentChat.title != c.currentChat.title,
           builder: (context, state) {
             return Center(
               child: Row(
@@ -44,6 +48,8 @@ class _GroupchatPageState extends State<GroupchatPage> {
                     backgroundImage: state.currentChat.profileImageLink != null
                         ? CachedNetworkImageProvider(
                             state.currentChat.profileImageLink!,
+                            cacheKey: state.currentChat.profileImageLink!
+                                .split("?")[0],
                           )
                         : null,
                     backgroundColor: state.currentChat.profileImageLink != null

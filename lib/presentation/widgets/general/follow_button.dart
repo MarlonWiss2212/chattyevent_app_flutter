@@ -58,7 +58,8 @@ class FollowButton extends StatelessWidget {
             : null,
         itemBuilder: (context) => [
           if (user.myUserRelationToOtherUser?.status !=
-              UserRelationStatusEnum.follower) ...{
+              UserRelationStatusEnum.follower && user.myUserRelationToOtherUser?.status !=
+              UserRelationStatusEnum.requesttofollow) ...{
             const PopupMenuItem<Either<Unit, UserRelationStatusEnum>>(
               value: Right(UserRelationStatusEnum.requesttofollow),
               child: Text("Folgen"),

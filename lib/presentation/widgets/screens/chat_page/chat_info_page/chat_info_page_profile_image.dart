@@ -72,6 +72,7 @@ class ChatInfoPageProfileImage extends StatelessWidget {
               ? const SizedBox()
               : CachedNetworkImage(
                   imageUrl: state.currentChat.profileImageLink!,
+                  cacheKey: state.currentChat.profileImageLink!.split("?")[0],
                   fit: BoxFit.cover,
                 ),
         );

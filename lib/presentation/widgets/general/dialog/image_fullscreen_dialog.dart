@@ -22,7 +22,11 @@ class ImageFullscreenDialog extends StatelessWidget {
         child: Stack(
           alignment: Alignment.topLeft,
           children: [
-            CachedNetworkImage(imageUrl: src, fit: BoxFit.contain),
+            CachedNetworkImage(
+              imageUrl: src,
+              fit: BoxFit.contain,
+              cacheKey: src.split("?")[0],
+            ),
             Material(
               color: Colors.transparent,
               child: Padding(

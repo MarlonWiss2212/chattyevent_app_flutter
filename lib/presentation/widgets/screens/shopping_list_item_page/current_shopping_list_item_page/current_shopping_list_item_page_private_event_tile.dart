@@ -26,6 +26,7 @@ class CurrentShoppingListItemPagePrivateEventTile extends StatelessWidget {
                   backgroundImage: state.event.coverImageLink != null
                       ? CachedNetworkImageProvider(
                           state.event.coverImageLink!,
+                          cacheKey: state.event.coverImageLink!.split("?")[0],
                         )
                       : null,
                   backgroundColor: state.event.coverImageLink == null

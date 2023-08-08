@@ -30,14 +30,20 @@ class _ChatListState extends State<ChatList> {
         widget.chats[index].groupchat?.profileImageLink != null
             ? CachedNetworkImageProvider(
                 widget.chats[index].groupchat!.profileImageLink!,
+                cacheKey: widget.chats[index].groupchat!.profileImageLink!
+                    .split("?")[0],
               )
             : widget.chats[index].event?.coverImageLink != null
                 ? CachedNetworkImageProvider(
                     widget.chats[index].event!.coverImageLink!,
+                    cacheKey: widget.chats[index].event!.coverImageLink!
+                        .split("?")[0],
                   )
                 : widget.chats[index].user?.profileImageLink != null
                     ? CachedNetworkImageProvider(
                         widget.chats[index].user!.profileImageLink!,
+                        cacheKey: widget.chats[index].user!.profileImageLink!
+                            .split("?")[0],
                       )
                     : null;
 
