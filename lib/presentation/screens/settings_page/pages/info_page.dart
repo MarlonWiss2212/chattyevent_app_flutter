@@ -40,7 +40,7 @@ class _SettingsInfoPageState extends State<SettingsInfoPage> {
             delegate: SliverChildListDelegate(
               [
                 ListTile(
-                  leading: const Icon(Icons.security),
+                  leading: const Icon(Icons.quiz),
                   title: Text(
                     "FAQ",
                     style: Theme.of(context).textTheme.titleMedium,
