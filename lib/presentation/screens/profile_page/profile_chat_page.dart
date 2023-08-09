@@ -41,7 +41,7 @@ class _ProfileChatPageState extends State<ProfileChatPage> {
         leading: const AutoLeadingButton(),
         title: BlocBuilder<ProfilePageCubit, ProfilePageState>(
           buildWhen: (p, c) =>
-              p.user.profileImageLink != c.user.profileImageLink &&
+              p.user.profileImageLink != c.user.profileImageLink ||
               p.user.username != c.user.username,
           builder: (context, state) {
             return Center(

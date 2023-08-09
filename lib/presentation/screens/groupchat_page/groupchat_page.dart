@@ -38,7 +38,7 @@ class _GroupchatPageState extends State<GroupchatPage> {
         title: BlocBuilder<CurrentGroupchatCubit, CurrentGroupchatState>(
           buildWhen: (p, c) =>
               p.currentChat.profileImageLink !=
-                  c.currentChat.profileImageLink &&
+                  c.currentChat.profileImageLink ||
               p.currentChat.title != c.currentChat.title,
           builder: (context, state) {
             return Center(
