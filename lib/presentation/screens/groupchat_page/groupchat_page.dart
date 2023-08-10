@@ -81,6 +81,9 @@ class _GroupchatPageState extends State<GroupchatPage> {
       body: Column(
         children: [
           BlocBuilder<CurrentGroupchatCubit, CurrentGroupchatState>(
+            buildWhen: (p, c) =>
+                p.loadingChat != c.loadingChat ||
+                p.loadingMessages != c.loadingMessages,
             builder: (context, state) {
               if (state.loadingChat || state.loadingMessages) {
                 return const LinearProgressIndicator();

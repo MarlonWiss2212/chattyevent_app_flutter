@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chattyevent_app_flutter/application/bloc/add_message/add_message_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/profile_page/profile_page_cubit.dart';
+import 'package:chattyevent_app_flutter/core/enums/user_relation/user_relation_status_enum.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/chat_message_input/chat_message_input.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/profile_page/profile_chat_page/profile_chat_page_message_area.dart';
@@ -82,9 +83,34 @@ class _ProfileChatPageState extends State<ProfileChatPage> {
       body: Column(
         children: [
           BlocBuilder<ProfilePageCubit, ProfilePageState>(
+            buildWhen: (p, c) => p.loadingMessages != c.loadingMessages,
             builder: (context, state) {
               if (state.loadingMessages) {
                 return const LinearProgressIndicator();
+              }
+              return const SizedBox();
+            },
+          ),
+          BlocBuilder<ProfilePageCubit, ProfilePageState>(
+            builder: (context, state) {
+              if (state.user.authId !=
+                      BlocProvider.of<AuthCubit>(context)
+                          .state
+                          .currentUser
+                          .authId &&
+                  state.user.otherUserRelationToMyUser?.status !=
+                      UserRelationStatusEnum.follower) {
+                return Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: ListTile(
+                    tileColor: Theme.of(context).colorScheme.errorContainer,
+                    leading: const Icon(Icons.info),
+                    title: Text(
+                      "Der andere User kann dir keine Nachricht schreiben, da er dir nicht folgt, wenn du mit ihm schreiben willst, schau bitte nach, ob er dir eine Freundschaftsanfrage gesendet hat. Der andere User kann aber deine Nachricht lesen",
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                  ),
+                );
               }
               return const SizedBox();
             },
