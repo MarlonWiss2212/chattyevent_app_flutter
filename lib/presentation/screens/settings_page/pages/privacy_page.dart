@@ -1,7 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
-import 'package:chattyevent_app_flutter/presentation/widgets/screens/settings_page/pages/privacy_page/privacy_page_calendar_watch_i_have_time_switch.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ionicons/ionicons.dart';
@@ -92,7 +91,16 @@ class _SettingsPrivacyPageState extends State<SettingsPrivacyPage> {
                     ),
                     trailing: const Icon(Ionicons.chevron_forward),
                   ),
-                  const PrivacyPageCalendarWatchIHaveTimeSwitch(),
+                  ListTile(
+                    title: const Text("Kalendar sehen"),
+                    subtitle: const Text(
+                      "follower können sehen ob du an einen Termin Zeit hast",
+                    ),
+                    onTap: () => AutoRouter.of(context).push(
+                      const CalendarWatchIHaveTimeRoute(),
+                    ),
+                    trailing: const Icon(Ionicons.chevron_forward),
+                  ),
                 ],
               ),
             ),

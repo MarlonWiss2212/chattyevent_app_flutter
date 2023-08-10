@@ -113,7 +113,9 @@ class UserSearchCubit extends Cubit<UserSearchState> {
     bool loadMore = false,
     bool? filterForPrivateEventAddMeAllowedUsers,
     bool? sortForPrivateEventAddMeAllowedUsersFirst,
+    bool? filterForCalendarWatchIHaveTimeAllowedUsers,
     bool? sortForGroupchatAddMeAllowedUsersFirst,
+    bool? sortForCalendarWatchIHaveTimeAllowedUsersFirst,
     bool? filterForGroupchatAddMeAllowedUsers,
     String? search,
   }) async {
@@ -132,6 +134,10 @@ class UserSearchCubit extends Cubit<UserSearchState> {
             filterForGroupchatAddMeAllowedUsers,
         filterForPrivateEventAddMeAllowedUsers:
             filterForPrivateEventAddMeAllowedUsers,
+        filterForCalendarWatchIHaveTimeAllowedUsers:
+            filterForCalendarWatchIHaveTimeAllowedUsers,
+        sortForCalendarWatchIHaveTimeAllowedUsersFirst:
+            sortForCalendarWatchIHaveTimeAllowedUsersFirst,
         sortForGroupchatAddMeAllowedUsersFirst:
             sortForGroupchatAddMeAllowedUsersFirst,
         sortForPrivateEventAddMeAllowedUsersFirst:

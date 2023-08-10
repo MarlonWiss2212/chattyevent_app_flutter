@@ -40,7 +40,7 @@ class PrivateEventAddMePageUserList extends StatelessWidget {
                       null) {
                 return const Center(
                   child: Text(
-                    "Kann keine User nicht darstellen da die berechtigungen nich geladen werden konnten",
+                    "Kann keine User nicht darstellen da die berechtigungen nicht geladen werden konnten",
                   ),
                 );
               }

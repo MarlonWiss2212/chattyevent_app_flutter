@@ -3,15 +3,15 @@ import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/user_search/user_search_cubit.dart';
 import 'package:chattyevent_app_flutter/core/utils/injection.dart';
-import 'package:chattyevent_app_flutter/presentation/widgets/screens/settings_page/pages/privacy_pages/private_event_add_me_page/private_event_add_me_page_chip_list.dart';
-import 'package:chattyevent_app_flutter/presentation/widgets/screens/settings_page/pages/privacy_pages/private_event_add_me_page/private_event_add_me_page_user_list.dart';
-import 'package:chattyevent_app_flutter/presentation/widgets/screens/settings_page/pages/privacy_pages/private_event_add_me_page/private_event_add_me_page_searchbar.dart';
+import 'package:chattyevent_app_flutter/presentation/widgets/screens/settings_page/pages/privacy_pages/calendar_watch_i_have_time_page/calendar_watch_i_have_time_page_chip_list.dart';
+import 'package:chattyevent_app_flutter/presentation/widgets/screens/settings_page/pages/privacy_pages/calendar_watch_i_have_time_page/calendar_watch_i_have_time_page_searchbar.dart';
+import 'package:chattyevent_app_flutter/presentation/widgets/screens/settings_page/pages/privacy_pages/calendar_watch_i_have_time_page/calendar_watch_i_have_time_page_user_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 @RoutePage()
-class PrivateEventAddMePage extends StatelessWidget {
-  const PrivateEventAddMePage({super.key});
+class CalendarWatchIHaveTimePage extends StatelessWidget {
+  const CalendarWatchIHaveTimePage({super.key});
 
   Widget initBloc(BuildContext context, {required Widget child}) {
     return BlocProvider(
@@ -24,7 +24,8 @@ class PrivateEventAddMePage extends StatelessWidget {
           param1: BlocProvider.of<AuthCubit>(context).state,
         ),
         notificationCubit: BlocProvider.of<NotificationCubit>(context),
-      )..getFollowersViaApi(sortForPrivateEventAddMeAllowedUsersFirst: true),
+      )..getFollowersViaApi(
+          sortForCalendarWatchIHaveTimeAllowedUsersFirst: true),
       child: child,
     );
   }
@@ -36,15 +37,15 @@ class PrivateEventAddMePage extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: const Text("Privates Event Hinzufüge Berechtigung"),
+          title: const Text("Kalendar sehen Berechtigung"),
         ),
         body: const Column(
           children: [
-            PrivateEventAddMePageChipList(),
+            CalendarWatchIHaveTimePageChipList(),
             SizedBox(height: 8),
-            PrivateEventAddMePageSearchbar(),
+            CalendarWatchIHaveTimePageSearchbar(),
             SizedBox(height: 8),
-            PrivateEventAddMePageUserList(),
+            CalendarWatchIHaveTimePageUserList(),
           ],
         ),
       ),

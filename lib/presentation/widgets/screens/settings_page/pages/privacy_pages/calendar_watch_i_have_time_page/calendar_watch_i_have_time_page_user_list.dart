@@ -1,16 +1,16 @@
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/user_search/user_search_cubit.dart';
-import 'package:chattyevent_app_flutter/core/enums/user/groupchat_add_me_permission_enum.dart';
+import 'package:chattyevent_app_flutter/core/enums/user/calendar_watch_i_have_time_permission_enum.dart';
 import 'package:chattyevent_app_flutter/infastructure/dto/user/update_user_dto.dart';
 import 'package:chattyevent_app_flutter/infastructure/dto/user/update_user_permissions.dart';
-import 'package:chattyevent_app_flutter/infastructure/dto/user/update_user_permissions/update_groupchat_add_me_dto.dart';
+import 'package:chattyevent_app_flutter/infastructure/dto/user/update_user_permissions/update_calendar_watch_i_have_time_dto.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/user_list/user_list_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletons/skeletons.dart';
 
-class GroupchatAddMePageUserList extends StatelessWidget {
-  const GroupchatAddMePageUserList({super.key});
+class CalendarWatchIHaveTimePageUserList extends StatelessWidget {
+  const CalendarWatchIHaveTimePageUserList({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,9 +19,9 @@ class GroupchatAddMePageUserList extends StatelessWidget {
         builder: (context, authState) {
           return BlocBuilder<UserSearchCubit, UserSearchState>(
             builder: (context, state) {
-              if (authState
-                      .currentUser.permissions?.groupchatAddMe?.permission ==
-                  GroupchatAddMePermissionEnum.none) {
+              if (authState.currentUser.permissions?.calendarWatchIHaveTime
+                      ?.permission ==
+                  CalendarWatchIHaveTimePermissionEnum.none) {
                 return const Center(
                     child: Text("Keine User können gewählt werden"));
               }
@@ -29,13 +29,13 @@ class GroupchatAddMePageUserList extends StatelessWidget {
                 return const Center(child: Text("Keine User gefunden"));
               }
 
-              if (authState.currentUser.permissions?.groupchatAddMe
+              if (authState.currentUser.permissions?.calendarWatchIHaveTime
                           ?.permission ==
                       null ||
-                  authState.currentUser.permissions?.groupchatAddMe
+                  authState.currentUser.permissions?.calendarWatchIHaveTime
                           ?.selectedUserIds ==
                       null ||
-                  authState.currentUser.permissions?.groupchatAddMe
+                  authState.currentUser.permissions?.calendarWatchIHaveTime
                           ?.exceptUserIds ==
                       null) {
                 return const Center(
@@ -91,7 +91,7 @@ class GroupchatAddMePageUserList extends StatelessWidget {
           onPressed: () {
             BlocProvider.of<UserSearchCubit>(context).getFollowersViaApi(
               loadMore: true,
-              sortForGroupchatAddMeAllowedUsersFirst: true,
+              sortForCalendarWatchIHaveTimeAllowedUsersFirst: true,
             );
           },
           icon: const Icon(Icons.add_circle),
@@ -100,17 +100,20 @@ class GroupchatAddMePageUserList extends StatelessWidget {
     }
 
     bool value = false;
-    switch (authState.currentUser.permissions!.groupchatAddMe!.permission!) {
-      case GroupchatAddMePermissionEnum.none:
+    switch (authState
+        .currentUser.permissions!.calendarWatchIHaveTime!.permission!) {
+      case CalendarWatchIHaveTimePermissionEnum.none:
         break;
-      case GroupchatAddMePermissionEnum.followersExcept:
-        if (authState.currentUser.permissions!.groupchatAddMe!.exceptUserIds!
+      case CalendarWatchIHaveTimePermissionEnum.followersExcept:
+        if (authState
+            .currentUser.permissions!.calendarWatchIHaveTime!.exceptUserIds!
             .contains(state.users[index].id)) {
           value = true;
         }
         break;
-      case GroupchatAddMePermissionEnum.onlySelectedFollowers:
-        if (authState.currentUser.permissions!.groupchatAddMe!.selectedUserIds!
+      case CalendarWatchIHaveTimePermissionEnum.onlySelectedFollowers:
+        if (authState
+            .currentUser.permissions!.calendarWatchIHaveTime!.selectedUserIds!
             .contains(state.users[index].id)) {
           value = true;
         }
@@ -122,32 +125,32 @@ class GroupchatAddMePageUserList extends StatelessWidget {
       trailing: Checkbox(
         value: value,
         onChanged: (value) {
-          UpdateGroupchatAddMeDto? dto;
+          UpdateCalendarWatchIHaveTimeDto? dto;
           if (value == null) {
             return;
           }
-          switch (
-              authState.currentUser.permissions!.groupchatAddMe!.permission!) {
-            case GroupchatAddMePermissionEnum.none:
+          switch (authState
+              .currentUser.permissions!.calendarWatchIHaveTime!.permission!) {
+            case CalendarWatchIHaveTimePermissionEnum.none:
               break;
-            case GroupchatAddMePermissionEnum.followersExcept:
+            case CalendarWatchIHaveTimePermissionEnum.followersExcept:
               if (value == true) {
-                dto = UpdateGroupchatAddMeDto(
+                dto = UpdateCalendarWatchIHaveTimeDto(
                   addToExceptUserIds: [state.users[index].id],
                 );
               } else {
-                dto = UpdateGroupchatAddMeDto(
+                dto = UpdateCalendarWatchIHaveTimeDto(
                   removeFromExceptUserIds: [state.users[index].id],
                 );
               }
               break;
-            case GroupchatAddMePermissionEnum.onlySelectedFollowers:
+            case CalendarWatchIHaveTimePermissionEnum.onlySelectedFollowers:
               if (value == true) {
-                dto = UpdateGroupchatAddMeDto(
+                dto = UpdateCalendarWatchIHaveTimeDto(
                   addToSelectedUserIds: [state.users[index].id],
                 );
               } else {
-                dto = UpdateGroupchatAddMeDto(
+                dto = UpdateCalendarWatchIHaveTimeDto(
                   removeFromSelectedUserIds: [state.users[index].id],
                 );
               }
@@ -157,7 +160,7 @@ class GroupchatAddMePageUserList extends StatelessWidget {
           BlocProvider.of<AuthCubit>(context).updateUser(
             updateUserDto: UpdateUserDto(
               permissions: UpdateUserPermissionsDto(
-                groupchatAddMe: dto,
+                calendarWatchIHaveTime: dto,
               ),
             ),
           );

@@ -3,8 +3,8 @@ import 'package:chattyevent_app_flutter/presentation/widgets/general/input_field
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class GroupchatAddMeSearchbar extends StatelessWidget {
-  const GroupchatAddMeSearchbar({super.key});
+class GroupchatAddMePageSearchbar extends StatelessWidget {
+  const GroupchatAddMePageSearchbar({super.key});
 
   @override
   Widget build(BuildContext context) {

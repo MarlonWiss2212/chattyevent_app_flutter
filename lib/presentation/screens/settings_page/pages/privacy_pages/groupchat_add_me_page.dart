@@ -5,7 +5,7 @@ import 'package:chattyevent_app_flutter/application/bloc/user_search/user_search
 import 'package:chattyevent_app_flutter/core/utils/injection.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/settings_page/pages/privacy_pages/groupchat_add_me_page/groupchat_add_me_page_chip_list.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/settings_page/pages/privacy_pages/groupchat_add_me_page/groupchat_add_me_page_user_list.dart';
-import 'package:chattyevent_app_flutter/presentation/widgets/screens/settings_page/pages/privacy_pages/groupchat_add_me_page/groupchat_add_me_searchbar.dart';
+import 'package:chattyevent_app_flutter/presentation/widgets/screens/settings_page/pages/privacy_pages/groupchat_add_me_page/groupchat_add_me_page_searchbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -42,7 +42,7 @@ class GroupchatAddMePage extends StatelessWidget {
           children: [
             GroupchatAddMePageChipList(),
             SizedBox(height: 8),
-            GroupchatAddMeSearchbar(),
+            GroupchatAddMePageSearchbar(),
             SizedBox(height: 8),
             GroupchatAddMePageUserList(),
           ],

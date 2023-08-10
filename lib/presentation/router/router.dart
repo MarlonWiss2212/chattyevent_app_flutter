@@ -501,6 +501,12 @@ class AppRouter extends $AppRouter {
           guards: [authGuard],
           path: 'settings/privacy/private-event-add-me-permission',
         ),
+        CustomRoute(
+          transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
+          page: CalendarWatchIHaveTimeRoute.page,
+          guards: [authGuard],
+          path: 'settings/privacy/calendar-watch-i-have-time-permission',
+        ),
       ];
 
   List<CustomRoute> get _introductionRoutes => [

@@ -1,10 +1,11 @@
+import 'package:chattyevent_app_flutter/infastructure/dto/user/update_user_permissions/update_calendar_watch_i_have_time_dto.dart';
 import 'package:chattyevent_app_flutter/infastructure/dto/user/update_user_permissions/update_groupchat_add_me_dto.dart';
 import 'package:chattyevent_app_flutter/infastructure/dto/user/update_user_permissions/update_private_event_add_me_dto.dart';
 
 class UpdateUserPermissionsDto {
   final UpdateGroupchatAddMeDto? groupchatAddMe;
   final UpdatePrivateEventAddMeDto? privateEventAddMe;
-  final bool? calendarWatchIHaveTime;
+  final UpdateCalendarWatchIHaveTimeDto? calendarWatchIHaveTime;
 
   UpdateUserPermissionsDto({
     this.calendarWatchIHaveTime,
@@ -22,7 +23,9 @@ class UpdateUserPermissionsDto {
       variables.addAll({"privateEventAddMe": privateEventAddMe!.toMap()});
     }
     if (calendarWatchIHaveTime != null) {
-      variables.addAll({"calendarWatchIHaveTime": calendarWatchIHaveTime});
+      variables.addAll({
+        "calendarWatchIHaveTime": calendarWatchIHaveTime!.toMap(),
+      });
     }
     return variables;
   }

@@ -51,7 +51,11 @@ class UserRepositoryImpl implements UserRepository {
                 exceptUserIds
                 selectedUserIds
               }
-              calendarWatchIHaveTime
+              calendarWatchIHaveTime {
+                permission
+                exceptUserIds
+                selectedUserIds
+              }
             }
             """ : """
             myUserRelationToOtherUser {
@@ -176,7 +180,11 @@ class UserRepositoryImpl implements UserRepository {
                 exceptUserIds
                 selectedUserIds
               }
-              calendarWatchIHaveTime
+              calendarWatchIHaveTime {
+                permission
+                exceptUserIds
+                selectedUserIds
+              }
             }
           }
         }
@@ -256,7 +264,11 @@ class UserRepositoryImpl implements UserRepository {
                 exceptUserIds
                 selectedUserIds
               }
-              calendarWatchIHaveTime
+              calendarWatchIHaveTime {
+                permission
+                exceptUserIds
+                selectedUserIds
+              }
             }
           }
         }
