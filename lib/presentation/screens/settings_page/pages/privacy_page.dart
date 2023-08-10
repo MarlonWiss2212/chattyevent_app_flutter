@@ -79,6 +79,10 @@ class _SettingsPrivacyPageState extends State<SettingsPrivacyPage> {
                   const Divider(thickness: 3),
                   ListTile(
                     title: const Text("Gruppenchat hinzufügen"),
+                    //   subtitle: const Text(
+                    //   "Follower dich in ein Gruppenchat hinzufügen, ohne diese Berechtigung aber wenigstens Einladen",
+                    //                      style: Theme.of(context).textTheme.bodySmall,
+                    // ),
                     onTap: () => AutoRouter.of(context).push(
                       const GroupchatAddMeRoute(),
                     ),
@@ -86,6 +90,10 @@ class _SettingsPrivacyPageState extends State<SettingsPrivacyPage> {
                   ),
                   ListTile(
                     title: const Text("Privates Event hinzufügen"),
+                    //   subtitle: const Text(
+                    //     "Follower dich in ein Privates Event hinzufügen, ohne diese Berechtigung aber wenigstens Einladen",
+                    //                      style: Theme.of(context).textTheme.bodySmall,
+                    //   ),
                     onTap: () => AutoRouter.of(context).push(
                       const PrivateEventAddMeRoute(),
                     ),
@@ -93,8 +101,9 @@ class _SettingsPrivacyPageState extends State<SettingsPrivacyPage> {
                   ),
                   ListTile(
                     title: const Text("Kalendar sehen"),
-                    subtitle: const Text(
-                      "follower können sehen ob du an einen Termin Zeit hast",
+                    subtitle: Text(
+                      "Follower können sehen ob du an einen Termin Zeit hast",
+                      style: Theme.of(context).textTheme.bodySmall,
                     ),
                     onTap: () => AutoRouter.of(context).push(
                       const CalendarWatchIHaveTimeRoute(),
