@@ -44,7 +44,7 @@ class ProfileFollowersTabListView extends StatelessWidget {
                 },
               ],
               trailing: SizedBox(
-                width: 90,
+                width: 100,
                 height: 40,
                 child: FollowButton(
                   user: followers[index],

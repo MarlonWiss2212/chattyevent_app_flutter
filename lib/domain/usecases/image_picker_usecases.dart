@@ -17,9 +17,6 @@ class ImagePickerUseCases {
 
   Future<Either<NotificationAlert, File>> getImageFromCameraWithPermissions({
     CropAspectRatio? cropAspectRatio,
-
-    /// 0 to 100
-    int quality = 50,
   }) async {
     PermissionStatus permissionStatus =
         await permissionRepository.getCameraPermissionStatus();
@@ -40,22 +37,25 @@ class ImagePickerUseCases {
       (alert) => Left(alert),
       (image) async {
         if (cropAspectRatio != null) {
-          return await imagePickerRepository.cropImage(
+          final fileOrAlert = await imagePickerRepository.cropImage(
             sourcePath: image.path,
             aspectRatio: cropAspectRatio,
-            compressQuality: quality,
+            compressQuality: 100,
+          );
+          return await fileOrAlert.fold(
+            (alert) => Left(alert),
+            (file) async {
+              return await convertImageToJpgAndScaleTo720p(file: file);
+            },
           );
         }
-        return Right(image);
+        return await convertImageToJpgAndScaleTo720p(file: image);
       },
     );
   }
 
   Future<Either<NotificationAlert, File>> getImageFromPhotosWithPermissions({
     CropAspectRatio? cropAspectRatio,
-
-    /// 0 to 100
-    int quality = 50,
   }) async {
     final permissionStatus =
         await permissionRepository.getPhotosPermissionStatus();
@@ -76,13 +76,34 @@ class ImagePickerUseCases {
       (alert) => Left(alert),
       (image) async {
         if (cropAspectRatio != null) {
-          return await imagePickerRepository.cropImage(
+          final fileOrAlert = await imagePickerRepository.cropImage(
             sourcePath: image.path,
             aspectRatio: cropAspectRatio,
-            compressQuality: quality,
+            compressQuality: 100,
+          );
+          return await fileOrAlert.fold(
+            (alert) => Left(alert),
+            (file) async {
+              return await convertImageToJpgAndScaleTo720p(file: file);
+            },
           );
         }
-        return Right(image);
+        return await convertImageToJpgAndScaleTo720p(file: image);
+      },
+    );
+  }
+
+  Future<Either<NotificationAlert, File>> convertImageToJpgAndScaleTo720p({
+    required File file,
+  }) async {
+    final imgOrAlert = await imagePickerRepository.fileToImage(file: file);
+    return await imgOrAlert.fold(
+      (alert) => Left(alert),
+      (img) async {
+        return await imagePickerRepository.convertPngToJpeg(
+          image: img,
+          oldPath: file.path,
+        );
       },
     );
   }
