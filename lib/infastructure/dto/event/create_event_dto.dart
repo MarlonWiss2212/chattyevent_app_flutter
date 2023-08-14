@@ -12,6 +12,7 @@ class CreateEventDto {
   final CreateEventPermissionsDto? permissions;
   final DateTime eventDate;
   final DateTime? eventEndDate;
+  final bool? autoDelete;
   final CreateEventLocationDto? eventLocation;
   final List<CreateEventUserFromEventDto>? eventUsers;
 
@@ -20,6 +21,7 @@ class CreateEventDto {
     required this.coverImage,
     required this.privateEventData,
     required this.eventDate,
+    required this.autoDelete,
     this.permissions,
     this.eventUsers,
     this.eventEndDate,
@@ -31,6 +33,7 @@ class CreateEventDto {
     Map<dynamic, dynamic> map = {
       "title": title,
       "eventDate": eventDate.toUtc().toIso8601String(),
+      "autoDelete": autoDelete
     };
     if (permissions != null) {
       map.addAll({"permissions": permissions!.toMap()});

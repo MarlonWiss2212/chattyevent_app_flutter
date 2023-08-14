@@ -31,6 +31,7 @@ class AddEventCubit extends Cubit<AddEventState> {
     required this.notificationCubit,
   }) : super(AddEventState(
           subtitle: "",
+          autoDelete: false,
           permissions: CreateEventPermissionsDto(
             addUsers: EventPermissionEnum.organizersonly,
             changeDescription: EventPermissionEnum.organizersonly,
@@ -68,6 +69,7 @@ class AddEventCubit extends Cubit<AddEventState> {
         title: state.title!,
         description: state.description,
         coverImage: state.coverImage!,
+        autoDelete: state.autoDelete,
         privateEventData: CreatePrivateEventDataDto(
           groupchatTo: state.selectedGroupchat?.id,
         ),
@@ -103,6 +105,7 @@ class AddEventCubit extends Cubit<AddEventState> {
       (event) {
         homeEventCubit.getfutureEventsViaApi(reload: true);
         emit(AddEventState(
+          autoDelete: false,
           subtitle: "",
           permissions: CreateEventPermissionsDto(),
           privateEventUsersDto: [],
@@ -194,6 +197,7 @@ class AddEventCubit extends Cubit<AddEventState> {
     String? street,
     String? housenumber,
     bool? isGroupchatEvent,
+    bool? autoDelete,
     AddEventStateStatus? status,
     EventEntity? addedEvent,
     List<CalendarTimeUserEntity>? calendarTimeUsers,
@@ -202,6 +206,7 @@ class AddEventCubit extends Cubit<AddEventState> {
     String? subtitle,
   }) {
     emit(AddEventState(
+      autoDelete: autoDelete ?? state.autoDelete,
       subtitle: subtitle ?? state.subtitle,
       permissions: permissions ?? state.permissions,
       isGroupchatEvent: isGroupchatEvent ?? state.isGroupchatEvent,

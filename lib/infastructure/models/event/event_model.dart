@@ -17,6 +17,7 @@ class EventModel extends EventEntity {
     EventStatusEnum? status,
     String? description,
     String? coverImageLink,
+    bool? autoDelete,
     required DateTime eventDate,
     DateTime? eventEndDate,
     EventPermissionsEntity? permissions,
@@ -39,6 +40,7 @@ class EventModel extends EventEntity {
           eventEndDate: eventEndDate,
           status: status,
           createdAt: createdAt,
+          autoDelete: autoDelete,
           updatedAt: updatedAt,
           createdBy: createdBy,
           latestMessage: latestMessage,
@@ -66,6 +68,7 @@ class EventModel extends EventEntity {
       coverImageLink: json['coverImageLink'],
       eventDate: eventDate,
       description: json["description"],
+      autoDelete: json["autoDelete"],
       eventEndDate: eventEndDate,
       permissions: json["permissions"] != null
           ? EventPermissionsModel.fromJson(json["permissions"])

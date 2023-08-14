@@ -27,6 +27,12 @@ class ChatRepositoryImpl implements ChatRepository {
                 readBy
                 messageToReactTo {
                   _id
+                  readBy
+                  message
+                  fileLinks
+                  groupchatTo
+                  createdBy
+                  createdAt
                 }
                 fileLinks
                 groupchatTo
@@ -38,6 +44,7 @@ class ChatRepositoryImpl implements ChatRepository {
               _id
               status
               title
+              autoDelete
               type
               privateEventData {
                 groupchatTo
@@ -57,6 +64,12 @@ class ChatRepositoryImpl implements ChatRepository {
                 message
                 messageToReactTo {
                   _id
+                  readBy
+                  message
+                  fileLinks
+                  eventTo
+                  createdBy
+                  createdAt
                 }
                 fileLinks
                 eventTo
@@ -75,6 +88,12 @@ class ChatRepositoryImpl implements ChatRepository {
                 message
                 messageToReactTo {
                   _id
+                  readBy
+                  message
+                  fileLinks
+                  userTo
+                  createdBy
+                  createdAt
                 }
                 fileLinks
                 userTo

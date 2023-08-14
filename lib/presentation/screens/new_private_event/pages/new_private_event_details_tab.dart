@@ -28,6 +28,9 @@ class _NewPrivateEventDetailsTabState extends State<NewPrivateEventDetailsTab> {
           if (previous.selectedGroupchat?.id != current.selectedGroupchat?.id) {
             return true;
           }
+          if (previous.autoDelete != current.autoDelete) {
+            return true;
+          }
           return false;
         },
         builder: (context, state) {
@@ -68,6 +71,17 @@ class _NewPrivateEventDetailsTabState extends State<NewPrivateEventDetailsTab> {
                   description: value,
                 ),
               ),
+              const SizedBox(height: 8),
+              SwitchListTile.adaptive(
+                title: const Text(
+                  "Soll das Event nach Ende automatisch gelöscht werden",
+                ),
+                value: state.autoDelete,
+                onChanged: (value) =>
+                    BlocProvider.of<AddEventCubit>(context).emitState(
+                  autoDelete: value,
+                ),
+              )
             ],
           );
         },

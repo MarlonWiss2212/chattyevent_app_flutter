@@ -60,7 +60,7 @@ class ImagePickerDatasourceImpl implements ImagePickerDatasource {
     final outputFilePath =
         oldPath.contains(".jpg") ? oldPath : "${oldPath.split(".png")[0]}.jpg";
 
-    final jpegData = encodeJpg(image, quality: 50);
+    final jpegData = encodeJpg(image, quality: 35);
 
     final outputFile = File(outputFilePath);
     return await outputFile.writeAsBytes(jpegData);

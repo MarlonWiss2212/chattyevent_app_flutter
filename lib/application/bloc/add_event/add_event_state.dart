@@ -13,6 +13,7 @@ class AddEventState {
   final File? coverImage;
   final DateTime? eventDate;
   final DateTime? eventEndDate;
+  final bool autoDelete;
 
   // if event is a normal or groupchat event type
   final bool isGroupchatEvent;
@@ -38,6 +39,7 @@ class AddEventState {
     this.loadingCalendarTimeUsers = false,
     this.status = AddEventStateStatus.initial,
     this.title,
+    required this.autoDelete,
     required this.privateEventUsersDto,
     required this.isGroupchatEvent,
     required this.permissions,

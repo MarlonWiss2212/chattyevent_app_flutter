@@ -53,6 +53,7 @@ class EventRepositoryImpl implements EventRepository {
             privateEventData {
               groupchatTo
             }
+            autoDelete
             title
             description
             status
@@ -123,6 +124,7 @@ class EventRepositoryImpl implements EventRepository {
             privateEventData {
               groupchatTo
             }
+            autoDelete
             status
             coverImageLink
             description
@@ -232,6 +234,7 @@ class EventRepositoryImpl implements EventRepository {
                 housenumber
               }
             }
+            autoDelete
             permissions {
               changeTitle
               changeDescription
@@ -373,6 +376,7 @@ class EventRepositoryImpl implements EventRepository {
             status
             title
             type
+            autoDelete
             privateEventData {
               groupchatTo
             }
@@ -437,6 +441,7 @@ class EventRepositoryImpl implements EventRepository {
             _id
             title
             status
+            autoDelete
             coverImageLink
             description
             eventLocation {

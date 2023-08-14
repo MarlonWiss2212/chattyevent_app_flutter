@@ -17,6 +17,7 @@ class EventEntity {
   final String? createdBy;
   final DateTime? createdAt;
   final DateTime? updatedAt;
+  final bool? autoDelete;
   final PrivateEventDataEntity? privateEventData;
   final EventTypeEnum? type;
   final EventLocationEntity? eventLocation;
@@ -31,6 +32,7 @@ class EventEntity {
     this.type,
     this.privateEventData,
     this.description,
+    this.autoDelete,
     this.coverImageLink,
     required this.eventDate,
     this.eventEndDate,
@@ -46,6 +48,7 @@ class EventEntity {
   }) {
     return EventEntity(
       id: newEntity.id,
+      autoDelete: newEntity.autoDelete ?? oldEntity.autoDelete,
       type: newEntity.type ?? oldEntity.type,
       privateEventData:
           newEntity.privateEventData ?? oldEntity.privateEventData,
