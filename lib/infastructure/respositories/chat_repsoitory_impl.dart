@@ -82,6 +82,24 @@ class ChatRepositoryImpl implements ChatRepository {
               authId
               username
               profileImageLink
+              myUserRelationToOtherUser {
+                _id
+                createdAt
+                updatedAt
+                status
+                followData {
+                  followedUserAt
+                }
+              }
+              otherUserRelationToMyUser {
+                _id
+                createdAt
+                updatedAt
+                status
+                followData {
+                  followedUserAt
+                }
+              }
               latestMessage {
                 _id
                 readBy
