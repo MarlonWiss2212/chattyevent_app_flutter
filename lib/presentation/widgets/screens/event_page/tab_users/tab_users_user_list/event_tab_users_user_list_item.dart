@@ -27,7 +27,7 @@ class EventTabUsersUserListItem extends StatelessWidget {
     String subtitle = "gekicked";
     Color? subititleColor = Colors.red;
 
-    if (eventUser.status == EventUserStatusEnum.accapted) {
+    if (eventUser.status == EventUserStatusEnum.accepted) {
       subititleColor = Colors.green;
       subtitle = "Angenommen";
       trailingWidget =
@@ -53,9 +53,9 @@ class EventTabUsersUserListItem extends StatelessWidget {
                   ],
                 )
               : null;
-    } else if (eventUser.status == EventUserStatusEnum.invited) {
+    } else if (eventUser.status == EventUserStatusEnum.unknown) {
       subititleColor = null;
-      subtitle = "Eingeladen";
+      subtitle = "Unbekannt";
       trailingWidget =
           currentEventUser != null && eventUser.id == currentEventUser!.id
               ? Wrap(

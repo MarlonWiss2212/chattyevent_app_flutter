@@ -18,7 +18,7 @@ class EventTabUsersUserList extends StatelessWidget {
           children: [
             Center(
               child: Text(
-                "Mitglieder die da sein werden: ${state.eventUsers.where((element) => element.status == EventUserStatusEnum.accapted).length.toString()}",
+                "Mitglieder die da sein werden: ${state.eventUsers.where((element) => element.status == EventUserStatusEnum.accepted).length.toString()}",
                 style: Theme.of(context).textTheme.titleMedium,
               ),
             ),

@@ -16,7 +16,7 @@ class AcceptInviteIconButton extends StatelessWidget {
       ),
       onPressed: () {
         BlocProvider.of<CurrentEventCubit>(context).updateEventUser(
-          status: EventUserStatusEnum.accapted,
+          status: EventUserStatusEnum.accepted,
           userId: userId,
         );
       },

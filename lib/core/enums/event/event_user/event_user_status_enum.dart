@@ -1,33 +1,33 @@
 enum EventUserStatusEnum {
-  accapted,
+  accepted,
   rejected,
-  invited,
+  unknown,
 }
 
 extension PrivateEventUserStatusEnumExtension on EventUserStatusEnum {
   String get value {
     switch (this) {
-      case EventUserStatusEnum.accapted:
+      case EventUserStatusEnum.accepted:
         return 'ACCEPTED';
       case EventUserStatusEnum.rejected:
         return 'REJECTED';
-      case EventUserStatusEnum.invited:
-        return 'INVITED';
+      case EventUserStatusEnum.unknown:
+        return 'UNKNOWN';
       default:
-        return 'INVITED';
+        return 'UNKNOWN';
     }
   }
 
   static EventUserStatusEnum fromValue(String value) {
     switch (value) {
       case 'ACCEPTED':
-        return EventUserStatusEnum.accapted;
+        return EventUserStatusEnum.accepted;
       case 'REJECTED':
         return EventUserStatusEnum.rejected;
-      case 'INVITED':
-        return EventUserStatusEnum.invited;
+      case 'UNKNOWN':
+        return EventUserStatusEnum.unknown;
       default:
-        return EventUserStatusEnum.invited;
+        return EventUserStatusEnum.unknown;
     }
   }
 }

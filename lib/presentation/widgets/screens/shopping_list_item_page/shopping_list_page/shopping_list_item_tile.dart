@@ -28,10 +28,10 @@ class ShoppingListItemTile extends StatelessWidget {
         spacing: 8,
         children: [
           if (userToBuyItem.status == EventUserStatusEnum.rejected ||
-              userToBuyItem.status == EventUserStatusEnum.invited) ...{
+              userToBuyItem.status == EventUserStatusEnum.unknown) ...{
             Badge(
               backgroundColor:
-                  userToBuyItem.status == EventUserStatusEnum.invited
+                  userToBuyItem.status == EventUserStatusEnum.unknown
                       ? Colors.yellow
                       : Colors.red,
             ),
