@@ -39,7 +39,7 @@ class BlocInitPage extends StatelessWidget {
             ),
             BlocProvider(
               create: (context) => ChatCubit(
-                chatUseCase: serviceLocator(param1: state),
+                chatUseCases: serviceLocator(param1: state),
                 notificationCubit: serviceLocator(),
               ),
             ),

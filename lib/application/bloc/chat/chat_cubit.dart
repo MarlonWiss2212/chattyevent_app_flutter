@@ -1,5 +1,5 @@
 import 'package:chattyevent_app_flutter/domain/entities/chat_entity.dart';
-import 'package:chattyevent_app_flutter/domain/usecases/chat_usecase.dart';
+import 'package:chattyevent_app_flutter/domain/usecases/chat_usecases.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
@@ -7,10 +7,10 @@ import 'package:chattyevent_app_flutter/application/bloc/notification/notificati
 part 'chat_state.dart';
 
 class ChatCubit extends Cubit<ChatState> {
-  final ChatUseCase chatUseCase;
+  final ChatUseCases chatUseCases;
   final NotificationCubit notificationCubit;
   ChatCubit({
-    required this.chatUseCase,
+    required this.chatUseCases,
     required this.notificationCubit,
   }) : super(const ChatState(chats: []));
 
@@ -70,7 +70,7 @@ class ChatCubit extends Cubit<ChatState> {
     emit(ChatState(chats: state.chats, status: ChatStateStatus.loading));
 
     final Either<NotificationAlert, List<ChatEntity>> chatsOrFailure =
-        await chatUseCase.getChatsViaApi();
+        await chatUseCases.getChatsViaApi();
 
     chatsOrFailure.fold(
       (alert) {

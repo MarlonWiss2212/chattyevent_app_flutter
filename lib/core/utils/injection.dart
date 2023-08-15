@@ -16,7 +16,7 @@ import 'package:chattyevent_app_flutter/domain/repositories/message_repository.d
 import 'package:chattyevent_app_flutter/domain/usecases/ad_mob_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/audio_player_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/calendar_usecases.dart';
-import 'package:chattyevent_app_flutter/domain/usecases/chat_usecase.dart';
+import 'package:chattyevent_app_flutter/domain/usecases/chat_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/imprint_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/introduction_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/launch_url_usecases.dart';
@@ -197,8 +197,8 @@ class InjectionUtils {
         groupchatRepository: serviceLocator(param1: param1),
       ),
     );
-    serviceLocator.registerFactoryParam<ChatUseCase, AuthState?, void>(
-      (param1, param2) => ChatUseCase(
+    serviceLocator.registerFactoryParam<ChatUseCases, AuthState?, void>(
+      (param1, param2) => ChatUseCases(
         chatRepository: serviceLocator(param1: param1),
       ),
     );
