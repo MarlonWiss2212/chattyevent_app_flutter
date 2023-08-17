@@ -26,7 +26,7 @@ class OpenMapsButton extends StatelessWidget {
         child: Ink(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: const Color.fromARGB(100, 0, 0, 0),
+            color: Theme.of(context).colorScheme.surface,
             borderRadius: BorderRadius.circular(8),
           ),
           child: Row(

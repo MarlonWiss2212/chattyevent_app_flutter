@@ -45,9 +45,6 @@ class FollowButton extends StatelessWidget {
       color: color,
       borderRadius: BorderRadius.circular(8),
       child: PopupMenuButton<Either<Unit, UserRelationStatusEnum>>(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
         initialValue: user.myUserRelationToOtherUser?.status != null
             ? Right(user.myUserRelationToOtherUser!.status!)
             : const Left(unit),
@@ -58,8 +55,9 @@ class FollowButton extends StatelessWidget {
             : null,
         itemBuilder: (context) => [
           if (user.myUserRelationToOtherUser?.status !=
-              UserRelationStatusEnum.follower && user.myUserRelationToOtherUser?.status !=
-              UserRelationStatusEnum.requesttofollow) ...{
+                  UserRelationStatusEnum.follower &&
+              user.myUserRelationToOtherUser?.status !=
+                  UserRelationStatusEnum.requesttofollow) ...{
             const PopupMenuItem<Either<Unit, UserRelationStatusEnum>>(
               value: Right(UserRelationStatusEnum.requesttofollow),
               child: Text("Folgen"),
@@ -95,7 +93,7 @@ class FollowButton extends StatelessWidget {
           },
         ],
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(12),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

@@ -70,16 +70,32 @@ class ChatInfoPageProfileImage extends StatelessWidget {
               : null,
           child: state.currentChat.profileImageLink == null
               ? const SizedBox()
-              : CachedNetworkImage(
-                  imageUrl: state.currentChat.profileImageLink!,
-                  cacheKey: state.currentChat.profileImageLink!.split("?")[0],
-                  fit: BoxFit.cover,
+              : Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    CachedNetworkImage(
+                      imageUrl: state.currentChat.profileImageLink!,
+                      cacheKey:
+                          state.currentChat.profileImageLink!.split("?")[0],
+                      fit: BoxFit.cover,
+                    ),
+                    Container(
+                      decoration: const BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            Color(0xCC000000),
+                            Color(0x00000000),
+                            Color(0x00000000),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
         );
       },
     );
   }
 }
-
-
-//

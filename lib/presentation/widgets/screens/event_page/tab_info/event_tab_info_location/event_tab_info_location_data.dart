@@ -70,10 +70,13 @@ class EventTabInfoLocationData extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 8),
-                OpenMapsButton(
-                  query: BlocProvider.of<CurrentEventCubit>(context)
-                      .state
-                      .getLocationQueryForMaps(),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  child: OpenMapsButton(
+                    query: BlocProvider.of<CurrentEventCubit>(context)
+                        .state
+                        .getLocationQueryForMaps(),
+                  ),
                 ),
               ] else if (state.loadingEvent) ...[
                 const SkeletonLine(),
