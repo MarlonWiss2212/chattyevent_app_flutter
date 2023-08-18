@@ -36,7 +36,6 @@ class CircleImage extends StatelessWidget {
             width: width,
             child: InkWell(
               onTap: onTap,
-              customBorder: const CircleBorder(),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(width / 2),
                 child: Hero(

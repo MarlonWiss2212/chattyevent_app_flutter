@@ -3,9 +3,9 @@ import 'package:chattyevent_app_flutter/application/bloc/notification/notificati
 import 'package:chattyevent_app_flutter/core/utils/injection.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/image_picker_usecases.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/dialog/blur_dialog.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
-import 'package:ionicons/ionicons.dart';
 
 class ImagePickerDialog extends StatelessWidget {
   final void Function(File newImage) imageChanged;
@@ -51,7 +51,7 @@ class ImagePickerDialog extends StatelessWidget {
               padding: const EdgeInsets.all(10),
               child: Row(
                 children: [
-                  const Icon(Ionicons.camera, size: 32),
+                  const Icon(CupertinoIcons.camera_fill, size: 32),
                   const SizedBox(width: 32),
                   Text(
                     "Kamera",
@@ -78,7 +78,7 @@ class ImagePickerDialog extends StatelessWidget {
               padding: const EdgeInsets.all(10),
               child: Row(
                 children: [
-                  const Icon(Ionicons.image, size: 32),
+                  const Icon(CupertinoIcons.photo_fill, size: 32),
                   const SizedBox(width: 32),
                   Text(
                     "Gallerie",

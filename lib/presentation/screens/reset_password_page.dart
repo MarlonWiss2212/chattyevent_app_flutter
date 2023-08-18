@@ -59,6 +59,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                 TextFormField(
                   decoration: const InputDecoration(
                     labelText: 'E-Mail',
+                    prefixIcon: Icon(Icons.email),
                   ),
                   controller: emailFieldController,
                   textInputAction: TextInputAction.done,

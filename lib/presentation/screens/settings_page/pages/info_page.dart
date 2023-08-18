@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:chattyevent_app_flutter/core/utils/injection.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/settings_usecases.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
 import 'package:ionicons/ionicons.dart';
@@ -40,7 +41,7 @@ class _SettingsInfoPageState extends State<SettingsInfoPage> {
             delegate: SliverChildListDelegate(
               [
                 ListTile(
-                  leading: const Icon(Icons.quiz),
+                  leading: const Icon(CupertinoIcons.question),
                   title: Text(
                     "FAQ",
                     style: Theme.of(context).textTheme.titleMedium,

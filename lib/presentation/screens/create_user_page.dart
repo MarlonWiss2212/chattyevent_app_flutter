@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/add_current_user_cubit.dart';
@@ -60,7 +61,7 @@ class CreateUserPage extends StatelessWidget {
                               const SizedBox(height: 20),
                               const CreateUserPageProfileImage(),
                               const SizedBox(height: 20),
-                              TextFormField(
+                              TextField(
                                 decoration: const InputDecoration(
                                   labelText: "Benutzername",
                                 ),

@@ -30,7 +30,7 @@ Future<void> main() async {
     IntlUtils.initialize()
   ];
   if (!kIsWeb) {
-    if (Platform.isAndroid || Platform.isIOS) {      
+    if (Platform.isAndroid || Platform.isIOS) {
       futures.add(MobileAds.instance.initialize());
     }
   }
@@ -156,8 +156,12 @@ class _AppState extends State<App> {
                 },
                 theme: ThemeData(
                   useMaterial3: true,
-                  inputDecorationTheme: const InputDecorationTheme(
-                    border: OutlineInputBorder(),
+                  inputDecorationTheme: InputDecorationTheme(
+                    fillColor: lightColorScheme.surface,
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
                   ),
                   listTileTheme: ListTileThemeData(
                     shape: RoundedRectangleBorder(
@@ -190,7 +194,10 @@ class _AppState extends State<App> {
                 darkTheme: ThemeData(
                   useMaterial3: true,
                   inputDecorationTheme: InputDecorationTheme(
+                    filled: true,
+                    fillColor: darkColorScheme.surface,
                     border: OutlineInputBorder(
+                      borderSide: const BorderSide(width: 1),
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),

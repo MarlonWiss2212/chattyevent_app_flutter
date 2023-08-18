@@ -53,10 +53,8 @@ class SelectCoverImage extends StatelessWidget {
           : Ink(
               width: size.width,
               decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.surface,
                 borderRadius: BorderRadius.circular(8),
-                border: Border.all(
-                  color: Theme.of(context).colorScheme.onBackground,
-                ),
               ),
               height: (size.width / 4 * 3) - 16,
               child: const Icon(Icons.add),

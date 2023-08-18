@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/chatty_event_logo_and_text_auth_pages.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/auth_pages/dataprotection_checkbox.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -67,17 +68,19 @@ class _LoginPageState extends State<LoginPage> {
                         child: ChattyEventLogoAndTextAuthPages(),
                       ),
                       const SizedBox(height: 50),
-                      TextFormField(
+                      TextField(
                         decoration: const InputDecoration(
                           labelText: "E-Mail",
+                          prefixIcon: Icon(Icons.email),
                         ),
                         controller: emailFieldController,
                         textInputAction: TextInputAction.next,
                       ),
                       const SizedBox(height: 8),
-                      TextFormField(
+                      TextField(
                         decoration: const InputDecoration(
                           labelText: "Passwort",
+                          prefixIcon: Icon(CupertinoIcons.lock_fill),
                         ),
                         controller: passwordFieldController,
                         obscureText: true,

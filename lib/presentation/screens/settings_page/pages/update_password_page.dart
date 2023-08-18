@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
@@ -31,18 +32,20 @@ class _UpdatePasswordPageState extends State<UpdatePasswordPage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const SizedBox(height: 8),
-              TextFormField(
+              TextField(
                 decoration: const InputDecoration(
                   labelText: 'Neues Passwort',
+                  prefixIcon: Icon(CupertinoIcons.lock_fill),
                 ),
                 controller: passwordFieldController,
                 obscureText: true,
                 textInputAction: TextInputAction.next,
               ),
               const SizedBox(height: 8),
-              TextFormField(
+              TextField(
                 decoration: const InputDecoration(
                   labelText: 'Bestätigung Neues Passwort',
+                  prefixIcon: Icon(CupertinoIcons.lock_fill),
                 ),
                 controller: verifyPasswordFieldController,
                 obscureText: true,

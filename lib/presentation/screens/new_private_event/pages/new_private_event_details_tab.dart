@@ -45,7 +45,7 @@ class _NewPrivateEventDetailsTabState extends State<NewPrivateEventDetailsTab> {
                 image: state.coverImage,
               ),
               const SizedBox(height: 8),
-              TextFormField(
+              TextField(
                 controller: TextEditingController(
                   text: state.title,
                 ),

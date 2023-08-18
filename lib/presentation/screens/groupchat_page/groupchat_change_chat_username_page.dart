@@ -43,7 +43,7 @@ class _GroupchatChangeUsernamePageState
             Expanded(
               child: Column(
                 children: [
-                  TextFormField(
+                  TextField(
                     decoration: const InputDecoration(
                       labelText: 'Neuer chat username',
                     ),

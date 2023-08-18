@@ -25,7 +25,7 @@ class _NewPrivateEventSearchGroupchatTabState
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8),
+      padding: const EdgeInsets.all(8),
       child: BlocBuilder<ChatCubit, ChatState>(
         builder: (context, chatState) {
           return BlocBuilder<AddEventCubit, AddEventState>(
@@ -38,7 +38,6 @@ class _NewPrivateEventSearchGroupchatTabState
 
               return Column(
                 children: [
-                  const SizedBox(height: 20),
                   Expanded(
                     child: GroupchatGridList(
                       key: const Key("NewEventSearchGroupchatPage"),

@@ -26,10 +26,8 @@ class NewPrivateEventTypeTab extends StatelessWidget {
                   child: Container(
                     decoration: state.isGroupchatEvent
                         ? BoxDecoration(
+                            color: Theme.of(context).colorScheme.surface,
                             borderRadius: BorderRadius.circular(8),
-                            border: Border.all(
-                              color: Theme.of(context).colorScheme.onBackground,
-                            ),
                           )
                         : null,
                     child: Padding(
@@ -62,10 +60,8 @@ class NewPrivateEventTypeTab extends StatelessWidget {
                   child: Container(
                     decoration: state.isGroupchatEvent == false
                         ? BoxDecoration(
+                            color: Theme.of(context).colorScheme.surface,
                             borderRadius: BorderRadius.circular(8),
-                            border: Border.all(
-                              color: Theme.of(context).colorScheme.onBackground,
-                            ),
                           )
                         : null,
                     child: Padding(

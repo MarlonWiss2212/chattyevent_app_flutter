@@ -35,7 +35,7 @@ class _DebouceInputFieldState extends State<DebouceInputField> {
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
+    return TextField(
       decoration: InputDecoration(
         labelText: widget.hintText,
       ),

@@ -19,46 +19,53 @@ class _CurrentShoppingListItemPageCreateBoughtAmountTileState
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      title: const Text("Neu Eingekauft"),
-      subtitle: TextFormField(
-        decoration: const InputDecoration(
-          labelText: "Menge",
-        ),
-        controller: boughtAmountController,
-        keyboardType: const TextInputType.numberWithOptions(
-          decimal: true,
-        ),
-      ),
-      trailing: SizedBox(
-        width: 100,
-        child: Button(
-          text: "Erstellen",
-          onTap: () async {
-            double? boughtAmount = double.tryParse(boughtAmountController.text);
+    return IntrinsicHeight(
+      child: Row(
+        children: [
+          Expanded(
+            child: TextField(
+              decoration: const InputDecoration(
+                labelText: "Neu Eingekaufte Menge",
+              ),
+              controller: boughtAmountController,
+              keyboardType: const TextInputType.numberWithOptions(
+                decimal: true,
+              ),
+            ),
+          ),
+          const SizedBox(width: 8),
+          SizedBox(
+            width: 100,
+            child: Button(
+              text: "Erstellen",
+              onTap: () async {
+                double? boughtAmount =
+                    double.tryParse(boughtAmountController.text);
 
-            if (boughtAmount == null) {
-              return await showDialog(
-                context: context,
-                builder: (c) {
-                  return CustomAlertDialog(
-                    notificationAlert: NotificationAlert(
-                      title: "Gekaufte Menge Fehler",
-                      message:
-                          "Die eingegebene gekaufte Menge muss eine Zahl sein",
-                    ),
-                    context: c,
+                if (boughtAmount == null) {
+                  return await showDialog(
+                    context: context,
+                    builder: (c) {
+                      return CustomAlertDialog(
+                        notificationAlert: NotificationAlert(
+                          title: "Gekaufte Menge Fehler",
+                          message:
+                              "Die eingegebene gekaufte Menge muss eine Zahl sein",
+                        ),
+                        context: c,
+                      );
+                    },
                   );
-                },
-              );
-            }
+                }
 
-            BlocProvider.of<CurrentShoppingListItemCubit>(context)
-                .addBoughtAmount(
-              boughtAmount: boughtAmount,
-            );
-          },
-        ),
+                BlocProvider.of<CurrentShoppingListItemCubit>(context)
+                    .addBoughtAmount(
+                  boughtAmount: boughtAmount,
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
   }

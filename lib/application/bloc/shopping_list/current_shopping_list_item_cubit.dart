@@ -137,9 +137,9 @@ class CurrentShoppingListItemCubit extends Cubit<CurrentShoppingListItemState> {
 
     boughtAmountOrFailure.fold(
       (alert) => notificationCubit.newAlert(notificationAlert: alert),
-      (boughtAmount) {
+      (boughtAmountEntity) {
         final List<BoughtAmountEntity> newBoughtAmounts = [
-          boughtAmount,
+          boughtAmountEntity,
           if (state.shoppingListItem.boughtAmounts != null) ...{
             ...state.shoppingListItem.boughtAmounts!,
           }

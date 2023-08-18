@@ -8,8 +8,6 @@ class CustomDivider extends StatelessWidget {
     return const Divider(
       thickness: 2,
       height: 50,
-      indent: 20,
-      endIndent: 20,
     );
   }
 }
