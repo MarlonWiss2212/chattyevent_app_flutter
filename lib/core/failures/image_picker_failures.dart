@@ -38,12 +38,12 @@ NotificationAlert mapImagePickerFailureToNotificationAlert(
     case NoPhotoTakenFailure:
       return NotificationAlert(
         title: "Kein Foto aufgenommen",
-        message: "Bitte nim ein Foto auf um dieses Feature nutzen zu können",
+        message: "Bitte ninm ein Foto auf um dieses Feature nutzen zu können",
       );
     case NoPhotoSelectedFailure:
       return NotificationAlert(
         title: "Kein Foto ausgewählt",
-        message: "Bitte wähle ein Foto auf um dieses Feature nutzen zu können",
+        message: "Bitte wähle ein Foto aus um dieses Feature nutzen zu können",
       );
     default:
       return NotificationAlert(

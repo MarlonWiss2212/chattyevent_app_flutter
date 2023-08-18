@@ -28,7 +28,7 @@ Future<void> main() async {
     InjectionUtils.initialize(),
   ];
   if (!kIsWeb) {
-    if (Platform.isAndroid || Platform.isIOS) {
+    if (Platform.isAndroid || Platform.isIOS) {      
       futures.add(MobileAds.instance.initialize());
     }
   }
