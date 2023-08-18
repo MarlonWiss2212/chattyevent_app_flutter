@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:chattyevent_app_flutter/application/bloc/introduction/introduction_cubit.dart';
+import 'package:chattyevent_app_flutter/core/utils/intl_utils.dart';
 import 'package:chattyevent_app_flutter/core/utils/material_theme_utils.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.dart';
 import 'package:chattyevent_app_flutter/scroll_bahaviour.dart';
@@ -26,6 +27,7 @@ Future<void> main() async {
   final List<Future> futures = [
     dotenv.load(fileName: '.env'),
     InjectionUtils.initialize(),
+    IntlUtils.initialize()
   ];
   if (!kIsWeb) {
     if (Platform.isAndroid || Platform.isIOS) {      
