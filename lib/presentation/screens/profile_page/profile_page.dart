@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:chattyevent_app_flutter/core/extensions/list_space_between_extension.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/profile_page/profile_page/profile_page_chat_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -51,14 +52,10 @@ class ProfilePage extends StatelessWidget {
                   delegate: SliverChildListDelegate(
                     const [
                       Center(child: ProfilePageCircleImage()),
-                      SizedBox(height: 20),
                       ProfileFollowerCounts(),
-                      SizedBox(height: 20),
                       ProfilePageFollowButton(),
-                      SizedBox(height: 20),
-                      // can be empty
                       ProfilePageChatButton(),
-                    ],
+                    ].withSpaceBetween(height: 20),
                   ),
                 );
               } else if (state.status == ProfilePageStateStatus.loading &&

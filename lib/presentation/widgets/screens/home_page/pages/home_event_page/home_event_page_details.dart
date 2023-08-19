@@ -1,5 +1,4 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:chattyevent_app_flutter/presentation/widgets/screens/home_page/pages/home_event_page/home_event_page_shopping_list_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/home_page/home_event/home_event_cubit.dart';
@@ -92,8 +91,6 @@ class HomeEventPageDetails extends StatelessWidget {
               templateType: TemplateType.medium,
             ),
           ),
-          const SizedBox(height: 8),
-          const HomeEventPageShoppingListTile(),
         ],
       ),
     );
