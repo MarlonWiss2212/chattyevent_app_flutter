@@ -35,7 +35,6 @@ class _NewPrivateEventSearchUserTabState
         builder: (context, state) {
           return Column(
             children: [
-              const SizedBox(height: 20),
               SelectedUsersList(
                 users: state.privateEventUsersDto.map((e) => e.user).toList(),
                 onPress: (user) => BlocProvider.of<AddEventCubit>(context)
