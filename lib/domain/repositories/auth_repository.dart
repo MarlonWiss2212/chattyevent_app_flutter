@@ -13,6 +13,7 @@ abstract class AuthRepository {
     required String password,
   });
   Future<Either<NotificationAlert, bool>> sendEmailVerification();
+  // Future<Either<NotificationAlert, bool>> verifyBeforeUpdateEmail();       auth.currentUser.verifyBeforeUpdateEmail(newEmail) https://stackoverflow.com/questions/61535850/how-to-verify-an-email-before-making-it-the-primary-firebase-authentication
   Future<Either<NotificationAlert, bool>> updatePassword({
     required String newPassword,
   });
