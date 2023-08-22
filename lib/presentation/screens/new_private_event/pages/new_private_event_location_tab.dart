@@ -11,95 +11,90 @@ class NewPrivateEventLocationTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: BlocBuilder<AddEventCubit, AddEventState>(
-        buildWhen: (previous, current) => false,
-        builder: (context, state) {
-          return Column(
-            children: [
-              const SizedBox(height: 20),
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 8,
-                  vertical: 4,
-                ),
-                child: TextField(
-                  decoration: const InputDecoration(
-                    labelText: "Stadt",
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: BlocBuilder<AddEventCubit, AddEventState>(
+          buildWhen: (previous, current) => false,
+          builder: (context, state) {
+            return Column(
+              children: [
+                Container(
+                  padding: const EdgeInsets.only(
+                    bottom: 4,
                   ),
-                  controller: TextEditingController(
-                    text: state.city,
-                  ),
-                  onChanged: (value) =>
-                      BlocProvider.of<AddEventCubit>(context).emitState(
-                    city: value,
-                  ),
-                  textInputAction: TextInputAction.next,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 8,
-                  vertical: 4,
-                ),
-                child: TextField(
-                  decoration: const InputDecoration(
-                    labelText: "Postleitzahl",
-                  ),
-                  controller: TextEditingController(text: state.zip),
-                  onChanged: (value) =>
-                      BlocProvider.of<AddEventCubit>(context).emitState(
-                    zip: value,
-                  ),
-                  keyboardType: TextInputType.number,
-                  textInputAction: TextInputAction.next,
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 8,
-                  vertical: 4,
-                ),
-                width: double.infinity,
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: TextField(
-                        decoration: const InputDecoration(
-                          labelText: "Straße",
-                        ),
-                        controller: TextEditingController(
-                          text: state.street,
-                        ),
-                        onChanged: (value) =>
-                            BlocProvider.of<AddEventCubit>(context).emitState(
-                          street: value,
-                        ),
-                        keyboardType: TextInputType.streetAddress,
-                        textInputAction: TextInputAction.next,
-                      ),
+                  child: TextField(
+                    decoration: const InputDecoration(
+                      labelText: "Stadt",
                     ),
-                    const SizedBox(width: 8.0),
-                    SizedBox(
-                      width: 100,
-                      child: TextField(
-                        decoration: const InputDecoration(
-                          labelText: "Nr.",
-                        ),
-                        controller: TextEditingController(
-                          text: state.housenumber,
-                        ),
-                        onChanged: (value) =>
-                            BlocProvider.of<AddEventCubit>(context).emitState(
-                          housenumber: value,
+                    controller: TextEditingController(
+                      text: state.city,
+                    ),
+                    onChanged: (value) =>
+                        BlocProvider.of<AddEventCubit>(context).emitState(
+                      city: value,
+                    ),
+                    textInputAction: TextInputAction.next,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 4),
+                  child: TextField(
+                    decoration: const InputDecoration(
+                      labelText: "Postleitzahl",
+                    ),
+                    controller: TextEditingController(text: state.zip),
+                    onChanged: (value) =>
+                        BlocProvider.of<AddEventCubit>(context).emitState(
+                      zip: value,
+                    ),
+                    keyboardType: TextInputType.number,
+                    textInputAction: TextInputAction.next,
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.only(top: 4),
+                  width: double.infinity,
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          decoration: const InputDecoration(
+                            labelText: "Straße",
+                          ),
+                          controller: TextEditingController(
+                            text: state.street,
+                          ),
+                          onChanged: (value) =>
+                              BlocProvider.of<AddEventCubit>(context).emitState(
+                            street: value,
+                          ),
+                          keyboardType: TextInputType.streetAddress,
+                          textInputAction: TextInputAction.next,
                         ),
                       ),
-                    ),
-                  ],
+                      const SizedBox(width: 8.0),
+                      SizedBox(
+                        width: 100,
+                        child: TextField(
+                          decoration: const InputDecoration(
+                            labelText: "Nr.",
+                          ),
+                          controller: TextEditingController(
+                            text: state.housenumber,
+                          ),
+                          onChanged: (value) =>
+                              BlocProvider.of<AddEventCubit>(context).emitState(
+                            housenumber: value,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
-          );
-        },
+              ],
+            );
+          },
+        ),
       ),
     );
   }

@@ -4,7 +4,7 @@ import 'package:intl/intl_standalone.dart';
 
 class IntlUtils {
   static Future<void> initialize() async {
-    initializeDateFormatting();
+    await initializeDateFormatting();
     Intl.systemLocale = await findSystemLocale();
   }
 }

@@ -5,12 +5,14 @@ class Button extends StatelessWidget {
   final String text;
   final Color? color;
   final TextStyle? textStyle;
+  final Widget? trailing;
 
   const Button({
     super.key,
     required this.onTap,
     required this.text,
     this.color,
+    this.trailing,
     this.textStyle,
   });
 
@@ -30,16 +32,26 @@ class Button extends StatelessWidget {
           ),
           child: Padding(
             padding: const EdgeInsets.all(16),
-            child: Center(
-              child: Text(
-                text,
-                style: textStyle != null
-                    ? textStyle?.merge(
-                          standardTextStyle,
-                        ) ??
-                        standardTextStyle
-                    : standardTextStyle,
-              ),
+            child: Stack(
+              alignment: Alignment.center,
+              fit: StackFit.loose,
+              children: [
+                Text(
+                  text,
+                  style: textStyle != null
+                      ? textStyle?.merge(
+                            standardTextStyle,
+                          ) ??
+                          standardTextStyle
+                      : standardTextStyle,
+                ),
+                if (trailing != null) ...{
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: trailing,
+                  )
+                },
+              ],
             ),
           ),
         ),

@@ -3,6 +3,7 @@ import 'package:chattyevent_app_flutter/presentation/widgets/general/button.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:ionicons/ionicons.dart';
 
 class NewEventDateTabSelectDateButtons extends StatelessWidget {
   const NewEventDateTabSelectDateButtons({super.key});
@@ -29,6 +30,15 @@ class NewEventDateTabSelectDateButtons extends StatelessWidget {
                 width: double.infinity,
                 child: Button(
                   color: Theme.of(context).colorScheme.surface,
+                  trailing: state.eventDate != null
+                      ? IconButton(
+                          padding: const EdgeInsets.all(0),
+                          onPressed: () =>
+                              BlocProvider.of<AddEventCubit>(context).emitState(
+                                removeEventDate: true,
+                              ),
+                          icon: const Icon(Ionicons.close))
+                      : null,
                   text:
                       "Datum wählen*: ${state.eventDate != null ? DateFormat.yMd().add_jm().format(state.eventDate!) : ""}",
                   onTap: () async {
@@ -72,6 +82,15 @@ class NewEventDateTabSelectDateButtons extends StatelessWidget {
                 width: double.infinity,
                 child: Button(
                   color: Theme.of(context).colorScheme.surface,
+                  trailing: state.eventEndDate != null
+                      ? IconButton(
+                          padding: const EdgeInsets.all(0),
+                          onPressed: () =>
+                              BlocProvider.of<AddEventCubit>(context).emitState(
+                                removeEventEndDate: true,
+                              ),
+                          icon: const Icon(Ionicons.close))
+                      : null,
                   text:
                       "End Datum wählen: ${state.eventEndDate != null ? DateFormat.yMd().add_jm().format(state.eventEndDate!) : ""}",
                   onTap: () async {

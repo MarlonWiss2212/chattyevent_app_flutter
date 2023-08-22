@@ -190,7 +190,9 @@ class AddEventCubit extends Cubit<AddEventState> {
     GroupchatEntity? selectedGroupchat,
     bool resetSelectedGroupchat = false,
     DateTime? eventDate,
+    bool removeEventDate = false,
     DateTime? eventEndDate,
+    bool removeEventEndDate = false,
     String? country,
     String? zip,
     String? city,
@@ -217,8 +219,10 @@ class AddEventCubit extends Cubit<AddEventState> {
       selectedGroupchat: resetSelectedGroupchat
           ? null
           : selectedGroupchat ?? state.selectedGroupchat,
-      eventDate: eventDate ?? state.eventDate,
-      eventEndDate: eventEndDate ?? state.eventEndDate,
+      eventDate: removeEventDate == false ? eventDate ?? state.eventDate : null,
+      eventEndDate: removeEventEndDate == false
+          ? eventEndDate ?? state.eventEndDate
+          : null,
       country: country ?? state.country,
       zip: zip ?? state.zip,
       city: city ?? state.city,

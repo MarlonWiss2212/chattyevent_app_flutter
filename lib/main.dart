@@ -158,8 +158,9 @@ class _AppState extends State<App> {
                   useMaterial3: true,
                   inputDecorationTheme: InputDecorationTheme(
                     fillColor: lightColorScheme.surface,
+                    filled: true,
                     border: OutlineInputBorder(
-                      borderSide: BorderSide.none,
+                      borderSide: const BorderSide(width: 1),
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),
