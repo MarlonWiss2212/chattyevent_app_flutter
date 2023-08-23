@@ -51,26 +51,29 @@ class _UpdatePasswordPageState extends State<UpdatePasswordPage> {
                 obscureText: true,
               ),
               const SizedBox(height: 8),
-              BlocListener<AuthCubit, AuthState>(
-                listener: (context, state) async {
-                  if (state.updatedPasswordSuccessfully) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text("Passwort geändert"),
-                      ),
+              SizedBox(
+                width: double.infinity,
+                child: Button(
+                  onTap: () {
+                    BlocProvider.of<AuthCubit>(context).updatePassword(
+                      password: passwordFieldController.text,
+                      verifyPassword: verifyPasswordFieldController.text,
                     );
-                  }
-                },
-                child: SizedBox(
-                  width: double.infinity,
-                  child: Button(
-                    onTap: () {
-                      BlocProvider.of<AuthCubit>(context).updatePassword(
-                        password: passwordFieldController.text,
-                        verifyPassword: verifyPasswordFieldController.text,
-                      );
-                    },
-                    text: "Passwort ändern",
+                  },
+                  text: "Passwort ändern",
+                ),
+              ),
+              const SizedBox(height: 8),
+              SizedBox(
+                width: double.infinity,
+                child: TextButton(
+                  onPressed: () {
+                    BlocProvider.of<AuthCubit>(context)
+                        .sendResetPasswordEmail();
+                  },
+                  child: const Text(
+                    "Du kannst dich nicht neu verifizieren? Sende passwort zurücksetzen E-Mail",
+                    textAlign: TextAlign.center,
                   ),
                 ),
               ),

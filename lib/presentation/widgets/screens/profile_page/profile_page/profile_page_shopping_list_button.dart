@@ -34,7 +34,7 @@ class ProfilePageShoppingListButton extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Padding(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(12),
                 child: Row(
                   children: [
                     const Icon(Icons.shopping_bag),

@@ -145,7 +145,7 @@ import 'package:chattyevent_app_flutter/presentation/screens/settings_page/pages
     as _i63;
 import 'package:chattyevent_app_flutter/presentation/screens/settings_page/pages/theme_mode_page.dart'
     as _i64;
-import 'package:chattyevent_app_flutter/presentation/screens/settings_page/pages/update_password_page.dart'
+import 'package:chattyevent_app_flutter/presentation/screens/settings_page/pages/privacy_pages/update_password_page.dart'
     as _i65;
 import 'package:chattyevent_app_flutter/presentation/screens/settings_page/settings_page.dart'
     as _i66;

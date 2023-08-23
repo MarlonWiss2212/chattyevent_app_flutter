@@ -12,7 +12,6 @@ import 'package:chattyevent_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/auth_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/user_usecases.dart';
 import '../../../core/utils/one_signal_utils.dart';
-
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
@@ -35,7 +34,6 @@ class AuthCubit extends Cubit<AuthState> {
     if (auth.currentUser == null) {
       return;
     }
-    emitState(status: AuthStateStatus.loading);
 
     final Either<NotificationAlert, UserEntity> userOrFailure =
         await userUseCases.getUserViaApi(
@@ -141,36 +139,36 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future sendEmailVerification() async {
-    emitState(status: AuthStateStatus.loading);
-
-    Either<NotificationAlert, bool> sendEmailOrFailure =
+    Either<NotificationAlert, Unit> sendEmailOrFailure =
         await authUseCases.sendEmailVerification();
 
     sendEmailOrFailure.fold(
       (alert) {
-        emitState(status: AuthStateStatus.initial);
         notificationCubit.newAlert(notificationAlert: alert);
       },
-      (worked) {
+      (_) {
         emitState(sendedVerificationEmail: true);
       },
     );
   }
 
-  Future sendResetPasswordEmail({
-    required String email,
-  }) async {
-    emitState(status: AuthStateStatus.loading);
-    Either<NotificationAlert, bool> sendEmailOrFailure =
+  Future sendResetPasswordEmail({String? email}) async {
+    Either<NotificationAlert, String> sendEmailOrFailure =
         await authUseCases.sendResetPasswordEmail(email: email);
 
     sendEmailOrFailure.fold(
       (alert) {
-        emitState(status: AuthStateStatus.initial);
         notificationCubit.newAlert(notificationAlert: alert);
       },
-      (worked) {
-        emitState(sendedResetPasswordEmail: true);
+      (newEmail) {
+        notificationCubit.newAlert(
+          notificationAlert: NotificationAlert(
+            title: "Email gesendet",
+            message:
+                "Die Password zurücksetye E-Mail wurde an die folgende E-Mail gesendet: $newEmail",
+            snackbar: true,
+          ),
+        );
       },
     );
   }
@@ -179,19 +177,50 @@ class AuthCubit extends Cubit<AuthState> {
     required String password,
     required String verifyPassword,
   }) async {
-    emitState(status: AuthStateStatus.loading);
-
-    Either<NotificationAlert, bool> updatedPassowrdOrFailure =
+    Either<NotificationAlert, Unit> updatedPassowrdOrFailure =
         await authUseCases.updatePassword(
-            password: password, verfiyPassword: verifyPassword);
+      password: password,
+      verfiyPassword: verifyPassword,
+    );
 
     updatedPassowrdOrFailure.fold(
       (alert) {
-        emitState(status: AuthStateStatus.initial);
         notificationCubit.newAlert(notificationAlert: alert);
       },
-      (worked) {
-        emitState(updatedPasswordSuccessfully: worked);
+      (_) {
+        notificationCubit.newAlert(
+          notificationAlert: NotificationAlert(
+            title: "Passwort aktualisiert",
+            message: "Dein Passwort wurde erfolgreich aktualisiert",
+            snackbar: true,
+          ),
+        );
+      },
+    );
+  }
+
+  Future verifyBeforeUpdateEmail({
+    required String email,
+    required String verifyEmail,
+  }) async {
+    Either<NotificationAlert, Unit> updatedEmailOrFailure =
+        await authUseCases.verifyBeforeUpdateEmail(
+      email: email,
+      verifyEmail: verifyEmail,
+    );
+
+    updatedEmailOrFailure.fold(
+      (alert) {
+        notificationCubit.newAlert(notificationAlert: alert);
+      },
+      (_) {
+        notificationCubit.newAlert(
+          notificationAlert: NotificationAlert(
+            title: "E-Mail Bestätigung gesendet",
+            message: "Deine E-Mail wird aktualisiert sobald du sie Bestätigst",
+            snackbar: true,
+          ),
+        );
       },
     );
   }
@@ -240,12 +269,10 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future deleteUser() async {
-    emitState(status: AuthStateStatus.loading);
     final deletedOrAlert = await authUseCases.deleteUser();
 
     deletedOrAlert.fold(
       (alert) {
-        emitState(status: AuthStateStatus.initial);
         notificationCubit.newAlert(notificationAlert: alert);
       },
       (worked) {
@@ -262,9 +289,7 @@ class AuthCubit extends Cubit<AuthState> {
     AuthStateStatus? status,
     String? token,
     UserEntity? currentUser,
-    bool? sendedResetPasswordEmail,
     bool? sendedVerificationEmail,
-    bool? updatedPasswordSuccessfully,
     bool? dataprotectionCheckbox,
     OperationException? userException,
     bool resetUserException = false,
@@ -273,9 +298,7 @@ class AuthCubit extends Cubit<AuthState> {
       status: status ?? AuthStateStatus.initial,
       token: token ?? state.token,
       currentUser: currentUser ?? state.currentUser,
-      sendedResetPasswordEmail: sendedResetPasswordEmail ?? false,
       sendedVerificationEmail: sendedVerificationEmail ?? false,
-      updatedPasswordSuccessfully: updatedPasswordSuccessfully ?? false,
       dataprotectionCheckbox:
           dataprotectionCheckbox ?? state.dataprotectionCheckbox,
       userException:

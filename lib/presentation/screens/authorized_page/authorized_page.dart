@@ -2,10 +2,8 @@ import 'dart:async';
 import 'package:auto_route/auto_route.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
-import 'package:chattyevent_app_flutter/presentation/widgets/general/dialog/alert_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 @RoutePage()
@@ -39,16 +37,7 @@ class _AuthorizedPageState extends State<AuthorizedPage> {
   Widget build(BuildContext context) {
     return BlocListener<NotificationCubit, NotificationState>(
       listener: (context, state) async {
-        if (state is NotificationAlert) {
-          await showAnimatedDialog(
-            curve: Curves.fastEaseInToSlowEaseOut,
-            animationType: DialogTransitionType.slideFromBottomFade,
-            context: context,
-            builder: (c) {
-              return CustomAlertDialog(notificationAlert: state, context: c);
-            },
-          );
-        }
+        state.listenerFunction(context);
       },
       child: const AutoRouter(),
     );

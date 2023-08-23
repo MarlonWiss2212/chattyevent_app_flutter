@@ -31,7 +31,7 @@ class Button extends StatelessWidget {
             borderRadius: BorderRadius.circular(8),
           ),
           child: Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(12),
             child: Stack(
               alignment: Alignment.center,
               fit: StackFit.loose,

@@ -32,7 +32,7 @@ class ProfilePageChatButton extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Padding(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(12),
                 child: Row(
                   children: [
                     const Icon(Ionicons.chatbubble),

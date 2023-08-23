@@ -17,7 +17,6 @@ class AuthState {
 
   final bool sendedResetPasswordEmail;
   final bool sendedVerificationEmail;
-  final bool updatedPasswordSuccessfully;
 
   final OperationException? userException;
 
@@ -40,7 +39,6 @@ class AuthState {
     this.token,
     this.status = AuthStateStatus.initial,
     this.sendedResetPasswordEmail = false,
-    this.updatedPasswordSuccessfully = false,
     this.sendedVerificationEmail = false,
     this.userException,
   });

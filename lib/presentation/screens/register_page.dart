@@ -3,13 +3,11 @@ import 'package:chattyevent_app_flutter/presentation/widgets/general/chatty_even
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/auth_pages/dataprotection_checkbox.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/button.dart';
-import 'package:chattyevent_app_flutter/presentation/widgets/general/dialog/alert_dialog.dart';
 
 @RoutePage()
 class RegisterPage extends StatefulWidget {
@@ -33,19 +31,7 @@ class _RegisterPageState extends State<RegisterPage> {
       ),
       body: BlocListener<NotificationCubit, NotificationState>(
         listener: (context, state) async {
-          if (state is NotificationAlert) {
-            await showAnimatedDialog(
-              curve: Curves.fastEaseInToSlowEaseOut,
-              animationType: DialogTransitionType.slideFromBottomFade,
-              context: context,
-              builder: (c) {
-                return CustomAlertDialog(
-                  notificationAlert: state,
-                  context: c,
-                );
-              },
-            );
-          }
+          state.listenerFunction(context);
         },
         child: Column(
           children: [

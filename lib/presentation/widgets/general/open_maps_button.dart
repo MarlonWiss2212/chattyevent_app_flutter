@@ -24,7 +24,7 @@ class OpenMapsButton extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
         onTap: () => openMaps(context),
         child: Ink(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.surface,
             borderRadius: BorderRadius.circular(8),

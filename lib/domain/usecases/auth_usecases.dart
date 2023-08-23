@@ -7,6 +7,10 @@ class AuthUseCases {
   final AuthRepository authRepository;
   AuthUseCases({required this.authRepository});
 
+  Future<Either<NotificationAlert, User>> getFirebaseUser() async {
+    return await authRepository.getFirebaseUser();
+  }
+
   Future<Either<NotificationAlert, UserCredential>> loginWithEmailAndPassword({
     required String email,
     required String password,
@@ -37,17 +41,46 @@ class AuthUseCases {
     return userCredOrNotificationAlertString;
   }
 
-  Future<Either<NotificationAlert, bool>> sendEmailVerification() async {
+  Future<Either<NotificationAlert, Unit>> sendEmailVerification() async {
     return await authRepository.sendEmailVerification();
   }
 
-  Future<Either<NotificationAlert, bool>> sendResetPasswordEmail({
-    required String email,
+  Future<Either<NotificationAlert, String>> sendResetPasswordEmail({
+    String? email,
   }) async {
-    return await authRepository.sendResetPasswordEmail(email: email);
+    if (email == null) {
+      final userOrFailure = await authRepository.getFirebaseUser();
+      return await userOrFailure.fold(
+        (alert) => Left(alert),
+        (user) async {
+          if (user.email == null) {
+            return Left(
+              NotificationAlert(
+                title: "Fehler Passwort zurücksetzen E-Mail",
+                message:
+                    "Konnte keine Email senden da keine E-Mail providet wurde",
+              ),
+            );
+          } else {
+            return (await authRepository.sendResetPasswordEmail(
+              email: user.email!,
+            ))
+                .fold(
+              (l) => Left(l),
+              (r) => Right(user.email!),
+            );
+          }
+        },
+      );
+    } else {
+      return (await authRepository.sendResetPasswordEmail(email: email)).fold(
+        (l) => Left(l),
+        (r) => Right(email),
+      );
+    }
   }
 
-  Future<Either<NotificationAlert, bool>> updatePassword({
+  Future<Either<NotificationAlert, Unit>> updatePassword({
     required String password,
     required String verfiyPassword,
   }) async {
@@ -58,6 +91,19 @@ class AuthUseCases {
       ));
     }
     return await authRepository.updatePassword(newPassword: password);
+  }
+
+  Future<Either<NotificationAlert, Unit>> verifyBeforeUpdateEmail({
+    required String email,
+    required String verifyEmail,
+  }) async {
+    if (email != verifyEmail) {
+      return Left(NotificationAlert(
+        title: "Unterschiedliches E-Mails",
+        message: "Die E-Mails stimmen nicht überein",
+      ));
+    }
+    return await authRepository.verifyBeforeUpdateEmail(newEmail: email);
   }
 
   Future<Either<NotificationAlert, User>> refreshUser() async {

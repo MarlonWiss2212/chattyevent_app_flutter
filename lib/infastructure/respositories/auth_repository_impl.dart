@@ -73,7 +73,7 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<NotificationAlert, bool>> sendEmailVerification() async {
+  Future<Either<NotificationAlert, Unit>> sendEmailVerification() async {
     try {
       if (auth.currentUser == null) {
         return Left(NotificationAlert(
@@ -83,37 +83,31 @@ class AuthRepositoryImpl implements AuthRepository {
         ));
       }
       await auth.currentUser!.sendEmailVerification();
-      return const Right(true);
+      return const Right(unit);
     } catch (e) {
       return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
     }
   }
 
   @override
-  Future<Either<NotificationAlert, bool>> sendResetPasswordEmail({
+  Future<Either<NotificationAlert, Unit>> sendResetPasswordEmail({
     required String email,
   }) async {
     try {
       await auth.sendPasswordResetEmail(email: email);
-      return const Right(true);
+      return const Right(unit);
     } catch (e) {
       return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
     }
   }
 
   @override
-  Future<Either<NotificationAlert, bool>> updatePassword({
+  Future<Either<NotificationAlert, Unit>> updatePassword({
     required String newPassword,
   }) async {
     try {
-      if (auth.currentUser == null) {
-        return Left(NotificationAlert(
-          title: "Passwort Update Fehler",
-          message: "Konnte das Passwort nicht updaten",
-        ));
-      }
-      await auth.currentUser!.updatePassword(newPassword);
-      return const Right(true);
+      await auth.currentUser?.updatePassword(newPassword);
+      return const Right(unit);
     } catch (e) {
       return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
     }
@@ -126,30 +120,26 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<Either<NotificationAlert, User>> refreshUser() async {
-    await auth.currentUser!.reload();
-    if (auth.currentUser == null) {
-      return Left(
-        NotificationAlert(
-          title: "Fehler User Neu Laden",
-          message: "Fehler beim Identifizierens des gerdigen Users",
-        ),
-      );
+    try {
+      await auth.currentUser?.reload();
+      if (auth.currentUser == null) {
+        return Left(
+          NotificationAlert(
+            title: "Fehler User Neu Laden",
+            message: "Fehler beim Identifizierens des gerdigen Users",
+          ),
+        );
+      }
+      return Right(auth.currentUser!);
+    } catch (e) {
+      return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
     }
-    return Right(auth.currentUser!);
   }
 
   @override
   Future<Either<NotificationAlert, Unit>> deleteUser() async {
-    if (auth.currentUser == null) {
-      return Left(
-        NotificationAlert(
-          title: "Fehler User Löschen",
-          message: "Fehler beim Identifizierens des gerdigen Users",
-        ),
-      );
-    }
     try {
-      await auth.currentUser!.delete();
+      await auth.currentUser?.delete();
       return const Right(unit);
     } catch (e) {
       return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
@@ -158,16 +148,8 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<Either<NotificationAlert, String>> refreshToken() async {
-    if (auth.currentUser == null) {
-      return Left(
-        NotificationAlert(
-          title: "Fehler Refresh Token",
-          message: "Fehler beim erneuern der Auth Daten",
-        ),
-      );
-    }
     try {
-      final token = await auth.currentUser!.getIdToken();
+      final token = await auth.currentUser?.getIdToken();
       if (token == null) {
         return Left(
           NotificationAlert(
@@ -177,6 +159,35 @@ class AuthRepositoryImpl implements AuthRepository {
         );
       }
       return Right(token);
+    } catch (e) {
+      return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
+    }
+  }
+
+  @override
+  Future<Either<NotificationAlert, User>> getFirebaseUser() async {
+    try {
+      if (auth.currentUser == null) {
+        return Left(
+          NotificationAlert(
+            title: "Fehler Refresh Token",
+            message: "Fehler beim erneuern der Auth Daten",
+          ),
+        );
+      }
+      return Right(auth.currentUser!);
+    } catch (e) {
+      return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
+    }
+  }
+
+  @override
+  Future<Either<NotificationAlert, Unit>> verifyBeforeUpdateEmail({
+    required String newEmail,
+  }) async {
+    try {
+      auth.currentUser?.verifyBeforeUpdateEmail(newEmail);
+      return const Right(unit);
     } catch (e) {
       return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
     }

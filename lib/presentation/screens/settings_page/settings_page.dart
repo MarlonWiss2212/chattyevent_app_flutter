@@ -59,18 +59,6 @@ class SettingsPage extends StatelessWidget {
                   },
                 ),
                 ListTile(
-                  leading: const Icon(CupertinoIcons.lock_fill),
-                  title: Text(
-                    "Password ändern",
-                    style: Theme.of(context).textTheme.titleMedium,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  trailing: const Icon(Ionicons.chevron_forward),
-                  onTap: () {
-                    AutoRouter.of(context).push(const UpdatePasswordRoute());
-                  },
-                ),
-                ListTile(
                   leading: const Icon(Icons.info),
                   title: Text(
                     "Info & Datenschutz",
