@@ -152,7 +152,7 @@ class _SettingsPrivacyPageState extends State<SettingsPrivacyPage> {
                 ),
                 trailing: const Icon(Ionicons.chevron_forward),
                 onTap: () {
-                  //      AutoRouter.of(context).push(const UpdateEmailRoute());
+                  AutoRouter.of(context).push(const UpdateEmailRoute());
                 },
               ),
               ListTile(

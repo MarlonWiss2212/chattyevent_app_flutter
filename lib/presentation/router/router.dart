@@ -463,20 +463,16 @@ class AppRouter extends $AppRouter {
         ),
         CustomRoute(
           transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
-          page: UpdatePasswordRoute.page,
+          page: SettingsInfoRoute.page,
           guards: [authGuard],
-          path: 'settings/update-password',
+          path: 'settings/info',
         ),
         CustomRoute(
-            transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
-            page: SettingsInfoRoute.page,
-            guards: [authGuard],
-            path: 'settings/info'),
-        CustomRoute(
-            transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
-            page: RightOnDeletionRoute.page,
-            guards: [authGuard],
-            path: 'settings/info/right-on-deletion'),
+          transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
+          page: RightOnDeletionRoute.page,
+          guards: [authGuard],
+          path: 'settings/info/right-on-deletion',
+        ),
         CustomRoute(
           transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
           page: ImprintRoute.page,
@@ -506,6 +502,18 @@ class AppRouter extends $AppRouter {
           page: CalendarWatchIHaveTimeRoute.page,
           guards: [authGuard],
           path: 'settings/privacy/calendar-watch-i-have-time-permission',
+        ),
+        CustomRoute(
+          transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
+          page: UpdatePasswordRoute.page,
+          guards: [authGuard],
+          path: 'settings/privacy/update-password',
+        ),
+        CustomRoute(
+          transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
+          page: UpdateEmailRoute.page,
+          guards: [authGuard],
+          path: 'settings/privacy/update-email',
         ),
       ];
 
