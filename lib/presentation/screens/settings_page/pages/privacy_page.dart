@@ -63,12 +63,7 @@ class _SettingsPrivacyPageState extends State<SettingsPrivacyPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsets.only(
-                  left: 20,
-                  top: 14,
-                  bottom: 20,
-                  right: 20,
-                ),
+                padding: const EdgeInsets.all(8.0),
                 child: Text(
                   "Wie dürfen andere mit dir interagieren?",
                   style: Theme.of(context).textTheme.titleLarge,
@@ -131,12 +126,7 @@ class _SettingsPrivacyPageState extends State<SettingsPrivacyPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsets.only(
-                  left: 20,
-                  top: 14,
-                  bottom: 20,
-                  right: 20,
-                ),
+                padding: const EdgeInsets.all(8.0),
                 child: Text(
                   "Persönliche Daten",
                   style: Theme.of(context).textTheme.titleLarge,

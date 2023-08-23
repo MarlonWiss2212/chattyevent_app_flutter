@@ -32,26 +32,28 @@ class Button extends StatelessWidget {
           ),
           child: Padding(
             padding: const EdgeInsets.all(12),
-            child: Stack(
-              alignment: Alignment.center,
-              fit: StackFit.loose,
-              children: [
-                Text(
-                  text,
-                  style: textStyle != null
-                      ? textStyle?.merge(
-                            standardTextStyle,
-                          ) ??
-                          standardTextStyle
-                      : standardTextStyle,
-                ),
-                if (trailing != null) ...{
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: trailing,
-                  )
-                },
-              ],
+            child: Center(
+              child: Stack(
+                alignment: Alignment.center,
+                fit: StackFit.loose,
+                children: [
+                  Text(
+                    text,
+                    style: textStyle != null
+                        ? textStyle?.merge(
+                              standardTextStyle,
+                            ) ??
+                            standardTextStyle
+                        : standardTextStyle,
+                  ),
+                  if (trailing != null) ...{
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: trailing,
+                    )
+                  },
+                ],
+              ),
             ),
           ),
         ),

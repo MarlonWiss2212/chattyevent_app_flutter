@@ -54,7 +54,7 @@ class ProfilePage extends StatelessWidget {
                       Center(child: ProfilePageCircleImage()),
                       ProfileFollowerCounts(),
                       ProfilePageFollowButton(),
-                      ProfilePageChatButton(),
+                      ProfilePageChatOrShoppingListButton(),
                     ].withSpaceBetween(height: 20),
                   ),
                 );

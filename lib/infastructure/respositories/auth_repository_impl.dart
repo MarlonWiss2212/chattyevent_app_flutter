@@ -186,7 +186,7 @@ class AuthRepositoryImpl implements AuthRepository {
     required String newEmail,
   }) async {
     try {
-      auth.currentUser?.verifyBeforeUpdateEmail(newEmail);
+      await auth.currentUser?.verifyBeforeUpdateEmail(newEmail);
       return const Right(unit);
     } catch (e) {
       return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));

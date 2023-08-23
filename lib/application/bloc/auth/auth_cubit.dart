@@ -217,7 +217,7 @@ class AuthCubit extends Cubit<AuthState> {
         notificationCubit.newAlert(
           notificationAlert: NotificationAlert(
             title: "E-Mail Bestätigung gesendet",
-            message: "Deine E-Mail wird aktualisiert sobald du sie Bestätigst",
+            message: "Deine E-Mail wird aktualisiert sobald du sie bestätigst",
             snackbar: true,
           ),
         );

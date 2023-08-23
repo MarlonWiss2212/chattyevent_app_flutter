@@ -1,4 +1,6 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:chattyevent_app_flutter/core/utils/injection.dart';
+import 'package:chattyevent_app_flutter/domain/usecases/auth_usecases.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,8 +16,26 @@ class UpdateEmailPage extends StatefulWidget {
 }
 
 class _UpdateEmailPageState extends State<UpdateEmailPage> {
+  AuthUseCases authUseCases = serviceLocator();
   TextEditingController emailFieldController = TextEditingController();
   TextEditingController verifyEmailFieldController = TextEditingController();
+  String emailAddress = "";
+
+  Future<void> setEmailAddress() async {
+    final response = await authUseCases.refreshUser();
+    response.fold(
+      (alert) => null,
+      (user) => setState(
+        () => emailAddress = user.email ?? "",
+      ),
+    );
+  }
+
+  @override
+  void initState() {
+    setEmailAddress();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,14 +51,18 @@ class _UpdateEmailPageState extends State<UpdateEmailPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const SizedBox(height: 8),
+              if (emailAddress != "") ...{
+                Text(
+                  "E-Mail Addresse: $emailAddress",
+                ),
+              },
+              const SizedBox(height: 20),
               TextField(
                 decoration: const InputDecoration(
                   labelText: 'Neue E-Mail',
                   prefixIcon: Icon(Icons.email),
                 ),
                 controller: emailFieldController,
-                obscureText: true,
                 textInputAction: TextInputAction.next,
               ),
               const SizedBox(height: 8),
@@ -48,7 +72,6 @@ class _UpdateEmailPageState extends State<UpdateEmailPage> {
                   prefixIcon: Icon(Icons.email),
                 ),
                 controller: verifyEmailFieldController,
-                obscureText: true,
               ),
               const SizedBox(height: 8),
               SizedBox(
@@ -60,7 +83,7 @@ class _UpdateEmailPageState extends State<UpdateEmailPage> {
                       verifyEmail: verifyEmailFieldController.text,
                     );
                   },
-                  text: "Passwort ändern",
+                  text: "E-Mail ändern",
                 ),
               ),
               const SizedBox(height: 8),
