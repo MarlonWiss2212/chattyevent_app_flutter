@@ -72,7 +72,7 @@ class _UpdatePasswordPageState extends State<UpdatePasswordPage> {
                         .sendResetPasswordEmail();
                   },
                   child: const Text(
-                    "Du kannst dich nicht neu verifizieren? Sende passwort zurücksetzen E-Mail",
+                    "Du kannst dich nicht neu verifizieren? Sende Passwort zurücksetzen E-Mail",
                     textAlign: TextAlign.center,
                   ),
                 ),

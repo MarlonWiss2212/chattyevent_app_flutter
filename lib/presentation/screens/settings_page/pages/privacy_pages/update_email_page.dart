@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/button.dart';
+import 'package:skeletons/skeletons.dart';
 
 @RoutePage()
 class UpdateEmailPage extends StatefulWidget {
@@ -20,14 +21,19 @@ class _UpdateEmailPageState extends State<UpdateEmailPage> {
   TextEditingController emailFieldController = TextEditingController();
   TextEditingController verifyEmailFieldController = TextEditingController();
   String emailAddress = "";
+  bool loading = true;
 
   Future<void> setEmailAddress() async {
+    final responseFirebaseUser = await authUseCases.getFirebaseUser();
+    setState(() => loading = false);
+    responseFirebaseUser.fold(
+      (alert) => null,
+      (user) => setState(() => emailAddress = user.email ?? ""),
+    );
     final response = await authUseCases.refreshUser();
     response.fold(
       (alert) => null,
-      (user) => setState(
-        () => emailAddress = user.email ?? "",
-      ),
+      (user) => setState(() => emailAddress = user.email ?? ""),
     );
   }
 
@@ -51,10 +57,12 @@ class _UpdateEmailPageState extends State<UpdateEmailPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              if (emailAddress != "") ...{
+              if (emailAddress != "" && loading == false) ...{
                 Text(
                   "E-Mail Addresse: $emailAddress",
                 ),
+              } else if (loading == true) ...{
+                const SkeletonLine(),
               },
               const SizedBox(height: 20),
               TextField(
