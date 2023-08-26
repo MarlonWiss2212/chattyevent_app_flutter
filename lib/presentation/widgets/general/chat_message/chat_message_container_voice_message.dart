@@ -125,7 +125,7 @@ class _ChatMessageContainerVoiceMessageState
           ),
           Column(
             children: [
-              Slider.adaptive(
+              Slider(
                 min: 0,
                 max: duration.inSeconds.toDouble(),
                 value: position.inSeconds.toDouble(),

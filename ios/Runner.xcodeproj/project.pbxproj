@@ -550,7 +550,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = iphoneos;
@@ -676,7 +676,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -725,7 +725,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = iphoneos;
@@ -796,12 +796,33 @@
 				CODE_SIGN_ENTITLEMENTS = OneSignalNotificationServiceExtension/OneSignalNotificationServiceExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherted)/**",
+					"\"${PODS_ROOT}/OneSignalXCFramework/iOS_SDK/OneSignalSDK/OneSignal_Core\"",
+					"\"${PODS_ROOT}/OneSignalXCFramework/iOS_SDK/OneSignalSDK/OneSignal_Extension\"",
+					"\"${PODS_ROOT}/OneSignalXCFramework/iOS_SDK/OneSignalSDK/OneSignal_InAppMessages\"",
+					"\"${PODS_ROOT}/OneSignalXCFramework/iOS_SDK/OneSignalSDK/OneSignal_Location\"",
+					"\"${PODS_ROOT}/OneSignalXCFramework/iOS_SDK/OneSignalSDK/OneSignal_Notifications\"",
+					"\"${PODS_ROOT}/OneSignalXCFramework/iOS_SDK/OneSignalSDK/OneSignal_OSCore\"",
+					"\"${PODS_ROOT}/OneSignalXCFramework/iOS_SDK/OneSignalSDK/OneSignal_Outcomes\"",
+					"\"${PODS_ROOT}/OneSignalXCFramework/iOS_SDK/OneSignalSDK/OneSignal_User\"",
+					"\"${PODS_ROOT}/OneSignalXCFramework/iOS_SDK/OneSignalSDK/OneSignal_XCFramework\"",
+					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/OneSignalXCFramework/OneSignal\"",
+					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/OneSignalXCFramework/OneSignalCore\"",
+					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/OneSignalXCFramework/OneSignalExtension\"",
+					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/OneSignalXCFramework/OneSignalInAppMessages\"",
+					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/OneSignalXCFramework/OneSignalLocation\"",
+					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/OneSignalXCFramework/OneSignalNotifications\"",
+					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/OneSignalXCFramework/OneSignalOSCore\"",
+					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/OneSignalXCFramework/OneSignalOutcomes\"",
+					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/OneSignalXCFramework/OneSignalUser\"",
+				);
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = OneSignalNotificationServiceExtension/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = OneSignalNotificationServiceExtension;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -834,12 +855,33 @@
 				CODE_SIGN_ENTITLEMENTS = OneSignalNotificationServiceExtension/OneSignalNotificationServiceExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherted)",
+					"\"${PODS_ROOT}/OneSignalXCFramework/iOS_SDK/OneSignalSDK/OneSignal_Core\"/**",
+					"\"${PODS_ROOT}/OneSignalXCFramework/iOS_SDK/OneSignalSDK/OneSignal_Extension\"",
+					"\"${PODS_ROOT}/OneSignalXCFramework/iOS_SDK/OneSignalSDK/OneSignal_InAppMessages\"",
+					"\"${PODS_ROOT}/OneSignalXCFramework/iOS_SDK/OneSignalSDK/OneSignal_Location\"",
+					"\"${PODS_ROOT}/OneSignalXCFramework/iOS_SDK/OneSignalSDK/OneSignal_Notifications\"",
+					"\"${PODS_ROOT}/OneSignalXCFramework/iOS_SDK/OneSignalSDK/OneSignal_OSCore\"",
+					"\"${PODS_ROOT}/OneSignalXCFramework/iOS_SDK/OneSignalSDK/OneSignal_Outcomes\"",
+					"\"${PODS_ROOT}/OneSignalXCFramework/iOS_SDK/OneSignalSDK/OneSignal_User\"",
+					"\"${PODS_ROOT}/OneSignalXCFramework/iOS_SDK/OneSignalSDK/OneSignal_XCFramework\"",
+					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/OneSignalXCFramework/OneSignal\"",
+					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/OneSignalXCFramework/OneSignalCore\"",
+					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/OneSignalXCFramework/OneSignalExtension\"",
+					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/OneSignalXCFramework/OneSignalInAppMessages\"",
+					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/OneSignalXCFramework/OneSignalLocation\"",
+					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/OneSignalXCFramework/OneSignalNotifications\"",
+					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/OneSignalXCFramework/OneSignalOSCore\"",
+					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/OneSignalXCFramework/OneSignalOutcomes\"",
+					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/OneSignalXCFramework/OneSignalUser\"",
+				);
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = OneSignalNotificationServiceExtension/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = OneSignalNotificationServiceExtension;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -869,12 +911,33 @@
 				CODE_SIGN_ENTITLEMENTS = OneSignalNotificationServiceExtension/OneSignalNotificationServiceExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherted)",
+					"\"${PODS_ROOT}/OneSignalXCFramework/iOS_SDK/OneSignalSDK/OneSignal_Core\"/**",
+					"\"${PODS_ROOT}/OneSignalXCFramework/iOS_SDK/OneSignalSDK/OneSignal_Extension\"",
+					"\"${PODS_ROOT}/OneSignalXCFramework/iOS_SDK/OneSignalSDK/OneSignal_InAppMessages\"",
+					"\"${PODS_ROOT}/OneSignalXCFramework/iOS_SDK/OneSignalSDK/OneSignal_Location\"",
+					"\"${PODS_ROOT}/OneSignalXCFramework/iOS_SDK/OneSignalSDK/OneSignal_Notifications\"",
+					"\"${PODS_ROOT}/OneSignalXCFramework/iOS_SDK/OneSignalSDK/OneSignal_OSCore\"",
+					"\"${PODS_ROOT}/OneSignalXCFramework/iOS_SDK/OneSignalSDK/OneSignal_Outcomes\"",
+					"\"${PODS_ROOT}/OneSignalXCFramework/iOS_SDK/OneSignalSDK/OneSignal_User\"",
+					"\"${PODS_ROOT}/OneSignalXCFramework/iOS_SDK/OneSignalSDK/OneSignal_XCFramework\"",
+					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/OneSignalXCFramework/OneSignal\"",
+					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/OneSignalXCFramework/OneSignalCore\"",
+					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/OneSignalXCFramework/OneSignalExtension\"",
+					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/OneSignalXCFramework/OneSignalInAppMessages\"",
+					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/OneSignalXCFramework/OneSignalLocation\"",
+					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/OneSignalXCFramework/OneSignalNotifications\"",
+					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/OneSignalXCFramework/OneSignalOSCore\"",
+					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/OneSignalXCFramework/OneSignalOutcomes\"",
+					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/OneSignalXCFramework/OneSignalUser\"",
+				);
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = OneSignalNotificationServiceExtension/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = OneSignalNotificationServiceExtension;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
