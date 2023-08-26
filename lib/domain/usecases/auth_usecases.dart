@@ -1,3 +1,4 @@
+import 'package:chattyevent_app_flutter/core/utils/one_signal_utils.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
@@ -115,6 +116,8 @@ class AuthUseCases {
   }
 
   Future<void> logout() async {
+    // put this in repo later
+    OneSignalUtils.logout();
     await authRepository.logout();
   }
 

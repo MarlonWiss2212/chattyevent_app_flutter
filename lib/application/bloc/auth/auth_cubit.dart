@@ -51,7 +51,7 @@ class AuthCubit extends Cubit<AuthState> {
       },
       (user) async {
         emitState(currentUser: user);
-        await OneSignalUtils.setExternalUserId(user.id);
+        await OneSignalUtils.login(user.id);
       },
     );
   }

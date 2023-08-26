@@ -5,18 +5,21 @@ import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 class OneSignalUtils {
   static Future<void> initialize() async {
-    await OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
-    await OneSignal.shared.setAppId(dotenv.get("ONE_SIGNAL_APP_ID"));
+    await OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
+    OneSignal.initialize(dotenv.get("ONE_SIGNAL_APP_ID"));
   }
 
-  static Future<void> setExternalUserId(String userId) async {
-    await OneSignal.shared.removeExternalUserId();
-    await OneSignal.shared.setExternalUserId(userId);
+  static Future<void> login(String userId) async {
+    await OneSignal.login(userId);
+  }
+
+  static Future<void> logout() async {
+    await OneSignal.logout();
   }
 
   static void setNotificationOpenedHandler(AppRouter appRouter) {
-    OneSignal.shared.setNotificationOpenedHandler((result) {
-      String? route = result.notification.additionalData?['route'];
+    OneSignal.Notifications.addClickListener((event) {
+      final String? route = event.notification.additionalData?['route'];
       if (route != null) {
         appRouter.pushNamed(route);
       }
@@ -24,11 +27,13 @@ class OneSignalUtils {
   }
 
   static void setNotificationReceivedHandler(AppRouter appRouter) {
-    OneSignal.shared.setNotificationWillShowInForegroundHandler((event) {
+    OneSignal.Notifications.addForegroundWillDisplayListener((event) {
+      event.preventDefault();
+
       final Map<String, dynamic>? additionalData =
           event.notification.additionalData;
       if (additionalData == null) {
-        event.complete(event.notification);
+        event.notification.display();
         return;
       }
 
@@ -39,12 +44,11 @@ class OneSignalUtils {
             : null;
 
         if (type == NotificationTypeEnum.messageadded) {
-          event.complete(null);
           return;
         }
       }
 
-      event.complete(event.notification);
+      event.notification.display();
     });
   }
 }
