@@ -28,8 +28,37 @@
 	<string>ca-app-pub-6709565406365779~8418953363</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>Music!</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>MyApp does not need this permission</string>
+	<key>NSCameraUsageDescription</key>
+	<string>camera</string>
+	<key>NSContactsUsageDescription</key>
+	<string>MyApp does not need this permission</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Always and when in use!</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Can I have location always?</string>
+	<key>NSLocationUsageDescription</key>
+	<string>Older devices need location.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Need location when in use</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>microphone</string>
+	<key>NSMotionUsageDescription</key>
+	<string>MyApp does not need this permission</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>photos</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>speech</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>audio</string>
+		<string>remote-notification</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
@@ -51,52 +80,7 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-
-	<!-- test if this works -->
-
-	<!-- Permission options for the `location` group -->
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Need location when in use</string>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>Always and when in use!</string>
-	<key>NSLocationUsageDescription</key>
-	<string>Older devices need location.</string>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Can I have location always?</string>
-
-	<!-- Permission options for the `mediaLibrary` group -->
-	<key>NSAppleMusicUsageDescription</key>
-	<string>Music!</string>
 	<key>kTCCServiceMediaLibrary</key>
 	<string>media</string>
-
-	<!-- Permission options for the `camera` group -->
-	<key>NSCameraUsageDescription</key>
-	<string>camera</string>
-
-	<!-- Permission options for the `microphone` group -->
-	<key>NSMicrophoneUsageDescription</key>
-	<string>microphone</string>
-	<key>UIBackgroundModes</key>
-	<array>
-		<string>audio</string>
-	</array>
-	
-	<key>NSCalendarsUsageDescription</key>
-	<string>MyApp does not need this permission</string>
-	
-	<key>NSContactsUsageDescription</key>
-	<string>MyApp does not need this permission</string>
-	
-	<key>NSMotionUsageDescription</key>
-	<string>MyApp does not need this permission</string>
-
-	<!-- Permission options for the `speech` group -->
-	<key>NSSpeechRecognitionUsageDescription</key>
-	<string>speech</string>
-
-	<!-- Permission options for the `photos` group -->
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>photos</string>
 </dict>
 </plist>
