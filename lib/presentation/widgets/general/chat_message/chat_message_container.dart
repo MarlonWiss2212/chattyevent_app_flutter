@@ -5,9 +5,10 @@ import 'package:chattyevent_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/vibration_usecases.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/chat_message/chat_message_container_bottom_container.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/chat_message/chat_message_container_main_container.dart';
-import 'package:chattyevent_app_flutter/presentation/widgets/general/chat_message/chat_message_read_by_bottom_sheet.dart';
+import 'package:chattyevent_app_flutter/presentation/widgets/general/chat_message/chat_message_read_by_bottom_dialog.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:swipe_to/swipe_to.dart';
 import 'package:chattyevent_app_flutter/domain/entities/message/message_and_user_entity.dart';
@@ -94,9 +95,10 @@ class _ChatMessageContainerState extends State<ChatMessageContainer> {
                       amplitude: 80,
                     );
                     // ignore: use_build_context_synchronously
-                    showModalBottomSheet(
-                      backgroundColor: Theme.of(context).colorScheme.surface,
+                    showAnimatedDialog(
                       context: context,
+                      curve: Curves.fastOutSlowIn,
+                      animationType: DialogTransitionType.slideFromBottomFade,
                       builder: (context) {
                         return ChatMessageReadByBottomSheet(
                           users: widget.users,
