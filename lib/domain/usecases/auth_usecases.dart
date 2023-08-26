@@ -1,4 +1,4 @@
-import 'package:chattyevent_app_flutter/core/utils/one_signal_utils.dart';
+import 'package:chattyevent_app_flutter/domain/repositories/one_signal_repository.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
@@ -6,7 +6,11 @@ import 'package:chattyevent_app_flutter/domain/repositories/auth_repository.dart
 
 class AuthUseCases {
   final AuthRepository authRepository;
-  AuthUseCases({required this.authRepository});
+  final OneSignalRepository oneSignalRepository;
+  AuthUseCases({
+    required this.authRepository,
+    required this.oneSignalRepository,
+  });
 
   Either<NotificationAlert, User> getFirebaseUser() {
     return authRepository.getFirebaseUser();
@@ -115,10 +119,11 @@ class AuthUseCases {
     return await authRepository.refreshToken();
   }
 
-  Future<void> logout() async {
-    // put this in repo later
-    OneSignalUtils.logout();
-    await authRepository.logout();
+  Future<List<Either<NotificationAlert, Unit>>> logout() async {
+    return await Future.wait([
+      oneSignalRepository.logout(),
+      authRepository.logout(),
+    ]);
   }
 
   Future<Either<NotificationAlert, Unit>> deleteUser() async {

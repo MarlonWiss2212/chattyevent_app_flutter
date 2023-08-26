@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:chattyevent_app_flutter/domain/usecases/one_signal_use_cases.dart';
 import 'package:chattyevent_app_flutter/infastructure/dto/user/update_user_dto.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/permission_usecases.dart';
 import 'package:dartz/dartz.dart';
@@ -11,17 +12,18 @@ import 'package:chattyevent_app_flutter/core/utils/injection.dart';
 import 'package:chattyevent_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/auth_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/user_usecases.dart';
-import '../../../core/utils/one_signal_utils.dart';
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
   final AuthUseCases authUseCases;
+  final OneSignalUseCases oneSignalUseCases;
   final PermissionUseCases permissionUseCases;
   final NotificationCubit notificationCubit;
   UserUseCases userUseCases;
 
   AuthCubit(
     super.initialState, {
+    required this.oneSignalUseCases,
     required this.notificationCubit,
     required this.authUseCases,
     required this.userUseCases,
@@ -51,7 +53,7 @@ class AuthCubit extends Cubit<AuthState> {
       },
       (user) async {
         emitState(currentUser: user);
-        await OneSignalUtils.login(user.id);
+        await oneSignalUseCases.login(userId: user.id);
       },
     );
   }

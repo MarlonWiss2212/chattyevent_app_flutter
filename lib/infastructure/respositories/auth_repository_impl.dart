@@ -114,8 +114,13 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<void> logout() async {
-    await auth.signOut();
+  Future<Either<NotificationAlert, Unit>> logout() async {
+    try {
+      await auth.signOut();
+      return const Right(unit);
+    } catch (e) {
+      return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
+    }
   }
 
   @override

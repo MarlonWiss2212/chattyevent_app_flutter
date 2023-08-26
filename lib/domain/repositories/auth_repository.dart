@@ -23,7 +23,7 @@ abstract class AuthRepository {
   Future<Either<NotificationAlert, Unit>> sendResetPasswordEmail({
     required String email,
   });
-  Future<void> logout();
+  Future<Either<NotificationAlert, Unit>> logout();
   Future<Either<NotificationAlert, User>> refreshUser();
   Future<Either<NotificationAlert, String>> refreshToken();
   Future<Either<NotificationAlert, Unit>> deleteUser();

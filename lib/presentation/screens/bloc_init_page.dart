@@ -1,6 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:chattyevent_app_flutter/application/bloc/imprint/imprint_cubit.dart';
-import 'package:chattyevent_app_flutter/core/utils/one_signal_utils.dart';
+import 'package:chattyevent_app_flutter/domain/usecases/one_signal_use_cases.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,14 +10,30 @@ import 'package:chattyevent_app_flutter/application/bloc/home_page/home_event/ho
 import 'package:chattyevent_app_flutter/core/utils/injection.dart';
 
 @RoutePage()
-class BlocInitPage extends StatelessWidget {
+class BlocInitPage extends StatefulWidget {
   const BlocInitPage({super.key});
 
   @override
+  State<BlocInitPage> createState() => _BlocInitPageState();
+}
+
+class _BlocInitPageState extends State<BlocInitPage> {
+  late OneSignalUseCases oneSignalUseCases;
+
+  @override
+  void initState() {
+    oneSignalUseCases = serviceLocator<OneSignalUseCases>();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    // push route when open notification and receive
-    OneSignalUtils.setNotificationOpenedHandler(serviceLocator<AppRouter>());
-    OneSignalUtils.setNotificationReceivedHandler(serviceLocator<AppRouter>());
+    oneSignalUseCases.setNotificationReceivedHandler(
+      appRouter: serviceLocator<AppRouter>(),
+    );
+    oneSignalUseCases.setNotificationReceivedHandler(
+      appRouter: serviceLocator<AppRouter>(),
+    );
     BlocProvider.of<AuthCubit>(context).setCurrentUserFromFirebaseViaApi();
 
     return BlocBuilder<AuthCubit, AuthState>(

@@ -13,6 +13,7 @@ import 'package:chattyevent_app_flutter/domain/repositories/imprint_repository.d
 import 'package:chattyevent_app_flutter/domain/repositories/introduction_repository.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/launch_url_repository.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/message_repository.dart';
+import 'package:chattyevent_app_flutter/domain/repositories/one_signal_repository.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/ad_mob_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/audio_player_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/calendar_usecases.dart';
@@ -22,6 +23,7 @@ import 'package:chattyevent_app_flutter/domain/usecases/introduction_usecases.da
 import 'package:chattyevent_app_flutter/domain/usecases/launch_url_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/message_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/microphone_usecases.dart';
+import 'package:chattyevent_app_flutter/domain/usecases/one_signal_use_cases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/permission_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/vibration_usecases.dart';
 import 'package:chattyevent_app_flutter/infastructure/datasources/device/audio_player.dart';
@@ -40,6 +42,7 @@ import 'package:chattyevent_app_flutter/infastructure/respositories/device/vibra
 import 'package:chattyevent_app_flutter/infastructure/respositories/imprint_repository_impl.dart';
 import 'package:chattyevent_app_flutter/infastructure/respositories/launch_url_repository_impl.dart';
 import 'package:chattyevent_app_flutter/infastructure/respositories/message_repository_impl.dart';
+import 'package:chattyevent_app_flutter/infastructure/respositories/one_signal_repository_impl.dart';
 import 'package:chattyevent_app_flutter/presentation/router/auth_guard.dart';
 import 'package:chattyevent_app_flutter/presentation/router/auth_pages_guard.dart';
 import 'package:chattyevent_app_flutter/presentation/router/create_user_page_guard.dart';
@@ -93,12 +96,21 @@ final serviceLocator = GetIt.I;
 
 class InjectionUtils {
   static Future initialize() async {
-    //auth
+    //auth stuff so it can init
     serviceLocator.registerLazySingleton<AuthUseCases>(
-      () => AuthUseCases(authRepository: serviceLocator()),
+      () => AuthUseCases(
+        authRepository: serviceLocator(),
+        oneSignalRepository: serviceLocator(),
+      ),
     );
     serviceLocator.registerLazySingleton<AuthRepository>(
       () => AuthRepositoryImpl(auth: FirebaseAuth.instance),
+    );
+    serviceLocator.registerLazySingleton<OneSignalUseCases>(
+      () => OneSignalUseCases(oneSignalRepository: serviceLocator()),
+    );
+    serviceLocator.registerLazySingleton<OneSignalRepository>(
+      () => OneSignalRepositoryImpl(),
     );
 
     // cubit
@@ -136,6 +148,7 @@ class InjectionUtils {
                 ? AuthStateStatus.initial
                 : AuthStateStatus.loggedIn,
           ),
+          oneSignalUseCases: serviceLocator(),
           notificationCubit: serviceLocator(),
           authUseCases: serviceLocator(),
           userUseCases: serviceLocator(),
@@ -229,7 +242,8 @@ class InjectionUtils {
     );
     serviceLocator.registerFactory<ShoppingListItemUseCases>(
       () => ShoppingListItemUseCases(
-          shoppingListItemRepository: serviceLocator()),
+        shoppingListItemRepository: serviceLocator(),
+      ),
     );
 
     // repositories
