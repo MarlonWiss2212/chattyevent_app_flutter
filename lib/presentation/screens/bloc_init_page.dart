@@ -26,20 +26,20 @@ class BlocInitPage extends StatelessWidget {
         return MultiBlocProvider(
           providers: [
             BlocProvider(
-              create: (context) => HomeEventCubit(
-                eventUseCases: serviceLocator(param1: state),
+              create: (_) => HomeEventCubit(
+                eventUseCases: serviceLocator(),
                 notificationCubit: serviceLocator(),
               ),
             ),
             BlocProvider(
-              create: (context) => ImprintCubit(
+              create: (_) => ImprintCubit(
                 imprintUseCases: serviceLocator(),
                 notificationCubit: serviceLocator(),
               ),
             ),
             BlocProvider(
-              create: (context) => ChatCubit(
-                chatUseCases: serviceLocator(param1: state),
+              create: (_) => ChatCubit(
+                chatUseCases: serviceLocator(),
                 notificationCubit: serviceLocator(),
               ),
             ),

@@ -25,10 +25,10 @@ class _ChatMessageInputTextFieldState extends State<ChatMessageInputTextField> {
         final borderRadius = state.messageToReactToWithUser != null ||
                 state.status == AddMessageStateStatus.loading
             ? const BorderRadius.only(
-                bottomLeft: Radius.circular(8),
-                bottomRight: Radius.circular(8),
+                bottomLeft: Radius.circular(12),
+                bottomRight: Radius.circular(12),
               )
-            : BorderRadius.circular(8);
+            : BorderRadius.circular(12);
 
         return Column(
           children: [

@@ -4,7 +4,6 @@ import 'package:chattyevent_app_flutter/application/bloc/add_message/add_message
 import 'package:chattyevent_app_flutter/presentation/widgets/general/chat_message_input/chat_message_input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/current_groupchat/current_chat_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:chattyevent_app_flutter/core/utils/injection.dart';
@@ -103,9 +102,7 @@ class _GroupchatPageState extends State<GroupchatPage> {
                 cubitToAddMessageTo: dz.Left(dz.Right(
                   BlocProvider.of<CurrentGroupchatCubit>(context),
                 )),
-                messageUseCases: serviceLocator(
-                  param1: BlocProvider.of<AuthCubit>(context).state,
-                ),
+                messageUseCases: serviceLocator(),
               ),
               child: const Stack(
                 fit: StackFit.expand,

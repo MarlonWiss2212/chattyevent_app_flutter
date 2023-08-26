@@ -94,64 +94,66 @@ class _ChatMessageContainerVoiceMessageState
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        IconButton(
-          icon: Icon(isPlaying ? Ionicons.pause : Ionicons.play),
-          onPressed: () async {
-            if (isPlaying) {
-              final res = await audioPlayerUseCases.pausePlaying();
-              res.fold(
-                (alert) {
-                  BlocProvider.of<NotificationCubit>(context).newAlert(
-                    notificationAlert: alert,
-                  );
-                },
-                (r) => null,
-              );
-            } else {
-              final res = await audioPlayerUseCases.resume();
-              res.fold(
-                (alert) {
-                  BlocProvider.of<NotificationCubit>(context).newAlert(
-                    notificationAlert: alert,
-                  );
-                },
-                (r) => null,
-              );
-            }
-          },
-        ),
-        Column(
-          children: [
-            Slider.adaptive(
-              min: 0,
-              max: duration.inSeconds.toDouble(),
-              value: position.inSeconds.toDouble(),
-              onChanged: (value) async {
-                final res = await audioPlayerUseCases.seek(
-                  position: Duration(seconds: value.toInt()),
-                );
+    return IntrinsicWidth(
+      child: Row(
+        children: [
+          IconButton(
+            icon: Icon(isPlaying ? Ionicons.pause : Ionicons.play),
+            onPressed: () async {
+              if (isPlaying) {
+                final res = await audioPlayerUseCases.pausePlaying();
                 res.fold(
                   (alert) {
                     BlocProvider.of<NotificationCubit>(context).newAlert(
                       notificationAlert: alert,
                     );
                   },
-                  (r) => null,
+                  (_) => null,
                 );
-              },
-            ),
-            Wrap(
-              spacing: 50,
-              children: [
-                Text(formatTime(position)),
-                Text(formatTime(duration)),
-              ],
-            ),
-          ],
-        ),
-      ],
+              } else {
+                final res = await audioPlayerUseCases.resume();
+                res.fold(
+                  (alert) {
+                    BlocProvider.of<NotificationCubit>(context).newAlert(
+                      notificationAlert: alert,
+                    );
+                  },
+                  (_) => null,
+                );
+              }
+            },
+          ),
+          Column(
+            children: [
+              Slider.adaptive(
+                min: 0,
+                max: duration.inSeconds.toDouble(),
+                value: position.inSeconds.toDouble(),
+                onChanged: (value) async {
+                  final res = await audioPlayerUseCases.seek(
+                    position: Duration(seconds: value.toInt()),
+                  );
+                  res.fold(
+                    (alert) {
+                      BlocProvider.of<NotificationCubit>(context).newAlert(
+                        notificationAlert: alert,
+                      );
+                    },
+                    (_) => null,
+                  );
+                },
+              ),
+              Wrap(
+                spacing: 70,
+                children: [
+                  Text(formatTime(position)),
+                  Text(formatTime(duration)),
+                ],
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

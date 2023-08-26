@@ -61,7 +61,9 @@ class _ChatMessageListState extends State<ChatMessageList> {
             message: message,
             messageToReactTo: message.messageToReactTo != null
                 ? widget.messages.firstWhere(
-                    (element) => element.id == message.messageToReactTo,
+                    (element) =>
+                        element.id ==
+                        message.messageToReactTo?.messageToReactToId,
                     orElse: () =>
                         MessageEntity(id: "", createdAt: message.createdAt),
                   )
@@ -89,12 +91,15 @@ class _ChatMessageListState extends State<ChatMessageList> {
           child: Center(
             child: Container(
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(12),
                 color: Theme.of(context).colorScheme.surface,
               ),
               child: Padding(
                 padding: const EdgeInsets.all(8),
-                child: Text(DateFormat.yMMMd().format(messageEntity.createdAt)),
+                child: Text(
+                  DateFormat.yMMMd().format(messageEntity.createdAt),
+                  style: Theme.of(context).textTheme.labelLarge,
+                ),
               ),
             ),
           ),

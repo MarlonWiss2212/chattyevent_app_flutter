@@ -7,8 +7,8 @@ class AuthUseCases {
   final AuthRepository authRepository;
   AuthUseCases({required this.authRepository});
 
-  Future<Either<NotificationAlert, User>> getFirebaseUser() async {
-    return await authRepository.getFirebaseUser();
+  Either<NotificationAlert, User> getFirebaseUser() {
+    return authRepository.getFirebaseUser();
   }
 
   Future<Either<NotificationAlert, UserCredential>> loginWithEmailAndPassword({

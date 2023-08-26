@@ -93,7 +93,13 @@ final serviceLocator = GetIt.I;
 
 class InjectionUtils {
   static Future initialize() async {
-    serviceLocator.registerLazySingleton(() => FirebaseAuth.instance);
+    //auth
+    serviceLocator.registerLazySingleton<AuthUseCases>(
+      () => AuthUseCases(authRepository: serviceLocator()),
+    );
+    serviceLocator.registerLazySingleton<AuthRepository>(
+      () => AuthRepositoryImpl(auth: FirebaseAuth.instance),
+    );
 
     // cubit
     serviceLocator.registerLazySingleton<IntroductionCubit>(
@@ -105,36 +111,46 @@ class InjectionUtils {
     serviceLocator.registerLazySingleton<NotificationCubit>(
       () => NotificationCubit(),
     );
-
-    final String? token =
-        await serviceLocator<FirebaseAuth>().currentUser?.getIdToken();
-    final authState = AuthState(
-      currentUser: UserEntity(
-        authId: serviceLocator<FirebaseAuth>().currentUser?.uid ?? "",
-        id: "",
-      ),
-      token: token,
-      status:
-          token != null ? AuthStateStatus.loggedIn : AuthStateStatus.initial,
+    final tokenOrFailure = await serviceLocator<AuthUseCases>().refreshToken();
+    final String? token = tokenOrFailure.fold(
+      (_) => null,
+      (token) => token,
     );
-    //print(token);
 
     serviceLocator.registerLazySingleton<AuthCubit>(
-      () => AuthCubit(
-        authState,
-        notificationCubit: serviceLocator(),
-        auth: serviceLocator(),
-        authUseCases: serviceLocator(),
-        userUseCases: serviceLocator(param1: authState),
-        permissionUseCases: serviceLocator(),
-      ),
+      () {
+        final User? user =
+            serviceLocator<AuthUseCases>().getFirebaseUser().fold(
+                  (_) => null,
+                  (user) => user,
+                );
+
+        return AuthCubit(
+          AuthState(
+            currentUser: UserEntity(
+              authId: user?.uid ?? "",
+              id: "",
+            ),
+            token: token,
+            status: token == null
+                ? AuthStateStatus.initial
+                : AuthStateStatus.loggedIn,
+          ),
+          notificationCubit: serviceLocator(),
+          authUseCases: serviceLocator(),
+          userUseCases: serviceLocator(),
+          permissionUseCases: serviceLocator(),
+        );
+      },
     );
 
     // router
     serviceLocator.registerLazySingleton<AppRouter>(
       () => AppRouter(
-        authPagesGuard: AuthPagesGuard(),
-        verifyEmailPageGuard: VerifyEmailPageGuard(),
+        authPagesGuard: AuthPagesGuard(authUseCases: serviceLocator()),
+        verifyEmailPageGuard: VerifyEmailPageGuard(
+          authUseCases: serviceLocator(),
+        ),
         createUserPageGuard: CreateUserPageGuard(authCubit: serviceLocator()),
         authGuard: AuthGuard(authCubit: serviceLocator()),
       ),
@@ -184,59 +200,36 @@ class InjectionUtils {
         launchUrlUseCases: serviceLocator(),
       ),
     );
-    serviceLocator.registerLazySingleton<AuthUseCases>(
-      () => AuthUseCases(authRepository: serviceLocator()),
+    serviceLocator.registerFactory<CalendarUseCases>(
+      () => CalendarUseCases(calendarRepository: serviceLocator()),
     );
-    serviceLocator.registerFactoryParam<CalendarUseCases, AuthState?, void>(
-      (param1, param2) => CalendarUseCases(
-        calendarRepository: serviceLocator(param1: param1),
-      ),
+    serviceLocator.registerFactory<GroupchatUseCases>(
+      () => GroupchatUseCases(groupchatRepository: serviceLocator()),
     );
-    serviceLocator.registerFactoryParam<GroupchatUseCases, AuthState?, void>(
-      (param1, param2) => GroupchatUseCases(
-        groupchatRepository: serviceLocator(param1: param1),
-      ),
+    serviceLocator.registerFactory<ChatUseCases>(
+      () => ChatUseCases(chatRepository: serviceLocator()),
     );
-    serviceLocator.registerFactoryParam<ChatUseCases, AuthState?, void>(
-      (param1, param2) => ChatUseCases(
-        chatRepository: serviceLocator(param1: param1),
-      ),
+    serviceLocator.registerFactory<BoughtAmountUseCases>(
+      () => BoughtAmountUseCases(boughtAmountRepository: serviceLocator()),
     );
-    serviceLocator.registerFactoryParam<BoughtAmountUseCases, AuthState?, void>(
-      (param1, param2) => BoughtAmountUseCases(
-        boughtAmountRepository: serviceLocator(param1: param1),
-      ),
+    serviceLocator.registerFactory<MessageUseCases>(
+      () => MessageUseCases(messageRepository: serviceLocator()),
     );
-    serviceLocator.registerFactoryParam<MessageUseCases, AuthState?, void>(
-      (param1, param2) => MessageUseCases(
-        messageRepository: serviceLocator(param1: param1),
-      ),
+    serviceLocator.registerFactory<EventUseCases>(
+      () => EventUseCases(privateEventRepository: serviceLocator()),
     );
-    serviceLocator.registerFactoryParam<EventUseCases, AuthState?, void>(
-      (param1, param2) => EventUseCases(
-        privateEventRepository: serviceLocator(param1: param1),
-      ),
+    serviceLocator.registerFactory<UserUseCases>(
+      () => UserUseCases(userRepository: serviceLocator()),
     );
-    serviceLocator.registerFactoryParam<UserUseCases, AuthState?, void>(
-      (param1, param2) => UserUseCases(
-        userRepository: serviceLocator(param1: param1),
-      ),
-    );
-    serviceLocator.registerFactoryParam<UserRelationUseCases, AuthState?, void>(
-      (param1, param2) => UserRelationUseCases(
-        userRelationRepository: serviceLocator(param1: param1),
-      ),
+    serviceLocator.registerFactory<UserRelationUseCases>(
+      () => UserRelationUseCases(userRelationRepository: serviceLocator()),
     );
     serviceLocator.registerFactory<AudioPlayerUseCases>(
-      () => AudioPlayerUseCases(
-        audioPlayerRepository: serviceLocator(),
-      ),
+      () => AudioPlayerUseCases(audioPlayerRepository: serviceLocator()),
     );
-    serviceLocator
-        .registerFactoryParam<ShoppingListItemUseCases, AuthState?, void>(
-      (param1, param2) => ShoppingListItemUseCases(
-        shoppingListItemRepository: serviceLocator(param1: param1),
-      ),
+    serviceLocator.registerFactory<ShoppingListItemUseCases>(
+      () => ShoppingListItemUseCases(
+          shoppingListItemRepository: serviceLocator()),
     );
 
     // repositories
@@ -275,80 +268,48 @@ class InjectionUtils {
       () =>
           SettingsRepositoryImpl(sharedPrefrencesDatasource: serviceLocator()),
     );
-    serviceLocator.registerLazySingleton<AuthRepository>(
-      () => AuthRepositoryImpl(auth: serviceLocator()),
+    serviceLocator.registerFactory<MessageRepository>(
+      () => MessageRepositoryImpl(graphQlDatasource: serviceLocator()),
     );
-    serviceLocator.registerFactoryParam<MessageRepository, AuthState?, void>(
-      (param1, param2) => MessageRepositoryImpl(
-        graphQlDatasource: serviceLocator(param1: param1),
-      ),
+    serviceLocator.registerFactory<CalendarRepository>(
+      () => CalendarRepositoryImpl(graphQlDatasource: serviceLocator()),
     );
-    serviceLocator.registerFactoryParam<CalendarRepository, AuthState?, void>(
-      (param1, param2) => CalendarRepositoryImpl(
-        graphQlDatasource: serviceLocator(param1: param1),
-      ),
+    serviceLocator.registerFactory<GroupchatRepository>(
+      () => GroupchatRepositoryImpl(graphQlDatasource: serviceLocator()),
     );
-    serviceLocator.registerFactoryParam<GroupchatRepository, AuthState?, void>(
-      (param1, param2) => GroupchatRepositoryImpl(
-        graphQlDatasource: serviceLocator(param1: param1),
-      ),
+    serviceLocator.registerFactory<ChatRepository>(
+      () => ChatRepositoryImpl(graphQlDatasource: serviceLocator()),
     );
-    serviceLocator.registerFactoryParam<ChatRepository, AuthState?, void>(
-      (param1, param2) => ChatRepositoryImpl(
-        graphQlDatasource: serviceLocator(param1: param1),
-      ),
+    serviceLocator.registerFactory<BoughtAmountRepository>(
+      () => BoughtAmountRepositoryImpl(graphQlDatasource: serviceLocator()),
     );
-    serviceLocator
-        .registerFactoryParam<BoughtAmountRepository, AuthState?, void>(
-      (param1, param2) => BoughtAmountRepositoryImpl(
-        graphQlDatasource: serviceLocator(param1: param1),
-      ),
+    serviceLocator.registerFactory<UserRepository>(
+      () => UserRepositoryImpl(graphQlDatasource: serviceLocator()),
     );
-    serviceLocator.registerFactoryParam<UserRepository, AuthState?, void>(
-      (param1, param2) => UserRepositoryImpl(
-        graphQlDatasource: serviceLocator(param1: param1),
-      ),
+    serviceLocator.registerFactory<UserRelationRepository>(
+      () => UserRelationRepositoryImpl(graphQlDatasource: serviceLocator()),
     );
-    serviceLocator
-        .registerFactoryParam<UserRelationRepository, AuthState?, void>(
-      (param1, param2) => UserRelationRepositoryImpl(
-        graphQlDatasource: serviceLocator(param1: param1),
-      ),
-    );
-    serviceLocator.registerFactoryParam<EventRepository, AuthState?, void>(
-      (param1, param2) => EventRepositoryImpl(
-        graphQlDatasource: serviceLocator(param1: param1),
-      ),
+    serviceLocator.registerFactory<EventRepository>(
+      () => EventRepositoryImpl(graphQlDatasource: serviceLocator()),
     );
     serviceLocator.registerFactory<AudioPlayerRepository>(
-      () => AudioPlayerRepositoryImpl(
-        audioPlayerDataource: serviceLocator(),
-      ),
+      () => AudioPlayerRepositoryImpl(audioPlayerDataource: serviceLocator()),
     );
-    serviceLocator
-        .registerFactoryParam<ShoppingListItemRepository, AuthState?, void>(
-      (param1, param2) => ShoppingListItemRepositoryImpl(
-        graphQlDatasource: serviceLocator(param1: param1),
-      ),
+    serviceLocator.registerFactory<ShoppingListItemRepository>(
+      () => ShoppingListItemRepositoryImpl(graphQlDatasource: serviceLocator()),
     );
 
     // datasources
     final sharedPrefs = await SharedPreferences.getInstance();
     serviceLocator.registerLazySingleton<SharedPreferencesDatasource>(
-      () => SharedPreferencesDatasourceImpl(
-        sharedPreferences: sharedPrefs,
-      ),
+      () => SharedPreferencesDatasourceImpl(sharedPreferences: sharedPrefs),
     );
     serviceLocator.registerLazySingleton<VibrationDatasource>(
-      () => VibrationDatasourceImpl(),
-    );
+        () => VibrationDatasourceImpl());
     serviceLocator.registerLazySingleton<PermissionDatasource>(
-      () => PermissionDatasourceImpl(),
-    );
+        () => PermissionDatasourceImpl());
     serviceLocator.registerLazySingleton<MicrophoneDatasource>(
-      () => MicrophoneDatasourceImpl(
-        recorder: FlutterSoundRecorder(),
-      ),
+      () => MicrophoneDatasourceImpl(recorder: FlutterSoundRecorder()),
     );
     serviceLocator.registerFactory<AudioPlayerDatasource>(
       () => AudioPlayerDatasourceImpl(
@@ -358,10 +319,10 @@ class InjectionUtils {
     serviceLocator.registerLazySingleton<HttpDatasource>(
       () => HttpDatasourceImpl(),
     );
-    serviceLocator.registerFactoryParam<GraphQlDatasource, AuthState?, void>(
-      (param1, param2) {
+    serviceLocator.registerFactory<GraphQlDatasource>(
+      () {
         return GraphQlDatasourceImpl(
-          client: GraphQlUtils.getGraphQlClient(token: param1?.token),
+          client: GraphQlUtils.getGraphQlClient(token: token),
         );
       },
     );

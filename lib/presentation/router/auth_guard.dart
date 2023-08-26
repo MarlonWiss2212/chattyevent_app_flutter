@@ -1,7 +1,5 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:chattyevent_app_flutter/core/utils/injection.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
 
 class AuthGuard extends AutoRouteGuard {
@@ -9,20 +7,20 @@ class AuthGuard extends AutoRouteGuard {
   AuthGuard({required this.authCubit});
 
   @override
-  void onNavigation(NavigationResolver resolver, StackRouter router) async {
-    final currentUser = serviceLocator<FirebaseAuth>().currentUser;
+  void onNavigation(NavigationResolver resolver, StackRouter router) {
+    final currentUserOrFailure = authCubit.authUseCases.getFirebaseUser();
 
-    if (currentUser != null) {
-      if (currentUser.emailVerified &&
-          authCubit.state.isUserCode404() == false) {
-        resolver.next(true);
-      } else if (currentUser.emailVerified) {
-        resolver.redirect(const CreateUserRoute(), replace: true);
-      } else {
-        resolver.redirect(const VerifyEmailRoute(), replace: true);
-      }
-    } else {
-      resolver.redirect(const LoginRoute(), replace: true);
-    }
+    currentUserOrFailure.fold(
+      (_) => resolver.redirect(const LoginRoute(), replace: true),
+      (user) {
+        if (user.emailVerified && authCubit.state.isUserCode404() == false) {
+          resolver.next(true);
+        } else if (user.emailVerified) {
+          resolver.redirect(const CreateUserRoute(), replace: true);
+        } else {
+          resolver.redirect(const VerifyEmailRoute(), replace: true);
+        }
+      },
+    );
   }
 }

@@ -99,6 +99,12 @@ class ChatMessageContainerMainContainer extends StatelessWidget {
               child: SizedBox(
                 height: 200,
                 child: GoogleMap(
+                  mapToolbarEnabled: false,
+                  zoomControlsEnabled: false,
+                  scrollGesturesEnabled: false,
+                  zoomGesturesEnabled: false,
+                  tiltGesturesEnabled: false,
+                  rotateGesturesEnabled: false,
                   onMapCreated: (controller) {
                     if (MediaQuery.of(context).platformBrightness ==
                         Brightness.dark) {
@@ -144,7 +150,7 @@ class ChatMessageContainerMainContainer extends StatelessWidget {
               voiceMessageLink: message.voiceMessageLink!,
             ),
           ],
-          if (message.message != null) ...{
+          if (message.message != null && message.message!.isNotEmpty) ...{
             Text(
               message.message!,
               overflow: TextOverflow.clip,

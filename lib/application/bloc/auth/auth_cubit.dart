@@ -16,7 +16,6 @@ part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
   final AuthUseCases authUseCases;
-  final FirebaseAuth auth;
   final PermissionUseCases permissionUseCases;
   final NotificationCubit notificationCubit;
   UserUseCases userUseCases;
@@ -25,20 +24,24 @@ class AuthCubit extends Cubit<AuthState> {
     super.initialState, {
     required this.notificationCubit,
     required this.authUseCases,
-    required this.auth,
     required this.userUseCases,
     required this.permissionUseCases,
   });
 
   Future setCurrentUserFromFirebaseViaApi() async {
-    if (auth.currentUser == null) {
+    final authUserOrFailure = authUseCases.getFirebaseUser();
+    final user = authUserOrFailure.fold(
+      (_) => null,
+      (user) => user,
+    );
+    if (user == null) {
       return;
     }
 
     final Either<NotificationAlert, UserEntity> userOrFailure =
         await userUseCases.getUserViaApi(
       currentUser: true,
-      findOneUserFilter: FindOneUserFilter(authId: auth.currentUser!.uid),
+      findOneUserFilter: FindOneUserFilter(authId: user.uid),
     );
 
     await userOrFailure.fold(
@@ -305,7 +308,7 @@ class AuthCubit extends Cubit<AuthState> {
           resetUserException ? null : userException ?? state.userException,
     ));
     if (token != null) {
-      userUseCases = serviceLocator(param1: state);
+      userUseCases = serviceLocator();
     }
   }
 }

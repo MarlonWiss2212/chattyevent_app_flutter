@@ -1,8 +1,6 @@
 import 'package:auto_route/auto_route.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/current_event/current_event_cubit.dart';
 import 'package:chattyevent_app_flutter/core/utils/injection.dart';
@@ -22,9 +20,7 @@ class EventCreateShoppingListItemPage extends StatelessWidget {
     return BlocProvider(
       create: (context) => AddShoppingListItemCubit(
         AddShoppingListItemState(selectedPrivateEvent: currentPrivateEvent),
-        shoppingListItemUseCases: serviceLocator(
-          param1: BlocProvider.of<AuthCubit>(context).state,
-        ),
+        shoppingListItemUseCases: serviceLocator(),
         currentPrivateEventCubit: BlocProvider.of<CurrentEventCubit>(
           context,
         ),

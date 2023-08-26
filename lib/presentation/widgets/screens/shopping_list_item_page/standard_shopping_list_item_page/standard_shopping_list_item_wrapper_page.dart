@@ -2,7 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/current_event/current_event_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/shopping_list/current_shopping_list_item_cubit.dart';
@@ -27,15 +26,11 @@ class StandardShoppingListItemWrapperPage extends StatelessWidget {
     return BlocProvider(
       create: (context) => CurrentShoppingListItemCubit(
         shoppingListItemStateToSet,
-        boughtAmountUseCases: serviceLocator(
-          param1: BlocProvider.of<AuthCubit>(context).state,
-        ),
+        boughtAmountUseCases: serviceLocator(),
         shoppingListCubitOrPrivateEventCubit: setCurrentPrivateEvent
             ? Left(BlocProvider.of<MyShoppingListCubit>(context))
             : Right(BlocProvider.of<CurrentEventCubit>(context)),
-        shoppingListItemUseCases: serviceLocator(
-          param1: BlocProvider.of<AuthCubit>(context).state,
-        ),
+        shoppingListItemUseCases: serviceLocator(),
         notificationCubit: BlocProvider.of<NotificationCubit>(context),
       )..getShoppingListItemViaApi(),
       child: Builder(

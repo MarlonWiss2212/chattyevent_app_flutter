@@ -1,24 +1,29 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:chattyevent_app_flutter/core/utils/injection.dart';
+import 'package:chattyevent_app_flutter/domain/usecases/auth_usecases.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
 
 class VerifyEmailPageGuard extends AutoRouteGuard {
-  @override
-  void onNavigation(NavigationResolver resolver, StackRouter router) async {
-    final currentUser = serviceLocator<FirebaseAuth>().currentUser;
+  final AuthUseCases authUseCases;
+  const VerifyEmailPageGuard({required this.authUseCases});
 
-    if (currentUser == null) {
-      resolver.redirect(const LoginRoute(), replace: true);
-    } else if (currentUser.emailVerified == false) {
-      resolver.next(true);
-    } else {
-      resolver.redirect(
-        const BlocInitRoute(
-          children: [HomeRoute()],
-        ),
-        replace: true,
-      );
-    }
+  @override
+  void onNavigation(NavigationResolver resolver, StackRouter router) {
+    final currentUserOrFailure = authUseCases.getFirebaseUser();
+
+    currentUserOrFailure.fold(
+      (_) => resolver.redirect(const LoginRoute(), replace: true),
+      (user) {
+        if (user.emailVerified == false) {
+          resolver.next(true);
+        } else {
+          resolver.redirect(
+            const BlocInitRoute(
+              children: [HomeRoute()],
+            ),
+            replace: true,
+          );
+        }
+      },
+    );
   }
 }

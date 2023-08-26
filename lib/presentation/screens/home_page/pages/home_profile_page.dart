@@ -24,15 +24,9 @@ class HomeProfilePage extends StatelessWidget {
           user: BlocProvider.of<AuthCubit>(context).state.currentUser,
         ),
         chatCubit: BlocProvider.of<ChatCubit>(context),
-        userUseCases: serviceLocator(
-          param1: BlocProvider.of<AuthCubit>(context).state,
-        ),
-        userRelationUseCases: serviceLocator(
-          param1: BlocProvider.of<AuthCubit>(context).state,
-        ),
-        messageUseCases: serviceLocator(
-          param1: BlocProvider.of<AuthCubit>(context).state,
-        ),
+        userUseCases: serviceLocator(),
+        userRelationUseCases: serviceLocator(),
+        messageUseCases: serviceLocator(),
         notificationCubit: BlocProvider.of<NotificationCubit>(context),
         authCubit: BlocProvider.of<AuthCubit>(context),
       ),

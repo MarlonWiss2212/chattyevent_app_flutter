@@ -106,7 +106,6 @@ class UserRelationUseCases {
       );
     }
     if (value == null) {
-      print("tesdgdergders");
       final booleanOrNotificationAlert =
           await userRelationRepository.deleteUserRelationViaApi(
         findOneUserRelationFilter: findOneUserRelationFilter,

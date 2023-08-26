@@ -35,8 +35,7 @@ Future<void> main() async {
     }
   }
 
-  await Future.wait(futures);
-  await OneSignalUtils.initialize();
+  await Future.wait([...futures, OneSignalUtils.initialize()]);
 
   runApp(
     MultiBlocProvider(
@@ -227,6 +226,7 @@ class _AppState extends State<App> {
                   ),
                   colorScheme: darkColorScheme.copyWith(
                     background: Colors.black,
+                    surface: const Color.fromARGB(255, 35, 35, 35),
                   ),
                 ),
                 themeMode: value.autoDarkMode == true

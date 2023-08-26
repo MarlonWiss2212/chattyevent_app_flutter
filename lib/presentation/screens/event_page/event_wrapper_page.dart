@@ -35,19 +35,11 @@ class EventWrapperPage extends StatelessWidget {
       chatCubit: BlocProvider.of<ChatCubit>(context),
       notificationCubit: BlocProvider.of<NotificationCubit>(context),
       locationUseCases: serviceLocator(),
-      messageUseCases: serviceLocator(
-        param1: BlocProvider.of<AuthCubit>(context).state,
-      ),
-      groupchatUseCases: serviceLocator(
-        param1: BlocProvider.of<AuthCubit>(context).state,
-      ),
-      shoppingListItemUseCases: serviceLocator(
-        param1: BlocProvider.of<AuthCubit>(context).state,
-      ),
+      messageUseCases: serviceLocator(),
+      groupchatUseCases: serviceLocator(),
+      shoppingListItemUseCases: serviceLocator(),
       homeEventCubit: BlocProvider.of<HomeEventCubit>(context),
-      eventUseCases: serviceLocator(
-        param1: BlocProvider.of<AuthCubit>(context).state,
-      ),
+      eventUseCases: serviceLocator(),
     )
       ..setGroupchatFromChatCubit()
       ..reloadEventStandardDataViaApi()
@@ -61,12 +53,8 @@ class EventWrapperPage extends StatelessWidget {
         BlocProvider(
           create: (context) => UserSearchCubit(
             authCubit: BlocProvider.of<AuthCubit>(context),
-            userRelationUseCases: serviceLocator(
-              param1: BlocProvider.of<AuthCubit>(context).state,
-            ),
-            userUseCases: serviceLocator(
-              param1: BlocProvider.of<AuthCubit>(context).state,
-            ),
+            userRelationUseCases: serviceLocator(),
+            userUseCases: serviceLocator(),
             notificationCubit: BlocProvider.of<NotificationCubit>(context),
           ),
         ),

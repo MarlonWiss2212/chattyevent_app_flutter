@@ -165,7 +165,7 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<NotificationAlert, User>> getFirebaseUser() async {
+  Either<NotificationAlert, User> getFirebaseUser() {
     try {
       if (auth.currentUser == null) {
         return Left(

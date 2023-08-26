@@ -31,23 +31,15 @@ class ShoppingListItemWrapperPage extends StatelessWidget {
           eventDate: DateTime.now(),
         ),
       ),
-      messageUseCases: serviceLocator(
-        param1: BlocProvider.of<AuthCubit>(context).state,
-      ),
+      messageUseCases: serviceLocator(),
       authCubit: BlocProvider.of<AuthCubit>(context),
       locationUseCases: serviceLocator(),
       chatCubit: BlocProvider.of<ChatCubit>(context),
-      groupchatUseCases: serviceLocator(
-        param1: BlocProvider.of<AuthCubit>(context).state,
-      ),
+      groupchatUseCases: serviceLocator(),
       notificationCubit: BlocProvider.of<NotificationCubit>(context),
-      shoppingListItemUseCases: serviceLocator(
-        param1: BlocProvider.of<AuthCubit>(context).state,
-      ),
+      shoppingListItemUseCases: serviceLocator(),
       homeEventCubit: BlocProvider.of<HomeEventCubit>(context),
-      eventUseCases: serviceLocator(
-        param1: BlocProvider.of<AuthCubit>(context).state,
-      ),
+      eventUseCases: serviceLocator(),
     );
 
     return MultiBlocProvider(

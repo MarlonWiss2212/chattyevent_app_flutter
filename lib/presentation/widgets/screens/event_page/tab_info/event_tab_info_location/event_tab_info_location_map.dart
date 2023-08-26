@@ -27,6 +27,12 @@ class EventTabInfoLocationMap extends StatelessWidget {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(8.0),
               child: GoogleMap(
+                mapToolbarEnabled: false,
+                zoomControlsEnabled: false,
+                scrollGesturesEnabled: false,
+                zoomGesturesEnabled: false,
+                tiltGesturesEnabled: false,
+                rotateGesturesEnabled: false,
                 onMapCreated: (controller) {
                   if (MediaQuery.of(context).platformBrightness ==
                       Brightness.dark) {

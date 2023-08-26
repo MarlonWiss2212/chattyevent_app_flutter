@@ -26,23 +26,15 @@ class NewPrivateEventPage extends StatelessWidget {
           create: (context) => AddEventCubit(
             homeEventCubit: BlocProvider.of<HomeEventCubit>(context),
             notificationCubit: BlocProvider.of<NotificationCubit>(context),
-            calendarUseCases: serviceLocator(
-              param1: BlocProvider.of<AuthCubit>(context).state,
-            ),
-            eventUseCases: serviceLocator(
-              param1: BlocProvider.of<AuthCubit>(context).state,
-            ),
+            calendarUseCases: serviceLocator(),
+            eventUseCases: serviceLocator(),
           ),
         ),
         BlocProvider(
           create: (context) => UserSearchCubit(
             authCubit: BlocProvider.of<AuthCubit>(context),
-            userRelationUseCases: serviceLocator(
-              param1: BlocProvider.of<AuthCubit>(context).state,
-            ),
-            userUseCases: serviceLocator(
-              param1: BlocProvider.of<AuthCubit>(context).state,
-            ),
+            userRelationUseCases: serviceLocator(),
+            userUseCases: serviceLocator(),
             notificationCubit: BlocProvider.of<NotificationCubit>(context),
           ),
         ),

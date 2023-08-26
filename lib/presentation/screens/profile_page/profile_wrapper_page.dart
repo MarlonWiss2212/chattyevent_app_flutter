@@ -27,15 +27,9 @@ class ProfileWrapperPage extends StatelessWidget {
           user: user ?? UserEntity(id: userId, authId: ""),
         ),
         chatCubit: BlocProvider.of<ChatCubit>(context),
-        userRelationUseCases: serviceLocator(
-          param1: BlocProvider.of<AuthCubit>(context).state,
-        ),
-        messageUseCases: serviceLocator(
-          param1: BlocProvider.of<AuthCubit>(context).state,
-        ),
-        userUseCases: serviceLocator(
-          param1: BlocProvider.of<AuthCubit>(context).state,
-        ),
+        userRelationUseCases: serviceLocator(),
+        messageUseCases: serviceLocator(),
+        userUseCases: serviceLocator(),
         authCubit: BlocProvider.of<AuthCubit>(context),
         notificationCubit: BlocProvider.of<NotificationCubit>(context),
       )..getCurrentUserViaApi(),

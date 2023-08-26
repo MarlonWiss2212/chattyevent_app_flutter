@@ -27,7 +27,12 @@ class ChatMessageInputCurrentLocation extends StatelessWidget {
                       fit: StackFit.expand,
                       children: [
                         GoogleMap(
+                          mapToolbarEnabled: false,
                           zoomControlsEnabled: false,
+                          scrollGesturesEnabled: false,
+                          zoomGesturesEnabled: false,
+                          tiltGesturesEnabled: false,
+                          rotateGesturesEnabled: false,
                           onMapCreated: (controller) {
                             if (MediaQuery.of(context).platformBrightness ==
                                 Brightness.dark) {

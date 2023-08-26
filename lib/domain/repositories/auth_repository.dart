@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
 
 abstract class AuthRepository {
-  Future<Either<NotificationAlert, User>> getFirebaseUser();
+  Either<NotificationAlert, User> getFirebaseUser();
   Future<Either<NotificationAlert, UserCredential>> loginWithEmailAndPassword({
     required String email,
     required String password,
