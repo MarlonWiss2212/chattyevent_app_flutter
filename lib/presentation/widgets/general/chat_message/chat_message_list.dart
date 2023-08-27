@@ -59,15 +59,6 @@ class _ChatMessageListState extends State<ChatMessageList> {
             key: ObjectKey(message.id),
             users: widget.users,
             message: message,
-            messageToReactTo: message.messageToReactTo != null
-                ? widget.messages.firstWhere(
-                    (element) =>
-                        element.id ==
-                        message.messageToReactTo?.messageToReactToId,
-                    orElse: () =>
-                        MessageEntity(id: "", createdAt: message.createdAt),
-                  )
-                : null,
             currentUserId: widget.currentUserId,
           ),
         );

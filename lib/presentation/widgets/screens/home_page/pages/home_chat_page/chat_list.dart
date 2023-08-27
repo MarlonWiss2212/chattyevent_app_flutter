@@ -78,7 +78,7 @@ class _ChatListState extends State<ChatList> {
         ),
       ),
       trailing: message?.readBy == null ||
-              message!.readBy!.contains(
+              message!.readBy.contains(
                 BlocProvider.of<AuthCubit>(context).state.currentUser.id,
               )
           ? null

@@ -32,9 +32,11 @@ class ChatRepositoryImpl implements ChatRepository {
                   fileLinks
                   groupchatTo
                   createdBy
+                  updatedAt
                   createdAt
                 }
                 fileLinks
+                updatedAt
                 groupchatTo
                 createdBy
                 createdAt
@@ -68,11 +70,13 @@ class ChatRepositoryImpl implements ChatRepository {
                   message
                   fileLinks
                   eventTo
+                  updatedAt
                   createdBy
                   createdAt
                 }
                 fileLinks
                 eventTo
+                updatedAt
                 createdBy
                 createdAt
               }
@@ -110,11 +114,13 @@ class ChatRepositoryImpl implements ChatRepository {
                   message
                   fileLinks
                   userTo
+                  updatedAt
                   createdBy
                   createdAt
                 }
                 fileLinks
                 userTo
+                updatedAt
                 createdBy
                 createdAt
               }

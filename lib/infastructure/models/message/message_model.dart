@@ -11,15 +11,15 @@ class MessageModel extends MessageEntity {
     String? message,
     List<String>? fileLinks,
     MessageToReactToEntity? messageToReactTo,
-    String? createdBy,
+    required String createdBy,
     String? groupchatTo,
     String? eventTo,
     String? userTo,
     required DateTime createdAt,
     MessageLocationEntity? currentLocation,
-    List<String>? readBy,
+    required List<String> readBy,
     String? voiceMessageLink,
-    DateTime? updatedAt,
+    required DateTime updatedAt,
   }) : super(
           id: id,
           readBy: readBy,
@@ -37,11 +37,8 @@ class MessageModel extends MessageEntity {
         );
 
   factory MessageModel.fromJson(Map<String, dynamic> json) {
-    final createdAt = DateTime.parse(json["createdAt"]).toLocal();
-
-    final updatedAt = json["updatedAt"] != null
-        ? DateTime.parse(json["updatedAt"]).toLocal()
-        : null;
+    final DateTime createdAt = DateTime.parse(json["createdAt"]).toLocal();
+    final DateTime updatedAt = DateTime.parse(json["updatedAt"]).toLocal();
 
     List<String>? fileLinks;
     if (json['fileLinks'] != null) {
@@ -51,12 +48,9 @@ class MessageModel extends MessageEntity {
       }
     }
 
-    List<String>? readBy;
-    if (json['readBy'] != null) {
-      readBy ??= [];
-      for (final readId in json["readBy"]) {
-        readBy.add(readId);
-      }
+    List<String> readBy = [];
+    for (final readId in json["readBy"]) {
+      readBy.add(readId);
     }
 
     return MessageModel(

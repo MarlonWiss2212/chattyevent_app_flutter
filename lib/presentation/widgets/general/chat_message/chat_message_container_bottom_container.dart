@@ -32,9 +32,8 @@ class ChatMessageContainerBottomContainer extends StatelessWidget {
         ),
         const SizedBox(width: 8),
         if (isCurrentUser &&
-            message.readBy != null &&
-            message.readBy!.isNotEmpty &&
-            message.readBy!.length == users.length) ...[
+            message.readBy.isNotEmpty &&
+            message.readBy.length == users.length) ...[
           Stack(
             children: [
               Icon(

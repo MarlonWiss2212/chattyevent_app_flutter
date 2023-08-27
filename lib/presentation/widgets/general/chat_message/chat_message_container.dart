@@ -17,14 +17,12 @@ class ChatMessageContainer extends StatefulWidget {
   final List<UserEntity> users;
   final MessageEntity message;
   final String currentUserId;
-  final MessageEntity? messageToReactTo;
 
   const ChatMessageContainer({
     super.key,
     required this.users,
     required this.message,
     required this.currentUserId,
-    this.messageToReactTo,
   });
 
   @override
@@ -39,9 +37,7 @@ class _ChatMessageContainerState extends State<ChatMessageContainer> {
 
   @override
   Widget build(BuildContext context) {
-    final UserEntity? foundUser = widget.message.createdBy != null
-        ? findUser(widget.message.createdBy!)
-        : null;
+    final UserEntity? foundUser = findUser(widget.message.createdBy);
 
     final isCurrentUser = foundUser?.id == widget.currentUserId;
 
@@ -102,7 +98,7 @@ class _ChatMessageContainerState extends State<ChatMessageContainer> {
                       builder: (context) {
                         return ChatMessageReadByBottomSheet(
                           users: widget.users,
-                          readByIds: widget.message.readBy ?? [],
+                          readByIds: widget.message.readBy,
                         );
                       },
                     );

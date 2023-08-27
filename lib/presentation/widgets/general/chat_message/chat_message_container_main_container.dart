@@ -50,7 +50,7 @@ class ChatMessageContainerMainContainer extends StatelessWidget {
             ChatMessageReactMessageContainer(
               messageToReactTo: message.messageToReactTo!,
               user: findUser(
-                    message.messageToReactTo!.createdBy ?? "",
+                    message.messageToReactTo!.createdBy,
                   ) ??
                   UserEntity(
                     id: "",

@@ -84,6 +84,7 @@ class MessageRepositoryImpl implements MessageRepository {
               }
               eventTo
               userTo
+              updatedAt
               createdBy
               createdAt
             }
@@ -106,6 +107,7 @@ class MessageRepositoryImpl implements MessageRepository {
             }
             eventTo
             userTo
+            updatedAt
             createdBy
             createdAt
           }
@@ -161,6 +163,7 @@ class MessageRepositoryImpl implements MessageRepository {
               }
               eventTo
               userTo
+              updatedAt
               createdBy
               createdAt
             }
@@ -183,6 +186,7 @@ class MessageRepositoryImpl implements MessageRepository {
             groupchatTo
             eventTo
             userTo
+            updatedAt
             createdBy
             createdAt
           }
@@ -261,6 +265,7 @@ class MessageRepositoryImpl implements MessageRepository {
               }
               eventTo
               userTo
+              updatedAt
               createdBy
               createdAt
             }
@@ -269,6 +274,7 @@ class MessageRepositoryImpl implements MessageRepository {
             userTo
             fileLinks
             voiceMessageLink
+            updatedAt
             createdBy
             createdAt
           }
