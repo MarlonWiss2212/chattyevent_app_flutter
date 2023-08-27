@@ -59,7 +59,6 @@ class EventTabInfoCoverImage extends StatelessWidget {
     final size = MediaQuery.of(context).size;
 
     return BlocBuilder<CurrentEventCubit, CurrentEventState>(
-      buildWhen: (p, c) => p.event.coverImageLink != c.event.coverImageLink,
       builder: (context, state) {
         return Container(
           decoration: const BoxDecoration(shape: BoxShape.circle),
@@ -92,11 +91,7 @@ class EventTabInfoCoverImage extends StatelessWidget {
                       ),
                     );
                   } else {
-                    return SizedBox(
-                      child: Card(
-                        color: Theme.of(context).colorScheme.surface,
-                      ),
-                    );
+                    return const SizedBox();
                   }
                 },
               ),

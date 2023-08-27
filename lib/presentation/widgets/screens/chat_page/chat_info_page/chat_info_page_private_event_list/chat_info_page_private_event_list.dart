@@ -6,7 +6,7 @@ import 'package:skeletons/skeletons.dart';
 import 'package:chattyevent_app_flutter/application/bloc/current_groupchat/current_chat_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/current_event/current_event_cubit.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
-import 'package:chattyevent_app_flutter/presentation/widgets/general/event_list/private_event_list_item.dart';
+import 'package:chattyevent_app_flutter/presentation/widgets/general/event_list/event_list_item.dart';
 
 class ChatInfoPagePrivateEventList extends StatelessWidget {
   const ChatInfoPagePrivateEventList({super.key});
@@ -42,9 +42,9 @@ class ChatInfoPagePrivateEventList extends StatelessWidget {
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
-                  return PrivateEventListItem(
+                  return EventListItem(
                     key: ObjectKey(state.futureConnectedPrivateEvents[index]),
-                    privateEventState: CurrentEventState.fromEvent(
+                    eventState: CurrentEventState.fromEvent(
                       event: state.futureConnectedPrivateEvents[index],
                     ),
                   );

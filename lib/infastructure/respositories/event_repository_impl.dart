@@ -36,17 +36,23 @@ class EventRepositoryImpl implements EventRepository {
     CreateEventDto createEventDto,
   ) async {
     try {
-      final byteData = createEventDto.coverImage.readAsBytesSync();
-      final multipartFile = MultipartFile.fromBytes(
-        'photo',
-        byteData,
-        filename: '${createEventDto.title}.jpg',
-        contentType: MediaType("image", "jpg"),
-      );
+      Map<String, dynamic> variables = {
+        "input": createEventDto.toMap(),
+      };
+      if (createEventDto.coverImage != null) {
+        final byteData = createEventDto.coverImage!.readAsBytesSync();
+        final multipartFile = MultipartFile.fromBytes(
+          'photo',
+          byteData,
+          filename: '${createEventDto.title}.jpg',
+          contentType: MediaType("image", "jpg"),
+        );
+        variables.addAll({'coverImage': multipartFile});
+      }
 
       final response = await graphQlDatasource.mutation(
         """
-        mutation CreateEvent(\$input: CreateEventInput!, \$coverImage: Upload!) {
+        mutation CreateEvent(\$input: CreateEventInput!, \$coverImage: Upload) {
           createEvent(createEventInput: \$input, coverImage: \$coverImage) {
             _id
             type
@@ -90,10 +96,7 @@ class EventRepositoryImpl implements EventRepository {
           }
         }
       """,
-        variables: {
-          "input": createEventDto.toMap(),
-          "coverImage": multipartFile,
-        },
+        variables: variables,
       );
 
       if (response.hasException) {

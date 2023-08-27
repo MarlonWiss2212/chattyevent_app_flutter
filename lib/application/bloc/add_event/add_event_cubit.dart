@@ -50,9 +50,7 @@ class AddEventCubit extends Cubit<AddEventState> {
         ));
 
   Future createEventViaApi() async {
-    if (state.coverImage == null ||
-        state.title == null ||
-        state.eventDate == null) {
+    if (state.title == null || state.eventDate == null) {
       return notificationCubit.newAlert(
         notificationAlert: NotificationAlert(
           title: "Fehler",
@@ -68,7 +66,7 @@ class AddEventCubit extends Cubit<AddEventState> {
       CreateEventDto(
         title: state.title!,
         description: state.description,
-        coverImage: state.coverImage!,
+        coverImage: state.coverImage,
         autoDelete: state.autoDelete,
         privateEventData: CreatePrivateEventDataDto(
           groupchatTo: state.selectedGroupchat?.id,

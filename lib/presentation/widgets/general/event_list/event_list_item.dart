@@ -5,34 +5,34 @@ import 'package:intl/intl.dart';
 import 'package:chattyevent_app_flutter/application/bloc/current_event/current_event_cubit.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
 
-class PrivateEventListItem extends StatelessWidget {
-  final CurrentEventState privateEventState;
-  const PrivateEventListItem({super.key, required this.privateEventState});
+class EventListItem extends StatelessWidget {
+  final CurrentEventState eventState;
+  const EventListItem({super.key, required this.eventState});
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
       leading: CircleAvatar(
-        backgroundImage: privateEventState.event.coverImageLink != null
+        backgroundImage: eventState.event.coverImageLink != null
             ? CachedNetworkImageProvider(
-                privateEventState.event.coverImageLink!,
-                cacheKey: privateEventState.event.coverImageLink!.split("?")[0],
+                eventState.event.coverImageLink!,
+                cacheKey: eventState.event.coverImageLink!.split("?")[0],
               )
             : null,
-        backgroundColor: privateEventState.event.coverImageLink == null
+        backgroundColor: eventState.event.coverImageLink == null
             ? Theme.of(context).colorScheme.surface
             : null,
       ),
       title: Hero(
-        tag: "${privateEventState.event.id} title",
+        tag: "${eventState.event.id} title",
         child: Text(
-          privateEventState.event.title ?? "",
+          eventState.event.title ?? "",
           style: Theme.of(context).textTheme.titleMedium,
         ),
       ),
       subtitle: Text(
         DateFormat.yMd().add_jm().format(
-              privateEventState.event.eventDate,
+              eventState.event.eventDate,
             ),
         softWrap: true,
         overflow: TextOverflow.ellipsis,
@@ -40,8 +40,8 @@ class PrivateEventListItem extends StatelessWidget {
       onTap: () {
         AutoRouter.of(context).push(
           EventWrapperRoute(
-            eventStateToSet: privateEventState,
-            eventId: privateEventState.event.id,
+            eventStateToSet: eventState,
+            eventId: eventState.event.id,
           ),
         );
       },

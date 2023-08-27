@@ -7,7 +7,7 @@ import 'package:chattyevent_app_flutter/infastructure/dto/event/event_user/creat
 class CreateEventDto {
   final String title;
   final String? description;
-  final File coverImage;
+  final File? coverImage;
   final CreatePrivateEventDataDto? privateEventData;
   final CreateEventPermissionsDto? permissions;
   final DateTime eventDate;

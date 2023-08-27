@@ -156,10 +156,13 @@ class _AppState extends State<App> {
                 theme: ThemeData(
                   useMaterial3: true,
                   inputDecorationTheme: InputDecorationTheme(
-                    fillColor: lightColorScheme.surface,
+                    fillColor: const Color.fromARGB(255, 230, 230, 230),
                     filled: true,
-                    border: OutlineInputBorder(
-                      borderSide: const BorderSide(width: 1),
+                    border: UnderlineInputBorder(
+                      borderSide: const BorderSide(
+                        width: 0,
+                        style: BorderStyle.none,
+                      ),
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),
@@ -196,8 +199,11 @@ class _AppState extends State<App> {
                   inputDecorationTheme: InputDecorationTheme(
                     filled: true,
                     fillColor: darkColorScheme.surface,
-                    border: OutlineInputBorder(
-                      borderSide: const BorderSide(width: 1),
+                    border: UnderlineInputBorder(
+                      borderSide: const BorderSide(
+                        width: 0,
+                        style: BorderStyle.none,
+                      ),
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),
@@ -226,7 +232,6 @@ class _AppState extends State<App> {
                   ),
                   colorScheme: darkColorScheme.copyWith(
                     background: Colors.black,
-                    surface: const Color.fromARGB(255, 35, 35, 35),
                   ),
                 ),
                 themeMode: value.autoDarkMode == true

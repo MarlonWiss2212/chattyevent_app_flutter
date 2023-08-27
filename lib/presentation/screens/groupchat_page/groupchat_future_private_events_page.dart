@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/current_groupchat/current_chat_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/current_event/current_event_cubit.dart';
-import 'package:chattyevent_app_flutter/presentation/widgets/general/event_list/private_event_list_item.dart';
+import 'package:chattyevent_app_flutter/presentation/widgets/general/event_list/event_list_item.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/chat_page/chat_future_private_event_page/chat_future_private_event_page_skeleton_list.dart';
 import 'package:auto_route/auto_route.dart';
 
@@ -65,8 +65,8 @@ class GroupchatfutureEventsPage extends StatelessWidget {
                 delegate: SliverChildBuilderDelegate(
                   (context, index) {
                     if (index < state.futureConnectedPrivateEvents.length) {
-                      return PrivateEventListItem(
-                        privateEventState: CurrentEventState.fromEvent(
+                      return EventListItem(
+                        eventState: CurrentEventState.fromEvent(
                           event: state.futureConnectedPrivateEvents[index],
                         ),
                       );

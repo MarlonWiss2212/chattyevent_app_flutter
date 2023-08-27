@@ -30,7 +30,7 @@ class BottomBlurredSurfaceDialog extends StatelessWidget {
             ),
           ),
         ).frosted(
-          blur: 5,
+          blur: 10,
           frostColor: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(20),
         ),
