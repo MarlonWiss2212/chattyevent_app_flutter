@@ -9,28 +9,40 @@ class EventTabUsersLeaveButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      leading: const Icon(
-        Icons.logout,
-        color: Colors.red,
-      ),
-      title: const Text(
-        "Privates Event verlassen",
-        style: TextStyle(color: Colors.red),
-      ),
-      onTap: () async {
-        await showDialog(
-          context: context,
-          builder: (c) {
-            return AcceptDeclineDialog(
-              title: "Privates Event verlassen",
-              message: "Möchtest du das Private Event wirklich verlassen",
-              onNoPress: () => Navigator.of(c).pop(),
-              onYesPress: () => BlocProvider.of<CurrentEventCubit>(context)
-                  .deleteUserFromEventViaApi(
-                userId:
-                    BlocProvider.of<AuthCubit>(context).state.currentUser.id,
-              ),
+    return BlocBuilder<CurrentEventCubit, CurrentEventState>(
+      buildWhen: (p, c) =>
+          p.event.privateEventData?.groupchatTo !=
+          c.event.privateEventData?.groupchatTo,
+      builder: (context, state) {
+        if (state.event.privateEventData?.groupchatTo != null) {
+          return const SizedBox();
+        }
+        return ListTile(
+          leading: const Icon(
+            Icons.logout,
+            color: Colors.red,
+          ),
+          title: const Text(
+            "Privates Event verlassen",
+            style: TextStyle(color: Colors.red),
+          ),
+          onTap: () async {
+            await showDialog(
+              context: context,
+              builder: (c) {
+                return AcceptDeclineDialog(
+                  title: "Privates Event verlassen",
+                  message: "Möchtest du das Private Event wirklich verlassen",
+                  onNoPress: () => Navigator.of(c).pop(),
+                  onYesPress: () => BlocProvider.of<CurrentEventCubit>(context)
+                      .deleteUserFromEventViaApi(
+                    userId: BlocProvider.of<AuthCubit>(context)
+                        .state
+                        .currentUser
+                        .id,
+                  ),
+                );
+              },
             );
           },
         );
