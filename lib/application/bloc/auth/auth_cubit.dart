@@ -8,7 +8,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graphql/client.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:chattyevent_app_flutter/infastructure/filter/user/find_one_user_filter.dart';
-import 'package:chattyevent_app_flutter/core/utils/injection.dart';
 import 'package:chattyevent_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/auth_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/user_usecases.dart';
@@ -19,14 +18,14 @@ class AuthCubit extends Cubit<AuthState> {
   final OneSignalUseCases oneSignalUseCases;
   final PermissionUseCases permissionUseCases;
   final NotificationCubit notificationCubit;
-  UserUseCases userUseCases;
+  UserUseCases? userUseCases;
 
   AuthCubit(
     super.initialState, {
     required this.oneSignalUseCases,
     required this.notificationCubit,
     required this.authUseCases,
-    required this.userUseCases,
+    this.userUseCases,
     required this.permissionUseCases,
   });
 
@@ -36,12 +35,12 @@ class AuthCubit extends Cubit<AuthState> {
       (_) => null,
       (user) => user,
     );
-    if (user == null) {
+    if (user == null || userUseCases == null) {
       return;
     }
 
     final Either<NotificationAlert, UserEntity> userOrFailure =
-        await userUseCases.getUserViaApi(
+        await userUseCases!.getUserViaApi(
       currentUser: true,
       findOneUserFilter: FindOneUserFilter(authId: user.uid),
     );
@@ -90,8 +89,6 @@ class AuthCubit extends Cubit<AuthState> {
           status: AuthStateStatus.loggedIn,
           token: await authUser.user?.getIdToken(),
         );
-        await setCurrentUserFromFirebaseViaApi();
-        await permissionUseCases.requestNotificationPermission();
       },
     );
   }
@@ -254,7 +251,10 @@ class AuthCubit extends Cubit<AuthState> {
   Future updateUser({
     required UpdateUserDto updateUserDto,
   }) async {
-    final userOrFailure = await userUseCases.updateUserViaApi(
+    if (userUseCases == null) {
+      return;
+    }
+    final userOrFailure = await userUseCases!.updateUserViaApi(
       updateUserDto: updateUserDto,
     );
 
@@ -274,6 +274,9 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future deleteUser() async {
+    if (userUseCases == null) {
+      return;
+    }
     final deletedOrAlert = await authUseCases.deleteUser();
 
     deletedOrAlert.fold(
@@ -281,7 +284,7 @@ class AuthCubit extends Cubit<AuthState> {
         notificationCubit.newAlert(notificationAlert: alert);
       },
       (worked) {
-        userUseCases.deleteUserViaApi();
+        userUseCases!.deleteUserViaApi();
         emit(AuthState(
           currentUser: UserEntity(authId: "", id: ""),
           status: AuthStateStatus.logout,
@@ -309,8 +312,5 @@ class AuthCubit extends Cubit<AuthState> {
       userException:
           resetUserException ? null : userException ?? state.userException,
     ));
-    if (token != null) {
-      userUseCases = serviceLocator();
-    }
   }
 }

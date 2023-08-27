@@ -20,7 +20,7 @@ class CreateUserPage extends StatelessWidget {
     return BlocProvider(
       create: (context) => AddCurrentUserCubit(
         authCubit: BlocProvider.of<AuthCubit>(context),
-        userUseCases: serviceLocator(),
+        userUseCases: authenticatedLocator(),
         notificationCubit: BlocProvider.of<NotificationCubit>(context),
       ),
       child: Builder(builder: (context) {

@@ -23,14 +23,14 @@ class NewGroupchatWrapperPage extends StatelessWidget {
           create: (context) => AddGroupchatCubit(
             notificationCubit: BlocProvider.of<NotificationCubit>(context),
             chatCubit: BlocProvider.of<ChatCubit>(context),
-            groupchatUseCases: serviceLocator(),
+            groupchatUseCases: authenticatedLocator(),
           ),
         ),
         BlocProvider(
           create: (context) => UserSearchCubit(
             authCubit: BlocProvider.of<AuthCubit>(context),
-            userRelationUseCases: serviceLocator(),
-            userUseCases: serviceLocator(),
+            userRelationUseCases: authenticatedLocator(),
+            userUseCases: authenticatedLocator(),
             notificationCubit: BlocProvider.of<NotificationCubit>(context),
           ),
         ),

@@ -127,7 +127,7 @@ class _ProfileChatPageState extends State<ProfileChatPage> {
                 cubitToAddMessageTo: dz.Right(
                   BlocProvider.of<ProfilePageCubit>(context),
                 ),
-                messageUseCases: serviceLocator(),
+                messageUseCases: authenticatedLocator(),
               ),
               child: const Stack(
                 fit: StackFit.expand,

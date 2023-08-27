@@ -1,5 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:chattyevent_app_flutter/application/bloc/imprint/imprint_cubit.dart';
+import 'package:chattyevent_app_flutter/domain/usecases/chat_usecases.dart';
+import 'package:chattyevent_app_flutter/domain/usecases/event_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/one_signal_use_cases.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.dart';
 import 'package:flutter/material.dart';
@@ -18,32 +20,34 @@ class BlocInitPage extends StatefulWidget {
 }
 
 class _BlocInitPageState extends State<BlocInitPage> {
-  late OneSignalUseCases oneSignalUseCases;
-
   @override
   void initState() {
-    oneSignalUseCases = serviceLocator<OneSignalUseCases>();
+    final OneSignalUseCases oneSignalUseCases =
+        serviceLocator<OneSignalUseCases>();
+    oneSignalUseCases.setNotificationReceivedHandler(
+      appRouter: serviceLocator<AppRouter>(),
+    );
+    oneSignalUseCases.setNotificationOpenedHandler(
+      appRouter: serviceLocator<AppRouter>(),
+    );
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    oneSignalUseCases.setNotificationReceivedHandler(
-      appRouter: serviceLocator<AppRouter>(),
-    );
-    oneSignalUseCases.setNotificationReceivedHandler(
-      appRouter: serviceLocator<AppRouter>(),
-    );
-    BlocProvider.of<AuthCubit>(context).setCurrentUserFromFirebaseViaApi();
-
     return BlocBuilder<AuthCubit, AuthState>(
       buildWhen: (p, c) => p.token != c.token,
       builder: (context, state) {
+        InjectionUtils.reinitializeAuthenticatedLocator();
+        BlocProvider.of<AuthCubit>(context).userUseCases =
+            authenticatedLocator();
+        BlocProvider.of<AuthCubit>(context).setCurrentUserFromFirebaseViaApi();
+        //  print(authenticatedLocator());
         return MultiBlocProvider(
           providers: [
             BlocProvider(
               create: (_) => HomeEventCubit(
-                eventUseCases: serviceLocator(),
+                eventUseCases: authenticatedLocator.get<EventUseCases>(),
                 notificationCubit: serviceLocator(),
               ),
             ),
@@ -55,7 +59,7 @@ class _BlocInitPageState extends State<BlocInitPage> {
             ),
             BlocProvider(
               create: (_) => ChatCubit(
-                chatUseCases: serviceLocator(),
+                chatUseCases: authenticatedLocator.get<ChatUseCases>(),
                 notificationCubit: serviceLocator(),
               ),
             ),

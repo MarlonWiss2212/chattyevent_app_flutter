@@ -40,7 +40,7 @@ class _EventTabChatState extends State<EventTabChat> {
         microphoneUseCases: serviceLocator(),
         locationUseCases: serviceLocator(),
         vibrationUseCases: serviceLocator(),
-        messageUseCases: serviceLocator(),
+        messageUseCases: authenticatedLocator(),
         imagePickerUseCases: serviceLocator(),
         cubitToAddMessageTo: dz.Left(dz.Left(
           BlocProvider.of<CurrentEventCubit>(context),

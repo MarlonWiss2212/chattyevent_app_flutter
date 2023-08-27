@@ -13,7 +13,7 @@ class ShoppingListWrapperPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => MyShoppingListCubit(
-        shoppingListItemUseCases: serviceLocator(),
+        shoppingListItemUseCases: authenticatedLocator(),
         notificationCubit: BlocProvider.of<NotificationCubit>(context),
       ),
       child: HeroControllerScope(

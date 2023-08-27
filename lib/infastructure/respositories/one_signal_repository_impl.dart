@@ -51,7 +51,6 @@ class OneSignalRepositoryImpl implements OneSignalRepository {
     required AppRouter appRouter,
   }) {
     try {
-      print("HALLO");
       OneSignal.Notifications.addForegroundWillDisplayListener((event) {
         event.preventDefault();
 

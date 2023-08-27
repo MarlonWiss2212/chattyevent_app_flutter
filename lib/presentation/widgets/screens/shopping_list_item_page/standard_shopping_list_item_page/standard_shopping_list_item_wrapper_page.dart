@@ -26,11 +26,11 @@ class StandardShoppingListItemWrapperPage extends StatelessWidget {
     return BlocProvider(
       create: (context) => CurrentShoppingListItemCubit(
         shoppingListItemStateToSet,
-        boughtAmountUseCases: serviceLocator(),
+        boughtAmountUseCases: authenticatedLocator(),
         shoppingListCubitOrPrivateEventCubit: setCurrentPrivateEvent
             ? Left(BlocProvider.of<MyShoppingListCubit>(context))
             : Right(BlocProvider.of<CurrentEventCubit>(context)),
-        shoppingListItemUseCases: serviceLocator(),
+        shoppingListItemUseCases: authenticatedLocator(),
         notificationCubit: BlocProvider.of<NotificationCubit>(context),
       )..getShoppingListItemViaApi(),
       child: Builder(

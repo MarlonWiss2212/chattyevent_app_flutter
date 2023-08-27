@@ -102,7 +102,7 @@ class _GroupchatPageState extends State<GroupchatPage> {
                 cubitToAddMessageTo: dz.Left(dz.Right(
                   BlocProvider.of<CurrentGroupchatCubit>(context),
                 )),
-                messageUseCases: serviceLocator(),
+                messageUseCases: authenticatedLocator(),
               ),
               child: const Stack(
                 fit: StackFit.expand,

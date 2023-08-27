@@ -94,26 +94,12 @@ import 'package:chattyevent_app_flutter/infastructure/respositories/user_reposit
 
 final serviceLocator = GetIt.I;
 
+///auth stuff has a different Locator so it has no circular dependencys
+final authenticatedLocator = GetIt.asNewInstance();
+
 class InjectionUtils {
   static Future initialize() async {
-    //auth stuff so it can init
-    serviceLocator.registerLazySingleton<AuthUseCases>(
-      () => AuthUseCases(
-        authRepository: serviceLocator(),
-        oneSignalRepository: serviceLocator(),
-      ),
-    );
-    serviceLocator.registerLazySingleton<AuthRepository>(
-      () => AuthRepositoryImpl(auth: FirebaseAuth.instance),
-    );
-    serviceLocator.registerLazySingleton<OneSignalUseCases>(
-      () => OneSignalUseCases(oneSignalRepository: serviceLocator()),
-    );
-    serviceLocator.registerLazySingleton<OneSignalRepository>(
-      () => OneSignalRepositoryImpl(),
-    );
-
-    // cubit
+    //cubit
     serviceLocator.registerLazySingleton<IntroductionCubit>(
       () => IntroductionCubit(
         introductionUseCases: serviceLocator(),
@@ -123,53 +109,11 @@ class InjectionUtils {
     serviceLocator.registerLazySingleton<NotificationCubit>(
       () => NotificationCubit(),
     );
-    final tokenOrFailure = await serviceLocator<AuthUseCases>().refreshToken();
-    final String? token = tokenOrFailure.fold(
-      (_) => null,
-      (token) => token,
+
+    //usecases
+    serviceLocator.registerFactory<AudioPlayerUseCases>(
+      () => AudioPlayerUseCases(audioPlayerRepository: serviceLocator()),
     );
-
-    serviceLocator.registerLazySingleton<AuthCubit>(
-      () {
-        final User? user =
-            serviceLocator<AuthUseCases>().getFirebaseUser().fold(
-                  (_) => null,
-                  (user) => user,
-                );
-
-        return AuthCubit(
-          AuthState(
-            currentUser: UserEntity(
-              authId: user?.uid ?? "",
-              id: "",
-            ),
-            token: token,
-            status: token == null
-                ? AuthStateStatus.initial
-                : AuthStateStatus.loggedIn,
-          ),
-          oneSignalUseCases: serviceLocator(),
-          notificationCubit: serviceLocator(),
-          authUseCases: serviceLocator(),
-          userUseCases: serviceLocator(),
-          permissionUseCases: serviceLocator(),
-        );
-      },
-    );
-
-    // router
-    serviceLocator.registerLazySingleton<AppRouter>(
-      () => AppRouter(
-        authPagesGuard: AuthPagesGuard(authUseCases: serviceLocator()),
-        verifyEmailPageGuard: VerifyEmailPageGuard(
-          authUseCases: serviceLocator(),
-        ),
-        createUserPageGuard: CreateUserPageGuard(authCubit: serviceLocator()),
-        authGuard: AuthGuard(authCubit: serviceLocator()),
-      ),
-    );
-
-    // use cases
     serviceLocator.registerLazySingleton<PermissionUseCases>(
       () => PermissionUseCases(permissionRepository: serviceLocator()),
     );
@@ -213,40 +157,17 @@ class InjectionUtils {
         launchUrlUseCases: serviceLocator(),
       ),
     );
-    serviceLocator.registerFactory<CalendarUseCases>(
-      () => CalendarUseCases(calendarRepository: serviceLocator()),
-    );
-    serviceLocator.registerFactory<GroupchatUseCases>(
-      () => GroupchatUseCases(groupchatRepository: serviceLocator()),
-    );
-    serviceLocator.registerFactory<ChatUseCases>(
-      () => ChatUseCases(chatRepository: serviceLocator()),
-    );
-    serviceLocator.registerFactory<BoughtAmountUseCases>(
-      () => BoughtAmountUseCases(boughtAmountRepository: serviceLocator()),
-    );
-    serviceLocator.registerFactory<MessageUseCases>(
-      () => MessageUseCases(messageRepository: serviceLocator()),
-    );
-    serviceLocator.registerFactory<EventUseCases>(
-      () => EventUseCases(privateEventRepository: serviceLocator()),
-    );
-    serviceLocator.registerFactory<UserUseCases>(
-      () => UserUseCases(userRepository: serviceLocator()),
-    );
-    serviceLocator.registerFactory<UserRelationUseCases>(
-      () => UserRelationUseCases(userRelationRepository: serviceLocator()),
-    );
-    serviceLocator.registerFactory<AudioPlayerUseCases>(
-      () => AudioPlayerUseCases(audioPlayerRepository: serviceLocator()),
-    );
-    serviceLocator.registerFactory<ShoppingListItemUseCases>(
-      () => ShoppingListItemUseCases(
-        shoppingListItemRepository: serviceLocator(),
+    serviceLocator.registerLazySingleton<AuthUseCases>(
+      () => AuthUseCases(
+        authRepository: serviceLocator(),
+        oneSignalRepository: serviceLocator(),
       ),
     );
+    serviceLocator.registerLazySingleton<OneSignalUseCases>(
+      () => OneSignalUseCases(oneSignalRepository: serviceLocator()),
+    );
 
-    // repositories
+    //repositories
     serviceLocator.registerLazySingleton<LaunchUrlRepository>(
       () => LaunchUrlRepositoryImpl(),
     );
@@ -279,66 +200,24 @@ class InjectionUtils {
       () => PermissionRepositoryImpl(permissionDatasource: serviceLocator()),
     );
     serviceLocator.registerLazySingleton<SettingsRepository>(
-      () =>
-          SettingsRepositoryImpl(sharedPrefrencesDatasource: serviceLocator()),
-    );
-    serviceLocator.registerFactory<MessageRepository>(
-      () => MessageRepositoryImpl(graphQlDatasource: serviceLocator()),
-    );
-    serviceLocator.registerFactory<CalendarRepository>(
-      () => CalendarRepositoryImpl(graphQlDatasource: serviceLocator()),
-    );
-    serviceLocator.registerFactory<GroupchatRepository>(
-      () => GroupchatRepositoryImpl(graphQlDatasource: serviceLocator()),
-    );
-    serviceLocator.registerFactory<ChatRepository>(
-      () => ChatRepositoryImpl(graphQlDatasource: serviceLocator()),
-    );
-    serviceLocator.registerFactory<BoughtAmountRepository>(
-      () => BoughtAmountRepositoryImpl(graphQlDatasource: serviceLocator()),
-    );
-    serviceLocator.registerFactory<UserRepository>(
-      () => UserRepositoryImpl(graphQlDatasource: serviceLocator()),
-    );
-    serviceLocator.registerFactory<UserRelationRepository>(
-      () => UserRelationRepositoryImpl(graphQlDatasource: serviceLocator()),
-    );
-    serviceLocator.registerFactory<EventRepository>(
-      () => EventRepositoryImpl(graphQlDatasource: serviceLocator()),
+      () => SettingsRepositoryImpl(
+        sharedPrefrencesDatasource: serviceLocator(),
+      ),
     );
     serviceLocator.registerFactory<AudioPlayerRepository>(
       () => AudioPlayerRepositoryImpl(audioPlayerDataource: serviceLocator()),
     );
-    serviceLocator.registerFactory<ShoppingListItemRepository>(
-      () => ShoppingListItemRepositoryImpl(graphQlDatasource: serviceLocator()),
+    serviceLocator.registerLazySingleton<AuthRepository>(
+      () => AuthRepositoryImpl(auth: FirebaseAuth.instance),
+    );
+    serviceLocator.registerLazySingleton<OneSignalRepository>(
+      () => OneSignalRepositoryImpl(),
     );
 
-    // datasources
-    final sharedPrefs = await SharedPreferences.getInstance();
-    serviceLocator.registerLazySingleton<SharedPreferencesDatasource>(
-      () => SharedPreferencesDatasourceImpl(sharedPreferences: sharedPrefs),
-    );
-    serviceLocator.registerLazySingleton<VibrationDatasource>(
-        () => VibrationDatasourceImpl());
-    serviceLocator.registerLazySingleton<PermissionDatasource>(
-        () => PermissionDatasourceImpl());
-    serviceLocator.registerLazySingleton<MicrophoneDatasource>(
-      () => MicrophoneDatasourceImpl(recorder: FlutterSoundRecorder()),
-    );
-    serviceLocator.registerFactory<AudioPlayerDatasource>(
-      () => AudioPlayerDatasourceImpl(
-        audioPlayer: AudioPlayer(playerId: UniqueKey().toString()),
-      ),
-    );
+    //datasources
+    // non token datasource
     serviceLocator.registerLazySingleton<HttpDatasource>(
       () => HttpDatasourceImpl(),
-    );
-    serviceLocator.registerFactory<GraphQlDatasource>(
-      () {
-        return GraphQlDatasourceImpl(
-          client: GraphQlUtils.getGraphQlClient(token: token),
-        );
-      },
     );
     serviceLocator.registerLazySingleton<LocationDatasource>(() {
       return LocationDatasourceImpl();
@@ -349,5 +228,155 @@ class InjectionUtils {
         imagePicker: ImagePicker(),
       );
     });
+    final sharedPrefs = await SharedPreferences.getInstance();
+    serviceLocator.registerLazySingleton<SharedPreferencesDatasource>(
+      () => SharedPreferencesDatasourceImpl(sharedPreferences: sharedPrefs),
+    );
+    serviceLocator.registerLazySingleton<VibrationDatasource>(
+      () => VibrationDatasourceImpl(),
+    );
+    serviceLocator.registerLazySingleton<PermissionDatasource>(
+      () => PermissionDatasourceImpl(),
+    );
+    serviceLocator.registerLazySingleton<MicrophoneDatasource>(
+      () => MicrophoneDatasourceImpl(
+        recorder: FlutterSoundRecorder(),
+      ),
+    );
+    serviceLocator.registerFactory<AudioPlayerDatasource>(
+      () => AudioPlayerDatasourceImpl(
+        audioPlayer: AudioPlayer(
+          playerId: UniqueKey().toString(),
+        ),
+      ),
+    );
+
+    final tokenOrFailure = await serviceLocator<AuthUseCases>().refreshToken();
+    final String? token = tokenOrFailure.fold(
+      (_) => null,
+      (token) => token,
+    );
+    serviceLocator.registerLazySingleton<AuthCubit>(
+      () {
+        final User? user =
+            serviceLocator<AuthUseCases>().getFirebaseUser().fold(
+                  (_) => null,
+                  (user) => user,
+                );
+
+        return AuthCubit(
+          AuthState(
+            currentUser: UserEntity(
+              authId: user?.uid ?? "",
+              id: "",
+            ),
+            token: token,
+            status: token != null
+                ? AuthStateStatus.loggedIn
+                : AuthStateStatus.initial,
+          ),
+          oneSignalUseCases: serviceLocator(),
+          notificationCubit: serviceLocator(),
+          authUseCases: serviceLocator(),
+          permissionUseCases: serviceLocator(),
+        );
+      },
+    );
+
+    // router
+    serviceLocator.registerLazySingleton<AppRouter>(
+      () => AppRouter(
+        authPagesGuard: AuthPagesGuard(
+          authUseCases: serviceLocator<AuthUseCases>(),
+        ),
+        verifyEmailPageGuard: VerifyEmailPageGuard(
+          authUseCases: serviceLocator<AuthUseCases>(),
+        ),
+        createUserPageGuard: CreateUserPageGuard(
+          authCubit: serviceLocator<AuthCubit>(),
+        ),
+        authGuard: AuthGuard(
+          authCubit: serviceLocator<AuthCubit>(),
+        ),
+      ),
+    );
+  }
+
+  static void reinitializeAuthenticatedLocator() {
+    authenticatedLocator.reset(dispose: false);
+
+    // use cases
+    authenticatedLocator.registerLazySingleton<CalendarUseCases>(
+      () => CalendarUseCases(calendarRepository: authenticatedLocator()),
+    );
+    authenticatedLocator.registerLazySingleton<GroupchatUseCases>(
+      () => GroupchatUseCases(groupchatRepository: authenticatedLocator()),
+    );
+    authenticatedLocator.registerLazySingleton<ChatUseCases>(
+      () => ChatUseCases(chatRepository: authenticatedLocator()),
+    );
+    authenticatedLocator.registerLazySingleton<BoughtAmountUseCases>(
+      () =>
+          BoughtAmountUseCases(boughtAmountRepository: authenticatedLocator()),
+    );
+    authenticatedLocator.registerLazySingleton<MessageUseCases>(
+      () => MessageUseCases(messageRepository: authenticatedLocator()),
+    );
+    authenticatedLocator.registerLazySingleton<EventUseCases>(
+      () => EventUseCases(privateEventRepository: authenticatedLocator()),
+    );
+    authenticatedLocator.registerLazySingleton<UserUseCases>(
+      () => UserUseCases(userRepository: authenticatedLocator()),
+    );
+    authenticatedLocator.registerLazySingleton<UserRelationUseCases>(
+      () =>
+          UserRelationUseCases(userRelationRepository: authenticatedLocator()),
+    );
+    authenticatedLocator.registerLazySingleton<ShoppingListItemUseCases>(
+      () => ShoppingListItemUseCases(
+        shoppingListItemRepository: authenticatedLocator(),
+      ),
+    );
+
+    // repositories
+    authenticatedLocator.registerLazySingleton<MessageRepository>(
+      () => MessageRepositoryImpl(graphQlDatasource: authenticatedLocator()),
+    );
+    authenticatedLocator.registerLazySingleton<CalendarRepository>(
+      () => CalendarRepositoryImpl(graphQlDatasource: authenticatedLocator()),
+    );
+    authenticatedLocator.registerLazySingleton<GroupchatRepository>(
+      () => GroupchatRepositoryImpl(graphQlDatasource: authenticatedLocator()),
+    );
+    authenticatedLocator.registerLazySingleton<ChatRepository>(
+      () => ChatRepositoryImpl(graphQlDatasource: authenticatedLocator()),
+    );
+    authenticatedLocator.registerLazySingleton<BoughtAmountRepository>(
+      () =>
+          BoughtAmountRepositoryImpl(graphQlDatasource: authenticatedLocator()),
+    );
+    authenticatedLocator.registerLazySingleton<UserRepository>(
+      () => UserRepositoryImpl(graphQlDatasource: authenticatedLocator()),
+    );
+    authenticatedLocator.registerLazySingleton<UserRelationRepository>(
+      () =>
+          UserRelationRepositoryImpl(graphQlDatasource: authenticatedLocator()),
+    );
+    authenticatedLocator.registerLazySingleton<EventRepository>(
+      () => EventRepositoryImpl(graphQlDatasource: authenticatedLocator()),
+    );
+    authenticatedLocator.registerLazySingleton<ShoppingListItemRepository>(
+      () => ShoppingListItemRepositoryImpl(
+          graphQlDatasource: authenticatedLocator()),
+    );
+
+    // datasources
+    authenticatedLocator.registerLazySingleton<GraphQlDatasource>(
+      () => GraphQlDatasourceImpl(
+        client: GraphQlUtils.getGraphQlClient(
+          token: serviceLocator<AuthCubit>().state.token,
+        ),
+      ),
+    );
   }
 }
