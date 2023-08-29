@@ -25,7 +25,7 @@ class EventTabUserList extends StatelessWidget {
           flexibleSpace: FlexibleSpaceBar(
             centerTitle: true,
             title: Text(
-              "Event User",
+              "Mitglieder",
               style: TextStyle(
                 color: Theme.of(context).colorScheme.onBackground,
               ),

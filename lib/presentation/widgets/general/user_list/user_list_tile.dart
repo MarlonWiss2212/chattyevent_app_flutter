@@ -8,11 +8,13 @@ class UserListTile extends StatefulWidget {
   final String? customTitle;
   final UserEntity user;
   final Widget? subtitle;
+  final void Function()? onTapAdditionalLogic;
   final Widget? trailing;
   final List<PopupMenuEntry<void>>? items;
 
   const UserListTile({
     super.key,
+    this.onTapAdditionalLogic,
     this.customTitle,
     this.subtitle,
     required this.user,
@@ -62,6 +64,9 @@ class _UserListTileState extends State<UserListTile> {
         ),
         subtitle: widget.subtitle,
         onTap: () {
+          if (widget.onTapAdditionalLogic != null) {
+            widget.onTapAdditionalLogic!();
+          }
           AutoRouter.of(context).root.push(
                 ProfileWrapperRoute(
                   userId: widget.user.id,

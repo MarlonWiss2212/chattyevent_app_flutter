@@ -74,7 +74,6 @@ class EventUseCases {
     );
   }
 
-  // event users
   Future<Either<NotificationAlert, EventUsersAndLeftUsersResponse>>
       getEventUsersAndLeftUsers({
     required FindOneEventToFilter findOneEventToFilter,

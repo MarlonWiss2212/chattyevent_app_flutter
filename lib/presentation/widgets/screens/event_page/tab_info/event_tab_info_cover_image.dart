@@ -91,7 +91,21 @@ class EventTabInfoCoverImage extends StatelessWidget {
                       ),
                     );
                   } else {
-                    return const SizedBox();
+                    return InkWell(
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(8.0),
+                      ),
+                      onTap: () => _onTapSetImageFunction(context),
+                      child: Ink(
+                        width: size.width,
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.surface,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        height: (size.width / 4 * 3) - 16,
+                        child: const Icon(Icons.add),
+                      ),
+                    );
                   }
                 },
               ),

@@ -44,7 +44,7 @@ class CreateShoppingListItemPageSelectUserList extends StatelessWidget {
             return Center(
               child: PlatformTextButton(
                 child: const Text(
-                  "Private Event User Laden",
+                  "Mitglieder Laden",
                 ),
                 onPressed: () => BlocProvider.of<CurrentEventCubit>(context)
                     .getEventUsersAndLeftUsersViaApi(),

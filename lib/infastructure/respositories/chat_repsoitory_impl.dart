@@ -46,7 +46,6 @@ class ChatRepositoryImpl implements ChatRepository {
               _id
               status
               title
-              autoDelete
               type
               privateEventData {
                 groupchatTo

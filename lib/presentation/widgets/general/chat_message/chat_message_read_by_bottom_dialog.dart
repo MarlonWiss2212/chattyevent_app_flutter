@@ -3,14 +3,16 @@ import 'package:chattyevent_app_flutter/presentation/widgets/general/dialog/bott
 import 'package:chattyevent_app_flutter/presentation/widgets/general/user_list/user_list_tile.dart';
 import 'package:flutter/material.dart';
 
-class ChatMessageReadByBottomSheet extends StatelessWidget {
+class ChatMessageReadByBottomDialog extends StatelessWidget {
   final List<UserEntity> users;
+  final BuildContext closeContext;
   final List<String> readByIds;
 
-  const ChatMessageReadByBottomSheet({
+  const ChatMessageReadByBottomDialog({
     super.key,
     required this.readByIds,
     required this.users,
+    required this.closeContext,
   });
 
   @override
@@ -37,6 +39,7 @@ class ChatMessageReadByBottomSheet extends StatelessWidget {
               itemBuilder: (context, index) => UserListTile(
                 key: ObjectKey(filteredUsers[index]),
                 user: filteredUsers[index],
+                onTapAdditionalLogic: () => Navigator.of(closeContext).pop(),
               ),
               itemCount: filteredUsers.length,
             ),

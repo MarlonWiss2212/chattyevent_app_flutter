@@ -95,8 +95,9 @@ class _ChatMessageContainerState extends State<ChatMessageContainer> {
                       context: context,
                       curve: Curves.fastOutSlowIn,
                       animationType: DialogTransitionType.slideFromBottomFade,
-                      builder: (context) {
-                        return ChatMessageReadByBottomSheet(
+                      builder: (closeContext) {
+                        return ChatMessageReadByBottomDialog(
+                          closeContext: closeContext,
                           users: widget.users,
                           readByIds: widget.message.readBy,
                         );
