@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:chattyevent_app_flutter/application/bloc/message_stream/message_stream_cubit.dart';
 import 'package:chattyevent_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -29,15 +30,14 @@ class GroupchatPageWrapper extends StatelessWidget {
             CurrentGroupchatState.fromGroupchat(
               groupchat: groupchat ?? GroupchatEntity(id: groupchatId),
             ),
+            messageStreamCubit: BlocProvider.of<MessageStreamCubit>(context),
             notificationCubit: BlocProvider.of<NotificationCubit>(context),
             authCubit: BlocProvider.of<AuthCubit>(context),
             messageUseCases: authenticatedLocator(),
             eventUseCases: authenticatedLocator(),
             chatCubit: BlocProvider.of<ChatCubit>(context),
             groupchatUseCases: authenticatedLocator(),
-          )
-            ..reloadGroupchatAndGroupchatUsersViaApi()
-            ..listenToMessages(),
+          )..reloadGroupchatAndGroupchatUsersViaApi(),
         ),
         BlocProvider(
           create: (context) => UserSearchCubit(

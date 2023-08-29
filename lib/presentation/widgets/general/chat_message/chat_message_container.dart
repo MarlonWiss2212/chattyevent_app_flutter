@@ -93,6 +93,7 @@ class _ChatMessageContainerState extends State<ChatMessageContainer> {
                     // ignore: use_build_context_synchronously
                     showAnimatedDialog(
                       context: context,
+                      barrierDismissible: true,
                       curve: Curves.fastOutSlowIn,
                       animationType: DialogTransitionType.slideFromBottomFade,
                       builder: (closeContext) {

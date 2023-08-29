@@ -30,7 +30,6 @@ class _ProfileChatPageState extends State<ProfileChatPage> {
   @override
   void initState() {
     BlocProvider.of<ProfilePageCubit>(context).loadMessages(reload: true);
-    BlocProvider.of<ProfilePageCubit>(context).listenToMessages();
     super.initState();
   }
 

@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:chattyevent_app_flutter/application/bloc/message_stream/message_stream_cubit.dart';
 import 'package:chattyevent_app_flutter/domain/entities/event/event_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -31,6 +32,7 @@ class EventWrapperPage extends StatelessWidget {
               eventDate: DateTime.now(),
             ),
           ),
+      messageStreamCubit: BlocProvider.of<MessageStreamCubit>(context),
       authCubit: BlocProvider.of<AuthCubit>(context),
       chatCubit: BlocProvider.of<ChatCubit>(context),
       notificationCubit: BlocProvider.of<NotificationCubit>(context),
@@ -42,8 +44,7 @@ class EventWrapperPage extends StatelessWidget {
       eventUseCases: authenticatedLocator(),
     )
       ..setGroupchatFromChatCubit()
-      ..reloadEventStandardDataViaApi()
-      ..listenToMessages();
+      ..reloadEventStandardDataViaApi();
 
     return MultiBlocProvider(
       providers: [

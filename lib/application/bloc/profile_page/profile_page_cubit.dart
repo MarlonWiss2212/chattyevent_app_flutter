@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:chattyevent_app_flutter/application/bloc/chat/chat_cubit.dart';
+import 'package:chattyevent_app_flutter/application/bloc/message_stream/message_stream_cubit.dart';
 import 'package:chattyevent_app_flutter/core/enums/user_relation/user_relation_status_enum.dart';
 import 'package:chattyevent_app_flutter/domain/entities/chat_entity.dart';
-import 'package:chattyevent_app_flutter/infastructure/filter/message/added_message_filter.dart';
 import 'package:chattyevent_app_flutter/infastructure/filter/message/find_messages_filter.dart';
 import 'package:chattyevent_app_flutter/domain/entities/message/message_entity.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/message_usecases.dart';
@@ -26,12 +26,11 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
   final AuthCubit authCubit;
   final ChatCubit chatCubit;
   final NotificationCubit notificationCubit;
+  final MessageStreamCubit messageStreamCubit;
 
   final UserRelationUseCases userRelationUseCases;
   final UserUseCases userUseCases;
   final MessageUseCases messageUseCases;
-
-  StreamSubscription<Either<NotificationAlert, MessageEntity>>? _subscription;
 
   ProfilePageCubit(
     super.initialState, {
@@ -41,13 +40,16 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
     required this.userRelationUseCases,
     required this.userUseCases,
     required this.messageUseCases,
-  });
-
-  @override
-  Future<void> close() {
-    _subscription?.cancel();
-    _subscription = null;
-    return super.close();
+    required this.messageStreamCubit,
+  }) {
+    messageStreamCubit.stream.listen((event) {
+      if ((event.addedMessage?.createdBy == state.user.id &&
+              event.addedMessage?.userTo == authCubit.state.currentUser.id) ||
+          (event.addedMessage?.createdBy == authCubit.state.currentUser.id &&
+              event.addedMessage?.userTo == state.user.id)) {
+        addMessage(message: event.addedMessage!);
+      }
+    });
   }
 
   Future getCurrentUserViaApi() async {
@@ -451,39 +453,6 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
     );
   }
 
-  // messages only if follow the other user
-  void listenToMessages() {
-    final eitherAlertOrStream = messageUseCases.getMessagesRealtimeViaApi(
-      addedMessageFilter: AddedMessageFilter(userTo: state.user.id),
-    );
-
-    eitherAlertOrStream.fold(
-      (alert) => notificationCubit.newAlert(
-        notificationAlert: NotificationAlert(
-          title: "Nachrichten error",
-          message:
-              "Fehler beim herstellen einer Verbindung um live nachrichten zu erhalten",
-        ),
-      ),
-      (subscription) {
-        _subscription = subscription.listen(
-          (event) {
-            event.fold(
-              (error) => notificationCubit.newAlert(
-                notificationAlert: NotificationAlert(
-                  title: "Nachrichten error",
-                  message:
-                      "Fehler beim herstellen einer Verbindung um live nachrichten zu erhalten",
-                ),
-              ),
-              (message) => addMessage(message: message),
-            );
-          },
-        );
-      },
-    );
-  }
-
   Future loadMessages({bool reload = false}) async {
     emitState(loadingMessages: true);
 
@@ -519,7 +488,10 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
   }
 
   MessageEntity addMessage({required MessageEntity message}) {
-    emitState(messages: List.from(state.messages)..add(message));
+    emitState(
+      messages: List.from(state.messages)..add(message),
+      replaceOrAddInOtherCubits: false,
+    );
     return message;
   }
 

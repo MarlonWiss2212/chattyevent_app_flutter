@@ -303,6 +303,7 @@ class InjectionUtils {
   }
 
   static void reinitializeAuthenticatedLocator() {
+    // TODO make this async
     authenticatedLocator.reset(dispose: false);
 
     // use cases

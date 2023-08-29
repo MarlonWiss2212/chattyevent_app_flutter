@@ -15,7 +15,7 @@ class GraphQlUtils {
       "wss://${dotenv.get("API_BASE_URL")}/graphql",
       subProtocol: GraphQLProtocol.graphqlTransportWs,
       config: SocketClientConfig(
-        inactivityTimeout: const Duration(hours: 1),
+        inactivityTimeout: const Duration(hours: 3),
         autoReconnect: false,
         initialPayload: {
           'authorization': 'Bearer $token',

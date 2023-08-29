@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:chattyevent_app_flutter/application/bloc/chat/chat_cubit.dart';
+import 'package:chattyevent_app_flutter/application/bloc/message_stream/message_stream_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
@@ -27,6 +28,7 @@ class HomeProfilePage extends StatelessWidget {
         userUseCases: authenticatedLocator(),
         userRelationUseCases: authenticatedLocator(),
         messageUseCases: authenticatedLocator(),
+        messageStreamCubit: BlocProvider.of<MessageStreamCubit>(context),
         notificationCubit: BlocProvider.of<NotificationCubit>(context),
         authCubit: BlocProvider.of<AuthCubit>(context),
       ),

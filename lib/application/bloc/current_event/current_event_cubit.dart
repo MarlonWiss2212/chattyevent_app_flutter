@@ -1,8 +1,8 @@
 import 'dart:async';
+import 'package:chattyevent_app_flutter/application/bloc/message_stream/message_stream_cubit.dart';
 import 'package:chattyevent_app_flutter/core/enums/event/event_permission_enum.dart';
 import 'package:chattyevent_app_flutter/core/enums/event/event_user/event_user_role_enum.dart';
 import 'package:chattyevent_app_flutter/core/enums/event/event_user/event_user_status_enum.dart';
-import 'package:chattyevent_app_flutter/infastructure/filter/message/added_message_filter.dart';
 import 'package:chattyevent_app_flutter/infastructure/filter/message/find_messages_filter.dart';
 import 'package:chattyevent_app_flutter/domain/entities/chat_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/message/message_entity.dart';
@@ -44,14 +44,13 @@ class CurrentEventCubit extends Cubit<CurrentEventState> {
   final ChatCubit chatCubit;
   final AuthCubit authCubit;
   final NotificationCubit notificationCubit;
+  final MessageStreamCubit messageStreamCubit;
 
   final EventUseCases eventUseCases;
   final GroupchatUseCases groupchatUseCases;
   final LocationUseCases locationUseCases;
   final ShoppingListItemUseCases shoppingListItemUseCases;
   final MessageUseCases messageUseCases;
-
-  StreamSubscription<Either<NotificationAlert, MessageEntity>>? _subscription;
 
   CurrentEventCubit(
     super.initialState, {
@@ -64,13 +63,13 @@ class CurrentEventCubit extends Cubit<CurrentEventState> {
     required this.shoppingListItemUseCases,
     required this.eventUseCases,
     required this.messageUseCases,
-  });
-
-  @override
-  Future<void> close() {
-    _subscription?.cancel();
-    _subscription = null;
-    return super.close();
+    required this.messageStreamCubit,
+  }) {
+    messageStreamCubit.stream.listen((event) {
+      if (event.addedMessage?.eventTo == state.event.id) {
+        addMessage(message: event.addedMessage!);
+      }
+    });
   }
 
   Future reloadEventStandardDataViaApi() async {
@@ -431,43 +430,6 @@ class CurrentEventCubit extends Cubit<CurrentEventState> {
     );
   }
 
-  // messages only for private events where no groupchat is connected
-
-  void listenToMessages() {
-    if (state.event.privateEventData?.groupchatTo != null) return;
-    final eitherAlertOrStream = messageUseCases.getMessagesRealtimeViaApi(
-      addedMessageFilter: AddedMessageFilter(
-        eventTo: state.event.id,
-      ),
-    );
-
-    eitherAlertOrStream.fold(
-      (alert) => notificationCubit.newAlert(
-        notificationAlert: NotificationAlert(
-          title: "Nachrichten error",
-          message:
-              "Fehler beim herstellen einer Verbindung um live nachrichten zu erhalten",
-        ),
-      ),
-      (subscription) {
-        _subscription = subscription.listen(
-          (event) {
-            event.fold(
-              (error) => notificationCubit.newAlert(
-                notificationAlert: NotificationAlert(
-                  title: "Nachrichten error",
-                  message:
-                      "Fehler beim herstellen einer Verbindung um live nachrichten zu erhalten",
-                ),
-              ),
-              (message) => addMessage(message: message),
-            );
-          },
-        );
-      },
-    );
-  }
-
   Future loadMessages({bool reload = false}) async {
     if (state.event.privateEventData?.groupchatTo != null) return;
     emitState(loadingMessages: true);
@@ -506,7 +468,10 @@ class CurrentEventCubit extends Cubit<CurrentEventState> {
   }
 
   MessageEntity addMessage({required MessageEntity message}) {
-    emitState(messages: List.from(state.messages)..add(message));
+    emitState(
+      messages: List.from(state.messages)..add(message),
+      replaceOrAddInOtherCubits: false,
+    );
     return message;
   }
 

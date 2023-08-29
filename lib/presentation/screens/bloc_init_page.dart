@@ -1,7 +1,9 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:chattyevent_app_flutter/application/bloc/imprint/imprint_cubit.dart';
+import 'package:chattyevent_app_flutter/application/bloc/message_stream/message_stream_cubit.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/chat_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/event_usecases.dart';
+import 'package:chattyevent_app_flutter/domain/usecases/message_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/one_signal_use_cases.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.dart';
 import 'package:flutter/material.dart';
@@ -42,29 +44,39 @@ class _BlocInitPageState extends State<BlocInitPage> {
         BlocProvider.of<AuthCubit>(context).userUseCases =
             authenticatedLocator();
         BlocProvider.of<AuthCubit>(context).setCurrentUserFromFirebaseViaApi();
-        //  print(authenticatedLocator());
-        return MultiBlocProvider(
-          providers: [
-            BlocProvider(
-              create: (_) => HomeEventCubit(
-                eventUseCases: authenticatedLocator.get<EventUseCases>(),
-                notificationCubit: serviceLocator(),
-              ),
-            ),
-            BlocProvider(
-              create: (_) => ImprintCubit(
-                imprintUseCases: serviceLocator(),
-                notificationCubit: serviceLocator(),
-              ),
-            ),
-            BlocProvider(
-              create: (_) => ChatCubit(
-                chatUseCases: authenticatedLocator.get<ChatUseCases>(),
-                notificationCubit: serviceLocator(),
-              ),
-            ),
-          ],
-          child: const AutoRouter(),
+        return BlocProvider(
+          create: (_) => MessageStreamCubit(
+            messageUseCases: authenticatedLocator.get<MessageUseCases>(),
+            notificationCubit: serviceLocator(),
+          ),
+          child: Builder(builder: (context) {
+            return MultiBlocProvider(
+              providers: [
+                BlocProvider(
+                  create: (_) => HomeEventCubit(
+                    eventUseCases: authenticatedLocator.get<EventUseCases>(),
+                    notificationCubit: serviceLocator(),
+                  ),
+                ),
+                BlocProvider(
+                  create: (_) => ImprintCubit(
+                    imprintUseCases: serviceLocator(),
+                    notificationCubit: serviceLocator(),
+                  ),
+                ),
+                BlocProvider(
+                  create: (_) => ChatCubit(
+                    authCubit: BlocProvider.of<AuthCubit>(context),
+                    messageStreamCubit:
+                        BlocProvider.of<MessageStreamCubit>(context),
+                    chatUseCases: authenticatedLocator.get<ChatUseCases>(),
+                    notificationCubit: serviceLocator(),
+                  ),
+                ),
+              ],
+              child: const AutoRouter(),
+            );
+          }),
         );
       },
     );

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:chattyevent_app_flutter/application/bloc/message_stream/message_stream_cubit.dart';
 import 'package:chattyevent_app_flutter/core/enums/groupchat/groupchat_permission_enum.dart';
 import 'package:chattyevent_app_flutter/domain/entities/chat_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/message/message_entity.dart';
@@ -12,7 +13,6 @@ import 'package:chattyevent_app_flutter/infastructure/dto/groupchat/update_group
 import 'package:chattyevent_app_flutter/infastructure/dto/groupchat/groupchat_user/update_groupchat_user_dto.dart';
 import 'package:chattyevent_app_flutter/infastructure/filter/groupchat/find_one_groupchat_filter.dart';
 import 'package:chattyevent_app_flutter/infastructure/filter/groupchat/find_one_groupchat_to_filter.dart';
-import 'package:chattyevent_app_flutter/infastructure/filter/message/added_message_filter.dart';
 import 'package:chattyevent_app_flutter/infastructure/filter/event/find_events_filter.dart';
 import 'package:chattyevent_app_flutter/infastructure/filter/message/find_messages_filter.dart';
 import 'package:chattyevent_app_flutter/infastructure/filter/groupchat/groupchat_user/find_one_groupchat_user_filter.dart';
@@ -32,23 +32,29 @@ part 'current_chat_state.dart';
 class CurrentGroupchatCubit extends Cubit<CurrentGroupchatState> {
   final AuthCubit authCubit;
   final ChatCubit chatCubit;
+  final MessageStreamCubit messageStreamCubit;
   final NotificationCubit notificationCubit;
 
   final GroupchatUseCases groupchatUseCases;
   final MessageUseCases messageUseCases;
   final EventUseCases eventUseCases;
 
-  StreamSubscription<Either<NotificationAlert, MessageEntity>>? _subscription;
-
   CurrentGroupchatCubit(
     super.initialState, {
+    required this.messageStreamCubit,
     required this.authCubit,
     required this.groupchatUseCases,
     required this.eventUseCases,
     required this.chatCubit,
     required this.notificationCubit,
     required this.messageUseCases,
-  });
+  }) {
+    messageStreamCubit.stream.listen((event) {
+      if (event.addedMessage?.groupchatTo == state.currentChat.id) {
+        addMessage(message: event.addedMessage!);
+      }
+    });
+  }
 
   @override
   void emit(
@@ -59,13 +65,6 @@ class CurrentGroupchatCubit extends Cubit<CurrentGroupchatState> {
       chatCubit.replaceOrAdd(chat: ChatEntity(groupchat: state.currentChat));
     }
     super.emit(state);
-  }
-
-  @override
-  Future<void> close() {
-    _subscription?.cancel();
-    _subscription = null;
-    return super.close();
   }
 
   Future reloadGroupchatAndGroupchatUsersViaApi() async {
@@ -357,42 +356,6 @@ class CurrentGroupchatCubit extends Cubit<CurrentGroupchatState> {
     );
   }
 
-  void listenToMessages() {
-    final eitherAlertOrStream = messageUseCases.getMessagesRealtimeViaApi(
-      addedMessageFilter: AddedMessageFilter(
-        groupchatTo: state.currentChat.id,
-      ),
-    );
-
-    eitherAlertOrStream.fold(
-      (alert) => notificationCubit.newAlert(
-        notificationAlert: NotificationAlert(
-          title: "Nachrichten error",
-          message:
-              "Fehler beim herstellen einer Verbindung um live nachrichten zu erhalten",
-        ),
-      ),
-      (subscription) {
-        _subscription = subscription.listen(
-          (event) {
-            event.fold(
-              (error) => notificationCubit.newAlert(
-                notificationAlert: NotificationAlert(
-                  title: "Nachrichten error",
-                  message:
-                      "Fehler beim herstellen einer Verbindung um live nachrichten zu erhalten",
-                ),
-              ),
-              (message) => addMessage(
-                message: message,
-              ),
-            );
-          },
-        );
-      },
-    );
-  }
-
   Future loadMessages({bool reload = false}) async {
     emit(CurrentGroupchatState.merge(
       oldState: state,
@@ -439,10 +402,13 @@ class CurrentGroupchatCubit extends Cubit<CurrentGroupchatState> {
   }
 
   MessageEntity addMessage({required MessageEntity message}) {
-    emit(CurrentGroupchatState.merge(
-      messages: List.from(state.messages)..add(message),
-      oldState: state,
-    ));
+    emit(
+      CurrentGroupchatState.merge(
+        messages: List.from(state.messages)..add(message),
+        oldState: state,
+      ),
+      replaceOrAddInOtherCubits: false,
+    );
     return message;
   }
 }
