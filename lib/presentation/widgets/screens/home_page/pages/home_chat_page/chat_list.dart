@@ -17,7 +17,7 @@ class ChatList extends StatefulWidget {
 }
 
 class _ChatListState extends State<ChatList> {
-  Widget messageLitTile(int index) {
+  Widget messageLitTile(int index, String userId) {
     final MessageEntity? message = widget.chats[index].groupchat != null
         ? widget.chats[index].groupchat!.latestMessage
         : widget.chats[index].event != null
@@ -77,10 +77,7 @@ class _ChatListState extends State<ChatList> {
           style: Theme.of(context).textTheme.titleMedium,
         ),
       ),
-      trailing: message?.readBy == null ||
-              message!.readBy.contains(
-                BlocProvider.of<AuthCubit>(context).state.currentUser.id,
-              )
+      trailing: message?.readBy == null || message!.readBy.contains(userId)
           ? null
           : Container(
               width: 8,
@@ -149,13 +146,18 @@ class _ChatListState extends State<ChatList> {
   @override
   Widget build(BuildContext context) {
     // doesnt need load more because all loaded on initial
-    return SliverList(
-      delegate: SliverChildBuilderDelegate(
-        (context, index) {
-          return messageLitTile(index);
-        },
-        childCount: widget.chats.length,
-      ),
+    return BlocBuilder<AuthCubit, AuthState>(
+      buildWhen: (p, c) => p.currentUser.id != c.currentUser.id,
+      builder: (context, state) {
+        return SliverList(
+          delegate: SliverChildBuilderDelegate(
+            (context, index) {
+              return messageLitTile(index, state.currentUser.id);
+            },
+            childCount: widget.chats.length,
+          ),
+        );
+      },
     );
   }
 }
