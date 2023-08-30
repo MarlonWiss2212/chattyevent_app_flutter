@@ -1,6 +1,8 @@
 import 'dart:io';
+import 'package:chattyevent_app_flutter/core/utils/failure_helper.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/device/permission_repository.dart';
 import 'package:dartz/dartz.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
@@ -96,15 +98,24 @@ class ImagePickerUseCases {
   Future<Either<NotificationAlert, File>> convertImageToJpgAndScaleTo720p({
     required File file,
   }) async {
-    final imgOrAlert = await imagePickerRepository.fileToImage(file: file);
-    return await imgOrAlert.fold(
-      (alert) => Left(alert),
-      (img) async {
-        return await imagePickerRepository.convertPngToJpeg(
-          image: img,
-          oldPath: file.path,
-        );
-      },
-    );
+    try {
+      final XFile? result = await FlutterImageCompress.compressAndGetFile(
+        file.path,
+        Uri.parse(file.path).resolve(".jpeg").toString(),
+        quality: 60,
+        minHeight: 720,
+        minWidth: 720,
+        format: CompressFormat.jpeg,
+      );
+      if (result == null) {
+        return Left(NotificationAlert(
+          title: "Fehler beim Konvertieren",
+          message: "Fehler beim Konvertieren der File zu einem Bild",
+        ));
+      }
+      return Right(File(result.path));
+    } catch (e) {
+      return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
+    }
   }
 }

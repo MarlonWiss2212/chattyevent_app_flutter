@@ -80,8 +80,8 @@ dependencies:
   google_maps_flutter: ^2.4.1
   flutter_cache_manager: ^3.3.1
   cached_network_image: ^3.2.3
-  image: ^4.0.17
   blur: ^3.1.0
+  flutter_image_compress: ^2.0.4
 
 dev_dependencies:
   flutter_test:
