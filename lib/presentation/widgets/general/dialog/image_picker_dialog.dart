@@ -8,12 +8,14 @@ import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 
 class ImagePickerDialog extends StatelessWidget {
-  final void Function(File newImage) imageChanged;
+  final void Function(File? newImage) imageChanged;
+  final bool removeImageOption;
   final double? ratioX;
   final double? ratioY;
   const ImagePickerDialog({
     super.key,
     required this.imageChanged,
+    required this.removeImageOption,
     this.ratioX,
     this.ratioY,
   });
@@ -88,6 +90,27 @@ class ImagePickerDialog extends StatelessWidget {
               ),
             ),
           ),
+          if (removeImageOption) ...{
+            InkWell(
+              borderRadius: BorderRadius.circular(8),
+              onTap: () async {
+                imageChanged(null);
+              },
+              child: Ink(
+                padding: const EdgeInsets.all(10),
+                child: Row(
+                  children: [
+                    const Icon(Icons.close, size: 32),
+                    const SizedBox(width: 32),
+                    Text(
+                      "Bild entfernen",
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          }
         ],
       ),
     );

@@ -19,6 +19,8 @@ class PrivateEventTabInfoEventEndDate extends StatelessWidget {
       firstDate: currentDate,
       lastDate: currentDate.add(const Duration(days: 3650)),
     );
+    if (newDate == null) return;
+
     TimeOfDay? newTime = await showTimePicker(
       context: context,
       initialTime: TimeOfDay(
@@ -27,7 +29,7 @@ class PrivateEventTabInfoEventEndDate extends StatelessWidget {
       ),
     );
 
-    if (newDate == null || newTime == null) return;
+    if (newTime == null) return;
     BlocProvider.of<CurrentEventCubit>(context).updateCurrentEvent(
       updateEventDto: UpdateEventDto(
         eventEndDate: DateTime(
@@ -71,13 +73,33 @@ class PrivateEventTabInfoEventEndDate extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  Text(
-                    state.event.eventEndDate != null
-                        ? DateFormat.yMd()
-                            .add_jm()
-                            .format(state.event.eventEndDate!)
-                        : "",
-                  )
+                  if (state.event.eventEndDate != null) ...{
+                    Row(
+                      children: [
+                        Text(
+                          DateFormat.yMd().add_jm().format(
+                                state.event.eventEndDate!,
+                              ),
+                        ),
+                        if (state.currentUserAllowedWithPermission(
+                          permissionCheckValue:
+                              state.event.permissions?.changeDate,
+                        )) ...[
+                          const SizedBox(width: 8),
+                          IconButton(
+                            onPressed: () =>
+                                BlocProvider.of<CurrentEventCubit>(context)
+                                    .updateCurrentEvent(
+                              updateEventDto: UpdateEventDto(
+                                removeEventEndDate: true,
+                              ),
+                            ),
+                            icon: const Icon(Icons.close),
+                          ),
+                        ]
+                      ],
+                    ),
+                  }
                 ],
               ),
             ),

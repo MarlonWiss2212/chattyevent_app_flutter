@@ -20,34 +20,65 @@ class EventTabInfoCoverImage extends StatelessWidget {
         return ImagePickerDialog(
           ratioX: 4,
           ratioY: 3,
+          removeImageOption: true,
           imageChanged: (newImage) async {
-            await showDialog(
-              context: context1,
-              builder: (c) {
-                return AcceptDeclineDialog(
-                  title: "Bild speichern",
-                  message: "Möchtest du das Bild als Cover Bild nehmen",
-                  onNoPress: () {
-                    Navigator.of(c).pop();
-                    Navigator.of(context1).pop();
-                  },
-                  onYesPress: () {
-                    BlocProvider.of<CurrentEventCubit>(context)
-                        .updateCurrentEvent(
-                      updateEventDto: UpdateEventDto(
-                        updateCoverImage: newImage,
-                      ),
-                    )
-                        .then(
-                      (value) {
-                        Navigator.of(c).pop();
-                        Navigator.of(context1).pop();
-                      },
-                    );
-                  },
-                );
-              },
-            );
+            if (newImage == null) {
+              await showDialog(
+                context: context1,
+                builder: (c) {
+                  return AcceptDeclineDialog(
+                    title: "Bild Löschen",
+                    message: "Möchtest du das Cover Bild löschen",
+                    onNoPress: () {
+                      Navigator.of(c).pop();
+                      Navigator.of(context1).pop();
+                    },
+                    onYesPress: () {
+                      BlocProvider.of<CurrentEventCubit>(context)
+                          .updateCurrentEvent(
+                        updateEventDto: UpdateEventDto(
+                          removeCoverImage: true,
+                        ),
+                      )
+                          .then(
+                        (value) {
+                          Navigator.of(c).pop();
+                          Navigator.of(context1).pop();
+                        },
+                      );
+                    },
+                  );
+                },
+              );
+            } else {
+              await showDialog(
+                context: context1,
+                builder: (c) {
+                  return AcceptDeclineDialog(
+                    title: "Bild speichern",
+                    message: "Möchtest du das Bild als Cover Bild nehmen",
+                    onNoPress: () {
+                      Navigator.of(c).pop();
+                      Navigator.of(context1).pop();
+                    },
+                    onYesPress: () {
+                      BlocProvider.of<CurrentEventCubit>(context)
+                          .updateCurrentEvent(
+                        updateEventDto: UpdateEventDto(
+                          updateCoverImage: newImage,
+                        ),
+                      )
+                          .then(
+                        (value) {
+                          Navigator.of(c).pop();
+                          Navigator.of(context1).pop();
+                        },
+                      );
+                    },
+                  );
+                },
+              );
+            }
           },
         );
       },

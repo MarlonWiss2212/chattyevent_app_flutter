@@ -20,34 +20,61 @@ class ProfilePageCircleImage extends StatelessWidget {
         return ImagePickerDialog(
           ratioX: 1,
           ratioY: 1,
+          removeImageOption: true,
           imageChanged: (newImage) async {
-            await showDialog(
-              context: context1,
-              builder: (c) {
-                return AcceptDeclineDialog(
-                  title: "Bild speichern",
-                  message: "Möchtest du das Bild als Profilbild nehmen",
-                  onNoPress: () {
-                    Navigator.of(c).pop();
-                    Navigator.of(context1).pop();
-                  },
-                  onYesPress: () {
-                    BlocProvider.of<ProfilePageCubit>(context)
-                        .updateUser(
-                      updateUserDto: UpdateUserDto(
-                        updateProfileImage: newImage,
-                      ),
-                    )
-                        .then(
-                      (value) {
-                        Navigator.of(c).pop();
-                        Navigator.of(context1).pop();
-                      },
-                    );
-                  },
-                );
-              },
-            );
+            if (newImage == null) {
+              await showDialog(
+                context: context1,
+                builder: (c) {
+                  return AcceptDeclineDialog(
+                    title: "Bild Löschen",
+                    message: "Möchtest du das Profilbild löschen",
+                    onNoPress: () {
+                      Navigator.of(c).pop();
+                      Navigator.of(context1).pop();
+                    },
+                    onYesPress: () {
+                      BlocProvider.of<ProfilePageCubit>(context)
+                          .deleteProfileImage()
+                          .then(
+                        (value) {
+                          Navigator.of(c).pop();
+                          Navigator.of(context1).pop();
+                        },
+                      );
+                    },
+                  );
+                },
+              );
+            } else {
+              await showDialog(
+                context: context1,
+                builder: (c) {
+                  return AcceptDeclineDialog(
+                    title: "Bild speichern",
+                    message: "Möchtest du das Bild als Profilbild nehmen",
+                    onNoPress: () {
+                      Navigator.of(c).pop();
+                      Navigator.of(context1).pop();
+                    },
+                    onYesPress: () {
+                      BlocProvider.of<ProfilePageCubit>(context)
+                          .updateUser(
+                        updateUserDto: UpdateUserDto(
+                          updateProfileImage: newImage,
+                        ),
+                      )
+                          .then(
+                        (value) {
+                          Navigator.of(c).pop();
+                          Navigator.of(context1).pop();
+                        },
+                      );
+                    },
+                  );
+                },
+              );
+            }
           },
         );
       },

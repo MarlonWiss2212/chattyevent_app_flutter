@@ -151,7 +151,8 @@ class AddEventCubit extends Cubit<AddEventState> {
   Future getCalendarTimeUsers() async {
     if ((state.selectedGroupchat == null &&
             state.privateEventUsersDto.isEmpty) ||
-        (state.eventDate == null)) {
+        state.eventDate == null) {
+      emitState(calendarTimeUsers: []);
       return;
     }
     emitState(loadingCalendarTimeUsers: true);
@@ -184,6 +185,7 @@ class AddEventCubit extends Cubit<AddEventState> {
     String? title,
     String? description,
     File? coverImage,
+    bool removeCoverImage = false,
     List<CreateEventUserFromEventDtoWithUserEntity>? privateEventUsersDto,
     GroupchatEntity? selectedGroupchat,
     bool resetSelectedGroupchat = false,
@@ -213,7 +215,7 @@ class AddEventCubit extends Cubit<AddEventState> {
       privateEventUsersDto: privateEventUsersDto ?? state.privateEventUsersDto,
       title: title ?? state.title,
       description: description ?? state.description,
-      coverImage: coverImage ?? state.coverImage,
+      coverImage: removeCoverImage ? null : coverImage ?? state.coverImage,
       selectedGroupchat: resetSelectedGroupchat
           ? null
           : selectedGroupchat ?? state.selectedGroupchat,

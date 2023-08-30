@@ -6,9 +6,11 @@ class UpdateGroupchatDto {
   final String? description;
   final UpdateGroupchatPermissionsDto? permissions;
   final File? updateProfileImage;
+  final bool? removeProfileImage;
 
   UpdateGroupchatDto({
     this.title,
+    this.removeProfileImage,
     this.permissions,
     this.updateProfileImage,
     this.description,
@@ -19,6 +21,9 @@ class UpdateGroupchatDto {
 
     if (title != null) {
       map.addAll({'title': title!});
+    }
+    if (removeProfileImage != null) {
+      map.addAll({'removeProfileImage': removeProfileImage});
     }
     if (permissions != null) {
       map.addAll({'permissions': permissions!.toMap()});

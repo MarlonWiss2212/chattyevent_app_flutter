@@ -16,7 +16,7 @@ class GraphQlUtils {
       subProtocol: GraphQLProtocol.graphqlTransportWs,
       config: SocketClientConfig(
         inactivityTimeout: const Duration(hours: 3),
-        autoReconnect: false,
+        autoReconnect: true,
         initialPayload: {
           'authorization': 'Bearer $token',
         },

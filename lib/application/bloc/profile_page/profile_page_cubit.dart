@@ -209,6 +209,20 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
     emitState(user: authCubit.state.currentUser);
   }
 
+  Future deleteProfileImage() async {
+    if (state.user.id != authCubit.state.currentUser.id) {
+      notificationCubit.newAlert(
+        notificationAlert: NotificationAlert(
+          title: "Update User Fehler",
+          message: "Du kannst andere User nicht ändern",
+        ),
+      );
+      return;
+    }
+    await authCubit.deleteProfileImage();
+    emitState(user: authCubit.state.currentUser);
+  }
+
   Future acceptFollowRequest({required String userId}) async {
     if (state.user.id != authCubit.state.currentUser.id) {
       notificationCubit.newAlert(

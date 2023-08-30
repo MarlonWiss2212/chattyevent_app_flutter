@@ -13,6 +13,8 @@ class UpdateEventDto {
   final UpdateEventPermissionsDto? permissions;
   final CreateEventLocationDto? eventLocation;
   final bool? removeEventLocation;
+  final bool? removeEventEndDate;
+  final bool? removeCoverImage;
 
   UpdateEventDto({
     this.title,
@@ -24,6 +26,8 @@ class UpdateEventDto {
     this.eventEndDate,
     this.removeEventLocation,
     this.eventLocation,
+    this.removeEventEndDate,
+    this.removeCoverImage,
   });
 
   Map<dynamic, dynamic> toMap() {
@@ -37,6 +41,9 @@ class UpdateEventDto {
     }
     if (description != null) {
       map.addAll({"description": description});
+    }
+    if (removeCoverImage != null) {
+      map.addAll({"removeCoverImage": removeCoverImage});
     }
     if (status != null) {
       map.addAll({"status": status!.value});
@@ -54,6 +61,9 @@ class UpdateEventDto {
     }
     if (eventEndDate != null) {
       map.addAll({'eventEndDate': eventEndDate!.toUtc().toIso8601String()});
+    }
+    if (removeEventEndDate != null) {
+      map.addAll({"removeEventEndDate": removeEventEndDate});
     }
 
     return map;

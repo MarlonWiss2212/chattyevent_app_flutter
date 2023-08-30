@@ -264,11 +264,28 @@ class AuthCubit extends Cubit<AuthState> {
         emitState(userException: alert.exception);
       },
       (user) {
-        final newUser = UserEntity.merge(
-          newEntity: user,
-          oldEntity: state.currentUser,
-        );
-        emitState(currentUser: newUser);
+        emitState(currentUser: user);
+      },
+    );
+  }
+
+  Future deleteProfileImage() async {
+    if (userUseCases == null) {
+      return;
+    }
+    final userOrFailure = await userUseCases!.updateUserViaApi(
+      updateUserDto: UpdateUserDto(
+        removeProfileImage: true,
+      ),
+    );
+
+    userOrFailure.fold(
+      (alert) {
+        notificationCubit.newAlert(notificationAlert: alert);
+        emitState(userException: alert.exception);
+      },
+      (user) {
+        emitState(currentUser: user);
       },
     );
   }

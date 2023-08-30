@@ -99,6 +99,7 @@ class AddGroupchatCubit extends Cubit<AddGroupchatState> {
   void emitState({
     String? title,
     File? profileImage,
+    bool removeProfileImage = false,
     String? description,
     CreateGroupchatPermissionsDto? permissions,
     List<CreateGroupchatUserFromCreateGroupchatDtoWithUserEntity>?
@@ -110,7 +111,8 @@ class AddGroupchatCubit extends Cubit<AddGroupchatState> {
     emit(AddGroupchatState(
       subtitle: subtitle ?? state.subtitle,
       title: title ?? state.title,
-      profileImage: profileImage ?? state.profileImage,
+      profileImage:
+          removeProfileImage ? null : profileImage ?? state.profileImage,
       permissions: permissions ?? state.permissions,
       description: description ?? state.description,
       groupchatUsers: groupchatUsers ?? state.groupchatUsers,

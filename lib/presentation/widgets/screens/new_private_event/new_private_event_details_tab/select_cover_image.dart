@@ -4,7 +4,7 @@ import 'package:chattyevent_app_flutter/presentation/widgets/general/dialog/imag
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 
 class SelectCoverImage extends StatelessWidget {
-  final void Function(File newImage) imageChanged;
+  final void Function(File? newImage) imageChanged;
   final File? image;
   const SelectCoverImage({
     super.key,
@@ -29,6 +29,7 @@ class SelectCoverImage extends StatelessWidget {
             return ImagePickerDialog(
               ratioX: 4,
               ratioY: 3,
+              removeImageOption: true,
               imageChanged: (newImage) {
                 imageChanged(newImage);
                 Navigator.of(context).pop();

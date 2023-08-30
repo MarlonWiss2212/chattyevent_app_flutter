@@ -30,9 +30,15 @@ class _NewGroupchatDetailsTabState extends State<NewGroupchatDetailsTab> {
                 const SizedBox(height: 20),
                 SelectCircleImage(
                   imageChanged: (newImage) {
-                    BlocProvider.of<AddGroupchatCubit>(context).emitState(
-                      profileImage: newImage,
-                    );
+                    if (newImage == null) {
+                      BlocProvider.of<AddGroupchatCubit>(context).emitState(
+                        removeProfileImage: true,
+                      );
+                    } else {
+                      BlocProvider.of<AddGroupchatCubit>(context).emitState(
+                        profileImage: newImage,
+                      );
+                    }
                   },
                   image: state.profileImage,
                 ),

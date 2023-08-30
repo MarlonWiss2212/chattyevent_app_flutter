@@ -18,6 +18,7 @@ class EventTabInfoEventDate extends StatelessWidget {
       firstDate: currentDate,
       lastDate: currentDate.add(const Duration(days: 3650)),
     );
+    if (newDate == null) return;
     TimeOfDay? newTime = await showTimePicker(
       context: context,
       initialTime: TimeOfDay(
@@ -26,7 +27,7 @@ class EventTabInfoEventDate extends StatelessWidget {
       ),
     );
 
-    if (newDate == null || newTime == null) return;
+    if (newTime == null) return;
     BlocProvider.of<CurrentEventCubit>(context).updateCurrentEvent(
       updateEventDto: UpdateEventDto(
         eventDate: DateTime(

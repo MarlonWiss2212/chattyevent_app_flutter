@@ -38,9 +38,15 @@ class _NewPrivateEventDetailsTabState extends State<NewPrivateEventDetailsTab> {
             children: [
               SelectCoverImage(
                 imageChanged: (newImage) {
-                  BlocProvider.of<AddEventCubit>(context).emitState(
-                    coverImage: newImage,
-                  );
+                  if (newImage == null) {
+                    BlocProvider.of<AddEventCubit>(context).emitState(
+                      removeCoverImage: true,
+                    );
+                  } else {
+                    BlocProvider.of<AddEventCubit>(context).emitState(
+                      coverImage: newImage,
+                    );
+                  }
                 },
                 image: state.coverImage,
               ),

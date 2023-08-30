@@ -5,7 +5,7 @@ import 'package:chattyevent_app_flutter/presentation/widgets/general/circle_imag
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 
 class SelectCircleImage extends StatelessWidget {
-  final void Function(File newImage) imageChanged;
+  final void Function(File? newImage) imageChanged;
   final File? image;
   const SelectCircleImage({
     super.key,
@@ -26,6 +26,7 @@ class SelectCircleImage extends StatelessWidget {
             return ImagePickerDialog(
               ratioX: 1,
               ratioY: 1,
+              removeImageOption: true,
               imageChanged: (newImage) {
                 imageChanged(newImage);
                 Navigator.of(context).pop();

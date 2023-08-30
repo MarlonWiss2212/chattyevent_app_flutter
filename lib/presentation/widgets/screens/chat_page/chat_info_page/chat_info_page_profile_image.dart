@@ -19,33 +19,65 @@ class ChatInfoPageProfileImage extends StatelessWidget {
         return ImagePickerDialog(
           ratioX: 4,
           ratioY: 3,
+          removeImageOption: true,
           imageChanged: (newImage) async {
-            await showDialog(
-              context: context1,
-              builder: (c) {
-                return AcceptDeclineDialog(
-                  title: "Bild speichern",
-                  message: "Möchtest du das Bild als Gruppenchat Bild nehmen",
-                  onNoPress: () {
-                    Navigator.of(c).pop();
-                    Navigator.of(context1).pop();
-                  },
-                  onYesPress: () =>
-                      BlocProvider.of<CurrentGroupchatCubit>(context)
-                          .updateCurrentGroupchatViaApi(
-                    updateGroupchatDto: UpdateGroupchatDto(
-                      updateProfileImage: newImage,
-                    ),
-                  )
-                          .then(
-                    (value) {
+            if (newImage == null) {
+              await showDialog(
+                context: context1,
+                builder: (c) {
+                  return AcceptDeclineDialog(
+                    title: "Bild Löschen",
+                    message: "Möchtest du das Gruppenchat Bild löschen",
+                    onNoPress: () {
                       Navigator.of(c).pop();
                       Navigator.of(context1).pop();
                     },
-                  ),
-                );
-              },
-            );
+                    onYesPress: () {
+                      BlocProvider.of<CurrentGroupchatCubit>(context)
+                          .updateCurrentGroupchatViaApi(
+                        updateGroupchatDto: UpdateGroupchatDto(
+                          removeProfileImage: true,
+                        ),
+                      )
+                          .then(
+                        (value) {
+                          Navigator.of(c).pop();
+                          Navigator.of(context1).pop();
+                        },
+                      );
+                    },
+                  );
+                },
+              );
+            } else {
+              await showDialog(
+                context: context1,
+                builder: (c) {
+                  return AcceptDeclineDialog(
+                    title: "Bild speichern",
+                    message: "Möchtest du das Bild als Gruppenchat Bild nehmen",
+                    onNoPress: () {
+                      Navigator.of(c).pop();
+                      Navigator.of(context1).pop();
+                    },
+                    onYesPress: () {
+                      BlocProvider.of<CurrentGroupchatCubit>(context)
+                          .updateCurrentGroupchatViaApi(
+                        updateGroupchatDto: UpdateGroupchatDto(
+                          updateProfileImage: newImage,
+                        ),
+                      )
+                          .then(
+                        (value) {
+                          Navigator.of(c).pop();
+                          Navigator.of(context1).pop();
+                        },
+                      );
+                    },
+                  );
+                },
+              );
+            }
           },
         );
       },
