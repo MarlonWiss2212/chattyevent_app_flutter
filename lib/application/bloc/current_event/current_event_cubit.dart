@@ -467,10 +467,13 @@ class CurrentEventCubit extends Cubit<CurrentEventState> {
     );
   }
 
-  MessageEntity addMessage({required MessageEntity message}) {
+  MessageEntity addMessage({
+    required MessageEntity message,
+    bool replaceOrAddInOtherCubits = false,
+  }) {
     emitState(
       messages: List.from(state.messages)..add(message),
-      replaceOrAddInOtherCubits: false,
+      replaceOrAddInOtherCubits: replaceOrAddInOtherCubits,
     );
     return message;
   }

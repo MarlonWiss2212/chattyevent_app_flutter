@@ -74,7 +74,7 @@ class AddMessageCubit extends Cubit<AddMessageState> {
     final Either<NotificationAlert, MessageEntity> messageOrFailure =
         await messageUseCases.createMessageViaApi(
       createMessageDto: CreateMessageDto(
-        message: state.message ?? "",
+        message: state.message,
         groupchatTo: state.groupchatTo,
         userTo: state.userTo,
         voiceMessage: state.voiceMessage,
@@ -107,11 +107,19 @@ class AddMessageCubit extends Cubit<AddMessageState> {
         ));
         cubitToAddMessageTo.fold(
           (either) => either.fold(
-            (privateEventCubit) =>
-                privateEventCubit.addMessage(message: message),
-            (groupchatCubit) => groupchatCubit.addMessage(message: message),
+            (privateEventCubit) => privateEventCubit.addMessage(
+              message: message,
+              replaceOrAddInOtherCubits: true,
+            ),
+            (groupchatCubit) => groupchatCubit.addMessage(
+              message: message,
+              replaceOrAddInOtherCubits: true,
+            ),
           ),
-          (profileCubit) => profileCubit.addMessage(message: message),
+          (profileCubit) => profileCubit.addMessage(
+            message: message,
+            replaceOrAddInOtherCubits: true,
+          ),
         );
       },
     );

@@ -1,4 +1,3 @@
-import 'package:chattyevent_app_flutter/core/utils/encryption_utils.dart';
 import 'package:chattyevent_app_flutter/domain/entities/message/message_location_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/message/message_to_react_to_entity.dart';
 import 'package:chattyevent_app_flutter/infastructure/models/message/message_location_model.dart';
@@ -53,9 +52,7 @@ class MessageToReactToModel extends MessageToReactToEntity {
 
     return MessageToReactToModel(
       id: json['_id'],
-      message: json['message'] != null
-          ? EncryptionUtils.decrypt(encryptedText: json['message'])
-          : null,
+      message: json['message'],
       fileLinks: fileLinks,
       voiceMessageLink: json['voiceMessageLink'],
       currentLocation: json['currentLocation'] != null

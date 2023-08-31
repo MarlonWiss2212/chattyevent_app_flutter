@@ -401,7 +401,10 @@ class CurrentGroupchatCubit extends Cubit<CurrentGroupchatState> {
     );
   }
 
-  MessageEntity addMessage({required MessageEntity message}) {
+  MessageEntity addMessage({
+    required MessageEntity message,
+    bool replaceOrAddInOtherCubits = false,
+  }) {
     emit(
       CurrentGroupchatState.merge(
         messages: List.from(state.messages)..add(message),
