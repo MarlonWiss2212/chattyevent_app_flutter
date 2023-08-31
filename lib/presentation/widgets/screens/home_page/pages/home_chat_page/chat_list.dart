@@ -87,15 +87,15 @@ class _ChatListState extends State<ChatList> {
                 color: Theme.of(context).colorScheme.primary,
               ),
             ),
-      subtitle: message != null
+      subtitle: message != null && message.message != null
           ? Text(
               "${message.message}",
               softWrap: true,
               overflow: TextOverflow.ellipsis,
               maxLines: 1,
             )
-          : const Text(
-              "Keine Nachricht",
+          : Text(
+              message == null ? "Keine Nachricht" : "Keine Textnachricht",
               softWrap: true,
               overflow: TextOverflow.ellipsis,
             ),
