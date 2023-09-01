@@ -169,6 +169,11 @@ class UserRepositoryImpl implements UserRepository {
             createdAt
             profileImageLink
             updatedAt
+            userRelationCounts {
+              followerCount
+              followedCount
+              followRequestCount
+            }
             permissions {
               groupchatAddMe {
                 permission

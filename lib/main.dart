@@ -9,6 +9,7 @@ import 'package:chattyevent_app_flutter/scroll_bahaviour.dart';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
@@ -148,11 +149,9 @@ class _AppState extends State<App> {
                 title: 'ChattyEvent',
                 routerConfig: serviceLocator<AppRouter>().config(),
                 builder: (context, widget) {
-                  return SafeArea(
-                    child: ScrollConfiguration(
-                      behavior: const ScrollBehaviorModified(),
-                      child: widget!,
-                    ),
+                  return ScrollConfiguration(
+                    behavior: const ScrollBehaviorModified(),
+                    child: widget!,
                   );
                 },
                 theme: ThemeData(
