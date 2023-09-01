@@ -8,16 +8,12 @@ import 'package:chattyevent_app_flutter/application/bloc/profile_page/profile_pa
 
 @RoutePage()
 class ProfileUserRelationsTabPage extends StatelessWidget {
-  final String? userId;
-
-  const ProfileUserRelationsTabPage({
-    super.key,
-    @PathParam('id') this.userId,
-  });
+  const ProfileUserRelationsTabPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AuthCubit, AuthState>(
+      buildWhen: (p, c) => p.currentUser.id != c.currentUser.id,
       builder: (context, authState) {
         return BlocBuilder<ProfilePageCubit, ProfilePageState>(
           buildWhen: (p, c) => p.user.id != c.user.id,
@@ -27,8 +23,7 @@ class ProfileUserRelationsTabPage extends StatelessWidget {
                 // had route before
                 const ProfileFollowerTab(),
                 const ProfileFollowedTab(),
-                if (state.user.id == authState.currentUser.id ||
-                    userId == null) ...{
+                if (state.user.id == authState.currentUser.id) ...{
                   const ProfileFollowRequestsTab(),
                 }
               ],
@@ -42,7 +37,7 @@ class ProfileUserRelationsTabPage extends StatelessWidget {
                       },
                       builder: (context, state) {
                         return Hero(
-                          tag: "${userId ?? state.user.id} username",
+                          tag: "${state.user.id} username",
                           child: Text(
                             state.user.username ?? "",
                             style: Theme.of(context).textTheme.titleLarge,
@@ -63,8 +58,7 @@ class ProfileUserRelationsTabPage extends StatelessWidget {
                             const Tab(
                                 text: "Gefolgt",
                                 icon: Icon(Icons.person_2_outlined)),
-                            if (state.user.id == authState.currentUser.id ||
-                                userId == null) ...{
+                            if (state.user.id == authState.currentUser.id) ...{
                               const Tab(
                                 text: "Anfragen",
                                 icon: Icon(Icons.front_hand),

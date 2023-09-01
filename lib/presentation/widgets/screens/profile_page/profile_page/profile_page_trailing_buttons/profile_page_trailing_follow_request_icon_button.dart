@@ -11,15 +11,16 @@ class ProfilePageTrailingFollowRequestIconButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AuthCubit, AuthState>(
+      buildWhen: (p, c) => p.currentUser.id != c.currentUser.id,
       builder: (context, authState) {
         return BlocBuilder<ProfilePageCubit, ProfilePageState>(
           builder: (context, state) {
             if (authState.currentUser.id == state.user.id) {
               return IconButton(
                 onPressed: () => AutoRouter.of(context).push(
-                  ProfileUserRelationsTabRoute(children: const [
-                    ProfileFollowRequestsTab(),
-                  ]),
+                  const ProfileUserRelationsTabRoute(
+                    children: [ProfileFollowRequestsTab()],
+                  ),
                 ),
                 icon: Badge(
                   isLabelVisible:
