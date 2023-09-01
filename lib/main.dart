@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:chattyevent_app_flutter/application/bloc/imprint/imprint_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/introduction/introduction_cubit.dart';
 import 'package:chattyevent_app_flutter/core/utils/intl_utils.dart';
 import 'package:chattyevent_app_flutter/core/utils/material_theme_utils.dart';
@@ -40,9 +41,10 @@ Future<void> main() async {
   runApp(
     MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => serviceLocator<NotificationCubit>()),
-        BlocProvider(create: (context) => serviceLocator<AuthCubit>()),
-        BlocProvider(create: (context) => serviceLocator<IntroductionCubit>()),
+        BlocProvider(create: (_) => serviceLocator<NotificationCubit>()),
+        BlocProvider(create: (_) => serviceLocator<AuthCubit>()),
+        BlocProvider(create: (_) => serviceLocator<ImprintCubit>()),
+        BlocProvider(create: (_) => serviceLocator<IntroductionCubit>()),
       ],
       child: Builder(
         builder: (context) {

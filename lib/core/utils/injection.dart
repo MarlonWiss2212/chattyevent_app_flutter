@@ -1,5 +1,9 @@
 import 'package:audioplayers/audioplayers.dart';
+import 'package:chattyevent_app_flutter/application/bloc/chat/chat_cubit.dart';
+import 'package:chattyevent_app_flutter/application/bloc/home_page/home_event/home_event_cubit.dart';
+import 'package:chattyevent_app_flutter/application/bloc/imprint/imprint_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/introduction/introduction_cubit.dart';
+import 'package:chattyevent_app_flutter/application/bloc/message_stream/message_stream_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:chattyevent_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/ad_mob_repository.dart';
@@ -108,6 +112,12 @@ class InjectionUtils {
     );
     serviceLocator.registerLazySingleton<NotificationCubit>(
       () => NotificationCubit(),
+    );
+    serviceLocator.registerLazySingleton<ImprintCubit>(
+      () => ImprintCubit(
+        imprintUseCases: serviceLocator(),
+        notificationCubit: serviceLocator(),
+      ),
     );
 
     //usecases
@@ -302,9 +312,33 @@ class InjectionUtils {
     );
   }
 
-  static void reinitializeAuthenticatedLocator() {
+  static Future<void> reinitializeAuthenticatedLocator() async {
     // TODO make this async
-    authenticatedLocator.reset(dispose: false);
+    await authenticatedLocator.reset(dispose: true);
+
+    // cubits
+    authenticatedLocator.registerLazySingleton<ChatCubit>(
+      () => ChatCubit(
+        chatUseCases: authenticatedLocator(),
+        notificationCubit: serviceLocator(),
+        authCubit: serviceLocator(),
+        messageStreamCubit: authenticatedLocator(),
+      ),
+    );
+    authenticatedLocator.registerLazySingleton<HomeEventCubit>(
+      () => HomeEventCubit(
+        eventUseCases: authenticatedLocator(),
+        notificationCubit: serviceLocator(),
+      ),
+    );
+    authenticatedLocator.registerLazySingleton<MessageStreamCubit>(
+      () => MessageStreamCubit(
+        messageUseCases: authenticatedLocator(),
+        notificationCubit: serviceLocator(),
+      ),
+    );
+
+    print("sdnioenjio");
 
     // use cases
     authenticatedLocator.registerLazySingleton<CalendarUseCases>(
