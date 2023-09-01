@@ -338,8 +338,6 @@ class InjectionUtils {
       ),
     );
 
-    print("sdnioenjio");
-
     // use cases
     authenticatedLocator.registerLazySingleton<CalendarUseCases>(
       () => CalendarUseCases(calendarRepository: authenticatedLocator()),

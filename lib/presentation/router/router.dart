@@ -426,6 +426,7 @@ class AppRouter extends $AppRouter {
             page: ProfileUserRelationsTabRoute.page,
             guards: [authGuard],
             path: 'user-relations',
+            fullscreenDialog: true,
             children: [
               AutoRoute(
                 page: ProfileFollowerTab.page,

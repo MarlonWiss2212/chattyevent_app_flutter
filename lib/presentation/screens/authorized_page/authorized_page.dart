@@ -21,7 +21,7 @@ class _AuthorizedPageState extends State<AuthorizedPage> {
   void initState() {
     //TODO optimize this and only refresh when sending new request
     timer = Timer.periodic(
-      const Duration(seconds: 10),
+      const Duration(minutes: 60, seconds: 1),
       (timer) => BlocProvider.of<AuthCubit>(context).refreshAuthToken(),
     );
     super.initState();

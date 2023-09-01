@@ -154,7 +154,7 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<Either<NotificationAlert, String>> refreshToken() async {
     try {
-      final token = await auth.currentUser?.getIdToken();
+      final token = await auth.currentUser?.getIdToken(false);
       if (token == null) {
         return Left(
           NotificationAlert(
@@ -175,8 +175,8 @@ class AuthRepositoryImpl implements AuthRepository {
       if (auth.currentUser == null) {
         return Left(
           NotificationAlert(
-            title: "Fehler Refresh Token",
-            message: "Fehler beim erneuern der Auth Daten",
+            title: "Fehler User",
+            message: "Fehler beim holen des Auth Users",
           ),
         );
       }
