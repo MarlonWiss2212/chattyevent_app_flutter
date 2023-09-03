@@ -84,10 +84,6 @@ class ChatMessageContainerMainContainer extends StatelessWidget {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(8.0),
                       child: CachedNetworkImage(
-                        memCacheWidth: 60,
-                        memCacheHeight: 60,
-                        maxHeightDiskCache: 60,
-                        maxWidthDiskCache: 60,
                         imageUrl: message.fileLinks![0],
                         cacheKey: message.fileLinks![0].split("?")[0],
                         fit: BoxFit.contain,
