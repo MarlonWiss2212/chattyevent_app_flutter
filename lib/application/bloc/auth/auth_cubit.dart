@@ -227,8 +227,8 @@ class AuthCubit extends Cubit<AuthState> {
     );
   }
 
-  Future refreshAuthToken() async {
-    final token = await authUseCases.refreshToken();
+  Future refreshAuthToken({bool force = false}) async {
+    final token = await authUseCases.refreshToken(force: force);
     token.fold(
       (alert) => notificationCubit.newAlert(notificationAlert: alert),
       (token) => token != state.token ? emitState(token: token) : null,

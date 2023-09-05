@@ -261,6 +261,7 @@ class InjectionUtils {
       ),
     );
 
+    // init this better for offline use
     final tokenOrFailure = await serviceLocator<AuthUseCases>().refreshToken();
     final String? token = tokenOrFailure.fold(
       (_) => null,
@@ -313,7 +314,6 @@ class InjectionUtils {
   }
 
   static Future<void> reinitializeAuthenticatedLocator() async {
-    // TODO make this async
     await authenticatedLocator.reset(dispose: true);
 
     // cubits
@@ -405,11 +405,14 @@ class InjectionUtils {
 
     // datasources
     authenticatedLocator.registerLazySingleton<GraphQlDatasource>(
-      () => GraphQlDatasourceImpl(
-        client: GraphQlUtils.getGraphQlClient(
-          token: serviceLocator<AuthCubit>().state.token,
-        ),
-      ),
+      () {
+        print(serviceLocator<AuthCubit>().state.token);
+        return GraphQlDatasourceImpl(
+          client: GraphQlUtils.getGraphQlClient(
+            token: serviceLocator<AuthCubit>().state.token,
+          ),
+        );
+      },
     );
   }
 }

@@ -152,9 +152,9 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<NotificationAlert, String>> refreshToken() async {
+  Future<Either<NotificationAlert, String>> refreshToken({bool? force}) async {
     try {
-      final token = await auth.currentUser?.getIdToken(false);
+      final token = await auth.currentUser?.getIdToken(force ?? false);
       if (token == null) {
         return Left(
           NotificationAlert(

@@ -115,8 +115,8 @@ class AuthUseCases {
     return await authRepository.refreshUser();
   }
 
-  Future<Either<NotificationAlert, String>> refreshToken() async {
-    return await authRepository.refreshToken();
+  Future<Either<NotificationAlert, String>> refreshToken({bool? force}) async {
+    return await authRepository.refreshToken(force: force);
   }
 
   Future<List<Either<NotificationAlert, Unit>>> logout() async {
