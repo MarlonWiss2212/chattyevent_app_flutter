@@ -52,4 +52,50 @@ class GroupchatModel extends GroupchatEntity {
       updatedAt: updatedAt,
     );
   }
+
+  static String groupchatFullQuery() {
+    return """
+      _id
+      title
+      description
+      profileImageLink
+      createdBy
+      createdAt
+      permissions {
+        changeTitle
+        changeDescription
+        changeProfileImage
+        createEventForGroupchat
+        addUsers
+      }
+    """;
+  }
+
+  static String groupchatLightQuery({required bool alsoLatestMessage}) {
+    return """
+    _id
+    profileImageLink
+    title
+    ${alsoLatestMessage ? """
+    latestMessage {
+      _id
+      readBy
+      message
+      messageToReactTo {
+        _id
+        readBy
+        message
+        fileLinks
+        groupchatTo
+        createdBy
+        createdAt
+      }
+      fileLinks
+      groupchatTo
+      createdBy
+      createdAt
+    }
+    """ : ""}
+    """;
+  }
 }

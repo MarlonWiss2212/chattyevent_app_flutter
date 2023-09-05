@@ -54,44 +54,7 @@ class EventRepositoryImpl implements EventRepository {
         """
         mutation CreateEvent(\$input: CreateEventInput!, \$coverImage: Upload) {
           createEvent(createEventInput: \$input, coverImage: \$coverImage) {
-            _id
-            type
-            privateEventData {
-              groupchatTo
-            }
-            title
-            description
-            status
-            coverImageLink
-            eventDate
-            eventEndDate
-            eventLocation {
-              geoJson {
-                type
-                coordinates
-              }
-              address {
-                zip
-                city
-                country
-                street
-                housenumber
-              }
-            }
-            permissions {
-              changeTitle
-              changeDescription
-              changeCoverImage
-              changeAddress
-              changeDate
-              changeStatus
-              addUsers
-              addShoppingListItem
-              updateShoppingListItem
-              deleteShoppingListItem
-            }
-            createdBy
-            createdAt
+            ${EventModel.eventFullQuery()}
           }
         }
       """,
@@ -120,44 +83,7 @@ class EventRepositoryImpl implements EventRepository {
         """
         query FindEvent(\$filter: FindOneEventInput!) {
           findEvent(filter: \$filter) {
-            _id
-            title
-            type
-            privateEventData {
-              groupchatTo
-            }
-            status
-            coverImageLink
-            description
-            eventLocation {
-              geoJson {
-                type
-                coordinates
-              }
-              address {
-                zip
-                city
-                country
-                street
-                housenumber
-              }
-            }
-            permissions {
-              changeTitle
-              changeDescription
-              changeCoverImage
-              changeAddress
-              changeDate
-              changeStatus
-              addUsers
-              addShoppingListItem
-              updateShoppingListItem
-              deleteShoppingListItem
-            }
-            eventDate
-            eventEndDate
-            createdBy
-            createdAt
+            ${EventModel.eventFullQuery()}
           }
         }
       """,
@@ -217,44 +143,7 @@ class EventRepositoryImpl implements EventRepository {
           '''}
           
           findEvent(filter: \$filter) {
-            _id
-            title
-            status
-            coverImageLink
-            description
-            eventLocation {
-              geoJson {
-                type
-                coordinates
-              }
-              address {
-                zip
-                city
-                country
-                street
-                housenumber
-              }
-            }
-            permissions {
-              changeTitle
-              changeDescription
-              changeCoverImage
-              changeAddress
-              changeDate
-              changeStatus
-              addUsers
-              addShoppingListItem
-              updateShoppingListItem
-              deleteShoppingListItem
-            }
-            eventDate
-            eventEndDate
-            type
-            privateEventData {
-              groupchatTo
-            }
-            createdBy
-            createdAt
+            ${EventModel.eventFullQuery()}
           }
 
           findEventLeftUsers(filter: \$findEventLeftUsersInput, limitOffsetInput: \$limitOffsetInput) {
@@ -372,22 +261,7 @@ class EventRepositoryImpl implements EventRepository {
       final response = await graphQlDatasource.query("""
         query FindEvents(\$filter: FindEventsInput, \$limitOffsetInput: LimitOffsetInput!) {
           findEvents(filter: \$filter, limitOffsetInput: \$limitOffsetInput) {
-            _id
-            status
-            title
-            type
-            privateEventData {
-              groupchatTo
-            }
-            eventDate
-            eventEndDate
-            eventLocation {
-              geoJson {
-                type
-                coordinates
-              }
-            }
-            coverImageLink
+            ${EventModel.eventLightQuery(alsoLatestMessage: true)}
           }
         }
       """, variables: {
@@ -437,44 +311,7 @@ class EventRepositoryImpl implements EventRepository {
         """
         mutation UpdateEvent(\$filter: FindOneEventInput!, \$updateEventInput: UpdateEventInput, \$updateCoverImage: Upload) {
           updateEvent(filter: \$filter, updateEventInput: \$updateEventInput, updateCoverImage: \$updateCoverImage) {
-            _id
-            title
-            status
-            coverImageLink
-            description
-            eventLocation {
-              geoJson {
-                type
-                coordinates
-              }
-              address {
-                zip
-                city
-                country
-                street
-                housenumber
-              }
-            }
-            permissions {
-              changeTitle
-              changeDescription
-              changeCoverImage
-              changeAddress
-              changeDate
-              changeStatus
-              addUsers
-              addShoppingListItem
-              updateShoppingListItem
-              deleteShoppingListItem
-            }
-            eventDate
-            eventEndDate
-            type
-            privateEventData {
-              groupchatTo
-            }
-            createdBy
-            createdAt
+            ${EventModel.eventFullQuery()}
           }
         }
       """,

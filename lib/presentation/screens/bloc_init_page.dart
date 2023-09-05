@@ -8,6 +8,7 @@ import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/chat/chat_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/home_page/home_event/home_event_cubit.dart';
 import 'package:chattyevent_app_flutter/core/utils/injection.dart';
+import 'package:chattyevent_app_flutter/domain/usecases/ad_mob_usecases.dart';
 
 @RoutePage()
 class BlocInitPage extends StatefulWidget {
@@ -18,6 +19,8 @@ class BlocInitPage extends StatefulWidget {
 }
 
 class _BlocInitPageState extends State<BlocInitPage> {
+  final AdMobUseCases adMobUseCases = serviceLocator<AdMobUseCases>();
+
   @override
   void initState() {
     final OneSignalUseCases oneSignalUseCases =
@@ -28,6 +31,11 @@ class _BlocInitPageState extends State<BlocInitPage> {
     oneSignalUseCases.setNotificationOpenedHandler(
       appRouter: serviceLocator<AppRouter>(),
     );
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await adMobUseCases.showAdMobPopUpIfRequired();
+    });
+
     super.initState();
   }
 

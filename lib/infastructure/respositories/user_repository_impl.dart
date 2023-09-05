@@ -28,55 +28,7 @@ class UserRepositoryImpl implements UserRepository {
         """
         query FindUser(\$filter: FindOneUserInput!) {
           findUser(filter: \$filter) {
-            username
-            _id
-            authId
-            createdAt      
-            profileImageLink
-            updatedAt
-            userRelationCounts {
-              followerCount
-              followedCount
-              followRequestCount
-            }
-            ${currentUser == true ? """
-            permissions {
-              groupchatAddMe {
-                permission
-                exceptUserIds
-                selectedUserIds
-              }
-              privateEventAddMe {
-                permission
-                exceptUserIds
-                selectedUserIds
-              }
-              calendarWatchIHaveTime {
-                permission
-                exceptUserIds
-                selectedUserIds
-              }
-            }
-            """ : """
-            myUserRelationToOtherUser {
-              _id
-              createdAt
-              updatedAt
-              status
-              followData {
-                followedUserAt
-              }
-            }
-            otherUserRelationToMyUser {
-              _id
-              createdAt
-              updatedAt
-              status
-              followData {
-                followedUserAt
-              }
-            }
-            """}
+            ${UserModel.userFullQuery(userIsCurrentUser: currentUser)}
           }
         }
         """,
@@ -163,34 +115,7 @@ class UserRepositoryImpl implements UserRepository {
         """
         mutation UpdateUser(\$updateUserInput: UpdateUserInput!, \$updateProfileImage: Upload) {
           updateUser(updateUserInput: \$updateUserInput, updateProfileImage: \$updateProfileImage) {
-            username
-            _id
-            authId
-            createdAt
-            profileImageLink
-            updatedAt
-            userRelationCounts {
-              followerCount
-              followedCount
-              followRequestCount
-            }
-            permissions {
-              groupchatAddMe {
-                permission
-                exceptUserIds
-                selectedUserIds
-              }
-              privateEventAddMe {
-                permission
-                exceptUserIds
-                selectedUserIds
-              }
-              calendarWatchIHaveTime {
-                permission
-                exceptUserIds
-                selectedUserIds
-              }
-            }
+            ${UserModel.userFullQuery(userIsCurrentUser: true)}
           }
         }
         """,

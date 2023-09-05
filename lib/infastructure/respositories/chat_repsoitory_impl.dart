@@ -4,6 +4,7 @@ import 'package:chattyevent_app_flutter/domain/entities/chat_entity.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/chat_repository.dart';
 import 'package:chattyevent_app_flutter/infastructure/datasources/remote/graphql.dart';
 import 'package:chattyevent_app_flutter/infastructure/models/chat_model.dart';
+import 'package:chattyevent_app_flutter/infastructure/models/groupchat/groupchat_model.dart';
 import 'package:dartz/dartz.dart';
 
 class ChatRepositoryImpl implements ChatRepository {
@@ -18,29 +19,7 @@ class ChatRepositoryImpl implements ChatRepository {
         query FindChats {
           findChats {
             groupchat {
-              _id
-              profileImageLink
-              title
-              latestMessage {
-                _id
-                message
-                readBy
-                messageToReactTo {
-                  _id
-                  readBy
-                  message
-                  fileLinks
-                  groupchatTo
-                  createdBy
-                  updatedAt
-                  createdAt
-                }
-                fileLinks
-                updatedAt
-                groupchatTo
-                createdBy
-                createdAt
-              }
+              ${GroupchatModel.groupchatLightQuery(alsoLatestMessage: true)}
             }
             event {
               _id

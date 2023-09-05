@@ -52,19 +52,7 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
         """
         mutation CreateGroupchat(\$input: CreateGroupchatInput!, \$profileImage: Upload) {
           createGroupchat(createGroupchatInput: \$input, profileImage: \$profileImage) {
-            _id
-            title
-            description
-            profileImageLink
-            createdBy
-            createdAt
-            permissions {
-              changeTitle
-              changeDescription
-              changeProfileImage
-              createEventForGroupchat
-              addUsers
-            }
+            ${GroupchatModel.groupchatFullQuery()}
           }
         }
       """,
@@ -92,19 +80,7 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
         """
         query FindGroupchat(\$filter: FindOneGroupchatInput!) {
           findGroupchat(filter: \$filter) {
-            _id
-            title
-            description
-            profileImageLink
-            createdBy
-            createdAt
-            permissions {
-              changeTitle
-              changeDescription
-              changeProfileImage
-              createEventForGroupchat
-              addUsers
-            }
+            ${GroupchatModel.groupchatFullQuery()}
           }
         }
         """,
@@ -134,19 +110,7 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
         """
           query GetGroupchatData(\$findGroupchatLeftUsersInput: FindGroupchatLeftUsersInput!, \$findGroupchatUsersInput: FindGroupchatUsersInput!, \$limitOffsetInput: LimitOffsetInput!, \$findOneGroupchatInput: FindOneGroupchatInput!) {   
             findGroupchat(filter: \$findOneGroupchatInput) {
-              _id
-              title
-              description
-              profileImageLink
-              createdBy
-              createdAt
-              permissions {
-                changeTitle
-                changeDescription
-                changeProfileImage
-                createEventForGroupchat
-                addUsers
-              }
+              ${GroupchatModel.groupchatFullQuery()}
             }
 
             findGroupchatLeftUsers(filter: \$findGroupchatLeftUsersInput, limitOffsetInput: \$limitOffsetInput) {
@@ -274,27 +238,7 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
         """
         query FindGroupchats {
           findGroupchats {
-            _id
-            profileImageLink
-            title
-            latestMessage {
-              _id
-              readBy
-              message
-              messageToReactTo {
-                _id
-                readBy
-                message
-                fileLinks
-                groupchatTo
-                createdBy
-                createdAt
-              }
-              fileLinks
-              groupchatTo
-              createdBy
-              createdAt
-            }
+            ${GroupchatModel.groupchatLightQuery(alsoLatestMessage: true)}
           }
         }
         """,
@@ -343,19 +287,7 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
         """
         mutation UpdateGroupchat(\$updateGroupchatInput: UpdateGroupchatInput, \$filter: FindOneGroupchatInput!, \$updateProfileImage: Upload) {
           updateGroupchat(updateGroupchatInput: \$updateGroupchatInput, filter: \$filter, updateProfileImage: \$updateProfileImage) {
-            _id
-            title
-            description
-            profileImageLink
-            createdBy
-            createdAt
-            permissions {
-              changeTitle
-              changeDescription
-              changeProfileImage
-              createEventForGroupchat
-              addUsers
-            }
+            ${GroupchatModel.groupchatFullQuery()}
           }
         }
       """,

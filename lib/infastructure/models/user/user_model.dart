@@ -77,4 +77,58 @@ class UserModel extends UserEntity {
       updatedAt: updatedAt,
     );
   }
+
+  static String userFullQuery({required bool userIsCurrentUser}) {
+    return """
+      username
+      _id
+      authId
+      createdAt      
+      profileImageLink
+      updatedAt
+      userRelationCounts {
+        followerCount
+        followedCount
+        followRequestCount
+      }
+      ${userIsCurrentUser == true ? """
+      permissions {
+        groupchatAddMe {
+          permission
+          exceptUserIds
+          selectedUserIds
+        }
+        privateEventAddMe {
+          permission
+          exceptUserIds
+          selectedUserIds
+        }
+        calendarWatchIHaveTime {
+          permission
+          exceptUserIds
+          selectedUserIds
+        }
+      }
+      """ : """
+      myUserRelationToOtherUser {
+        _id
+        createdAt
+        updatedAt
+        status
+        followData {
+          followedUserAt
+        }
+      }
+      otherUserRelationToMyUser {
+        _id
+        createdAt
+        updatedAt
+        status
+        followData {
+          followedUserAt
+        }
+      }
+    """}
+    """;
+  }
 }

@@ -93,4 +93,90 @@ class EventModel extends EventEntity {
           : null,
     );
   }
+
+  static String eventFullQuery() {
+    return """
+    _id
+    type
+    privateEventData {
+      groupchatTo
+    }
+    title
+    description
+    status
+    coverImageLink
+    eventDate
+    eventEndDate
+    eventLocation {
+      geoJson {
+        type
+        coordinates
+      }
+      address {
+        zip
+        city
+        country
+        street
+        housenumber
+      }
+    }
+    permissions {
+      changeTitle
+      changeDescription
+      changeCoverImage
+      changeAddress
+      changeDate
+      changeStatus
+      addUsers
+      addShoppingListItem
+      updateShoppingListItem
+      deleteShoppingListItem
+    }
+    createdBy
+    createdAt
+    """;
+  }
+
+  static String eventLightQuery({required bool alsoLatestMessage}) {
+    return """
+      _id
+      status
+      title
+      type
+      privateEventData {
+        groupchatTo
+      }
+      eventDate
+      eventEndDate
+      eventLocation {
+        geoJson {
+          type
+          coordinates
+        }
+      }
+      coverImageLink
+      ${alsoLatestMessage ? """
+      latestMessage {
+        _id
+        readBy
+        message
+        messageToReactTo {
+          _id
+          readBy
+          message
+          fileLinks
+          eventTo
+          updatedAt
+          createdBy
+          createdAt
+        }
+        fileLinks
+        eventTo
+        updatedAt
+        createdBy
+        createdAt
+      }
+      """ : ""}
+    """;
+  }
 }
