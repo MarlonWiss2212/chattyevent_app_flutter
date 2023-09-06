@@ -7,6 +7,7 @@ import 'package:chattyevent_app_flutter/infastructure/filter/request/find_one_re
 import 'package:chattyevent_app_flutter/infastructure/filter/request/find_requests_filter.dart';
 import 'package:chattyevent_app_flutter/infastructure/models/event/event_model.dart';
 import 'package:chattyevent_app_flutter/infastructure/models/groupchat/groupchat_model.dart';
+import 'package:chattyevent_app_flutter/infastructure/models/request/request_model.dart';
 import 'package:chattyevent_app_flutter/infastructure/models/user/user_model.dart';
 import 'package:dartz/dartz.dart';
 
@@ -46,10 +47,10 @@ class RequestRepositoryImpl implements RequestRepository {
               }
             }
             joinRequestData {
-              groupchat {
+              groupchatTo {
                 ${GroupchatModel.groupchatLightQuery(alsoLatestMessage: false)}
               }
-              event {
+              eventTo {
                 ${EventModel.eventLightQuery(alsoLatestMessage: false)}
               }
             }
@@ -71,11 +72,9 @@ class RequestRepositoryImpl implements RequestRepository {
         ));
       }
 
-      // TODO
       List<RequestEntity> requests = [];
       for (final request in response.data!["findRequests"]) {
-        // TODO requests.add(RequestModel.fromJson(request));
-        requests.add(RequestEntity());
+        requests.add(RequestModel.fromJson(request));
       }
       return Right(requests);
     } catch (e) {
