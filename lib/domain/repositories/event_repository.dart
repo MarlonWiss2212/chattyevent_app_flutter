@@ -1,3 +1,4 @@
+import 'package:chattyevent_app_flutter/core/response/event/event_add_user.response.dart';
 import 'package:dartz/dartz.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:chattyevent_app_flutter/infastructure/dto/event/create_event_dto.dart';
@@ -45,7 +46,7 @@ abstract class EventRepository {
     required FindOneEventToFilter findOneEventToFilter,
   });
 
-  Future<Either<NotificationAlert, EventUserEntity>> addUserToEventViaApi({
+  Future<Either<NotificationAlert, EventAddUserResponse>> addUserToEventViaApi({
     required CreateEventUserDto createEventUserDto,
   });
 

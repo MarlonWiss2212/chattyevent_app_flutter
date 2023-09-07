@@ -1,3 +1,5 @@
+import 'package:chattyevent_app_flutter/core/response/groupchat/groupchat_add_user.response.dart';
+import 'package:chattyevent_app_flutter/infastructure/models/request/request_model.dart';
 import 'package:http/http.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
@@ -307,7 +309,7 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
   }
 
   @override
-  Future<Either<NotificationAlert, GroupchatUserEntity>>
+  Future<Either<NotificationAlert, GroupchatAddUserResponse>>
       addUserToGroupchatViaApi({
     required CreateGroupchatUserDto createGroupchatUserDto,
   }) async {
@@ -316,40 +318,45 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
         """
         mutation AddUserToGroupchat(\$input: CreateGroupchatUserInput!) {
           addUserToGroupchat(createGroupchatUserInput: \$input) {
-            groupchatUserId
-            _id
-            authId
-            role
-            joinedChatAt
-            groupchatTo
-            usernameForChat
-            createdAt
-            profileImageLink
-            updatedAt
-            userRelationCounts {
-              followerCount
-              followedCount
-              followRequestCount
-            }
-            myUserRelationToOtherUser {
+            groupchatUser {
+              groupchatUserId
               _id
+              authId
+              role
+              joinedChatAt
+              groupchatTo
+              usernameForChat
               createdAt
+              profileImageLink
               updatedAt
-              status
-              followData {
-                followedUserAt
+              userRelationCounts {
+                followerCount
+                followedCount
+                followRequestCount
               }
-            }
-            otherUserRelationToMyUser {
-              _id
-              createdAt
-              updatedAt
-              status
-              followData {
-                followedUserAt
+              myUserRelationToOtherUser {
+                _id
+                createdAt
+                updatedAt
+                status
+                followData {
+                  followedUserAt
+                }
               }
+              otherUserRelationToMyUser {
+                _id
+                createdAt
+                updatedAt
+                status
+                followData {
+                  followedUserAt
+                }
+              }
+              username
             }
-            username
+            request {
+              ${RequestModel.requestFullQuery()}
+            }
           }
         }
         """,
@@ -365,9 +372,16 @@ class GroupchatRepositoryImpl implements GroupchatRepository {
         ));
       }
 
-      return Right(
-        GroupchatUserModel.fromJson(response.data!["addUserToGroupchat"]),
-      );
+      final dynamic groupchatUser =
+          response.data!["addUserToGroupchat"]["groupchatUser"];
+      final dynamic request = response.data!["addUserToGroupchat"]["request"];
+
+      return Right(GroupchatAddUserResponse(
+        groupchatUser: groupchatUser != null
+            ? GroupchatUserModel.fromJson(groupchatUser)
+            : null,
+        request: request != null ? RequestModel.fromJson(request) : null,
+      ));
     } catch (e) {
       return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
     }

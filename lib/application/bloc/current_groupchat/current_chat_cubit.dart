@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:chattyevent_app_flutter/application/bloc/message_stream/message_stream_cubit.dart';
 import 'package:chattyevent_app_flutter/core/enums/groupchat/groupchat_permission_enum.dart';
 import 'package:chattyevent_app_flutter/core/enums/request/request_type_enum.dart';
+import 'package:chattyevent_app_flutter/core/response/groupchat/groupchat_add_user.response.dart';
 import 'package:chattyevent_app_flutter/domain/entities/chat_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/message/message_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/request/request_entity.dart';
@@ -259,8 +260,8 @@ class CurrentGroupchatCubit extends Cubit<CurrentGroupchatState> {
       oldState: state,
       loadingChat: true,
     ));
-    final Either<NotificationAlert, GroupchatUserEntity> groupchatOrFailure =
-        await groupchatUseCases.addUserToGroupchatViaApi(
+    final Either<NotificationAlert, GroupchatAddUserResponse>
+        groupchatOrFailure = await groupchatUseCases.addUserToGroupchatViaApi(
       createGroupchatUserDto: CreateGroupchatUserDto(
         userId: userId,
         groupchatTo: state.currentChat.id,
@@ -272,13 +273,23 @@ class CurrentGroupchatCubit extends Cubit<CurrentGroupchatState> {
         notificationCubit.newAlert(notificationAlert: alert);
         emit(CurrentGroupchatState.merge(oldState: state, loadingChat: false));
       },
-      (groupchatUser) {
+      (groupchatUserOrRequest) {
         emit(CurrentGroupchatState.merge(
-          leftUsers: List.from(state.leftUsers)
-            ..removeWhere((element) => element.id == groupchatUser.id),
-          users: List.from(state.users)..add(groupchatUser),
-          loadingChat: false,
           oldState: state,
+          users: groupchatUserOrRequest.groupchatUser != null
+              ? [...state.users, groupchatUserOrRequest.groupchatUser!]
+              : null,
+          leftUsers: groupchatUserOrRequest.groupchatUser != null
+              ? state.leftUsers
+                  .where(
+                    (element) =>
+                        element.id != groupchatUserOrRequest.groupchatUser!.id,
+                  )
+                  .toList()
+              : null,
+          invitations: groupchatUserOrRequest.request != null
+              ? [...state.invitations, groupchatUserOrRequest.request!]
+              : state.invitations,
         ));
       },
     );

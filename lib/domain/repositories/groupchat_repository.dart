@@ -1,3 +1,4 @@
+import 'package:chattyevent_app_flutter/core/response/groupchat/groupchat_add_user.response.dart';
 import 'package:dartz/dartz.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:chattyevent_app_flutter/infastructure/dto/groupchat/create_groupchat_dto.dart';
@@ -31,7 +32,7 @@ abstract class GroupchatRepository {
     required FindOneGroupchatFilter findOneGroupchatFilter,
     required UpdateGroupchatDto updateGroupchatDto,
   });
-  Future<Either<NotificationAlert, GroupchatUserEntity>>
+  Future<Either<NotificationAlert, GroupchatAddUserResponse>>
       addUserToGroupchatViaApi({
     required CreateGroupchatUserDto createGroupchatUserDto,
   });

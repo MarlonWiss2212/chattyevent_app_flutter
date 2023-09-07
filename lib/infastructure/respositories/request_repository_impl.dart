@@ -6,10 +6,7 @@ import 'package:chattyevent_app_flutter/infastructure/datasources/remote/graphql
 import 'package:chattyevent_app_flutter/infastructure/filter/limit_offset_filter.dart';
 import 'package:chattyevent_app_flutter/infastructure/filter/request/find_one_request_filter.dart';
 import 'package:chattyevent_app_flutter/infastructure/filter/request/find_requests_filter.dart';
-import 'package:chattyevent_app_flutter/infastructure/models/event/event_model.dart';
-import 'package:chattyevent_app_flutter/infastructure/models/groupchat/groupchat_model.dart';
 import 'package:chattyevent_app_flutter/infastructure/models/request/request_model.dart';
-import 'package:chattyevent_app_flutter/infastructure/models/user/user_model.dart';
 import 'package:dartz/dartz.dart';
 
 class RequestRepositoryImpl implements RequestRepository {
@@ -27,38 +24,7 @@ class RequestRepositoryImpl implements RequestRepository {
         """
         query FindRequests(\$filter: FindRequestsInput!, \$limitOffsetInput: LimitOffsetInput!) {
           findRequests(filter: \$filter, limitOffsetInput: \$limitOffsetInput) {
-            _id
-            createdAt
-            updatedAt
-            type
-            invitationData {
-              invitedUser {
-                ${UserModel.userFullQuery(userIsCurrentUser: false)}
-              }
-              eventUser {
-                event {
-                 ${EventModel.eventLightQuery(alsoLatestMessage: false)}
-                }
-                role
-              }
-              groupchatUser {
-                groupchat {
-                  ${GroupchatModel.groupchatLightQuery(alsoLatestMessage: false)}
-                }
-                role
-              }
-            }
-            joinRequestData {
-              groupchat {
-                ${GroupchatModel.groupchatLightQuery(alsoLatestMessage: false)}
-              }
-              event {
-                ${EventModel.eventLightQuery(alsoLatestMessage: false)}
-              }
-            }
-            createdBy {
-              ${UserModel.userFullQuery(userIsCurrentUser: false)}
-            }
+            ${RequestModel.requestFullQuery()}
           }
         }
       """,

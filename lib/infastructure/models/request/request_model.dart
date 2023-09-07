@@ -1,5 +1,7 @@
 import 'package:chattyevent_app_flutter/core/enums/request/request_type_enum.dart';
 import 'package:chattyevent_app_flutter/domain/entities/request/request_entity.dart';
+import 'package:chattyevent_app_flutter/infastructure/models/event/event_model.dart';
+import 'package:chattyevent_app_flutter/infastructure/models/groupchat/groupchat_model.dart';
 import 'package:chattyevent_app_flutter/infastructure/models/request/invitation_data_model.dart';
 import 'package:chattyevent_app_flutter/infastructure/models/request/join_request_data_model.dart';
 import 'package:chattyevent_app_flutter/infastructure/models/user/user_model.dart';
@@ -32,5 +34,42 @@ class RequestModel extends RequestEntity {
           ? JoinRequestDataModel.fromJson(json["joinRequestData"])
           : null,
     );
+  }
+
+  static String requestFullQuery() {
+    return """
+      _id
+      createdAt
+      updatedAt
+      type
+      invitationData {
+        invitedUser {
+          ${UserModel.userFullQuery(userIsCurrentUser: false)}
+        }
+        eventUser {
+          event {
+            ${EventModel.eventLightQuery(alsoLatestMessage: false)}
+          }
+          role
+        }
+        groupchatUser {
+          groupchat {
+            ${GroupchatModel.groupchatLightQuery(alsoLatestMessage: false)}
+          }
+          role
+        }
+      }
+      joinRequestData {
+        groupchat {
+          ${GroupchatModel.groupchatLightQuery(alsoLatestMessage: false)}
+        }
+        event {
+          ${EventModel.eventLightQuery(alsoLatestMessage: false)}
+        }
+      }
+      createdBy {
+        ${UserModel.userFullQuery(userIsCurrentUser: false)}
+      }
+    """;
   }
 }

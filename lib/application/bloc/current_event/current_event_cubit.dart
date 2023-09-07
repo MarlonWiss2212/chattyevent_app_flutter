@@ -4,6 +4,7 @@ import 'package:chattyevent_app_flutter/core/enums/event/event_permission_enum.d
 import 'package:chattyevent_app_flutter/core/enums/event/event_user/event_user_role_enum.dart';
 import 'package:chattyevent_app_flutter/core/enums/event/event_user/event_user_status_enum.dart';
 import 'package:chattyevent_app_flutter/core/enums/request/request_type_enum.dart';
+import 'package:chattyevent_app_flutter/core/response/event/event_add_user.response.dart';
 import 'package:chattyevent_app_flutter/domain/entities/request/request_entity.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/request_usecases.dart';
 import 'package:chattyevent_app_flutter/infastructure/filter/message/find_messages_filter.dart';
@@ -240,7 +241,7 @@ class CurrentEventCubit extends Cubit<CurrentEventState> {
   }
 
   Future addUserToEventViaApi({required String userId}) async {
-    Either<NotificationAlert, EventUserEntity> privateEventUserOrFailure =
+    Either<NotificationAlert, EventAddUserResponse> privateEventUserOrFailure =
         await eventUseCases.addUserToEventViaApi(
       createEventUserDto: CreateEventUserDto(
         userId: userId,
@@ -250,14 +251,21 @@ class CurrentEventCubit extends Cubit<CurrentEventState> {
 
     privateEventUserOrFailure.fold(
       (alert) => notificationCubit.newAlert(notificationAlert: alert),
-      (eventUser) {
+      (eventUserOrRequest) {
         emitState(
-          eventUsers: List.from(state.eventUsers)..add(eventUser),
-          eventLeftUsers: state.eventLeftUsers
-              .where(
-                (element) => element.id != eventUser.id,
-              )
-              .toList(),
+          eventUsers: eventUserOrRequest.eventUser != null
+              ? [...state.eventUsers, eventUserOrRequest.eventUser!]
+              : null,
+          eventLeftUsers: eventUserOrRequest.eventUser != null
+              ? state.eventLeftUsers
+                  .where(
+                    (element) => element.id != eventUserOrRequest.eventUser!.id,
+                  )
+                  .toList()
+              : null,
+          invitations: eventUserOrRequest.request != null
+              ? [...state.invitations, eventUserOrRequest.request!]
+              : state.invitations,
         );
       },
     );

@@ -1,6 +1,8 @@
+import 'package:chattyevent_app_flutter/core/response/event/event_add_user.response.dart';
 import 'package:chattyevent_app_flutter/infastructure/models/event/event_left_user_model.dart';
 import 'package:chattyevent_app_flutter/infastructure/models/event/event_model.dart';
 import 'package:chattyevent_app_flutter/infastructure/models/event/event_user_model.dart';
+import 'package:chattyevent_app_flutter/infastructure/models/request/request_model.dart';
 import 'package:http/http.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
@@ -425,7 +427,7 @@ class EventRepositoryImpl implements EventRepository {
   }
 
   @override
-  Future<Either<NotificationAlert, EventUserEntity>> addUserToEventViaApi({
+  Future<Either<NotificationAlert, EventAddUserResponse>> addUserToEventViaApi({
     required CreateEventUserDto createEventUserDto,
   }) async {
     try {
@@ -433,38 +435,43 @@ class EventRepositoryImpl implements EventRepository {
         """
           mutation AddUserToEvent(\$input: CreateEventUserInput!) {
             addUserToEvent(createEventUserInput: \$input) {
-              eventUserId
-              username
-              _id
-              authId
-              status
-              role
-              joinedEventAt
-              eventTo
-              createdAt
-              profileImageLink
-              updatedAt
-              userRelationCounts {
-                followerCount
-                followedCount
-                followRequestCount
+              request {
+                ${RequestModel.requestFullQuery()}
               }
-              myUserRelationToOtherUser {
+              eventUser {
+                eventUserId
+                username
                 _id
-                createdAt
-                updatedAt
+                authId
                 status
-                followData {
-                  followedUserAt
+                role
+                joinedEventAt
+                eventTo
+                createdAt
+                profileImageLink
+                updatedAt
+                userRelationCounts {
+                  followerCount
+                  followedCount
+                  followRequestCount
                 }
-              }
-              otherUserRelationToMyUser {
-                _id
-                createdAt
-                updatedAt
-                status
-                followData {
-                  followedUserAt
+                myUserRelationToOtherUser {
+                  _id
+                  createdAt
+                  updatedAt
+                  status
+                  followData {
+                    followedUserAt
+                  }
+                }
+                otherUserRelationToMyUser {
+                  _id
+                  createdAt
+                  updatedAt
+                  status
+                  followData {
+                    followedUserAt
+                  }
                 }
               }
             }
@@ -479,7 +486,14 @@ class EventRepositoryImpl implements EventRepository {
           response: response,
         ));
       }
-      return Right(EventUserModel.fromJson(response.data!["addUserToEvent"]));
+      final dynamic eventUser = response.data!["addUserToEvent"]["eventUser"];
+      final dynamic request = response.data!["addUserToEvent"]["request"];
+
+      return Right(EventAddUserResponse(
+        eventUser:
+            eventUser != null ? EventUserModel.fromJson(eventUser) : null,
+        request: request != null ? RequestModel.fromJson(request) : null,
+      ));
     } catch (e) {
       return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
     }
