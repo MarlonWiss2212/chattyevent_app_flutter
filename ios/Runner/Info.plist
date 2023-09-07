@@ -33,7 +33,7 @@
 	<key>NSCalendarsUsageDescription</key>
 	<string>MyApp does not need this permission</string>
 	<key>NSCameraUsageDescription</key>
-	<string>camera</string>
+	<string>We use the Camera to take pictures, so you can send pictures to your friends or upload profile pictures</string>
 	<key>NSContactsUsageDescription</key>
 	<string>MyApp does not need this permission</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
@@ -45,11 +45,11 @@
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Need location when in use</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>microphone</string>
+	<string>We use the mircrophone so you can send Audio files to your friends</string>
 	<key>NSMotionUsageDescription</key>
 	<string>MyApp does not need this permission</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>photos</string>
+	<string>We use photos(library) to take pictures, so you can send pictures to your friends or upload profile pictures</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
 	<string>speech</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
