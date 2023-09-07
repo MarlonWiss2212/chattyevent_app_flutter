@@ -14,13 +14,13 @@ class FindRequestsFilter {
   Map<dynamic, dynamic> toMap() {
     Map<dynamic, dynamic> map = {};
     if (type != null) {
-      map.addAll({type: type!.value});
+      map.addAll({"type": type!.value});
     }
     if (groupchatTo != null) {
-      map.addAll({groupchatTo: "groupchatTo"});
+      map.addAll({"groupchatTo": groupchatTo});
     }
     if (eventTo != null) {
-      map.addAll({eventTo: "eventTo"});
+      map.addAll({"eventTo": eventTo});
     }
     return map;
   }

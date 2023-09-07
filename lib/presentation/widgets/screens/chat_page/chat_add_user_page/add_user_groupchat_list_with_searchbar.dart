@@ -20,14 +20,12 @@ class AddUserGroupchatListWithSearchbar extends StatelessWidget {
             showTextSearch: true,
             reloadRequest: ({String? text}) {
               BlocProvider.of<UserSearchCubit>(context).getFollowedViaApi(
-                filterForGroupchatAddMeAllowedUsers: true,
                 search: text,
               );
             },
             loadMoreRequest: ({String? text}) {
               BlocProvider.of<UserSearchCubit>(context).getFollowedViaApi(
                 loadMore: true,
-                filterForGroupchatAddMeAllowedUsers: true,
                 search: text,
               );
             },

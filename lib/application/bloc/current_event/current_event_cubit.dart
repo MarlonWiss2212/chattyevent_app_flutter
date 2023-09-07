@@ -3,10 +3,15 @@ import 'package:chattyevent_app_flutter/application/bloc/message_stream/message_
 import 'package:chattyevent_app_flutter/core/enums/event/event_permission_enum.dart';
 import 'package:chattyevent_app_flutter/core/enums/event/event_user/event_user_role_enum.dart';
 import 'package:chattyevent_app_flutter/core/enums/event/event_user/event_user_status_enum.dart';
+import 'package:chattyevent_app_flutter/core/enums/request/request_type_enum.dart';
+import 'package:chattyevent_app_flutter/domain/entities/request/request_entity.dart';
+import 'package:chattyevent_app_flutter/domain/usecases/request_usecases.dart';
 import 'package:chattyevent_app_flutter/infastructure/filter/message/find_messages_filter.dart';
 import 'package:chattyevent_app_flutter/domain/entities/chat_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/message/message_entity.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/message_usecases.dart';
+import 'package:chattyevent_app_flutter/infastructure/filter/request/find_one_request_filter.dart';
+import 'package:chattyevent_app_flutter/infastructure/filter/request/find_requests_filter.dart';
 import 'package:collection/collection.dart';
 import 'package:dartz/dartz.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
@@ -51,9 +56,11 @@ class CurrentEventCubit extends Cubit<CurrentEventState> {
   final LocationUseCases locationUseCases;
   final ShoppingListItemUseCases shoppingListItemUseCases;
   final MessageUseCases messageUseCases;
+  final RequestUseCases requestUseCases;
 
   CurrentEventCubit(
     super.initialState, {
+    required this.requestUseCases,
     required this.notificationCubit,
     required this.authCubit,
     required this.locationUseCases,
@@ -467,6 +474,65 @@ class CurrentEventCubit extends Cubit<CurrentEventState> {
     );
   }
 
+  Future<void> getInvitationsViaApi({bool reload = false}) async {
+    emitState(loadingInvitations: true);
+
+    final requestsOrFailure = await requestUseCases.getRequestsViaApi(
+      findRequestsFilter: FindRequestsFilter(
+        eventTo: state.event.id,
+        type: RequestTypeEnum.invitation,
+      ),
+      limitOffsetFilter: reload
+          ? LimitOffsetFilter(
+              limit:
+                  state.invitations.length < 20 ? 20 : state.invitations.length,
+              offset: 0,
+            )
+          : LimitOffsetFilter(
+              limit: 20,
+              offset: state.invitations.length,
+            ),
+    );
+    requestsOrFailure.fold(
+      (alert) {
+        emitState(loadingInvitations: false);
+        notificationCubit.newAlert(notificationAlert: alert);
+      },
+      (requests) {
+        if (reload) {
+          emitState(loadingInvitations: false, invitations: requests);
+        } else {
+          emitState(
+            loadingInvitations: false,
+            invitations: [...state.invitations, ...requests],
+          );
+        }
+      },
+    );
+  }
+
+  Future<void> deleteRequestViaApiAndReloadRequests({
+    required RequestEntity request,
+  }) async {
+    final deletedOrFailure = await requestUseCases.deleteRequestViaApi(
+      findOneRequestFilter: FindOneRequestFilter(id: request.id),
+    );
+
+    await deletedOrFailure.fold(
+      (alert) => notificationCubit.newAlert(notificationAlert: alert),
+      (_) async {
+        emitState(
+          invitations: state.invitations
+              .where((element) => element.id != request.id)
+              .toList(),
+        );
+
+        //TODO: check later if i have to relaod invitations Or Join Requests
+        await getInvitationsViaApi(reload: true);
+      },
+    );
+  }
+
   MessageEntity addMessage({
     required MessageEntity message,
     bool replaceOrAddInOtherCubits = false,
@@ -483,9 +549,11 @@ class CurrentEventCubit extends Cubit<CurrentEventState> {
     List<EventUserEntity>? eventUsers,
     List<EventLeftUserEntity>? eventLeftUsers,
     List<MessageEntity>? messages,
+    List<RequestEntity>? invitations,
     GroupchatEntity? groupchat,
     int? currentUserIndex,
     bool? loadingEvent,
+    bool? loadingInvitations,
     bool? loadingGroupchat,
     bool? loadingMessages,
     bool? loadingShoppingList,
@@ -495,6 +563,9 @@ class CurrentEventCubit extends Cubit<CurrentEventState> {
   }) {
     final List<MessageEntity> allMessages = messages ?? state.messages;
     allMessages.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+
+    final List<RequestEntity> allInvitations = invitations ?? state.invitations;
+    allInvitations.sort((a, b) => a.createdAt.compareTo(b.createdAt));
 
     EventEntity newEvent = event ?? state.event;
     allMessages.isNotEmpty
@@ -510,6 +581,8 @@ class CurrentEventCubit extends Cubit<CurrentEventState> {
 
     final CurrentEventState newState = CurrentEventState(
       messages: allMessages,
+      invitations: allInvitations,
+      loadingInvitations: loadingInvitations ?? state.loadingInvitations,
       loadingMessages: loadingMessages ?? state.loadingMessages,
       currentUserIndex: currentUserIndex ?? state.currentUserIndex,
       shoppingListItemStates:

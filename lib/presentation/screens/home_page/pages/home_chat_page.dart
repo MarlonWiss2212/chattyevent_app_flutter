@@ -1,4 +1,6 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:chattyevent_app_flutter/application/bloc/requests/requests_cubit.dart';
+import 'package:chattyevent_app_flutter/presentation/widgets/general/request/request_horizontal_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,6 +22,7 @@ class _HomeChatPageState extends State<HomeChatPage> {
   void initState() {
     super.initState();
     BlocProvider.of<ChatCubit>(context).getChatsViaApi();
+    BlocProvider.of<RequestsCubit>(context).getRequestsViaApi(reload: true);
   }
 
   @override
@@ -52,8 +55,19 @@ class _HomeChatPageState extends State<HomeChatPage> {
             ],
           ),
           CupertinoSliverRefreshControl(
-            onRefresh: () =>
-                BlocProvider.of<ChatCubit>(context).getChatsViaApi(),
+            onRefresh: () {
+              return Future.wait([
+                BlocProvider.of<RequestsCubit>(context)
+                    .getRequestsViaApi(reload: true),
+                BlocProvider.of<ChatCubit>(context).getChatsViaApi()
+              ]);
+            },
+          ),
+          const SliverPadding(
+            padding: EdgeInsets.all(8),
+            sliver: SliverToBoxAdapter(
+              child: RequestHorizontalList(),
+            ),
           ),
           BlocBuilder<ChatCubit, ChatState>(
             builder: (context, state) {

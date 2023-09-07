@@ -20,9 +20,7 @@ class GroupchatAddUserPage extends StatefulWidget {
 class _GroupchatAddUserPageState extends State<GroupchatAddUserPage> {
   @override
   void initState() {
-    BlocProvider.of<UserSearchCubit>(context).getFollowedViaApi(
-      filterForGroupchatAddMeAllowedUsers: true,
-    );
+    BlocProvider.of<UserSearchCubit>(context).getFollowedViaApi();
     super.initState();
   }
 

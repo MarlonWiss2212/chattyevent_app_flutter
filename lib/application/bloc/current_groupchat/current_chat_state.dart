@@ -8,6 +8,10 @@ class CurrentGroupchatState {
   final List<GroupchatLeftUserEntity> leftUsers;
 
   final List<MessageEntity> messages;
+  final List<RequestEntity> invitations;
+
+  //TODO
+  //final List<GroupchatUser> requests;
 
   final List<EventEntity> futureConnectedPrivateEvents;
   final bool loadingPrivateEvents;
@@ -16,6 +20,7 @@ class CurrentGroupchatState {
 
   final bool loadingChat;
   final bool loadingMessages;
+  final bool loadingInvitations;
 
   GroupchatUserEntity? getCurrentGroupchatUser() {
     if (currentUserIndex != -1) {
@@ -36,6 +41,8 @@ class CurrentGroupchatState {
   }
 
   const CurrentGroupchatState({
+    required this.invitations,
+    required this.loadingInvitations,
     required this.currentUserIndex,
     required this.currentUserLeftChat,
     required this.loadingPrivateEvents,
@@ -54,6 +61,8 @@ class CurrentGroupchatState {
     return CurrentGroupchatState(
       currentChat: groupchat,
       messages: [],
+      loadingInvitations: false,
+      invitations: [],
       currentUserIndex: -1,
       currentUserLeftChat: false,
       futureConnectedPrivateEvents: [],
@@ -67,12 +76,14 @@ class CurrentGroupchatState {
 
   factory CurrentGroupchatState.merge({
     required CurrentGroupchatState oldState,
+    bool? loadingInvitations,
     GroupchatEntity? currentChat,
     List<GroupchatUserEntity>? users,
     int? currentUserIndex,
     List<GroupchatLeftUserEntity>? leftUsers,
     List<EventEntity>? futureConnectedPrivateEvents,
     List<MessageEntity>? messages,
+    List<RequestEntity>? invitations,
     bool? loadingPrivateEvents,
     bool? currentUserLeftChat,
     bool? loadingChat,
@@ -80,6 +91,10 @@ class CurrentGroupchatState {
   }) {
     final List<MessageEntity> allMessages = messages ?? oldState.messages;
     allMessages.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+
+    final List<RequestEntity> allInvitations =
+        invitations ?? oldState.invitations;
+    allInvitations.sort((a, b) => a.createdAt.compareTo(b.createdAt));
 
     GroupchatEntity newChat = currentChat ?? oldState.currentChat;
     allMessages.isNotEmpty
@@ -93,6 +108,8 @@ class CurrentGroupchatState {
         : null;
 
     return CurrentGroupchatState(
+      invitations: allInvitations,
+      loadingInvitations: loadingInvitations ?? oldState.loadingInvitations,
       messages: allMessages,
       currentUserIndex: currentUserIndex ?? oldState.currentUserIndex,
       currentUserLeftChat: currentUserLeftChat ?? oldState.currentUserLeftChat,

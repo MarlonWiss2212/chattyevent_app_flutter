@@ -1,4 +1,3 @@
-import 'package:chattyevent_app_flutter/core/enums/groupchat/groupchat_user/groupchat_user_role_enum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -10,11 +9,13 @@ import 'package:chattyevent_app_flutter/presentation/widgets/general/user_list/u
 class ChatInfoPageLeftUserListItem extends StatelessWidget {
   final GroupchatLeftUserEntity leftUser;
   final GroupchatUserEntity currentUser;
+  final CurrentGroupchatState state;
 
   const ChatInfoPageLeftUserListItem({
     super.key,
     required this.leftUser,
     required this.currentUser,
+    required this.state,
   });
 
   @override
@@ -30,9 +31,9 @@ class ChatInfoPageLeftUserListItem extends StatelessWidget {
               "Kein Datum",
               overflow: TextOverflow.ellipsis,
             ),
-      items: currentUser.role != null &&
-              currentUser.role == GroupchatUserRoleEnum.admin &&
-              currentUser.id != leftUser.id
+      items: state.currentUserAllowedWithPermission(
+        permissionCheckValue: state.currentChat.permissions?.addUsers,
+      )
           ? [
               PopupMenuItem(
                 child: const Text("Hinzufügen"),

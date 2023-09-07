@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:chattyevent_app_flutter/application/bloc/message_stream/message_stream_cubit.dart';
+import 'package:chattyevent_app_flutter/application/bloc/requests/requests_cubit.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/one_signal_use_cases.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.dart';
 import 'package:flutter/material.dart';
@@ -61,6 +62,9 @@ class _BlocInitPageState extends State<BlocInitPage> {
               providers: [
                 BlocProvider(
                   create: (_) => authenticatedLocator<MessageStreamCubit>(),
+                ),
+                BlocProvider(
+                  create: (_) => authenticatedLocator<RequestsCubit>(),
                 ),
                 BlocProvider(
                   create: (_) => authenticatedLocator<HomeEventCubit>(),

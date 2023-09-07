@@ -20,9 +20,7 @@ class NewGroupchatSelectUserTab extends StatefulWidget {
 class _NewGroupchatSelectUserTabState extends State<NewGroupchatSelectUserTab> {
   @override
   void initState() {
-    BlocProvider.of<UserSearchCubit>(context).getFollowedViaApi(
-      filterForGroupchatAddMeAllowedUsers: true,
-    );
+    BlocProvider.of<UserSearchCubit>(context).getFollowedViaApi();
     super.initState();
   }
 
@@ -61,14 +59,12 @@ class _NewGroupchatSelectUserTabState extends State<NewGroupchatSelectUserTab> {
                   },
                   reloadRequest: ({String? text}) {
                     BlocProvider.of<UserSearchCubit>(context).getFollowedViaApi(
-                      filterForGroupchatAddMeAllowedUsers: true,
                       search: text,
                     );
                   },
                   loadMoreRequest: ({String? text}) {
                     BlocProvider.of<UserSearchCubit>(context).getFollowedViaApi(
                       loadMore: true,
-                      filterForGroupchatAddMeAllowedUsers: true,
                       search: text,
                     );
                   },

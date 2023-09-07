@@ -10,6 +10,9 @@ class CurrentEventState {
   final List<MessageEntity> messages;
   final bool loadingMessages;
 
+  final List<RequestEntity> invitations;
+  final bool loadingInvitations;
+
   final bool loadingEvent;
   final bool loadingGroupchat;
   final bool loadingShoppingList;
@@ -47,6 +50,8 @@ class CurrentEventState {
   const CurrentEventState({
     required this.currentUserIndex,
     required this.messages,
+    required this.invitations,
+    required this.loadingInvitations,
     required this.loadingMessages,
     required this.event,
     required this.eventUsers,
@@ -64,6 +69,8 @@ class CurrentEventState {
   }) {
     return CurrentEventState(
       event: event,
+      invitations: [],
+      loadingInvitations: false,
       loadingGroupchat: false,
       loadingEvent: false,
       loadingShoppingList: false,

@@ -19,9 +19,7 @@ class EventInviteUserPage extends StatefulWidget {
 class _EventInviteUserPageState extends State<EventInviteUserPage> {
   @override
   void initState() {
-    BlocProvider.of<UserSearchCubit>(context).getFollowedViaApi(
-      filterForPrivateEventAddMeAllowedUsers: true,
-    );
+    BlocProvider.of<UserSearchCubit>(context).getFollowedViaApi();
     super.initState();
   }
 
@@ -40,14 +38,12 @@ class _EventInviteUserPageState extends State<EventInviteUserPage> {
               showTextSearch: true,
               reloadRequest: ({String? text}) {
                 BlocProvider.of<UserSearchCubit>(context).getFollowedViaApi(
-                  filterForPrivateEventAddMeAllowedUsers: true,
                   search: text,
                 );
               },
               loadMoreRequest: ({String? text}) {
                 BlocProvider.of<UserSearchCubit>(context).getFollowedViaApi(
                   loadMore: true,
-                  filterForPrivateEventAddMeAllowedUsers: true,
                   search: text,
                 );
               },

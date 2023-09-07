@@ -34,10 +34,13 @@ class GroupchatPageWrapper extends StatelessWidget {
             notificationCubit: BlocProvider.of<NotificationCubit>(context),
             authCubit: BlocProvider.of<AuthCubit>(context),
             messageUseCases: authenticatedLocator(),
+            requestUseCases: authenticatedLocator(),
             eventUseCases: authenticatedLocator(),
             chatCubit: BlocProvider.of<ChatCubit>(context),
             groupchatUseCases: authenticatedLocator(),
-          )..reloadGroupchatAndGroupchatUsersViaApi(),
+          )
+            ..reloadGroupchatAndGroupchatUsersViaApi()
+            ..getInvitationsViaApi(),
         ),
         BlocProvider(
           create: (context) => UserSearchCubit(

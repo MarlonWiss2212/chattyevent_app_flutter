@@ -39,12 +39,14 @@ class EventWrapperPage extends StatelessWidget {
       locationUseCases: serviceLocator(),
       messageUseCases: authenticatedLocator(),
       groupchatUseCases: authenticatedLocator(),
+      requestUseCases: authenticatedLocator(),
       shoppingListItemUseCases: authenticatedLocator(),
       homeEventCubit: BlocProvider.of<HomeEventCubit>(context),
       eventUseCases: authenticatedLocator(),
     )
       ..setGroupchatFromChatCubit()
-      ..reloadEventStandardDataViaApi();
+      ..reloadEventStandardDataViaApi()
+      ..getInvitationsViaApi();
 
     return MultiBlocProvider(
       providers: [

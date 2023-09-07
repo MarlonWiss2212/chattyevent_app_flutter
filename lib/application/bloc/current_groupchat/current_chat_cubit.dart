@@ -1,8 +1,13 @@
 import 'dart:async';
 import 'package:chattyevent_app_flutter/application/bloc/message_stream/message_stream_cubit.dart';
 import 'package:chattyevent_app_flutter/core/enums/groupchat/groupchat_permission_enum.dart';
+import 'package:chattyevent_app_flutter/core/enums/request/request_type_enum.dart';
 import 'package:chattyevent_app_flutter/domain/entities/chat_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/message/message_entity.dart';
+import 'package:chattyevent_app_flutter/domain/entities/request/request_entity.dart';
+import 'package:chattyevent_app_flutter/domain/usecases/request_usecases.dart';
+import 'package:chattyevent_app_flutter/infastructure/filter/request/find_one_request_filter.dart';
+import 'package:chattyevent_app_flutter/infastructure/filter/request/find_requests_filter.dart';
 import 'package:dartz/dartz.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/chat/chat_cubit.dart';
@@ -35,6 +40,7 @@ class CurrentGroupchatCubit extends Cubit<CurrentGroupchatState> {
   final MessageStreamCubit messageStreamCubit;
   final NotificationCubit notificationCubit;
 
+  final RequestUseCases requestUseCases;
   final GroupchatUseCases groupchatUseCases;
   final MessageUseCases messageUseCases;
   final EventUseCases eventUseCases;
@@ -42,6 +48,7 @@ class CurrentGroupchatCubit extends Cubit<CurrentGroupchatState> {
   CurrentGroupchatCubit(
     super.initialState, {
     required this.messageStreamCubit,
+    required this.requestUseCases,
     required this.authCubit,
     required this.groupchatUseCases,
     required this.eventUseCases,
@@ -397,6 +404,77 @@ class CurrentGroupchatCubit extends Cubit<CurrentGroupchatState> {
           loadingMessages: false,
           oldState: state,
         ));
+      },
+    );
+  }
+
+  Future<void> getInvitationsViaApi({bool reload = false}) async {
+    emit(CurrentGroupchatState.merge(
+      oldState: state,
+      loadingInvitations: true,
+    ));
+
+    final requestsOrFailure = await requestUseCases.getRequestsViaApi(
+      findRequestsFilter: FindRequestsFilter(
+        groupchatTo: state.currentChat.id,
+        type: RequestTypeEnum.invitation,
+      ),
+      limitOffsetFilter: reload
+          ? LimitOffsetFilter(
+              limit:
+                  state.invitations.length < 20 ? 20 : state.invitations.length,
+              offset: 0,
+            )
+          : LimitOffsetFilter(
+              limit: 20,
+              offset: state.invitations.length,
+            ),
+    );
+    requestsOrFailure.fold(
+      (alert) {
+        emit(CurrentGroupchatState.merge(
+          oldState: state,
+          loadingInvitations: false,
+        ));
+        notificationCubit.newAlert(notificationAlert: alert);
+      },
+      (requests) {
+        if (reload) {
+          emit(CurrentGroupchatState.merge(
+            oldState: state,
+            loadingInvitations: false,
+            invitations: requests,
+          ));
+        } else {
+          emit(CurrentGroupchatState.merge(
+            oldState: state,
+            loadingInvitations: false,
+            invitations: [...state.invitations, ...requests],
+          ));
+        }
+      },
+    );
+  }
+
+  Future<void> deleteRequestViaApiAndReloadRequests({
+    required RequestEntity request,
+  }) async {
+    final deletedOrFailure = await requestUseCases.deleteRequestViaApi(
+      findOneRequestFilter: FindOneRequestFilter(id: request.id),
+    );
+
+    await deletedOrFailure.fold(
+      (alert) => notificationCubit.newAlert(notificationAlert: alert),
+      (_) async {
+        emit(CurrentGroupchatState.merge(
+          oldState: state,
+          invitations: state.invitations
+              .where((element) => element.id != request.id)
+              .toList(),
+        ));
+
+        //TODO: check later if i have to relaod invitations Or Join Requests
+        await getInvitationsViaApi(reload: true);
       },
     );
   }

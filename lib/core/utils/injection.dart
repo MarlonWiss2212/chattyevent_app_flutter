@@ -5,6 +5,7 @@ import 'package:chattyevent_app_flutter/application/bloc/imprint/imprint_cubit.d
 import 'package:chattyevent_app_flutter/application/bloc/introduction/introduction_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/message_stream/message_stream_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
+import 'package:chattyevent_app_flutter/application/bloc/requests/requests_cubit.dart';
 import 'package:chattyevent_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/ad_mob_repository.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/calendar_repository.dart';
@@ -18,6 +19,7 @@ import 'package:chattyevent_app_flutter/domain/repositories/introduction_reposit
 import 'package:chattyevent_app_flutter/domain/repositories/launch_url_repository.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/message_repository.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/one_signal_repository.dart';
+import 'package:chattyevent_app_flutter/domain/repositories/request_repository.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/ad_mob_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/audio_player_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/calendar_usecases.dart';
@@ -29,6 +31,7 @@ import 'package:chattyevent_app_flutter/domain/usecases/message_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/microphone_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/one_signal_use_cases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/permission_usecases.dart';
+import 'package:chattyevent_app_flutter/domain/usecases/request_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/vibration_usecases.dart';
 import 'package:chattyevent_app_flutter/infastructure/datasources/device/audio_player.dart';
 import 'package:chattyevent_app_flutter/infastructure/datasources/device/microphone.dart';
@@ -47,6 +50,7 @@ import 'package:chattyevent_app_flutter/infastructure/respositories/imprint_repo
 import 'package:chattyevent_app_flutter/infastructure/respositories/launch_url_repository_impl.dart';
 import 'package:chattyevent_app_flutter/infastructure/respositories/message_repository_impl.dart';
 import 'package:chattyevent_app_flutter/infastructure/respositories/one_signal_repository_impl.dart';
+import 'package:chattyevent_app_flutter/infastructure/respositories/request_repository_impl.dart';
 import 'package:chattyevent_app_flutter/presentation/router/auth_guard.dart';
 import 'package:chattyevent_app_flutter/presentation/router/auth_pages_guard.dart';
 import 'package:chattyevent_app_flutter/presentation/router/create_user_page_guard.dart';
@@ -337,6 +341,13 @@ class InjectionUtils {
         notificationCubit: serviceLocator(),
       ),
     );
+    authenticatedLocator.registerLazySingleton<RequestsCubit>(
+      () => RequestsCubit(
+        chatCubit: authenticatedLocator(),
+        notificationCubit: serviceLocator(),
+        requestUseCases: authenticatedLocator(),
+      ),
+    );
 
     // use cases
     authenticatedLocator.registerLazySingleton<CalendarUseCases>(
@@ -362,8 +373,14 @@ class InjectionUtils {
       () => UserUseCases(userRepository: authenticatedLocator()),
     );
     authenticatedLocator.registerLazySingleton<UserRelationUseCases>(
-      () =>
-          UserRelationUseCases(userRelationRepository: authenticatedLocator()),
+      () => UserRelationUseCases(
+        userRelationRepository: authenticatedLocator(),
+      ),
+    );
+    authenticatedLocator.registerLazySingleton<RequestUseCases>(
+      () => RequestUseCases(
+        requestRepository: authenticatedLocator(),
+      ),
     );
     authenticatedLocator.registerLazySingleton<ShoppingListItemUseCases>(
       () => ShoppingListItemUseCases(
@@ -372,6 +389,9 @@ class InjectionUtils {
     );
 
     // repositories
+    authenticatedLocator.registerLazySingleton<RequestRepository>(
+      () => RequestRepositoryImpl(graphQlDatasource: authenticatedLocator()),
+    );
     authenticatedLocator.registerLazySingleton<MessageRepository>(
       () => MessageRepositoryImpl(graphQlDatasource: authenticatedLocator()),
     );
@@ -385,22 +405,25 @@ class InjectionUtils {
       () => ChatRepositoryImpl(graphQlDatasource: authenticatedLocator()),
     );
     authenticatedLocator.registerLazySingleton<BoughtAmountRepository>(
-      () =>
-          BoughtAmountRepositoryImpl(graphQlDatasource: authenticatedLocator()),
+      () => BoughtAmountRepositoryImpl(
+        graphQlDatasource: authenticatedLocator(),
+      ),
     );
     authenticatedLocator.registerLazySingleton<UserRepository>(
       () => UserRepositoryImpl(graphQlDatasource: authenticatedLocator()),
     );
     authenticatedLocator.registerLazySingleton<UserRelationRepository>(
-      () =>
-          UserRelationRepositoryImpl(graphQlDatasource: authenticatedLocator()),
+      () => UserRelationRepositoryImpl(
+        graphQlDatasource: authenticatedLocator(),
+      ),
     );
     authenticatedLocator.registerLazySingleton<EventRepository>(
       () => EventRepositoryImpl(graphQlDatasource: authenticatedLocator()),
     );
     authenticatedLocator.registerLazySingleton<ShoppingListItemRepository>(
       () => ShoppingListItemRepositoryImpl(
-          graphQlDatasource: authenticatedLocator()),
+        graphQlDatasource: authenticatedLocator(),
+      ),
     );
 
     // datasources

@@ -20,6 +20,11 @@ class AppRouter extends $AppRouter {
   });
 
   @override
+  RouteType get defaultRouteType => const RouteType.custom(
+        barrierDismissible: true,
+      );
+
+  @override
   List<AutoRoute> get routes {
     return [
       AutoRoute(

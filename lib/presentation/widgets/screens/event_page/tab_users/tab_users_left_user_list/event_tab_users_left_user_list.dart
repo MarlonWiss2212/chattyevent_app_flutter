@@ -39,7 +39,7 @@ class EventTabUsersLeftUserList extends StatelessWidget {
                 itemBuilder: (context, index) {
                   return PrivateEventTabUsersLeftUserListItem(
                     key: ObjectKey(state.eventLeftUsers[index]),
-                    currentEventUser: state.getCurrentEventUser(),
+                    state: state,
                     leftPrivateEventUser: state.eventLeftUsers[index],
                     event: state.event,
                   );

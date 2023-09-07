@@ -48,6 +48,7 @@ class _ChatMessageListState extends State<ChatMessageList> {
   @override
   Widget build(BuildContext context) {
     return GroupedListView<MessageEntity, String>(
+      cacheExtent: 500,
       controller: _scrollController,
       padding: const EdgeInsets.symmetric(vertical: 4),
       itemBuilder: (context, message) {

@@ -1,5 +1,6 @@
 import 'package:chattyevent_app_flutter/presentation/widgets/general/custom_divider.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/event_page/tab_users/event_tab_users_leave_button.dart';
+import 'package:chattyevent_app_flutter/presentation/widgets/screens/event_page/tab_users/tab_invitation_list/event_tab_invitation_list.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/event_page/tab_users/tab_users_left_user_list/event_tab_users_left_user_list.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/event_page/tab_users/tab_users_user_list/event_tab_users_user_list.dart';
 import 'package:flutter/cupertino.dart';
@@ -33,8 +34,11 @@ class EventTabUserList extends StatelessWidget {
           ),
         ),
         CupertinoSliverRefreshControl(
-          onRefresh: () => BlocProvider.of<CurrentEventCubit>(context)
-              .getEventUsersAndLeftUsersViaApi(),
+          onRefresh: () => Future.wait([
+            BlocProvider.of<CurrentEventCubit>(context)
+                .getEventUsersAndLeftUsersViaApi(),
+            BlocProvider.of<CurrentEventCubit>(context).getInvitationsViaApi(),
+          ]),
         ),
         BlocBuilder<CurrentEventCubit, CurrentEventState>(
           builder: (context, state) {
@@ -44,6 +48,8 @@ class EventTabUserList extends StatelessWidget {
                   const EventTabUsersUserList(),
                   const CustomDivider(),
                   const EventTabUsersLeftUserList(),
+                  const CustomDivider(),
+                  const EventTabInvitationList(),
                   const CustomDivider(),
                   const EventTabUsersLeaveButton(),
                 ],

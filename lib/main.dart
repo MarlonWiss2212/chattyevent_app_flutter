@@ -9,7 +9,6 @@ import 'package:chattyevent_app_flutter/scroll_bahaviour.dart';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
@@ -27,7 +26,8 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   final List<Future> futures = [
-    dotenv.load(fileName: '.env'),
+    //TODO: change before release
+    dotenv.load(fileName: '.dev.env'),
     InjectionUtils.initialize(),
     IntlUtils.initialize()
   ];

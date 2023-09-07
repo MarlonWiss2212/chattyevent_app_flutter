@@ -3,6 +3,7 @@ import 'package:chattyevent_app_flutter/core/utils/failure_helper.dart';
 import 'package:chattyevent_app_flutter/domain/entities/request/request_entity.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/request_repository.dart';
 import 'package:chattyevent_app_flutter/infastructure/datasources/remote/graphql.dart';
+import 'package:chattyevent_app_flutter/infastructure/filter/limit_offset_filter.dart';
 import 'package:chattyevent_app_flutter/infastructure/filter/request/find_one_request_filter.dart';
 import 'package:chattyevent_app_flutter/infastructure/filter/request/find_requests_filter.dart';
 import 'package:chattyevent_app_flutter/infastructure/models/event/event_model.dart';
@@ -19,12 +20,13 @@ class RequestRepositoryImpl implements RequestRepository {
   @override
   Future<Either<NotificationAlert, List<RequestEntity>>> getRequestsViaApi({
     required FindRequestsFilter findRequestsFilter,
+    required LimitOffsetFilter limitOffsetFilter,
   }) async {
     try {
-      final response = await graphQlDatasource.mutation(
+      final response = await graphQlDatasource.query(
         """
-        mutation FindRequests(\$filter: FindRequestsInput!) {
-          findRequests(filter: \$filter) {
+        query FindRequests(\$filter: FindRequestsInput!, \$limitOffsetInput: LimitOffsetInput!) {
+          findRequests(filter: \$filter, limitOffsetInput: \$limitOffsetInput) {
             _id
             createdAt
             updatedAt
@@ -47,10 +49,10 @@ class RequestRepositoryImpl implements RequestRepository {
               }
             }
             joinRequestData {
-              groupchatTo {
+              groupchat {
                 ${GroupchatModel.groupchatLightQuery(alsoLatestMessage: false)}
               }
-              eventTo {
+              event {
                 ${EventModel.eventLightQuery(alsoLatestMessage: false)}
               }
             }
@@ -62,12 +64,13 @@ class RequestRepositoryImpl implements RequestRepository {
       """,
         variables: {
           "filter": findRequestsFilter.toMap(),
+          "limitOffsetInput": limitOffsetFilter.toMap(),
         },
       );
 
       if (response.hasException) {
         return Left(FailureHelper.graphqlFailureToNotificationAlert(
-          title: "Delete Request Fehler",
+          title: "Get Request Fehler",
           response: response,
         ));
       }
@@ -89,9 +92,10 @@ class RequestRepositoryImpl implements RequestRepository {
     try {
       final response = await graphQlDatasource.mutation(
         """
-        mutation AcceptRequest(\$filter: FindOneRequestInput!) {
-          acceptRequest(filter: \$filter)
-      """,
+          mutation AcceptRequest(\$filter: FindOneRequestInput!) {
+            acceptRequest(filter: \$filter)
+          }
+        """,
         variables: {
           "filter": findOneRequestFilter.toMap(),
         },
@@ -121,6 +125,7 @@ class RequestRepositoryImpl implements RequestRepository {
         """
         mutation DeleteRequest(\$filter: FindOneRequestInput!) {
           deleteRequest(filter: \$filter)
+        }
       """,
         variables: {
           "filter": findOneRequestFilter.toMap(),

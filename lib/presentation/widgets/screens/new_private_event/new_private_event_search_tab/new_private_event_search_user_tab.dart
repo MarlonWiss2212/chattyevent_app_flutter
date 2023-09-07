@@ -19,9 +19,7 @@ class _NewPrivateEventSearchUserTabState
     extends State<NewPrivateEventSearchUserTab> {
   @override
   void initState() {
-    BlocProvider.of<UserSearchCubit>(context).getFollowedViaApi(
-      filterForPrivateEventAddMeAllowedUsers: true,
-    );
+    BlocProvider.of<UserSearchCubit>(context).getFollowedViaApi();
     super.initState();
   }
 
@@ -59,14 +57,12 @@ class _NewPrivateEventSearchUserTabState
                   },
                   reloadRequest: ({String? text}) {
                     BlocProvider.of<UserSearchCubit>(context).getFollowedViaApi(
-                      filterForPrivateEventAddMeAllowedUsers: true,
                       search: text,
                     );
                   },
                   loadMoreRequest: ({String? text}) {
                     BlocProvider.of<UserSearchCubit>(context).getFollowedViaApi(
                       loadMore: true,
-                      filterForPrivateEventAddMeAllowedUsers: true,
                       search: text,
                     );
                   },

@@ -37,6 +37,7 @@ class ShoppingListItemWrapperPage extends StatelessWidget {
       authCubit: BlocProvider.of<AuthCubit>(context),
       locationUseCases: serviceLocator(),
       chatCubit: BlocProvider.of<ChatCubit>(context),
+      requestUseCases: authenticatedLocator(),
       groupchatUseCases: authenticatedLocator(),
       notificationCubit: BlocProvider.of<NotificationCubit>(context),
       shoppingListItemUseCases: authenticatedLocator(),
