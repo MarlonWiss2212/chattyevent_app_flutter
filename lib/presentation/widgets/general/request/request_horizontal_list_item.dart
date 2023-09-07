@@ -65,7 +65,10 @@ class RequestHorizontalListItem extends StatelessWidget {
                     // TODO join request
                     _getInvitationText(request),
                     softWrap: true,
-                    style: Theme.of(context).textTheme.labelLarge,
+
+                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                          color: Colors.white,
+                        ),
                   ),
                 },
                 Row(

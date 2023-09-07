@@ -23,28 +23,29 @@ class RequestHorizontalList extends StatelessWidget {
           return const SizedBox();
         }
 
-        return PageView.builder(
-          scrollDirection: Axis.horizontal,
-          controller: PageController(viewportFraction: viewportFraction),
-          itemBuilder: (context, index) {
-            Widget? child;
-            if (index > state.requests.length - 1) {
-              child = const RequestHorizontalListSkeleton();
-            } else {
-              child = RequestHorizontalListItem(
-                request: state.requests[index],
-              );
-            }
-            return SizedBox(
-              height: height,
-              child: FractionallySizedBox(
+        return SizedBox(
+          height: height,
+          child: PageView.builder(
+            scrollDirection: Axis.horizontal,
+            controller: PageController(viewportFraction: viewportFraction),
+            itemBuilder: (context, index) {
+              Widget? child;
+              if (index > state.requests.length - 1) {
+                child = const RequestHorizontalListSkeleton();
+              } else {
+                child = RequestHorizontalListItem(
+                  request: state.requests[index],
+                );
+              }
+              return FractionallySizedBox(
                 widthFactor: 1 / viewportFraction,
                 child: child,
-              ),
-            );
-          },
-          itemCount:
-              state.loading ? state.requests.length + 1 : state.requests.length,
+              );
+            },
+            itemCount: state.loading
+                ? state.requests.length + 1
+                : state.requests.length,
+          ),
         );
       },
     );

@@ -27,7 +27,7 @@ Future<void> main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   final List<Future> futures = [
     //TODO: change before release
-    dotenv.load(fileName: '.dev.env'),
+    dotenv.load(fileName: '.env'),
     InjectionUtils.initialize(),
     IntlUtils.initialize()
   ];
