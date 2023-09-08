@@ -37,13 +37,13 @@
 	<key>NSContactsUsageDescription</key>
 	<string>MyApp does not need this permission</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>Always and when in use!</string>
+	<string>We use the location so you can send your Current Location to your friends or other features</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Can I have location always?</string>
+	<string>We use the location so you can send your Current Location to your friends or other features</string>
 	<key>NSLocationUsageDescription</key>
-	<string>Older devices need location.</string>
+	<string>We use the location so you can send your Current Location to your friends or other features</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Need location when in use</string>
+	<string>We use the location so you can send your Current Location to your friends or other features</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>We use the mircrophone so you can send Audio files to your friends</string>
 	<key>NSMotionUsageDescription</key>
