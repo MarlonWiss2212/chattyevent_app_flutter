@@ -26,7 +26,6 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   final List<Future> futures = [
-    //TODO: change before release
     dotenv.load(fileName: '.env'),
     InjectionUtils.initialize(),
     IntlUtils.initialize()

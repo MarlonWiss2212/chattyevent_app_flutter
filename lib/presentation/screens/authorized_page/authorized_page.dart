@@ -14,8 +14,17 @@ class AuthorizedPage extends StatefulWidget {
   State<AuthorizedPage> createState() => _AuthorizedPageState();
 }
 
-class _AuthorizedPageState extends State<AuthorizedPage> {
+class _AuthorizedPageState extends State<AuthorizedPage>
+    with WidgetsBindingObserver {
   late Timer timer;
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      BlocProvider.of<AuthCubit>(context).refreshAuthToken();
+    }
+    super.didChangeAppLifecycleState(state);
+  }
 
   @override
   void initState() {
