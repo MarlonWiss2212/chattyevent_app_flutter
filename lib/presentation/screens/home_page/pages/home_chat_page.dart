@@ -8,6 +8,7 @@ import 'package:chattyevent_app_flutter/application/bloc/chat/chat_cubit.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/home_page/pages/home_chat_page/chat_list.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/home_page/pages/home_chat_page/home_chat_page_skeleton.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 @RoutePage()
 class HomeChatPage extends StatefulWidget {
@@ -39,7 +40,7 @@ class _HomeChatPageState extends State<HomeChatPage> {
             flexibleSpace: FlexibleSpaceBar(
               centerTitle: true,
               title: Text(
-                "Chats",
+                AppLocalizations.of(context)!.chats,
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.onBackground,
                 ),

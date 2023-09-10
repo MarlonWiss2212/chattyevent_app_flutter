@@ -8,6 +8,18 @@ import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 class OneSignalRepositoryImpl implements OneSignalRepository {
   @override
+  Future<Either<NotificationAlert, Unit>> setLanguageCode({
+    required String languageCode,
+  }) async {
+    try {
+      await OneSignal.User.setLanguage(languageCode);
+      return const Right(unit);
+    } catch (e) {
+      return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
+    }
+  }
+
+  @override
   Future<Either<NotificationAlert, Unit>> login({
     required String userId,
   }) async {

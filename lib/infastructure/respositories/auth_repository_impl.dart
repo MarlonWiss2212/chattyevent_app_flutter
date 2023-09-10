@@ -197,4 +197,16 @@ class AuthRepositoryImpl implements AuthRepository {
       return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
     }
   }
+
+  @override
+  Future<Either<NotificationAlert, Unit>> setLanguageCode({
+    required String languageCode,
+  }) async {
+    try {
+      await auth.setLanguageCode(languageCode);
+      return const Right(unit);
+    } catch (e) {
+      return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
+    }
+  }
 }

@@ -1,5 +1,5 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/add_event/add_event_cubit.dart';
@@ -89,6 +89,35 @@ class NewPrivateEventLocationTab extends StatelessWidget {
                         ),
                       ),
                     ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 4,
+                  ),
+                  child: Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.surface,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: CountryCodePicker(
+                      onChanged: (code) {
+                        if (code.code != null) {
+                          BlocProvider.of<AddEventCubit>(context).emitState(
+                            countryCode: code.code,
+                          );
+                        }
+                      },
+                      initialSelection: 'DE',
+                      barrierColor: Colors.transparent.withOpacity(.6),
+                      dialogBackgroundColor:
+                          Theme.of(context).colorScheme.surface,
+                      showCountryOnly: true,
+                      showOnlyCountryWhenClosed: true,
+                      alignLeft: false,
+                    ),
                   ),
                 ),
               ],

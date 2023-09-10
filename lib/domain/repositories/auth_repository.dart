@@ -27,4 +27,7 @@ abstract class AuthRepository {
   Future<Either<NotificationAlert, User>> refreshUser();
   Future<Either<NotificationAlert, String>> refreshToken({bool? force});
   Future<Either<NotificationAlert, Unit>> deleteUser();
+  Future<Either<NotificationAlert, Unit>> setLanguageCode({
+    required String languageCode,
+  });
 }

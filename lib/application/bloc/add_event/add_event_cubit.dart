@@ -197,6 +197,7 @@ class AddEventCubit extends Cubit<AddEventState> {
     String? zip,
     String? city,
     String? street,
+    String? countryCode,
     String? housenumber,
     bool? isGroupchatEvent,
     bool? autoDelete,
@@ -210,6 +211,7 @@ class AddEventCubit extends Cubit<AddEventState> {
     emit(AddEventState(
       autoDelete: autoDelete ?? state.autoDelete,
       subtitle: subtitle ?? state.subtitle,
+      countryCode: countryCode ?? state.countryCode,
       permissions: permissions ?? state.permissions,
       isGroupchatEvent: isGroupchatEvent ?? state.isGroupchatEvent,
       privateEventUsersDto: privateEventUsersDto ?? state.privateEventUsersDto,

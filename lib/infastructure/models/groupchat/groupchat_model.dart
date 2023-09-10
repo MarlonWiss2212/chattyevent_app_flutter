@@ -89,9 +89,11 @@ class GroupchatModel extends GroupchatEntity {
         groupchatTo
         createdBy
         createdAt
+        updatedAt
       }
       fileLinks
       groupchatTo
+      updatedAt
       createdBy
       createdAt
     }

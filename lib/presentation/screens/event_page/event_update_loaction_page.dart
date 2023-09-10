@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:chattyevent_app_flutter/infastructure/dto/geocoding/create_address_dto.dart';
+import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/current_event/current_event_cubit.dart';
@@ -21,6 +22,7 @@ class _EventUpdateLocationPageState extends State<EventUpdateLocationPage> {
   TextEditingController zipController = TextEditingController();
   TextEditingController streetController = TextEditingController();
   TextEditingController housenumberController = TextEditingController();
+  String countryCode = "";
 
   @override
   Widget build(BuildContext context) {
@@ -100,6 +102,33 @@ class _EventUpdateLocationPageState extends State<EventUpdateLocationPage> {
                         ],
                       ),
                     ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 4,
+                      ),
+                      child: Container(
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.surface,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: CountryCodePicker(
+                          onChanged: (code) {
+                            if (code.code != null) {
+                              setState(() => countryCode = code.code!);
+                            }
+                          },
+                          initialSelection: 'DE',
+                          barrierColor: Colors.transparent.withOpacity(.6),
+                          dialogBackgroundColor:
+                              Theme.of(context).colorScheme.surface,
+                          showCountryOnly: true,
+                          showOnlyCountryWhenClosed: true,
+                          alignLeft: false,
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -120,7 +149,7 @@ class _EventUpdateLocationPageState extends State<EventUpdateLocationPage> {
                             zip: zipController.text,
                             housenumber: housenumberController.text,
                             street: streetController.text,
-                            country: "DE",
+                            country: countryCode,
                           ),
                         ),
                       ),

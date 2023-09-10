@@ -12,4 +12,7 @@ abstract class OneSignalRepository {
   Either<NotificationAlert, Unit> setNotificationReceivedHandler({
     required AppRouter appRouter,
   });
+  Future<Either<NotificationAlert, Unit>> setLanguageCode({
+    required String languageCode,
+  });
 }

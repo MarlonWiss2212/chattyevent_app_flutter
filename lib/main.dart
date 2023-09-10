@@ -2,12 +2,15 @@ import 'dart:async';
 import 'dart:io';
 import 'package:chattyevent_app_flutter/application/bloc/imprint/imprint_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/introduction/introduction_cubit.dart';
-import 'package:chattyevent_app_flutter/core/utils/intl_utils.dart';
+import 'package:chattyevent_app_flutter/core/utils/localization_utils.dart';
 import 'package:chattyevent_app_flutter/core/utils/material_theme_utils.dart';
+import 'package:chattyevent_app_flutter/domain/usecases/auth_usecases.dart';
+import 'package:chattyevent_app_flutter/domain/usecases/one_signal_use_cases.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.dart';
 import 'package:chattyevent_app_flutter/scroll_bahaviour.dart';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -28,7 +31,7 @@ Future<void> main() async {
   final List<Future> futures = [
     dotenv.load(fileName: '.env'),
     InjectionUtils.initialize(),
-    IntlUtils.initialize()
+    LocalizationUtils.init()
   ];
   if (!kIsWeb) {
     if (Platform.isAndroid || Platform.isIOS) {
@@ -36,7 +39,20 @@ Future<void> main() async {
     }
   }
 
-  await Future.wait([...futures, OneSignalUtils.initialize()]);
+  await Future.wait([
+    ...futures,
+    OneSignalUtils.initialize(),
+  ]);
+
+  //set locales
+  final String languageCode = LocalizationUtils.systemLocale.split("_")[0];
+  print(languageCode);
+  await Future.wait([
+    serviceLocator<AuthUseCases>().setLanguageCode(languageCode: languageCode),
+    serviceLocator<OneSignalUseCases>().setLanguageCode(
+      languageCode: languageCode,
+    ),
+  ]);
 
   runApp(
     MultiBlocProvider(
@@ -145,6 +161,16 @@ class _AppState extends State<App> {
           child: Consumer<DarkModeProvider>(
             builder: (context, value, child) {
               return MaterialApp.router(
+                supportedLocales: const [
+                  Locale("en"),
+                  Locale("de"),
+                  Locale("es"),
+                  Locale("pt"),
+                  Locale("fr"),
+                  Locale("it"),
+                  Locale("nl"),
+                ],
+                localizationsDelegates: AppLocalizations.localizationsDelegates,
                 title: 'ChattyEvent',
                 routerConfig: serviceLocator<AppRouter>().config(),
                 builder: (context, widget) {

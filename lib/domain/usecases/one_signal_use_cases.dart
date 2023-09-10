@@ -9,6 +9,12 @@ class OneSignalUseCases {
     required this.oneSignalRepository,
   });
 
+  Future<Either<NotificationAlert, Unit>> setLanguageCode({
+    required String languageCode,
+  }) {
+    return oneSignalRepository.setLanguageCode(languageCode: languageCode);
+  }
+
   Future<Either<NotificationAlert, Unit>> login({required String userId}) {
     return oneSignalRepository.login(userId: userId);
   }

@@ -29,6 +29,7 @@ class AddEventState {
   final String? city;
   final String? street;
   final String? housenumber;
+  final String? countryCode;
 
   final CreateEventPermissionsDto permissions;
 
@@ -47,6 +48,7 @@ class AddEventState {
     this.coverImage,
     this.selectedGroupchat,
     this.eventDate,
+    this.countryCode,
     this.eventEndDate,
     this.city,
     this.country,

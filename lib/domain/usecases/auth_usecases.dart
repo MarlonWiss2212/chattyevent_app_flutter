@@ -12,6 +12,12 @@ class AuthUseCases {
     required this.oneSignalRepository,
   });
 
+  Future<Either<NotificationAlert, Unit>> setLanguageCode({
+    required String languageCode,
+  }) {
+    return authRepository.setLanguageCode(languageCode: languageCode);
+  }
+
   Either<NotificationAlert, User> getFirebaseUser() {
     return authRepository.getFirebaseUser();
   }

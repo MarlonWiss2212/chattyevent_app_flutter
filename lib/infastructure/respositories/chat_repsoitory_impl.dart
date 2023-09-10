@@ -4,6 +4,7 @@ import 'package:chattyevent_app_flutter/domain/entities/chat_entity.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/chat_repository.dart';
 import 'package:chattyevent_app_flutter/infastructure/datasources/remote/graphql.dart';
 import 'package:chattyevent_app_flutter/infastructure/models/chat_model.dart';
+import 'package:chattyevent_app_flutter/infastructure/models/event/event_model.dart';
 import 'package:chattyevent_app_flutter/infastructure/models/groupchat/groupchat_model.dart';
 import 'package:dartz/dartz.dart';
 
@@ -22,42 +23,7 @@ class ChatRepositoryImpl implements ChatRepository {
               ${GroupchatModel.groupchatLightQuery(alsoLatestMessage: true)}
             }
             event {
-              _id
-              status
-              title
-              type
-              privateEventData {
-                groupchatTo
-              }
-              eventDate
-              eventEndDate
-              eventLocation {
-                geoJson {
-                  type
-                  coordinates
-                }
-              }
-              coverImageLink
-              latestMessage {
-                _id
-                readBy
-                message
-                messageToReactTo {
-                  _id
-                  readBy
-                  message
-                  fileLinks
-                  eventTo
-                  updatedAt
-                  createdBy
-                  createdAt
-                }
-                fileLinks
-                eventTo
-                updatedAt
-                createdBy
-                createdAt
-              }
+              ${EventModel.eventLightQuery(alsoLatestMessage: true)}
             } 
             user {
               _id
@@ -103,7 +69,6 @@ class ChatRepositoryImpl implements ChatRepository {
                 createdAt
               }
             }
-            
           }
         }
         """,
