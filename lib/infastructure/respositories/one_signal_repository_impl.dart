@@ -12,9 +12,14 @@ class OneSignalRepositoryImpl implements OneSignalRepository {
     required String languageCode,
   }) async {
     try {
+      print(11111111);
       await OneSignal.User.setLanguage(languageCode);
+      print(2222222);
+
       return const Right(unit);
     } catch (e) {
+      print(3333333);
+
       return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
     }
   }

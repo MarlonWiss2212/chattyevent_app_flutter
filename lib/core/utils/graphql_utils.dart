@@ -12,7 +12,7 @@ class GraphQlUtils {
     );
 
     final WebSocketLink webSocketLink = WebSocketLink(
-      "wss://${dotenv.get("API_BASE_URL")}/graphql",
+      "ws://${dotenv.get("API_BASE_URL")}/graphql",
       subProtocol: GraphQLProtocol.graphqlTransportWs,
       config: SocketClientConfig(
         inactivityTimeout: const Duration(hours: 3),

@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:chattyevent_app_flutter/core/enums/event/event_permission_enum.dart';
+import 'package:chattyevent_app_flutter/core/utils/localization_utils.dart';
 import 'package:chattyevent_app_flutter/infastructure/dto/event/create_private_event_data_dto.dart';
 import 'package:chattyevent_app_flutter/infastructure/dto/geocoding/create_address_dto.dart';
 import 'package:chattyevent_app_flutter/infastructure/dto/event/create_event_permissions_dto.dart';
@@ -44,6 +45,7 @@ class AddEventCubit extends Cubit<AddEventState> {
             updateShoppingListItem: EventPermissionEnum.everyone,
             deleteShoppingListItem: EventPermissionEnum.everyone,
           ),
+          countryCode: LocalizationUtils.systemLocale.split("_")[1],
           isGroupchatEvent: false,
           calendarTimeUsers: [],
           privateEventUsersDto: [],
@@ -85,7 +87,7 @@ class AddEventCubit extends Cubit<AddEventState> {
             ? CreateEventLocationDto(
                 address: CreateAddressDto(
                   city: state.city!,
-                  country: "DE",
+                  country: state.countryCode,
                   housenumber: state.housenumber!,
                   street: state.street!,
                   zip: state.zip!,
@@ -103,6 +105,7 @@ class AddEventCubit extends Cubit<AddEventState> {
       (event) {
         homeEventCubit.getfutureEventsViaApi(reload: true);
         emit(AddEventState(
+          countryCode: LocalizationUtils.systemLocale.split("_")[1],
           autoDelete: false,
           subtitle: "",
           permissions: CreateEventPermissionsDto(),

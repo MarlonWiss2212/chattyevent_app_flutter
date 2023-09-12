@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:chattyevent_app_flutter/core/utils/localization_utils.dart';
 import 'package:chattyevent_app_flutter/infastructure/dto/geocoding/create_address_dto.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +23,7 @@ class _EventUpdateLocationPageState extends State<EventUpdateLocationPage> {
   TextEditingController zipController = TextEditingController();
   TextEditingController streetController = TextEditingController();
   TextEditingController housenumberController = TextEditingController();
-  String countryCode = "";
+  String countryCode = LocalizationUtils.systemLocale.split("_")[1];
 
   @override
   Widget build(BuildContext context) {
@@ -119,7 +120,7 @@ class _EventUpdateLocationPageState extends State<EventUpdateLocationPage> {
                               setState(() => countryCode = code.code!);
                             }
                           },
-                          initialSelection: 'DE',
+                          initialSelection: countryCode,
                           barrierColor: Colors.transparent.withOpacity(.6),
                           dialogBackgroundColor:
                               Theme.of(context).colorScheme.surface,

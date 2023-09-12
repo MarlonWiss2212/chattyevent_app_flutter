@@ -76,10 +76,10 @@ class CurrentGroupchatState {
 
   factory CurrentGroupchatState.merge({
     required CurrentGroupchatState oldState,
+    required String currentUserId,
     bool? loadingInvitations,
     GroupchatEntity? currentChat,
     List<GroupchatUserEntity>? users,
-    int? currentUserIndex,
     List<GroupchatLeftUserEntity>? leftUsers,
     List<EventEntity>? futureConnectedPrivateEvents,
     List<MessageEntity>? messages,
@@ -107,11 +107,15 @@ class CurrentGroupchatState {
           )
         : null;
 
+    final newUsers = users ?? oldState.users;
+
     return CurrentGroupchatState(
       invitations: allInvitations,
       loadingInvitations: loadingInvitations ?? oldState.loadingInvitations,
       messages: allMessages,
-      currentUserIndex: currentUserIndex ?? oldState.currentUserIndex,
+      currentUserIndex: newUsers.indexWhere(
+        (element) => element.id == currentUserId,
+      ),
       currentUserLeftChat: currentUserLeftChat ?? oldState.currentUserLeftChat,
       loadingPrivateEvents:
           loadingPrivateEvents ?? oldState.loadingPrivateEvents,
@@ -120,7 +124,7 @@ class CurrentGroupchatState {
       loadingMessages: loadingMessages ?? oldState.loadingMessages,
       currentChat: newChat,
       loadingChat: loadingChat ?? oldState.loadingChat,
-      users: users ?? oldState.users,
+      users: newUsers,
       leftUsers: leftUsers ?? oldState.leftUsers,
     );
   }

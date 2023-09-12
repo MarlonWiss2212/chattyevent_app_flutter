@@ -5,7 +5,6 @@ import 'package:chattyevent_app_flutter/application/bloc/introduction/introducti
 import 'package:chattyevent_app_flutter/core/utils/localization_utils.dart';
 import 'package:chattyevent_app_flutter/core/utils/material_theme_utils.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/auth_usecases.dart';
-import 'package:chattyevent_app_flutter/domain/usecases/one_signal_use_cases.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.dart';
 import 'package:chattyevent_app_flutter/scroll_bahaviour.dart';
 import 'package:dynamic_color/dynamic_color.dart';
@@ -46,12 +45,10 @@ Future<void> main() async {
 
   //set locales
   final String languageCode = LocalizationUtils.systemLocale.split("_")[0];
-  print(languageCode);
   await Future.wait([
     serviceLocator<AuthUseCases>().setLanguageCode(languageCode: languageCode),
-    serviceLocator<OneSignalUseCases>().setLanguageCode(
-      languageCode: languageCode,
-    ),
+    //TODO: fix
+    // serviceLocator<OneSignalUseCases>().setLanguageCode(languageCode: languageCode),
   ]);
 
   runApp(

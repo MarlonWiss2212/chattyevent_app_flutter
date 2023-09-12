@@ -102,9 +102,6 @@ class CurrentEventCubit extends Cubit<CurrentEventState> {
           loadingEvent: false,
           event: data.event,
           eventUsers: data.eventUsers,
-          currentUserIndex: data.eventUsers.indexWhere(
-            (element) => element.id == authCubit.state.currentUser.id,
-          ),
           eventLeftUsers: data.eventLeftUsers,
           groupchat: data.groupchat,
         );
@@ -126,9 +123,6 @@ class CurrentEventCubit extends Cubit<CurrentEventState> {
         emitState(
           eventUsers: usersAndLeftUsers.eventUsers,
           eventLeftUsers: usersAndLeftUsers.eventLeftUsers,
-          currentUserIndex: usersAndLeftUsers.eventUsers.indexWhere(
-            (element) => element.id == authCubit.state.currentUser.id,
-          ),
         );
       },
     );
@@ -559,7 +553,6 @@ class CurrentEventCubit extends Cubit<CurrentEventState> {
     List<MessageEntity>? messages,
     List<RequestEntity>? invitations,
     GroupchatEntity? groupchat,
-    int? currentUserIndex,
     bool? loadingEvent,
     bool? loadingInvitations,
     bool? loadingGroupchat,
@@ -587,18 +580,21 @@ class CurrentEventCubit extends Cubit<CurrentEventState> {
           )
         : null;
 
+    final newEventUsers = eventUsers ?? state.eventUsers;
     final CurrentEventState newState = CurrentEventState(
       messages: allMessages,
       invitations: allInvitations,
       loadingInvitations: loadingInvitations ?? state.loadingInvitations,
       loadingMessages: loadingMessages ?? state.loadingMessages,
-      currentUserIndex: currentUserIndex ?? state.currentUserIndex,
+      currentUserIndex: newEventUsers.indexWhere(
+        (element) => element.id == authCubit.state.currentUser.id,
+      ),
       shoppingListItemStates:
           shoppingListItemStates ?? state.shoppingListItemStates,
       loadingShoppingList: loadingShoppingList ?? state.loadingShoppingList,
       event: newEvent,
       eventLeftUsers: eventLeftUsers ?? state.eventLeftUsers,
-      eventUsers: eventUsers ?? state.eventUsers,
+      eventUsers: newEventUsers,
       groupchat: groupchat ?? state.groupchat,
       loadingEvent: loadingEvent ?? state.loadingEvent,
       loadingGroupchat: loadingGroupchat ?? state.loadingGroupchat,

@@ -72,11 +72,15 @@ class CurrentGroupchatCubit extends Cubit<CurrentGroupchatState> {
     if (replaceOrAddInOtherCubits) {
       chatCubit.replaceOrAdd(chat: ChatEntity(groupchat: state.currentChat));
     }
+
     super.emit(state);
   }
 
   Future reloadGroupchatAndGroupchatUsersViaApi() async {
-    emit(CurrentGroupchatState.merge(oldState: state, loadingChat: true));
+    emit(CurrentGroupchatState.merge(
+        oldState: state,
+        currentUserId: authCubit.state.currentUser.id,
+        loadingChat: true));
 
     final Either<NotificationAlert, GroupchatAndGroupchatUsersResponse>
         response = await groupchatUseCases.getGroupchatDataViaApi(
@@ -92,18 +96,19 @@ class CurrentGroupchatCubit extends Cubit<CurrentGroupchatState> {
     response.fold(
       (alert) {
         notificationCubit.newAlert(notificationAlert: alert);
-        emit(CurrentGroupchatState.merge(oldState: state, loadingChat: false));
+        emit(CurrentGroupchatState.merge(
+            oldState: state,
+            currentUserId: authCubit.state.currentUser.id,
+            loadingChat: false));
       },
       (data) {
         emit(CurrentGroupchatState.merge(
           currentChat: data.groupchat,
           users: data.groupchatUsers,
-          currentUserIndex: data.groupchatUsers.indexWhere(
-            (element) => element.id == authCubit.state.currentUser.id,
-          ),
           leftUsers: data.groupchatLeftUsers,
           loadingChat: false,
           oldState: state,
+          currentUserId: authCubit.state.currentUser.id,
         ));
       },
     );
@@ -123,11 +128,9 @@ class CurrentGroupchatCubit extends Cubit<CurrentGroupchatState> {
         emit(
           CurrentGroupchatState.merge(
             oldState: state,
+            currentUserId: authCubit.state.currentUser.id,
             users: usersAndLeftUsers.groupchatUsers,
             leftUsers: usersAndLeftUsers.groupchatLeftUsers,
-            currentUserIndex: usersAndLeftUsers.groupchatUsers.indexWhere(
-              (element) => element.id == authCubit.state.currentUser.id,
-            ),
           ),
         );
       },
@@ -139,6 +142,7 @@ class CurrentGroupchatCubit extends Cubit<CurrentGroupchatState> {
   }) async {
     emit(CurrentGroupchatState.merge(
       oldState: state,
+      currentUserId: authCubit.state.currentUser.id,
       loadingPrivateEvents: true,
     ));
 
@@ -163,12 +167,14 @@ class CurrentGroupchatCubit extends Cubit<CurrentGroupchatState> {
         notificationCubit.newAlert(notificationAlert: alert);
         emit(CurrentGroupchatState.merge(
           oldState: state,
+          currentUserId: authCubit.state.currentUser.id,
           loadingPrivateEvents: false,
         ));
       },
       (events) {
         emit(CurrentGroupchatState.merge(
           oldState: state,
+          currentUserId: authCubit.state.currentUser.id,
           loadingPrivateEvents: false,
         ));
         for (final event in events) {
@@ -191,6 +197,7 @@ class CurrentGroupchatCubit extends Cubit<CurrentGroupchatState> {
 
       emit(CurrentGroupchatState.merge(
         oldState: state,
+        currentUserId: authCubit.state.currentUser.id,
         futureConnectedPrivateEvents: newPrivateEvents,
       ));
       return newPrivateEvents[foundIndex];
@@ -200,6 +207,7 @@ class CurrentGroupchatCubit extends Cubit<CurrentGroupchatState> {
       newPrivateEvents.sort((a, b) => a.eventDate.compareTo(b.eventDate));
       emit(CurrentGroupchatState.merge(
         oldState: state,
+        currentUserId: authCubit.state.currentUser.id,
         futureConnectedPrivateEvents: newPrivateEvents,
       ));
     }
@@ -209,6 +217,7 @@ class CurrentGroupchatCubit extends Cubit<CurrentGroupchatState> {
   Future getCurrentChatViaApi() async {
     emit(CurrentGroupchatState.merge(
       oldState: state,
+      currentUserId: authCubit.state.currentUser.id,
       loadingChat: true,
     ));
 
@@ -222,13 +231,17 @@ class CurrentGroupchatCubit extends Cubit<CurrentGroupchatState> {
     groupchatOrFailure.fold(
       (alert) {
         notificationCubit.newAlert(notificationAlert: alert);
-        emit(CurrentGroupchatState.merge(oldState: state, loadingChat: false));
+        emit(CurrentGroupchatState.merge(
+            oldState: state,
+            currentUserId: authCubit.state.currentUser.id,
+            loadingChat: false));
       },
       (groupchat) async {
         emit(CurrentGroupchatState.merge(
           currentChat: groupchat,
           loadingChat: false,
           oldState: state,
+          currentUserId: authCubit.state.currentUser.id,
         ));
       },
     );
@@ -249,7 +262,11 @@ class CurrentGroupchatCubit extends Cubit<CurrentGroupchatState> {
       (alert) => notificationCubit.newAlert(notificationAlert: alert),
       (groupchat) {
         emit(
-          CurrentGroupchatState.merge(currentChat: groupchat, oldState: state),
+          CurrentGroupchatState.merge(
+            currentChat: groupchat,
+            oldState: state,
+            currentUserId: authCubit.state.currentUser.id,
+          ),
         );
       },
     );
@@ -258,6 +275,7 @@ class CurrentGroupchatCubit extends Cubit<CurrentGroupchatState> {
   Future addUserToChat({required String userId}) async {
     emit(CurrentGroupchatState.merge(
       oldState: state,
+      currentUserId: authCubit.state.currentUser.id,
       loadingChat: true,
     ));
     final Either<NotificationAlert, GroupchatAddUserResponse>
@@ -271,11 +289,15 @@ class CurrentGroupchatCubit extends Cubit<CurrentGroupchatState> {
     groupchatOrFailure.fold(
       (alert) {
         notificationCubit.newAlert(notificationAlert: alert);
-        emit(CurrentGroupchatState.merge(oldState: state, loadingChat: false));
+        emit(CurrentGroupchatState.merge(
+            oldState: state,
+            currentUserId: authCubit.state.currentUser.id,
+            loadingChat: false));
       },
       (groupchatUserOrRequest) {
         emit(CurrentGroupchatState.merge(
           oldState: state,
+          currentUserId: authCubit.state.currentUser.id,
           users: groupchatUserOrRequest.groupchatUser != null
               ? [...state.users, groupchatUserOrRequest.groupchatUser!]
               : null,
@@ -326,6 +348,7 @@ class CurrentGroupchatCubit extends Cubit<CurrentGroupchatState> {
           users: newGroupchatUsers,
           loadingChat: false,
           oldState: state,
+          currentUserId: authCubit.state.currentUser.id,
         ));
       },
     );
@@ -334,6 +357,7 @@ class CurrentGroupchatCubit extends Cubit<CurrentGroupchatState> {
   Future deleteUserFromChat({required String userId}) async {
     emit(CurrentGroupchatState.merge(
       oldState: state,
+      currentUserId: authCubit.state.currentUser.id,
       loadingChat: true,
     ));
     final Either<NotificationAlert, GroupchatLeftUserEntity?>
@@ -349,7 +373,10 @@ class CurrentGroupchatCubit extends Cubit<CurrentGroupchatState> {
       (alert) {
         notificationCubit.newAlert(notificationAlert: alert);
         emit(
-          CurrentGroupchatState.merge(oldState: state, loadingChat: false),
+          CurrentGroupchatState.merge(
+              oldState: state,
+              currentUserId: authCubit.state.currentUser.id,
+              loadingChat: false),
         );
       },
       (groupchatLeftUser) {
@@ -359,6 +386,7 @@ class CurrentGroupchatCubit extends Cubit<CurrentGroupchatState> {
             currentUserLeftChat: true,
             loadingChat: false,
             oldState: state,
+            currentUserId: authCubit.state.currentUser.id,
           ));
           chatCubit.delete(groupchatId: state.currentChat.id);
         } else {
@@ -368,6 +396,7 @@ class CurrentGroupchatCubit extends Cubit<CurrentGroupchatState> {
             leftUsers: List.from(state.leftUsers)..add(groupchatLeftUser),
             loadingChat: false,
             oldState: state,
+            currentUserId: authCubit.state.currentUser.id,
           ));
         }
       },
@@ -377,6 +406,7 @@ class CurrentGroupchatCubit extends Cubit<CurrentGroupchatState> {
   Future loadMessages({bool reload = false}) async {
     emit(CurrentGroupchatState.merge(
       oldState: state,
+      currentUserId: authCubit.state.currentUser.id,
       loadingMessages: true,
     ));
 
@@ -399,7 +429,10 @@ class CurrentGroupchatCubit extends Cubit<CurrentGroupchatState> {
       (alert) {
         notificationCubit.newAlert(notificationAlert: alert);
         emit(
-          CurrentGroupchatState.merge(oldState: state, loadingMessages: false),
+          CurrentGroupchatState.merge(
+              oldState: state,
+              currentUserId: authCubit.state.currentUser.id,
+              loadingMessages: false),
         );
       },
       (messages) {
@@ -414,6 +447,7 @@ class CurrentGroupchatCubit extends Cubit<CurrentGroupchatState> {
           messages: newMessages,
           loadingMessages: false,
           oldState: state,
+          currentUserId: authCubit.state.currentUser.id,
         ));
       },
     );
@@ -422,6 +456,7 @@ class CurrentGroupchatCubit extends Cubit<CurrentGroupchatState> {
   Future<void> getInvitationsViaApi({bool reload = false}) async {
     emit(CurrentGroupchatState.merge(
       oldState: state,
+      currentUserId: authCubit.state.currentUser.id,
       loadingInvitations: true,
     ));
 
@@ -445,6 +480,7 @@ class CurrentGroupchatCubit extends Cubit<CurrentGroupchatState> {
       (alert) {
         emit(CurrentGroupchatState.merge(
           oldState: state,
+          currentUserId: authCubit.state.currentUser.id,
           loadingInvitations: false,
         ));
         notificationCubit.newAlert(notificationAlert: alert);
@@ -453,12 +489,14 @@ class CurrentGroupchatCubit extends Cubit<CurrentGroupchatState> {
         if (reload) {
           emit(CurrentGroupchatState.merge(
             oldState: state,
+            currentUserId: authCubit.state.currentUser.id,
             loadingInvitations: false,
             invitations: requests,
           ));
         } else {
           emit(CurrentGroupchatState.merge(
             oldState: state,
+            currentUserId: authCubit.state.currentUser.id,
             loadingInvitations: false,
             invitations: [...state.invitations, ...requests],
           ));
@@ -479,6 +517,7 @@ class CurrentGroupchatCubit extends Cubit<CurrentGroupchatState> {
       (_) async {
         emit(CurrentGroupchatState.merge(
           oldState: state,
+          currentUserId: authCubit.state.currentUser.id,
           invitations: state.invitations
               .where((element) => element.id != request.id)
               .toList(),
@@ -498,6 +537,7 @@ class CurrentGroupchatCubit extends Cubit<CurrentGroupchatState> {
       CurrentGroupchatState.merge(
         messages: List.from(state.messages)..add(message),
         oldState: state,
+        currentUserId: authCubit.state.currentUser.id,
       ),
       replaceOrAddInOtherCubits: false,
     );

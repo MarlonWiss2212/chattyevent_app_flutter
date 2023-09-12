@@ -52,7 +52,7 @@ class NewPrivateEventLocationTab extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  padding: const EdgeInsets.only(top: 4),
+                  padding: const EdgeInsets.symmetric(vertical: 4),
                   width: double.infinity,
                   child: Row(
                     children: [
@@ -92,9 +92,8 @@ class NewPrivateEventLocationTab extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 8,
-                    vertical: 4,
+                  padding: const EdgeInsets.only(
+                    top: 4,
                   ),
                   child: Container(
                     width: double.infinity,
@@ -110,7 +109,7 @@ class NewPrivateEventLocationTab extends StatelessWidget {
                           );
                         }
                       },
-                      initialSelection: 'DE',
+                      initialSelection: state.countryCode,
                       barrierColor: Colors.transparent.withOpacity(.6),
                       dialogBackgroundColor:
                           Theme.of(context).colorScheme.surface,
