@@ -23,7 +23,7 @@ class _BlocInitPageState extends State<BlocInitPage> {
   final AdMobUseCases adMobUseCases = serviceLocator<AdMobUseCases>();
 
   @override
-  void initState() {
+  Future<void> initState() async {
     final OneSignalUseCases oneSignalUseCases =
         serviceLocator<OneSignalUseCases>();
     oneSignalUseCases.setNotificationReceivedHandler(
