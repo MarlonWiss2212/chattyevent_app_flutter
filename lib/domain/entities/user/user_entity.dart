@@ -8,7 +8,7 @@ class UserEntity {
   final String authId;
   final String? username;
   final String? profileImageLink;
-  final String? birthdate;
+  final DateTime? birthdate;
   final UserRelationsCountEntity? userRelationCounts;
   final UserRelationEntity? myUserRelationToOtherUser;
   final UserRelationEntity? otherUserRelationToMyUser;

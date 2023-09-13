@@ -134,6 +134,18 @@ class _SettingsPrivacyPageState extends State<SettingsPrivacyPage> {
               ),
               const Divider(thickness: 3),
               ListTile(
+                leading: const Icon(Icons.date_range),
+                title: Text(
+                  "Geburtstag ändern",
+                  style: Theme.of(context).textTheme.titleMedium,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                trailing: const Icon(Ionicons.chevron_forward),
+                onTap: () {
+                  AutoRouter.of(context).push(const UpdateBirthdateRoute());
+                },
+              ),
+              ListTile(
                 leading: const Icon(Icons.email),
                 title: Text(
                   "Email ändern",

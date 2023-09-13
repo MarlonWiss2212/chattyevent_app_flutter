@@ -28,10 +28,7 @@ class CreateUserPageBirthdayButton extends StatelessWidget {
                   decimal: true,
                 ),
                 context: context,
-                initialDate: BlocProvider.of<AddCurrentUserCubit>(context)
-                        .state
-                        .birthdate ??
-                    lastDate,
+                initialDate: state.birthdate ?? lastDate,
                 firstDate: DateTime(lastDate.year - 140),
                 lastDate: lastDate,
               );

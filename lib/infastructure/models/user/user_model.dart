@@ -14,7 +14,7 @@ class UserModel extends UserEntity {
     required String authId,
     String? username,
     String? profileImageLink,
-    String? birthdate,
+    DateTime? birthdate,
     UserRelationsCountEntity? userRelationCounts,
     UserRelationEntity? myUserRelationToOtherUser,
     UserRelationEntity? otherUserRelationToMyUser,
@@ -46,6 +46,10 @@ class UserModel extends UserEntity {
         ? DateTime.parse(json["updatedAt"]).toLocal()
         : null;
 
+    final birthdate = json["birthdate"] != null
+        ? DateTime.parse(json["updbirthdateatedAt"]).toLocal()
+        : null;
+
     return UserModel(
       id: json['_id'],
       authId: json["authId"],
@@ -57,7 +61,7 @@ class UserModel extends UserEntity {
       latestMessage: json["latestMessage"] != null
           ? MessageModel.fromJson(json["latestMessage"])
           : null,
-      birthdate: json["birthdate"],
+      birthdate: birthdate,
       userRelationCounts: json['userRelationCounts'] != null
           ? UserRelationsCountModel.fromJson(
               json['userRelationCounts'],
@@ -92,6 +96,7 @@ class UserModel extends UserEntity {
         followRequestCount
       }
       ${userIsCurrentUser == true ? """
+      birthdate
       permissions {
         groupchatAddMe {
           permission

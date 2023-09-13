@@ -514,6 +514,11 @@ class AppRouter extends $AppRouter {
           path: 'settings/privacy/update-password',
         ),
         CustomRoute(
+          page: UpdateBirthdateRoute.page,
+          guards: [authGuard],
+          path: 'settings/privacy/update-birthdate',
+        ),
+        CustomRoute(
           transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
           page: UpdateEmailRoute.page,
           guards: [authGuard],
