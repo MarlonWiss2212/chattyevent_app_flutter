@@ -50,6 +50,9 @@ class IntroductionCubit extends Cubit<IntroductionState> {
         } else if (features.finishedUsersPage == false) {
           context.pushRoute(const AppFeatureIntroductionRoutesUsersRoute());
           return;
+        } else if (features.finishedMessagesPage == false) {
+          context.pushRoute(const AppFeatureIntroductionRoutesMessageRoute());
+          return;
         } else if (features.finishedPrivateEventPage == false) {
           context
               .pushRoute(const AppFeatureIntroductionRoutesPrivateEventRoute());

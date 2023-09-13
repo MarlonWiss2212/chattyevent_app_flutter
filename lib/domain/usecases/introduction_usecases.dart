@@ -26,6 +26,7 @@ class IntroductionUseCases {
           introduction: IntroductionEntity(
             appFeatureIntroduction: AppFeatureIntroductionEntity(
               finishedUsersPage: false,
+              finishedMessagesPage: false,
               finishedPrivateEventPage: false,
               finishedGroupchatsPage: false,
             ),

@@ -42,6 +42,15 @@ class SettingsUseCases {
     );
   }
 
+  Future<Either<NotificationAlert, Unit>> openImprintPage() async {
+    return await launchUrlUseCases.launchUrl(
+      url: "https://chattyevent.com/datasecurity/imprint",
+      launchMode: Platform.isAndroid || Platform.isIOS
+          ? LaunchMode.externalApplication
+          : LaunchMode.platformDefault,
+    );
+  }
+
   Future<Either<NotificationAlert, Unit>> openTermsOfUsePage() async {
     return await launchUrlUseCases.launchUrl(
       url: "https://chattyevent.com/datasecurity/terms-of-use",

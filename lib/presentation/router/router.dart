@@ -479,12 +479,6 @@ class AppRouter extends $AppRouter {
         ),
         CustomRoute(
           transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
-          page: ImprintRoute.page,
-          guards: [authGuard],
-          path: 'settings/info/imprint',
-        ),
-        CustomRoute(
-          transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
           page: SettingsPrivacyRoute.page,
           guards: [authGuard],
           path: 'settings/privacy',
@@ -561,6 +555,13 @@ class AppRouter extends $AppRouter {
           guards: [authGuard],
           fullscreenDialog: true,
           path: 'introduction/features/groupchat',
+        ),
+        CustomRoute(
+          transitionsBuilder: TransitionsBuilders.fadeIn,
+          page: AppFeatureIntroductionRoutesMessageRoute.page,
+          guards: [authGuard],
+          fullscreenDialog: true,
+          path: 'introduction/features/messages',
         ),
       ];
 }

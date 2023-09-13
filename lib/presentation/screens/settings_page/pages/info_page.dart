@@ -84,10 +84,8 @@ class _SettingsInfoPageState extends State<SettingsInfoPage> {
                     overflow: TextOverflow.ellipsis,
                   ),
                   trailing: const Icon(Ionicons.chevron_forward),
-                  onTap: () {
-                    AutoRouter.of(context).push(
-                      const ImprintRoute(),
-                    );
+                  onTap: () async {
+                    await settingsUseCases.openImprintPage();
                   },
                 ),
                 ListTile(

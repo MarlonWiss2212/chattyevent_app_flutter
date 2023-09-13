@@ -5,6 +5,7 @@ class AppFeatureIntroductionModel extends AppFeatureIntroductionEntity {
     required super.finishedUsersPage,
     required super.finishedPrivateEventPage,
     required super.finishedGroupchatsPage,
+    required super.finishedMessagesPage,
   });
 
   factory AppFeatureIntroductionModel.fromJson(Map<String, dynamic> json) {
@@ -12,6 +13,7 @@ class AppFeatureIntroductionModel extends AppFeatureIntroductionEntity {
       finishedUsersPage: json['finishedUsersPage'],
       finishedPrivateEventPage: json['finishedPrivateEventPage'],
       finishedGroupchatsPage: json['finishedGroupchatsPage'],
+      finishedMessagesPage: json['finishedMessagesPage'] ?? false,
     );
   }
 }
