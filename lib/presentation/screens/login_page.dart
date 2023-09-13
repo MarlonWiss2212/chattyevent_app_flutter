@@ -58,6 +58,7 @@ class _LoginPageState extends State<LoginPage> {
                           labelText: "E-Mail",
                           prefixIcon: Icon(Icons.email),
                         ),
+                        keyboardType: TextInputType.emailAddress,
                         controller: emailFieldController,
                         textInputAction: TextInputAction.next,
                       ),

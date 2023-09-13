@@ -59,6 +59,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           labelText: "E-Mail",
                           prefixIcon: Icon(Icons.email),
                         ),
+                        keyboardType: TextInputType.emailAddress,
                         controller: emailFieldController,
                         textInputAction: TextInputAction.next,
                       ),

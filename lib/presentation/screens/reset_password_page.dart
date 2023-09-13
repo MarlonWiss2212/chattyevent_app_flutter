@@ -47,6 +47,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                     labelText: 'E-Mail',
                     prefixIcon: Icon(Icons.email),
                   ),
+                  keyboardType: TextInputType.emailAddress,
                   controller: emailFieldController,
                   textInputAction: TextInputAction.done,
                   onFieldSubmitted: (newValue) {
