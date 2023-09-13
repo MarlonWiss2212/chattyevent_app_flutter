@@ -47,7 +47,7 @@ class UserModel extends UserEntity {
         : null;
 
     final birthdate = json["birthdate"] != null
-        ? DateTime.parse(json["updbirthdateatedAt"]).toLocal()
+        ? DateTime.parse(json["birthdate"]).toLocal()
         : null;
 
     return UserModel(
