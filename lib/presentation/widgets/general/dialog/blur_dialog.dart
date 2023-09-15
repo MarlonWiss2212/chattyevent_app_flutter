@@ -21,7 +21,7 @@ class BlurDialog extends StatelessWidget {
         child: Dialog(
           surfaceTintColor: Colors.transparent,
           backgroundColor: Colors.transparent,
-          insetPadding: const EdgeInsets.all(0),
+          insetPadding: const EdgeInsets.only(top: 30),
           child: Padding(
             padding: const EdgeInsets.all(12),
             child: Align(
