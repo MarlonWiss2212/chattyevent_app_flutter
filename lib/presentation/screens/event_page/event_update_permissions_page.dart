@@ -3,6 +3,7 @@ import 'package:chattyevent_app_flutter/core/enums/event/event_permission_enum.d
 import 'package:chattyevent_app_flutter/infastructure/dto/event/update_event_dto.dart';
 import 'package:chattyevent_app_flutter/infastructure/dto/event/update_event_permissions_dto.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/event_permissions_menu.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:auto_route/auto_route.dart';
@@ -15,7 +16,7 @@ class EventUpdatePermissionsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Mitglieder Berechtigungen"),
+        title: const Text("eventPage.updatePermissionPage.title").tr(),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -26,7 +27,7 @@ class EventUpdatePermissionsPage extends StatelessWidget {
                 children: [
                   const SizedBox(height: 20),
                   EventPermissionsMenu(
-                    text: "Title ändern",
+                    text: "general.eventPermissionForm.changeTitle",
                     value: state.event.permissions?.changeTitle,
                     changePermission: (EventPermissionEnum value) =>
                         BlocProvider.of<CurrentEventCubit>(context)
@@ -40,7 +41,7 @@ class EventUpdatePermissionsPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   EventPermissionsMenu(
-                    text: "Beschreibung ändern",
+                    text: "general.eventPermissionForm.changeDescription",
                     value: state.event.permissions?.changeDescription,
                     changePermission: (EventPermissionEnum value) =>
                         BlocProvider.of<CurrentEventCubit>(context)
@@ -54,7 +55,7 @@ class EventUpdatePermissionsPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   EventPermissionsMenu(
-                    text: "Bild ändern",
+                    text: "general.eventPermissionForm.changeCoverImage",
                     value: state.event.permissions?.changeCoverImage,
                     changePermission: (EventPermissionEnum value) =>
                         BlocProvider.of<CurrentEventCubit>(context)
@@ -68,7 +69,7 @@ class EventUpdatePermissionsPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   EventPermissionsMenu(
-                    text: "Datum ändern",
+                    text: "general.eventPermissionForm.changeDate",
                     value: state.event.permissions?.changeDate,
                     changePermission: (EventPermissionEnum value) =>
                         BlocProvider.of<CurrentEventCubit>(context)
@@ -82,7 +83,7 @@ class EventUpdatePermissionsPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   EventPermissionsMenu(
-                    text: "Addresse ändern",
+                    text: "general.eventPermissionForm.changeAddress",
                     value: state.event.permissions?.changeAddress,
                     changePermission: (EventPermissionEnum value) =>
                         BlocProvider.of<CurrentEventCubit>(context)
@@ -96,7 +97,7 @@ class EventUpdatePermissionsPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   EventPermissionsMenu(
-                    text: "Stattfinde Status ändern",
+                    text: "general.eventPermissionForm.changeStatus",
                     value: state.event.permissions?.changeStatus,
                     changePermission: (EventPermissionEnum value) =>
                         BlocProvider.of<CurrentEventCubit>(context)
@@ -110,7 +111,7 @@ class EventUpdatePermissionsPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   EventPermissionsMenu(
-                    text: "User hinzufügen",
+                    text: "general.eventPermissionForm.addUsers",
                     value: state.event.permissions?.addUsers,
                     changePermission: (EventPermissionEnum value) =>
                         BlocProvider.of<CurrentEventCubit>(context)
@@ -124,7 +125,7 @@ class EventUpdatePermissionsPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   EventPermissionsMenu(
-                    text: "Einkaufslisten-Item hinzufügen",
+                    text: "general.eventPermissionForm.addShoppingListItem",
                     value: state.event.permissions?.addShoppingListItem,
                     changePermission: (EventPermissionEnum value) =>
                         BlocProvider.of<CurrentEventCubit>(context)
@@ -138,7 +139,7 @@ class EventUpdatePermissionsPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   EventPermissionsMenu(
-                    text: "Einkaufslisten-Item bearbeiten",
+                    text: "general.eventPermissionForm.updateShoppingListItem",
                     value: state.event.permissions?.updateShoppingListItem,
                     changePermission: (EventPermissionEnum value) =>
                         BlocProvider.of<CurrentEventCubit>(context)
@@ -152,7 +153,7 @@ class EventUpdatePermissionsPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   EventPermissionsMenu(
-                    text: "Einkaufslisten-Item löschen",
+                    text: "general.eventPermissionForm.deleteShoppingListItem",
                     value: state.event.permissions?.deleteShoppingListItem,
                     changePermission: (EventPermissionEnum value) =>
                         BlocProvider.of<CurrentEventCubit>(context)

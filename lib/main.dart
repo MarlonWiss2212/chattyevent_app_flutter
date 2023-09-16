@@ -5,11 +5,12 @@ import 'package:chattyevent_app_flutter/application/bloc/introduction/introducti
 import 'package:chattyevent_app_flutter/core/utils/localization_utils.dart';
 import 'package:chattyevent_app_flutter/core/utils/material_theme_utils.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/auth_usecases.dart';
+import 'package:chattyevent_app_flutter/generated/codegen_loader.g.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.dart';
 import 'package:chattyevent_app_flutter/scroll_bahaviour.dart';
 import 'package:dynamic_color/dynamic_color.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -26,6 +27,7 @@ import 'core/utils/one_signal_utils.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await EasyLocalization.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   final List<Future> futures = [
     dotenv.load(fileName: '.env'),
@@ -52,51 +54,65 @@ Future<void> main() async {
   ]);
 
   runApp(
-    MultiBlocProvider(
-      providers: [
-        BlocProvider(create: (_) => serviceLocator<NotificationCubit>()),
-        BlocProvider(create: (_) => serviceLocator<AuthCubit>()),
-        BlocProvider(create: (_) => serviceLocator<ImprintCubit>()),
-        BlocProvider(create: (_) => serviceLocator<IntroductionCubit>()),
+    EasyLocalization(
+      supportedLocales: const [
+        Locale("en"),
+        Locale("de"),
+        //Locale("es"),
+        //Locale("pt"),
+        //Locale("fr"),
+        //Locale("it"),
+        //Locale("nl"),
       ],
-      child: Builder(
-        builder: (context) {
-          return MultiBlocListener(
-            listeners: [
-              BlocListener<AuthCubit, AuthState>(
-                listener: (context, state) {
-                  if (state.isUserCode404()) {
-                    serviceLocator<AppRouter>().root.popUntilRoot();
-                    serviceLocator<AppRouter>().root.replace(
-                          const AuthorizedRoute(
-                            children: [CreateUserRoute()],
-                          ),
-                        );
-                  }
-                },
-              ),
-              BlocListener<AuthCubit, AuthState>(
-                listenWhen: (p, c) => p.status != c.status,
-                listener: (context, state) {
-                  if (state.status == AuthStateStatus.loggedIn &&
-                      state.token != null) {
-                    serviceLocator<AppRouter>()
-                        .root
-                        .replace(const AuthorizedRoute(children: [
-                          BlocInitRoute(children: [HomeRoute()])
-                        ]));
-                  } else if (state.status == AuthStateStatus.logout) {
-                    serviceLocator<AppRouter>().root.popUntilRoot();
-                    serviceLocator<AppRouter>()
-                        .root
-                        .replace(const LoginRoute());
-                  }
-                },
-              ),
-            ],
-            child: const App(),
-          );
-        },
+      path: "assets/translations",
+      assetLoader: const CodegenLoader(),
+      fallbackLocale: const Locale("en"),
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (_) => serviceLocator<NotificationCubit>()),
+          BlocProvider(create: (_) => serviceLocator<AuthCubit>()),
+          BlocProvider(create: (_) => serviceLocator<ImprintCubit>()),
+          BlocProvider(create: (_) => serviceLocator<IntroductionCubit>()),
+        ],
+        child: Builder(
+          builder: (context) {
+            return MultiBlocListener(
+              listeners: [
+                BlocListener<AuthCubit, AuthState>(
+                  listener: (context, state) {
+                    if (state.isUserCode404()) {
+                      serviceLocator<AppRouter>().root.popUntilRoot();
+                      serviceLocator<AppRouter>().root.replace(
+                            const AuthorizedRoute(
+                              children: [CreateUserRoute()],
+                            ),
+                          );
+                    }
+                  },
+                ),
+                BlocListener<AuthCubit, AuthState>(
+                  listenWhen: (p, c) => p.status != c.status,
+                  listener: (context, state) {
+                    if (state.status == AuthStateStatus.loggedIn &&
+                        state.token != null) {
+                      serviceLocator<AppRouter>()
+                          .root
+                          .replace(const AuthorizedRoute(children: [
+                            BlocInitRoute(children: [HomeRoute()])
+                          ]));
+                    } else if (state.status == AuthStateStatus.logout) {
+                      serviceLocator<AppRouter>().root.popUntilRoot();
+                      serviceLocator<AppRouter>()
+                          .root
+                          .replace(const LoginRoute());
+                    }
+                  },
+                ),
+              ],
+              child: const App(),
+            );
+          },
+        ),
       ),
     ),
   );
@@ -158,16 +174,8 @@ class _AppState extends State<App> {
           child: Consumer<DarkModeProvider>(
             builder: (context, value, child) {
               return MaterialApp.router(
-                supportedLocales: const [
-                  Locale("en"),
-                  Locale("de"),
-                  Locale("es"),
-                  Locale("pt"),
-                  Locale("fr"),
-                  Locale("it"),
-                  Locale("nl"),
-                ],
-                localizationsDelegates: AppLocalizations.localizationsDelegates,
+                supportedLocales: context.supportedLocales,
+                localizationsDelegates: context.localizationDelegates,
                 title: 'ChattyEvent',
                 routerConfig: serviceLocator<AppRouter>().config(),
                 builder: (context, widget) {

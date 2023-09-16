@@ -1,0 +1,49 @@
+{
+  "chats": "Chats",
+  "general": {
+    "changeText": "Change",
+    "addText": "Add",
+    "createText": "Create",
+    "locationForm": {
+      "country": "Country",
+      "city": "City",
+      "zip": "Zip",
+      "street": "Street",
+      "number": "Nr."
+    },
+    "eventPermissionForm": {
+      "changeTitle": "Change title",
+      "changeDescription": "Change description",
+      "changeCoverImage": "Change image",
+      "changeDate": "Change date",
+      "changeAddress": "Change address",
+      "changeStatus": "Change status",
+      "addUsers": "add user",
+      "addShoppingListItem": "add shopping-list-item",
+      "updateShoppingListItem": "update shopping-list-item",
+      "deleteShoppingListItem": "delete shopping-list-item"
+    }
+  },
+  "eventPage": {
+    "tabs": {
+      "shoppingListTab": {
+        "title": "Shopping List"
+      },
+      "userListTab": {
+        "title": "Members"
+      }
+    },
+    "createShoppingListItemPage": {
+      "title": "New Item"
+    },
+    "inviteUserPage": {
+      "title": "Add User to Event"
+    },
+    "updateLocationPage": {
+      "title": "Update Location"
+    },
+    "updatePermissionPage": {
+      "title": "Member Permissions"
+    }
+  }
+}

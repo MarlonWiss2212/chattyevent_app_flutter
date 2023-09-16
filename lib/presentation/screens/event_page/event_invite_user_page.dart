@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/button.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/current_event/current_event_cubit.dart';
@@ -28,7 +29,7 @@ class _EventInviteUserPageState extends State<EventInviteUserPage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text("User zum Event hinzufügen"),
+        title: const Text("eventPage.inviteUserPage.title").tr(),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -55,7 +56,7 @@ class _EventInviteUserPageState extends State<EventInviteUserPage> {
                     userId: user.id,
                   );
                 },
-                text: "Hinzufügen",
+                text: "general.addText",
               ),
               filterUsers: (users) {
                 List<UserEntity> filteredUsers = [];

@@ -1,0 +1,49 @@
+{
+  "chats": "Chats",
+  "general": {
+    "changeText": "Ändern",
+    "addText": "Hinzufügen",
+    "createText": "Erstellen",
+    "locationForm": {
+      "country": "Land",
+      "city": "Stadt",
+      "zip": "PLZ",
+      "street": "Straße",
+      "number": "Nr."
+    },
+    "eventPermissionForm": {
+      "changeTitle": "Titel ändern",
+      "changeDescription": "Beschreibung ändern",
+      "changeCoverImage": "Bild ändern",
+      "changeDate": "Datum ändern",
+      "changeAddress": "Adresse ändern",
+      "changeStatus": "Status ändern",
+      "addUsers": "Mitglied hinzufügen",
+      "addShoppingListItem": "Einkaufsliste hinzufügen",
+      "updateShoppingListItem": "Einkaufsliste bearbeiten",
+      "deleteShoppingListItem": "Einkaufsliste löschen"
+    }
+  },
+  "eventPage": {
+    "tabs": {
+      "shoppingListTab": {
+        "title": "Einkaufsliste"
+      },
+      "userListTab": {
+        "title": "Mitglieder"
+      }
+    },
+    "createShoppingListItemPage": {
+      "title": "Neues Item"
+    },
+    "inviteUserPage": {
+      "title": "Benutzer zum Event hinzufügen"
+    },
+    "updateLocationPage": {
+      "title": "Ort aktualisieren"
+    },
+    "updatePermissionPage": {
+      "title": "Mitgliederberechtigungen"
+    }
+  }
+}
