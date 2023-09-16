@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:chattyevent_app_flutter/application/bloc/requests/requests_cubit.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/request/request_horizontal_list.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,7 +9,6 @@ import 'package:chattyevent_app_flutter/application/bloc/chat/chat_cubit.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/home_page/pages/home_chat_page/chat_list.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/home_page/pages/home_chat_page/home_chat_page_skeleton.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 @RoutePage()
 class HomeChatPage extends StatefulWidget {
@@ -40,11 +40,11 @@ class _HomeChatPageState extends State<HomeChatPage> {
             flexibleSpace: FlexibleSpaceBar(
               centerTitle: true,
               title: Text(
-                AppLocalizations.of(context)!.chats,
+                "Chats",
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.onBackground,
                 ),
-              ),
+              ).tr(),
             ),
             actions: [
               IconButton(

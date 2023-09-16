@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:chattyevent_app_flutter/core/utils/localization_utils.dart';
 import 'package:chattyevent_app_flutter/infastructure/dto/geocoding/create_address_dto.dart';
 import 'package:country_code_picker/country_code_picker.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/current_event/current_event_cubit.dart';
@@ -30,7 +31,7 @@ class _EventUpdateLocationPageState extends State<EventUpdateLocationPage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text("Location Aktualisieren"),
+        title: const Text("eventPage.updateLocationPage.title").tr(),
       ),
       body: BlocListener<CurrentEventCubit, CurrentEventState>(
         listener: (context, state) {
@@ -47,12 +48,10 @@ class _EventUpdateLocationPageState extends State<EventUpdateLocationPage> {
                     const SizedBox(height: 8),
                     Container(
                       padding: const EdgeInsets.symmetric(
-                        horizontal: 8,
-                        vertical: 4,
-                      ),
+                          horizontal: 8, vertical: 4),
                       child: TextField(
-                        decoration: const InputDecoration(
-                          labelText: "Stadt",
+                        decoration: InputDecoration(
+                          labelText: "general.locationForm.city".tr(),
                         ),
                         controller: cityController,
                         textInputAction: TextInputAction.next,
@@ -64,8 +63,8 @@ class _EventUpdateLocationPageState extends State<EventUpdateLocationPage> {
                         vertical: 4,
                       ),
                       child: TextField(
-                        decoration: const InputDecoration(
-                          labelText: "Postleitzahl",
+                        decoration: InputDecoration(
+                          labelText: "general.locationForm.zip".tr(),
                         ),
                         controller: zipController,
                         keyboardType: TextInputType.number,
@@ -82,8 +81,8 @@ class _EventUpdateLocationPageState extends State<EventUpdateLocationPage> {
                         children: [
                           Expanded(
                             child: TextFormField(
-                              decoration: const InputDecoration(
-                                labelText: 'Straße',
+                              decoration: InputDecoration(
+                                labelText: 'general.locationForm.street'.tr(),
                               ),
                               controller: streetController,
                               keyboardType: TextInputType.streetAddress,
@@ -94,8 +93,8 @@ class _EventUpdateLocationPageState extends State<EventUpdateLocationPage> {
                           SizedBox(
                             width: 100,
                             child: TextFormField(
-                              decoration: const InputDecoration(
-                                labelText: 'Nr.',
+                              decoration: InputDecoration(
+                                labelText: 'general.locationForm.number'.tr(),
                               ),
                               controller: housenumberController,
                             ),
@@ -139,7 +138,7 @@ class _EventUpdateLocationPageState extends State<EventUpdateLocationPage> {
               child: SizedBox(
                 width: double.infinity,
                 child: Button(
-                  text: "Ändern",
+                  text: "general.changeText",
                   onTap: () {
                     BlocProvider.of<CurrentEventCubit>(context)
                         .updateCurrentEvent(

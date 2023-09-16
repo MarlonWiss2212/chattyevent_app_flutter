@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -27,11 +28,11 @@ class EventTabShoppingList extends StatelessWidget {
         flexibleSpace: FlexibleSpaceBar(
           centerTitle: true,
           title: Text(
-            "Einkaufsliste",
+            "eventPage.tabs.shoppingListTab.title",
             style: TextStyle(
               color: Theme.of(context).colorScheme.onBackground,
             ),
-          ),
+          ).tr(),
         ),
         actions: [
           BlocBuilder<CurrentEventCubit, CurrentEventState>(

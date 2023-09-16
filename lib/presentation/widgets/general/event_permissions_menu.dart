@@ -1,4 +1,5 @@
 import 'package:chattyevent_app_flutter/core/enums/event/event_permission_enum.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class EventPermissionsMenu extends StatelessWidget {
@@ -25,7 +26,7 @@ class EventPermissionsMenu extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
             overflow: TextOverflow.ellipsis,
-          ),
+          ).tr(),
           PopupMenuButton(
             initialValue: value,
             onSelected: changePermission,

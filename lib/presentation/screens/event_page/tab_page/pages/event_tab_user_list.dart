@@ -3,6 +3,7 @@ import 'package:chattyevent_app_flutter/presentation/widgets/screens/event_page/
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/event_page/tab_users/tab_invitation_list/event_tab_invitation_list.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/event_page/tab_users/tab_users_left_user_list/event_tab_users_left_user_list.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/event_page/tab_users/tab_users_user_list/event_tab_users_user_list.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,11 +27,11 @@ class EventTabUserList extends StatelessWidget {
           flexibleSpace: FlexibleSpaceBar(
             centerTitle: true,
             title: Text(
-              "Mitglieder",
+              "eventPage.tabs.userListTab.title",
               style: TextStyle(
                 color: Theme.of(context).colorScheme.onBackground,
               ),
-            ),
+            ).tr(),
           ),
         ),
         CupertinoSliverRefreshControl(

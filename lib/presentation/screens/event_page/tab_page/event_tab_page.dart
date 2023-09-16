@@ -40,7 +40,7 @@ class EventTabPage extends StatelessWidget {
                 return Hero(
                   tag: "$eventId title",
                   child: EditInputTextField(
-                    text: state.event.title ?? "Kein Titel",
+                    text: state.event.title ?? "",
                     editable: state.currentUserAllowedWithPermission(
                       permissionCheckValue:
                           state.event.permissions?.changeTitle,
