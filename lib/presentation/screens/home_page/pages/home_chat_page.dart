@@ -40,7 +40,7 @@ class _HomeChatPageState extends State<HomeChatPage> {
             flexibleSpace: FlexibleSpaceBar(
               centerTitle: true,
               title: Text(
-                "Chats",
+                "homePage.pages.chatPage.title",
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.onBackground,
                 ),
@@ -74,9 +74,10 @@ class _HomeChatPageState extends State<HomeChatPage> {
             builder: (context, state) {
               if (state.chats.isEmpty &&
                   state.status != ChatStateStatus.loading) {
-                return const SliverFillRemaining(
+                return SliverFillRemaining(
                   child: Center(
-                    child: Text("Keine Chats"),
+                    child:
+                        const Text("homePage.pages.chatPage.noChatsText").tr(),
                   ),
                 );
               }

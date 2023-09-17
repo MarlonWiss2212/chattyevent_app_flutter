@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/add_event/add_event_cubit.dart';
@@ -37,14 +38,14 @@ class NewPrivateEventTypeTab extends StatelessWidget {
                         children: [
                           const Icon(Icons.chat),
                           Text(
-                            "Privates Gruppenchat Event",
+                            "newPrivateEventPage.pages.eventTypTab.privateGroupchatEvent.title",
                             style: Theme.of(context).textTheme.labelLarge,
-                          ),
+                          ).tr(),
                           const Text(
-                            "Hierbei verbindest du ein Event mit einem Gruppenchat. Es werden automatisch alle User eingeladen die im Gruppenchat sind. Wenn ein User aus dem Chat geht oder gekickt wird passiert das auch beim Event",
+                            "newPrivateEventPage.pages.eventTypTab.privateGroupchatEvent.description",
                             overflow: TextOverflow.clip,
                             textAlign: TextAlign.center,
-                          ),
+                          ).tr(),
                         ],
                       ),
                     ),
@@ -71,14 +72,14 @@ class NewPrivateEventTypeTab extends StatelessWidget {
                         children: [
                           const Icon(Icons.person),
                           Text(
-                            "Normales Privates Event",
+                            "newPrivateEventPage.pages.eventTypTab.normalPrivateEvent.title",
                             style: Theme.of(context).textTheme.labelLarge,
-                          ),
+                          ).tr(),
                           const Text(
-                            "Du kannst hier User einladen und ausladen unabängig von einem Chat",
+                            "newPrivateEventPage.pages.eventTypTab.normalPrivateEvent.description",
                             overflow: TextOverflow.clip,
                             textAlign: TextAlign.center,
-                          ),
+                          ).tr(),
                         ],
                       ),
                     ),

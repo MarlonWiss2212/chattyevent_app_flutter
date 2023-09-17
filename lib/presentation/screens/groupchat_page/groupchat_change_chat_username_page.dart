@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
@@ -34,7 +35,7 @@ class _GroupchatChangeUsernamePageState
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text("Chat username ändern"),
+        title: const Text("groupchatPage.changeChatUsernamePage.title").tr(),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8),
@@ -44,8 +45,10 @@ class _GroupchatChangeUsernamePageState
               child: Column(
                 children: [
                   TextField(
-                    decoration: const InputDecoration(
-                      labelText: 'Neuer chat username',
+                    decoration: InputDecoration(
+                      labelText:
+                          "groupchatPage.changeChatUsernamePage.newChatUsername"
+                              .tr(),
                     ),
                     controller: newUsernameController,
                   ),
@@ -69,7 +72,7 @@ class _GroupchatChangeUsernamePageState
                     .then(
                       (value) => AutoRouter.of(context).pop(),
                     ),
-                text: "Chat Namen Löschen",
+                text: "groupchatPage.changeChatUsernamePage.deleteChatName",
               ),
             ),
             const SizedBox(height: 8),
@@ -89,7 +92,7 @@ class _GroupchatChangeUsernamePageState
                     .then(
                       (value) => AutoRouter.of(context).pop(),
                     ),
-                text: "Speichern",
+                text: "general.saveText",
               ),
             )
           ],

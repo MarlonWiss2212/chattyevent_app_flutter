@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/add_event/add_event_cubit.dart';
@@ -59,7 +60,9 @@ class _NewPrivateEventDetailsTabState extends State<NewPrivateEventDetailsTab> {
                     BlocProvider.of<AddEventCubit>(context).emitState(
                   title: value,
                 ),
-                decoration: const InputDecoration(labelText: 'Name*'),
+                decoration: InputDecoration(
+                  labelText: 'newGroupchatPage.fields.nameField.lable'.tr(),
+                ),
                 textInputAction: TextInputAction.next,
               ),
               const SizedBox(height: 8),
@@ -69,8 +72,10 @@ class _NewPrivateEventDetailsTabState extends State<NewPrivateEventDetailsTab> {
                 keyboardType: TextInputType.multiline,
                 minLines: 1,
                 maxLines: 10,
-                decoration:
-                    const InputDecoration(labelText: 'Beschreibung (optional)'),
+                decoration: InputDecoration(
+                  labelText:
+                      'newGroupchatPage.fields.descriptionField.lable'.tr(),
+                ),
                 onTapOutside: (event) => descriptionFocusNode.unfocus(),
                 onChanged: (value) =>
                     BlocProvider.of<AddEventCubit>(context).emitState(
@@ -80,8 +85,8 @@ class _NewPrivateEventDetailsTabState extends State<NewPrivateEventDetailsTab> {
               const SizedBox(height: 8),
               SwitchListTile.adaptive(
                 title: const Text(
-                  "Soll das Event nach Ende automatisch gelöscht werden",
-                ),
+                  "newGroupchatPage.fields.deleteAfterEndDateSwitch.title",
+                ).tr(),
                 value: state.autoDelete,
                 onChanged: (value) =>
                     BlocProvider.of<AddEventCubit>(context).emitState(

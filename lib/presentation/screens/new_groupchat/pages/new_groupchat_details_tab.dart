@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/add_groupchat/add_groupchat_cubit.dart';
@@ -51,7 +52,9 @@ class _NewGroupchatDetailsTabState extends State<NewGroupchatDetailsTab> {
                       BlocProvider.of<AddGroupchatCubit>(context).emitState(
                     title: value,
                   ),
-                  decoration: const InputDecoration(labelText: "Name*"),
+                  decoration: InputDecoration(
+                    labelText: "newGroupchatPage.fields.nameField.lable".tr(),
+                  ),
                   textInputAction: TextInputAction.next,
                 ),
                 const SizedBox(height: 8),
@@ -61,8 +64,9 @@ class _NewGroupchatDetailsTabState extends State<NewGroupchatDetailsTab> {
                   keyboardType: TextInputType.multiline,
                   minLines: 1,
                   maxLines: 10,
-                  decoration: const InputDecoration(
-                    labelText: "Beschreibung (optional)",
+                  decoration: InputDecoration(
+                    labelText:
+                        "newGroupchatPage.fields.descriptionField.lable".tr(),
                   ),
                   onTapOutside: (event) => descriptionFocusNode.unfocus(),
                   onChanged: (value) =>

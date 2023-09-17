@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,11 +25,11 @@ class PastEventsPage extends StatelessWidget {
             flexibleSpace: FlexibleSpaceBar(
               centerTitle: true,
               title: Text(
-                "Vergangene Events",
+                "pastEventsPage.tilte",
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.onBackground,
                 ),
-              ),
+              ).tr(),
             ),
           ),
           CupertinoSliverRefreshControl(
@@ -57,8 +58,10 @@ class PastEventsPage extends StatelessWidget {
                   ),
                 );
               } else if (state.pastEvents.isEmpty) {
-                return const SliverFillRemaining(
-                  child: Center(child: Text("Keine Vergangenen Events")),
+                return SliverFillRemaining(
+                  child: Center(
+                    child: const Text("pastEventsPage.noPastEventsText").tr(),
+                  ),
                 );
               }
 

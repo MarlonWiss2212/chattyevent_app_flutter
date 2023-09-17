@@ -2,6 +2,7 @@ import 'package:auto_route/annotations.dart';
 import 'package:chattyevent_app_flutter/core/utils/ad_helper.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/ads/custom_native_ad.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/input_fields/debounce_input_field.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
@@ -39,11 +40,11 @@ class HomeSearchPage extends StatelessWidget {
                 flexibleSpace: FlexibleSpaceBar(
                   centerTitle: true,
                   title: Text(
-                    "Entdecken",
+                    "homePage.pages.searchPage.title",
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.onBackground,
                     ),
-                  ),
+                  ).tr(),
                 ),
               ),
               SliverPadding(
@@ -59,7 +60,7 @@ class HomeSearchPage extends StatelessWidget {
                                 .getUsersViaApi(
                           findUsersFilter: FindUsersFilter(search: text),
                         ),
-                        hintText: "User Suche: ",
+                        hintText: "usersearch.userSearchText",
                       ),
                       const SizedBox(height: 8),
                       BlocBuilder<UserSearchCubit, UserSearchState>(
@@ -70,8 +71,9 @@ class HomeSearchPage extends StatelessWidget {
                             );
                           }
                           if (state.users.isEmpty) {
-                            return const Center(
-                              child: Text("Keine User gefunden"),
+                            return Center(
+                              child: const Text("userSearch.noUsersFoundText")
+                                  .tr(),
                             );
                           }
                           return UserHorizontalList(users: state.users);

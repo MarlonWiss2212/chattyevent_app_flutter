@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -64,7 +65,7 @@ class NewPrivateEventPage extends StatelessWidget {
                 centerTitle: true,
                 title: Column(
                   children: [
-                    const Text('Neues Event'),
+                    const Text('newPrivateEventPage.title').tr(),
                     BlocBuilder<AddEventCubit, AddEventState>(
                       buildWhen: (p, c) => p.subtitle != c.subtitle,
                       builder: (context, state) {
@@ -127,7 +128,7 @@ class NewPrivateEventPage extends StatelessWidget {
                               BlocProvider.of<AddEventCubit>(context)
                                   .createEventViaApi();
                             },
-                            text: "Erstellen",
+                            text: "general.createText",
                           ),
                         ),
                       ),

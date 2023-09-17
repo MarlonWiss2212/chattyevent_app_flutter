@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,11 +25,11 @@ class FutureEventsPage extends StatelessWidget {
             flexibleSpace: FlexibleSpaceBar(
               centerTitle: true,
               title: Text(
-                "Zukünftige Events",
+                "futureEventPage.title",
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.onBackground,
                 ),
-              ),
+              ).tr(),
             ),
           ),
           CupertinoSliverRefreshControl(
@@ -57,8 +58,9 @@ class FutureEventsPage extends StatelessWidget {
                   ),
                 );
               } else if (state.futureEvents.isEmpty) {
-                return const SliverFillRemaining(
-                  child: Center(child: Text("Keine Zukünftigen Events")),
+                return SliverFillRemaining(
+                  child: Center(
+                      child: Text("futureEventPage.noFutureEventsText").tr()),
                 );
               }
 

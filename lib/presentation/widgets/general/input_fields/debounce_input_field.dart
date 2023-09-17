@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class DebouceInputField extends StatefulWidget {
@@ -37,7 +38,7 @@ class _DebouceInputFieldState extends State<DebouceInputField> {
   Widget build(BuildContext context) {
     return TextField(
       decoration: InputDecoration(
-        labelText: widget.hintText,
+        labelText: widget.hintText.toString().tr(),
       ),
       controller: widget.searchController,
       onChanged: (text) => _onSearchChanged(text: text),

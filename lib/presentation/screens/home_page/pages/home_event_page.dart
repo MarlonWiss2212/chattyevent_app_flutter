@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -37,11 +38,11 @@ class _HomeEventPageState extends State<HomeEventPage> {
             flexibleSpace: FlexibleSpaceBar(
               centerTitle: true,
               title: Text(
-                "Events",
+                "homePage.pages.eventPage.title",
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.onBackground,
                 ),
-              ),
+              ).tr(),
             ),
             actions: [
               IconButton(
@@ -68,8 +69,12 @@ class _HomeEventPageState extends State<HomeEventPage> {
                   state.pastEvents.isEmpty &&
                   state.loadingFutureEvents == false &&
                   state.loadingPastEvents == false) {
-                return const SliverFillRemaining(
-                  child: Center(child: Text("Keine Privaten Events")),
+                return SliverFillRemaining(
+                  child: Center(
+                    child: const Text(
+                      "homePage.pages.eventPage.noEventsText",
+                    ).tr(),
+                  ),
                 );
               }
 

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,13 +24,14 @@ class GroupchatfutureEventsPage extends StatelessWidget {
             centerTitle: true,
             expandedHeight: 100,
             flexibleSpace: FlexibleSpaceBar(
-                centerTitle: true,
-                title: Text(
-                  "Zukünftige Events",
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.onBackground,
-                  ),
-                )),
+              centerTitle: true,
+              title: Text(
+                "groupchatPage.futurePrivateEventsPage.title",
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onBackground,
+                ),
+              ).tr(),
+            ),
           ),
           CupertinoSliverRefreshControl(
             onRefresh: () {
@@ -54,11 +56,13 @@ class GroupchatfutureEventsPage extends StatelessWidget {
                   child: ChatFuturePrivateEventPageSkeletonList(),
                 );
               } else if (state.futureConnectedPrivateEvents.isEmpty) {
-                return const SliverFillRemaining(
-                    child: Center(
-                        child: Text(
-                  "Keine Privaten Event für diesen Gruppenchat",
-                )));
+                return SliverFillRemaining(
+                  child: Center(
+                    child: const Text(
+                      "groupchatPage.futurePrivateEventsPage.noFuturePrivateEventsText",
+                    ).tr(),
+                  ),
+                );
               }
 
               return SliverList(

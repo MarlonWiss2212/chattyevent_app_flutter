@@ -1,9 +1,10 @@
 {
-  "chats": "Chats",
   "general": {
     "changeText": "Ändern",
     "addText": "Hinzufügen",
     "createText": "Erstellen",
+    "saveText": "Speichern",
+    "continueText": "Fortsetzen",
     "locationForm": {
       "country": "Land",
       "city": "Stadt",
@@ -18,11 +19,48 @@
       "changeDate": "Datum ändern",
       "changeAddress": "Adresse ändern",
       "changeStatus": "Status ändern",
-      "addUsers": "Mitglied hinzufügen",
+      "addUsers": "Benutzer hinzufügen",
       "addShoppingListItem": "Einkaufsliste hinzufügen",
-      "updateShoppingListItem": "Einkaufsliste bearbeiten",
+      "updateShoppingListItem": "Einkaufsliste aktualisieren",
       "deleteShoppingListItem": "Einkaufsliste löschen"
+    },
+    "groupchatPermissionForm": {
+      "changeTitle": "Titel ändern",
+      "changeDescription": "Beschreibung ändern",
+      "changeProfileImage": "Bild ändern",
+      "createEventForGroupchat": "Event für Gruppenchat erstellen",
+      "addUsers": "Benutzer hinzufügen"
+    },
+    "userSearch": {
+      "userSearchText": "Benutzersuche:",
+      "noUsersFoundText": "Keine Benutzer gefunden"
     }
+  },
+  "homePage": {
+    "pages": {
+      "chatPage": {
+        "title": "Chats",
+        "noChatsText": "Keine Chats"
+      },
+      "eventPage": {
+        "title": "Veranstaltungen",
+        "noEventsText": "Keine Veranstaltungen"
+      },
+      "searchPage": {
+        "title": "Entdecken"
+      },
+      "profilePage": {
+        "title": "Profil"
+      }
+    }
+  },
+  "futureEventPage": {
+    "title": "Künftige Veranstaltungen",
+    "noFutureEventsText": "Keine künftigen Veranstaltungen"
+  },
+  "pastEventPage": {
+    "title": "Vergangene Veranstaltungen",
+    "noPastEventsText": "Keine vergangenen Veranstaltungen"
   },
   "eventPage": {
     "tabs": {
@@ -34,16 +72,126 @@
       }
     },
     "createShoppingListItemPage": {
-      "title": "Neues Item"
+      "title": "Neuer Artikel"
     },
     "inviteUserPage": {
-      "title": "Benutzer zum Event hinzufügen"
+      "title": "Benutzer zur Veranstaltung hinzufügen"
     },
     "updateLocationPage": {
-      "title": "Ort aktualisieren"
+      "title": "Standort aktualisieren"
     },
     "updatePermissionPage": {
-      "title": "Mitgliederberechtigungen"
+      "title": "Berechtigungen der Mitglieder"
+    }
+  },
+  "groupchatPage": {
+    "addUserPage": {
+      "title": "Benutzer zum Gruppenchat hinzufügen"
+    },
+    "changeChatUsernamePage": {
+      "title": "Benutzernamen im Chat ändern",
+      "newChatUsername": "Neuer Chat-Benutzername",
+      "deleteChatName": "Chat-Namen löschen"
+    },
+    "futurePrivateEventsPage": {
+      "title": "Künftige private Veranstaltungen",
+      "noFuturePrivateEventsText": "Keine künftigen privaten Veranstaltungen für diesen Gruppenchat"
+    },
+    "updatePermissionPage": {
+      "title": "Berechtigungen der Mitglieder"
+    }
+  },
+  "introductionPages": {
+    "permissionPages": {
+      "general": {
+        "requestPermissionText": "Berechtigung anfordern",
+        "dontRequestPermissionText": "Keine Berechtigung anfordern"
+      },
+      "microphonePage": {
+        "text": "Wenn Sie das Mikrofon für z. B. Sprachnachrichten verwenden möchten, drücken Sie bitte 'Berechtigung anfordern'."
+      },
+      "notificationPage": {
+        "text": "Wenn Sie Benachrichtigungen wie Nachrichten, Einladungen usw. erhalten möchten, drücken Sie bitte 'Berechtigung anfordern'."
+      }
+    },
+    "featurePages": {
+      "messagePage": {
+        "title": "Nachrichten",
+        "receivedButNotReadText": "Empfangen, aber nicht gelesen",
+        "receivedAndReadText": "Empfangen und gelesen"
+      },
+      "groupchatPage": {
+        "text": "ChattyEvent ist die ultimative Lösung für Ihre Party- und Eventplanung! Unsere innovative App dreht sich alles um Gruppeninteraktion und erleichtert die Kommunikation mit Ihren Freunden, Ihrer Familie oder Ihren Kollegen. Egal, ob Sie eine epische Party organisieren oder in engerem Kontakt bleiben möchten, ChattyEvent ist der ideale Begleiter, um alle Ihre Kontakte an einem zentralen Ort zusammenzubringen.\n\nChattyEvent zeichnet sich durch seine mühelose Benutzerfreundlichkeit aus und bietet alle Werkzeuge, die Sie für reibungslose Gruppenkommunikation und makellose Eventplanung benötigen. Warten Sie nicht länger - probieren Sie es heute aus und überzeugen Sie sich selbst von der Einfachheit und Effizienz unserer App. Steigern Sie das Potenzial Ihrer Partyplanung und Eventorganisation mit ChattyEvent!\n\nViel Spaß mit ChattyEvent!"
+      },
+      "privateEventPage": {
+        "text": "ChattyEvents besondere Partyplanungsfunktion ermöglicht es Ihnen, Veranstaltungen schnell und mühelos einzurichten und alle Details problemlos zu teilen. Sie können die Veranstaltung mit einem Gruppenchat verknüpfen oder unabhängig planen. Diese innovative Funktion stellt sicher, dass jeder eingeladen ist und alle relevanten Details auf einen Blick sichtbar sind.\n\nUm die Eventplanung noch weiter zu vereinfachen, haben wir sogar eine praktische Einkaufsliste integriert. Dies ermöglicht es Ihnen, genau festzulegen, was jeder Eventteilnehmer beitragen soll. Dadurch wird verhindert, dass etwas vergessen wird, und Sie können alle Details perfekt im Voraus koordinieren."
+      },
+      "usersPage": {
+        "text": "Ebenso bietet ChattyEvent ein ausgeklügeltes Freundschaftssystem, mit dem Sie die Rechte Ihrer Freunde gezielt verwalten können. Dies bedeutet, dass Sie auswählen können, welche Freunde Sie in eine Gruppe aufnehmen möchten und wie weitreichend ihr Zugriff sein soll. Individuelle Berechtigungen können nach Ihren Wünschen für jeden Freund angepasst werden, um eine gut organisierte und geschützte Gruppendynamik zu gewährleisten."
+      }
+    }
+  },
+  "newGroupchatPage": {
+    "title": "Neuer Gruppenchat",
+    "pages": {
+      "permissionTab": {
+        "title": "Mitgliederberechtigungen"
+      },
+      "selectUserTab": {
+        "title": "Mitglieder auswählen"
+      }
+    },
+    "fields": {
+      "nameField": {
+        "lable": "Name*"
+      },
+      "descriptionField": {
+        "lable": "Beschreibung (optional)"
+      },
+      "deleteAfterEndDateSwitch": {
+        "title": "Soll die Veranstaltung automatisch nach dem Ende gelöscht werden"
+      }
+    }
+  },
+  "newPrivateEventPage": {
+    "title": "Neue private Veranstaltung",
+    "pages": {
+      "typTab": {
+        "title": "Typ"
+      },
+      "searchTab": {
+        "title": "Suche"
+      },
+      "dateTab": {
+        "title": "Datum"
+      },
+      "locationTab": {
+        "title": "Ort (optional)"
+      },
+      "permissionTab": {
+        "title": "Mitgliederberechtigungen"
+      },
+      "selectUserTab": {
+        "title": "Mitglieder auswählen"
+      },
+      "eventTypTab": {
+        "privateGroupchatEvent": {
+          "title": "Privates Gruppenchat-Event",
+          "description": "Hier verknüpfen Sie eine Veranstaltung mit einem Gruppenchat. Alle Benutzer, die sich im Gruppenchat befinden, sind automatisch eingeladen. Wenn ein Benutzer den Chat verlässt oder entfernt wird, geschieht dies auch in der Veranstaltung."
+        },
+        "normalPrivateEvent": {
+          "title": "Normales privates Event",
+          "description": "Hier können Sie Benutzer unabhängig von einem Chat einladen und wieder ausladen."
+        }
+      }
+    },
+    "fields": {
+      "nameField": {
+        "lable": "Name*"
+      },
+      "descriptionField": {
+        "lable": "Beschreibung (optional)"
+      }
     }
   }
 }

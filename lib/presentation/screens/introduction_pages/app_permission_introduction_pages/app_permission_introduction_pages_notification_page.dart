@@ -41,7 +41,7 @@ class AppPermissionIntroductionPagesNotificationPage extends StatelessWidget {
               size: 40,
             ),
             Text(
-              "Wenn sie Benachrichtigungen wie z.B. Nachrichten, du wurdest eingeladen usw. erhalten möchten. Drücken sie bitte auf Anfordern",
+              "introductionPages.permissionPages.notificationPage.text",
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.titleMedium,
             ),
@@ -52,7 +52,8 @@ class AppPermissionIntroductionPagesNotificationPage extends StatelessWidget {
                   child: Button(
                     onTap: () => navigateToNextPage(context),
                     color: Theme.of(context).colorScheme.surface,
-                    text: "Nicht Anforden",
+                    text:
+                        "introductionPages.permissionPages.general.dontRequestPermissionText",
                   ),
                 ),
                 const SizedBox(width: 8),
@@ -63,7 +64,8 @@ class AppPermissionIntroductionPagesNotificationPage extends StatelessWidget {
                           .requestNotificationPermission();
                       navigateToNextPage(context);
                     },
-                    text: "Anforden",
+                    text:
+                        "introductionPages.permissionPages.general.requestPermissionText",
                   ),
                 ),
               ],

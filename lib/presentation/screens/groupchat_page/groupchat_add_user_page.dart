@@ -1,4 +1,5 @@
 import 'package:auto_route/annotations.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/current_groupchat/current_chat_cubit.dart';
@@ -29,7 +30,7 @@ class _GroupchatAddUserPageState extends State<GroupchatAddUserPage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text("User zum Chat hinzufügen"),
+        title: const Text("groupchatPage.addUserPage.title").tr(),
       ),
       body: Column(
         children: [

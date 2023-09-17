@@ -20,7 +20,7 @@ class NewGroupchatPermissionsTab extends StatelessWidget {
               children: [
                 const SizedBox(height: 20),
                 GroupchatPermissionsMenu(
-                  text: "Title ändern",
+                  text: "general.groupchatPermissionForm.changeTitle",
                   value: state.permissions.changeTitle,
                   changePermission: (GroupchatPermissionEnum value) =>
                       BlocProvider.of<AddGroupchatCubit>(context).emitState(
@@ -29,7 +29,7 @@ class NewGroupchatPermissionsTab extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 GroupchatPermissionsMenu(
-                  text: "Beschreibung ändern",
+                  text: "general.groupchatPermissionForm.changeDescription",
                   value: state.permissions.changeDescription,
                   changePermission: (GroupchatPermissionEnum value) =>
                       BlocProvider.of<AddGroupchatCubit>(context).emitState(
@@ -39,7 +39,7 @@ class NewGroupchatPermissionsTab extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 GroupchatPermissionsMenu(
-                  text: "Bild ändern",
+                  text: "general.groupchatPermissionForm.changeProfileImage",
                   value: state.permissions.changeProfileImage,
                   changePermission: (GroupchatPermissionEnum value) =>
                       BlocProvider.of<AddGroupchatCubit>(context).emitState(
@@ -49,7 +49,8 @@ class NewGroupchatPermissionsTab extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 GroupchatPermissionsMenu(
-                  text: "Events erstellen für Chat",
+                  text:
+                      "general.groupchatPermissionForm.createEventForGroupchat",
                   value: state.permissions.createEventForGroupchat,
                   changePermission: (GroupchatPermissionEnum value) =>
                       BlocProvider.of<AddGroupchatCubit>(context).emitState(
@@ -59,7 +60,7 @@ class NewGroupchatPermissionsTab extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 GroupchatPermissionsMenu(
-                  text: "User hinzufügen",
+                  text: "general.groupchatPermissionForm.addUsers",
                   value: state.permissions.addUsers,
                   changePermission: (GroupchatPermissionEnum value) =>
                       BlocProvider.of<AddGroupchatCubit>(context).emitState(

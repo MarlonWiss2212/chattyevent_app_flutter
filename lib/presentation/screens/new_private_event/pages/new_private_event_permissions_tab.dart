@@ -19,7 +19,7 @@ class NewPrivateEventPermissionsTab extends StatelessWidget {
               children: [
                 const SizedBox(height: 20),
                 EventPermissionsMenu(
-                  text: "Title ändern",
+                  text: "general.eventPermissionForm.changeTitle",
                   value: state.permissions.changeTitle,
                   changePermission: (value) =>
                       BlocProvider.of<AddEventCubit>(context).emitState(
@@ -28,7 +28,7 @@ class NewPrivateEventPermissionsTab extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 EventPermissionsMenu(
-                  text: "Beschreibung ändern",
+                  text: "general.eventPermissionForm.changeDescription",
                   value: state.permissions.changeDescription,
                   changePermission: (value) =>
                       BlocProvider.of<AddEventCubit>(context).emitState(
@@ -38,7 +38,7 @@ class NewPrivateEventPermissionsTab extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 EventPermissionsMenu(
-                  text: "Bild ändern",
+                  text: "general.eventPermissionForm.changeCoverImage",
                   value: state.permissions.changeCoverImage,
                   changePermission: (value) =>
                       BlocProvider.of<AddEventCubit>(context).emitState(
@@ -48,7 +48,7 @@ class NewPrivateEventPermissionsTab extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 EventPermissionsMenu(
-                  text: "Datum ändern",
+                  text: "general.eventPermissionForm.changeDate",
                   value: state.permissions.changeDate,
                   changePermission: (value) =>
                       BlocProvider.of<AddEventCubit>(context).emitState(
@@ -57,7 +57,7 @@ class NewPrivateEventPermissionsTab extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 EventPermissionsMenu(
-                  text: "Addresse ändern",
+                  text: "general.eventPermissionForm.changeAddress",
                   value: state.permissions.changeAddress,
                   changePermission: (value) =>
                       BlocProvider.of<AddEventCubit>(context).emitState(
@@ -67,7 +67,7 @@ class NewPrivateEventPermissionsTab extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 EventPermissionsMenu(
-                  text: "Stattfinde Status ändern",
+                  text: "general.eventPermissionForm.changeStatus",
                   value: state.permissions.changeStatus,
                   changePermission: (value) =>
                       BlocProvider.of<AddEventCubit>(context).emitState(
@@ -77,7 +77,7 @@ class NewPrivateEventPermissionsTab extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 EventPermissionsMenu(
-                  text: "User hinzufügen",
+                  text: "general.eventPermissionForm.addUsers",
                   value: state.permissions.addUsers,
                   changePermission: (value) =>
                       BlocProvider.of<AddEventCubit>(context).emitState(
@@ -86,7 +86,7 @@ class NewPrivateEventPermissionsTab extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 EventPermissionsMenu(
-                  text: "Einkaufslisten-Item hinzufügen",
+                  text: "general.eventPermissionForm.addShoppingListItem",
                   value: state.permissions.addShoppingListItem,
                   changePermission: (value) =>
                       BlocProvider.of<AddEventCubit>(context).emitState(
@@ -96,7 +96,7 @@ class NewPrivateEventPermissionsTab extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 EventPermissionsMenu(
-                  text: "Einkaufslisten-Item bearbeiten",
+                  text: "general.eventPermissionForm.updateShoppingListItem",
                   value: state.permissions.updateShoppingListItem,
                   changePermission: (value) =>
                       BlocProvider.of<AddEventCubit>(context).emitState(
@@ -106,7 +106,7 @@ class NewPrivateEventPermissionsTab extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 EventPermissionsMenu(
-                  text: "Einkaufslisten-Item löschen",
+                  text: "general.eventPermissionForm.deleteShoppingListItem",
                   value: state.permissions.deleteShoppingListItem,
                   changePermission: (value) =>
                       BlocProvider.of<AddEventCubit>(context).emitState(

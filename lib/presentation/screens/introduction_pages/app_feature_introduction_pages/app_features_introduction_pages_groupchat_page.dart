@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:chattyevent_app_flutter/application/bloc/introduction/introduction_cubit.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/button.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -34,22 +35,16 @@ class AppFeatureIntroductionPagesGroupchatPage extends StatelessWidget {
             const SizedBox(),
             SingleChildScrollView(
               child: Text(
-                """
-ChattyEvent ist die ultimative Lösung für Ihre Party- und Eventplanung! Unsere innovative App dreht sich rund um Gruppeninteraktion und erleichtert Ihnen die Kommunikation mit Ihren Freunden, Familie oder Kollegen. Egal, ob Sie eine epische Party organisieren oder einfach nur engeren Kontakt pflegen möchten – ChattyEvent ist der ideale Begleiter, um all Ihre Kontakte an einem zentralen Ort zu bündeln.
-
-ChattyEvent zeichnet sich durch seine mühelose Benutzerfreundlichkeit aus und hält sämtliche Tools bereit, die Sie für eine geschmeidige Gruppenkommunikation und eine tadellose Event-Planung benötigen. Warten Sie nicht länger – probieren Sie es noch heute aus und überzeugen Sie sich selbst von der Leichtigkeit und Effizienz unserer App. Steigern Sie das Potenzial Ihrer Partyplanung und Eventorganisation mit ChattyEvent!                       
-
-Viel Spaß mit ChattyEvent!
-                """,
+                "introductionPages.featurePages.groupchatPage.text",
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.titleMedium,
-              ),
+              ).tr(),
             ),
             SizedBox(
               width: double.infinity,
               child: Button(
                 onTap: () => navigateToNextPage(context),
-                text: "Weiter",
+                text: "general.continue",
               ),
             ),
           ],

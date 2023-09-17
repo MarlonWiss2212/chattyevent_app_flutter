@@ -85,11 +85,8 @@ dependencies:
   blur: ^3.1.0
   flutter_image_compress: ^2.0.4
   country_code_picker: ^3.0.0
-<<<<<<< HEAD
   audio_session: ^0.1.16
-=======
   easy_localization: ^3.0.3
->>>>>>> master
 
 dev_dependencies:
   flutter_test:

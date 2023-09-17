@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:chattyevent_app_flutter/application/bloc/introduction/introduction_cubit.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/button.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ionicons/ionicons.dart';
@@ -38,9 +39,9 @@ class AppFeatureIntroductionPagesMessagePage extends StatelessWidget {
             Column(
               children: [
                 Text(
-                  "Nachrichten",
+                  "introductionPages.featurePages.messagePage.title",
                   style: Theme.of(context).textTheme.bodyLarge,
-                ),
+                ).tr(),
                 const SizedBox(height: 20),
                 Row(
                   children: [
@@ -50,7 +51,9 @@ class AppFeatureIntroductionPagesMessagePage extends StatelessWidget {
                       size: Theme.of(context).textTheme.bodySmall?.fontSize,
                     ),
                     const SizedBox(width: 8),
-                    const Text("Erhalten aber nicht gelesen")
+                    const Text(
+                      "introductionPages.featurePages.messagePage.receivedButNotReadText",
+                    ).tr()
                   ],
                 ),
                 const SizedBox(height: 20),
@@ -75,7 +78,9 @@ class AppFeatureIntroductionPagesMessagePage extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(width: 8),
-                    const Text("Erhalten und gelesen")
+                    const Text(
+                      "introductionPages.featurePages.messagePage.receivedAndReadText",
+                    ).tr()
                   ],
                 ),
               ],
@@ -84,7 +89,7 @@ class AppFeatureIntroductionPagesMessagePage extends StatelessWidget {
               width: double.infinity,
               child: Button(
                 onTap: () => navigateToNextPage(context),
-                text: "Weiter",
+                text: "general.continueText",
               ),
             ),
           ],

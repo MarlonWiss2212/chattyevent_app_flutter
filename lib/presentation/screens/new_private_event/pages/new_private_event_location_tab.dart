@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:country_code_picker/country_code_picker.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/add_event/add_event_cubit.dart';
@@ -23,8 +24,8 @@ class NewPrivateEventLocationTab extends StatelessWidget {
                     bottom: 4,
                   ),
                   child: TextField(
-                    decoration: const InputDecoration(
-                      labelText: "Stadt",
+                    decoration: InputDecoration(
+                      labelText: "general.locationForm.city".tr(),
                     ),
                     controller: TextEditingController(
                       text: state.city,
@@ -39,8 +40,8 @@ class NewPrivateEventLocationTab extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 4),
                   child: TextField(
-                    decoration: const InputDecoration(
-                      labelText: "Postleitzahl",
+                    decoration: InputDecoration(
+                      labelText: "general.locationForm.zip".tr(),
                     ),
                     controller: TextEditingController(text: state.zip),
                     onChanged: (value) =>
@@ -58,8 +59,8 @@ class NewPrivateEventLocationTab extends StatelessWidget {
                     children: [
                       Expanded(
                         child: TextField(
-                          decoration: const InputDecoration(
-                            labelText: "Straße",
+                          decoration: InputDecoration(
+                            labelText: "general.locationForm.street".tr(),
                           ),
                           controller: TextEditingController(
                             text: state.street,
@@ -76,8 +77,8 @@ class NewPrivateEventLocationTab extends StatelessWidget {
                       SizedBox(
                         width: 100,
                         child: TextField(
-                          decoration: const InputDecoration(
-                            labelText: "Nr.",
+                          decoration: InputDecoration(
+                            labelText: "general.locationForm.number".tr(),
                           ),
                           controller: TextEditingController(
                             text: state.housenumber,

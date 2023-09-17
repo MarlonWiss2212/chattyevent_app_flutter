@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -58,7 +59,7 @@ class NewGroupchatWrapperPage extends StatelessWidget {
                 centerTitle: true,
                 title: Column(
                   children: [
-                    const Text('Neuer Gruppenchat'),
+                    const Text('newGroupchatPage.newGroupchatPage').tr(),
                     BlocBuilder<AddGroupchatCubit, AddGroupchatState>(
                       buildWhen: (p, c) => p.subtitle != c.subtitle,
                       builder: (context, state) {
@@ -113,7 +114,7 @@ class NewGroupchatWrapperPage extends StatelessWidget {
                               BlocProvider.of<AddGroupchatCubit>(context)
                                   .createGroupchatViaApi();
                             },
-                            text: "Erstellen",
+                            text: "general.createText",
                           ),
                         ),
                       ),

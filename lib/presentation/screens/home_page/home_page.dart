@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:chattyevent_app_flutter/application/bloc/introduction/introduction_cubit.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
@@ -50,26 +51,30 @@ class _HomePageState extends State<HomePage> {
                       ),
                       onDestinationSelected: (value) =>
                           tabsRouter.setActiveIndex(value),
-                      destinations: const [
+                      destinations: [
                         NavigationRailDestination(
-                          icon: Icon(Ionicons.chatbubble_outline),
-                          selectedIcon: Icon(Ionicons.chatbubble),
-                          label: Text('Chats'),
+                          icon: const Icon(Ionicons.chatbubble_outline),
+                          selectedIcon: const Icon(Ionicons.chatbubble),
+                          label:
+                              const Text('homePage.pages.chatPage.title').tr(),
                         ),
                         NavigationRailDestination(
-                          icon: Icon(Icons.celebration_outlined),
-                          selectedIcon: Icon(Icons.celebration),
-                          label: Text('Events'),
+                          icon: const Icon(Icons.celebration_outlined),
+                          selectedIcon: const Icon(Icons.celebration),
+                          label:
+                              const Text('homePage.pages.eventPage.title').tr(),
                         ),
                         NavigationRailDestination(
-                          icon: Icon(Ionicons.search_outline),
-                          selectedIcon: Icon(Ionicons.search),
-                          label: Text('Entdecken'),
+                          icon: const Icon(Ionicons.search_outline),
+                          selectedIcon: const Icon(Ionicons.search),
+                          label: const Text('homePage.pages.searchPage.title')
+                              .tr(),
                         ),
                         NavigationRailDestination(
-                          icon: MiniProfileImage(),
-                          selectedIcon: MiniProfileImage(),
-                          label: Text('Profil'),
+                          icon: const MiniProfileImage(),
+                          selectedIcon: const MiniProfileImage(),
+                          label: const Text('homePage.pages.profilePage.title')
+                              .tr(),
                         )
                       ],
                     ),
@@ -102,26 +107,26 @@ class _HomePageState extends State<HomePage> {
                   selectedItemColor: Theme.of(context).colorScheme.onBackground,
                   unselectedItemColor:
                       Theme.of(context).colorScheme.onBackground,
-                  items: const [
+                  items: [
                     BottomNavigationBarItem(
-                      icon: Icon(Ionicons.chatbubble_outline),
-                      activeIcon: Icon(Ionicons.chatbubble),
-                      label: 'Chat',
+                      icon: const Icon(Ionicons.chatbubble_outline),
+                      activeIcon: const Icon(Ionicons.chatbubble),
+                      label: 'homePage.pages.chatPage.title'.tr(),
                     ),
                     BottomNavigationBarItem(
-                      icon: Icon(Icons.celebration_outlined),
-                      activeIcon: Icon(Icons.celebration),
-                      label: 'Party',
+                      icon: const Icon(Icons.celebration_outlined),
+                      activeIcon: const Icon(Icons.celebration),
+                      label: 'homePage.pages.eventPage.title'.tr(),
                     ),
                     BottomNavigationBarItem(
-                      icon: Icon(Ionicons.search_outline),
-                      activeIcon: Icon(Ionicons.search),
-                      label: 'Entdecken',
+                      icon: const Icon(Ionicons.search_outline),
+                      activeIcon: const Icon(Ionicons.search),
+                      label: 'homePage.pages.searchPage.title'.tr(),
                     ),
                     BottomNavigationBarItem(
-                      icon: MiniProfileImage(),
-                      activeIcon: MiniProfileImage(),
-                      label: 'Profil',
+                      icon: const MiniProfileImage(),
+                      activeIcon: const MiniProfileImage(),
+                      label: "homePage.pages.profilePage.title".tr(),
                     ),
                   ],
                 );

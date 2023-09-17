@@ -4,6 +4,7 @@ import 'package:chattyevent_app_flutter/presentation/router/auth_guard.dart';
 import 'package:chattyevent_app_flutter/presentation/router/auth_pages_guard.dart';
 import 'package:chattyevent_app_flutter/presentation/router/create_user_page_guard.dart';
 import 'package:chattyevent_app_flutter/presentation/router/verify_email_page_guard.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 @AutoRouterConfig()
 class AppRouter extends $AppRouter {
@@ -144,14 +145,16 @@ class AppRouter extends $AppRouter {
                     initial: false,
                     guards: [authGuard],
                     path: 'users',
-                    title: (context, data) => "Mitglieder Wählen",
+                    title: (context, data) =>
+                        "newGroupchatPage.pages.selectUserTab.title".tr(),
                   ),
                   AutoRoute(
                     page: NewGroupchatPermissionsTab.page,
                     initial: false,
                     guards: [authGuard],
                     path: 'permissions',
-                    title: (context, data) => "Mitglieder Berechtigungen",
+                    title: (context, data) =>
+                        "newGroupchatPage.pages.permissionTab.title".tr(),
                   ),
                   RedirectRoute(path: '*', redirectTo: '')
                 ],
@@ -175,31 +178,36 @@ class AppRouter extends $AppRouter {
                     page: NewPrivateEventTypeTab.page,
                     guards: [authGuard],
                     path: 'type',
-                    title: (context, data) => "Typ",
+                    title: (context, data) =>
+                        "newPrivateEventPage.pages.typTab.title".tr(),
                   ),
                   AutoRoute(
                     page: NewPrivateEventSearchTab.page,
                     guards: [authGuard],
                     path: 'search',
-                    title: (context, data) => "Suche",
+                    title: (context, data) =>
+                        "newPrivateEventPage.pages.searchTab.title".tr(),
                   ),
                   AutoRoute(
                     page: NewPrivateEventDateTab.page,
                     guards: [authGuard],
                     path: 'date',
-                    title: (context, data) => "Datum",
+                    title: (context, data) =>
+                        "newPrivateEventPage.pages.dateTab.title".tr(),
                   ),
                   AutoRoute(
                     page: NewPrivateEventLocationTab.page,
                     guards: [authGuard],
                     path: 'location',
-                    title: (context, data) => "Standort (optional)",
+                    title: (context, data) =>
+                        "newPrivateEventPage.pages.locationTab.title".tr(),
                   ),
                   AutoRoute(
                     page: NewPrivateEventPermissionsTab.page,
                     guards: [authGuard],
                     path: 'permissions',
-                    title: (context, data) => "Mitglieder Berechtigungen",
+                    title: (context, data) =>
+                        "newPrivateEventPage.pages.permissionTab.title".tr(),
                   ),
                   RedirectRoute(path: '*', redirectTo: '')
                 ],
