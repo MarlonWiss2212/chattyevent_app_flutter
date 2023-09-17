@@ -71,7 +71,7 @@ class UserGridListItem extends StatelessWidget {
                   Hero(
                     tag: "${user.id} username",
                     child: Text(
-                      user.username ?? "Kein Name",
+                      user.username ?? "",
                       style: Theme.of(context).textTheme.labelMedium?.apply(
                             color: Colors.white,
                           ),

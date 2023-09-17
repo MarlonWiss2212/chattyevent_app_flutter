@@ -60,7 +60,7 @@ class HomeSearchPage extends StatelessWidget {
                                 .getUsersViaApi(
                           findUsersFilter: FindUsersFilter(search: text),
                         ),
-                        hintText: "usersearch.userSearchText",
+                        hintText: "general.userSearch.userSearchText",
                       ),
                       const SizedBox(height: 8),
                       BlocBuilder<UserSearchCubit, UserSearchState>(
@@ -72,7 +72,8 @@ class HomeSearchPage extends StatelessWidget {
                           }
                           if (state.users.isEmpty) {
                             return Center(
-                              child: const Text("userSearch.noUsersFoundText")
+                              child: const Text(
+                                      "general.userSearch.noUsersFoundText")
                                   .tr(),
                             );
                           }

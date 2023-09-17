@@ -58,7 +58,7 @@ class _UserListTileState extends State<UserListTile> {
         title: Hero(
           tag: "${widget.user.id} username",
           child: Text(
-            widget.customTitle ?? widget.user.username ?? "Kein Username",
+            widget.customTitle ?? widget.user.username ?? "",
             style: Theme.of(context).textTheme.titleMedium,
           ),
         ),
