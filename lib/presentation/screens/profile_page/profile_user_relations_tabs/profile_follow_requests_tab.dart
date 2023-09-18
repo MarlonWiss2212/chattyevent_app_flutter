@@ -4,6 +4,7 @@ import 'package:chattyevent_app_flutter/application/bloc/profile_page/profile_pa
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/profile_page/profile_user_relations_tabs/profile_follow_requests_tab/profile_follow_requests_tab_list_view.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/profile_page/profile_user_relations_tabs/profile_follow_requests_tab/profile_follow_requests_tab_skeleton_list_view.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 @RoutePage()
 class ProfileFollowRequestsTab extends StatefulWidget {
@@ -40,8 +41,12 @@ class _ProfileFollowRequestsTabState extends State<ProfileFollowRequestsTab> {
             }
 
             if (state.followRequests.isEmpty) {
-              return const SliverFillRemaining(
-                child: Center(child: Text("Keine Freundschaftsanfragen")),
+              return SliverFillRemaining(
+                child: Center(
+                  child: const Text(
+                          "profilePage.userRelationsTabs.followRequestsTab.noFollowRequestsText")
+                      .tr(),
+                ),
               );
             }
 

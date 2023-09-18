@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
@@ -28,7 +29,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text("Password Zurücksetzen"),
+        title: const Text("resetPasswordPage.title").tr(),
       ),
       body: BlocListener<NotificationCubit, NotificationState>(
         listener: (context, state) async {
@@ -43,9 +44,9 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
               children: [
                 const SizedBox(height: 8),
                 TextFormField(
-                  decoration: const InputDecoration(
-                    labelText: 'E-Mail',
-                    prefixIcon: Icon(Icons.email),
+                  decoration: InputDecoration(
+                    labelText: "resetPasswordPage.emailLable".tr(),
+                    prefixIcon: const Icon(Icons.email),
                   ),
                   keyboardType: TextInputType.emailAddress,
                   controller: emailFieldController,
@@ -66,7 +67,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                         email: emailFieldController.text,
                       );
                     },
-                    text: "Sende Email",
+                    text: "resetPasswordPage.sendEmailLable".tr(),
                   ),
                 ),
                 const SizedBox(height: 8),

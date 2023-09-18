@@ -6,6 +6,7 @@ import 'package:chattyevent_app_flutter/core/utils/injection.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/settings_page/pages/privacy_pages/private_event_add_me_page/private_event_add_me_page_chip_list.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/settings_page/pages/privacy_pages/private_event_add_me_page/private_event_add_me_page_user_list.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/settings_page/pages/privacy_pages/private_event_add_me_page/private_event_add_me_page_searchbar.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -32,7 +33,9 @@ class PrivateEventAddMePage extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: const Text("Privates Event Hinzufüge Berechtigung"),
+          title: const Text(
+            "settingsPage.privacyPage.privateEventAddMePage.title",
+          ).tr(),
         ),
         body: const Column(
           children: [

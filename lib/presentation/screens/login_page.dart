@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/chatty_event_logo_and_text_auth_pages.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/auth_pages/dataprotection_checkbox.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,7 +27,7 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text("Login"),
+        title: const Text("loginPage.title").tr(),
       ),
       body: BlocListener<NotificationCubit, NotificationState>(
         listener: (context, state) async {
@@ -54,9 +55,9 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       const SizedBox(height: 50),
                       TextField(
-                        decoration: const InputDecoration(
-                          labelText: "E-Mail",
-                          prefixIcon: Icon(Icons.email),
+                        decoration: InputDecoration(
+                          labelText: "loginPage.emailLable".tr(),
+                          prefixIcon: const Icon(Icons.email),
                         ),
                         keyboardType: TextInputType.emailAddress,
                         controller: emailFieldController,
@@ -64,9 +65,9 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       const SizedBox(height: 8),
                       TextField(
-                        decoration: const InputDecoration(
-                          labelText: "Passwort",
-                          prefixIcon: Icon(CupertinoIcons.lock_fill),
+                        decoration: InputDecoration(
+                          labelText: "loginPage.passwordLable".tr(),
+                          prefixIcon: const Icon(CupertinoIcons.lock_fill),
                         ),
                         controller: passwordFieldController,
                         obscureText: true,
@@ -85,7 +86,7 @@ class _LoginPageState extends State<LoginPage> {
                               password: passwordFieldController.text,
                             );
                           },
-                          text: "Einloggen",
+                          text: "loginPage.loginText".tr(),
                         ),
                       ),
                       const SizedBox(height: 16),
@@ -97,7 +98,9 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           );
                         },
-                        child: const Text("Passwort vergessen?"),
+                        child: const Text(
+                          "loginPage.passwordForgottenText",
+                        ).tr(),
                       ),
                       const SizedBox(height: 16),
                       TextButton(
@@ -106,7 +109,9 @@ class _LoginPageState extends State<LoginPage> {
                             const RegisterRoute(),
                           );
                         },
-                        child: const Text("Registrieren?"),
+                        child: const Text(
+                          "loginPage.registerInsteadText",
+                        ).tr(),
                       ),
                       const SizedBox(height: 8),
                     ],

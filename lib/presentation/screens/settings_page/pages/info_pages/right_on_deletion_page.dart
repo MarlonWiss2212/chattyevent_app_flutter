@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
@@ -15,33 +16,33 @@ class RightOnDeletionPage extends StatelessWidget {
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          "Recht auf Löschung",
+          "settingsPage.infoPage.rightOnDeletionPage.title",
           style: TextStyle(
             color: Theme.of(context).colorScheme.onBackground,
           ),
-        ),
+        ).tr(),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Expanded(
+            Expanded(
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      "Wenn du auf den Button 'Daten Löschen' klickst werden alle Daten von dir gelöscht",
+                    const Text(
+                      "settingsPage.infoPage.rightOnDeletionPage.text",
                       textAlign: TextAlign.center,
                       style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(height: 20),
-                    Text(
-                      "Folgende Daten können nicht gelöscht werden:",
+                    ).tr(),
+                    const SizedBox(height: 20),
+                    const Text(
+                      "settingsPage.infoPage.rightOnDeletionPage.followingDataWillBeDeletedText",
                       style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    Text(
+                    ).tr(),
+                    const Text(
                       "\u2022 User Unique Id",
                       textAlign: TextAlign.left,
                     )
@@ -52,14 +53,16 @@ class RightOnDeletionPage extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(top: 8),
               child: Button(
-                text: "Daten Löschen",
+                text: "settingsPage.infoPage.rightOnDeletionPage.deleteData",
                 onTap: () async {
                   await showDialog(
                     context: context,
                     builder: (c) {
                       return AcceptDeclineDialog(
-                        title: "Wirklich alle Daten Löschen",
-                        message: "Willst du wirklich alle deine Daten Löschen",
+                        title:
+                            "settingsPage.infoPage.rightOnDeletionPage.dialog.title",
+                        message:
+                            "settingsPage.infoPage.rightOnDeletionPage.dialog.message",
                         onNoPress: () => Navigator.of(c).pop(),
                         onYesPress: () =>
                             BlocProvider.of<AuthCubit>(context).deleteUser(),

@@ -5,6 +5,7 @@ import 'package:chattyevent_app_flutter/core/utils/injection.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/auth_usecases.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
@@ -45,7 +46,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text("Email Bestätigen"),
+        title: const Text("verifyEmailPage.title").tr(),
         actions: [
           IconButton(
             onPressed: () {
@@ -67,7 +68,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
               ),
               const SizedBox(height: 20),
               PlatformElevatedButton(
-                child: const Text("Erneut Senden"),
+                child: const Text("verifyEmailPage.resendEmail").tr(),
                 onPressed: () {
                   BlocProvider.of<AuthCubit>(context).sendEmailVerification();
                 },

@@ -1,6 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
@@ -24,11 +24,11 @@ class SettingsPage extends StatelessWidget {
             flexibleSpace: FlexibleSpaceBar(
               centerTitle: true,
               title: Text(
-                "Einstellungen",
+                "settingsPage.title",
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.onBackground,
                 ),
-              ),
+              ).tr(),
             ),
           ),
           SliverList(
@@ -37,10 +37,10 @@ class SettingsPage extends StatelessWidget {
                 ListTile(
                   leading: const Icon(Icons.dark_mode),
                   title: Text(
-                    "Darstellung",
+                    "settingsPage.themeModePage.title",
                     style: Theme.of(context).textTheme.titleMedium,
                     overflow: TextOverflow.ellipsis,
-                  ),
+                  ).tr(),
                   trailing: const Icon(Ionicons.chevron_forward),
                   onTap: () {
                     AutoRouter.of(context).push(const ThemeModeRoute());
@@ -49,10 +49,10 @@ class SettingsPage extends StatelessWidget {
                 ListTile(
                   leading: const Icon(Icons.security),
                   title: Text(
-                    "Privatsphäre & Sicherheit",
+                    "settingsPage.privacyPage.title",
                     style: Theme.of(context).textTheme.titleMedium,
                     overflow: TextOverflow.ellipsis,
-                  ),
+                  ).tr(),
                   trailing: const Icon(Ionicons.chevron_forward),
                   onTap: () {
                     AutoRouter.of(context).push(const SettingsPrivacyRoute());
@@ -61,10 +61,10 @@ class SettingsPage extends StatelessWidget {
                 ListTile(
                   leading: const Icon(Icons.info),
                   title: Text(
-                    "Info & Datenschutz",
+                    "settingsPage.infoPage.title",
                     style: Theme.of(context).textTheme.titleMedium,
                     overflow: TextOverflow.ellipsis,
-                  ),
+                  ).tr(),
                   trailing: const Icon(Ionicons.chevron_forward),
                   onTap: () {
                     AutoRouter.of(context).push(const SettingsInfoRoute());
@@ -76,9 +76,9 @@ class SettingsPage extends StatelessWidget {
                     color: Colors.red,
                   ),
                   title: const Text(
-                    "Abmelden",
+                    "settingsPage.logout",
                     style: TextStyle(color: Colors.red),
-                  ),
+                  ).tr(),
                   onTap: () {
                     BlocProvider.of<AuthCubit>(context).logout();
                   },

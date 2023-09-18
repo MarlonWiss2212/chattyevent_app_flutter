@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/profile_page/profile_page_cubit.dart';
@@ -39,8 +40,8 @@ class _ProfileFollowedTabState extends State<ProfileFollowedTab> {
             }
 
             if (state.followed.isEmpty) {
-              return const SliverFillRemaining(
-                child: Center(child: Text("Keinen Gefolgt")),
+              return SliverFillRemaining(
+                child: Center(child: const Text("Keinen Gefolgt").tr()),
               );
             }
 

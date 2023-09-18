@@ -193,5 +193,115 @@
         "lable": "Description (optional)"
       }
     }
+  },
+  "profilePage": {
+    "userRelationsTabs": {
+      "followRequestsTab": {
+        "title": "Follow requests",
+        "noFollowRequestsText": "No follow requests"
+      },
+      "followedTab": {
+        "title": "Followed",
+        "noFollowedText": "No followed"
+      },
+      "followerTab": {
+        "title": "Followers",
+        "noFollowersText": "No followers"
+      }
+    },
+    "chatPage": {
+      "otherUserNotFollowerInfoText": "The other user can't write you a message because he doesn't follow you, if you want to write with him, please check if he sent you a friend request. But the other user can read your message"
+    }
+  },
+  "settingsPage": {
+    "title": "Settings",
+    "logout": "Logout",
+    "themeModePage": {
+      "title": "Theme Mode",
+      "darkModeText": "Dark Mode",
+      "darkModeAutomaticText": "Dark Mode automatic"
+    },
+    "privacyPage": {
+      "title": "Privacy & Security",
+      "personalDataTitle": "Personal Data",
+      "howOthersInteractWithYouText": "How may others interact with you?",
+      "calenderTileMessage": "Followers can see if you have time on an appointment",
+      "updatePasswordPage": {
+        "title": "Update password",
+        "newPasswordText": "New password",
+        "confirmNewPasswordText": "Confirm new password",
+        "sendEmailText": "Can't re-verify? Send password reset email"
+      },
+      "updateEmailPage": {
+        "title": "Update E-Mail",
+        "currentEmailAddressText": "E-Mail address: {}",
+        "newEmailAddressText": "New email",
+        "confirmNewEmailAddressText": "Confirm new email"
+      },
+      "updateBirthdatePage": {
+        "title": "Update Birthdate",
+        "birthdateText": "Birthdate: {}"
+      },
+      "privateEventAddMePage": {
+        "title": "Private event add permission"
+      },
+      "groupchatAddMePage": {
+        "title": "Groupchat add permission"
+      },
+      "calendarWatchIHaveTimePage": {
+        "title": "Calendar see permission"
+      }
+    },
+    "infoPage": {
+      "title": "Info & Privacy",
+      "faqText": "FAQ",
+      "privacyPolicyText": "Privacy policy",
+      "termsOfUseText": "Terms of use",
+      "imprintText": "Imprint",
+      "rightOnDataAccessText": "Right on data access",
+      "rightOnDeletionPage": {
+        "title": "Right on deletion",
+        "text": "When you click on the 'Delete data' button all your data will be deleted.",
+        "followingDataWillBeDeletedText": "The following data cannot be deleted:",
+        "deleteDataText": "Delete Data",
+        "dialog": {
+          "title": "Really delete all data",
+          "message": "Do you really want to delete all your data"
+        }
+      }
+    }
+  },
+  "shoppingListPage": {
+    "title": "Shopping list",
+    "noItemsNeededText": "No items that need to be bought"
+  },
+  "createUserPage": {
+    "title": "Create User",
+    "usernameLable": "Username"
+  },
+  "loginPage": {
+    "title": "Login",
+    "emailLable": "E-Mail",
+    "passwordLable": "Password",
+    "loginText": "Login",
+    "passwordForgottenText": "Password forgotten?",
+    "registerInsteadText": "Register?"
+  },
+  "registerPage": {
+    "title": "Register",
+    "emailLable": "E-Mail",
+    "passwordLable": "Password",
+    "confirmPasswordLable": "Confirm password",
+    "registerText": "Register",
+    "loginInsteadText": "Login?"
+  },
+  "resetPasswordPage": {
+    "title": "Reset Password",
+    "emailLable": "E-Mail",
+    "sendEmailLable": "Send E-Mail"
+  },
+  "verifyEmailPage": {
+    "title": "Verify E-Mail",
+    "resendEmail": "Resend E-Mail"
   }
 }

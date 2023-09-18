@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/custom_tab_bar.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
@@ -20,7 +21,6 @@ class ProfileUserRelationsTabPage extends StatelessWidget {
           builder: (context, state) {
             return AutoTabsRouter.tabBar(
               routes: [
-                // had route before
                 const ProfileFollowerTab(),
                 const ProfileFollowedTab(),
                 if (state.user.id == authState.currentUser.id) ...{
@@ -53,15 +53,24 @@ class ProfileUserRelationsTabPage extends StatelessWidget {
                         child: CustomTabBar(
                           controller: tabController,
                           tabs: [
-                            const Tab(
-                                text: "Followers", icon: Icon(Icons.person)),
-                            const Tab(
-                                text: "Gefolgt",
-                                icon: Icon(Icons.person_2_outlined)),
+                            Tab(
+                              text:
+                                  "profilePage.userRelationsTabs.followerTab.title"
+                                      .tr(),
+                              icon: const Icon(Icons.person),
+                            ),
+                            Tab(
+                              text:
+                                  "profilePage.userRelationsTabs.followedTab.title"
+                                      .tr(),
+                              icon: const Icon(Icons.person_2_outlined),
+                            ),
                             if (state.user.id == authState.currentUser.id) ...{
-                              const Tab(
-                                text: "Anfragen",
-                                icon: Icon(Icons.front_hand),
+                              Tab(
+                                text:
+                                    "profilePage.userRelationsTabs.followRequestsTab.title"
+                                        .tr(),
+                                icon: const Icon(Icons.front_hand),
                               ),
                             }
                           ],

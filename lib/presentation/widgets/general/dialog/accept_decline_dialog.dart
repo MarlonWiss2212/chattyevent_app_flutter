@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/button.dart';
 
@@ -37,13 +38,13 @@ class AcceptDeclineDialog extends StatelessWidget {
                       title,
                       style: Theme.of(context).textTheme.titleLarge,
                       overflow: TextOverflow.clip,
-                    ),
+                    ).tr(),
                     const SizedBox(height: 8),
                     Text(
                       message,
                       style: Theme.of(context).textTheme.bodyMedium,
                       overflow: TextOverflow.clip,
-                    ),
+                    ).tr(),
                   ],
                 ),
               ),

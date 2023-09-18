@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:chattyevent_app_flutter/core/utils/injection.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/settings_usecases.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
@@ -30,11 +31,11 @@ class _SettingsInfoPageState extends State<SettingsInfoPage> {
             flexibleSpace: FlexibleSpaceBar(
               centerTitle: true,
               title: Text(
-                "Info & Datenschutz",
+                "settingsPage.infoPage.title",
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.onBackground,
                 ),
-              ),
+              ).tr(),
             ),
           ),
           SliverList(
@@ -43,10 +44,10 @@ class _SettingsInfoPageState extends State<SettingsInfoPage> {
                 ListTile(
                   leading: const Icon(CupertinoIcons.question),
                   title: Text(
-                    "FAQ",
+                    "settingsPage.infoPage.faqText",
                     style: Theme.of(context).textTheme.titleMedium,
                     overflow: TextOverflow.ellipsis,
-                  ),
+                  ).tr(),
                   trailing: const Icon(Ionicons.chevron_forward),
                   onTap: () async {
                     await settingsUseCases.openFAQPage();
@@ -55,10 +56,10 @@ class _SettingsInfoPageState extends State<SettingsInfoPage> {
                 ListTile(
                   leading: const Icon(Icons.security),
                   title: Text(
-                    "Datenschutzerklärung",
+                    "settingsPage.infoPage.privacyPolicyText",
                     style: Theme.of(context).textTheme.titleMedium,
                     overflow: TextOverflow.ellipsis,
-                  ),
+                  ).tr(),
                   trailing: const Icon(Ionicons.chevron_forward),
                   onTap: () async {
                     await settingsUseCases.openDatasecurityPage();
@@ -67,10 +68,10 @@ class _SettingsInfoPageState extends State<SettingsInfoPage> {
                 ListTile(
                   leading: const Icon(Icons.rule),
                   title: Text(
-                    "Nutzungsbedingungen",
+                    "settingsPage.infoPage.termsOfUseText",
                     style: Theme.of(context).textTheme.titleMedium,
                     overflow: TextOverflow.ellipsis,
-                  ),
+                  ).tr(),
                   trailing: const Icon(Ionicons.chevron_forward),
                   onTap: () async {
                     await settingsUseCases.openTermsOfUsePage();
@@ -79,10 +80,10 @@ class _SettingsInfoPageState extends State<SettingsInfoPage> {
                 ListTile(
                   leading: const Icon(Icons.contact_page),
                   title: Text(
-                    "Impressum",
+                    "settingsPage.infoPage.imprintText",
                     style: Theme.of(context).textTheme.titleMedium,
                     overflow: TextOverflow.ellipsis,
-                  ),
+                  ).tr(),
                   trailing: const Icon(Ionicons.chevron_forward),
                   onTap: () async {
                     await settingsUseCases.openImprintPage();
@@ -91,10 +92,10 @@ class _SettingsInfoPageState extends State<SettingsInfoPage> {
                 ListTile(
                   leading: const Icon(Icons.text_snippet),
                   title: Text(
-                    "Recht auf Auskunft",
+                    "settingsPage.infoPage.rightOnDataAccessText",
                     style: Theme.of(context).textTheme.titleMedium,
                     overflow: TextOverflow.ellipsis,
-                  ),
+                  ).tr(),
                   trailing: const Icon(Ionicons.chevron_forward),
                   onTap: () async {
                     await settingsUseCases.openRightOnDataAccessPage();
@@ -103,10 +104,10 @@ class _SettingsInfoPageState extends State<SettingsInfoPage> {
                 ListTile(
                   leading: const Icon(Icons.delete),
                   title: Text(
-                    "Recht auf Löschung",
+                    "settingsPage.infoPage.rightOnDeletionPage.title",
                     style: Theme.of(context).textTheme.titleMedium,
                     overflow: TextOverflow.ellipsis,
-                  ),
+                  ).tr(),
                   trailing: const Icon(Ionicons.chevron_forward),
                   onTap: () {
                     AutoRouter.of(context).push(

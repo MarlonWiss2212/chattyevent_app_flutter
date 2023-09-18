@@ -6,6 +6,7 @@ import 'package:chattyevent_app_flutter/core/utils/injection.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/settings_page/pages/privacy_pages/calendar_watch_i_have_time_page/calendar_watch_i_have_time_page_chip_list.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/settings_page/pages/privacy_pages/calendar_watch_i_have_time_page/calendar_watch_i_have_time_page_searchbar.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/settings_page/pages/privacy_pages/calendar_watch_i_have_time_page/calendar_watch_i_have_time_page_user_list.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -33,7 +34,9 @@ class CalendarWatchIHaveTimePage extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: const Text("Kalendar sehen Berechtigung"),
+          title: const Text(
+            "settingsPage.privacyPage.calendarWatchIHaveTimePage.title",
+          ).tr(),
         ),
         body: const Column(
           children: [

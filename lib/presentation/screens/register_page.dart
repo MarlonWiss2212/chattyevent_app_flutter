@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/chatty_event_logo_and_text_auth_pages.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/auth_pages/dataprotection_checkbox.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -27,7 +28,7 @@ class _RegisterPageState extends State<RegisterPage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text("Registrieren"),
+        title: const Text("registerPage.title").tr(),
       ),
       body: BlocListener<NotificationCubit, NotificationState>(
         listener: (context, state) async {
@@ -55,9 +56,9 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                       const SizedBox(height: 50),
                       TextField(
-                        decoration: const InputDecoration(
-                          labelText: "E-Mail",
-                          prefixIcon: Icon(Icons.email),
+                        decoration: InputDecoration(
+                          labelText: "registerPage.emailLable".tr(),
+                          prefixIcon: const Icon(Icons.email),
                         ),
                         keyboardType: TextInputType.emailAddress,
                         controller: emailFieldController,
@@ -65,9 +66,9 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                       const SizedBox(height: 8),
                       TextField(
-                        decoration: const InputDecoration(
-                          labelText: "Passwort",
-                          prefixIcon: Icon(CupertinoIcons.lock_fill),
+                        decoration: InputDecoration(
+                          labelText: "registerPage.passwordLable".tr(),
+                          prefixIcon: const Icon(CupertinoIcons.lock_fill),
                         ),
                         controller: passwordFieldController,
                         obscureText: true,
@@ -75,9 +76,9 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                       const SizedBox(height: 8),
                       TextField(
-                        decoration: const InputDecoration(
-                          labelText: "Passwort Bestätigen",
-                          prefixIcon: Icon(CupertinoIcons.lock_fill),
+                        decoration: InputDecoration(
+                          labelText: "registerPage.confirmPasswordLable".tr(),
+                          prefixIcon: const Icon(CupertinoIcons.lock_fill),
                         ),
                         controller: verifyPasswordFieldController,
                         obscureText: true,
@@ -98,7 +99,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                   verifyPasswordFieldController.text,
                             );
                           },
-                          text: "Registrieren",
+                          text: "registerPage.registerText".tr(),
                         ),
                       ),
                       const SizedBox(height: 16),
@@ -106,7 +107,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         onPressed: () {
                           AutoRouter.of(context).replace(const LoginRoute());
                         },
-                        child: const Text("Login?"),
+                        child: const Text("registerPage.loginInsteadText").tr(),
                       ),
                       const SizedBox(height: 8),
                     ],

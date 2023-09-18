@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
@@ -27,11 +28,11 @@ class _SettingsPrivacyPageState extends State<SettingsPrivacyPage> {
             flexibleSpace: FlexibleSpaceBar(
               centerTitle: true,
               title: Text(
-                "Privatsphäre & Sicherheit",
+                "settingsPage.privacyPage.title",
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.onBackground,
                 ),
-              ),
+              ).tr(),
             ),
           ),
           SliverList(
@@ -65,39 +66,37 @@ class _SettingsPrivacyPageState extends State<SettingsPrivacyPage> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  "Wie dürfen andere mit dir interagieren?",
+                  "settingsPage.privacyPage.howOthersInteractWithYouText",
                   style: Theme.of(context).textTheme.titleLarge,
-                ),
+                ).tr(),
               ),
               const Divider(thickness: 3),
               ListTile(
-                title: const Text("Gruppenchat hinzufügen"),
-                //   subtitle: const Text(
-                //   "Follower dich in ein Gruppenchat hinzufügen, ohne diese Berechtigung aber wenigstens Einladen",
-                //                      style: Theme.of(context).textTheme.bodySmall,
-                // ),
+                title: const Text(
+                  "settingsPage.privacyPage.groupchatAddMePage.title",
+                ).tr(),
                 onTap: () => AutoRouter.of(context).push(
                   const GroupchatAddMeRoute(),
                 ),
                 trailing: const Icon(Ionicons.chevron_forward),
               ),
               ListTile(
-                title: const Text("Privates Event hinzufügen"),
-                //   subtitle: const Text(
-                //     "Follower dich in ein Privates Event hinzufügen, ohne diese Berechtigung aber wenigstens Einladen",
-                //                      style: Theme.of(context).textTheme.bodySmall,
-                //   ),
+                title: const Text(
+                  "settingsPage.privacyPage.privateEventAddMePage.title",
+                ).tr(),
                 onTap: () => AutoRouter.of(context).push(
                   const PrivateEventAddMeRoute(),
                 ),
                 trailing: const Icon(Ionicons.chevron_forward),
               ),
               ListTile(
-                title: const Text("Kalendar sehen"),
+                title: const Text(
+                  "settingsPage.privacyPage.calendarWatchIHaveTimePage.title",
+                ).tr(),
                 subtitle: Text(
-                  "Follower können sehen ob du an einen Termin Zeit hast",
+                  "settingsPage.privacyPage.calenderTileMessage",
                   style: Theme.of(context).textTheme.bodySmall,
-                ),
+                ).tr(),
                 onTap: () => AutoRouter.of(context).push(
                   const CalendarWatchIHaveTimeRoute(),
                 ),
@@ -128,18 +127,18 @@ class _SettingsPrivacyPageState extends State<SettingsPrivacyPage> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  "Persönliche Daten",
+                  "settingsPage.privacyPage.personalDataTitle",
                   style: Theme.of(context).textTheme.titleLarge,
-                ),
+                ).tr(),
               ),
               const Divider(thickness: 3),
               ListTile(
                 leading: const Icon(Icons.date_range),
                 title: Text(
-                  "Geburtstag ändern",
+                  "settingsPage.privacyPage.updateBirthdatePage.title",
                   style: Theme.of(context).textTheme.titleMedium,
                   overflow: TextOverflow.ellipsis,
-                ),
+                ).tr(),
                 trailing: const Icon(Ionicons.chevron_forward),
                 onTap: () {
                   AutoRouter.of(context).push(const UpdateBirthdateRoute());
@@ -148,10 +147,10 @@ class _SettingsPrivacyPageState extends State<SettingsPrivacyPage> {
               ListTile(
                 leading: const Icon(Icons.email),
                 title: Text(
-                  "Email ändern",
+                  "settingsPage.privacyPage.updateEmailPage.title",
                   style: Theme.of(context).textTheme.titleMedium,
                   overflow: TextOverflow.ellipsis,
-                ),
+                ).tr(),
                 trailing: const Icon(Ionicons.chevron_forward),
                 onTap: () {
                   AutoRouter.of(context).push(const UpdateEmailRoute());
@@ -160,10 +159,10 @@ class _SettingsPrivacyPageState extends State<SettingsPrivacyPage> {
               ListTile(
                 leading: const Icon(CupertinoIcons.lock_fill),
                 title: Text(
-                  "Password ändern",
+                  "settingsPage.privacyPage.updatePasswordPage.title",
                   style: Theme.of(context).textTheme.titleMedium,
                   overflow: TextOverflow.ellipsis,
-                ),
+                ).tr(),
                 trailing: const Icon(Ionicons.chevron_forward),
                 onTap: () {
                   AutoRouter.of(context).push(const UpdatePasswordRoute());

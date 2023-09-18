@@ -1,5 +1,5 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/add_current_user_cubit.dart';
@@ -27,7 +27,7 @@ class CreateUserPage extends StatelessWidget {
         return Scaffold(
           appBar: AppBar(
             centerTitle: true,
-            title: const Text("User Erstellen"),
+            title: const Text("createUserPage.title").tr(),
             actions: [
               IconButton(
                 onPressed: () {
@@ -60,8 +60,9 @@ class CreateUserPage extends StatelessWidget {
                               const CreateUserPageProfileImage(),
                               const SizedBox(height: 20),
                               TextField(
-                                decoration: const InputDecoration(
-                                  labelText: "Benutzername",
+                                decoration: InputDecoration(
+                                  labelText:
+                                      "createUserPage.usernameLable".tr(),
                                 ),
                                 onChanged: (value) {
                                   BlocProvider.of<AddCurrentUserCubit>(context)
@@ -96,7 +97,7 @@ class CreateUserPage extends StatelessWidget {
                               BlocProvider.of<AddCurrentUserCubit>(context)
                                   .createCurrentUser();
                             },
-                            text: "User Erstellen",
+                            text: "general.createText".tr(),
                           ),
                         ),
                       ),

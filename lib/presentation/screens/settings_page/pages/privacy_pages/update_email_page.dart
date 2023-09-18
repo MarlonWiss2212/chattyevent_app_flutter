@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:chattyevent_app_flutter/core/utils/injection.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/auth_usecases.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
@@ -44,7 +45,8 @@ class _UpdateEmailPageState extends State<UpdateEmailPage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text("E-Mail aktualisieren"),
+        title:
+            const Text("settingsPage.privacyPage.updateEmailPage.title").tr(),
       ),
       body: Center(
         child: SingleChildScrollView(
@@ -54,24 +56,28 @@ class _UpdateEmailPageState extends State<UpdateEmailPage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               if (emailAddress != "") ...{
-                Text(
-                  "E-Mail Addresse: $emailAddress",
-                ),
+                const Text(
+                  "settingsPage.privacyPage.updateEmailPage.currentEmailAddressText",
+                ).tr(args: [emailAddress]),
               },
               const SizedBox(height: 20),
               TextField(
-                decoration: const InputDecoration(
-                  labelText: 'Neue E-Mail',
-                  prefixIcon: Icon(Icons.email),
+                decoration: InputDecoration(
+                  labelText:
+                      "settingsPage.privacyPage.updateEmailPage.newEmailAddressText"
+                          .tr(),
+                  prefixIcon: const Icon(Icons.email),
                 ),
                 controller: emailFieldController,
                 textInputAction: TextInputAction.next,
               ),
               const SizedBox(height: 8),
               TextField(
-                decoration: const InputDecoration(
-                  labelText: 'Bestätigung neue E-Mail',
-                  prefixIcon: Icon(Icons.email),
+                decoration: InputDecoration(
+                  labelText:
+                      "settingsPage.privacyPage.updateEmailPage.confirmNewEmailAddressText"
+                          .tr(),
+                  prefixIcon: const Icon(Icons.email),
                 ),
                 controller: verifyEmailFieldController,
               ),
@@ -85,7 +91,7 @@ class _UpdateEmailPageState extends State<UpdateEmailPage> {
                       verifyEmail: verifyEmailFieldController.text,
                     );
                   },
-                  text: "E-Mail ändern",
+                  text: "general.saveText",
                 ),
               ),
               const SizedBox(height: 8),

@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,7 +23,8 @@ class _UpdatePasswordPageState extends State<UpdatePasswordPage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text("Password aktualisieren"),
+        title: const Text("settingsPage.privacyPage.updatePasswordPage.title")
+            .tr(),
       ),
       body: Center(
         child: SingleChildScrollView(
@@ -33,9 +35,11 @@ class _UpdatePasswordPageState extends State<UpdatePasswordPage> {
             children: [
               const SizedBox(height: 8),
               TextField(
-                decoration: const InputDecoration(
-                  labelText: 'Neues Passwort',
-                  prefixIcon: Icon(CupertinoIcons.lock_fill),
+                decoration: InputDecoration(
+                  labelText:
+                      "settingsPage.privacyPage.updatePasswordPage.newPasswordText"
+                          .tr(),
+                  prefixIcon: const Icon(CupertinoIcons.lock_fill),
                 ),
                 controller: passwordFieldController,
                 obscureText: true,
@@ -43,9 +47,11 @@ class _UpdatePasswordPageState extends State<UpdatePasswordPage> {
               ),
               const SizedBox(height: 8),
               TextField(
-                decoration: const InputDecoration(
-                  labelText: 'Bestätigung neues Passwort',
-                  prefixIcon: Icon(CupertinoIcons.lock_fill),
+                decoration: InputDecoration(
+                  labelText:
+                      "settingsPage.privacyPage.updatePasswordPage.confirmNewPasswordText"
+                          .tr(),
+                  prefixIcon: const Icon(CupertinoIcons.lock_fill),
                 ),
                 controller: verifyPasswordFieldController,
                 obscureText: true,
@@ -60,7 +66,7 @@ class _UpdatePasswordPageState extends State<UpdatePasswordPage> {
                       verifyPassword: verifyPasswordFieldController.text,
                     );
                   },
-                  text: "Passwort ändern",
+                  text: "general.saveText",
                 ),
               ),
               const SizedBox(height: 8),
@@ -72,9 +78,9 @@ class _UpdatePasswordPageState extends State<UpdatePasswordPage> {
                         .sendResetPasswordEmail();
                   },
                   child: const Text(
-                    "Du kannst dich nicht neu verifizieren? Sende Passwort zurücksetzen E-Mail",
+                    "settingsPage.privacyPage.updatePasswordPage.sendEmailText",
                     textAlign: TextAlign.center,
-                  ),
+                  ).tr(),
                 ),
               ),
               const SizedBox(height: 8),

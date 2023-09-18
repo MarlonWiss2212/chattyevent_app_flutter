@@ -59,7 +59,7 @@ class NewGroupchatWrapperPage extends StatelessWidget {
                 centerTitle: true,
                 title: Column(
                   children: [
-                    const Text('newGroupchatPage.newGroupchatPage').tr(),
+                    const Text('newGroupchatPage.title').tr(),
                     BlocBuilder<AddGroupchatCubit, AddGroupchatState>(
                       buildWhen: (p, c) => p.subtitle != c.subtitle,
                       builder: (context, state) {

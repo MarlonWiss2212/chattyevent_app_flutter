@@ -69,9 +69,7 @@ class ProfilePage extends StatelessWidget {
                 return SliverFillRemaining(
                   child: Center(
                     child: PlatformTextButton(
-                      child: Text(
-                        "Keinen User mit der Id: ${userId ?? state.user.id}",
-                      ),
+                      child: Text(userId ?? state.user.id),
                       onPressed: () =>
                           BlocProvider.of<ProfilePageCubit>(context)
                               .getCurrentUserViaApi(),
