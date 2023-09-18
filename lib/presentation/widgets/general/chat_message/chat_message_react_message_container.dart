@@ -2,6 +2,7 @@ import 'package:chattyevent_app_flutter/application/bloc/add_message/add_message
 import 'package:chattyevent_app_flutter/core/extensions/list_space_between_extension.dart';
 import 'package:chattyevent_app_flutter/domain/entities/message/message_to_react_to_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/user/user_entity.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -91,9 +92,9 @@ class ChatMessageReactMessageContainer extends StatelessWidget {
                             const Icon(Icons.file_copy),
                             const SizedBox(width: 2),
                             Text(
-                              "Dateien",
+                              "general.chatMessage.reactMessageContainer.filesText",
                               style: Theme.of(context).textTheme.bodyMedium,
-                            ),
+                            ).tr(),
                           ],
                         ),
                       ],
@@ -103,10 +104,10 @@ class ChatMessageReactMessageContainer extends StatelessWidget {
                             const Icon(Ionicons.map),
                             const SizedBox(width: 2),
                             Text(
-                              "Geradiger Standort",
+                              "general.chatMessage.reactMessageContainer.currentLocationText",
                               overflow: TextOverflow.ellipsis,
                               style: Theme.of(context).textTheme.bodyMedium,
-                            ),
+                            ).tr(),
                           ],
                         ),
                       ],
@@ -116,10 +117,10 @@ class ChatMessageReactMessageContainer extends StatelessWidget {
                             const Icon(Ionicons.play),
                             const SizedBox(width: 2),
                             Text(
-                              "Audio",
+                              "general.chatMessage.reactMessageContainer.audio",
                               overflow: TextOverflow.ellipsis,
                               style: Theme.of(context).textTheme.bodyMedium,
-                            ),
+                            ).tr(),
                           ],
                         ),
                       },

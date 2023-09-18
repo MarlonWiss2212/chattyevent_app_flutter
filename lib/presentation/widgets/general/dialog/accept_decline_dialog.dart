@@ -52,12 +52,18 @@ class AcceptDeclineDialog extends StatelessWidget {
                 children: [
                   Flexible(
                     flex: 1,
-                    child: Button(onTap: onNoPress, text: "Nein"),
+                    child: Button(
+                      onTap: onNoPress,
+                      text: "general.noText".tr(),
+                    ),
                   ),
                   const SizedBox(width: 8),
                   Flexible(
                     flex: 1,
-                    child: Button(onTap: onYesPress, text: "Ja"),
+                    child: Button(
+                      onTap: onYesPress,
+                      text: "general.yesText".tr(),
+                    ),
                   ),
                 ],
               )

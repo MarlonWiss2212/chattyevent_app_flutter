@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:chattyevent_app_flutter/application/bloc/add_message/add_message_cubit.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -54,8 +55,9 @@ class _ChatMessageInputTextFieldState extends State<ChatMessageInputTextField> {
                     minLines: 1,
                     maxLines: 6,
                     style: Theme.of(context).textTheme.bodyMedium,
-                    decoration: const InputDecoration.collapsed(
-                      hintText: "Nachricht",
+                    decoration: InputDecoration.collapsed(
+                      hintText:
+                          "general.chatMessageInput.textField.hintText".tr(),
                     ),
                     onChanged: (p0) =>
                         BlocProvider.of<AddMessageCubit>(context).emitState(

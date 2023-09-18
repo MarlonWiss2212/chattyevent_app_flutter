@@ -1,6 +1,7 @@
 import 'package:chattyevent_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/dialog/bottom_blurred_surface_dialog.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/user_list/user_list_tile.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class ChatMessageReadByBottomDialog extends StatelessWidget {
@@ -22,16 +23,20 @@ class ChatMessageReadByBottomDialog extends StatelessWidget {
     }).toList();
 
     if (filteredUsers.isEmpty) {
-      return const Center(child: Text("Keiner hat die Nachticht gelesen"));
+      return Center(
+        child: const Text(
+          "genral.chatMessage.readByContainer.emptyMessage",
+        ).tr(),
+      );
     }
     return BottomBlurredSurfaceDialog(
       child: Column(
         children: [
           Center(
             child: Text(
-              "Gelesen von:",
+              "general.chatMessage.readByContainer.title",
               style: Theme.of(context).textTheme.titleLarge,
-            ),
+            ).tr(),
           ),
           Flexible(
             child: ListView.builder(

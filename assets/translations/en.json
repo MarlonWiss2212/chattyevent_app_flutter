@@ -5,6 +5,9 @@
     "createText": "Create",
     "saveText": "Save",
     "continueText": "Continue",
+    "noText": "No",
+    "yesText": "Yes",
+    "okText": "Ok",
     "locationForm": {
       "country": "Country",
       "city": "City",
@@ -34,6 +37,25 @@
     "userSearch": {
       "userSearchText": "User search:",
       "noUsersFoundText": "No users found"
+    },
+    "chatMessage": {
+      "reactMessageContainer": {
+        "filesText": "Files",
+        "currentLocationText": "Current Location",
+        "audioText": "Audio"
+      },
+      "readByContainer": {
+        "title": "Read By:",
+        "emptyMessage": "Nobody read the message"
+      }
+    },
+    "chatMessageInput": {
+      "textField": {
+        "hintTexxt": "Message"
+      },
+      "voiceMessage": {
+        "title": "Voice message"
+      }
     }
   },
   "homePage": {

@@ -1,4 +1,5 @@
 import 'package:chattyevent_app_flutter/application/bloc/add_message/add_message_cubit.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ionicons/ionicons.dart';
@@ -41,11 +42,11 @@ class ChatMessageInputVoiceMessage extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      "Sprachnachricht",
+                                      "general.chatMessageInput.voiceMessage.title",
                                       style: Theme.of(context)
                                           .textTheme
                                           .labelLarge,
-                                    ),
+                                    ).tr(),
                                     Text(
                                       state.voiceMessage!.path,
                                       style:
