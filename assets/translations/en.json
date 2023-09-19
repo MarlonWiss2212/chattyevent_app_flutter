@@ -82,7 +82,7 @@
     },
     "chatMessageInput": {
       "textField": {
-        "hintTexxt": "Message"
+        "hintText": "Message"
       },
       "voiceMessage": {
         "title": "Voice message"

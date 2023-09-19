@@ -98,7 +98,7 @@ class CodegenLoader extends AssetLoader{
     },
     "chatMessageInput": {
       "textField": {
-        "hintTexxt": "Message"
+        "hintText": "Message"
       },
       "voiceMessage": {
         "title": "Voice message"
@@ -464,7 +464,7 @@ static const Map<String,dynamic> en = {
     },
     "chatMessageInput": {
       "textField": {
-        "hintTexxt": "Message"
+        "hintText": "Message"
       },
       "voiceMessage": {
         "title": "Voice message"
