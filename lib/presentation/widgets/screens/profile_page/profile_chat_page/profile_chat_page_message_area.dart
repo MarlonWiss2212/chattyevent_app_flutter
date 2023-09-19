@@ -48,6 +48,7 @@ class ProfileChatPageMessageArea extends StatelessWidget {
         return ChatMessageList(
           messages: state.messages,
           users: [state.user, currentUser],
+          usersCount: 1,
           currentUserId: currentUser.id,
           loadMoreMessages: () {
             if (BlocProvider.of<ProfilePageCubit>(context)

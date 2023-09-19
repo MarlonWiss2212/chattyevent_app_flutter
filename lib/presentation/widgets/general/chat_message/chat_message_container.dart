@@ -16,11 +16,13 @@ import 'package:chattyevent_app_flutter/domain/entities/message/message_and_user
 class ChatMessageContainer extends StatefulWidget {
   final List<UserEntity> users;
   final MessageEntity message;
+  final int usersCount;
   final String currentUserId;
 
   const ChatMessageContainer({
     super.key,
     required this.users,
+    required this.usersCount,
     required this.message,
     required this.currentUserId,
   });
@@ -114,9 +116,9 @@ class _ChatMessageContainerState extends State<ChatMessageContainer> {
                 ),
                 const SizedBox(height: 4),
                 ChatMessageContainerBottomContainer(
+                  usersCount: widget.usersCount,
                   isCurrentUser: isCurrentUser,
                   message: widget.message,
-                  users: widget.users,
                 ),
               ],
             ),

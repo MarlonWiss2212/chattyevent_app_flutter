@@ -1,18 +1,17 @@
 import 'package:chattyevent_app_flutter/domain/entities/message/message_entity.dart';
-import 'package:chattyevent_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:ionicons/ionicons.dart';
 
 class ChatMessageContainerBottomContainer extends StatelessWidget {
   final bool isCurrentUser;
-  final List<UserEntity> users;
+  final int usersCount;
   final MessageEntity message;
   const ChatMessageContainerBottomContainer({
     super.key,
     required this.isCurrentUser,
+    required this.usersCount,
     required this.message,
-    required this.users,
   });
 
   @override
@@ -33,7 +32,7 @@ class ChatMessageContainerBottomContainer extends StatelessWidget {
         const SizedBox(width: 8),
         if (isCurrentUser &&
             message.readBy.isNotEmpty &&
-            message.readBy.length == users.length) ...[
+            message.readBy.length == usersCount) ...[
           Stack(
             children: [
               Icon(

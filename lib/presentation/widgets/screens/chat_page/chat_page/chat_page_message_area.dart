@@ -53,6 +53,7 @@ class ChatPageMessageArea extends StatelessWidget {
         return ChatMessageList(
           messages: state.messages,
           users: [...state.users, ...state.leftUsers],
+          usersCount: state.users.length,
           currentUserId:
               BlocProvider.of<AuthCubit>(context).state.currentUser.id,
           loadMoreMessages: () {

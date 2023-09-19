@@ -52,6 +52,7 @@ class TabChatMessageArea extends StatelessWidget {
         return ChatMessageList(
           messages: state.messages,
           users: [...state.eventUsers, ...state.eventLeftUsers],
+          usersCount: state.eventUsers.length,
           currentUserId:
               BlocProvider.of<AuthCubit>(context).state.currentUser.id,
           loadMoreMessages: () {

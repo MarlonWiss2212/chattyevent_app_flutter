@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 class ChatMessageList extends StatefulWidget {
   final List<MessageEntity> messages;
   final List<UserEntity> users;
+  final int usersCount;
   final String currentUserId;
   final void Function() loadMoreMessages;
 
@@ -16,6 +17,7 @@ class ChatMessageList extends StatefulWidget {
     required this.messages,
     required this.currentUserId,
     required this.users,
+    required this.usersCount,
     required this.loadMoreMessages,
   });
 
@@ -59,6 +61,7 @@ class _ChatMessageListState extends State<ChatMessageList> {
           child: ChatMessageContainer(
             key: ObjectKey(message.id),
             users: widget.users,
+            usersCount: widget.usersCount,
             message: message,
             currentUserId: widget.currentUserId,
           ),
