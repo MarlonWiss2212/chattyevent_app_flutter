@@ -1,5 +1,6 @@
 import 'package:chattyevent_app_flutter/core/enums/user_relation/user_relation_status_enum.dart';
 import 'package:dartz/dartz.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
@@ -27,18 +28,18 @@ class FollowButton extends StatelessWidget {
 
     if (user.myUserRelationToOtherUser?.status ==
         UserRelationStatusEnum.follower) {
-      text = "Gefolgt";
+      text = "general.followButton.followedText";
       color = Theme.of(context).colorScheme.surface;
     } else if (user.myUserRelationToOtherUser?.status ==
         UserRelationStatusEnum.requesttofollow) {
-      text = "Angefragt";
+      text = "general.followButton.requestedText";
       color = Theme.of(context).colorScheme.surface;
     } else if (user.myUserRelationToOtherUser?.status ==
         UserRelationStatusEnum.blocked) {
-      text = "Blockiert";
+      text = "general.followButton.blockedText";
       color = Theme.of(context).colorScheme.errorContainer;
     } else {
-      text = "Folgen";
+      text = "general.followButton.followText";
       color = Theme.of(context).colorScheme.primaryContainer;
     }
     return Material(
@@ -58,37 +59,41 @@ class FollowButton extends StatelessWidget {
                   UserRelationStatusEnum.follower &&
               user.myUserRelationToOtherUser?.status !=
                   UserRelationStatusEnum.requesttofollow) ...{
-            const PopupMenuItem<Either<Unit, UserRelationStatusEnum>>(
-              value: Right(UserRelationStatusEnum.requesttofollow),
-              child: Text("Folgen"),
+            PopupMenuItem<Either<Unit, UserRelationStatusEnum>>(
+              value: const Right(UserRelationStatusEnum.requesttofollow),
+              child: const Text("general.followButton.followText").tr(),
             ),
           },
           if (user.myUserRelationToOtherUser?.status ==
               UserRelationStatusEnum.requesttofollow) ...{
-            const PopupMenuItem<Either<Unit, UserRelationStatusEnum>>(
-              value: Left(unit),
-              child: Text("Anfrage zurücknehmen"),
+            PopupMenuItem<Either<Unit, UserRelationStatusEnum>>(
+              value: const Left(unit),
+              child: const Text("general.followButton.takeBackRequest").tr(),
             ),
           },
           if (user.myUserRelationToOtherUser?.status ==
               UserRelationStatusEnum.follower) ...{
-            const PopupMenuItem<Either<Unit, UserRelationStatusEnum>>(
-              value: Left(unit),
-              child: Text("Nicht mehr Folgen"),
+            PopupMenuItem<Either<Unit, UserRelationStatusEnum>>(
+              value: const Left(unit),
+              child: const Text(
+                "general.followButton.dontFollowAnymoreText",
+              ).tr(),
             ),
           },
           if (user.myUserRelationToOtherUser?.status !=
               UserRelationStatusEnum.blocked) ...{
-            const PopupMenuItem<Either<Unit, UserRelationStatusEnum>>(
-              value: Right(UserRelationStatusEnum.blocked),
-              child: Text("Blockieren"),
+            PopupMenuItem<Either<Unit, UserRelationStatusEnum>>(
+              value: const Right(UserRelationStatusEnum.blocked),
+              child: const Text("general.followButton.blockText").tr(),
             ),
           },
           if (user.myUserRelationToOtherUser?.status ==
               UserRelationStatusEnum.blocked) ...{
-            const PopupMenuItem<Either<Unit, UserRelationStatusEnum>>(
-              value: Left(unit),
-              child: Text("Nicht mehr Blockieren"),
+            PopupMenuItem<Either<Unit, UserRelationStatusEnum>>(
+              value: const Left(unit),
+              child: const Text(
+                "general.followButton.dontBlockAnymoreText",
+              ).tr(),
             ),
           },
         ],
@@ -101,7 +106,7 @@ class FollowButton extends StatelessWidget {
               Text(
                 text,
                 style: Theme.of(context).textTheme.labelMedium,
-              ),
+              ).tr(),
               const Icon(
                 Ionicons.arrow_down,
                 size: 10,

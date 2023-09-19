@@ -30,27 +30,29 @@ class GroupchatPermissionsMenu extends StatelessWidget {
           PopupMenuButton(
             initialValue: value,
             onSelected: changePermission,
-            itemBuilder: (context) => const [
+            itemBuilder: (context) => [
               PopupMenuItem(
                 value: GroupchatPermissionEnum.adminsonly,
-                child: Text("Nur Admins"),
+                child: const Text(
+                  "general.groupchatPermissionMenu.onlyAdminsText",
+                ).tr(),
               ),
               PopupMenuItem(
                 value: GroupchatPermissionEnum.everyone,
-                child: Text("Alle"),
+                child: const Text("general.everyoneText").tr(),
               ),
             ],
             child: Row(
               children: [
                 Text(
                   value == null
-                      ? "Standartdaten"
+                      ? "general.defaultDataText"
                       : value == GroupchatPermissionEnum.adminsonly
-                          ? "Nur Admins"
+                          ? "general.groupchatPermissionMenu.onlyAdminsText"
                           : value == GroupchatPermissionEnum.everyone
-                              ? "Alle"
-                              : "Keine Info",
-                ),
+                              ? "general.everyoneText"
+                              : "general.noInfoText",
+                ).tr(),
                 const SizedBox(width: 4),
                 const Icon(Icons.arrow_drop_down, size: 14)
               ],

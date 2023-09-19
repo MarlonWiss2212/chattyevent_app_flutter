@@ -2,6 +2,7 @@ import 'package:chattyevent_app_flutter/application/bloc/notification/notificati
 import 'package:chattyevent_app_flutter/core/utils/injection.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/location_usecases.dart';
 import 'package:dartz/dartz.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -34,9 +35,9 @@ class OpenMapsButton extends StatelessWidget {
               const Icon(Ionicons.map),
               const SizedBox(width: 16),
               Text(
-                "In Maps öffnen",
+                "general.openInMapsText",
                 style: Theme.of(context).textTheme.labelLarge,
-              ),
+              ).tr(),
             ],
           ),
         ),

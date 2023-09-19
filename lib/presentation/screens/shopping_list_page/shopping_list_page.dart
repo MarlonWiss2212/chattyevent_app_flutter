@@ -46,7 +46,7 @@ class _ShoppingListPageState extends State<ShoppingListPage> {
                   style: TextStyle(
                     color: Theme.of(context).colorScheme.onBackground,
                   ),
-                ),
+                ).tr(),
               ),
             ),
           ),

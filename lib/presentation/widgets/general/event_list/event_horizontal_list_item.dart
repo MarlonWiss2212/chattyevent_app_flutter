@@ -88,7 +88,7 @@ class EventHorizontalListItem extends StatelessWidget {
                     Hero(
                       tag: "${event.id} title",
                       child: Text(
-                        event.title ?? "Kein Titel",
+                        event.title ?? "",
                         style: Theme.of(context).textTheme.titleLarge?.apply(
                               color: Colors.white,
                             ),

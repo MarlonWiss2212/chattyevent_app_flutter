@@ -1,5 +1,6 @@
 import 'package:chattyevent_app_flutter/application/bloc/add_message/add_message_cubit.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/dialog/blur_dialog.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -32,9 +33,9 @@ class AddChatMessageDetailDialog extends StatelessWidget {
                   const Icon(CupertinoIcons.camera_fill, size: 32),
                   const SizedBox(width: 32),
                   Text(
-                    "Kamera",
+                    "general.dialog.cameraText",
                     style: Theme.of(context).textTheme.titleMedium,
-                  ),
+                  ).tr(),
                 ],
               ),
             ),
@@ -52,9 +53,9 @@ class AddChatMessageDetailDialog extends StatelessWidget {
                   const Icon(CupertinoIcons.photo_fill, size: 32),
                   const SizedBox(width: 32),
                   Text(
-                    "Gallerie",
+                    "general.dialog.galleryText",
                     style: Theme.of(context).textTheme.titleMedium,
-                  ),
+                  ).tr(),
                 ],
               ),
             ),
@@ -72,9 +73,9 @@ class AddChatMessageDetailDialog extends StatelessWidget {
                   const Icon(Ionicons.location, size: 32),
                   const SizedBox(width: 32),
                   Text(
-                    "Dein Standort",
+                    "general.dialog.yourLocationText",
                     style: Theme.of(context).textTheme.titleMedium,
-                  ),
+                  ).tr(),
                 ],
               ),
             ),

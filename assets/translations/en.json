@@ -8,6 +8,37 @@
     "noText": "No",
     "yesText": "Yes",
     "okText": "Ok",
+    "reloadText": "Reload",
+    "loadMoreText": "Load more",
+    "everyoneText": "Everyone",
+    "noInfoText": "No info",
+    "deleteText": "Delete",
+    "acceptText": "Accept",
+    "rejectText": "Reject",
+    "defaultDataText": "default data",
+    "openInMapsText": "Open in maps",
+    "errorText": "Error",
+    "groupchatPermissionMenu": {
+      "onlyAdminsText": "Only Admins"
+    },
+    "request": {
+      "invitationEventText": "The user {} send you and invitation to the event {} at the following date: {}",
+      "invitationGroupchatText": "The user {} send you and invitation to the groupchat {}"
+    },
+    "eventPermissionMenu": {
+      "creatorOnlyText": "Creator only",
+      "organizerOnlyText": "Organizers only"
+    },
+    "followButton": {
+      "followText": "Follow",
+      "followedText": "Followed",
+      "requestedText": "Requested",
+      "blockText": "Block",
+      "blockedText": "Blocked",
+      "takeBackRequest": "Take back request",
+      "dontBlockAnymoreText": "Don't block anymore",
+      "dontFollowAnymoreText": "Don't follow anymore"
+    },
     "locationForm": {
       "country": "Country",
       "city": "City",
@@ -56,6 +87,12 @@
       "voiceMessage": {
         "title": "Voice message"
       }
+    },
+    "dialog": {
+      "cameraText": "Camera",
+      "galleryText": "Gallery",
+      "removeImageText": "Remove image",
+      "yourLocationText": "Your Location"
     }
   },
   "homePage": {

@@ -21,6 +21,40 @@ class CodegenLoader extends AssetLoader{
     "createText": "Create",
     "saveText": "Save",
     "continueText": "Continue",
+    "noText": "No",
+    "yesText": "Yes",
+    "okText": "Ok",
+    "reloadText": "Reload",
+    "loadMoreText": "Load more",
+    "everyoneText": "Everyone",
+    "noInfoText": "No info",
+    "deleteText": "Delete",
+    "acceptText": "Accept",
+    "rejectText": "Reject",
+    "defaultDataText": "default data",
+    "openInMapsText": "Open in maps",
+    "errorText": "Error",
+    "groupchatPermissionMenu": {
+      "onlyAdminsText": "Only Admins"
+    },
+    "request": {
+      "invitationEventText": "The user {} send you and invitation to the event {} at the following date: {}",
+      "invitationGroupchatText": "The user {} send you and invitation to the groupchat {}"
+    },
+    "eventPermissionMenu": {
+      "creatorOnlyText": "Creator only",
+      "organizerOnlyText": "Organizers only"
+    },
+    "followButton": {
+      "followText": "Follow",
+      "followedText": "Followed",
+      "requestedText": "Requested",
+      "blockText": "Block",
+      "blockedText": "Blocked",
+      "takeBackRequest": "Take back request",
+      "dontBlockAnymoreText": "Don't block anymore",
+      "dontFollowAnymoreText": "Don't follow anymore"
+    },
     "locationForm": {
       "country": "Country",
       "city": "City",
@@ -50,6 +84,31 @@ class CodegenLoader extends AssetLoader{
     "userSearch": {
       "userSearchText": "User search:",
       "noUsersFoundText": "No users found"
+    },
+    "chatMessage": {
+      "reactMessageContainer": {
+        "filesText": "Files",
+        "currentLocationText": "Current Location",
+        "audioText": "Audio"
+      },
+      "readByContainer": {
+        "title": "Read By:",
+        "emptyMessage": "Nobody read the message"
+      }
+    },
+    "chatMessageInput": {
+      "textField": {
+        "hintTexxt": "Message"
+      },
+      "voiceMessage": {
+        "title": "Voice message"
+      }
+    },
+    "dialog": {
+      "cameraText": "Camera",
+      "galleryText": "Gallery",
+      "removeImageText": "Remove image",
+      "yourLocationText": "Your Location"
     }
   },
   "homePage": {
@@ -290,6 +349,35 @@ class CodegenLoader extends AssetLoader{
   "shoppingListPage": {
     "title": "Shopping list",
     "noItemsNeededText": "No items that need to be bought"
+  },
+  "createUserPage": {
+    "title": "Create User",
+    "usernameLable": "Username"
+  },
+  "loginPage": {
+    "title": "Login",
+    "emailLable": "E-Mail",
+    "passwordLable": "Password",
+    "loginText": "Login",
+    "passwordForgottenText": "Password forgotten?",
+    "registerInsteadText": "Register?"
+  },
+  "registerPage": {
+    "title": "Register",
+    "emailLable": "E-Mail",
+    "passwordLable": "Password",
+    "confirmPasswordLable": "Confirm password",
+    "registerText": "Register",
+    "loginInsteadText": "Login?"
+  },
+  "resetPasswordPage": {
+    "title": "Reset Password",
+    "emailLable": "E-Mail",
+    "sendEmailLable": "Send E-Mail"
+  },
+  "verifyEmailPage": {
+    "title": "Verify E-Mail",
+    "resendEmail": "Resend E-Mail"
   }
 };
 static const Map<String,dynamic> en = {
@@ -299,6 +387,40 @@ static const Map<String,dynamic> en = {
     "createText": "Create",
     "saveText": "Save",
     "continueText": "Continue",
+    "noText": "No",
+    "yesText": "Yes",
+    "okText": "Ok",
+    "reloadText": "Reload",
+    "loadMoreText": "Load more",
+    "everyoneText": "Everyone",
+    "noInfoText": "No info",
+    "deleteText": "Delete",
+    "acceptText": "Accept",
+    "rejectText": "Reject",
+    "defaultDataText": "default data",
+    "openInMapsText": "Open in maps",
+    "errorText": "Error",
+    "groupchatPermissionMenu": {
+      "onlyAdminsText": "Only Admins"
+    },
+    "request": {
+      "invitationEventText": "The user {} send you and invitation to the event {} at the following date: {}",
+      "invitationGroupchatText": "The user {} send you and invitation to the groupchat {}"
+    },
+    "eventPermissionMenu": {
+      "creatorOnlyText": "Creator only",
+      "organizerOnlyText": "Organizers only"
+    },
+    "followButton": {
+      "followText": "Follow",
+      "followedText": "Followed",
+      "requestedText": "Requested",
+      "blockText": "Block",
+      "blockedText": "Blocked",
+      "takeBackRequest": "Take back request",
+      "dontBlockAnymoreText": "Don't block anymore",
+      "dontFollowAnymoreText": "Don't follow anymore"
+    },
     "locationForm": {
       "country": "Country",
       "city": "City",
@@ -328,6 +450,31 @@ static const Map<String,dynamic> en = {
     "userSearch": {
       "userSearchText": "User search:",
       "noUsersFoundText": "No users found"
+    },
+    "chatMessage": {
+      "reactMessageContainer": {
+        "filesText": "Files",
+        "currentLocationText": "Current Location",
+        "audioText": "Audio"
+      },
+      "readByContainer": {
+        "title": "Read By:",
+        "emptyMessage": "Nobody read the message"
+      }
+    },
+    "chatMessageInput": {
+      "textField": {
+        "hintTexxt": "Message"
+      },
+      "voiceMessage": {
+        "title": "Voice message"
+      }
+    },
+    "dialog": {
+      "cameraText": "Camera",
+      "galleryText": "Gallery",
+      "removeImageText": "Remove image",
+      "yourLocationText": "Your Location"
     }
   },
   "homePage": {
@@ -568,6 +715,35 @@ static const Map<String,dynamic> en = {
   "shoppingListPage": {
     "title": "Shopping list",
     "noItemsNeededText": "No items that need to be bought"
+  },
+  "createUserPage": {
+    "title": "Create User",
+    "usernameLable": "Username"
+  },
+  "loginPage": {
+    "title": "Login",
+    "emailLable": "E-Mail",
+    "passwordLable": "Password",
+    "loginText": "Login",
+    "passwordForgottenText": "Password forgotten?",
+    "registerInsteadText": "Register?"
+  },
+  "registerPage": {
+    "title": "Register",
+    "emailLable": "E-Mail",
+    "passwordLable": "Password",
+    "confirmPasswordLable": "Confirm password",
+    "registerText": "Register",
+    "loginInsteadText": "Login?"
+  },
+  "resetPasswordPage": {
+    "title": "Reset Password",
+    "emailLable": "E-Mail",
+    "sendEmailLable": "Send E-Mail"
+  },
+  "verifyEmailPage": {
+    "title": "Verify E-Mail",
+    "resendEmail": "Resend E-Mail"
   }
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"de": de, "en": en};

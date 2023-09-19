@@ -3,6 +3,7 @@ import 'package:chattyevent_app_flutter/application/bloc/notification/notificati
 import 'package:chattyevent_app_flutter/core/utils/injection.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/image_picker_usecases.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/dialog/blur_dialog.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -56,9 +57,9 @@ class ImagePickerDialog extends StatelessWidget {
                   const Icon(CupertinoIcons.camera_fill, size: 32),
                   const SizedBox(width: 32),
                   Text(
-                    "Kamera",
+                    "general.dialog.cameraText",
                     style: Theme.of(context).textTheme.titleMedium,
-                  ),
+                  ).tr(),
                 ],
               ),
             ),
@@ -83,9 +84,9 @@ class ImagePickerDialog extends StatelessWidget {
                   const Icon(CupertinoIcons.photo_fill, size: 32),
                   const SizedBox(width: 32),
                   Text(
-                    "Gallerie",
+                    "general.dialog.galleryText",
                     style: Theme.of(context).textTheme.titleMedium,
-                  ),
+                  ).tr(),
                 ],
               ),
             ),
@@ -103,9 +104,9 @@ class ImagePickerDialog extends StatelessWidget {
                     const Icon(Icons.close, size: 32),
                     const SizedBox(width: 32),
                     Text(
-                      "Bild entfernen",
+                      "general.dialog.removeImageText",
                       style: Theme.of(context).textTheme.titleMedium,
-                    ),
+                    ).tr(),
                   ],
                 ),
               ),

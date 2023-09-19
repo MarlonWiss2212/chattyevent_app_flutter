@@ -75,7 +75,7 @@ class GroupchatGridListItem extends StatelessWidget {
                   Hero(
                     tag: "${chat.id} title",
                     child: Text(
-                      chat.title ?? "Kein Name",
+                      chat.title ?? "",
                       style: Theme.of(context).textTheme.labelMedium,
                       overflow: TextOverflow.ellipsis,
                       softWrap: true,

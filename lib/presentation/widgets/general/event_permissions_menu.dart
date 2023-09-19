@@ -30,33 +30,37 @@ class EventPermissionsMenu extends StatelessWidget {
           PopupMenuButton(
             initialValue: value,
             onSelected: changePermission,
-            itemBuilder: (context) => const [
+            itemBuilder: (context) => [
               PopupMenuItem(
                 value: EventPermissionEnum.creatoronly,
-                child: Text("Nur Ersteller"),
+                child: const Text(
+                  "general.eventPermissionMenu.creatorOnlyText",
+                ).tr(),
               ),
               PopupMenuItem(
                 value: EventPermissionEnum.organizersonly,
-                child: Text("Nur Organisatoren"),
+                child: const Text(
+                  "general.eventPermissionMenu.organizerOnlyText",
+                ).tr(),
               ),
               PopupMenuItem(
                 value: EventPermissionEnum.everyone,
-                child: Text("Alle"),
+                child: const Text("general.everyoneText").tr(),
               ),
             ],
             child: Row(
               children: [
                 Text(
                   value == null
-                      ? "Standartdaten"
+                      ? "general.defaultDataText"
                       : value == EventPermissionEnum.creatoronly
-                          ? "Nur Ersteller"
+                          ? "general.eventPermissionMenu.creatorOnlyText"
                           : value == EventPermissionEnum.organizersonly
-                              ? "Nur Organisatoren"
+                              ? "general.eventPermissionMenu.organizerOnlyText"
                               : value == EventPermissionEnum.everyone
-                                  ? "Alle"
-                                  : "Keine Info",
-                ),
+                                  ? "general.everyoneText"
+                                  : "general.noInfoText",
+                ).tr(),
                 const SizedBox(width: 4),
                 const Icon(Icons.arrow_drop_down, size: 14)
               ],

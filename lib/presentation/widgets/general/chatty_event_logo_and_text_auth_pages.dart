@@ -5,8 +5,8 @@ class ChattyEventLogoAndTextAuthPages extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Wrap(
+      spacing: 8,
       children: [
         ClipRRect(
           borderRadius: BorderRadius.circular(10),

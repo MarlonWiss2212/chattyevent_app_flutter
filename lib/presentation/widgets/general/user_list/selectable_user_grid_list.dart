@@ -1,4 +1,5 @@
 import 'package:chattyevent_app_flutter/presentation/widgets/general/input_fields/debounce_input_field.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/user_search/user_search_cubit.dart';
@@ -44,13 +45,13 @@ class _SelectableUserGridListState extends State<SelectableUserGridList> {
             onSearchChanged: ({required String text}) => widget.reloadRequest(
               text: text,
             ),
-            hintText: "User Suche: ",
+            hintText: "general.userSearch.userSearchText".tr(),
           ),
         } else ...[
           SizedBox(
             width: double.infinity,
             child: Button(
-              text: "Neu Laden",
+              text: "general.reloadText".tr(),
               color: Theme.of(context).colorScheme.surface,
               onTap: () => widget.reloadRequest(),
             ),
@@ -60,7 +61,7 @@ class _SelectableUserGridListState extends State<SelectableUserGridList> {
         SizedBox(
           width: double.infinity,
           child: Button(
-            text: "Mehr Laden",
+            text: "general.loadMoreText".tr(),
             color: Theme.of(context).colorScheme.surface,
             onTap: () => widget.loadMoreRequest(text: userSearch.text),
           ),

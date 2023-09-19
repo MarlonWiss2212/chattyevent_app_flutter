@@ -2,9 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chattyevent_app_flutter/application/bloc/requests/requests_cubit.dart';
 import 'package:chattyevent_app_flutter/domain/entities/request/request_entity.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/button.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 
 class RequestHorizontalListItem extends StatelessWidget {
   final RequestEntity request;
@@ -14,8 +14,25 @@ class RequestHorizontalListItem extends StatelessWidget {
     required this.request,
   });
 
-  static String _getInvitationText(RequestEntity request) =>
-      "Der User ${request.createdBy.username} hat dir eine Einladung ${request.invitationData!.eventUser != null ? "zum Event ${request.invitationData!.eventUser!.event.title} gesendet. Das Event findet an den flogendem Datum statt: ${DateFormat.yMd().add_jm().format(request.invitationData!.eventUser!.event.eventDate)}${request.invitationData!.eventUser!.event.eventEndDate != null ? "-${request.invitationData!.eventUser!.event.eventEndDate}" : ""}" : request.invitationData!.groupchatUser != null ? "zu dem Gruppenchat ${request.invitationData!.groupchatUser!.groupchat.title} gesendet" : "Fehler"}";
+  static String _getInvitationText(RequestEntity request) {
+    if (request.invitationData!.eventUser != null) {
+      return "general.request.invitationEventText".tr(
+        args: [
+          request.createdBy.username ?? "",
+          request.invitationData!.eventUser!.event.title ?? "",
+          "${DateFormat.yMd().add_jm().format(request.invitationData!.eventUser!.event.eventDate)}-${request.invitationData!.eventUser!.event.eventEndDate ?? ""}"
+        ],
+      );
+    } else if (request.invitationData!.groupchatUser != null) {
+      return "general.request.invitationGroupchatText".tr(
+        args: [
+          request.createdBy.username ?? "",
+          request.invitationData!.groupchatUser!.groupchat.title ?? "",
+        ],
+      );
+    }
+    return "general.errorText";
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,11 +82,10 @@ class RequestHorizontalListItem extends StatelessWidget {
                     // TODO join request
                     _getInvitationText(request),
                     softWrap: true,
-
                     style: Theme.of(context).textTheme.labelLarge?.copyWith(
                           color: Colors.white,
                         ),
-                  ),
+                  ).tr(),
                 },
                 Row(
                   children: [
@@ -80,8 +96,8 @@ class RequestHorizontalListItem extends StatelessWidget {
                           request: request,
                         ),
                         text: request.invitationData != null
-                            ? "Ablehnen"
-                            : "Löschen",
+                            ? "general.rejectText".tr()
+                            : "general.deleteText".tr(),
                         color: Theme.of(context).colorScheme.surface,
                       ),
                     ),
@@ -93,7 +109,7 @@ class RequestHorizontalListItem extends StatelessWidget {
                               .acceptInvitationViaApiAndReloadRequests(
                             invitation: request,
                           ),
-                          text: "Akzeptieren",
+                          text: "general.acceptText".tr(),
                         ),
                       ),
                     },

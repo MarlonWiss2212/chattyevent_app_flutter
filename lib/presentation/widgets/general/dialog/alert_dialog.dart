@@ -1,4 +1,5 @@
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/button.dart';
 
@@ -43,7 +44,10 @@ class CustomAlertDialog extends StatelessWidget {
                   ],
                 ),
               ),
-              Button(onTap: () => Navigator.of(c).pop(), text: "OK")
+              Button(
+                onTap: () => Navigator.of(c).pop(),
+                text: "general.okText".tr(),
+              )
             ],
           ),
         ),
