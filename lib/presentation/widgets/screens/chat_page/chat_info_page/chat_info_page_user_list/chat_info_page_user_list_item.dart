@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:chattyevent_app_flutter/core/enums/groupchat/groupchat_user/groupchat_user_role_enum.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/current_groupchat/current_chat_cubit.dart';
@@ -23,23 +24,23 @@ class ChatInfoPageUserListItem extends StatelessWidget {
       user: user,
       subtitle: user.role != null && user.role == GroupchatUserRoleEnum.admin
           ? Text(
-              "Admin",
+              "groupchatPage.infoPage.userList.adminText",
               style: TextStyle(
                 color: Theme.of(context).colorScheme.primary,
               ),
               overflow: TextOverflow.ellipsis,
-            )
+            ).tr()
           : const Text(
-              "Nicht Admin",
+              "groupchatPage.infoPage.userList.notAdminText",
               overflow: TextOverflow.ellipsis,
-            ),
+            ).tr(),
       customTitle: user.usernameForChat != null ? user.usernameForChat! : null,
       items: [
         if (currentUser.role != null &&
             currentUser.role == GroupchatUserRoleEnum.admin &&
             currentUser.id != user.id) ...{
           PopupMenuItem(
-            child: const Text("Kicken"),
+            child: const Text("general.kickText").tr(),
             onTap: () => BlocProvider.of<CurrentGroupchatCubit>(context)
                 .deleteUserFromChat(
               userId: user.id,
@@ -49,8 +50,12 @@ class ChatInfoPageUserListItem extends StatelessWidget {
         if (currentUser.role == GroupchatUserRoleEnum.admin) ...{
           PopupMenuItem(
             child: user.role == GroupchatUserRoleEnum.admin
-                ? const Text("Admin degradieren")
-                : const Text("Zum Admin machen"),
+                ? const Text(
+                    "groupchatPage.infoPage.userList.degradeAdmin",
+                  ).tr()
+                : const Text(
+                    "groupchatPage.infoPage.userList.makeAdmin",
+                  ).tr(),
             onTap: () => BlocProvider.of<CurrentGroupchatCubit>(context)
                 .updateGroupchatUserViaApi(
               userId: user.id,
@@ -63,7 +68,9 @@ class ChatInfoPageUserListItem extends StatelessWidget {
         },
         if (currentUser.id == user.id) ...[
           PopupMenuItem(
-            child: const Text("Chat username ändern"),
+            child: const Text(
+              "groupchatPage.infoPage.userList.changeChatUsernameText",
+            ).tr(),
             onTap: () => AutoRouter.of(context).push(
               const GroupchatChangeUsernameRoute(),
             ),

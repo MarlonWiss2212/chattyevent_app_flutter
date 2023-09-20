@@ -1,4 +1,5 @@
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/chat_page/chat_info_page/chat_info_page_invitation_list/chat_info_page_invitation_list_item.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletons/skeletons.dart';
@@ -14,10 +15,10 @@ class ChatInfoPageInvitationList extends StatelessWidget {
         return Column(
           children: [
             Text(
-              "Eingeladene User: ${state.invitations.length}",
+              "groupchatPage.infoPage.invitationList.invitedUsersCount",
               style: Theme.of(context).textTheme.titleMedium,
               overflow: TextOverflow.ellipsis,
-            ),
+            ).tr(args: [state.invitations.length.toString()]),
             if (state.invitations.isEmpty && state.loadingInvitations) ...[
               const SizedBox(height: 8),
               SkeletonListTile(

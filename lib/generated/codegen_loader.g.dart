@@ -26,6 +26,7 @@ class CodegenLoader extends AssetLoader{
     "okText": "Ok",
     "reloadText": "Reload",
     "loadMoreText": "Load more",
+    "loadMembersText": "Load members",
     "everyoneText": "Everyone",
     "noInfoText": "No info",
     "deleteText": "Delete",
@@ -33,7 +34,22 @@ class CodegenLoader extends AssetLoader{
     "rejectText": "Reject",
     "defaultDataText": "default data",
     "openInMapsText": "Open in maps",
+    "kickText": "Kick",
     "errorText": "Error",
+    "noDescriptionText": "No description",
+    "memberPermissionText": "Member Permissions",
+    "birthdateText": "Birthdate: {}",
+    "showAllText": "Show all",
+    "shoppingList": {
+      "title": "Shopping list"
+    },
+    "notificationAlert": {
+      "deleteImageText": "Delete image",
+      "saveImageText": "Save image"
+    },
+    "messageArea": {
+      "noMessagesText": "No messages"
+    },
     "groupchatPermissionMenu": {
       "onlyAdminsText": "Only Admins"
     },
@@ -111,6 +127,13 @@ class CodegenLoader extends AssetLoader{
       "yourLocationText": "Your Location"
     }
   },
+  "authPages": {
+    "dataprotectionBox": {
+      "text1": "i have read and agree to the ",
+      "text2": " and ",
+      "text3": ""
+    }
+  },
   "homePage": {
     "pages": {
       "chatPage": {
@@ -119,7 +142,9 @@ class CodegenLoader extends AssetLoader{
       },
       "eventPage": {
         "title": "Events",
-        "noEventsText": "No events"
+        "noEventsText": "No events",
+        "lastEvents": "Last events",
+        "nextEvents": "Next events"
       },
       "searchPage": {
         "title": "Discover"
@@ -162,6 +187,35 @@ class CodegenLoader extends AssetLoader{
   "groupchatPage": {
     "addUserPage": {
       "title": "Add user to Groupchat"
+    },
+    "infoPage": {
+      "invitationList": {
+        "errorToDisplayOneInvitationText": "Error when displaying an Invited User",
+        "invitedByText": "Invited by: {}",
+        "deleteInvitationText": "Delete invitation",
+        "invitedUsersCount": "Invited users: {}"
+      },
+      "leftUserList": {
+        "pastMembers": "Past members: {}"
+      },
+      "userList": {
+        "addUserToGroupchat": "Add user to groupchat",
+        "membersCount": "Members: {}",
+        "changeChatUsernameText": "Change chat username",
+        "adminText": "Admin",
+        "notAdminText": "Not admin",
+        "makeAdmin": "Make admin",
+        "degradeAdmin": "Degrade admin"
+      },
+      "leaveChatButton": {
+        "leaveGroupchatText": "Leave groupchat",
+        "leaveGroupchatDescriptionText": "Do you really want to leave the group chat?"
+      },
+      "profileImageButton": {
+        "saveProfileImageDescription": "Do you want to take the image as groupchat profile image?",
+        "deleteProfileImageDescription": "Do you want to delete the groupchat profile image?"
+      },
+      "futureConnectedEventsText": "Future connected events: "
     },
     "changeChatUsernamePage": {
       "title": "Change chat Username",
@@ -314,8 +368,7 @@ class CodegenLoader extends AssetLoader{
         "confirmNewEmailAddressText": "Confirm new email"
       },
       "updateBirthdatePage": {
-        "title": "Update Birthdate",
-        "birthdateText": "Birthdate: {}"
+        "title": "Update Birthdate"
       },
       "privateEventAddMePage": {
         "title": "Private event add permission"
@@ -347,7 +400,6 @@ class CodegenLoader extends AssetLoader{
     }
   },
   "shoppingListPage": {
-    "title": "Shopping list",
     "noItemsNeededText": "No items that need to be bought"
   },
   "createUserPage": {
@@ -392,6 +444,7 @@ static const Map<String,dynamic> en = {
     "okText": "Ok",
     "reloadText": "Reload",
     "loadMoreText": "Load more",
+    "loadMembersText": "Load members",
     "everyoneText": "Everyone",
     "noInfoText": "No info",
     "deleteText": "Delete",
@@ -399,7 +452,22 @@ static const Map<String,dynamic> en = {
     "rejectText": "Reject",
     "defaultDataText": "default data",
     "openInMapsText": "Open in maps",
+    "kickText": "Kick",
     "errorText": "Error",
+    "noDescriptionText": "No description",
+    "memberPermissionText": "Member Permissions",
+    "birthdateText": "Birthdate: {}",
+    "showAllText": "Show all",
+    "shoppingList": {
+      "title": "Shopping list"
+    },
+    "notificationAlert": {
+      "deleteImageText": "Delete image",
+      "saveImageText": "Save image"
+    },
+    "messageArea": {
+      "noMessagesText": "No messages"
+    },
     "groupchatPermissionMenu": {
       "onlyAdminsText": "Only Admins"
     },
@@ -477,6 +545,13 @@ static const Map<String,dynamic> en = {
       "yourLocationText": "Your Location"
     }
   },
+  "authPages": {
+    "dataprotectionBox": {
+      "text1": "i have read and agree to the ",
+      "text2": " and ",
+      "text3": ""
+    }
+  },
   "homePage": {
     "pages": {
       "chatPage": {
@@ -485,7 +560,9 @@ static const Map<String,dynamic> en = {
       },
       "eventPage": {
         "title": "Events",
-        "noEventsText": "No events"
+        "noEventsText": "No events",
+        "lastEvents": "Last events",
+        "nextEvents": "Next events"
       },
       "searchPage": {
         "title": "Discover"
@@ -528,6 +605,35 @@ static const Map<String,dynamic> en = {
   "groupchatPage": {
     "addUserPage": {
       "title": "Add user to Groupchat"
+    },
+    "infoPage": {
+      "invitationList": {
+        "errorToDisplayOneInvitationText": "Error when displaying an Invited User",
+        "invitedByText": "Invited by: {}",
+        "deleteInvitationText": "Delete invitation",
+        "invitedUsersCount": "Invited users: {}"
+      },
+      "leftUserList": {
+        "pastMembers": "Past members: {}"
+      },
+      "userList": {
+        "addUserToGroupchat": "Add user to groupchat",
+        "membersCount": "Members: {}",
+        "changeChatUsernameText": "Change chat username",
+        "adminText": "Admin",
+        "notAdminText": "Not admin",
+        "makeAdmin": "Make admin",
+        "degradeAdmin": "Degrade admin"
+      },
+      "leaveChatButton": {
+        "leaveGroupchatText": "Leave groupchat",
+        "leaveGroupchatDescriptionText": "Do you really want to leave the group chat?"
+      },
+      "profileImageButton": {
+        "saveProfileImageDescription": "Do you want to take the image as groupchat profile image?",
+        "deleteProfileImageDescription": "Do you want to delete the groupchat profile image?"
+      },
+      "futureConnectedEventsText": "Future connected events: "
     },
     "changeChatUsernamePage": {
       "title": "Change chat Username",
@@ -680,8 +786,7 @@ static const Map<String,dynamic> en = {
         "confirmNewEmailAddressText": "Confirm new email"
       },
       "updateBirthdatePage": {
-        "title": "Update Birthdate",
-        "birthdateText": "Birthdate: {}"
+        "title": "Update Birthdate"
       },
       "privateEventAddMePage": {
         "title": "Private event add permission"
@@ -713,7 +818,6 @@ static const Map<String,dynamic> en = {
     }
   },
   "shoppingListPage": {
-    "title": "Shopping list",
     "noItemsNeededText": "No items that need to be bought"
   },
   "createUserPage": {

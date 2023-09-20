@@ -42,7 +42,7 @@ class _ShoppingListPageState extends State<ShoppingListPage> {
               title: Hero(
                 tag: "ShoppingListTitle",
                 child: Text(
-                  "shoppingListPage.title",
+                  "general.shoppingListPage.title",
                   style: TextStyle(
                     color: Theme.of(context).colorScheme.onBackground,
                   ),

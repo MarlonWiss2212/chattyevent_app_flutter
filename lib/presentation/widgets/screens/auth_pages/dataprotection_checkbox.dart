@@ -1,6 +1,7 @@
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:chattyevent_app_flutter/core/utils/injection.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/settings_usecases.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,7 +27,7 @@ class _DataprotectionCheckboxState extends State<DataprotectionCheckbox> {
             text: TextSpan(
               style: Theme.of(context).textTheme.bodyMedium,
               children: [
-                const TextSpan(text: "Ich habe die "),
+                TextSpan(text: "authPages.dataprotectionBox.text1".tr()),
                 TextSpan(
                   text: "Nutzungsbedingungen",
                   style:
@@ -34,7 +35,7 @@ class _DataprotectionCheckboxState extends State<DataprotectionCheckbox> {
                   recognizer: TapGestureRecognizer()
                     ..onTap = () => settingsUseCases.openTermsOfUsePage(),
                 ),
-                const TextSpan(text: " und die "),
+                TextSpan(text: "authPages.dataprotectionBox.text2".tr()),
                 TextSpan(
                   text: "Datenschutzerklärung",
                   style:
@@ -42,7 +43,7 @@ class _DataprotectionCheckboxState extends State<DataprotectionCheckbox> {
                   recognizer: TapGestureRecognizer()
                     ..onTap = () => settingsUseCases.openDatasecurityPage(),
                 ),
-                const TextSpan(text: " durchgelesen und stimme ihnen zu."),
+                TextSpan(text: "authPages.dataprotectionBox.text3".tr()),
               ],
             ),
           ),

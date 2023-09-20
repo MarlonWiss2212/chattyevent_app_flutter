@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/home_page/home_event/home_event_cubit.dart';
@@ -29,17 +30,17 @@ class HomeEventPageDetails extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           const Text(
-                            "Nächste Events",
+                            "homePage.pages.eventPage.nextEvents",
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 20,
                             ),
-                          ),
+                          ).tr(),
                           TextButton(
                             onPressed: () => AutoRouter.of(context).push(
                               const FutureEventsRoute(),
                             ),
-                            child: const Text("Alle Anzeigen"),
+                            child: const Text("general.showAllText").tr(),
                           )
                         ],
                       ),
@@ -55,17 +56,17 @@ class HomeEventPageDetails extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           const Text(
-                            "Letzte Events",
+                            "homePage.pages.eventPage.lastEvents",
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 20,
                             ),
-                          ),
+                          ).tr(),
                           TextButton(
                             onPressed: () => AutoRouter.of(context).push(
                               const PastEventsRoute(),
                             ),
-                            child: const Text("Alle Anzeigen"),
+                            child: const Text("general.showAllText").tr(),
                           )
                         ],
                       ),

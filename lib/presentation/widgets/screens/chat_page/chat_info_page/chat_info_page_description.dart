@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletons/skeletons.dart';
@@ -23,7 +24,7 @@ class ChatInfoPageDescription extends StatelessWidget {
             textOverflow: TextOverflow.visible,
             text: description != null && description.isNotEmpty
                 ? description
-                : "Keine Beschreibung",
+                : "general.noDescriptionText".tr(),
             textStyle: Theme.of(context).textTheme.titleMedium,
             keyboardType: TextInputType.multiline,
             maxLines: 10,

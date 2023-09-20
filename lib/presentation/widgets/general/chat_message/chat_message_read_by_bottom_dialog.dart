@@ -25,7 +25,7 @@ class ChatMessageReadByBottomDialog extends StatelessWidget {
     if (filteredUsers.isEmpty) {
       return Center(
         child: const Text(
-          "genral.chatMessage.readByContainer.emptyMessage",
+          "general.chatMessage.readByContainer.emptyMessage",
         ).tr(),
       );
     }

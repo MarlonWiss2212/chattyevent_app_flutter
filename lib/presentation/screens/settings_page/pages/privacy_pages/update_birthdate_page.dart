@@ -58,9 +58,7 @@ class UpdateBirthdatePage extends StatelessWidget {
                         ),
                       );
                     },
-                    text:
-                        "settingsPage.privacyPage.updateBirthdatePage.birthdateText"
-                            .tr(
+                    text: "general.birthdateText".tr(
                       args: [
                         birthdateAsString ?? "",
                       ],

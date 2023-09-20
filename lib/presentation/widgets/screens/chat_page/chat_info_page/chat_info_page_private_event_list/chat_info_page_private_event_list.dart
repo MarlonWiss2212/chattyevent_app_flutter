@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ionicons/ionicons.dart';
@@ -18,9 +19,9 @@ class ChatInfoPagePrivateEventList extends StatelessWidget {
         return Column(
           children: [
             Text(
-              "Zukünftige Verbundene Events: ",
+              "groupchatPage.infoPage.futureConnectedEventsText",
               style: Theme.of(context).textTheme.titleMedium,
-            ),
+            ).tr(),
             if (state.futureConnectedPrivateEvents.isEmpty &&
                 state.loadingPrivateEvents == true) ...[
               const SizedBox(height: 8),
@@ -56,10 +57,10 @@ class ChatInfoPagePrivateEventList extends StatelessWidget {
             ],
             ListTile(
               title: Text(
-                "Alle Anzeigen",
+                "general.showAllText",
                 style: Theme.of(context).textTheme.titleMedium,
                 overflow: TextOverflow.ellipsis,
-              ),
+              ).tr(),
               trailing: const Icon(Ionicons.chevron_forward),
               onTap: () {
                 AutoRouter.of(context).push(

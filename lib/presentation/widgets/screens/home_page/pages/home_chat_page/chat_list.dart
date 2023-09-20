@@ -94,11 +94,7 @@ class _ChatListState extends State<ChatList> {
               overflow: TextOverflow.ellipsis,
               maxLines: 1,
             )
-          : Text(
-              message == null ? "Keine Nachricht" : "Keine Textnachricht",
-              softWrap: true,
-              overflow: TextOverflow.ellipsis,
-            ),
+          : null,
       onTap: () {
         if (widget.chats[index].groupchat != null) {
           AutoRouter.of(context).push(

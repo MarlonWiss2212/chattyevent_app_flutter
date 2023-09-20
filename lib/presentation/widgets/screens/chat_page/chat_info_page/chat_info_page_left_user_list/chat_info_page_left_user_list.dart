@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletons/skeletons.dart';
@@ -16,10 +17,10 @@ class ChatInfoPageLeftUserList extends StatelessWidget {
         return Column(
           children: [
             Text(
-              "Frühere Midglieder: ${state.leftUsers.length}",
+              "groupchatPage.infoPage.leftUserList.pastMembers",
               style: Theme.of(context).textTheme.titleMedium,
               overflow: TextOverflow.ellipsis,
-            ),
+            ).tr(args: [state.leftUsers.length.toString()]),
             if (state.leftUsers.isEmpty && state.loadingChat) ...[
               const SizedBox(height: 8),
               SkeletonListTile(

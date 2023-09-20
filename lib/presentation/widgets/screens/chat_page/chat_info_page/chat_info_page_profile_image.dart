@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,8 +27,10 @@ class ChatInfoPageProfileImage extends StatelessWidget {
                 context: context1,
                 builder: (c) {
                   return AcceptDeclineDialog(
-                    title: "Bild Löschen",
-                    message: "Möchtest du das Gruppenchat Bild löschen",
+                    title: "general.deleteImageText".tr(),
+                    message:
+                        "groupchatPage.infoPage.profileImageButton.deleteProfileImageDescription"
+                            .tr(),
                     onNoPress: () {
                       Navigator.of(c).pop();
                       Navigator.of(context1).pop();
@@ -54,8 +57,10 @@ class ChatInfoPageProfileImage extends StatelessWidget {
                 context: context1,
                 builder: (c) {
                   return AcceptDeclineDialog(
-                    title: "Bild speichern",
-                    message: "Möchtest du das Bild als Gruppenchat Bild nehmen",
+                    title: "general.saveImageText".tr(),
+                    message:
+                        "groupchatPage.infoPage.profileImageButton.saveProfileImageDescription"
+                            .tr(),
                     onNoPress: () {
                       Navigator.of(c).pop();
                       Navigator.of(context1).pop();

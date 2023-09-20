@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
@@ -15,16 +16,19 @@ class ChatInfoPageLeaveChat extends StatelessWidget {
         color: Colors.red,
       ),
       title: const Text(
-        "Gruppenchat verlassen",
+        "groupchatPage.infoPage.leaveChatButton.leaveGroupchatText",
         style: TextStyle(color: Colors.red),
-      ),
+      ).tr(),
       onTap: () async {
         await showDialog(
           context: context,
           builder: (c) {
             return AcceptDeclineDialog(
-              title: "Gruppenchat verlassen",
-              message: "Möchtest du den Gruppenchat wirklich verlassen",
+              title: "groupchatPage.infoPage.leaveChatButton.leaveGroupchatText"
+                  .tr(),
+              message:
+                  "groupchatPage.infoPage.leaveChatButton.leaveGroupchatDescriptionText"
+                      .tr(),
               onNoPress: () => Navigator.of(c).pop(),
               onYesPress: () => BlocProvider.of<CurrentGroupchatCubit>(context)
                   .deleteUserFromChat(

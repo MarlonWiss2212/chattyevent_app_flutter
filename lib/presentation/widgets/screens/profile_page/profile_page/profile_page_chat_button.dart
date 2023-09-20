@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:chattyevent_app_flutter/core/enums/user_relation/user_relation_status_enum.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/profile_page/profile_page_cubit.dart';
@@ -44,9 +45,9 @@ class ProfilePageChatOrShoppingListButton extends StatelessWidget {
                       Hero(
                         tag: "ShoppingListTitle",
                         child: Text(
-                          "Einkaufsliste",
+                          "shoppingList.title",
                           style: Theme.of(context).textTheme.labelLarge,
-                        ),
+                        ).tr(),
                       ),
                     ],
                   ),

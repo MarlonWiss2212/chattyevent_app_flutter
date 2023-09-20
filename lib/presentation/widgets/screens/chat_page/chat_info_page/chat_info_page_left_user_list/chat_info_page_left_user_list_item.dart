@@ -1,6 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:chattyevent_app_flutter/application/bloc/current_groupchat/current_chat_cubit.dart';
 import 'package:chattyevent_app_flutter/domain/entities/groupchat/groupchat_left_user_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
@@ -27,16 +27,13 @@ class ChatInfoPageLeftUserListItem extends StatelessWidget {
               DateFormat.yMd().add_jm().format(leftUser.leftGroupchatAt!),
               overflow: TextOverflow.ellipsis,
             )
-          : const Text(
-              "Kein Datum",
-              overflow: TextOverflow.ellipsis,
-            ),
+          : null,
       items: state.currentUserAllowedWithPermission(
         permissionCheckValue: state.currentChat.permissions?.addUsers,
       )
           ? [
               PopupMenuItem(
-                child: const Text("Hinzufügen"),
+                child: const Text("general.addText").tr(),
                 onTap: () => BlocProvider.of<CurrentGroupchatCubit>(context)
                     .addUserToChat(
                   userId: leftUser.id,

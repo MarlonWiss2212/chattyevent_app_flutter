@@ -1,8 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/add_current_user_cubit.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/button.dart';
-import 'package:intl/intl.dart';
 
 class CreateUserPageBirthdayButton extends StatelessWidget {
   const CreateUserPageBirthdayButton({super.key});
@@ -39,8 +39,13 @@ class CreateUserPageBirthdayButton extends StatelessWidget {
                 birthdate: newDate,
               );
             },
-            text:
-                "Geburtstag: ${state.birthdate != null ? DateFormat.yMd().format(state.birthdate!) : ""}",
+            text: "general.birthdateText".tr(
+              args: [
+                state.birthdate != null
+                    ? DateFormat.yMd().format(state.birthdate!)
+                    : ""
+              ],
+            ),
           ),
         );
       },

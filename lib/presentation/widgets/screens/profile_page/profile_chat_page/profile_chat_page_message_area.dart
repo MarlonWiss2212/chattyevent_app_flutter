@@ -1,6 +1,7 @@
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/profile_page/profile_page_cubit.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/chat_message/chat_message_list.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletons/skeletons.dart';
@@ -22,7 +23,9 @@ class ProfileChatPageMessageArea extends StatelessWidget {
       },
       builder: (context, state) {
         if (state.loadingMessages == false && state.messages.isEmpty) {
-          return const Center(child: Text("Keine Nachrichten"));
+          return Center(
+            child: const Text("general.messageArea.noMessagesText").tr(),
+          );
         }
 
         if (state.loadingMessages == true && state.messages.isEmpty) {
