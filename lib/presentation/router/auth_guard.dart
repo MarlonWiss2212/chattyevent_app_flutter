@@ -16,7 +16,12 @@ class AuthGuard extends AutoRouteGuard {
         if (user.emailVerified && authCubit.state.isUserCode404() == false) {
           resolver.next(true);
         } else if (user.emailVerified) {
-          resolver.redirect(const CreateUserRoute(), replace: true);
+          resolver.redirect(
+            const AuthorizedRoute(
+              children: [CreateUserRoute()],
+            ),
+            replace: true,
+          );
         } else {
           resolver.redirect(const VerifyEmailRoute(), replace: true);
         }
