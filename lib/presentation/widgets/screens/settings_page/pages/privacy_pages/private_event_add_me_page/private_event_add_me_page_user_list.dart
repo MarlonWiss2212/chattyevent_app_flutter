@@ -5,6 +5,7 @@ import 'package:chattyevent_app_flutter/infastructure/dto/user/update_user_dto.d
 import 'package:chattyevent_app_flutter/infastructure/dto/user/update_user_permissions.dart';
 import 'package:chattyevent_app_flutter/infastructure/dto/user/update_user_permissions/update_private_event_add_me_dto.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/user_list/user_list_tile.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletons/skeletons.dart';
@@ -22,11 +23,16 @@ class PrivateEventAddMePageUserList extends StatelessWidget {
               if (authState
                       .currentUser.permissions?.privateEventAddMe?.permission ==
                   PrivateEventAddMePermissionEnum.none) {
-                return const Center(
-                    child: Text("Keine User können gewählt werden"));
+                return Center(
+                  child: const Text(
+                    "settingsPage.privacyPage.userListTexts.noUsersCanBeSelected",
+                  ).tr(),
+                );
               }
               if (state.users.isEmpty) {
-                return const Center(child: Text("Keine User gefunden"));
+                return Center(
+                  child: const Text("general.userSearch.noUsersFoundText").tr(),
+                );
               }
 
               if (authState.currentUser.permissions?.privateEventAddMe
@@ -38,10 +44,10 @@ class PrivateEventAddMePageUserList extends StatelessWidget {
                   authState.currentUser.permissions?.privateEventAddMe
                           ?.exceptUserIds ==
                       null) {
-                return const Center(
-                  child: Text(
-                    "Kann keine User nicht darstellen da die berechtigungen nicht geladen werden konnten",
-                  ),
+                return Center(
+                  child: const Text(
+                    "settingsPage.privacyPage.userListTexts.couldntLoadUsersDueToPermission",
+                  ).tr(),
                 );
               }
               if (state.status == UserSearchStateStatus.loading) {

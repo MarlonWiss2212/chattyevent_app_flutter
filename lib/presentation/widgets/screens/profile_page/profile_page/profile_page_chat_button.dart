@@ -80,9 +80,9 @@ class ProfilePageChatOrShoppingListButton extends StatelessWidget {
                         const Icon(Ionicons.chatbubble),
                         const SizedBox(width: 16),
                         Text(
-                          "Chat",
+                          "general.chatText",
                           style: Theme.of(context).textTheme.labelLarge,
-                        ),
+                        ).tr(),
                       ],
                     ),
                   ),

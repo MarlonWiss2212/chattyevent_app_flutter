@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletons/skeletons.dart';
@@ -38,7 +39,9 @@ class ProfileFollowerCounts extends StatelessWidget {
                             "0",
                       ),
                     },
-                    const Text("Followers"),
+                    const Text(
+                      "profilePage.userRelationsTabs.followerTab.title",
+                    ).tr(),
                   ],
                 );
               },
@@ -70,7 +73,9 @@ class ProfileFollowerCounts extends StatelessWidget {
                             "0",
                       ),
                     },
-                    const Text("Gefolgt"),
+                    const Text(
+                      "profilePage.userRelationsTabs.followedTab.title",
+                    ).tr(),
                   ],
                 );
               },

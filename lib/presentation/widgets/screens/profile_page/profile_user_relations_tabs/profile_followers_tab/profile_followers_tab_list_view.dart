@@ -1,4 +1,5 @@
 import 'package:chattyevent_app_flutter/core/enums/user_relation/user_relation_status_enum.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
@@ -33,7 +34,7 @@ class ProfileFollowersTabListView extends StatelessWidget {
                 if (BlocProvider.of<AuthCubit>(context).state.currentUser.id ==
                     profileUserId) ...{
                   PopupMenuItem(
-                    child: const Text("Entfernen"),
+                    child: const Text("general.removeText").tr(),
                     onTap: () {
                       BlocProvider.of<ProfilePageCubit>(context)
                           .deleteFollowerOrRequest(

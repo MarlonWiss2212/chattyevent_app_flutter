@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -27,8 +28,10 @@ class ProfilePageCircleImage extends StatelessWidget {
                 context: context1,
                 builder: (c) {
                   return AcceptDeclineDialog(
-                    title: "Bild Löschen",
-                    message: "Möchtest du das Profilbild löschen",
+                    title: "general.notificationAlert.deleteImageText".tr(),
+                    message:
+                        "profilePage.profileImageButton.deleteProfileImageDescription"
+                            .tr(),
                     onNoPress: () {
                       Navigator.of(c).pop();
                       Navigator.of(context1).pop();
@@ -51,8 +54,10 @@ class ProfilePageCircleImage extends StatelessWidget {
                 context: context1,
                 builder: (c) {
                   return AcceptDeclineDialog(
-                    title: "Bild speichern",
-                    message: "Möchtest du das Bild als Profilbild nehmen",
+                    title: "general.notificationAlert.saveImageText".tr(),
+                    message:
+                        "profilePage.profileImageButton.saveProfileImageDescription"
+                            .tr(),
                     onNoPress: () {
                       Navigator.of(c).pop();
                       Navigator.of(context1).pop();

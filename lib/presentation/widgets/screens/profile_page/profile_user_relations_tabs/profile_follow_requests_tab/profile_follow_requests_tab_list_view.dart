@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/profile_page/profile_page_cubit.dart';
@@ -42,11 +43,11 @@ class ProfileFollowRequestsTabListView extends StatelessWidget {
                           color: Theme.of(context).colorScheme.primaryContainer,
                         ),
                         child: Text(
-                          "Akzeptieren",
+                          "general.acceptText",
                           style: Theme.of(context).textTheme.labelMedium?.apply(
                                 color: Colors.white,
                               ),
-                        ),
+                        ).tr(),
                       ),
                     ),
                   ),
@@ -66,11 +67,11 @@ class ProfileFollowRequestsTabListView extends StatelessWidget {
                           color: Colors.black,
                         ),
                         child: Text(
-                          "Ablehnen",
+                          "general.rejectText",
                           style: Theme.of(context).textTheme.labelMedium?.apply(
                                 color: Colors.white,
                               ),
-                        ),
+                        ).tr(),
                       ),
                     ),
                   ),

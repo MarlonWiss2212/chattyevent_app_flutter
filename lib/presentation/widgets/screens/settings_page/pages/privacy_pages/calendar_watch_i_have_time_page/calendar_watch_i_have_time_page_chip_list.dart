@@ -5,6 +5,7 @@ import 'package:chattyevent_app_flutter/infastructure/dto/user/update_user_dto.d
 import 'package:chattyevent_app_flutter/infastructure/dto/user/update_user_permissions.dart';
 import 'package:chattyevent_app_flutter/infastructure/dto/user/update_user_permissions/update_calendar_watch_i_have_time_dto.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/custom_chip.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ionicons/ionicons.dart';
@@ -55,7 +56,9 @@ class CalendarWatchIHaveTimePageChipList extends StatelessWidget {
                   leadingIcon: permissionIsNone
                       ? const Icon(Ionicons.checkmark, size: 13)
                       : null,
-                  text: const Text("Niemand"),
+                  text: const Text(
+                    "settingsPage.privacyPage.chipTitles.noone",
+                  ).tr(),
                 ),
                 CustomChip(
                   onTap: () async {
@@ -85,7 +88,9 @@ class CalendarWatchIHaveTimePageChipList extends StatelessWidget {
                   leadingIcon: permissionIsFollowersExcept
                       ? const Icon(Ionicons.checkmark, size: 13)
                       : null,
-                  text: const Text("Follower außer"),
+                  text: const Text(
+                    "settingsPage.privacyPage.chipTitles.followersExcept",
+                  ).tr(),
                 ),
                 CustomChip(
                   onTap: () => BlocProvider.of<AuthCubit>(context)
@@ -112,7 +117,9 @@ class CalendarWatchIHaveTimePageChipList extends StatelessWidget {
                   leadingIcon: permissionIsOnlySelectedFollowers
                       ? const Icon(Ionicons.checkmark, size: 13)
                       : null,
-                  text: const Text("Nur diese Follower"),
+                  text: const Text(
+                    "settingsPage.privacyPage.chipTitles.onlyTheseFollowers",
+                  ).tr(),
                 ),
               ],
             ),

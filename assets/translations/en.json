@@ -19,6 +19,8 @@
     "defaultDataText": "default data",
     "openInMapsText": "Open in maps",
     "kickText": "Kick",
+    "chatText": "Chat",
+    "removeText": "Remove",
     "errorText": "Error",
     "noDescriptionText": "No description",
     "memberPermissionText": "Member Permissions",
@@ -383,6 +385,10 @@
     }
   },
   "profilePage": {
+    "profileImageButton": {
+      "saveProfileImageDescription": "Do you want to take the image as profile image?",
+      "deleteProfileImageDescription": "Do you want to delete the profile image?"
+    },
     "userRelationsTabs": {
       "followRequestsTab": {
         "title": "Follow requests",
@@ -428,6 +434,15 @@
       },
       "updateBirthdatePage": {
         "title": "Update Birthdate"
+      },
+      "chipTitles": {
+        "noone": "Noone",
+        "followersExcept": "Followers Except",
+        "onlyTheseFollowers": "Only these followers"
+      },
+      "userListTexts": {
+        "noUsersCanBeSelected": "Keine User können gewählt werden",
+        "couldntLoadUsersDueToPermission": "Kann keine User laden, da die berechtigung nicht geladen werden konnte"
       },
       "privateEventAddMePage": {
         "title": "Private event add permission"

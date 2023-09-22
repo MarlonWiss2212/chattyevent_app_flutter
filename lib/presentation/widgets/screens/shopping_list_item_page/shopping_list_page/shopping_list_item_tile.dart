@@ -37,7 +37,7 @@ class ShoppingListItemTile extends StatelessWidget {
             ),
           },
           Text(
-            shoppingListItem.itemName ?? "Kein Name",
+            shoppingListItem.itemName ?? "",
             style: Theme.of(context).textTheme.titleMedium,
             softWrap: true,
             overflow: TextOverflow.ellipsis,
