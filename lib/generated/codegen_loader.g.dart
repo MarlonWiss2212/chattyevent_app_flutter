@@ -170,11 +170,82 @@ class CodegenLoader extends AssetLoader{
         "title": "Shopping List"
       },
       "userListTab": {
-        "title": "Members"
+        "title": "Members",
+        "leftUserList": {
+          "pastMembers": "Past members: {}"
+        },
+        "userList": {
+          "addUserToEvent": "Add user to event",
+          "membersThatWillBeThereCount": "Members that will be there: {}",
+          "changeChatUsernameText": "Change chat username",
+          "kickedText": "Kicked",
+          "acceptedText": "Accepted",
+          "rejectedText": "Rejected",
+          "unknownText": "Unknown",
+          "statusPlusOrganizerText": " | Organizer",
+          "removeOrganizerStatus": "Remove organizer status",
+          "makeOrganizer": "Make organizer"
+        },
+        "invitationList": {
+          "errorToDisplayOneInvitationText": "Error when displaying an Invited User",
+          "invitedByText": "Invited by: {}",
+          "deleteInvitationText": "Delete invitation",
+          "invitedUsersCount": "Invited users: {}"
+        },
+        "leaveEventButton": {
+          "leaveEventText": "Leave event",
+          "leaveEventDescriptionText": "Do you really want to leave the event?"
+        }
+      },
+      "infoTab": {
+        "connectedGroupchatText": "Connected groupchat",
+        "addressButton": {
+          "leftEmptyText": "Address: ",
+          "rightEmptyText": "Add address",
+          "removeAddressDialog": {
+            "title": "Remove address",
+            "message": "Do you really want to remove the address?"
+          }
+        },
+        "deleteButton": {
+          "dialog": {
+            "title": "Delete event",
+            "message": "Do you really want to delete the event?"
+          }
+        },
+        "coverImageButton": {
+          "saveCoverImageDescription": "Do you want to take the image as the event cover image?",
+          "deleteCoverImageDescription": "Do you want to delete the event cover image?"
+        },
+        "statusButton": {
+          "leftText": "Status: ",
+          "takesPlaceText": "Takes place",
+          "cancelledText": "Cancelled",
+          "undecidedText": "Undecided"
+        },
+        "eventDateText": "Event date: ",
+        "eventEndDateText": "Event end date: ",
+        "memberPermissionsText": "Member permissions"
       }
     },
     "createShoppingListItemPage": {
-      "title": "New Item"
+      "title": "New Item",
+      "fields": {
+        "itemNameField": {
+          "lable": "Item name"
+        },
+        "amountField": {
+          "lable": "amount"
+        },
+        "unitField": {
+          "lable": "unit"
+        }
+      },
+      "amountIsntANumberAlert": {
+        "title": "Amount error",
+        "message": "The entered quantity must be a number"
+      },
+      "userWhoShouldBuyTheItemText": "User that should buy the item: {}"
     },
     "inviteUserPage": {
       "title": "Add User to Event"
@@ -294,7 +365,9 @@ class CodegenLoader extends AssetLoader{
         "title": "Search"
       },
       "dateTab": {
-        "title": "Date"
+        "title": "Date",
+        "selectDateButtonText": "Select date*: {}",
+        "selectEndDateButtonText": "Select end date: {}"
       },
       "locationTab": {
         "title": "Location (optional)"
@@ -590,11 +663,82 @@ static const Map<String,dynamic> en = {
         "title": "Shopping List"
       },
       "userListTab": {
-        "title": "Members"
+        "title": "Members",
+        "leftUserList": {
+          "pastMembers": "Past members: {}"
+        },
+        "userList": {
+          "addUserToEvent": "Add user to event",
+          "membersThatWillBeThereCount": "Members that will be there: {}",
+          "changeChatUsernameText": "Change chat username",
+          "kickedText": "Kicked",
+          "acceptedText": "Accepted",
+          "rejectedText": "Rejected",
+          "unknownText": "Unknown",
+          "statusPlusOrganizerText": " | Organizer",
+          "removeOrganizerStatus": "Remove organizer status",
+          "makeOrganizer": "Make organizer"
+        },
+        "invitationList": {
+          "errorToDisplayOneInvitationText": "Error when displaying an Invited User",
+          "invitedByText": "Invited by: {}",
+          "deleteInvitationText": "Delete invitation",
+          "invitedUsersCount": "Invited users: {}"
+        },
+        "leaveEventButton": {
+          "leaveEventText": "Leave event",
+          "leaveEventDescriptionText": "Do you really want to leave the event?"
+        }
+      },
+      "infoTab": {
+        "connectedGroupchatText": "Connected groupchat",
+        "addressButton": {
+          "leftEmptyText": "Address: ",
+          "rightEmptyText": "Add address",
+          "removeAddressDialog": {
+            "title": "Remove address",
+            "message": "Do you really want to remove the address?"
+          }
+        },
+        "deleteButton": {
+          "dialog": {
+            "title": "Delete event",
+            "message": "Do you really want to delete the event?"
+          }
+        },
+        "coverImageButton": {
+          "saveCoverImageDescription": "Do you want to take the image as the event cover image?",
+          "deleteCoverImageDescription": "Do you want to delete the event cover image?"
+        },
+        "statusButton": {
+          "leftText": "Status: ",
+          "takesPlaceText": "Takes place",
+          "cancelledText": "Cancelled",
+          "undecidedText": "Undecided"
+        },
+        "eventDateText": "Event date: ",
+        "eventEndDateText": "Event end date: ",
+        "memberPermissionsText": "Member permissions"
       }
     },
     "createShoppingListItemPage": {
-      "title": "New Item"
+      "title": "New Item",
+      "fields": {
+        "itemNameField": {
+          "lable": "Item name"
+        },
+        "amountField": {
+          "lable": "amount"
+        },
+        "unitField": {
+          "lable": "unit"
+        }
+      },
+      "amountIsntANumberAlert": {
+        "title": "Amount error",
+        "message": "The entered quantity must be a number"
+      },
+      "userWhoShouldBuyTheItemText": "User that should buy the item: {}"
     },
     "inviteUserPage": {
       "title": "Add User to Event"
@@ -714,7 +858,9 @@ static const Map<String,dynamic> en = {
         "title": "Search"
       },
       "dateTab": {
-        "title": "Date"
+        "title": "Date",
+        "selectDateButtonText": "Select date*: {}",
+        "selectEndDateButtonText": "Select end date: {}"
       },
       "locationTab": {
         "title": "Location (optional)"

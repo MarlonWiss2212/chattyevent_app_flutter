@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/open_maps_button.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/event_page/tab_info/event_tab_info_location/event_tab_info_location_remove_icon.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletons/skeletons.dart';
@@ -9,6 +10,24 @@ import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
 
 class EventTabInfoLocationData extends StatelessWidget {
   const EventTabInfoLocationData({super.key});
+
+  Widget _addressRow({required Widget rightElement}) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          const Text(
+            "eventPage.tabs.infoTab.addressButton.leftEmptyText",
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ).tr(),
+          rightElement,
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,42 +49,30 @@ class EventTabInfoLocationData extends StatelessWidget {
                   state.event.eventLocation!.address!.housenumber != null &&
                   state.event.eventLocation!.address!.zip != null &&
                   state.event.eventLocation!.address!.country != null) ...[
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                _addressRow(
+                  rightElement: Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      const Text(
-                        "Addresse: ",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Row(
+                      Column(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Text(
-                                "${state.event.eventLocation!.address!.country}, ${state.event.eventLocation!.address!.city}, ${state.event.eventLocation!.address!.zip}",
-                                style: Theme.of(context).textTheme.bodyMedium,
-                              ),
-                              Text(
-                                "${state.event.eventLocation!.address!.street} ${state.event.eventLocation!.address!.housenumber}",
-                                style: Theme.of(context).textTheme.bodyMedium,
-                              ),
-                            ],
+                          Text(
+                            "${state.event.eventLocation!.address!.country}, ${state.event.eventLocation!.address!.city}, ${state.event.eventLocation!.address!.zip}",
+                            style: Theme.of(context).textTheme.bodyMedium,
                           ),
-                          const SizedBox(height: 8),
-                          if (state.currentUserAllowedWithPermission(
-                            permissionCheckValue:
-                                state.event.permissions?.changeAddress,
-                          )) ...{
-                            const EventTabInfoLocationRemoveIcon(),
-                          },
+                          Text(
+                            "${state.event.eventLocation!.address!.street} ${state.event.eventLocation!.address!.housenumber}",
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
                         ],
-                      )
+                      ),
+                      const SizedBox(height: 8),
+                      if (state.currentUserAllowedWithPermission(
+                        permissionCheckValue:
+                            state.event.permissions?.changeAddress,
+                      )) ...{
+                        const EventTabInfoLocationRemoveIcon(),
+                      },
                     ],
                   ),
                 ),
@@ -93,20 +100,10 @@ class EventTabInfoLocationData extends StatelessWidget {
                   ),
                 )
               ] else ...[
-                const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Addresse: ",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Text("Addresse hinzufügen")
-                    ],
-                  ),
+                _addressRow(
+                  rightElement: const Text(
+                    "eventPage.tabs.infoTab.addressButton.rightEmptyText",
+                  ).tr(),
                 ),
               ],
             ],

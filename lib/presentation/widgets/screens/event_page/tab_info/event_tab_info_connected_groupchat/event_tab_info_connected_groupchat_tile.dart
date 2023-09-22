@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chattyevent_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
 
@@ -25,23 +26,18 @@ class EventTabInfoGroupchatToTile extends StatelessWidget {
             ? Theme.of(context).colorScheme.surface
             : null,
       ),
-      title: groupchat.title != null
-          ? Hero(
-              tag: "${groupchat.id} title",
-              child: Text(
-                groupchat.title!,
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-            )
-          : Text(
-              "Kein Titel",
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
+      title: Hero(
+        tag: "${groupchat.id} title",
+        child: Text(
+          groupchat.title ?? "",
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
+      ),
       subtitle: const Text(
-        "Verbundener Gruppenchat",
+        "eventPage.tabs.infoTab.connectedGroupchatText",
         softWrap: true,
         overflow: TextOverflow.ellipsis,
-      ),
+      ).tr(),
       onTap: () {
         AutoRouter.of(context).root.push(
               GroupchatRouteWrapper(

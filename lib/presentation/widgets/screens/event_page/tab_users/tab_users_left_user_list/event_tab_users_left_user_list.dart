@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletons/skeletons.dart';
@@ -15,9 +16,9 @@ class EventTabUsersLeftUserList extends StatelessWidget {
           children: [
             Center(
               child: Text(
-                "Frühere Mitglieder: ${state.eventLeftUsers.length.toString()}",
+                "eventPage.tabs.userListTab.leftUserList.pastMembers",
                 style: Theme.of(context).textTheme.titleMedium,
-              ),
+              ).tr(args: [state.eventLeftUsers.length.toString()]),
             ),
             if (state.eventUsers.isEmpty && state.loadingEvent) ...[
               const SizedBox(height: 8),

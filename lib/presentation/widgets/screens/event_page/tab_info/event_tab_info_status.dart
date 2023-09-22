@@ -1,4 +1,5 @@
 import 'package:chattyevent_app_flutter/core/enums/event/event_status_enum.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletons/skeletons.dart';
@@ -12,16 +13,16 @@ class EventTabInfoStatus extends StatelessWidget {
     String text = "";
     switch (state.event.status) {
       case EventStatusEnum.takesplace:
-        text = "findet statt";
+        text = "eventPage.tabs.infoTab.statusButton.takesPlaceText".tr();
         break;
       case EventStatusEnum.cancelled:
-        text = "abgesagt";
+        text = "eventPage.tabs.infoTab.statusButton.cancelledText".tr();
         break;
       case EventStatusEnum.undecided:
-        text = "nicht entschieden";
+        text = "eventPage.tabs.infoTab.statusButton.undecidedText".tr();
         break;
       default:
-        text = "keine Daten";
+        text = "";
         break;
     }
     return Text(text);
@@ -39,11 +40,11 @@ class EventTabInfoStatus extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const Text(
-                      "Status: ",
+                      "eventPage.tabs.infoTab.statusButton.leftText",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                       ),
-                    ),
+                    ).tr(),
                     if (state.currentUserAllowedWithPermission(
                         permissionCheckValue:
                             state.event.permissions?.changeStatus)) ...{
@@ -59,23 +60,29 @@ class EventTabInfoStatus extends StatelessWidget {
                         itemBuilder: (context) => [
                           if (state.event.status !=
                               EventStatusEnum.takesplace) ...[
-                            const PopupMenuItem(
+                            PopupMenuItem(
                               value: EventStatusEnum.takesplace,
-                              child: Text("findet statt"),
+                              child: const Text(
+                                "eventPage.tabs.infoTab.statusButton.takesPlaceText",
+                              ).tr(),
                             ),
                           ],
                           if (state.event.status !=
                               EventStatusEnum.undecided) ...[
-                            const PopupMenuItem(
+                            PopupMenuItem(
                               value: EventStatusEnum.undecided,
-                              child: Text("nicht entschieden"),
+                              child: const Text(
+                                "eventPage.tabs.infoTab.statusButton.undecidedText",
+                              ).tr(),
                             ),
                           ],
                           if (state.event.status !=
                               EventStatusEnum.cancelled) ...[
-                            const PopupMenuItem(
-                              value: EventStatusEnum.cancelled,
-                              child: Text("abgesagt"),
+                            PopupMenuItem(
+                              value: EventStatusEnum.undecided,
+                              child: const Text(
+                                "eventPage.tabs.infoTab.statusButton.cancelledText",
+                              ).tr(),
                             ),
                           ],
                         ],

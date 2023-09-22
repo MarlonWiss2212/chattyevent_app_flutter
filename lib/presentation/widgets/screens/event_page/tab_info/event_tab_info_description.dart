@@ -1,4 +1,5 @@
 import 'package:chattyevent_app_flutter/core/enums/event/event_user/event_user_role_enum.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletons/skeletons.dart';
@@ -24,7 +25,7 @@ class EventTabInfoDescription extends StatelessWidget {
             textOverflow: TextOverflow.visible,
             text: description != null && description.isNotEmpty
                 ? description
-                : "Keine Beschreibung",
+                : "general.noDescriptionText".tr(),
             keyboardType: TextInputType.multiline,
             maxLines: 10,
             textStyle: Theme.of(context).textTheme.titleMedium,

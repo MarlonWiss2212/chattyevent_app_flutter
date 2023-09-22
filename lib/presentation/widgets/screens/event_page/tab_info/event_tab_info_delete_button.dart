@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/current_event/current_event_cubit.dart';
@@ -17,8 +18,11 @@ class EventTabInfoDeleteButton extends StatelessWidget {
                 context: context,
                 builder: (c) {
                   return AcceptDeclineDialog(
-                    title: "Privates Event löschen",
-                    message: "Möchtest du das Private Event wirklich löschen",
+                    title:
+                        "eventPage.tabs.infoTab.deleteButton.dialog.title".tr(),
+                    message:
+                        "eventPage.tabs.infoTab.deleteButton.dialog.message"
+                            .tr(),
                     onNoPress: () => Navigator.of(c).pop(),
                     onYesPress: () =>
                         BlocProvider.of<CurrentEventCubit>(context)

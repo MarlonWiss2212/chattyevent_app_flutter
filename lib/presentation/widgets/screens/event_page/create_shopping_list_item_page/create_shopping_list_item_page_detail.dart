@@ -1,4 +1,5 @@
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/shopping_list/add_shopping_list_item_cubit.dart';
@@ -21,8 +22,10 @@ class CreateShoppingListItemPageDetail extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
                 child: TextFormField(
-                  decoration: const InputDecoration(
-                    labelText: "Item name",
+                  decoration: InputDecoration(
+                    labelText:
+                        "eventPage.createShoppingListItemPage.fields.itemNameField.lable"
+                            .tr(),
                   ),
                   controller: TextEditingController(
                     text: state.itemName,
@@ -44,8 +47,10 @@ class CreateShoppingListItemPageDetail extends StatelessWidget {
                     Flexible(
                       flex: 1,
                       child: TextFormField(
-                        decoration: const InputDecoration(
-                          labelText: "Menge",
+                        decoration: InputDecoration(
+                          labelText:
+                              "eventPage.createShoppingListItemPage.fields.amountField.lable"
+                                  .tr(),
                         ),
                         keyboardType: const TextInputType.numberWithOptions(
                           decimal: true,
@@ -66,9 +71,12 @@ class CreateShoppingListItemPageDetail extends StatelessWidget {
                               builder: (c) {
                                 return CustomAlertDialog(
                                   notificationAlert: NotificationAlert(
-                                    title: "Menge Fehler",
+                                    title:
+                                        "eventPage.createShoppingListItemPage.amountIsntANumberAlert.title"
+                                            .tr(),
                                     message:
-                                        "Die eingegebene Menge muss eine Zahl sein",
+                                        "eventPage.createShoppingListItemPage.amountIsntANumberAlert.message"
+                                            .tr(),
                                   ),
                                   context: c,
                                 );
@@ -87,8 +95,10 @@ class CreateShoppingListItemPageDetail extends StatelessWidget {
                     Flexible(
                       flex: 1,
                       child: TextFormField(
-                        decoration: const InputDecoration(
-                          labelText: "Einheit",
+                        decoration: InputDecoration(
+                          labelText:
+                              "eventPage.createShoppingListItemPage.fields.unitField.lable"
+                                  .tr(),
                         ),
                         controller: TextEditingController(
                           text: state.unit,
@@ -109,11 +119,11 @@ class CreateShoppingListItemPageDetail extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    "User der das Item kauft: ${state.userToBuyItemEntity != null ? state.userToBuyItemEntity!.username : ''}",
+                    "eventPage.createShoppingListItemPage.userWhoShouldBuyTheItemText",
                     softWrap: true,
                     overflow: TextOverflow.ellipsis,
                     style: Theme.of(context).textTheme.titleMedium,
-                  ),
+                  ).tr(args: [state.userToBuyItemEntity?.username ?? ""]),
                 ],
               ),
               const SizedBox(height: 8.0),

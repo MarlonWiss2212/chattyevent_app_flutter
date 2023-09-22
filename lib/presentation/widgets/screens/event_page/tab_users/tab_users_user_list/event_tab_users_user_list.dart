@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:chattyevent_app_flutter/core/enums/event/event_user/event_user_status_enum.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletons/skeletons.dart';
@@ -18,8 +19,16 @@ class EventTabUsersUserList extends StatelessWidget {
           children: [
             Center(
               child: Text(
-                "Mitglieder die da sein werden: ${state.eventUsers.where((element) => element.status == EventUserStatusEnum.accepted).length.toString()}",
+                "eventPage.tabs.userListTab.userList.membersThatWillBeThereCount",
                 style: Theme.of(context).textTheme.titleMedium,
+              ).tr(
+                args: [
+                  state.eventUsers
+                      .where((element) =>
+                          element.status == EventUserStatusEnum.accepted)
+                      .length
+                      .toString()
+                ],
               ),
             ),
             const SizedBox(height: 8),
@@ -33,9 +42,9 @@ class EventTabUsersUserList extends StatelessWidget {
                   color: Colors.green,
                 ),
                 title: const Text(
-                  "User zum Event hinzufügen",
+                  "eventPage.tabs.userListTab.userList.addUserToEvent",
                   style: TextStyle(color: Colors.green),
-                ),
+                ).tr(),
                 onTap: () {
                   AutoRouter.of(context).push(
                     const EventInviteUserRoute(),

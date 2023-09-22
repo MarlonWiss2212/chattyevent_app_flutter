@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -60,11 +61,11 @@ class EventTabInfoEventDate extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const Text(
-                "Event Datum: ",
+                "eventPage.tabs.infoTab.eventDateText",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                 ),
-              ),
+              ).tr(),
               Text(
                 DateFormat.yMd().add_jm().format(state.event.eventDate),
               )

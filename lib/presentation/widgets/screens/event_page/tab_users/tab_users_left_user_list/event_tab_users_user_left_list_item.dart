@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -28,17 +29,14 @@ class PrivateEventTabUsersLeftUserListItem extends StatelessWidget {
                   ),
               overflow: TextOverflow.ellipsis,
             )
-          : const Text(
-              "Kein Datum",
-              overflow: TextOverflow.ellipsis,
-            ),
+          : null,
       user: leftPrivateEventUser,
       items: state.currentUserAllowedWithPermission(
         permissionCheckValue: state.event.permissions?.addUsers,
       )
           ? [
               PopupMenuItem<void Function(void)>(
-                child: const Text("Hinzufügen"),
+                child: const Text("general.addText").tr(),
                 onTap: () {
                   BlocProvider.of<CurrentEventCubit>(context)
                       .addUserToEventViaApi(

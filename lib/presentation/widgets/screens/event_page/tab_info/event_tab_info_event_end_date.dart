@@ -1,6 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:skeletons/skeletons.dart';
 import 'package:chattyevent_app_flutter/application/bloc/current_event/current_event_cubit.dart';
 import 'package:chattyevent_app_flutter/infastructure/dto/event/update_event_dto.dart';
@@ -68,11 +68,11 @@ class PrivateEventTabInfoEventEndDate extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text(
-                    "Event End Datum: ",
+                    "eventPage.tabs.infoTab.eventDateText",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                     ),
-                  ),
+                  ).tr(),
                   if (state.event.eventEndDate != null) ...{
                     Row(
                       children: [

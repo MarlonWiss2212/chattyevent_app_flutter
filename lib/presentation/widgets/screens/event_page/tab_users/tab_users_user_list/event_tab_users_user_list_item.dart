@@ -1,5 +1,6 @@
 import 'package:chattyevent_app_flutter/core/enums/event/event_user/event_user_role_enum.dart';
 import 'package:chattyevent_app_flutter/core/enums/event/event_user/event_user_status_enum.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/current_event/current_event_cubit.dart';
@@ -24,12 +25,12 @@ class EventTabUsersUserListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget? trailingWidget;
-    String subtitle = "gekicked";
+    String subtitle = "eventPage.tabs.userListTab.userList.kickedText".tr();
     Color? subititleColor = Colors.red;
 
     if (eventUser.status == EventUserStatusEnum.accepted) {
       subititleColor = Colors.green;
-      subtitle = "Angenommen";
+      subtitle = "eventPage.tabs.userListTab.userList.acceptedText".tr();
       trailingWidget =
           currentEventUser != null && eventUser.id == currentEventUser!.id
               ? Wrap(
@@ -42,7 +43,7 @@ class EventTabUsersUserListItem extends StatelessWidget {
               : null;
     } else if (eventUser.status == EventUserStatusEnum.rejected) {
       subititleColor = Colors.red;
-      subtitle = "Abgelehnt";
+      subtitle = "eventPage.tabs.userListTab.userList.rejectedText".tr();
       trailingWidget =
           currentEventUser != null && eventUser.id == currentEventUser!.id
               ? Wrap(
@@ -55,7 +56,7 @@ class EventTabUsersUserListItem extends StatelessWidget {
               : null;
     } else if (eventUser.status == EventUserStatusEnum.unknown) {
       subititleColor = null;
-      subtitle = "Unbekannt";
+      subtitle = "eventPage.tabs.userListTab.userList.unknownText".tr();
       trailingWidget =
           currentEventUser != null && eventUser.id == currentEventUser!.id
               ? Wrap(
@@ -69,7 +70,8 @@ class EventTabUsersUserListItem extends StatelessWidget {
     }
 
     if (eventUser.role == EventUserRoleEnum.organizer) {
-      subtitle += " | Organisator";
+      subtitle +=
+          "eventPage.tabs.userListTab.userList.statusPlusOrganizerText".tr();
     }
 
     return UserListTile(
@@ -87,7 +89,7 @@ class EventTabUsersUserListItem extends StatelessWidget {
                 currentEventUser!.role == EventUserRoleEnum.organizer &&
                 event.privateEventData?.groupchatTo == "") ...{
           PopupMenuItem<void Function(void)>(
-            child: const Text("Kicken"),
+            child: const Text("general.kickText").tr(),
             onTap: () {
               BlocProvider.of<CurrentEventCubit>(context)
                   .deleteUserFromEventViaApi(
@@ -102,8 +104,12 @@ class EventTabUsersUserListItem extends StatelessWidget {
             currentEventUser?.id != eventUser.id) ...{
           PopupMenuItem<void Function(void)>(
             child: eventUser.role == EventUserRoleEnum.organizer
-                ? const Text("Organisator status entfernen")
-                : const Text("Zum Organisator machen"),
+                ? const Text(
+                        "eventPage.tabs.userListTab.userList.removeOrganizerStatus")
+                    .tr()
+                : const Text(
+                        "eventPage.tabs.userListTab.userList.makeOrganizer")
+                    .tr(),
             onTap: () {
               BlocProvider.of<CurrentEventCubit>(context).updateEventUser(
                 userId: eventUser.id,

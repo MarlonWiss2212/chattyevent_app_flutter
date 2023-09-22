@@ -79,8 +79,10 @@ class ProfilePageChatOrShoppingListButton extends StatelessWidget {
                       children: [
                         const Icon(Ionicons.chatbubble),
                         const SizedBox(width: 16),
-                        Text("Chat",
-                            style: Theme.of(context).textTheme.labelLarge),
+                        Text(
+                          "Chat",
+                          style: Theme.of(context).textTheme.labelLarge,
+                        ),
                       ],
                     ),
                   ),

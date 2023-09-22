@@ -1,5 +1,6 @@
 import 'package:chattyevent_app_flutter/application/bloc/add_event/add_event_cubit.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/button.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -26,8 +27,13 @@ class NewEventDateTabSelectDateButtons extends StatelessWidget {
                 icon: const Icon(Ionicons.close),
               )
             : null,
-        text:
-            "Datum wählen*: ${state.eventDate != null ? DateFormat.yMd().add_jm().format(state.eventDate!) : ""}",
+        text: "newPrivateEventPage.pages.dateTab.selectDateButtonText".tr(
+          args: [
+            state.eventDate != null
+                ? DateFormat.yMd().add_jm().format(state.eventDate!)
+                : ""
+          ],
+        ),
         onTap: () async {
           DateTime currentDate = DateTime.now();
           DateTime? newDate = await showDatePicker(
@@ -86,8 +92,13 @@ class NewEventDateTabSelectDateButtons extends StatelessWidget {
                 icon: const Icon(Ionicons.close),
               )
             : null,
-        text:
-            "End Datum wählen: ${state.eventEndDate != null ? DateFormat.yMd().add_jm().format(state.eventEndDate!) : ""}",
+        text: "newPrivateEventPage.pages.dateTab.selectEndDateButtonText".tr(
+          args: [
+            state.eventEndDate != null
+                ? DateFormat.yMd().add_jm().format(state.eventEndDate!)
+                : ""
+          ],
+        ),
         onTap: () async {
           DateTime currentDate = DateTime.now();
           DateTime? newDate = await showDatePicker(
