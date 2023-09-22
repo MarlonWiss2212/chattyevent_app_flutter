@@ -23,13 +23,12 @@ class ProfilePageTrailingFollowRequestIconButton extends StatelessWidget {
                   ),
                 ),
                 icon: Badge(
-                  isLabelVisible:
-                      state.user.userRelationCounts?.followRequestCount != null,
-                  label: state.user.userRelationCounts?.followRequestCount !=
-                          null
-                      ? Text(state.user.userRelationCounts!.followRequestCount!
-                          .toString())
-                      : null,
+                  backgroundColor: Theme.of(context).colorScheme.primary,
+                  label: Text(
+                    state.user.userRelationCounts?.followRequestCount
+                            ?.toString() ??
+                        "0",
+                  ),
                   child: const Icon(Icons.favorite),
                 ),
               );

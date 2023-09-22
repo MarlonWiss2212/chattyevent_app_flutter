@@ -16,9 +16,11 @@ class ProfileFollowerCounts extends StatelessWidget {
         InkWell(
           borderRadius: BorderRadius.circular(8),
           onTap: () => AutoRouter.of(context).push(
-            ProfileUserRelationsTabRoute(children: const [
-              ProfileFollowerTab(),
-            ]),
+            const ProfileUserRelationsTabRoute(
+              children: [
+                ProfileFollowerTab(),
+              ],
+            ),
           ),
           child: Ink(
             padding: const EdgeInsets.all(8),
@@ -46,8 +48,8 @@ class ProfileFollowerCounts extends StatelessWidget {
         InkWell(
           borderRadius: BorderRadius.circular(8),
           onTap: () => AutoRouter.of(context).push(
-            ProfileUserRelationsTabRoute(
-              children: const [
+            const ProfileUserRelationsTabRoute(
+              children: [
                 ProfileFollowedTab(),
               ],
             ),

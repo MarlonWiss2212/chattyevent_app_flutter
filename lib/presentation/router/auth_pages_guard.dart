@@ -13,9 +13,7 @@ class AuthPagesGuard extends AutoRouteGuard {
     currentUserOrFailure.fold(
       (l) => resolver.next(true),
       (user) => resolver.redirect(
-        const AuthorizedRoute(children: [
-          BlocInitRoute(children: [HomeRoute()])
-        ]),
+        const AuthorizedRoute(children: [HomeRoute()]),
         replace: true,
       ),
     );

@@ -51,15 +51,10 @@ class ProfileChatPageMessageArea extends StatelessWidget {
         return ChatMessageList(
           messages: state.messages,
           users: [state.user, currentUser],
-          usersCount: 1,
+          usersCount: 2,
           currentUserId: currentUser.id,
           loadMoreMessages: () {
-            if (BlocProvider.of<ProfilePageCubit>(context)
-                    .state
-                    .loadingMessages ==
-                false) {
-              BlocProvider.of<ProfilePageCubit>(context).loadMessages();
-            }
+            return BlocProvider.of<ProfilePageCubit>(context).loadMessages();
           },
         );
       },

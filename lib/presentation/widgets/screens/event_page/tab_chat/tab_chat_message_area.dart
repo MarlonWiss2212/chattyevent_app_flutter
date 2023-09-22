@@ -59,12 +59,7 @@ class TabChatMessageArea extends StatelessWidget {
           currentUserId:
               BlocProvider.of<AuthCubit>(context).state.currentUser.id,
           loadMoreMessages: () {
-            if (BlocProvider.of<CurrentEventCubit>(context)
-                    .state
-                    .loadingMessages ==
-                false) {
-              BlocProvider.of<CurrentEventCubit>(context).loadMessages();
-            }
+            return BlocProvider.of<CurrentEventCubit>(context).loadMessages();
           },
         );
       },

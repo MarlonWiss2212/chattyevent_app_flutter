@@ -29,7 +29,7 @@ class _DataprotectionCheckboxState extends State<DataprotectionCheckbox> {
               children: [
                 TextSpan(text: "authPages.dataprotectionBox.text1".tr()),
                 TextSpan(
-                  text: "Nutzungsbedingungen",
+                  text: "authPages.dataprotectionBox.termsOfUseText".tr(),
                   style:
                       TextStyle(color: Theme.of(context).colorScheme.primary),
                   recognizer: TapGestureRecognizer()
@@ -37,7 +37,7 @@ class _DataprotectionCheckboxState extends State<DataprotectionCheckbox> {
                 ),
                 TextSpan(text: "authPages.dataprotectionBox.text2".tr()),
                 TextSpan(
-                  text: "Datenschutzerklärung",
+                  text: "authPages.dataprotectionBox.privacyPolicyText".tr(),
                   style:
                       TextStyle(color: Theme.of(context).colorScheme.primary),
                   recognizer: TapGestureRecognizer()

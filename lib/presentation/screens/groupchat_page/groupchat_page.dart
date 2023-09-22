@@ -77,46 +77,29 @@ class _GroupchatPageState extends State<GroupchatPage> {
           )
         ],
       ),
-      body: Column(
-        children: [
-          BlocBuilder<CurrentGroupchatCubit, CurrentGroupchatState>(
-            buildWhen: (p, c) =>
-                p.loadingChat != c.loadingChat ||
-                p.loadingMessages != c.loadingMessages,
-            builder: (context, state) {
-              if (state.loadingChat || state.loadingMessages) {
-                return const LinearProgressIndicator();
-              }
-              return const SizedBox();
-            },
-          ),
-          Expanded(
-            child: BlocProvider(
-              create: (context) => AddMessageCubit(
-                AddMessageState(groupchatTo: widget.groupchatId),
-                imagePickerUseCases: serviceLocator(),
-                microphoneUseCases: serviceLocator(),
-                locationUseCases: serviceLocator(),
-                vibrationUseCases: serviceLocator(),
-                notificationCubit: BlocProvider.of<NotificationCubit>(context),
-                cubitToAddMessageTo: dz.Left(dz.Right(
-                  BlocProvider.of<CurrentGroupchatCubit>(context),
-                )),
-                messageUseCases: authenticatedLocator(),
-              ),
-              child: const Stack(
-                fit: StackFit.expand,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 8.0),
-                    child: ChatPageMessageArea(),
-                  ),
-                  ChatMessageInput(),
-                ],
-              ),
+      body: BlocProvider(
+        create: (context) => AddMessageCubit(
+          AddMessageState(groupchatTo: widget.groupchatId),
+          imagePickerUseCases: serviceLocator(),
+          microphoneUseCases: serviceLocator(),
+          locationUseCases: serviceLocator(),
+          vibrationUseCases: serviceLocator(),
+          notificationCubit: BlocProvider.of<NotificationCubit>(context),
+          cubitToAddMessageTo: dz.Left(dz.Right(
+            BlocProvider.of<CurrentGroupchatCubit>(context),
+          )),
+          messageUseCases: authenticatedLocator(),
+        ),
+        child: const Stack(
+          fit: StackFit.expand,
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 8.0),
+              child: ChatPageMessageArea(),
             ),
-          ),
-        ],
+            ChatMessageInput(),
+          ],
+        ),
       ),
     );
   }

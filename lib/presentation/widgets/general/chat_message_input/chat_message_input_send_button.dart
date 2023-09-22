@@ -31,59 +31,50 @@ class ChatMessageInputSendButton extends StatelessWidget {
         child: ClipOval(
           child: BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
-            child: Material(
-              color: Colors.transparent,
-              child: AnimatedSize(
-                duration: const Duration(milliseconds: 200),
-                child: BlocBuilder<AddMessageCubit, AddMessageState>(
-                  builder: (context, state) {
-                    return StreamBuilder(
-                      stream: state.isRecordingVoiceMessageStream,
-                      builder: (context, snapshot) {
-                        return Ink(
-                          width: snapshot.connectionState ==
-                                  ConnectionState.waiting
-                              ? 100
-                              : 50,
-                          height: snapshot.connectionState ==
-                                  ConnectionState.waiting
-                              ? 100
-                              : 50,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: snapshot.connectionState ==
-                                    ConnectionState.waiting
-                                ? Theme.of(context)
-                                    .colorScheme
-                                    .primary
-                                    .withOpacity(.6)
-                                : Theme.of(context)
-                                    .colorScheme
-                                    .surface
-                                    .withOpacity(.6),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: snapshot.connectionState ==
-                                    ConnectionState.waiting
-                                ? const [
-                                    Icon(Ionicons.mic, size: 50),
-                                  ]
-                                : const [
-                                    Icon(Ionicons.send, size: 10),
-                                    Text("/"),
-                                    Icon(Ionicons.mic, size: 10),
-                                  ],
-                          ),
-                        );
-                      },
-                    );
-                  },
-                ),
-              ),
-            ),
+            child: Material(color: Colors.transparent, child: _animatedStuff()),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _animatedStuff() {
+    return AnimatedSize(
+      duration: const Duration(milliseconds: 200),
+      child: BlocBuilder<AddMessageCubit, AddMessageState>(
+        builder: (context, state) {
+          return StreamBuilder(
+            stream: state.isRecordingVoiceMessageStream,
+            builder: (context, snapshot) {
+              return Ink(
+                width: snapshot.connectionState == ConnectionState.waiting
+                    ? 100
+                    : 50,
+                height: snapshot.connectionState == ConnectionState.waiting
+                    ? 100
+                    : 50,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: snapshot.connectionState == ConnectionState.waiting
+                      ? Theme.of(context).colorScheme.surface.withOpacity(.8)
+                      : Theme.of(context).colorScheme.surface.withOpacity(.6),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: snapshot.connectionState == ConnectionState.waiting
+                      ? const [
+                          Icon(Ionicons.mic, size: 50),
+                        ]
+                      : const [
+                          Icon(Ionicons.send, size: 10),
+                          Text("/"),
+                          Icon(Ionicons.mic, size: 10),
+                        ],
+                ),
+              );
+            },
+          );
+        },
       ),
     );
   }

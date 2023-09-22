@@ -5,10 +5,10 @@ import 'package:chattyevent_app_flutter/core/utils/injection.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/auth_usecases.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
+import 'package:chattyevent_app_flutter/presentation/widgets/general/button.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
 
 @RoutePage()
@@ -20,10 +20,27 @@ class VerifyEmailPage extends StatefulWidget {
 }
 
 class _VerifyEmailPageState extends State<VerifyEmailPage> {
+  AuthUseCases authUseCases = serviceLocator();
+  String emailAddress = "";
+
+  Future<void> setEmailAddress() async {
+    final responseFirebaseUser = authUseCases.getFirebaseUser();
+    responseFirebaseUser.fold(
+      (alert) => null,
+      (user) => setState(() => emailAddress = user.email ?? ""),
+    );
+    final response = await authUseCases.refreshUser();
+    response.fold(
+      (alert) => null,
+      (user) => setState(() => emailAddress = user.email ?? ""),
+    );
+  }
+
   late Timer timer;
 
   @override
   void initState() {
+    setEmailAddress();
     timer = Timer.periodic(
       const Duration(seconds: 3),
       (timer) async {
@@ -67,11 +84,16 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                 size: min(200, MediaQuery.of(context).size.width / 2),
               ),
               const SizedBox(height: 20),
-              PlatformElevatedButton(
-                child: const Text("verifyEmailPage.resendEmail").tr(),
-                onPressed: () {
-                  BlocProvider.of<AuthCubit>(context).sendEmailVerification();
-                },
+              Text(emailAddress),
+              const SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: Button(
+                  text: "verifyEmailPage.resendEmail".tr(),
+                  onTap: () {
+                    BlocProvider.of<AuthCubit>(context).sendEmailVerification();
+                  },
+                ),
               ),
             ],
           ),

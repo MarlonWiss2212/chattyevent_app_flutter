@@ -44,7 +44,7 @@ class AppFeatureIntroductionPagesGroupchatPage extends StatelessWidget {
               width: double.infinity,
               child: Button(
                 onTap: () => navigateToNextPage(context),
-                text: "general.continue",
+                text: "general.continueText".tr(),
               ),
             ),
           ],

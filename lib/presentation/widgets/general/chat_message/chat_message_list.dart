@@ -10,7 +10,7 @@ class ChatMessageList extends StatefulWidget {
   final List<UserEntity> users;
   final int usersCount;
   final String currentUserId;
-  final void Function() loadMoreMessages;
+  final Future<void> Function() loadMoreMessages;
 
   const ChatMessageList({
     super.key,
@@ -26,6 +26,7 @@ class ChatMessageList extends StatefulWidget {
 }
 
 class _ChatMessageListState extends State<ChatMessageList> {
+  bool loadingMore = false;
   late ScrollController _scrollController;
 
   @override
@@ -41,9 +42,11 @@ class _ChatMessageListState extends State<ChatMessageList> {
     super.dispose();
   }
 
-  void _scrollListener() {
+  Future<void> _scrollListener() async {
     if (_scrollController.position.extentAfter <= 0) {
-      widget.loadMoreMessages();
+      loadingMore = true;
+      await widget.loadMoreMessages();
+      loadingMore = false;
     }
   }
 

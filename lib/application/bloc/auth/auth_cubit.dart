@@ -1,7 +1,10 @@
 import 'dart:async';
+import 'package:chattyevent_app_flutter/core/utils/injection.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/one_signal_use_cases.dart';
 import 'package:chattyevent_app_flutter/infastructure/dto/user/update_user_dto.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/permission_usecases.dart';
+import 'package:chattyevent_app_flutter/presentation/router/router.dart';
+import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -47,7 +50,18 @@ class AuthCubit extends Cubit<AuthState> {
 
     await userOrFailure.fold(
       (alert) {
-        emitState(userException: alert.exception);
+        if (alert.exception != null) {
+          for (final error in alert.exception!.graphqlErrors) {
+            if (error.extensions?["code"] == "404" ||
+                error.extensions?["response"]["statusCode"] == 404) {
+              serviceLocator<AppRouter>().root.popUntilRoot();
+              serviceLocator<AppRouter>().root.replace(
+                    const CreateUserRoute(),
+                  );
+              return;
+            }
+          }
+        }
         notificationCubit.newAlert(notificationAlert: alert);
       },
       (user) async {

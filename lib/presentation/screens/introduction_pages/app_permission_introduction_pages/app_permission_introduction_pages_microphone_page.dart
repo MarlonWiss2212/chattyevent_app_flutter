@@ -54,7 +54,8 @@ class AppPermissionIntroductionPagesMicrophonePage extends StatelessWidget {
                     onTap: () => navigateToNextPage(context),
                     color: Theme.of(context).colorScheme.surface,
                     text:
-                        "introductionPages.permissionPages.general.dontRequestPermissionText",
+                        "introductionPages.permissionPages.general.dontRequestPermissionText"
+                            .tr(),
                   ),
                 ),
                 const SizedBox(width: 8),
@@ -67,7 +68,8 @@ class AppPermissionIntroductionPagesMicrophonePage extends StatelessWidget {
                       navigateToNextPage(context);
                     },
                     text:
-                        "introductionPages.permissionPages.general.requestPermissionText",
+                        "introductionPages.permissionPages.general.requestPermissionText"
+                            .tr(),
                   ),
                 ),
               ],

@@ -123,7 +123,7 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
       notificationCubit.newAlert(
         notificationAlert: NotificationAlert(
           title: "Get Follow Request Fehler",
-          message: "Du kannst nicht die Freundschaftsanfragen anderer sehen",
+          message: "Du kannst nicht die Follower Anfragen anderer sehen",
         ),
       );
       return;
@@ -229,7 +229,7 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
         notificationAlert: NotificationAlert(
           title: "Accept User Relation Fehler",
           message:
-              "Du kannst keine Freundschaftsanfragen auf anderen Profilen annehmen",
+              "Du kannst keine Follower Anfragen von anderen Profilen annehmen",
         ),
       );
       return;

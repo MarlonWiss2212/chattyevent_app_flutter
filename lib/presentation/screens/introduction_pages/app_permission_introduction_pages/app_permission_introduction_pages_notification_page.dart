@@ -3,6 +3,7 @@ import 'package:chattyevent_app_flutter/application/bloc/introduction/introducti
 import 'package:chattyevent_app_flutter/core/utils/injection.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/permission_usecases.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/button.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ionicons/ionicons.dart';
@@ -44,7 +45,7 @@ class AppPermissionIntroductionPagesNotificationPage extends StatelessWidget {
               "introductionPages.permissionPages.notificationPage.text",
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.titleMedium,
-            ),
+            ).tr(),
             const SizedBox(),
             Row(
               children: [
@@ -53,7 +54,8 @@ class AppPermissionIntroductionPagesNotificationPage extends StatelessWidget {
                     onTap: () => navigateToNextPage(context),
                     color: Theme.of(context).colorScheme.surface,
                     text:
-                        "introductionPages.permissionPages.general.dontRequestPermissionText",
+                        "introductionPages.permissionPages.general.dontRequestPermissionText"
+                            .tr(),
                   ),
                 ),
                 const SizedBox(width: 8),
@@ -62,10 +64,12 @@ class AppPermissionIntroductionPagesNotificationPage extends StatelessWidget {
                     onTap: () async {
                       await serviceLocator<PermissionUseCases>()
                           .requestNotificationPermission();
+                      // ignore: use_build_context_synchronously
                       navigateToNextPage(context);
                     },
                     text:
-                        "introductionPages.permissionPages.general.requestPermissionText",
+                        "introductionPages.permissionPages.general.requestPermissionText"
+                            .tr(),
                   ),
                 ),
               ],

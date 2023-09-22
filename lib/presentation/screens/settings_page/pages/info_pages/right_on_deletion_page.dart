@@ -53,7 +53,8 @@ class RightOnDeletionPage extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(top: 8),
               child: Button(
-                text: "settingsPage.infoPage.rightOnDeletionPage.deleteData",
+                text: "settingsPage.infoPage.rightOnDeletionPage.deleteDataText"
+                    .tr(),
                 onTap: () async {
                   await showDialog(
                     context: context,

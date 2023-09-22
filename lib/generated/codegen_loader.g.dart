@@ -131,7 +131,9 @@ class CodegenLoader extends AssetLoader{
     "dataprotectionBox": {
       "text1": "i have read and agree to the ",
       "text2": " and ",
-      "text3": ""
+      "text3": "",
+      "privacyPolicyText": "Privacy policy",
+      "termsOfUseText": "Terms of use"
     }
   },
   "homePage": {
@@ -549,7 +551,9 @@ static const Map<String,dynamic> en = {
     "dataprotectionBox": {
       "text1": "i have read and agree to the ",
       "text2": " and ",
-      "text3": ""
+      "text3": "",
+      "privacyPolicyText": "Privacy policy",
+      "termsOfUseText": "Terms of use"
     }
   },
   "homePage": {

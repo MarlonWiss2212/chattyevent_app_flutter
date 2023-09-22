@@ -89,7 +89,7 @@ class AppFeatureIntroductionPagesMessagePage extends StatelessWidget {
               width: double.infinity,
               child: Button(
                 onTap: () => navigateToNextPage(context),
-                text: "general.continueText",
+                text: "general.continueText".tr(),
               ),
             ),
           ],

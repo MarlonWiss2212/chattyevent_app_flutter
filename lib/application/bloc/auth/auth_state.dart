@@ -20,18 +20,6 @@ class AuthState {
 
   final OperationException? userException;
 
-  bool isUserCode404() {
-    if (userException == null) {
-      return false;
-    }
-    for (final error in userException!.graphqlErrors) {
-      if (error.extensions?["code"] == "404") {
-        return true;
-      }
-    }
-    return false;
-  }
-
   AuthState({
     required this.currentUser,
     // but dont merge in emitState

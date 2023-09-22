@@ -17,9 +17,7 @@ class VerifyEmailPageGuard extends AutoRouteGuard {
           resolver.next(true);
         } else {
           resolver.redirect(
-            const BlocInitRoute(
-              children: [HomeRoute()],
-            ),
+            const HomeRoute(),
             replace: true,
           );
         }

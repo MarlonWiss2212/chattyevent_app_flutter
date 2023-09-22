@@ -21,7 +21,7 @@ class AppRouter extends $AppRouter {
   });
 
   @override
-  RouteType get defaultRouteType => const RouteType.adaptive();
+  RouteType get defaultRouteType => const RouteType.material();
 
   @override
   List<AutoRoute> get routes {
@@ -59,159 +59,149 @@ class AppRouter extends $AppRouter {
             initial: false,
             guards: [createUserPageGuard],
           ),
+
+          _homePageRoute,
+          _groupchatRouter,
+          _privateEventRouter,
+          _profileRouter,
+          ..._settingsRoutes,
+          ..._introductionRoutes,
+
+          // future and past events
           CustomRoute(
             transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
-            page: BlocInitRoute.page,
-            path: '',
-            initial: true,
+            page: FutureEventsRoute.page,
             guards: [authGuard],
+            path: 'future-events',
+          ),
+          CustomRoute(
+            transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
+            page: PastEventsRoute.page,
+            guards: [authGuard],
+            path: 'past-events',
+          ),
+
+          //Shopping List page
+          CustomRoute(
+            transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
+            page: ShoppingListWrapperRoute.page,
+            guards: [authGuard],
+            path: 'shopping-list',
             children: [
-              _homePageRoute,
-              _groupchatRouter,
-              _privateEventRouter,
-              _profileRouter,
-              ..._settingsRoutes,
-              ..._introductionRoutes,
-
-              // future and past events
               CustomRoute(
                 transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
-                page: FutureEventsRoute.page,
+                page: ShoppingListRoute.page,
                 guards: [authGuard],
-                path: 'future-events',
+                path: '',
               ),
               CustomRoute(
                 transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
-                page: PastEventsRoute.page,
+                page: ShoppingListItemWrapperRoute.page,
                 guards: [authGuard],
-                path: 'past-events',
-              ),
-
-              //Shopping List page
-              CustomRoute(
-                transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
-                page: ShoppingListWrapperRoute.page,
-                guards: [authGuard],
-                path: 'shopping-list',
+                path: ':shoppingListItemId',
                 children: [
                   CustomRoute(
                     transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
-                    page: ShoppingListRoute.page,
+                    page: ShoppingListItemRoute.page,
                     guards: [authGuard],
                     path: '',
                   ),
                   CustomRoute(
                     transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
-                    page: ShoppingListItemWrapperRoute.page,
+                    page: ShoppingListItemChangeUserRoute.page,
                     guards: [authGuard],
-                    path: ':shoppingListItemId',
-                    children: [
-                      CustomRoute(
-                        transitionsBuilder:
-                            TransitionsBuilders.slideLeftWithFade,
-                        page: ShoppingListItemRoute.page,
-                        guards: [authGuard],
-                        path: '',
-                      ),
-                      CustomRoute(
-                        transitionsBuilder:
-                            TransitionsBuilders.slideLeftWithFade,
-                        page: ShoppingListItemChangeUserRoute.page,
-                        guards: [authGuard],
-                        path: 'change-user-to-buy-item',
-                      ),
-                    ],
+                    path: 'change-user-to-buy-item',
                   ),
-                  RedirectRoute(path: '*', redirectTo: '')
                 ],
               ),
+              RedirectRoute(path: '*', redirectTo: '')
+            ],
+          ),
 
-              // new groupchat
-              CustomRoute(
-                transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
-                page: NewGroupchatWrapperRoute.page,
+          // new groupchat
+          CustomRoute(
+            transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
+            page: NewGroupchatWrapperRoute.page,
+            guards: [authGuard],
+            path: 'new-groupchat',
+            children: [
+              AutoRoute(
+                page: NewGroupchatDetailsTab.page,
+                initial: true,
                 guards: [authGuard],
-                path: 'new-groupchat',
-                children: [
-                  AutoRoute(
-                    page: NewGroupchatDetailsTab.page,
-                    initial: true,
-                    guards: [authGuard],
-                    path: '',
-                    title: (context, data) => "",
-                  ),
-                  AutoRoute(
-                    page: NewGroupchatSelectUserTab.page,
-                    initial: false,
-                    guards: [authGuard],
-                    path: 'users',
-                    title: (context, data) =>
-                        "newGroupchatPage.pages.selectUserTab.title".tr(),
-                  ),
-                  AutoRoute(
-                    page: NewGroupchatPermissionsTab.page,
-                    initial: false,
-                    guards: [authGuard],
-                    path: 'permissions',
-                    title: (context, data) =>
-                        "newGroupchatPage.pages.permissionTab.title".tr(),
-                  ),
-                  RedirectRoute(path: '*', redirectTo: '')
-                ],
+                path: '',
+                title: (context, data) => "",
               ),
+              AutoRoute(
+                page: NewGroupchatSelectUserTab.page,
+                initial: false,
+                guards: [authGuard],
+                path: 'users',
+                title: (context, data) =>
+                    "newGroupchatPage.pages.selectUserTab.title".tr(),
+              ),
+              AutoRoute(
+                page: NewGroupchatPermissionsTab.page,
+                initial: false,
+                guards: [authGuard],
+                path: 'permissions',
+                title: (context, data) =>
+                    "newGroupchatPage.pages.permissionTab.title".tr(),
+              ),
+              RedirectRoute(path: '*', redirectTo: '')
+            ],
+          ),
 
-              // new event
-              CustomRoute(
-                transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
-                page: NewPrivateEventRoute.page,
+          // new event
+          CustomRoute(
+            transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
+            page: NewPrivateEventRoute.page,
+            guards: [authGuard],
+            path: 'new-event',
+            children: [
+              AutoRoute(
+                page: NewPrivateEventDetailsTab.page,
+                initial: true,
                 guards: [authGuard],
-                path: 'new-event',
-                children: [
-                  AutoRoute(
-                    page: NewPrivateEventDetailsTab.page,
-                    initial: true,
-                    guards: [authGuard],
-                    path: '',
-                    title: (context, data) => "",
-                  ),
-                  AutoRoute(
-                    page: NewPrivateEventTypeTab.page,
-                    guards: [authGuard],
-                    path: 'type',
-                    title: (context, data) =>
-                        "newPrivateEventPage.pages.typTab.title".tr(),
-                  ),
-                  AutoRoute(
-                    page: NewPrivateEventSearchTab.page,
-                    guards: [authGuard],
-                    path: 'search',
-                    title: (context, data) =>
-                        "newPrivateEventPage.pages.searchTab.title".tr(),
-                  ),
-                  AutoRoute(
-                    page: NewPrivateEventDateTab.page,
-                    guards: [authGuard],
-                    path: 'date',
-                    title: (context, data) =>
-                        "newPrivateEventPage.pages.dateTab.title".tr(),
-                  ),
-                  AutoRoute(
-                    page: NewPrivateEventLocationTab.page,
-                    guards: [authGuard],
-                    path: 'location',
-                    title: (context, data) =>
-                        "newPrivateEventPage.pages.locationTab.title".tr(),
-                  ),
-                  AutoRoute(
-                    page: NewPrivateEventPermissionsTab.page,
-                    guards: [authGuard],
-                    path: 'permissions',
-                    title: (context, data) =>
-                        "newPrivateEventPage.pages.permissionTab.title".tr(),
-                  ),
-                  RedirectRoute(path: '*', redirectTo: '')
-                ],
+                path: '',
+                title: (context, data) => "",
               ),
+              AutoRoute(
+                page: NewPrivateEventTypeTab.page,
+                guards: [authGuard],
+                path: 'type',
+                title: (context, data) =>
+                    "newPrivateEventPage.pages.typTab.title".tr(),
+              ),
+              AutoRoute(
+                page: NewPrivateEventSearchTab.page,
+                guards: [authGuard],
+                path: 'search',
+                title: (context, data) =>
+                    "newPrivateEventPage.pages.searchTab.title".tr(),
+              ),
+              AutoRoute(
+                page: NewPrivateEventDateTab.page,
+                guards: [authGuard],
+                path: 'date',
+                title: (context, data) =>
+                    "newPrivateEventPage.pages.dateTab.title".tr(),
+              ),
+              AutoRoute(
+                page: NewPrivateEventLocationTab.page,
+                guards: [authGuard],
+                path: 'location',
+                title: (context, data) =>
+                    "newPrivateEventPage.pages.locationTab.title".tr(),
+              ),
+              AutoRoute(
+                page: NewPrivateEventPermissionsTab.page,
+                guards: [authGuard],
+                path: 'permissions',
+                title: (context, data) =>
+                    "newPrivateEventPage.pages.permissionTab.title".tr(),
+              ),
+              RedirectRoute(path: '*', redirectTo: '')
             ],
           ),
         ],

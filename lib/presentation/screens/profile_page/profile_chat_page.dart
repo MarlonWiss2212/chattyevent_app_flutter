@@ -83,15 +83,6 @@ class _ProfileChatPageState extends State<ProfileChatPage> {
       body: Column(
         children: [
           BlocBuilder<ProfilePageCubit, ProfilePageState>(
-            buildWhen: (p, c) => p.loadingMessages != c.loadingMessages,
-            builder: (context, state) {
-              if (state.loadingMessages) {
-                return const LinearProgressIndicator();
-              }
-              return const SizedBox();
-            },
-          ),
-          BlocBuilder<ProfilePageCubit, ProfilePageState>(
             builder: (context, state) {
               if (state.user.authId !=
                       BlocProvider.of<AuthCubit>(context)

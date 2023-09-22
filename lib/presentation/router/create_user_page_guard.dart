@@ -13,14 +13,13 @@ class CreateUserPageGuard extends AutoRouteGuard {
     currentUserOrFailure.fold(
       (_) => resolver.redirect(const LoginRoute(), replace: true),
       (user) {
-        if (authCubit.state.isUserCode404() ||
-            user.emailVerified && authCubit.state.currentUser.id == "") {
+        if (user.emailVerified && authCubit.state.currentUser.id == "") {
           resolver.next(true);
         } else if (user.emailVerified == false) {
           resolver.redirect(const VerifyEmailRoute(), replace: true);
         } else {
           resolver.redirect(
-            const BlocInitRoute(children: [HomeRoute()]),
+            const HomeRoute(),
             replace: true,
           );
         }
