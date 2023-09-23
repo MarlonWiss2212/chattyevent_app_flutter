@@ -1,4 +1,5 @@
 import 'package:collection/collection.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -22,8 +23,10 @@ class CurrentShoppingListItemPageBoughtAmountList extends StatelessWidget {
         if (state.loading == false &&
             (state.shoppingListItem.boughtAmounts == null ||
                 state.shoppingListItem.boughtAmounts!.isEmpty)) {
-          return const Center(
-            child: Text("Keine gekauften Elemente gefunden"),
+          return Center(
+            child: const Text(
+              "shoppingListPage.boughtAmountList.noBoughtElementsFoundText",
+            ).tr(),
           );
         }
 
@@ -86,15 +89,15 @@ class CurrentShoppingListItemPageBoughtAmountList extends StatelessWidget {
                           authId: "",
                           username: "",
                         ),
-                    trailing: Text(
-                      state.shoppingListItem.createdAt != null
-                          ? DateFormat.jm()
-                              .format(state.shoppingListItem.createdAt!)
-                          : "Kein Datum",
-                    ),
-                    subtitle: Text(
-                      "Eigekaufte Menge: ${boughtAmount.boughtAmount.toString()}",
-                    ),
+                    trailing: state.shoppingListItem.createdAt != null
+                        ? Text(
+                            DateFormat.jm()
+                                .format(state.shoppingListItem.createdAt!),
+                          )
+                        : null,
+                    subtitle: const Text(
+                      "shoppingListPage.boughtAmountList.itemSubtitle",
+                    ).tr(args: [boughtAmount.boughtAmount.toString()]),
                   ),
                 );
               },

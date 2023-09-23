@@ -1,6 +1,7 @@
 import 'package:chattyevent_app_flutter/application/bloc/current_event/current_event_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:chattyevent_app_flutter/domain/entities/bought_amount_entity.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/shopping_list/current_shopping_list_item_cubit.dart';
@@ -48,7 +49,7 @@ class CurrentShoppingListItemPageWithProgressBar extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "$boughtAmount von ",
+                        "$boughtAmount / ",
                         style: Theme.of(context).textTheme.labelLarge?.apply(
                               color: Theme.of(context).colorScheme.primary,
                             ),
@@ -75,9 +76,12 @@ class CurrentShoppingListItemPageWithProgressBar extends StatelessWidget {
                                           return CustomAlertDialog(
                                             notificationAlert:
                                                 NotificationAlert(
-                                              title: "Menge Fehler",
+                                              title:
+                                                  "general.amountIsntANumberAlert.title"
+                                                      .tr(),
                                               message:
-                                                  "Die eingegebene Menge muss eine Zahl sein",
+                                                  "general.amountIsntANumberAlert.message"
+                                                      .tr(),
                                             ),
                                             context: c,
                                           );
@@ -108,7 +112,7 @@ class CurrentShoppingListItemPageWithProgressBar extends StatelessWidget {
                         child: EditInputTextField(
                           text: state.shoppingListItem.unit == null ||
                                   state.shoppingListItem.unit!.isEmpty
-                              ? " (einheit)"
+                              ? "general.unitText".tr()
                               : state.shoppingListItem.unit!,
                           onSaved: privateEventState
                                   .currentUserAllowedWithPermission(
@@ -136,7 +140,7 @@ class CurrentShoppingListItemPageWithProgressBar extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        " gekauft",
+                        "shoppingListPage.boughtText".tr(),
                         style: Theme.of(context).textTheme.labelLarge?.apply(
                               color: Theme.of(context).colorScheme.primary,
                             ),

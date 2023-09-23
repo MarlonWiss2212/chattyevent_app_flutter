@@ -33,6 +33,10 @@
       "deleteImageText": "Delete image",
       "saveImageText": "Save image"
     },
+    "amountIsntANumberAlert": {
+      "title": "Amount error",
+      "message": "The entered quantity must be a number"
+    },
     "messageArea": {
       "noMessagesText": "No messages"
     },
@@ -226,10 +230,6 @@
         "unitField": {
           "lable": "unit"
         }
-      },
-      "amountIsntANumberAlert": {
-        "title": "Amount error",
-        "message": "The entered quantity must be a number"
       },
       "userWhoShouldBuyTheItemText": "User that should buy the item: {}"
     },
@@ -474,7 +474,26 @@
     }
   },
   "shoppingListPage": {
-    "noItemsNeededText": "No items that need to be bought"
+    "noItemsNeededText": "No items that need to be bought",
+    "changeUserText": "Change user",
+    "userWhoShouldBuyTheItemText": "User that should buy the item",
+    "unitText": " (unit)",
+    "boughtText": " bought",
+    "connectedEvent": {
+      "title": "Connected private event: ",
+      "connectedEventText": "Connected event"
+    },
+    "createBoughtAmount": {
+      "newBoughtAmountText": "New bought amount",
+      "boughtAmountIsntANumberAlert": {
+        "title": "Bought amount error",
+        "message": "The entered quantity must be a number"
+      }
+    },
+    "boughtAmountList": {
+      "noBoughtElementsFoundText": "No bought amounts",
+      "itemSubtitle": "Bought amount: {}"
+    }
   },
   "createUserPage": {
     "title": "Create User",

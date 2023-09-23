@@ -1,4 +1,5 @@
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/shopping_list/current_shopping_list_item_cubit.dart';
@@ -26,8 +27,10 @@ class _CurrentShoppingListItemPageCreateBoughtAmountTileState
           children: [
             Expanded(
               child: TextField(
-                decoration: const InputDecoration(
-                  labelText: "Neu Eingekaufte Menge",
+                decoration: InputDecoration(
+                  labelText:
+                      "shoppingListPage.createBoughtAmount.newBoughtAmountText"
+                          .tr(),
                 ),
                 controller: boughtAmountController,
                 keyboardType: const TextInputType.numberWithOptions(
@@ -39,7 +42,7 @@ class _CurrentShoppingListItemPageCreateBoughtAmountTileState
             SizedBox(
               width: 100,
               child: Button(
-                text: "Erstellen",
+                text: "general.createText".tr(),
                 onTap: () async {
                   double? boughtAmount =
                       double.tryParse(boughtAmountController.text);
@@ -50,9 +53,12 @@ class _CurrentShoppingListItemPageCreateBoughtAmountTileState
                       builder: (c) {
                         return CustomAlertDialog(
                           notificationAlert: NotificationAlert(
-                            title: "Gekaufte Menge Fehler",
+                            title:
+                                "shoppingListPage.createBoughtAmount.boughtAmountIsntANumberAlert.title"
+                                    .tr(),
                             message:
-                                "Die eingegebene gekaufte Menge muss eine Zahl sein",
+                                "shoppingListPage.createBoughtAmount.boughtAmountIsntANumberAlert.message"
+                                    .tr(),
                           ),
                           context: c,
                         );

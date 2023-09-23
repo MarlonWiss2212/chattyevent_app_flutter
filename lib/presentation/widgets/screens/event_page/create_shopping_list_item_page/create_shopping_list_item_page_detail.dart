@@ -72,10 +72,10 @@ class CreateShoppingListItemPageDetail extends StatelessWidget {
                                 return CustomAlertDialog(
                                   notificationAlert: NotificationAlert(
                                     title:
-                                        "eventPage.createShoppingListItemPage.amountIsntANumberAlert.title"
+                                        "general.amountIsntANumberAlert.title"
                                             .tr(),
                                     message:
-                                        "eventPage.createShoppingListItemPage.amountIsntANumberAlert.message"
+                                        "general.amountIsntANumberAlert.message"
                                             .tr(),
                                   ),
                                   context: c,

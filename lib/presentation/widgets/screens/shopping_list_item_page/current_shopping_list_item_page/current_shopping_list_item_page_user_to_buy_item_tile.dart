@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/current_event/current_event_cubit.dart';
@@ -37,7 +38,7 @@ class CurrentShoppingListItemPageUserToBuyItemTile extends StatelessWidget {
                               .event.permissions?.updateShoppingListItem)
                       ? [
                           PopupMenuItem(
-                            child: const Text("ändern"),
+                            child: const Text("general.changeText").tr(),
                             onTap: () {
                               BlocProvider.of<CurrentShoppingListItemCubit>(
                                       context)
@@ -55,10 +56,10 @@ class CurrentShoppingListItemPageUserToBuyItemTile extends StatelessWidget {
                         ]
                       : null,
                   subtitle: const Text(
-                    "Benutzer der es kaufen soll",
+                    "shoppingListPage.userWhoShouldBuyTheItemText",
                     softWrap: true,
                     overflow: TextOverflow.ellipsis,
-                  ),
+                  ).tr(),
                 );
               },
             );
