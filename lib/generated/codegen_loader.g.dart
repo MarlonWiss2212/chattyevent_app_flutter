@@ -60,7 +60,7 @@ class CodegenLoader extends AssetLoader{
       "onlyAdminsText": "Nur Admins"
     },
     "request": {
-      "invitationEventText": "Der Benutzer {} hat Ihnen eine Einladung zur Event {} für das folgende Datum gesendet: {}",
+      "invitationEventText": "Der Benutzer {} hat Ihnen eine Einladung zum Event {} für das folgende Datum gesendet: {}",
       "invitationGroupchatText": "Der Benutzer {} hat Ihnen eine Einladung zum Gruppenchat {} gesendet"
     },
     "eventPermissionMenu": {
@@ -181,7 +181,7 @@ class CodegenLoader extends AssetLoader{
           "pastMembers": "Vergangene Mitglieder: {}"
         },
         "userList": {
-          "addUserToEvent": "Benutzer zur Event hinzufügen",
+          "addUserToEvent": "Benutzer zum Event hinzufügen",
           "membersThatWillBeThereCount": "Mitglieder, die dabei sein werden: {}",
           "changeChatUsernameText": "Chat-Benutzernamen ändern",
           "kickedText": "Rausgeworfen",
@@ -200,7 +200,7 @@ class CodegenLoader extends AssetLoader{
         },
         "leaveEventButton": {
           "leaveEventText": "Event verlassen",
-          "leaveEventDescriptionText": "Möchten Sie die Event wirklich verlassen?"
+          "leaveEventDescriptionText": "Möchten Sie das Event wirklich verlassen?"
         }
       },
       "infoTab": {
@@ -216,12 +216,12 @@ class CodegenLoader extends AssetLoader{
         "deleteButton": {
           "dialog": {
             "title": "Event löschen",
-            "message": "Möchten Sie die Event wirklich löschen?"
+            "message": "Möchten Sie das Event wirklich löschen?"
           }
         },
         "coverImageButton": {
-          "saveCoverImageDescription": "Möchten Sie das Bild als Titelbild für die Event verwenden?",
-          "deleteCoverImageDescription": "Möchten Sie das Titelbild der Event wirklich löschen?"
+          "saveCoverImageDescription": "Möchten Sie das Bild als Titelbild für das Event verwenden?",
+          "deleteCoverImageDescription": "Möchten Sie das Titelbild des Event wirklich löschen?"
         },
         "statusButton": {
           "leftText": "Status: ",
@@ -250,7 +250,7 @@ class CodegenLoader extends AssetLoader{
       "userWhoShouldBuyTheItemText": "Benutzer, der den Artikel kaufen sollte: {}"
     },
     "inviteUserPage": {
-      "title": "Benutzer zur Event hinzufügen"
+      "title": "Benutzer zum Event hinzufügen"
     },
     "updateLocationPage": {
       "title": "Standort aktualisieren"
@@ -328,7 +328,7 @@ class CodegenLoader extends AssetLoader{
         "text": "ChattyEvent ist die ultimative Lösung für Ihre Party- und Eventplanung! Unsere innovative App dreht sich um Gruppeninteraktion und macht es Ihnen leicht, mit Ihren Freunden, Ihrer Familie oder Ihren Kollegen zu kommunizieren. Ob Sie eine epische Party organisieren oder einfach in engerem Kontakt bleiben möchten, ChattyEvent ist der ideale Begleiter, um all Ihre Kontakte an einem zentralen Ort zusammenzuführen.\n\nChattyEvent zeichnet sich durch seine mühelose Benutzerfreundlichkeit aus und bietet alle Tools, die Sie für reibungslose Gruppenkommunikation und makellose Eventplanung benötigen. Warten Sie nicht länger - probieren Sie es noch heute aus und überzeugen Sie sich von der Leichtigkeit und Effizienz unserer App. Steigern Sie das Potenzial Ihrer Partyplanung und Eventorganisation mit ChattyEvent!\n\nViel Spaß mit ChattyEvent!"
       },
       "privateEventPage": {
-        "text": "ChattyEvents spezielle Partyplanungsfunktion ermöglicht es Ihnen, Events schnell und mühelos einzurichten und alle Details mühelos zu teilen. Sie können die Event mit einem Gruppenchat verknüpfen oder unabhängig planen. Diese innovative Funktion stellt sicher, dass jeder eingeladen ist und alle relevanten Details auf einen Blick sichtbar sind.\n\nUm die Eventplanung noch weiter zu vereinfachen, haben wir sogar eine praktische Einkaufsliste hinzugefügt. Dadurch können Sie klar festlegen, was jeder Teilnehmer zur Event beitragen soll. Dadurch wird vermieden, dass etwas vergessen wird, und Sie können alle Details perfekt im Voraus koordinieren."
+        "text": "ChattyEvents spezielle Partyplanungsfunktion ermöglicht es Ihnen, Events schnell und mühelos einzurichten und alle Details mühelos zu teilen. Sie können die Event mit einem Gruppenchat verknüpfen oder unabhängig planen. Diese innovative Funktion stellt sicher, dass jeder eingeladen ist und alle relevanten Details auf einen Blick sichtbar sind.\n\nUm die Eventplanung noch weiter zu vereinfachen, haben wir sogar eine praktische Einkaufsliste hinzugefügt. Dadurch können Sie klar festlegen, was jeder Teilnehmer zum Event beitragen soll. Dadurch wird vermieden, dass etwas vergessen wird, und Sie können alle Details perfekt im Voraus koordinieren."
       },
       "usersPage": {
         "text": "Ebenso bietet ChattyEvent ein ausgefeiltes Freundschaftssystem, mit dem Sie die Rechte Ihrer Freunde gezielt verwalten können. Das bedeutet, dass Sie genau auswählen können, welche Freunde Sie in eine Gruppe aufnehmen und wie weitreichend ihr Zugriff sein soll. Individuelle Berechtigungen können für jeden Freund nach Ihren Wünschen angepasst werden - für eine gut organisierte und geschützte Gruppendynamik."
@@ -353,12 +353,12 @@ class CodegenLoader extends AssetLoader{
         "lable": "Beschreibung (optional)"
       },
       "deleteAfterEndDateSwitch": {
-        "title": "Soll die Event automatisch nach dem Ende gelöscht werden"
+        "title": "Soll das Event automatisch nach dem Ende gelöscht werden"
       }
     }
   },
   "newPrivateEventPage": {
-    "title": "Neue private Event",
+    "title": "Neues privates event",
     "pages": {
       "typTab": {
         "title": "Typ"
@@ -383,10 +383,10 @@ class CodegenLoader extends AssetLoader{
       "eventTypTab": {
         "privateGroupchatEvent": {
           "title": "Privates Gruppenchat-Event",
-          "description": "Hier verknüpfen Sie eine Event mit einem Gruppenchat. Alle Benutzer, die sich im Gruppenchat befinden, werden automatisch eingeladen. Wenn ein Benutzer den Chat verlässt oder entfernt wird, geschieht dies auch in der Event."
+          "description": "Hier verknüpfen Sie ein Event mit einem Gruppenchat. Alle Benutzer, die sich im Gruppenchat befinden, werden automatisch eingeladen. Wenn ein Benutzer den Chat verlässt oder entfernt wird, geschieht dies auch im Event."
         },
         "normalPrivateEvent": {
-          "title": "Normale private Event",
+          "title": "Normales privates event",
           "description": "Hier können Sie Benutzer unabhängig von einem Chat einladen oder ausladen."
         }
       }
