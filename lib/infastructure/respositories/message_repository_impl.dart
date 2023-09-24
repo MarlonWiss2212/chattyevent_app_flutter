@@ -216,13 +216,15 @@ class MessageRepositoryImpl implements MessageRepository {
   }
 
   @override
-  Either<NotificationAlert, Stream<Either<NotificationAlert, MessageEntity>>>
+  Future<
+          Either<NotificationAlert,
+              Stream<Either<NotificationAlert, MessageEntity>>>>
       getMessagesRealtimeViaApi({
     required AddedMessageFilter addedMessageFilter,
-  }) {
+  }) async {
     try {
       final Stream<QueryResult<Object?>> subscription =
-          graphQlDatasource.subscription(
+          await graphQlDatasource.subscription(
         """
         subscription(\$addedMessageInput: AddedMessageInput!) {
           messageAdded(addedMessageInput: \$addedMessageInput) {

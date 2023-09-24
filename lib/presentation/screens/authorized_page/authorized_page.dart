@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:auto_route/auto_route.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/chat/chat_cubit.dart';
@@ -21,20 +20,8 @@ class AuthorizedPage extends StatefulWidget {
   State<AuthorizedPage> createState() => _AuthorizedPageState();
 }
 
-class _AuthorizedPageState extends State<AuthorizedPage>
-    with WidgetsBindingObserver {
+class _AuthorizedPageState extends State<AuthorizedPage> {
   final AdMobUseCases adMobUseCases = serviceLocator<AdMobUseCases>();
-
-  late Timer timer;
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    // TODO does this work?
-    if (state == AppLifecycleState.resumed) {
-      BlocProvider.of<AuthCubit>(context).refreshAuthToken();
-    }
-    super.didChangeAppLifecycleState(state);
-  }
 
   @override
   void initState() {
@@ -51,21 +38,7 @@ class _AuthorizedPageState extends State<AuthorizedPage>
       await adMobUseCases.showAdMobPopUpIfRequired();
     });
 
-    //TODO optimize this and only refresh when sending new request
-    timer = Timer.periodic(
-      const Duration(minutes: 60),
-      (timer) => BlocProvider.of<AuthCubit>(context).refreshAuthToken(
-        force: true,
-      ),
-    );
-
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    timer.cancel();
-    super.dispose();
   }
 
   @override

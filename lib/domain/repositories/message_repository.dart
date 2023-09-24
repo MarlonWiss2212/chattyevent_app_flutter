@@ -15,7 +15,9 @@ abstract class MessageRepository {
     required FindMessagesFilter findMessagesFilter,
     required LimitOffsetFilter limitOffsetFilter,
   });
-  Either<NotificationAlert, Stream<Either<NotificationAlert, MessageEntity>>>
+  Future<
+          Either<NotificationAlert,
+              Stream<Either<NotificationAlert, MessageEntity>>>>
       getMessagesRealtimeViaApi({
     required AddedMessageFilter addedMessageFilter,
   });

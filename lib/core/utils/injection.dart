@@ -430,6 +430,9 @@ class InjectionUtils {
     authenticatedLocator.registerLazySingleton<GraphQlDatasource>(
       () {
         return GraphQlDatasourceImpl(
+          refreshTokenBeforeRequestIfRequiredCallback: () {
+            return serviceLocator<AuthCubit>().refreshAuthToken();
+          },
           client: GraphQlUtils.getGraphQlClient(
             token: serviceLocator<AuthCubit>().state.token,
           ),

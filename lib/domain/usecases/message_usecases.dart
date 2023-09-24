@@ -30,7 +30,9 @@ class MessageUseCases {
     );
   }
 
-  Either<NotificationAlert, Stream<Either<NotificationAlert, MessageEntity>>>
+  Future<
+          Either<NotificationAlert,
+              Stream<Either<NotificationAlert, MessageEntity>>>>
       getMessagesRealtimeViaApi({
     required AddedMessageFilter addedMessageFilter,
   }) {
