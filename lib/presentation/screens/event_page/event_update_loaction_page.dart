@@ -138,7 +138,7 @@ class _EventUpdateLocationPageState extends State<EventUpdateLocationPage> {
               child: SizedBox(
                 width: double.infinity,
                 child: Button(
-                  text: "general.changeText",
+                  text: "general.changeText".tr(),
                   onTap: () {
                     BlocProvider.of<CurrentEventCubit>(context)
                         .updateCurrentEvent(

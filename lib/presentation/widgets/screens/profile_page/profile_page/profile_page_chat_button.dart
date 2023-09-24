@@ -13,18 +13,18 @@ class ProfilePageChatOrShoppingListButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AuthCubit, AuthState>(
-      buildWhen: (p, c) => p.currentUser.id != c.currentUser.id,
-      builder: (context, authState) {
-        return BlocBuilder<ProfilePageCubit, ProfilePageState>(
-          buildWhen: (previous, current) =>
-              previous.user.myUserRelationToOtherUser?.status !=
-              current.user.myUserRelationToOtherUser?.status,
-          builder: (context, state) {
-            if (authState.currentUser.id == state.user.authId) {
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                child: InkWell(
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      child: BlocBuilder<AuthCubit, AuthState>(
+        buildWhen: (p, c) => p.currentUser.id != c.currentUser.id,
+        builder: (context, authState) {
+          return BlocBuilder<ProfilePageCubit, ProfilePageState>(
+            buildWhen: (previous, current) =>
+                previous.user.myUserRelationToOtherUser?.status !=
+                current.user.myUserRelationToOtherUser?.status,
+            builder: (context, state) {
+              if (authState.currentUser.id == state.user.authId) {
+                return InkWell(
                   borderRadius: BorderRadius.circular(8),
                   onTap: () {
                     AutoRouter.of(context).push(
@@ -55,16 +55,13 @@ class ProfilePageChatOrShoppingListButton extends StatelessWidget {
                       ),
                     ),
                   ),
-                ),
-              );
-            }
-            if (state.user.myUserRelationToOtherUser?.status !=
-                UserRelationStatusEnum.follower) {
-              return const SizedBox();
-            }
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              child: InkWell(
+                );
+              }
+              if (state.user.myUserRelationToOtherUser?.status !=
+                  UserRelationStatusEnum.follower) {
+                return const SizedBox();
+              }
+              return InkWell(
                 borderRadius: BorderRadius.circular(8),
                 onTap: () => AutoRouter.of(context)
                     .push(ProfileChatRoute(userId: state.user.id)),
@@ -87,11 +84,11 @@ class ProfilePageChatOrShoppingListButton extends StatelessWidget {
                     ),
                   ),
                 ),
-              ),
-            );
-          },
-        );
-      },
+              );
+            },
+          );
+        },
+      ),
     );
   }
 }

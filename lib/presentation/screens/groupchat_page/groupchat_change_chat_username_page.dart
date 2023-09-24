@@ -72,7 +72,8 @@ class _GroupchatChangeUsernamePageState
                     .then(
                       (value) => AutoRouter.of(context).pop(),
                     ),
-                text: "groupchatPage.changeChatUsernamePage.deleteChatName",
+                text:
+                    "groupchatPage.changeChatUsernamePage.deleteChatName".tr(),
               ),
             ),
             const SizedBox(height: 8),
@@ -92,7 +93,7 @@ class _GroupchatChangeUsernamePageState
                     .then(
                       (value) => AutoRouter.of(context).pop(),
                     ),
-                text: "general.saveText",
+                text: "general.saveText".tr(),
               ),
             )
           ],

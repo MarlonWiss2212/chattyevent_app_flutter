@@ -91,7 +91,7 @@ class _UpdateEmailPageState extends State<UpdateEmailPage> {
                       verifyEmail: verifyEmailFieldController.text,
                     );
                   },
-                  text: "general.saveText",
+                  text: "general.saveText".tr(),
                 ),
               ),
               const SizedBox(height: 8),

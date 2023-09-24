@@ -35,6 +35,8 @@ class CodegenLoader extends AssetLoader{
     "defaultDataText": "default data",
     "openInMapsText": "Open in maps",
     "kickText": "Kick",
+    "chatText": "Chat",
+    "removeText": "Remove",
     "errorText": "Error",
     "noDescriptionText": "No description",
     "memberPermissionText": "Member Permissions",
@@ -46,6 +48,10 @@ class CodegenLoader extends AssetLoader{
     "notificationAlert": {
       "deleteImageText": "Delete image",
       "saveImageText": "Save image"
+    },
+    "amountIsntANumberAlert": {
+      "title": "Amount error",
+      "message": "The entered quantity must be a number"
     },
     "messageArea": {
       "noMessagesText": "No messages"
@@ -241,10 +247,6 @@ class CodegenLoader extends AssetLoader{
           "lable": "unit"
         }
       },
-      "amountIsntANumberAlert": {
-        "title": "Amount error",
-        "message": "The entered quantity must be a number"
-      },
       "userWhoShouldBuyTheItemText": "User that should buy the item: {}"
     },
     "inviteUserPage": {
@@ -291,9 +293,9 @@ class CodegenLoader extends AssetLoader{
       "futureConnectedEventsText": "Future connected events: "
     },
     "changeChatUsernamePage": {
-      "title": "Change chat Username",
+      "title": "change chat username",
       "newChatUsername": "New chat username",
-      "deleteChatName": "Delete chat Name"
+      "deleteChatName": "Delete chat name"
     },
     "futurePrivateEventsPage": {
       "title": "Future private events",
@@ -399,6 +401,10 @@ class CodegenLoader extends AssetLoader{
     }
   },
   "profilePage": {
+    "profileImageButton": {
+      "saveProfileImageDescription": "Do you want to take the image as profile image?",
+      "deleteProfileImageDescription": "Do you want to delete the profile image?"
+    },
     "userRelationsTabs": {
       "followRequestsTab": {
         "title": "Follow requests",
@@ -445,6 +451,15 @@ class CodegenLoader extends AssetLoader{
       "updateBirthdatePage": {
         "title": "Update Birthdate"
       },
+      "chipTitles": {
+        "noone": "Noone",
+        "followersExcept": "Followers Except",
+        "onlyTheseFollowers": "Only these followers"
+      },
+      "userListTexts": {
+        "noUsersCanBeSelected": "Keine User können gewählt werden",
+        "couldntLoadUsersDueToPermission": "Kann keine User laden, da die berechtigung nicht geladen werden konnte"
+      },
       "privateEventAddMePage": {
         "title": "Private event add permission"
       },
@@ -475,7 +490,26 @@ class CodegenLoader extends AssetLoader{
     }
   },
   "shoppingListPage": {
-    "noItemsNeededText": "No items that need to be bought"
+    "noItemsNeededText": "No items that need to be bought",
+    "changeUserText": "Change user",
+    "userWhoShouldBuyTheItemText": "User that should buy the item",
+    "unitText": " (unit)",
+    "boughtText": " bought",
+    "connectedEvent": {
+      "title": "Connected private event: ",
+      "connectedEventText": "Connected event"
+    },
+    "createBoughtAmount": {
+      "newBoughtAmountText": "New bought amount",
+      "boughtAmountIsntANumberAlert": {
+        "title": "Bought amount error",
+        "message": "The entered quantity must be a number"
+      }
+    },
+    "boughtAmountList": {
+      "noBoughtElementsFoundText": "No bought amounts",
+      "itemSubtitle": "Bought amount: {}"
+    }
   },
   "createUserPage": {
     "title": "Create User",
@@ -528,6 +562,8 @@ static const Map<String,dynamic> en = {
     "defaultDataText": "default data",
     "openInMapsText": "Open in maps",
     "kickText": "Kick",
+    "chatText": "Chat",
+    "removeText": "Remove",
     "errorText": "Error",
     "noDescriptionText": "No description",
     "memberPermissionText": "Member Permissions",
@@ -539,6 +575,10 @@ static const Map<String,dynamic> en = {
     "notificationAlert": {
       "deleteImageText": "Delete image",
       "saveImageText": "Save image"
+    },
+    "amountIsntANumberAlert": {
+      "title": "Amount error",
+      "message": "The entered quantity must be a number"
     },
     "messageArea": {
       "noMessagesText": "No messages"
@@ -734,10 +774,6 @@ static const Map<String,dynamic> en = {
           "lable": "unit"
         }
       },
-      "amountIsntANumberAlert": {
-        "title": "Amount error",
-        "message": "The entered quantity must be a number"
-      },
       "userWhoShouldBuyTheItemText": "User that should buy the item: {}"
     },
     "inviteUserPage": {
@@ -784,7 +820,7 @@ static const Map<String,dynamic> en = {
       "futureConnectedEventsText": "Future connected events: "
     },
     "changeChatUsernamePage": {
-      "title": "Change chat Username",
+      "title": "change chat username",
       "newChatUsername": "New chat username",
       "deleteChatName": "Delete chat Name"
     },
@@ -892,6 +928,10 @@ static const Map<String,dynamic> en = {
     }
   },
   "profilePage": {
+    "profileImageButton": {
+      "saveProfileImageDescription": "Do you want to take the image as profile image?",
+      "deleteProfileImageDescription": "Do you want to delete the profile image?"
+    },
     "userRelationsTabs": {
       "followRequestsTab": {
         "title": "Follow requests",
@@ -938,6 +978,15 @@ static const Map<String,dynamic> en = {
       "updateBirthdatePage": {
         "title": "Update Birthdate"
       },
+      "chipTitles": {
+        "noone": "Noone",
+        "followersExcept": "Followers Except",
+        "onlyTheseFollowers": "Only these followers"
+      },
+      "userListTexts": {
+        "noUsersCanBeSelected": "Keine User können gewählt werden",
+        "couldntLoadUsersDueToPermission": "Kann keine User laden, da die berechtigung nicht geladen werden konnte"
+      },
       "privateEventAddMePage": {
         "title": "Private event add permission"
       },
@@ -968,7 +1017,26 @@ static const Map<String,dynamic> en = {
     }
   },
   "shoppingListPage": {
-    "noItemsNeededText": "No items that need to be bought"
+    "noItemsNeededText": "No items that need to be bought",
+    "changeUserText": "Change user",
+    "userWhoShouldBuyTheItemText": "User that should buy the item",
+    "unitText": " (unit)",
+    "boughtText": " bought",
+    "connectedEvent": {
+      "title": "Connected private event: ",
+      "connectedEventText": "Connected event"
+    },
+    "createBoughtAmount": {
+      "newBoughtAmountText": "New bought amount",
+      "boughtAmountIsntANumberAlert": {
+        "title": "Bought amount error",
+        "message": "The entered quantity must be a number"
+      }
+    },
+    "boughtAmountList": {
+      "noBoughtElementsFoundText": "No bought amounts",
+      "itemSubtitle": "Bought amount: {}"
+    }
   },
   "createUserPage": {
     "title": "Create User",

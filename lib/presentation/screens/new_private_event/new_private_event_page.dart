@@ -128,7 +128,7 @@ class NewPrivateEventPage extends StatelessWidget {
                               BlocProvider.of<AddEventCubit>(context)
                                   .createEventViaApi();
                             },
-                            text: "general.createText",
+                            text: "general.createText".tr(),
                           ),
                         ),
                       ),

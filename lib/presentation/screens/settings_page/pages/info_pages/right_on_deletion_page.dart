@@ -61,9 +61,11 @@ class RightOnDeletionPage extends StatelessWidget {
                     builder: (c) {
                       return AcceptDeclineDialog(
                         title:
-                            "settingsPage.infoPage.rightOnDeletionPage.dialog.title",
+                            "settingsPage.infoPage.rightOnDeletionPage.dialog.title"
+                                .tr(),
                         message:
-                            "settingsPage.infoPage.rightOnDeletionPage.dialog.message",
+                            "settingsPage.infoPage.rightOnDeletionPage.dialog.message"
+                                .tr(),
                         onNoPress: () => Navigator.of(c).pop(),
                         onYesPress: () =>
                             BlocProvider.of<AuthCubit>(context).deleteUser(),

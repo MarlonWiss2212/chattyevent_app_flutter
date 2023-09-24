@@ -181,7 +181,7 @@ class AuthCubit extends Cubit<AuthState> {
           notificationAlert: NotificationAlert(
             title: "Email gesendet",
             message:
-                "Die Password zurücksetye E-Mail wurde an die folgende E-Mail gesendet: $newEmail",
+                "Die Password zurücksetze E-Mail wurde an die folgende E-Mail gesendet: $newEmail",
             snackbar: true,
           ),
         );

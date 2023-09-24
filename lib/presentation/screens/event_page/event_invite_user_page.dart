@@ -56,7 +56,7 @@ class _EventInviteUserPageState extends State<EventInviteUserPage> {
                     userId: user.id,
                   );
                 },
-                text: "general.addText",
+                text: "general.addText".tr(),
               ),
               filterUsers: (users) {
                 List<UserEntity> filteredUsers = [];

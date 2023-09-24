@@ -66,7 +66,7 @@ class _UpdatePasswordPageState extends State<UpdatePasswordPage> {
                       verifyPassword: verifyPasswordFieldController.text,
                     );
                   },
-                  text: "general.saveText",
+                  text: "general.saveText".tr(),
                 ),
               ),
               const SizedBox(height: 8),

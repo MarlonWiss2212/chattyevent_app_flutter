@@ -74,7 +74,7 @@ class EventCreateShoppingListItemPage extends StatelessWidget {
                                         context)
                                     .createShoppingListItemViaApi();
                               },
-                              text: "general.createText",
+                              text: "general.createText".tr(),
                             ),
                           ),
                         ],
