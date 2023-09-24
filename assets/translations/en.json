@@ -279,7 +279,7 @@
     "changeChatUsernamePage": {
       "title": "change chat username",
       "newChatUsername": "New chat username",
-      "deleteChatName": "Delete chat Name"
+      "deleteChatName": "Delete chat name"
     },
     "futurePrivateEventsPage": {
       "title": "Future private events",

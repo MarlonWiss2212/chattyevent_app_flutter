@@ -68,7 +68,7 @@ class PrivateEventTabInfoEventEndDate extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text(
-                    "eventPage.tabs.infoTab.eventDateText",
+                    "eventPage.tabs.infoTab.eventEndDateText",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                     ),
