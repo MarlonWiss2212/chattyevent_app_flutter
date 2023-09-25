@@ -116,7 +116,7 @@ class ChatMessageReactMessageContainer extends StatelessWidget {
                             const Icon(Ionicons.play),
                             const SizedBox(width: 2),
                             Text(
-                              "general.chatMessage.reactMessageContainer.audio",
+                              "general.chatMessage.reactMessageContainer.audioText",
                               overflow: TextOverflow.ellipsis,
                               style: Theme.of(context).textTheme.bodyMedium,
                             ).tr(),

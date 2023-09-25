@@ -7,6 +7,7 @@ class FindFollowersFilter {
   final bool? sortForPrivateEventAddMeAllowedUsersFirst;
   final bool? sortForGroupchatAddMeAllowedUsersFirst;
   final String? search;
+  final List<String>? notTheseUserIds;
 
   FindFollowersFilter({
     required this.targetUserId,
@@ -15,6 +16,7 @@ class FindFollowersFilter {
     this.filterForCalendarWatchIHaveTimeAllowedUsers,
     this.sortForCalendarWatchIHaveTimeAllowedUsersFirst,
     this.sortForPrivateEventAddMeAllowedUsersFirst,
+    this.notTheseUserIds,
     this.sortForGroupchatAddMeAllowedUsersFirst,
     this.search,
   });
@@ -24,6 +26,10 @@ class FindFollowersFilter {
 
     if (search != null) {
       map.addAll({"search": search});
+    }
+
+    if (notTheseUserIds != null) {
+      map.addAll({"notTheseUserIds": notTheseUserIds});
     }
 
     if (filterForPrivateEventAddMeAllowedUsers != null) {

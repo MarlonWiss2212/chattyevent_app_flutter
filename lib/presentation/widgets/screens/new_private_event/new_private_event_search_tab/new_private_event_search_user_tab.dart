@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/add_event/add_event_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/user_search/user_search_cubit.dart';
 import 'package:chattyevent_app_flutter/infastructure/dto/event/event_user/create_event_user_from_event_dto.dart';
-import 'package:chattyevent_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/user_list/selectable_user_grid_list.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/user_list/selected_user_list.dart';
 
@@ -19,7 +18,13 @@ class _NewPrivateEventSearchUserTabState
     extends State<NewPrivateEventSearchUserTab> {
   @override
   void initState() {
-    BlocProvider.of<UserSearchCubit>(context).getFollowedViaApi();
+    BlocProvider.of<UserSearchCubit>(context).getFollowedViaApi(
+      notTheseUserIds: BlocProvider.of<AddEventCubit>(context)
+          .state
+          .calendarTimeUsers
+          .map((e) => e.id)
+          .toList(),
+    );
     super.initState();
   }
 
@@ -42,28 +47,19 @@ class _NewPrivateEventSearchUserTabState
               ),
               Expanded(
                 child: SelectableUserGridList(
-                  filterUsers: (users) {
-                    List<UserEntity> filteredUsers = [];
-
-                    for (final user in users) {
-                      int foundIndex = state.privateEventUsersDto.indexWhere(
-                        (groupchatUser) => groupchatUser.user.id == user.id,
-                      );
-                      if (foundIndex == -1) {
-                        filteredUsers.add(user);
-                      }
-                    }
-                    return filteredUsers;
-                  },
                   reloadRequest: ({String? text}) {
                     BlocProvider.of<UserSearchCubit>(context).getFollowedViaApi(
                       search: text,
+                      notTheseUserIds:
+                          state.calendarTimeUsers.map((e) => e.id).toList(),
                     );
                   },
                   loadMoreRequest: ({String? text}) {
                     BlocProvider.of<UserSearchCubit>(context).getFollowedViaApi(
                       loadMore: true,
                       search: text,
+                      notTheseUserIds:
+                          state.calendarTimeUsers.map((e) => e.id).toList(),
                     );
                   },
                   showTextSearch: true,

@@ -235,7 +235,7 @@ class CodegenLoader extends AssetLoader{
       }
     },
     "createShoppingListItemPage": {
-      "title": "Neues Element",
+      "title": "Neuer Artikel",
       "fields": {
         "itemNameField": {
           "lable": "Artikelname"
@@ -247,7 +247,7 @@ class CodegenLoader extends AssetLoader{
           "lable": "Einheit"
         }
       },
-      "userWhoShouldBuyTheItemText": "Benutzer, der den Artikel kaufen sollte: {}"
+      "userWhoShouldBuyTheItemText": "Benutzer, der den Artikel kaufen soll: {}"
     },
     "inviteUserPage": {
       "title": "Benutzer zum Event hinzufügen"
@@ -432,10 +432,10 @@ class CodegenLoader extends AssetLoader{
       "darkModeAutomaticText": "Automatischer Dunkelmodus"
     },
     "privacyPage": {
-      "title": "Datenschutz & Sicherheit",
+      "title": "Privatsphäre",
       "personalDataTitle": "Persönliche Daten",
       "howOthersInteractWithYouText": "Wie dürfen andere mit Ihnen interagieren?",
-      "calenderTileMessage": "Follower können sehen, ob Sie Zeit für einen Termin haben",
+      "calenderTileMessage": "Follower können sehen, ob Sie Zeit an einem Termin haben",
       "updatePasswordPage": {
         "title": "Passwort aktualisieren",
         "newPasswordText": "Neues Passwort",
@@ -453,7 +453,7 @@ class CodegenLoader extends AssetLoader{
       },
       "chipTitles": {
         "noone": "Niemand",
-        "followersExcept": "Nur ausgewählte Follower",
+        "followersExcept": "Follower außer",
         "onlyTheseFollowers": "Nur diese Follower"
       },
       "userListTexts": {
@@ -461,13 +461,13 @@ class CodegenLoader extends AssetLoader{
         "couldntLoadUsersDueToPermission": "Benutzer können aufgrund fehlender Berechtigungen nicht geladen werden"
       },
       "privateEventAddMePage": {
-        "title": "Berechtigung zur Teilnahme an privaten Events"
+        "title": "Berechtigung zum Hinzufügen zu privaten events"
       },
       "groupchatAddMePage": {
-        "title": "Berechtigung zur Teilnahme an Gruppenchats"
+        "title": "Berechtigung zum Hinzufügen zu Gruppenchats"
       },
       "calendarWatchIHaveTimePage": {
-        "title": "Berechtigung zur Anzeige des Kalenders"
+        "title": "Berechtigung zum sehen des Kalenders"
       }
     },
     "infoPage": {
@@ -496,8 +496,8 @@ class CodegenLoader extends AssetLoader{
     "unitText": " (Einheit)",
     "boughtText": " gekauft",
     "connectedEvent": {
-      "title": "Verbundene private Event: ",
-      "connectedEventText": "Verbundene Event"
+      "title": "Verbundenes privates event: ",
+      "connectedEventText": "Verbundenes Event"
     },
     "createBoughtAmount": {
       "newBoughtAmountText": "Neue gekaufte Menge",

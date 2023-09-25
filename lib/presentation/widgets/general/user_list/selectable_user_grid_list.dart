@@ -10,9 +10,6 @@ import 'package:chattyevent_app_flutter/presentation/widgets/general/user_list/u
 class SelectableUserGridList extends StatefulWidget {
   final void Function(UserEntity user)? onUserPress;
 
-  //TODO: in future over api
-  final List<UserEntity> Function(List<UserEntity> users)? filterUsers;
-
   final void Function({String? text}) reloadRequest;
   final void Function({String? text}) loadMoreRequest;
   final Widget Function(UserEntity)? userButton;
@@ -21,7 +18,6 @@ class SelectableUserGridList extends StatefulWidget {
   const SelectableUserGridList({
     super.key,
     this.onUserPress,
-    this.filterUsers,
     this.userButton,
     required this.reloadRequest,
     required this.loadMoreRequest,
@@ -78,13 +74,9 @@ class _SelectableUserGridListState extends State<SelectableUserGridList> {
               );
             }
 
-            final filteredUsers = widget.filterUsers != null
-                ? widget.filterUsers!(state.users)
-                : state.users;
-
             return Expanded(
               child: UserGridList(
-                users: filteredUsers,
+                users: state.users,
                 onPress: widget.onUserPress,
                 button: widget.userButton,
                 loadMore: () {

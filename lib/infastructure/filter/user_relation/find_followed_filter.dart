@@ -3,10 +3,12 @@ class FindFollowedFilter {
   final bool? filterForPrivateEventAddMeAllowedUsers;
   final bool? filterForGroupchatAddMeAllowedUsers;
   final String? search;
+  final List<String>? notTheseUserIds;
 
   FindFollowedFilter({
     required this.requesterUserId,
     this.filterForGroupchatAddMeAllowedUsers,
+    this.notTheseUserIds,
     this.filterForPrivateEventAddMeAllowedUsers,
     this.search,
   });
@@ -16,6 +18,10 @@ class FindFollowedFilter {
 
     if (search != null) {
       map.addAll({"search": search});
+    }
+
+    if (notTheseUserIds != null) {
+      map.addAll({"notTheseUserIds": notTheseUserIds});
     }
 
     if (filterForPrivateEventAddMeAllowedUsers != null) {

@@ -70,6 +70,7 @@ class UserSearchCubit extends Cubit<UserSearchState> {
     bool? filterForPrivateEventAddMeAllowedUsers,
     bool? filterForGroupchatAddMeAllowedUsers,
     String? search,
+    List<String>? notTheseUserIds,
   }) async {
     emit(UserSearchState(
       status: loadMore
@@ -81,6 +82,7 @@ class UserSearchCubit extends Cubit<UserSearchState> {
     final Either<NotificationAlert, List<UserEntity>> userSearchOrFailure =
         await userRelationUseCases.getFollowedViaApi(
       findFollowedFilter: FindFollowedFilter(
+        notTheseUserIds: notTheseUserIds,
         requesterUserId: authCubit.state.currentUser.id,
         filterForPrivateEventAddMeAllowedUsers:
             filterForPrivateEventAddMeAllowedUsers,
@@ -118,6 +120,7 @@ class UserSearchCubit extends Cubit<UserSearchState> {
     bool? sortForCalendarWatchIHaveTimeAllowedUsersFirst,
     bool? filterForGroupchatAddMeAllowedUsers,
     String? search,
+    List<String>? notTheseUserIds,
   }) async {
     emit(UserSearchState(
       status: loadMore
@@ -132,6 +135,7 @@ class UserSearchCubit extends Cubit<UserSearchState> {
         targetUserId: authCubit.state.currentUser.id,
         filterForGroupchatAddMeAllowedUsers:
             filterForGroupchatAddMeAllowedUsers,
+        notTheseUserIds: notTheseUserIds,
         filterForPrivateEventAddMeAllowedUsers:
             filterForPrivateEventAddMeAllowedUsers,
         filterForCalendarWatchIHaveTimeAllowedUsers:
