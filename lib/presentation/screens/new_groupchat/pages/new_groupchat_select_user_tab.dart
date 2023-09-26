@@ -48,6 +48,7 @@ class _NewGroupchatSelectUserTabState extends State<NewGroupchatSelectUserTab> {
               Expanded(
                 child: SelectableUserGridList(
                   reloadRequest: ({String? text}) {
+                    print(state.groupchatUsers.map((e) => e.userId).toList());
                     BlocProvider.of<UserSearchCubit>(context).getFollowedViaApi(
                       search: text,
                       notTheseUserIds:

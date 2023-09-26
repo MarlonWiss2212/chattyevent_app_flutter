@@ -78,7 +78,7 @@ class CurrentEventState {
       eventUsers: [],
       eventLeftUsers: [],
       shoppingListItemStates: [],
-      messages: [],
+      messages: event.latestMessage != null ? [event.latestMessage!] : [],
       loadingMessages: false,
     );
   }

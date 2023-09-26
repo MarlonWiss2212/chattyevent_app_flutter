@@ -77,7 +77,12 @@ class _SelectableUserGridListState extends State<SelectableUserGridList> {
             return Expanded(
               child: UserGridList(
                 users: state.users,
-                onPress: widget.onUserPress,
+                onPress: (user) async {
+                  if (widget.onUserPress != null) {
+                    widget.onUserPress!(user);
+                  }
+                  widget.reloadRequest();
+                },
                 button: widget.userButton,
                 loadMore: () {
                   widget.loadMoreRequest();

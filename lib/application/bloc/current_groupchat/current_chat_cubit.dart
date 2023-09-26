@@ -289,15 +289,19 @@ class CurrentGroupchatCubit extends Cubit<CurrentGroupchatState> {
     groupchatOrFailure.fold(
       (alert) {
         notificationCubit.newAlert(notificationAlert: alert);
-        emit(CurrentGroupchatState.merge(
+        emit(
+          CurrentGroupchatState.merge(
             oldState: state,
             currentUserId: authCubit.state.currentUser.id,
-            loadingChat: false));
+            loadingChat: false,
+          ),
+        );
       },
       (groupchatUserOrRequest) {
         emit(CurrentGroupchatState.merge(
           oldState: state,
           currentUserId: authCubit.state.currentUser.id,
+          loadingChat: false,
           users: groupchatUserOrRequest.groupchatUser != null
               ? [...state.users, groupchatUserOrRequest.groupchatUser!]
               : null,

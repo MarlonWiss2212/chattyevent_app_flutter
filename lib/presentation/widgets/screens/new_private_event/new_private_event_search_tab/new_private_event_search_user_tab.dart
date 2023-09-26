@@ -33,8 +33,6 @@ class _NewPrivateEventSearchUserTabState
     return Padding(
       padding: const EdgeInsets.all(8),
       child: BlocBuilder<AddEventCubit, AddEventState>(
-        buildWhen: (p, c) =>
-            p.privateEventUsersDto.length != c.privateEventUsersDto.length,
         builder: (context, state) {
           return Column(
             children: [
@@ -50,16 +48,18 @@ class _NewPrivateEventSearchUserTabState
                   reloadRequest: ({String? text}) {
                     BlocProvider.of<UserSearchCubit>(context).getFollowedViaApi(
                       search: text,
-                      notTheseUserIds:
-                          state.calendarTimeUsers.map((e) => e.id).toList(),
+                      notTheseUserIds: state.privateEventUsersDto
+                          .map((e) => e.userId)
+                          .toList(),
                     );
                   },
                   loadMoreRequest: ({String? text}) {
                     BlocProvider.of<UserSearchCubit>(context).getFollowedViaApi(
                       loadMore: true,
                       search: text,
-                      notTheseUserIds:
-                          state.calendarTimeUsers.map((e) => e.id).toList(),
+                      notTheseUserIds: state.privateEventUsersDto
+                          .map((e) => e.userId)
+                          .toList(),
                     );
                   },
                   showTextSearch: true,

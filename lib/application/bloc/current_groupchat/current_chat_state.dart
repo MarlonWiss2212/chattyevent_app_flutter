@@ -60,7 +60,8 @@ class CurrentGroupchatState {
   }) {
     return CurrentGroupchatState(
       currentChat: groupchat,
-      messages: [],
+      messages:
+          groupchat.latestMessage != null ? [groupchat.latestMessage!] : [],
       loadingInvitations: false,
       invitations: [],
       currentUserIndex: -1,
