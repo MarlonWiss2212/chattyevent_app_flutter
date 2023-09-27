@@ -256,6 +256,7 @@ class AuthCubit extends Cubit<AuthState> {
   Future logout() async {
     emitState(status: AuthStateStatus.loading);
     await authUseCases.logout();
+    await InjectionUtils.resetAuthenticatedLocator();
     emit(AuthState(
       currentUser: UserEntity(authId: "", id: ""),
       status: AuthStateStatus.logout,

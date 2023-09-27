@@ -60,6 +60,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:get_it/get_it.dart';
+import 'package:graphql/client.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -317,9 +318,10 @@ class InjectionUtils {
     );
   }
 
-  static Future<void> reinitializeAuthenticatedLocator() async {
-    await authenticatedLocator.reset(dispose: true);
+  static Future<void> resetAuthenticatedLocator() async =>
+      await authenticatedLocator.reset(dispose: true);
 
+  static void initializeAuthenticatedLocator() {
     // cubits
     authenticatedLocator.registerLazySingleton<ChatCubit>(
       () => ChatCubit(
@@ -430,14 +432,20 @@ class InjectionUtils {
     authenticatedLocator.registerLazySingleton<GraphQlDatasource>(
       () {
         return GraphQlDatasourceImpl(
-          refreshTokenBeforeRequestIfRequiredCallback: () {
-            return serviceLocator<AuthCubit>().refreshAuthToken();
+          newClient: () async {
+            await serviceLocator<AuthCubit>().refreshAuthToken();
+            return authenticatedLocator.get<GraphQLClient>();
           },
-          client: GraphQlUtils.getGraphQlClient(
-            token: serviceLocator<AuthCubit>().state.token,
-          ),
+          client: authenticatedLocator(),
         );
       },
+    );
+
+    // client
+    authenticatedLocator.registerLazySingleton<GraphQLClient>(
+      () => GraphQlUtils.getGraphQlClient(
+        token: serviceLocator<AuthCubit>().state.token,
+      ),
     );
   }
 }

@@ -11,6 +11,7 @@ import 'package:chattyevent_app_flutter/domain/usecases/one_signal_use_cases.dar
 import 'package:chattyevent_app_flutter/presentation/router/router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:graphql/client.dart';
 
 @RoutePage()
 class AuthorizedPage extends StatefulWidget {
@@ -43,45 +44,34 @@ class _AuthorizedPageState extends State<AuthorizedPage> {
 
   @override
   Widget build(BuildContext context) {
+    InjectionUtils.initializeAuthenticatedLocator();
+    BlocProvider.of<AuthCubit>(context).userUseCases = authenticatedLocator();
+    BlocProvider.of<AuthCubit>(context).setCurrentUserFromFirebaseViaApi();
+
     return BlocListener<NotificationCubit, NotificationState>(
       listener: (context, state) async {
         state.listenerFunction(context);
       },
-      child: BlocBuilder<AuthCubit, AuthState>(
-        buildWhen: (p, c) => p.token != c.token,
-        builder: (context, state) {
-          return FutureBuilder(
-            future: InjectionUtils.reinitializeAuthenticatedLocator(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState != ConnectionState.done) {
-                return const Scaffold(
-                  body: Center(child: CircularProgressIndicator.adaptive()),
-                );
-              }
-
-              BlocProvider.of<AuthCubit>(context).userUseCases =
-                  authenticatedLocator();
-              BlocProvider.of<AuthCubit>(context)
-                  .setCurrentUserFromFirebaseViaApi();
-              return MultiBlocProvider(
-                providers: [
-                  BlocProvider(
-                    create: (_) => authenticatedLocator<MessageStreamCubit>(),
-                  ),
-                  BlocProvider(
-                    create: (_) => authenticatedLocator<RequestsCubit>(),
-                  ),
-                  BlocProvider(
-                    create: (_) => authenticatedLocator<HomeEventCubit>(),
-                  ),
-                  BlocProvider(
-                      create: (_) => authenticatedLocator<ChatCubit>()),
-                ],
-                child: const AutoRouter(),
-              );
-            },
-          );
+      child: BlocListener<AuthCubit, AuthState>(
+        listenWhen: (p, c) => p.token != c.token,
+        listener: (context, state) {
+          authenticatedLocator.resetLazySingleton<GraphQLClient>();
         },
+        child: MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (_) => authenticatedLocator<MessageStreamCubit>(),
+            ),
+            BlocProvider(
+              create: (_) => authenticatedLocator<RequestsCubit>(),
+            ),
+            BlocProvider(
+              create: (_) => authenticatedLocator<HomeEventCubit>(),
+            ),
+            BlocProvider(create: (_) => authenticatedLocator<ChatCubit>()),
+          ],
+          child: const AutoRouter(),
+        ),
       ),
     );
   }

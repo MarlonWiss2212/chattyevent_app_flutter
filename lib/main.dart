@@ -78,7 +78,7 @@ Future<void> main() async {
           builder: (context) {
             return BlocListener<AuthCubit, AuthState>(
               listenWhen: (p, c) => p.status != c.status,
-              listener: (context, state) {
+              listener: (context, state) async {
                 if (state.status == AuthStateStatus.loggedIn &&
                     state.token != null) {
                   serviceLocator<AppRouter>().root.replace(

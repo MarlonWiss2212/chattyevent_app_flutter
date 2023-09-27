@@ -16,11 +16,11 @@ abstract class GraphQlDatasource {
 }
 
 class GraphQlDatasourceImpl implements GraphQlDatasource {
-  final Future<void> Function() refreshTokenBeforeRequestIfRequiredCallback;
-  final GraphQLClient client;
+  final Future<GraphQLClient> Function() newClient;
+  GraphQLClient client;
 
   GraphQlDatasourceImpl({
-    required this.refreshTokenBeforeRequestIfRequiredCallback,
+    required this.newClient,
     required this.client,
   });
 
@@ -29,7 +29,7 @@ class GraphQlDatasourceImpl implements GraphQlDatasource {
     String options, {
     Map<String, dynamic> variables = const {},
   }) async {
-    await refreshTokenBeforeRequestIfRequiredCallback();
+    client = await newClient();
 
     return client.query(
       QueryOptions(
@@ -44,7 +44,7 @@ class GraphQlDatasourceImpl implements GraphQlDatasource {
     String options, {
     Map<String, dynamic> variables = const {},
   }) async {
-    await refreshTokenBeforeRequestIfRequiredCallback();
+    client = await newClient();
 
     return client.mutate(
       MutationOptions(
@@ -59,7 +59,7 @@ class GraphQlDatasourceImpl implements GraphQlDatasource {
     String options, {
     Map<String, dynamic> variables = const {},
   }) async {
-    await refreshTokenBeforeRequestIfRequiredCallback();
+    client = await newClient();
 
     return client.subscribe(
       SubscriptionOptions(
