@@ -8,7 +8,6 @@ import 'package:chattyevent_app_flutter/presentation/widgets/general/chat_messag
 import 'package:chattyevent_app_flutter/presentation/widgets/general/chat_message/chat_message_read_by_bottom_dialog.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:swipe_to/swipe_to.dart';
 import 'package:chattyevent_app_flutter/domain/entities/message/message_and_user_entity.dart';
@@ -93,18 +92,13 @@ class _ChatMessageContainerState extends State<ChatMessageContainer> {
                       amplitude: 80,
                     );
                     // ignore: use_build_context_synchronously
-                    showAnimatedDialog(
+                    showModalBottomSheet(
                       context: context,
-                      barrierDismissible: true,
-                      curve: Curves.fastOutSlowIn,
-                      animationType: DialogTransitionType.slideFromBottomFade,
-                      builder: (closeContext) {
-                        return ChatMessageReadByBottomDialog(
-                          closeContext: closeContext,
-                          users: widget.users,
-                          readByIds: widget.message.readBy,
-                        );
-                      },
+                      builder: (closeContext) => ChatMessageReadByBottomDialog(
+                        closeContext: closeContext,
+                        users: widget.users,
+                        readByIds: widget.message.readBy,
+                      ),
                     );
                   },
                   child: ChatMessageContainerMainContainer(

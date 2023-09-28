@@ -14,7 +14,7 @@ class NotificationAlert extends NotificationState {
   final bool snackbar;
   final String title;
   final String message;
-
+  final Color? snackBarColor;
   final OperationException? exception;
 
   @override
@@ -25,7 +25,8 @@ class NotificationAlert extends NotificationState {
           elevation: 6.0,
           behavior: SnackBarBehavior.floating,
           padding: const EdgeInsets.all(10),
-          backgroundColor: Theme.of(context).colorScheme.surface,
+          backgroundColor:
+              snackBarColor ?? Theme.of(context).colorScheme.surface,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
           content: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -56,6 +57,7 @@ class NotificationAlert extends NotificationState {
 
   NotificationAlert({
     this.snackbar = false,
+    this.snackBarColor,
     this.exception,
     required this.title,
     required this.message,

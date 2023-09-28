@@ -47,7 +47,15 @@ class CodegenLoader extends AssetLoader{
     },
     "notificationAlert": {
       "deleteImageText": "Bild löschen",
-      "saveImageText": "Bild speichern"
+      "saveImageText": "Bild speichern",
+      "internetIsThereAlert": {
+        "title": "Internetverbindung",
+        "message": "Sie sind wieder mit dem Internet verbunden"
+      },
+      "noInternetIsThereAlert": {
+        "title": "Keine Internetverbindung",
+        "message": "Sie haben die Verbindung zum Internet verloren"
+      }
     },
     "amountIsntANumberAlert": {
       "title": "Mengenfehler",
@@ -153,6 +161,9 @@ class CodegenLoader extends AssetLoader{
         "noEventsText": "Keine Events",
         "lastEvents": "Letzte Events",
         "nextEvents": "Kommende Events"
+      },
+      "mapPage": {
+        "title": "Map"
       },
       "searchPage": {
         "title": "Entdecken"
@@ -574,7 +585,15 @@ static const Map<String,dynamic> en = {
     },
     "notificationAlert": {
       "deleteImageText": "Delete image",
-      "saveImageText": "Save image"
+      "saveImageText": "Save image",
+      "internetIsThereAlert": {
+        "title": "Internet connection",
+        "message": "You are connected to the internet again"
+      },
+      "noInternetIsThereAlert": {
+        "title": "No internet connection",
+        "message": "You lost your connection to the internet"
+      }
     },
     "amountIsntANumberAlert": {
       "title": "Amount error",
@@ -680,6 +699,9 @@ static const Map<String,dynamic> en = {
         "noEventsText": "No events",
         "lastEvents": "Last events",
         "nextEvents": "Next events"
+      },
+      "mapPage": {
+        "title": "Map"
       },
       "searchPage": {
         "title": "Discover"

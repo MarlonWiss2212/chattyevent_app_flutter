@@ -31,7 +31,15 @@
     },
     "notificationAlert": {
       "deleteImageText": "Delete image",
-      "saveImageText": "Save image"
+      "saveImageText": "Save image",
+      "internetIsThereAlert": {
+        "title": "Internet connection",
+        "message": "You are connected to the internet again"
+      },
+      "noInternetIsThereAlert": {
+        "title": "No internet connection",
+        "message": "You lost your connection to the internet"
+      }
     },
     "amountIsntANumberAlert": {
       "title": "Amount error",
@@ -137,6 +145,9 @@
         "noEventsText": "No events",
         "lastEvents": "Last events",
         "nextEvents": "Next events"
+      },
+      "mapPage": {
+        "title": "Map"
       },
       "searchPage": {
         "title": "Discover"

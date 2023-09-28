@@ -30,6 +30,7 @@ class _HomePageState extends State<HomePage> {
       routes: [
         const HomeChatRoute(),
         const HomeEventRoute(),
+        const HomeMapRoute(),
         const HomeSearchRoute(),
         HomeProfileRoute(
           userId: BlocProvider.of<AuthCubit>(context).state.currentUser.id,
@@ -63,6 +64,12 @@ class _HomePageState extends State<HomePage> {
                           selectedIcon: const Icon(Icons.celebration),
                           label:
                               const Text('homePage.pages.eventPage.title').tr(),
+                        ),
+                        NavigationRailDestination(
+                          icon: const Icon(Ionicons.map_outline),
+                          selectedIcon: const Icon(Ionicons.map),
+                          label:
+                              const Text('homePage.pages.mapPage.title').tr(),
                         ),
                         NavigationRailDestination(
                           icon: const Icon(Ionicons.search_outline),
@@ -117,6 +124,11 @@ class _HomePageState extends State<HomePage> {
                       icon: const Icon(Icons.celebration_outlined),
                       activeIcon: const Icon(Icons.celebration),
                       label: 'homePage.pages.eventPage.title'.tr(),
+                    ),
+                    BottomNavigationBarItem(
+                      icon: const Icon(Ionicons.map_outline),
+                      activeIcon: const Icon(Ionicons.map),
+                      label: 'homePage.pages.mapPage.title'.tr(),
                     ),
                     BottomNavigationBarItem(
                       icon: const Icon(Ionicons.search_outline),

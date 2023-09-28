@@ -1,14 +1,18 @@
+import 'package:chattyevent_app_flutter/infastructure/filter/geocoding/geo_within_filter.dart';
+
 class FindEventsFilter {
   final String? groupchatTo;
   final bool? onlyFutureEvents;
   final bool? onlyPastEvents;
   final bool? sortNewestDateFirst;
+  final GeoWithinFilter? locationGeoWithin;
 
   FindEventsFilter({
     this.groupchatTo,
     this.onlyFutureEvents,
     this.onlyPastEvents,
     this.sortNewestDateFirst,
+    this.locationGeoWithin,
   });
 
   Map<dynamic, dynamic> toMap() {
@@ -18,6 +22,9 @@ class FindEventsFilter {
       map.addAll({"groupchatTo": groupchatTo});
     }
 
+    if (locationGeoWithin != null) {
+      map.addAll({"locationGeoWithin": locationGeoWithin!.toMap()});
+    }
     if (onlyFutureEvents != null) {
       map.addAll({"onlyFutureEvents": onlyFutureEvents});
     }

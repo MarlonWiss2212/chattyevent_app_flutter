@@ -87,6 +87,7 @@ dependencies:
   country_code_picker: ^3.0.0
   audio_session: ^0.1.16
   easy_localization: ^3.0.3
+  connectivity_plus: ^4.0.2
 
 dev_dependencies:
   flutter_test:

@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/chat/chat_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/home_page/home_event/home_event_cubit.dart';
+import 'package:chattyevent_app_flutter/application/bloc/home_page/home_map/home_map_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/message_stream/message_stream_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/requests/requests_cubit.dart';
@@ -67,6 +68,9 @@ class _AuthorizedPageState extends State<AuthorizedPage> {
             ),
             BlocProvider(
               create: (_) => authenticatedLocator<HomeEventCubit>(),
+            ),
+            BlocProvider(
+              create: (_) => authenticatedLocator<HomeMapCubit>(),
             ),
             BlocProvider(create: (_) => authenticatedLocator<ChatCubit>()),
           ],

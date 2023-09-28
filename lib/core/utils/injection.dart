@@ -1,7 +1,9 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:chattyevent_app_flutter/application/bloc/chat/chat_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/home_page/home_event/home_event_cubit.dart';
+import 'package:chattyevent_app_flutter/application/bloc/home_page/home_map/home_map_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/imprint/imprint_cubit.dart';
+import 'package:chattyevent_app_flutter/application/bloc/internet_connection/internet_connection_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/introduction/introduction_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/message_stream/message_stream_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
@@ -11,6 +13,7 @@ import 'package:chattyevent_app_flutter/domain/repositories/ad_mob_repository.da
 import 'package:chattyevent_app_flutter/domain/repositories/calendar_repository.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/chat_repository.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/device/audio_player_repository.dart';
+import 'package:chattyevent_app_flutter/domain/repositories/device/internet_connection_repository.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/device/microphone_repository.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/device/permission_repository.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/device/vibration_repository.dart';
@@ -25,6 +28,7 @@ import 'package:chattyevent_app_flutter/domain/usecases/audio_player_usecases.da
 import 'package:chattyevent_app_flutter/domain/usecases/calendar_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/chat_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/imprint_usecases.dart';
+import 'package:chattyevent_app_flutter/domain/usecases/internet_connection_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/introduction_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/launch_url_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/message_usecases.dart';
@@ -34,6 +38,7 @@ import 'package:chattyevent_app_flutter/domain/usecases/permission_usecases.dart
 import 'package:chattyevent_app_flutter/domain/usecases/request_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/vibration_usecases.dart';
 import 'package:chattyevent_app_flutter/infastructure/datasources/device/audio_player.dart';
+import 'package:chattyevent_app_flutter/infastructure/datasources/device/internet_connection.dart';
 import 'package:chattyevent_app_flutter/infastructure/datasources/device/microphone.dart';
 import 'package:chattyevent_app_flutter/infastructure/datasources/device/permission.dart';
 import 'package:chattyevent_app_flutter/infastructure/datasources/device/vibration.dart';
@@ -42,6 +47,7 @@ import 'package:chattyevent_app_flutter/infastructure/respositories/ad_mob_repos
 import 'package:chattyevent_app_flutter/infastructure/respositories/calendar_repository_impl.dart';
 import 'package:chattyevent_app_flutter/infastructure/respositories/chat_repsoitory_impl.dart';
 import 'package:chattyevent_app_flutter/infastructure/respositories/device/audio_player_repository_impl.dart';
+import 'package:chattyevent_app_flutter/infastructure/respositories/device/internet_connection_repository_impl.dart';
 import 'package:chattyevent_app_flutter/infastructure/respositories/device/introduction_repository_impl.dart';
 import 'package:chattyevent_app_flutter/infastructure/respositories/device/microphone_repository_impl.dart';
 import 'package:chattyevent_app_flutter/infastructure/respositories/device/permission_repository_impl.dart';
@@ -56,6 +62,7 @@ import 'package:chattyevent_app_flutter/presentation/router/auth_pages_guard.dar
 import 'package:chattyevent_app_flutter/presentation/router/create_user_page_guard.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.dart';
 import 'package:chattyevent_app_flutter/presentation/router/verify_email_page_guard.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_sound/flutter_sound.dart';
@@ -115,6 +122,12 @@ class InjectionUtils {
         notificationCubit: serviceLocator(),
       ),
     );
+    serviceLocator.registerLazySingleton<InternetConnectionCubit>(
+      () => InternetConnectionCubit(
+        internetConnectionUseCases: serviceLocator(),
+        notificationCubit: serviceLocator(),
+      ),
+    );
     serviceLocator.registerLazySingleton<NotificationCubit>(
       () => NotificationCubit(),
     );
@@ -128,6 +141,11 @@ class InjectionUtils {
     //usecases
     serviceLocator.registerFactory<AudioPlayerUseCases>(
       () => AudioPlayerUseCases(audioPlayerRepository: serviceLocator()),
+    );
+    serviceLocator.registerFactory<InternetConnectionUseCases>(
+      () => InternetConnectionUseCases(
+        internetConnectionRepository: serviceLocator(),
+      ),
     );
     serviceLocator.registerLazySingleton<PermissionUseCases>(
       () => PermissionUseCases(permissionRepository: serviceLocator()),
@@ -194,6 +212,11 @@ class InjectionUtils {
     serviceLocator.registerLazySingleton<AdMobRepository>(
       () => AdMobRepositoryImpl(),
     );
+    serviceLocator.registerLazySingleton<InternetConnectionRepository>(
+      () => InternetConnectionRepositoryImpl(
+        internetConnectionDatasource: serviceLocator(),
+      ),
+    );
     serviceLocator.registerLazySingleton<ImprintRepository>(
       () => ImprintRepositoryImpl(httpDatasource: serviceLocator()),
     );
@@ -231,6 +254,11 @@ class InjectionUtils {
 
     //datasources
     // non token datasource
+    serviceLocator.registerLazySingleton<InternetConnectionDatasource>(
+      () => InternetConnectionDatasourceImpl(
+        connectivity: Connectivity(),
+      ),
+    );
     serviceLocator.registerLazySingleton<HttpDatasource>(
       () => HttpDatasourceImpl(),
     );
@@ -333,6 +361,12 @@ class InjectionUtils {
     );
     authenticatedLocator.registerLazySingleton<HomeEventCubit>(
       () => HomeEventCubit(
+        eventUseCases: authenticatedLocator(),
+        notificationCubit: serviceLocator(),
+      ),
+    );
+    authenticatedLocator.registerLazySingleton<HomeMapCubit>(
+      () => HomeMapCubit(
         eventUseCases: authenticatedLocator(),
         notificationCubit: serviceLocator(),
       ),

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:chattyevent_app_flutter/application/bloc/imprint/imprint_cubit.dart';
+import 'package:chattyevent_app_flutter/application/bloc/internet_connection/internet_connection_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/introduction/introduction_cubit.dart';
 import 'package:chattyevent_app_flutter/core/utils/localization_utils.dart';
 import 'package:chattyevent_app_flutter/core/utils/material_theme_utils.dart';
@@ -71,28 +72,69 @@ Future<void> main() async {
         providers: [
           BlocProvider(create: (_) => serviceLocator<NotificationCubit>()),
           BlocProvider(create: (_) => serviceLocator<AuthCubit>()),
+          BlocProvider(
+            create: (_) => serviceLocator<InternetConnectionCubit>(),
+          ),
           BlocProvider(create: (_) => serviceLocator<ImprintCubit>()),
           BlocProvider(create: (_) => serviceLocator<IntroductionCubit>()),
         ],
         child: Builder(
           builder: (context) {
-            return BlocListener<AuthCubit, AuthState>(
-              listenWhen: (p, c) => p.status != c.status,
-              listener: (context, state) async {
-                if (state.status == AuthStateStatus.loggedIn &&
-                    state.token != null) {
-                  serviceLocator<AppRouter>().root.replace(
-                        const AuthorizedRoute(
-                          children: [HomeRoute()],
+            return MultiBlocListener(
+              listeners: [
+                BlocListener<AuthCubit, AuthState>(
+                  listenWhen: (p, c) => p.status != c.status,
+                  listener: (context, state) async {
+                    if (state.status == AuthStateStatus.loggedIn &&
+                        state.token != null) {
+                      serviceLocator<AppRouter>().root.replace(
+                            const AuthorizedRoute(
+                              children: [HomeRoute()],
+                            ),
+                          );
+                    } else if (state.status == AuthStateStatus.logout) {
+                      serviceLocator<AppRouter>().root.popUntilRoot();
+                      serviceLocator<AppRouter>().root.replace(
+                            const LoginRoute(),
+                          );
+                    }
+                  },
+                ),
+                BlocListener<InternetConnectionCubit, InternetConnectionState>(
+                  listenWhen: (p, c) => p.hasInternet != c.hasInternet,
+                  listener: (context, state) {
+                    if (state.hasInternet) {
+                      BlocProvider.of<NotificationCubit>(context).newAlert(
+                        notificationAlert: NotificationAlert(
+                          title:
+                              "general.notificationAlert.internetIsThereAlert.title"
+                                  .tr(),
+                          message:
+                              "general.notificationAlert.internetIsThereAlert.message"
+                                  .tr(),
+                          snackbar: true,
+                          snackBarColor:
+                              Theme.of(context).colorScheme.primaryContainer,
                         ),
                       );
-                } else if (state.status == AuthStateStatus.logout) {
-                  serviceLocator<AppRouter>().root.popUntilRoot();
-                  serviceLocator<AppRouter>().root.replace(
-                        const LoginRoute(),
+                    } else {
+                      BlocProvider.of<NotificationCubit>(context).newAlert(
+                        notificationAlert: NotificationAlert(
+                          title:
+                              "general.notificationAlert.noInternetIsThereAlert.title"
+                                  .tr(),
+                          message:
+                              "general.notificationAlert.noInternetIsThereAlert.message"
+                                  .tr(),
+                          snackbar: true,
+                          snackBarColor:
+                              Theme.of(context).colorScheme.errorContainer,
+                        ),
                       );
-                }
-              },
+                    }
+                  },
+                )
+              ],
               child: const App(),
             );
           },

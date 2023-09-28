@@ -1,5 +1,4 @@
 import 'package:chattyevent_app_flutter/domain/entities/user/user_entity.dart';
-import 'package:chattyevent_app_flutter/presentation/widgets/general/dialog/bottom_blurred_surface_dialog.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/user_list/user_list_tile.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +28,8 @@ class ChatMessageReadByBottomDialog extends StatelessWidget {
         ).tr(),
       );
     }
-    return BottomBlurredSurfaceDialog(
+    return Padding(
+      padding: const EdgeInsets.all(20),
       child: Column(
         children: [
           Center(
@@ -38,6 +38,7 @@ class ChatMessageReadByBottomDialog extends StatelessWidget {
               style: Theme.of(context).textTheme.titleLarge,
             ).tr(),
           ),
+          const SizedBox(height: 20),
           Flexible(
             child: ListView.builder(
               shrinkWrap: true,

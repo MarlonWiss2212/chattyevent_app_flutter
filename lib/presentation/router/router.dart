@@ -360,7 +360,8 @@ class AppRouter extends $AppRouter {
             initial: true,
           ),
           AutoRoute(
-              page: HomeEventRoute.page, guards: [authGuard], path: 'events'),
+              page: HomeEventRoute.page, guards: [authGuard], path: 'events'),AutoRoute(
+              page: HomeMapRoute.page, guards: [authGuard], path: 'maps'),
           AutoRoute(
               page: HomeSearchRoute.page, guards: [authGuard], path: 'search'),
           AutoRoute(
