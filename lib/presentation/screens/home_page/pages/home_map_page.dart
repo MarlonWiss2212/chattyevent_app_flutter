@@ -6,6 +6,7 @@ import 'package:chattyevent_app_flutter/core/utils/maps_helper.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/location_usecases.dart';
 import 'package:chattyevent_app_flutter/infastructure/filter/geocoding/geo_within_box_filter.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -73,30 +74,35 @@ class _HomeMapPageState extends State<HomeMapPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text("homePage.pages.mapPage.title").tr(),
+      ),
       body: BlocBuilder<HomeMapCubit, HomeMapState>(
         builder: (context, state) {
           final Set<Marker> markers = {};
 
           for (final event in state.events) {
             if (event.eventLocation?.geoJson?.coordinates != null) {
-              markers.add(Marker(
-                markerId: MarkerId(event.id),
-                position: LatLng(
-                  event.eventLocation!.geoJson!.coordinates![1],
-                  event.eventLocation!.geoJson!.coordinates![0],
-                ),
-                onTap: () {
-                  AutoRouter.of(context).push(
-                    EventWrapperRoute(
-                      eventId: event.id,
-                      eventStateToSet: CurrentEventState.fromEvent(
-                        event: event,
+              markers.add(
+                Marker(
+                  markerId: MarkerId(event.id),
+                  onTap: () {
+                    AutoRouter.of(context).push(
+                      EventWrapperRoute(
+                        eventId: event.id,
+                        eventStateToSet: CurrentEventState.fromEvent(
+                          event: event,
+                        ),
                       ),
-                    ),
-                  );
-                },
-                icon: BitmapDescriptor.defaultMarker,
-              ));
+                    );
+                  },
+                  position: LatLng(
+                    event.eventLocation!.geoJson!.coordinates![1],
+                    event.eventLocation!.geoJson!.coordinates![0],
+                  ),
+                  icon: BitmapDescriptor.defaultMarker,
+                ),
+              );
             }
           }
 

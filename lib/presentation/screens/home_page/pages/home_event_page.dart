@@ -21,7 +21,7 @@ class _HomeEventPageState extends State<HomeEventPage> {
   void initState() {
     super.initState();
     BlocProvider.of<HomeEventCubit>(context).getfutureEventsViaApi();
-    BlocProvider.of<HomeEventCubit>(context).getpastEventsViaApi();
+    BlocProvider.of<HomeEventCubit>(context).getPastEventsViaApi();
   }
 
   @override
@@ -59,7 +59,7 @@ class _HomeEventPageState extends State<HomeEventPage> {
                 BlocProvider.of<HomeEventCubit>(context)
                     .getfutureEventsViaApi(reload: true),
                 BlocProvider.of<HomeEventCubit>(context)
-                    .getpastEventsViaApi(reload: true),
+                    .getPastEventsViaApi(reload: true),
               ]);
             },
           ),

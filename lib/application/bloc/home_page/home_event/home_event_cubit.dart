@@ -142,7 +142,7 @@ class HomeEventCubit extends Cubit<HomeEventState> {
     );
   }
 
-  Future getpastEventsViaApi({
+  Future getPastEventsViaApi({
     bool reload = false,
   }) async {
     emitState(loadingPastEvents: true);
@@ -165,12 +165,12 @@ class HomeEventCubit extends Cubit<HomeEventState> {
         emitState(loadingPastEvents: false);
         notificationCubit.newAlert(notificationAlert: alert);
       },
-      (privateEvents) {
+      (pastEvents) {
         emitState(loadingPastEvents: false);
 
         if (reload) {
           emitState(
-            pastEvents: privateEvents
+            pastEvents: pastEvents
                 .map(
                   (e) => CurrentEventState.fromEvent(
                     event: e,
@@ -180,7 +180,7 @@ class HomeEventCubit extends Cubit<HomeEventState> {
           );
         } else {
           replaceOrAddMultiple(
-            eventStates: privateEvents
+            eventStates: pastEvents
                 .map(
                   (e) => CurrentEventState.fromEvent(
                     event: e,

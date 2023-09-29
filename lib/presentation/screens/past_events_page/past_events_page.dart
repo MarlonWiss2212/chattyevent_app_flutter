@@ -34,7 +34,7 @@ class PastEventsPage extends StatelessWidget {
           ),
           CupertinoSliverRefreshControl(
             onRefresh: () => BlocProvider.of<HomeEventCubit>(context)
-                .getpastEventsViaApi(reload: true),
+                .getPastEventsViaApi(reload: true),
           ),
           BlocBuilder<HomeEventCubit, HomeEventState>(
             builder: (context, state) {
@@ -81,7 +81,7 @@ class PastEventsPage extends StatelessWidget {
                       return IconButton(
                         onPressed: () {
                           BlocProvider.of<HomeEventCubit>(context)
-                              .getpastEventsViaApi();
+                              .getPastEventsViaApi();
                         },
                         icon: const Icon(Icons.add_circle),
                       );

@@ -163,7 +163,7 @@ class CodegenLoader extends AssetLoader{
         "nextEvents": "Kommende Events"
       },
       "mapPage": {
-        "title": "Map"
+        "title": "Event Map"
       },
       "searchPage": {
         "title": "Entdecken"
@@ -701,7 +701,7 @@ static const Map<String,dynamic> en = {
         "nextEvents": "Next events"
       },
       "mapPage": {
-        "title": "Map"
+        "title": "Event Map"
       },
       "searchPage": {
         "title": "Discover"

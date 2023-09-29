@@ -9,7 +9,7 @@ class EventHorizontalListSkeleton extends StatelessWidget {
   Widget build(BuildContext context) {
     // this is the function from the item to get the width
     double viewportFraction = min(
-      (300 / MediaQuery.of(context).size.width).toDouble(),
+      (350 / MediaQuery.of(context).size.width).toDouble(),
       1,
     );
     final width = (MediaQuery.of(context).size.width * viewportFraction) - 16;

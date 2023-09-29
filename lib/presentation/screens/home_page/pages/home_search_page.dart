@@ -60,7 +60,7 @@ class HomeSearchPage extends StatelessWidget {
                                 .getUsersViaApi(
                           findUsersFilter: FindUsersFilter(search: text),
                         ),
-                        hintText: "general.userSearch.userSearchText",
+                        hintText: "general.userSearch.userSearchText".tr(),
                       ),
                       const SizedBox(height: 8),
                       BlocBuilder<UserSearchCubit, UserSearchState>(
