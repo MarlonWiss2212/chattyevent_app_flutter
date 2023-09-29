@@ -1,4 +1,6 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:chattyevent_app_flutter/core/utils/injection.dart';
+import 'package:chattyevent_app_flutter/domain/usecases/ad_mob_usecases.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/chatty_event_logo_and_text_auth_pages.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/auth_pages/dataprotection_checkbox.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -19,8 +21,17 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final AdMobUseCases adMobUseCases = serviceLocator<AdMobUseCases>();
   final emailFieldController = TextEditingController();
   final passwordFieldController = TextEditingController();
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await adMobUseCases.showAdMobPopUpIfRequired();
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

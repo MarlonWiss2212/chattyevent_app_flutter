@@ -11,14 +11,26 @@ class EventHorizontalList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width - 16;
     final double viewportFraction = min(
-      (350 / MediaQuery.of(context).size.width).toDouble(),
+      (350 / screenWidth).toDouble(),
       1,
     );
     final pageController = PageController(viewportFraction: viewportFraction);
 
-    final width = (MediaQuery.of(context).size.width * viewportFraction) - 16;
+    final width = screenWidth * viewportFraction;
     final height = width / 4 * 3;
+
+    Widget addPadding({
+      required int index,
+      required BuildContext context,
+      required Widget child,
+    }) {
+      if (eventStates.length == index) {
+        return child;
+      }
+      return Padding(padding: const EdgeInsets.only(right: 10), child: child);
+    }
 
     return SizedBox(
       height: height,
@@ -26,26 +38,24 @@ class EventHorizontalList extends StatelessWidget {
         padEnds: false,
         physics: const PageScrollPhysics(),
         controller: pageController,
-        itemBuilder: (context, index) {
-          return FractionallySizedBox(
-            widthFactor: .95,
-            alignment: Alignment.centerLeft,
-            child: EventHorizontalListItem(
-              key: ObjectKey(eventStates[index].event),
-              event: eventStates[index].event,
-              width: width,
-              height: height,
-              onPress: () {
-                AutoRouter.of(context).push(
-                  EventWrapperRoute(
-                    eventStateToSet: eventStates[index],
-                    eventId: eventStates[index].event.id,
-                  ),
-                );
-              },
-            ),
-          );
-        },
+        itemBuilder: (context, index) => addPadding(
+          context: context,
+          index: index,
+          child: EventHorizontalListItem(
+            key: ObjectKey(eventStates[index].event),
+            event: eventStates[index].event,
+            width: width,
+            height: height,
+            onPress: () {
+              AutoRouter.of(context).push(
+                EventWrapperRoute(
+                  eventStateToSet: eventStates[index],
+                  eventId: eventStates[index].event.id,
+                ),
+              );
+            },
+          ),
+        ),
         itemCount: eventStates.length,
       ),
     );

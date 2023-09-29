@@ -11,7 +11,9 @@ class CreateUserPageGuard extends AutoRouteGuard {
     final currentUserOrFailure = authCubit.authUseCases.getFirebaseUser();
 
     currentUserOrFailure.fold(
-      (_) => resolver.redirect(const LoginRoute(), replace: true),
+      (_) {
+        resolver.redirect(const LoginRoute(), replace: true);
+      },
       (user) {
         if (user.emailVerified && authCubit.state.currentUser.id == "") {
           resolver.next(true);

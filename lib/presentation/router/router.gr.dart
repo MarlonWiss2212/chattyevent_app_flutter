@@ -70,101 +70,101 @@ import 'package:chattyevent_app_flutter/presentation/screens/home_page/pages/hom
 import 'package:chattyevent_app_flutter/presentation/screens/home_page/pages/home_event_page.dart'
     as _i26;
 import 'package:chattyevent_app_flutter/presentation/screens/home_page/pages/home_map_page.dart'
-    as _i74;
-import 'package:chattyevent_app_flutter/presentation/screens/home_page/pages/home_profile_page.dart'
     as _i27;
-import 'package:chattyevent_app_flutter/presentation/screens/home_page/pages/home_search_page.dart'
+import 'package:chattyevent_app_flutter/presentation/screens/home_page/pages/home_profile_page.dart'
     as _i28;
-import 'package:chattyevent_app_flutter/presentation/screens/introduction_pages/app_feature_introduction_pages/app_feature_introduction_pages_message_page.dart'
-    as _i32;
-import 'package:chattyevent_app_flutter/presentation/screens/introduction_pages/app_feature_introduction_pages/app_features_introduction_pages_groupchat_page.dart'
+import 'package:chattyevent_app_flutter/presentation/screens/home_page/pages/home_search_page.dart'
     as _i29;
-import 'package:chattyevent_app_flutter/presentation/screens/introduction_pages/app_feature_introduction_pages/app_features_introduction_pages_private_event_page.dart'
-    as _i30;
-import 'package:chattyevent_app_flutter/presentation/screens/introduction_pages/app_feature_introduction_pages/app_features_introduction_pages_users_page.dart'
-    as _i31;
-import 'package:chattyevent_app_flutter/presentation/screens/introduction_pages/app_permission_introduction_pages/app_permission_introduction_pages_microphone_page.dart'
+import 'package:chattyevent_app_flutter/presentation/screens/introduction_pages/app_feature_introduction_pages/app_feature_introduction_pages_message_page.dart'
     as _i33;
-import 'package:chattyevent_app_flutter/presentation/screens/introduction_pages/app_permission_introduction_pages/app_permission_introduction_pages_notification_page.dart'
+import 'package:chattyevent_app_flutter/presentation/screens/introduction_pages/app_feature_introduction_pages/app_features_introduction_pages_groupchat_page.dart'
+    as _i30;
+import 'package:chattyevent_app_flutter/presentation/screens/introduction_pages/app_feature_introduction_pages/app_features_introduction_pages_private_event_page.dart'
+    as _i31;
+import 'package:chattyevent_app_flutter/presentation/screens/introduction_pages/app_feature_introduction_pages/app_features_introduction_pages_users_page.dart'
+    as _i32;
+import 'package:chattyevent_app_flutter/presentation/screens/introduction_pages/app_permission_introduction_pages/app_permission_introduction_pages_microphone_page.dart'
     as _i34;
-import 'package:chattyevent_app_flutter/presentation/screens/login_page.dart'
+import 'package:chattyevent_app_flutter/presentation/screens/introduction_pages/app_permission_introduction_pages/app_permission_introduction_pages_notification_page.dart'
     as _i35;
-import 'package:chattyevent_app_flutter/presentation/screens/new_groupchat/new_groupchat_wrapper_page.dart'
+import 'package:chattyevent_app_flutter/presentation/screens/login_page.dart'
     as _i36;
-import 'package:chattyevent_app_flutter/presentation/screens/new_groupchat/pages/new_groupchat_details_tab.dart'
+import 'package:chattyevent_app_flutter/presentation/screens/new_groupchat/new_groupchat_wrapper_page.dart'
     as _i37;
-import 'package:chattyevent_app_flutter/presentation/screens/new_groupchat/pages/new_groupchat_permissions_tab.dart'
+import 'package:chattyevent_app_flutter/presentation/screens/new_groupchat/pages/new_groupchat_details_tab.dart'
     as _i38;
-import 'package:chattyevent_app_flutter/presentation/screens/new_groupchat/pages/new_groupchat_select_user_tab.dart'
+import 'package:chattyevent_app_flutter/presentation/screens/new_groupchat/pages/new_groupchat_permissions_tab.dart'
     as _i39;
-import 'package:chattyevent_app_flutter/presentation/screens/new_private_event/new_private_event_page.dart'
+import 'package:chattyevent_app_flutter/presentation/screens/new_groupchat/pages/new_groupchat_select_user_tab.dart'
     as _i40;
-import 'package:chattyevent_app_flutter/presentation/screens/new_private_event/pages/new_private_event_date_tab.dart'
+import 'package:chattyevent_app_flutter/presentation/screens/new_private_event/new_private_event_page.dart'
     as _i41;
-import 'package:chattyevent_app_flutter/presentation/screens/new_private_event/pages/new_private_event_details_tab.dart'
+import 'package:chattyevent_app_flutter/presentation/screens/new_private_event/pages/new_private_event_date_tab.dart'
     as _i42;
-import 'package:chattyevent_app_flutter/presentation/screens/new_private_event/pages/new_private_event_location_tab.dart'
+import 'package:chattyevent_app_flutter/presentation/screens/new_private_event/pages/new_private_event_details_tab.dart'
     as _i43;
-import 'package:chattyevent_app_flutter/presentation/screens/new_private_event/pages/new_private_event_permissions_tab.dart'
+import 'package:chattyevent_app_flutter/presentation/screens/new_private_event/pages/new_private_event_location_tab.dart'
     as _i44;
-import 'package:chattyevent_app_flutter/presentation/screens/new_private_event/pages/new_private_event_search_tab.dart'
+import 'package:chattyevent_app_flutter/presentation/screens/new_private_event/pages/new_private_event_permissions_tab.dart'
     as _i45;
-import 'package:chattyevent_app_flutter/presentation/screens/new_private_event/pages/new_private_event_type_tab.dart'
+import 'package:chattyevent_app_flutter/presentation/screens/new_private_event/pages/new_private_event_search_tab.dart'
     as _i46;
-import 'package:chattyevent_app_flutter/presentation/screens/past_events_page/past_events_page.dart'
+import 'package:chattyevent_app_flutter/presentation/screens/new_private_event/pages/new_private_event_type_tab.dart'
     as _i47;
-import 'package:chattyevent_app_flutter/presentation/screens/profile_page/profile_chat_page.dart'
+import 'package:chattyevent_app_flutter/presentation/screens/past_events_page/past_events_page.dart'
     as _i48;
-import 'package:chattyevent_app_flutter/presentation/screens/profile_page/profile_page.dart'
+import 'package:chattyevent_app_flutter/presentation/screens/profile_page/profile_chat_page.dart'
     as _i49;
-import 'package:chattyevent_app_flutter/presentation/screens/profile_page/profile_user_relations_tabs/profile_follow_requests_tab.dart'
-    as _i52;
-import 'package:chattyevent_app_flutter/presentation/screens/profile_page/profile_user_relations_tabs/profile_followed_tab.dart'
+import 'package:chattyevent_app_flutter/presentation/screens/profile_page/profile_page.dart'
     as _i50;
-import 'package:chattyevent_app_flutter/presentation/screens/profile_page/profile_user_relations_tabs/profile_follower_tab.dart'
-    as _i51;
-import 'package:chattyevent_app_flutter/presentation/screens/profile_page/profile_user_relations_tabs/profile_user_relations_tab_page.dart'
+import 'package:chattyevent_app_flutter/presentation/screens/profile_page/profile_user_relations_tabs/profile_follow_requests_tab.dart'
     as _i53;
-import 'package:chattyevent_app_flutter/presentation/screens/profile_page/profile_wrapper_page.dart'
+import 'package:chattyevent_app_flutter/presentation/screens/profile_page/profile_user_relations_tabs/profile_followed_tab.dart'
+    as _i51;
+import 'package:chattyevent_app_flutter/presentation/screens/profile_page/profile_user_relations_tabs/profile_follower_tab.dart'
+    as _i52;
+import 'package:chattyevent_app_flutter/presentation/screens/profile_page/profile_user_relations_tabs/profile_user_relations_tab_page.dart'
     as _i54;
-import 'package:chattyevent_app_flutter/presentation/screens/register_page.dart'
+import 'package:chattyevent_app_flutter/presentation/screens/profile_page/profile_wrapper_page.dart'
     as _i55;
-import 'package:chattyevent_app_flutter/presentation/screens/reset_password_page.dart'
+import 'package:chattyevent_app_flutter/presentation/screens/register_page.dart'
     as _i56;
-import 'package:chattyevent_app_flutter/presentation/screens/settings_page/pages/info_page.dart'
+import 'package:chattyevent_app_flutter/presentation/screens/reset_password_page.dart'
     as _i57;
-import 'package:chattyevent_app_flutter/presentation/screens/settings_page/pages/info_pages/right_on_deletion_page.dart'
+import 'package:chattyevent_app_flutter/presentation/screens/settings_page/pages/info_page.dart'
     as _i58;
-import 'package:chattyevent_app_flutter/presentation/screens/settings_page/pages/privacy_page.dart'
+import 'package:chattyevent_app_flutter/presentation/screens/settings_page/pages/info_pages/right_on_deletion_page.dart'
     as _i59;
-import 'package:chattyevent_app_flutter/presentation/screens/settings_page/pages/privacy_pages/calendar_watch_i_have_time_page.dart'
+import 'package:chattyevent_app_flutter/presentation/screens/settings_page/pages/privacy_page.dart'
     as _i60;
-import 'package:chattyevent_app_flutter/presentation/screens/settings_page/pages/privacy_pages/groupchat_add_me_page.dart'
+import 'package:chattyevent_app_flutter/presentation/screens/settings_page/pages/privacy_pages/calendar_watch_i_have_time_page.dart'
     as _i61;
-import 'package:chattyevent_app_flutter/presentation/screens/settings_page/pages/privacy_pages/private_event_add_me_page.dart'
+import 'package:chattyevent_app_flutter/presentation/screens/settings_page/pages/privacy_pages/groupchat_add_me_page.dart'
     as _i62;
-import 'package:chattyevent_app_flutter/presentation/screens/settings_page/pages/privacy_pages/update_birthdate_page.dart'
+import 'package:chattyevent_app_flutter/presentation/screens/settings_page/pages/privacy_pages/private_event_add_me_page.dart'
     as _i63;
-import 'package:chattyevent_app_flutter/presentation/screens/settings_page/pages/privacy_pages/update_email_page.dart'
+import 'package:chattyevent_app_flutter/presentation/screens/settings_page/pages/privacy_pages/update_birthdate_page.dart'
     as _i64;
-import 'package:chattyevent_app_flutter/presentation/screens/settings_page/pages/privacy_pages/update_password_page.dart'
+import 'package:chattyevent_app_flutter/presentation/screens/settings_page/pages/privacy_pages/update_email_page.dart'
     as _i65;
-import 'package:chattyevent_app_flutter/presentation/screens/settings_page/pages/theme_mode_page.dart'
+import 'package:chattyevent_app_flutter/presentation/screens/settings_page/pages/privacy_pages/update_password_page.dart'
     as _i66;
-import 'package:chattyevent_app_flutter/presentation/screens/settings_page/settings_page.dart'
+import 'package:chattyevent_app_flutter/presentation/screens/settings_page/pages/theme_mode_page.dart'
     as _i67;
-import 'package:chattyevent_app_flutter/presentation/screens/shopping_list_page/shopping_list_item_page/shopping_list_item_change_user_page.dart'
+import 'package:chattyevent_app_flutter/presentation/screens/settings_page/settings_page.dart'
     as _i68;
-import 'package:chattyevent_app_flutter/presentation/screens/shopping_list_page/shopping_list_item_page/shopping_list_item_page.dart'
+import 'package:chattyevent_app_flutter/presentation/screens/shopping_list_page/shopping_list_item_page/shopping_list_item_change_user_page.dart'
     as _i69;
-import 'package:chattyevent_app_flutter/presentation/screens/shopping_list_page/shopping_list_item_page/shopping_list_item_wrapper_page.dart'
+import 'package:chattyevent_app_flutter/presentation/screens/shopping_list_page/shopping_list_item_page/shopping_list_item_page.dart'
     as _i70;
-import 'package:chattyevent_app_flutter/presentation/screens/shopping_list_page/shopping_list_page.dart'
+import 'package:chattyevent_app_flutter/presentation/screens/shopping_list_page/shopping_list_item_page/shopping_list_item_wrapper_page.dart'
     as _i71;
-import 'package:chattyevent_app_flutter/presentation/screens/shopping_list_page/shopping_list_wrapper_page.dart'
+import 'package:chattyevent_app_flutter/presentation/screens/shopping_list_page/shopping_list_page.dart'
     as _i72;
-import 'package:chattyevent_app_flutter/presentation/screens/verify_email_page.dart'
+import 'package:chattyevent_app_flutter/presentation/screens/shopping_list_page/shopping_list_wrapper_page.dart'
     as _i73;
+import 'package:chattyevent_app_flutter/presentation/screens/verify_email_page.dart'
+    as _i74;
 import 'package:flutter/cupertino.dart' as _i79;
 import 'package:flutter/material.dart' as _i77;
 
@@ -384,6 +384,12 @@ abstract class $AppRouter extends _i75.RootStackRouter {
         child: const _i26.HomeEventPage(),
       );
     },
+    HomeMapRoute.name: (routeData) {
+      return _i75.AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const _i27.HomeMapPage(),
+      );
+    },
     HomeProfileRoute.name: (routeData) {
       final pathParams = routeData.inheritedPathParams;
       final args = routeData.argsAs<HomeProfileRouteArgs>(
@@ -391,7 +397,7 @@ abstract class $AppRouter extends _i75.RootStackRouter {
               HomeProfileRouteArgs(userId: pathParams.optString('id')));
       return _i75.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i27.HomeProfilePage(
+        child: _i28.HomeProfilePage(
           key: args.key,
           userId: args.userId,
         ),
@@ -400,121 +406,121 @@ abstract class $AppRouter extends _i75.RootStackRouter {
     HomeSearchRoute.name: (routeData) {
       return _i75.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i28.HomeSearchPage(),
+        child: const _i29.HomeSearchPage(),
       );
     },
     AppFeatureIntroductionRoutesGroupchatRoute.name: (routeData) {
       return _i75.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i29.AppFeatureIntroductionPagesGroupchatPage(),
+        child: const _i30.AppFeatureIntroductionPagesGroupchatPage(),
       );
     },
     AppFeatureIntroductionRoutesPrivateEventRoute.name: (routeData) {
       return _i75.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i30.AppFeatureIntroductionPagesPrivateEventPage(),
+        child: const _i31.AppFeatureIntroductionPagesPrivateEventPage(),
       );
     },
     AppFeatureIntroductionRoutesUsersRoute.name: (routeData) {
       return _i75.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i31.AppFeatureIntroductionPagesUsersPage(),
+        child: const _i32.AppFeatureIntroductionPagesUsersPage(),
       );
     },
     AppFeatureIntroductionRoutesMessageRoute.name: (routeData) {
       return _i75.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i32.AppFeatureIntroductionPagesMessagePage(),
+        child: const _i33.AppFeatureIntroductionPagesMessagePage(),
       );
     },
     AppPermissionIntroductionRoutesMicrophoneRoute.name: (routeData) {
       return _i75.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i33.AppPermissionIntroductionPagesMicrophonePage(),
+        child: const _i34.AppPermissionIntroductionPagesMicrophonePage(),
       );
     },
     AppPermissionIntroductionRoutesNotificationRoute.name: (routeData) {
       return _i75.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i34.AppPermissionIntroductionPagesNotificationPage(),
+        child: const _i35.AppPermissionIntroductionPagesNotificationPage(),
       );
     },
     LoginRoute.name: (routeData) {
       return _i75.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i35.LoginPage(),
+        child: const _i36.LoginPage(),
       );
     },
     NewGroupchatWrapperRoute.name: (routeData) {
       return _i75.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i36.NewGroupchatWrapperPage(),
+        child: const _i37.NewGroupchatWrapperPage(),
       );
     },
     NewGroupchatDetailsTab.name: (routeData) {
       return _i75.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i37.NewGroupchatDetailsTab(),
+        child: const _i38.NewGroupchatDetailsTab(),
       );
     },
     NewGroupchatPermissionsTab.name: (routeData) {
       return _i75.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i38.NewGroupchatPermissionsTab(),
+        child: const _i39.NewGroupchatPermissionsTab(),
       );
     },
     NewGroupchatSelectUserTab.name: (routeData) {
       return _i75.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i39.NewGroupchatSelectUserTab(),
+        child: const _i40.NewGroupchatSelectUserTab(),
       );
     },
     NewPrivateEventRoute.name: (routeData) {
       return _i75.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i40.NewPrivateEventPage(),
+        child: const _i41.NewPrivateEventPage(),
       );
     },
     NewPrivateEventDateTab.name: (routeData) {
       return _i75.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i41.NewPrivateEventDateTab(),
+        child: const _i42.NewPrivateEventDateTab(),
       );
     },
     NewPrivateEventDetailsTab.name: (routeData) {
       return _i75.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i42.NewPrivateEventDetailsTab(),
+        child: const _i43.NewPrivateEventDetailsTab(),
       );
     },
     NewPrivateEventLocationTab.name: (routeData) {
       return _i75.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i43.NewPrivateEventLocationTab(),
+        child: const _i44.NewPrivateEventLocationTab(),
       );
     },
     NewPrivateEventPermissionsTab.name: (routeData) {
       return _i75.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i44.NewPrivateEventPermissionsTab(),
+        child: const _i45.NewPrivateEventPermissionsTab(),
       );
     },
     NewPrivateEventSearchTab.name: (routeData) {
       return _i75.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i45.NewPrivateEventSearchTab(),
+        child: const _i46.NewPrivateEventSearchTab(),
       );
     },
     NewPrivateEventTypeTab.name: (routeData) {
       return _i75.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i46.NewPrivateEventTypeTab(),
+        child: const _i47.NewPrivateEventTypeTab(),
       );
     },
     PastEventsRoute.name: (routeData) {
       return _i75.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i47.PastEventsPage(),
+        child: const _i48.PastEventsPage(),
       );
     },
     ProfileChatRoute.name: (routeData) {
@@ -524,7 +530,7 @@ abstract class $AppRouter extends _i75.RootStackRouter {
               ProfileChatRouteArgs(userId: pathParams.getString('id')));
       return _i75.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i48.ProfileChatPage(
+        child: _i49.ProfileChatPage(
           userId: args.userId,
           key: args.key,
         ),
@@ -536,7 +542,7 @@ abstract class $AppRouter extends _i75.RootStackRouter {
           orElse: () => ProfileRouteArgs(userId: pathParams.optString('id')));
       return _i75.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i49.ProfilePage(
+        child: _i50.ProfilePage(
           key: args.key,
           userId: args.userId,
         ),
@@ -545,25 +551,25 @@ abstract class $AppRouter extends _i75.RootStackRouter {
     ProfileFollowedTab.name: (routeData) {
       return _i75.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i50.ProfileFollowedTab(),
+        child: const _i51.ProfileFollowedTab(),
       );
     },
     ProfileFollowerTab.name: (routeData) {
       return _i75.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i51.ProfileFollowerTab(),
+        child: const _i52.ProfileFollowerTab(),
       );
     },
     ProfileFollowRequestsTab.name: (routeData) {
       return _i75.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i52.ProfileFollowRequestsTab(),
+        child: const _i53.ProfileFollowRequestsTab(),
       );
     },
     ProfileUserRelationsTabRoute.name: (routeData) {
       return _i75.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i53.ProfileUserRelationsTabPage(),
+        child: const _i54.ProfileUserRelationsTabPage(),
       );
     },
     ProfileWrapperRoute.name: (routeData) {
@@ -573,7 +579,7 @@ abstract class $AppRouter extends _i75.RootStackRouter {
               ProfileWrapperRouteArgs(userId: pathParams.getString('id')));
       return _i75.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i54.ProfileWrapperPage(
+        child: _i55.ProfileWrapperPage(
           key: args.key,
           user: args.user,
           userId: args.userId,
@@ -583,7 +589,7 @@ abstract class $AppRouter extends _i75.RootStackRouter {
     RegisterRoute.name: (routeData) {
       return _i75.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i55.RegisterPage(),
+        child: const _i56.RegisterPage(),
       );
     },
     ResetPasswordRoute.name: (routeData) {
@@ -591,7 +597,7 @@ abstract class $AppRouter extends _i75.RootStackRouter {
           orElse: () => const ResetPasswordRouteArgs());
       return _i75.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i56.ResetPasswordPage(
+        child: _i57.ResetPasswordPage(
           key: args.key,
           standardEmail: args.standardEmail,
         ),
@@ -600,86 +606,86 @@ abstract class $AppRouter extends _i75.RootStackRouter {
     SettingsInfoRoute.name: (routeData) {
       return _i75.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i57.SettingsInfoPage(),
+        child: const _i58.SettingsInfoPage(),
       );
     },
     RightOnDeletionRoute.name: (routeData) {
       return _i75.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i58.RightOnDeletionPage(),
+        child: const _i59.RightOnDeletionPage(),
       );
     },
     SettingsPrivacyRoute.name: (routeData) {
       return _i75.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i59.SettingsPrivacyPage(),
+        child: const _i60.SettingsPrivacyPage(),
       );
     },
     CalendarWatchIHaveTimeRoute.name: (routeData) {
       return _i75.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i60.CalendarWatchIHaveTimePage(),
+        child: const _i61.CalendarWatchIHaveTimePage(),
       );
     },
     GroupchatAddMeRoute.name: (routeData) {
       return _i75.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i61.GroupchatAddMePage(),
+        child: const _i62.GroupchatAddMePage(),
       );
     },
     PrivateEventAddMeRoute.name: (routeData) {
       return _i75.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i62.PrivateEventAddMePage(),
+        child: const _i63.PrivateEventAddMePage(),
       );
     },
     UpdateBirthdateRoute.name: (routeData) {
       return _i75.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i63.UpdateBirthdatePage(),
+        child: const _i64.UpdateBirthdatePage(),
       );
     },
     UpdateEmailRoute.name: (routeData) {
       return _i75.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i64.UpdateEmailPage(),
+        child: const _i65.UpdateEmailPage(),
       );
     },
     UpdatePasswordRoute.name: (routeData) {
       return _i75.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i65.UpdatePasswordPage(),
+        child: const _i66.UpdatePasswordPage(),
       );
     },
     ThemeModeRoute.name: (routeData) {
       return _i75.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i66.ThemeModePage(),
+        child: const _i67.ThemeModePage(),
       );
     },
     SettingsRoute.name: (routeData) {
       return _i75.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i67.SettingsPage(),
+        child: const _i68.SettingsPage(),
       );
     },
     ShoppingListItemChangeUserRoute.name: (routeData) {
       return _i75.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i68.ShoppingListItemChangeUserPage(),
+        child: const _i69.ShoppingListItemChangeUserPage(),
       );
     },
     ShoppingListItemRoute.name: (routeData) {
       return _i75.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i69.ShoppingListItemPage(),
+        child: const _i70.ShoppingListItemPage(),
       );
     },
     ShoppingListItemWrapperRoute.name: (routeData) {
       final args = routeData.argsAs<ShoppingListItemWrapperRouteArgs>();
       return _i75.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i70.ShoppingListItemWrapperPage(
+        child: _i71.ShoppingListItemWrapperPage(
           key: args.key,
           shoppingListItemId: args.shoppingListItemId,
           currentShoppingListItemStateToSet:
@@ -690,25 +696,19 @@ abstract class $AppRouter extends _i75.RootStackRouter {
     ShoppingListRoute.name: (routeData) {
       return _i75.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i71.ShoppingListPage(),
+        child: const _i72.ShoppingListPage(),
       );
     },
     ShoppingListWrapperRoute.name: (routeData) {
       return _i75.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i72.ShoppingListWrapperPage(),
+        child: const _i73.ShoppingListWrapperPage(),
       );
     },
     VerifyEmailRoute.name: (routeData) {
       return _i75.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i73.VerifyEmailPage(),
-      );
-    },
-    HomeMapRoute.name: (routeData) {
-      return _i75.AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const _i74.HomeMapPage(),
+        child: const _i74.VerifyEmailPage(),
       );
     },
   };
@@ -1303,7 +1303,21 @@ class HomeEventRoute extends _i75.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i27.HomeProfilePage]
+/// [_i27.HomeMapPage]
+class HomeMapRoute extends _i75.PageRouteInfo<void> {
+  const HomeMapRoute({List<_i75.PageRouteInfo>? children})
+      : super(
+          HomeMapRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'HomeMapRoute';
+
+  static const _i75.PageInfo<void> page = _i75.PageInfo<void>(name);
+}
+
+/// generated route for
+/// [_i28.HomeProfilePage]
 class HomeProfileRoute extends _i75.PageRouteInfo<HomeProfileRouteArgs> {
   HomeProfileRoute({
     _i77.Key? key,
@@ -1342,7 +1356,7 @@ class HomeProfileRouteArgs {
 }
 
 /// generated route for
-/// [_i28.HomeSearchPage]
+/// [_i29.HomeSearchPage]
 class HomeSearchRoute extends _i75.PageRouteInfo<void> {
   const HomeSearchRoute({List<_i75.PageRouteInfo>? children})
       : super(
@@ -1356,7 +1370,7 @@ class HomeSearchRoute extends _i75.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i29.AppFeatureIntroductionPagesGroupchatPage]
+/// [_i30.AppFeatureIntroductionPagesGroupchatPage]
 class AppFeatureIntroductionRoutesGroupchatRoute
     extends _i75.PageRouteInfo<void> {
   const AppFeatureIntroductionRoutesGroupchatRoute(
@@ -1372,7 +1386,7 @@ class AppFeatureIntroductionRoutesGroupchatRoute
 }
 
 /// generated route for
-/// [_i30.AppFeatureIntroductionPagesPrivateEventPage]
+/// [_i31.AppFeatureIntroductionPagesPrivateEventPage]
 class AppFeatureIntroductionRoutesPrivateEventRoute
     extends _i75.PageRouteInfo<void> {
   const AppFeatureIntroductionRoutesPrivateEventRoute(
@@ -1388,7 +1402,7 @@ class AppFeatureIntroductionRoutesPrivateEventRoute
 }
 
 /// generated route for
-/// [_i31.AppFeatureIntroductionPagesUsersPage]
+/// [_i32.AppFeatureIntroductionPagesUsersPage]
 class AppFeatureIntroductionRoutesUsersRoute extends _i75.PageRouteInfo<void> {
   const AppFeatureIntroductionRoutesUsersRoute(
       {List<_i75.PageRouteInfo>? children})
@@ -1403,7 +1417,7 @@ class AppFeatureIntroductionRoutesUsersRoute extends _i75.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i32.AppFeatureIntroductionPagesMessagePage]
+/// [_i33.AppFeatureIntroductionPagesMessagePage]
 class AppFeatureIntroductionRoutesMessageRoute
     extends _i75.PageRouteInfo<void> {
   const AppFeatureIntroductionRoutesMessageRoute(
@@ -1419,7 +1433,7 @@ class AppFeatureIntroductionRoutesMessageRoute
 }
 
 /// generated route for
-/// [_i33.AppPermissionIntroductionPagesMicrophonePage]
+/// [_i34.AppPermissionIntroductionPagesMicrophonePage]
 class AppPermissionIntroductionRoutesMicrophoneRoute
     extends _i75.PageRouteInfo<void> {
   const AppPermissionIntroductionRoutesMicrophoneRoute(
@@ -1435,7 +1449,7 @@ class AppPermissionIntroductionRoutesMicrophoneRoute
 }
 
 /// generated route for
-/// [_i34.AppPermissionIntroductionPagesNotificationPage]
+/// [_i35.AppPermissionIntroductionPagesNotificationPage]
 class AppPermissionIntroductionRoutesNotificationRoute
     extends _i75.PageRouteInfo<void> {
   const AppPermissionIntroductionRoutesNotificationRoute(
@@ -1451,7 +1465,7 @@ class AppPermissionIntroductionRoutesNotificationRoute
 }
 
 /// generated route for
-/// [_i35.LoginPage]
+/// [_i36.LoginPage]
 class LoginRoute extends _i75.PageRouteInfo<void> {
   const LoginRoute({List<_i75.PageRouteInfo>? children})
       : super(
@@ -1465,7 +1479,7 @@ class LoginRoute extends _i75.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i36.NewGroupchatWrapperPage]
+/// [_i37.NewGroupchatWrapperPage]
 class NewGroupchatWrapperRoute extends _i75.PageRouteInfo<void> {
   const NewGroupchatWrapperRoute({List<_i75.PageRouteInfo>? children})
       : super(
@@ -1479,7 +1493,7 @@ class NewGroupchatWrapperRoute extends _i75.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i37.NewGroupchatDetailsTab]
+/// [_i38.NewGroupchatDetailsTab]
 class NewGroupchatDetailsTab extends _i75.PageRouteInfo<void> {
   const NewGroupchatDetailsTab({List<_i75.PageRouteInfo>? children})
       : super(
@@ -1493,7 +1507,7 @@ class NewGroupchatDetailsTab extends _i75.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i38.NewGroupchatPermissionsTab]
+/// [_i39.NewGroupchatPermissionsTab]
 class NewGroupchatPermissionsTab extends _i75.PageRouteInfo<void> {
   const NewGroupchatPermissionsTab({List<_i75.PageRouteInfo>? children})
       : super(
@@ -1507,7 +1521,7 @@ class NewGroupchatPermissionsTab extends _i75.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i39.NewGroupchatSelectUserTab]
+/// [_i40.NewGroupchatSelectUserTab]
 class NewGroupchatSelectUserTab extends _i75.PageRouteInfo<void> {
   const NewGroupchatSelectUserTab({List<_i75.PageRouteInfo>? children})
       : super(
@@ -1521,7 +1535,7 @@ class NewGroupchatSelectUserTab extends _i75.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i40.NewPrivateEventPage]
+/// [_i41.NewPrivateEventPage]
 class NewPrivateEventRoute extends _i75.PageRouteInfo<void> {
   const NewPrivateEventRoute({List<_i75.PageRouteInfo>? children})
       : super(
@@ -1535,7 +1549,7 @@ class NewPrivateEventRoute extends _i75.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i41.NewPrivateEventDateTab]
+/// [_i42.NewPrivateEventDateTab]
 class NewPrivateEventDateTab extends _i75.PageRouteInfo<void> {
   const NewPrivateEventDateTab({List<_i75.PageRouteInfo>? children})
       : super(
@@ -1549,7 +1563,7 @@ class NewPrivateEventDateTab extends _i75.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i42.NewPrivateEventDetailsTab]
+/// [_i43.NewPrivateEventDetailsTab]
 class NewPrivateEventDetailsTab extends _i75.PageRouteInfo<void> {
   const NewPrivateEventDetailsTab({List<_i75.PageRouteInfo>? children})
       : super(
@@ -1563,7 +1577,7 @@ class NewPrivateEventDetailsTab extends _i75.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i43.NewPrivateEventLocationTab]
+/// [_i44.NewPrivateEventLocationTab]
 class NewPrivateEventLocationTab extends _i75.PageRouteInfo<void> {
   const NewPrivateEventLocationTab({List<_i75.PageRouteInfo>? children})
       : super(
@@ -1577,7 +1591,7 @@ class NewPrivateEventLocationTab extends _i75.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i44.NewPrivateEventPermissionsTab]
+/// [_i45.NewPrivateEventPermissionsTab]
 class NewPrivateEventPermissionsTab extends _i75.PageRouteInfo<void> {
   const NewPrivateEventPermissionsTab({List<_i75.PageRouteInfo>? children})
       : super(
@@ -1591,7 +1605,7 @@ class NewPrivateEventPermissionsTab extends _i75.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i45.NewPrivateEventSearchTab]
+/// [_i46.NewPrivateEventSearchTab]
 class NewPrivateEventSearchTab extends _i75.PageRouteInfo<void> {
   const NewPrivateEventSearchTab({List<_i75.PageRouteInfo>? children})
       : super(
@@ -1605,7 +1619,7 @@ class NewPrivateEventSearchTab extends _i75.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i46.NewPrivateEventTypeTab]
+/// [_i47.NewPrivateEventTypeTab]
 class NewPrivateEventTypeTab extends _i75.PageRouteInfo<void> {
   const NewPrivateEventTypeTab({List<_i75.PageRouteInfo>? children})
       : super(
@@ -1619,7 +1633,7 @@ class NewPrivateEventTypeTab extends _i75.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i47.PastEventsPage]
+/// [_i48.PastEventsPage]
 class PastEventsRoute extends _i75.PageRouteInfo<void> {
   const PastEventsRoute({List<_i75.PageRouteInfo>? children})
       : super(
@@ -1633,7 +1647,7 @@ class PastEventsRoute extends _i75.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i48.ProfileChatPage]
+/// [_i49.ProfileChatPage]
 class ProfileChatRoute extends _i75.PageRouteInfo<ProfileChatRouteArgs> {
   ProfileChatRoute({
     required String userId,
@@ -1672,7 +1686,7 @@ class ProfileChatRouteArgs {
 }
 
 /// generated route for
-/// [_i49.ProfilePage]
+/// [_i50.ProfilePage]
 class ProfileRoute extends _i75.PageRouteInfo<ProfileRouteArgs> {
   ProfileRoute({
     _i79.Key? key,
@@ -1711,7 +1725,7 @@ class ProfileRouteArgs {
 }
 
 /// generated route for
-/// [_i50.ProfileFollowedTab]
+/// [_i51.ProfileFollowedTab]
 class ProfileFollowedTab extends _i75.PageRouteInfo<void> {
   const ProfileFollowedTab({List<_i75.PageRouteInfo>? children})
       : super(
@@ -1725,7 +1739,7 @@ class ProfileFollowedTab extends _i75.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i51.ProfileFollowerTab]
+/// [_i52.ProfileFollowerTab]
 class ProfileFollowerTab extends _i75.PageRouteInfo<void> {
   const ProfileFollowerTab({List<_i75.PageRouteInfo>? children})
       : super(
@@ -1739,7 +1753,7 @@ class ProfileFollowerTab extends _i75.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i52.ProfileFollowRequestsTab]
+/// [_i53.ProfileFollowRequestsTab]
 class ProfileFollowRequestsTab extends _i75.PageRouteInfo<void> {
   const ProfileFollowRequestsTab({List<_i75.PageRouteInfo>? children})
       : super(
@@ -1753,7 +1767,7 @@ class ProfileFollowRequestsTab extends _i75.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i53.ProfileUserRelationsTabPage]
+/// [_i54.ProfileUserRelationsTabPage]
 class ProfileUserRelationsTabRoute extends _i75.PageRouteInfo<void> {
   const ProfileUserRelationsTabRoute({List<_i75.PageRouteInfo>? children})
       : super(
@@ -1767,7 +1781,7 @@ class ProfileUserRelationsTabRoute extends _i75.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i54.ProfileWrapperPage]
+/// [_i55.ProfileWrapperPage]
 class ProfileWrapperRoute extends _i75.PageRouteInfo<ProfileWrapperRouteArgs> {
   ProfileWrapperRoute({
     _i77.Key? key,
@@ -1811,7 +1825,7 @@ class ProfileWrapperRouteArgs {
 }
 
 /// generated route for
-/// [_i55.RegisterPage]
+/// [_i56.RegisterPage]
 class RegisterRoute extends _i75.PageRouteInfo<void> {
   const RegisterRoute({List<_i75.PageRouteInfo>? children})
       : super(
@@ -1825,7 +1839,7 @@ class RegisterRoute extends _i75.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i56.ResetPasswordPage]
+/// [_i57.ResetPasswordPage]
 class ResetPasswordRoute extends _i75.PageRouteInfo<ResetPasswordRouteArgs> {
   ResetPasswordRoute({
     _i77.Key? key,
@@ -1863,7 +1877,7 @@ class ResetPasswordRouteArgs {
 }
 
 /// generated route for
-/// [_i57.SettingsInfoPage]
+/// [_i58.SettingsInfoPage]
 class SettingsInfoRoute extends _i75.PageRouteInfo<void> {
   const SettingsInfoRoute({List<_i75.PageRouteInfo>? children})
       : super(
@@ -1877,7 +1891,7 @@ class SettingsInfoRoute extends _i75.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i58.RightOnDeletionPage]
+/// [_i59.RightOnDeletionPage]
 class RightOnDeletionRoute extends _i75.PageRouteInfo<void> {
   const RightOnDeletionRoute({List<_i75.PageRouteInfo>? children})
       : super(
@@ -1891,7 +1905,7 @@ class RightOnDeletionRoute extends _i75.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i59.SettingsPrivacyPage]
+/// [_i60.SettingsPrivacyPage]
 class SettingsPrivacyRoute extends _i75.PageRouteInfo<void> {
   const SettingsPrivacyRoute({List<_i75.PageRouteInfo>? children})
       : super(
@@ -1905,7 +1919,7 @@ class SettingsPrivacyRoute extends _i75.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i60.CalendarWatchIHaveTimePage]
+/// [_i61.CalendarWatchIHaveTimePage]
 class CalendarWatchIHaveTimeRoute extends _i75.PageRouteInfo<void> {
   const CalendarWatchIHaveTimeRoute({List<_i75.PageRouteInfo>? children})
       : super(
@@ -1919,7 +1933,7 @@ class CalendarWatchIHaveTimeRoute extends _i75.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i61.GroupchatAddMePage]
+/// [_i62.GroupchatAddMePage]
 class GroupchatAddMeRoute extends _i75.PageRouteInfo<void> {
   const GroupchatAddMeRoute({List<_i75.PageRouteInfo>? children})
       : super(
@@ -1933,7 +1947,7 @@ class GroupchatAddMeRoute extends _i75.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i62.PrivateEventAddMePage]
+/// [_i63.PrivateEventAddMePage]
 class PrivateEventAddMeRoute extends _i75.PageRouteInfo<void> {
   const PrivateEventAddMeRoute({List<_i75.PageRouteInfo>? children})
       : super(
@@ -1947,7 +1961,7 @@ class PrivateEventAddMeRoute extends _i75.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i63.UpdateBirthdatePage]
+/// [_i64.UpdateBirthdatePage]
 class UpdateBirthdateRoute extends _i75.PageRouteInfo<void> {
   const UpdateBirthdateRoute({List<_i75.PageRouteInfo>? children})
       : super(
@@ -1961,7 +1975,7 @@ class UpdateBirthdateRoute extends _i75.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i64.UpdateEmailPage]
+/// [_i65.UpdateEmailPage]
 class UpdateEmailRoute extends _i75.PageRouteInfo<void> {
   const UpdateEmailRoute({List<_i75.PageRouteInfo>? children})
       : super(
@@ -1975,7 +1989,7 @@ class UpdateEmailRoute extends _i75.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i65.UpdatePasswordPage]
+/// [_i66.UpdatePasswordPage]
 class UpdatePasswordRoute extends _i75.PageRouteInfo<void> {
   const UpdatePasswordRoute({List<_i75.PageRouteInfo>? children})
       : super(
@@ -1989,7 +2003,7 @@ class UpdatePasswordRoute extends _i75.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i66.ThemeModePage]
+/// [_i67.ThemeModePage]
 class ThemeModeRoute extends _i75.PageRouteInfo<void> {
   const ThemeModeRoute({List<_i75.PageRouteInfo>? children})
       : super(
@@ -2003,7 +2017,7 @@ class ThemeModeRoute extends _i75.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i67.SettingsPage]
+/// [_i68.SettingsPage]
 class SettingsRoute extends _i75.PageRouteInfo<void> {
   const SettingsRoute({List<_i75.PageRouteInfo>? children})
       : super(
@@ -2017,7 +2031,7 @@ class SettingsRoute extends _i75.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i68.ShoppingListItemChangeUserPage]
+/// [_i69.ShoppingListItemChangeUserPage]
 class ShoppingListItemChangeUserRoute extends _i75.PageRouteInfo<void> {
   const ShoppingListItemChangeUserRoute({List<_i75.PageRouteInfo>? children})
       : super(
@@ -2031,7 +2045,7 @@ class ShoppingListItemChangeUserRoute extends _i75.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i69.ShoppingListItemPage]
+/// [_i70.ShoppingListItemPage]
 class ShoppingListItemRoute extends _i75.PageRouteInfo<void> {
   const ShoppingListItemRoute({List<_i75.PageRouteInfo>? children})
       : super(
@@ -2045,7 +2059,7 @@ class ShoppingListItemRoute extends _i75.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i70.ShoppingListItemWrapperPage]
+/// [_i71.ShoppingListItemWrapperPage]
 class ShoppingListItemWrapperRoute
     extends _i75.PageRouteInfo<ShoppingListItemWrapperRouteArgs> {
   ShoppingListItemWrapperRoute({
@@ -2092,7 +2106,7 @@ class ShoppingListItemWrapperRouteArgs {
 }
 
 /// generated route for
-/// [_i71.ShoppingListPage]
+/// [_i72.ShoppingListPage]
 class ShoppingListRoute extends _i75.PageRouteInfo<void> {
   const ShoppingListRoute({List<_i75.PageRouteInfo>? children})
       : super(
@@ -2106,7 +2120,7 @@ class ShoppingListRoute extends _i75.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i72.ShoppingListWrapperPage]
+/// [_i73.ShoppingListWrapperPage]
 class ShoppingListWrapperRoute extends _i75.PageRouteInfo<void> {
   const ShoppingListWrapperRoute({List<_i75.PageRouteInfo>? children})
       : super(
@@ -2120,7 +2134,7 @@ class ShoppingListWrapperRoute extends _i75.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i73.VerifyEmailPage]
+/// [_i74.VerifyEmailPage]
 class VerifyEmailRoute extends _i75.PageRouteInfo<void> {
   const VerifyEmailRoute({List<_i75.PageRouteInfo>? children})
       : super(
@@ -2129,20 +2143,6 @@ class VerifyEmailRoute extends _i75.PageRouteInfo<void> {
         );
 
   static const String name = 'VerifyEmailRoute';
-
-  static const _i75.PageInfo<void> page = _i75.PageInfo<void>(name);
-}
-
-/// generated route for
-/// [_i74.HomeMapPage]
-class HomeMapRoute extends _i75.PageRouteInfo<void> {
-  const HomeMapRoute({List<_i75.PageRouteInfo>? children})
-      : super(
-          HomeMapRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'HomeMapRoute';
 
   static const _i75.PageInfo<void> page = _i75.PageInfo<void>(name);
 }

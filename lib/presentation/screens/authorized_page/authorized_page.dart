@@ -7,7 +7,6 @@ import 'package:chattyevent_app_flutter/application/bloc/message_stream/message_
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/requests/requests_cubit.dart';
 import 'package:chattyevent_app_flutter/core/utils/injection.dart';
-import 'package:chattyevent_app_flutter/domain/usecases/ad_mob_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/one_signal_use_cases.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.dart';
 import 'package:flutter/material.dart';
@@ -23,10 +22,9 @@ class AuthorizedPage extends StatefulWidget {
 }
 
 class _AuthorizedPageState extends State<AuthorizedPage> {
-  final AdMobUseCases adMobUseCases = serviceLocator<AdMobUseCases>();
-
   @override
   void initState() {
+    super.initState();
     final OneSignalUseCases oneSignalUseCases =
         serviceLocator<OneSignalUseCases>();
     oneSignalUseCases.setNotificationReceivedHandler(
@@ -35,12 +33,6 @@ class _AuthorizedPageState extends State<AuthorizedPage> {
     oneSignalUseCases.setNotificationOpenedHandler(
       appRouter: serviceLocator<AppRouter>(),
     );
-
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await adMobUseCases.showAdMobPopUpIfRequired();
-    });
-
-    super.initState();
   }
 
   @override

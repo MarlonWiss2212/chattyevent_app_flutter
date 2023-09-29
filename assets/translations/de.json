@@ -128,8 +128,8 @@
   "authPages": {
     "dataprotectionBox": {
       "text1": "Ich habe die ",
-      "text2": " gelesen und stimme den ",
-      "text3": " zu",
+      "text2": " und die ",
+      "text3": " gelesen und stimme ihnen zu",
       "privacyPolicyText": "Datenschutzrichtlinien",
       "termsOfUseText": "Nutzungsbedingungen"
     }

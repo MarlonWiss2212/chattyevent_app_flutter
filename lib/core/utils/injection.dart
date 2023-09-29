@@ -58,7 +58,8 @@ import 'package:chattyevent_app_flutter/infastructure/respositories/message_repo
 import 'package:chattyevent_app_flutter/infastructure/respositories/one_signal_repository_impl.dart';
 import 'package:chattyevent_app_flutter/infastructure/respositories/request_repository_impl.dart';
 import 'package:chattyevent_app_flutter/presentation/router/auth_guard.dart';
-import 'package:chattyevent_app_flutter/presentation/router/auth_pages_guard.dart';
+import 'package:chattyevent_app_flutter/presentation/router/authorized_guard.dart';
+import 'package:chattyevent_app_flutter/presentation/router/not_authenticated_pages_guard.dart';
 import 'package:chattyevent_app_flutter/presentation/router/create_user_page_guard.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.dart';
 import 'package:chattyevent_app_flutter/presentation/router/verify_email_page_guard.dart';
@@ -330,7 +331,7 @@ class InjectionUtils {
     // router
     serviceLocator.registerLazySingleton<AppRouter>(
       () => AppRouter(
-        authPagesGuard: AuthPagesGuard(
+        notAuthenticatedPagesGuard: NotAuthenticatedPagesGuard(
           authUseCases: serviceLocator<AuthUseCases>(),
         ),
         verifyEmailPageGuard: VerifyEmailPageGuard(
@@ -342,12 +343,17 @@ class InjectionUtils {
         authGuard: AuthGuard(
           authCubit: serviceLocator<AuthCubit>(),
         ),
+        authorizedGuard: AuthorizedGuard(
+          authCubit: serviceLocator<AuthCubit>(),
+        ),
       ),
     );
   }
 
   static Future<void> resetAuthenticatedLocator() async =>
-      await authenticatedLocator.reset(dispose: true);
+      await authenticatedLocator.reset(
+        dispose: true,
+      );
 
   static void initializeAuthenticatedLocator() {
     // cubits

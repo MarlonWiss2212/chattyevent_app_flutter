@@ -7,13 +7,14 @@ class EventHorizontalListSkeleton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // this is the function from the item to get the width
-    double viewportFraction = min(
-      (350 / MediaQuery.of(context).size.width).toDouble(),
+    final screenWidth = MediaQuery.of(context).size.width - 16;
+    final double viewportFraction = min(
+      (350 / screenWidth).toDouble(),
       1,
     );
-    final width = (MediaQuery.of(context).size.width * viewportFraction) - 16;
+    final width = screenWidth * viewportFraction;
     final height = width / 4 * 3;
+
     return SliverPadding(
       padding: const EdgeInsets.all(8.0),
       sliver: SliverList(

@@ -1,23 +1,26 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:chattyevent_app_flutter/presentation/router/authorized_guard.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
 import 'package:chattyevent_app_flutter/presentation/router/auth_guard.dart';
-import 'package:chattyevent_app_flutter/presentation/router/auth_pages_guard.dart';
+import 'package:chattyevent_app_flutter/presentation/router/not_authenticated_pages_guard.dart';
 import 'package:chattyevent_app_flutter/presentation/router/create_user_page_guard.dart';
 import 'package:chattyevent_app_flutter/presentation/router/verify_email_page_guard.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 @AutoRouterConfig()
 class AppRouter extends $AppRouter {
-  final AuthPagesGuard authPagesGuard;
+  final NotAuthenticatedPagesGuard notAuthenticatedPagesGuard;
   final VerifyEmailPageGuard verifyEmailPageGuard;
   final AuthGuard authGuard;
+  final AuthorizedGuard authorizedGuard;
   final CreateUserPageGuard createUserPageGuard;
 
   AppRouter({
-    required this.authPagesGuard,
+    required this.notAuthenticatedPagesGuard,
     required this.authGuard,
     required this.createUserPageGuard,
     required this.verifyEmailPageGuard,
+    required this.authorizedGuard,
   });
 
   @override
@@ -29,23 +32,24 @@ class AppRouter extends $AppRouter {
       AutoRoute(
         page: LoginRoute.page,
         initial: false,
-        guards: [authPagesGuard],
+        guards: [notAuthenticatedPagesGuard],
       ),
       AutoRoute(
         page: ResetPasswordRoute.page,
         initial: false,
-        guards: [authPagesGuard],
+        guards: [notAuthenticatedPagesGuard],
       ),
       AutoRoute(
         page: RegisterRoute.page,
         initial: false,
-        guards: [authPagesGuard],
+        guards: [notAuthenticatedPagesGuard],
       ),
       CustomRoute(
         transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
         page: AuthorizedRoute.page,
         path: '/',
         initial: true,
+        guards: [authorizedGuard],
         children: [
           CustomRoute(
             transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
@@ -360,8 +364,8 @@ class AppRouter extends $AppRouter {
             initial: true,
           ),
           AutoRoute(
-              page: HomeEventRoute.page, guards: [authGuard], path: 'events'),AutoRoute(
-              page: HomeMapRoute.page, guards: [authGuard], path: 'maps'),
+              page: HomeEventRoute.page, guards: [authGuard], path: 'events'),
+          AutoRoute(page: HomeMapRoute.page, guards: [authGuard], path: 'maps'),
           AutoRoute(
               page: HomeSearchRoute.page, guards: [authGuard], path: 'search'),
           AutoRoute(

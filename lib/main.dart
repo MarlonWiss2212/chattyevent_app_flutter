@@ -89,7 +89,9 @@ Future<void> main() async {
                         state.token != null) {
                       serviceLocator<AppRouter>().root.replace(
                             const AuthorizedRoute(
-                              children: [HomeRoute()],
+                              children: [
+                                HomeRoute(),
+                              ],
                             ),
                           );
                     } else if (state.status == AuthStateStatus.logout) {

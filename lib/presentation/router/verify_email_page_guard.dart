@@ -11,7 +11,9 @@ class VerifyEmailPageGuard extends AutoRouteGuard {
     final currentUserOrFailure = authUseCases.getFirebaseUser();
 
     currentUserOrFailure.fold(
-      (_) => resolver.redirect(const LoginRoute(), replace: true),
+      (_) {
+        resolver.redirect(const LoginRoute(), replace: true);
+      },
       (user) {
         if (user.emailVerified == false) {
           resolver.next(true);
