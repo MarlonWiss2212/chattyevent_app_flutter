@@ -434,9 +434,10 @@ class CurrentGroupchatCubit extends Cubit<CurrentGroupchatState> {
         notificationCubit.newAlert(notificationAlert: alert);
         emit(
           CurrentGroupchatState.merge(
-              oldState: state,
-              currentUserId: authCubit.state.currentUser.id,
-              loadingMessages: false),
+            oldState: state,
+            currentUserId: authCubit.state.currentUser.id,
+            loadingMessages: false,
+          ),
         );
       },
       (messages) {

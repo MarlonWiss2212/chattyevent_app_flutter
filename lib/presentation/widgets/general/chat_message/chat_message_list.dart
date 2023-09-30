@@ -26,7 +26,7 @@ class ChatMessageList extends StatefulWidget {
 }
 
 class _ChatMessageListState extends State<ChatMessageList> {
-  bool loadingMore = false;
+  bool loadMore = false;
   late ScrollController _scrollController;
 
   @override
@@ -43,10 +43,11 @@ class _ChatMessageListState extends State<ChatMessageList> {
   }
 
   Future<void> _scrollListener() async {
-    if (_scrollController.position.extentAfter <= 0) {
-      loadingMore = true;
-      await widget.loadMoreMessages();
-      loadingMore = false;
+    if (_scrollController.position.pixels ==
+            _scrollController.position.maxScrollExtent &&
+        !loadMore) {
+      loadMore = true;
+      widget.loadMoreMessages().then((_) => loadMore = false);
     }
   }
 
