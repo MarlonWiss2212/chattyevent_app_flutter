@@ -50,24 +50,8 @@ class _HomeMapPageState extends State<HomeMapPage> {
     if (MediaQuery.of(context).platformBrightness == Brightness.dark) {
       controller.setMapStyle(MapsHelper.mapStyle());
     }
-
-    final locationOrFailure =
-        await locationUseCases.getCurrentLocationWithPermissions();
-    locationOrFailure.fold(
-      (alert) => notificationCubit.newAlert(notificationAlert: alert),
-      (location) {
-        controller.animateCamera(
-          CameraUpdate.newCameraPosition(
-            CameraPosition(
-              target: LatLng(
-                location.latitude,
-                location.longitude,
-              ),
-              zoom: 12,
-            ),
-          ),
-        );
-      },
+    BlocProvider.of<HomeMapCubit>(context).setCurrentLocation(
+      formStorageFirst: true,
     );
   }
 
@@ -77,52 +61,75 @@ class _HomeMapPageState extends State<HomeMapPage> {
       appBar: AppBar(
         title: const Text("homePage.pages.mapPage.title").tr(),
       ),
-      body: BlocBuilder<HomeMapCubit, HomeMapState>(
-        builder: (context, state) {
-          final Set<Marker> markers = {};
-
-          for (final event in state.events) {
-            if (event.eventLocation?.geoJson?.coordinates != null) {
-              markers.add(
-                Marker(
-                  markerId: MarkerId(event.id),
-                  onTap: () {
-                    AutoRouter.of(context).push(
-                      EventWrapperRoute(
-                        eventId: event.id,
-                        eventStateToSet: CurrentEventState.fromEvent(
-                          event: event,
-                        ),
-                      ),
-                    );
-                  },
-                  position: LatLng(
-                    event.eventLocation!.geoJson!.coordinates![1],
-                    event.eventLocation!.geoJson!.coordinates![0],
-                  ),
-                  icon: BitmapDescriptor.defaultMarker,
-                ),
-              );
-            }
+      body: BlocListener<HomeMapCubit, HomeMapState>(
+        listenWhen: (p, c) =>
+            p.currentLocation?.latitude != c.currentLocation?.latitude ||
+            p.currentLocation?.longitude != c.currentLocation?.longitude,
+        listener: (context, state) {
+          if (state.currentLocation == null) {
+            return;
           }
-
-          return GoogleMap(
-            mapToolbarEnabled: false,
-            tiltGesturesEnabled: false,
-            rotateGesturesEnabled: false,
-            onCameraIdle: onCameraIdle,
-            onMapCreated: onMapCreated,
-            markers: markers,
-            mapType: MapType.normal,
-            initialCameraPosition: const CameraPosition(
-              target: LatLng(
-                51.165691,
-                10.451526,
+          mapController?.animateCamera(
+            CameraUpdate.newCameraPosition(
+              CameraPosition(
+                target: state.currentLocation!,
+                zoom: 12,
               ),
-              zoom: 8,
             ),
           );
         },
+        child: BlocBuilder<HomeMapCubit, HomeMapState>(
+          builder: (context, state) {
+            final Set<Marker> markers = {};
+
+            for (final event in state.events) {
+              if (event.eventLocation?.geoJson?.coordinates != null) {
+                markers.add(
+                  Marker(
+                    markerId: MarkerId(event.id),
+                    onTap: () {
+                      AutoRouter.of(context).push(
+                        EventWrapperRoute(
+                          eventId: event.id,
+                          eventStateToSet: CurrentEventState.fromEvent(
+                            event: event,
+                          ),
+                        ),
+                      );
+                    },
+                    position: LatLng(
+                      event.eventLocation!.geoJson!.coordinates![1],
+                      event.eventLocation!.geoJson!.coordinates![0],
+                    ),
+                    icon: BitmapDescriptor.defaultMarker,
+                  ),
+                );
+              }
+            }
+
+            return GoogleMap(
+              mapToolbarEnabled: false,
+              tiltGesturesEnabled: false,
+              rotateGesturesEnabled: false,
+              onCameraIdle: onCameraIdle,
+              onMapCreated: onMapCreated,
+              markers: markers,
+              mapType: MapType.normal,
+              initialCameraPosition: state.currentLocation != null
+                  ? CameraPosition(
+                      target: state.currentLocation!,
+                      zoom: 12,
+                    )
+                  : const CameraPosition(
+                      target: LatLng(
+                        51.165691,
+                        10.451526,
+                      ),
+                      zoom: 8,
+                    ),
+            );
+          },
+        ),
       ),
     );
   }

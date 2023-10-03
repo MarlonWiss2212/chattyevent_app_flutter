@@ -225,7 +225,10 @@ class InjectionUtils {
       () => VibrationRepositoryImpl(vibrationDatasource: serviceLocator()),
     );
     serviceLocator.registerLazySingleton<LocationRepository>(
-      () => LocationRepositoryImpl(locationDatasource: serviceLocator()),
+      () => LocationRepositoryImpl(
+        locationDatasource: serviceLocator(),
+        sharedPrefrencesDatasource: serviceLocator(),
+      ),
     );
     serviceLocator.registerLazySingleton<MicrophoneRepository>(
       () => MicrophoneRepositoryImpl(microphoneDatasource: serviceLocator()),
@@ -373,9 +376,9 @@ class InjectionUtils {
     );
     authenticatedLocator.registerLazySingleton<HomeMapCubit>(
       () => HomeMapCubit(
-        eventUseCases: authenticatedLocator(),
-        notificationCubit: serviceLocator(),
-      ),
+          eventUseCases: authenticatedLocator(),
+          notificationCubit: serviceLocator(),
+          locationUseCases: serviceLocator()),
     );
     authenticatedLocator.registerLazySingleton<MessageStreamCubit>(
       () => MessageStreamCubit(

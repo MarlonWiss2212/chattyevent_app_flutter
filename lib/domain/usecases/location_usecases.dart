@@ -20,6 +20,18 @@ class LocationUseCases {
     required this.launchUrlUseCases,
   });
 
+  Future<void> saveCurrentLocationLatLngToStorage({
+    required LatLng latLng,
+  }) async {
+    return await locationRepository.saveCurrentLocationLatLngToStorage(
+        latLng: latLng);
+  }
+
+  Future<Either<NotificationAlert, LatLng>>
+      getCurrentLocationLatLngFromStorage() async {
+    return await locationRepository.getCurrentLocationLatLngFromStorage();
+  }
+
   Future<bool> locationServiceIsEnabled() async {
     return await locationRepository.locationServiceIsEnabled();
   }
@@ -44,10 +56,20 @@ class LocationUseCases {
         NoLocationPermissionFailure(),
       ));
     }
+    final locationOrFailure = await locationRepository.getCurrentLocation();
+    await locationOrFailure.fold(
+      (_) => null,
+      (position) async {
+        await locationRepository.saveCurrentLocationLatLngToStorage(
+          latLng: LatLng(
+            position.latitude,
+            position.longitude,
+          ),
+        );
+      },
+    );
 
-    final location = await locationRepository.getCurrentLocation();
-
-    return Right(location);
+    return locationOrFailure;
   }
 
   Future<Either<NotificationAlert, Unit>> openMaps({

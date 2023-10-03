@@ -46,7 +46,8 @@ class _AuthorizedPageState extends State<AuthorizedPage> {
         state.listenerFunction(context);
       },
       child: BlocListener<AuthCubit, AuthState>(
-        listenWhen: (p, c) => p.token != c.token,
+        listenWhen: (p, c) =>
+            p.token != c.token && c.token != null && c.token!.isNotEmpty,
         listener: (context, state) {
           authenticatedLocator.resetLazySingleton<GraphQLClient>();
         },
