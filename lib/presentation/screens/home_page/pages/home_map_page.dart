@@ -51,7 +51,7 @@ class _HomeMapPageState extends State<HomeMapPage> {
       controller.setMapStyle(MapsHelper.mapStyle());
     }
     BlocProvider.of<HomeMapCubit>(context).setCurrentLocation(
-      formStorageFirst: true,
+      fromStorageFirst: true,
     );
   }
 

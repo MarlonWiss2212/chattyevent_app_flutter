@@ -376,9 +376,10 @@ class InjectionUtils {
     );
     authenticatedLocator.registerLazySingleton<HomeMapCubit>(
       () => HomeMapCubit(
-          eventUseCases: authenticatedLocator(),
-          notificationCubit: serviceLocator(),
-          locationUseCases: serviceLocator()),
+        eventUseCases: authenticatedLocator(),
+        notificationCubit: serviceLocator(),
+        locationUseCases: serviceLocator(),
+      )..setCurrentLocationFromStorage(),
     );
     authenticatedLocator.registerLazySingleton<MessageStreamCubit>(
       () => MessageStreamCubit(
