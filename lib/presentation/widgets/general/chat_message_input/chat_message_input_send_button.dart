@@ -19,10 +19,6 @@ class ChatMessageInputSendButton extends StatelessWidget {
           BlocProvider.of<AddMessageCubit>(context)
               .startRecordingVoiceMessage();
         },
-        onLongPressUp: () {
-          BlocProvider.of<AddMessageCubit>(context)
-              .stopRecordingVoiceMessageAndEmitIt();
-        },
         onLongPressEnd: (_) {
           BlocProvider.of<AddMessageCubit>(context)
               .stopRecordingVoiceMessageAndEmitIt();

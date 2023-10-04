@@ -173,6 +173,7 @@ class AddMessageCubit extends Cubit<AddMessageState> {
     alertOrPath.fold(
       (alert) => notificationCubit.newAlert(notificationAlert: alert),
       (path) {
+           print('fdfdd ${path}');
         emitState(voiceMessage: File(path));
       },
     );

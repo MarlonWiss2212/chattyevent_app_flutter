@@ -39,7 +39,6 @@ class MicrophoneRepositoryImpl implements MicrophoneRepository {
   Future<Either<NotificationAlert, Unit>> startRecording() async {
     try {
       await microphoneDatasource.openRecorder();
-      await microphoneDatasource.openiOSSession();
       await microphoneDatasource.startRecording();
       return const Right(unit);
     } catch (e) {
