@@ -477,7 +477,17 @@ class InjectionUtils {
       () {
         return GraphQlDatasourceImpl(
           newClient: () async {
+            final String oldToken =
+                serviceLocator<AuthCubit>().state.token ?? "";
+
             await serviceLocator<AuthCubit>().refreshAuthToken();
+
+            final String newToken =
+                serviceLocator<AuthCubit>().state.token ?? "";
+
+            if (oldToken != newToken) {
+              await authenticatedLocator.resetLazySingleton<GraphQLClient>();
+            }
             return authenticatedLocator.get<GraphQLClient>();
           },
           client: authenticatedLocator(),

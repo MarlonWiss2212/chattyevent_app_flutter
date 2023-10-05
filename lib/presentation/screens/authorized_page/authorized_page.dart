@@ -12,7 +12,6 @@ import 'package:chattyevent_app_flutter/domain/usecases/permission_usecases.dart
 import 'package:chattyevent_app_flutter/presentation/router/router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:graphql/client.dart';
 
 @RoutePage()
 class AuthorizedPage extends StatefulWidget {
@@ -47,30 +46,23 @@ class _AuthorizedPageState extends State<AuthorizedPage> {
       listener: (context, state) async {
         state.listenerFunction(context);
       },
-      child: BlocListener<AuthCubit, AuthState>(
-        listenWhen: (p, c) =>
-            p.token != c.token && c.token != null && c.token!.isNotEmpty,
-        listener: (context, state) {
-          authenticatedLocator.resetLazySingleton<GraphQLClient>();
-        },
-        child: MultiBlocProvider(
-          providers: [
-            BlocProvider(
-              create: (_) => authenticatedLocator<MessageStreamCubit>(),
-            ),
-            BlocProvider(
-              create: (_) => authenticatedLocator<RequestsCubit>(),
-            ),
-            BlocProvider(
-              create: (_) => authenticatedLocator<HomeEventCubit>(),
-            ),
-            BlocProvider(
-              create: (_) => authenticatedLocator<HomeMapCubit>(),
-            ),
-            BlocProvider(create: (_) => authenticatedLocator<ChatCubit>()),
-          ],
-          child: const AutoRouter(),
-        ),
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (_) => authenticatedLocator<MessageStreamCubit>(),
+          ),
+          BlocProvider(
+            create: (_) => authenticatedLocator<RequestsCubit>(),
+          ),
+          BlocProvider(
+            create: (_) => authenticatedLocator<HomeEventCubit>(),
+          ),
+          BlocProvider(
+            create: (_) => authenticatedLocator<HomeMapCubit>(),
+          ),
+          BlocProvider(create: (_) => authenticatedLocator<ChatCubit>()),
+        ],
+        child: const AutoRouter(),
       ),
     );
   }

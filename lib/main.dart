@@ -6,7 +6,6 @@ import 'package:chattyevent_app_flutter/application/bloc/introduction/introducti
 import 'package:chattyevent_app_flutter/core/utils/localization_utils.dart';
 import 'package:chattyevent_app_flutter/core/utils/material_theme_utils.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/auth_usecases.dart';
-import 'package:chattyevent_app_flutter/domain/usecases/one_signal_use_cases.dart';
 import 'package:chattyevent_app_flutter/generated/codegen_loader.g.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.dart';
 import 'package:chattyevent_app_flutter/scroll_bahaviour.dart';
