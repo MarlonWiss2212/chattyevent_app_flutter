@@ -5,6 +5,10 @@ class PermissionUseCases {
   final PermissionRepository permissionRepository;
   PermissionUseCases({required this.permissionRepository});
 
+  Future<PermissionStatus> getNotificationPermissionStatus() async {
+    return await permissionRepository.getNotificationPermissionStatus();
+  }
+
   Future<PermissionStatus> requestNotificationPermission() async {
     return await permissionRepository.requestNotificationPermission();
   }

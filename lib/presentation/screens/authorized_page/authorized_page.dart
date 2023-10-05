@@ -8,6 +8,7 @@ import 'package:chattyevent_app_flutter/application/bloc/notification/notificati
 import 'package:chattyevent_app_flutter/application/bloc/requests/requests_cubit.dart';
 import 'package:chattyevent_app_flutter/core/utils/injection.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/one_signal_use_cases.dart';
+import 'package:chattyevent_app_flutter/domain/usecases/permission_usecases.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,6 +23,7 @@ class AuthorizedPage extends StatefulWidget {
 }
 
 class _AuthorizedPageState extends State<AuthorizedPage> {
+  final PermissionUseCases permissionUseCases = serviceLocator();
   @override
   void initState() {
     super.initState();

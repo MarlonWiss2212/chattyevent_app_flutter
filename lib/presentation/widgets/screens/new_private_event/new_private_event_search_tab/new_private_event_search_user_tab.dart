@@ -16,16 +16,17 @@ class NewPrivateEventSearchUserTab extends StatefulWidget {
 
 class _NewPrivateEventSearchUserTabState
     extends State<NewPrivateEventSearchUserTab> {
+  String text = "";
   @override
   void initState() {
-    BlocProvider.of<UserSearchCubit>(context).getFollowedViaApi(
-      notTheseUserIds: BlocProvider.of<AddEventCubit>(context)
-          .state
-          .calendarTimeUsers
-          .map((e) => e.id)
-          .toList(),
-    );
     super.initState();
+  }
+
+  Future<void> _reloadRequest(AddEventState state) async {
+    return await BlocProvider.of<UserSearchCubit>(context).getFollowedViaApi(
+      search: text,
+      notTheseUserIds: state.privateEventUsersDto.map((e) => e.userId).toList(),
+    );
   }
 
   @override
@@ -33,30 +34,32 @@ class _NewPrivateEventSearchUserTabState
     return Padding(
       padding: const EdgeInsets.all(8),
       child: BlocBuilder<AddEventCubit, AddEventState>(
+        buildWhen: (p, c) =>
+            p.privateEventUsersDto.length != c.privateEventUsersDto.length,
         builder: (context, state) {
+          _reloadRequest(state);
           return Column(
             children: [
               SelectedUsersList(
                 users: state.privateEventUsersDto.map((e) => e.user).toList(),
-                onPress: (user) => BlocProvider.of<AddEventCubit>(context)
-                    .removePrivateEventUserFromList(
-                  userId: user.id,
-                ),
+                onPress: (user) {
+                  BlocProvider.of<AddEventCubit>(context)
+                      .removePrivateEventUserFromList(
+                    userId: user.id,
+                  );
+                },
               ),
               Expanded(
                 child: SelectableUserGridList(
                   reloadRequest: ({String? text}) {
-                    BlocProvider.of<UserSearchCubit>(context).getFollowedViaApi(
-                      search: text,
-                      notTheseUserIds: state.privateEventUsersDto
-                          .map((e) => e.userId)
-                          .toList(),
-                    );
+                    this.text = text ?? this.text;
+                    _reloadRequest(state);
                   },
                   loadMoreRequest: ({String? text}) {
+                    this.text = text ?? this.text;
                     BlocProvider.of<UserSearchCubit>(context).getFollowedViaApi(
                       loadMore: true,
-                      search: text,
+                      search: this.text,
                       notTheseUserIds: state.privateEventUsersDto
                           .map((e) => e.userId)
                           .toList(),

@@ -17,16 +17,13 @@ class NewGroupchatSelectUserTab extends StatefulWidget {
 }
 
 class _NewGroupchatSelectUserTabState extends State<NewGroupchatSelectUserTab> {
-  @override
-  void initState() {
-    BlocProvider.of<UserSearchCubit>(context).getFollowedViaApi(
-      notTheseUserIds: BlocProvider.of<AddGroupchatCubit>(context)
-          .state
-          .groupchatUsers
-          .map((e) => e.userId)
-          .toList(),
+  String text = "";
+
+  Future<void> _reloadRequest(AddGroupchatState state) async {
+    return await BlocProvider.of<UserSearchCubit>(context).getFollowedViaApi(
+      search: text,
+      notTheseUserIds: state.groupchatUsers.map((e) => e.userId).toList(),
     );
-    super.initState();
   }
 
   @override
@@ -34,7 +31,9 @@ class _NewGroupchatSelectUserTabState extends State<NewGroupchatSelectUserTab> {
     return Padding(
       padding: const EdgeInsets.all(8),
       child: BlocBuilder<AddGroupchatCubit, AddGroupchatState>(
+        buildWhen: (p, c) => p.groupchatUsers.length != c.groupchatUsers.length,
         builder: (context, state) {
+          _reloadRequest(state);
           return Column(
             children: [
               const SizedBox(height: 20),
@@ -48,14 +47,11 @@ class _NewGroupchatSelectUserTabState extends State<NewGroupchatSelectUserTab> {
               Expanded(
                 child: SelectableUserGridList(
                   reloadRequest: ({String? text}) {
-                    print(state.groupchatUsers.map((e) => e.userId).toList());
-                    BlocProvider.of<UserSearchCubit>(context).getFollowedViaApi(
-                      search: text,
-                      notTheseUserIds:
-                          state.groupchatUsers.map((e) => e.userId).toList(),
-                    );
+                    this.text = text ?? this.text;
+                    _reloadRequest(state);
                   },
                   loadMoreRequest: ({String? text}) {
+                    this.text = text ?? this.text;
                     BlocProvider.of<UserSearchCubit>(context).getFollowedViaApi(
                       loadMore: true,
                       search: text,

@@ -28,6 +28,15 @@ class _EventInviteUserPageState extends State<EventInviteUserPage> {
     super.initState();
   }
 
+  String text = "";
+
+  Future<void> _reloadRequest(CurrentEventState state) async {
+    return await BlocProvider.of<UserSearchCubit>(context).getFollowedViaApi(
+      search: text,
+      notTheseUserIds: state.eventUsers.map((e) => e.id).toList(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,16 +47,18 @@ class _EventInviteUserPageState extends State<EventInviteUserPage> {
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: BlocBuilder<CurrentEventCubit, CurrentEventState>(
+          buildWhen: (p, c) => p.eventUsers.length != c.eventUsers.length,
           builder: (context, state) {
+            _reloadRequest(state);
+
             return SelectableUserGridList(
               showTextSearch: true,
               reloadRequest: ({String? text}) {
-                BlocProvider.of<UserSearchCubit>(context).getFollowedViaApi(
-                  search: text,
-                  notTheseUserIds: state.eventUsers.map((e) => e.id).toList(),
-                );
+                this.text = text ?? this.text;
+                _reloadRequest(state);
               },
               loadMoreRequest: ({String? text}) {
+                this.text = text ?? this.text;
                 BlocProvider.of<UserSearchCubit>(context).getFollowedViaApi(
                   loadMore: true,
                   search: text,

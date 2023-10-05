@@ -6,6 +6,7 @@ import 'package:chattyevent_app_flutter/application/bloc/introduction/introducti
 import 'package:chattyevent_app_flutter/core/utils/localization_utils.dart';
 import 'package:chattyevent_app_flutter/core/utils/material_theme_utils.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/auth_usecases.dart';
+import 'package:chattyevent_app_flutter/domain/usecases/one_signal_use_cases.dart';
 import 'package:chattyevent_app_flutter/generated/codegen_loader.g.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.dart';
 import 'package:chattyevent_app_flutter/scroll_bahaviour.dart';
@@ -30,11 +31,13 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
   final List<Future> futures = [
     dotenv.load(fileName: '.env'),
     InjectionUtils.initialize(),
     LocalizationUtils.init()
   ];
+
   if (!kIsWeb) {
     if (Platform.isAndroid || Platform.isIOS) {
       futures.add(MobileAds.instance.initialize());
@@ -50,8 +53,9 @@ Future<void> main() async {
   final String languageCode = LocalizationUtils.systemLocale.split("_")[0];
   await Future.wait([
     serviceLocator<AuthUseCases>().setLanguageCode(languageCode: languageCode),
-    //TODO: fix
-    // serviceLocator<OneSignalUseCases>().setLanguageCode(languageCode: languageCode),
+    //serviceLocator<OneSignalUseCases>().setLanguageCode(
+    //  languageCode: languageCode,
+    //),
   ]);
 
   runApp(
