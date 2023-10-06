@@ -6,6 +6,7 @@ import 'package:chattyevent_app_flutter/presentation/widgets/general/groupchat_p
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 @RoutePage()
 class GroupchatUpdatePermissionsPage extends StatelessWidget {
@@ -15,7 +16,7 @@ class GroupchatUpdatePermissionsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("groupchatPage.updatePermissionPage.title"),
+        title: const Text("groupchatPage.updatePermissionPage.title").tr(),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
