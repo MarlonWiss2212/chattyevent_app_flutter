@@ -21,7 +21,7 @@ class SettingsUseCases {
     );
   }
 
-  Future<Either<NotificationAlert, bool>> getAutoDarkModeFromStorage() {
+  Either<NotificationAlert, bool> getAutoDarkModeFromStorage() {
     return settingsRepository.getAutoDarkModeFromStorage();
   }
 
@@ -29,7 +29,7 @@ class SettingsUseCases {
     return settingsRepository.saveDarkModeInStorage(darkMode: darkMode);
   }
 
-  Future<Either<NotificationAlert, bool>> getDarkModeFromStorage() {
+  Either<NotificationAlert, bool> getDarkModeFromStorage() {
     return settingsRepository.getDarkModeFromStorage();
   }
 

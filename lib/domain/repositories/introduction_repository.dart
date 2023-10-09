@@ -6,6 +6,5 @@ abstract class IntroductionRepository {
   Future<void> saveIntroductionInStorage({
     required IntroductionEntity introduction,
   });
-  Future<Either<NotificationAlert, IntroductionEntity>>
-      getIntroductionFromStorage();
+  Either<NotificationAlert, IntroductionEntity> getIntroductionFromStorage();
 }

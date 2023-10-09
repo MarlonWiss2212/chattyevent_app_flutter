@@ -1,37 +1,52 @@
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
+import 'package:chattyevent_app_flutter/core/utils/failure_helper.dart';
+import 'package:chattyevent_app_flutter/infastructure/datasources/local/persist_hive_datasource.dart';
 import 'package:dartz/dartz.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/settings_repository.dart';
-import 'package:chattyevent_app_flutter/infastructure/datasources/local/sharedPreferences.dart';
 
 class SettingsRepositoryImpl extends SettingsRepository {
-  final SharedPreferencesDatasource sharedPrefrencesDatasource;
+  final PersistHiveDatasource persistHiveDatasource;
   SettingsRepositoryImpl({
-    required this.sharedPrefrencesDatasource,
+    required this.persistHiveDatasource,
   });
 
   @override
   Future<void> saveAutoDarkModeInStorage({required bool autoDarkMode}) async {
-    return await sharedPrefrencesDatasource.saveBoolToStorage(
-      "autoDarkMode",
-      autoDarkMode,
+    return await persistHiveDatasource.put<bool>(
+      key: "autoDarkMode",
+      value: autoDarkMode,
     );
   }
 
   @override
-  Future<Either<NotificationAlert, bool>> getAutoDarkModeFromStorage() async {
-    return await sharedPrefrencesDatasource.getBoolFromStorage("autoDarkMode");
+  Either<NotificationAlert, bool> getAutoDarkModeFromStorage() {
+    try {
+      final bool data = persistHiveDatasource.get<bool>(
+        key: "autoDarkMode",
+      );
+      return Right(data);
+    } catch (e) {
+      return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
+    }
   }
 
   @override
   Future<void> saveDarkModeInStorage({required bool darkMode}) async {
-    return await sharedPrefrencesDatasource.saveBoolToStorage(
-      "darkMode",
-      darkMode,
+    return await persistHiveDatasource.put<bool>(
+      key: "darkMode",
+      value: darkMode,
     );
   }
 
   @override
-  Future<Either<NotificationAlert, bool>> getDarkModeFromStorage() async {
-    return await sharedPrefrencesDatasource.getBoolFromStorage("darkMode");
+  Either<NotificationAlert, bool> getDarkModeFromStorage() {
+    try {
+      final bool data = persistHiveDatasource.get<bool>(
+        key: "darkMode",
+      );
+      return Right(data);
+    } catch (e) {
+      return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
+    }
   }
 }

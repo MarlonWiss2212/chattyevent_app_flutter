@@ -3,9 +3,9 @@ import 'package:chattyevent_app_flutter/application/bloc/notification/notificati
 
 abstract class SettingsRepository {
   Future<void> saveDarkModeInStorage({required bool darkMode});
-  Future<Either<NotificationAlert, bool>> getDarkModeFromStorage();
+  Either<NotificationAlert, bool> getDarkModeFromStorage();
   Future<void> saveAutoDarkModeInStorage({
     required bool autoDarkMode,
   });
-  Future<Either<NotificationAlert, bool>> getAutoDarkModeFromStorage();
+  Either<NotificationAlert, bool> getAutoDarkModeFromStorage();
 }

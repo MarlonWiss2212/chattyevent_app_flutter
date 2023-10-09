@@ -9,6 +9,5 @@ abstract class LocationRepository {
   Future<void> saveCurrentLocationLatLngToStorage({
     required LatLng latLng,
   });
-  Future<Either<NotificationAlert, LatLng>>
-      getCurrentLocationLatLngFromStorage();
+  Either<NotificationAlert, LatLng> getCurrentLocationLatLngFromStorage();
 }

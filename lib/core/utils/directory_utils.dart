@@ -4,4 +4,8 @@ class DirectoryUtils {
   static Future<String> getTemporaryPath() async {
     return (await getTemporaryDirectory()).path;
   }
+
+  static Future<String> getApplicationDocumentsPath() async {
+    return (await getApplicationDocumentsDirectory()).path;
+  }
 }

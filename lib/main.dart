@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:chattyevent_app_flutter/application/bloc/imprint/imprint_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/internet_connection/internet_connection_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/introduction/introduction_cubit.dart';
+import 'package:chattyevent_app_flutter/core/utils/hive_utils.dart';
 import 'package:chattyevent_app_flutter/core/utils/localization_utils.dart';
 import 'package:chattyevent_app_flutter/core/utils/material_theme_utils.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/auth_usecases.dart';
@@ -28,14 +29,15 @@ import 'core/utils/one_signal_utils.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await EasyLocalization.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  final List<Future> futures = [
+  await Future.wait([
+    Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform),
+    HiveUtils.initialize(),
+    LocalizationUtils.init(),
     dotenv.load(fileName: '.env'),
-    InjectionUtils.initialize(),
-    LocalizationUtils.init()
-  ];
+  ]);
+
+  final List<Future> futures = [];
 
   if (!kIsWeb) {
     if (Platform.isAndroid || Platform.isIOS) {
@@ -45,7 +47,9 @@ Future<void> main() async {
 
   await Future.wait([
     ...futures,
+    InjectionUtils.initialize(),
     OneSignalUtils.initialize(),
+    EasyLocalization.ensureInitialized(),
   ]);
 
   //set locales
@@ -157,20 +161,11 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
-  DarkModeProvider darkModeProvider = DarkModeProvider(
-    settingsUseCases: serviceLocator(),
-  );
+  DarkModeProvider darkModeProvider = serviceLocator();
 
-  // for dark mode provider
   @override
   void initState() {
-    super.initState();
-    setDarkMode();
-  }
-
-  setDarkMode() async {
-    final darkMode =
-        await darkModeProvider.settingsUseCases.getDarkModeFromStorage();
+    final darkMode = darkModeProvider.settingsUseCases.getDarkModeFromStorage();
 
     darkMode.fold(
       (error) => darkModeProvider.darkMode = true,
@@ -178,12 +173,14 @@ class _AppState extends State<App> {
     );
 
     final autoDarkMode =
-        await darkModeProvider.settingsUseCases.getAutoDarkModeFromStorage();
+        darkModeProvider.settingsUseCases.getAutoDarkModeFromStorage();
 
     autoDarkMode.fold(
       (error) => darkModeProvider.darkMode = true,
       (autoDarkMode) => darkModeProvider.autoDarkMode = autoDarkMode,
     );
+
+    super.initState();
   }
 
   @override
