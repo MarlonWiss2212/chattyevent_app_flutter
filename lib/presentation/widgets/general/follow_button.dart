@@ -3,7 +3,7 @@ import 'package:dartz/dartz.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
+import 'package:chattyevent_app_flutter/application/bloc/auth/auth_state.dart';
 import 'package:chattyevent_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:ionicons/ionicons.dart';
 

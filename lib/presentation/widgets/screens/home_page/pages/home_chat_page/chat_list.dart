@@ -1,6 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
+import 'package:chattyevent_app_flutter/application/bloc/auth/auth_state.dart';
 import 'package:chattyevent_app_flutter/application/bloc/current_event/current_event_cubit.dart';
 import 'package:chattyevent_app_flutter/domain/entities/chat_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/message/message_entity.dart';

@@ -1,7 +1,19 @@
+import 'package:hive/hive.dart';
+
+part 'app_feature_introduction_entity.g.dart';
+
+@HiveType(typeId: 2)
 class AppFeatureIntroductionEntity {
+  @HiveField(0)
   final bool finishedUsersPage;
+
+  @HiveField(1)
   final bool finishedPrivateEventPage;
+
+  @HiveField(2)
   final bool finishedGroupchatsPage;
+
+  @HiveField(3)
   final bool finishedMessagesPage;
 
   AppFeatureIntroductionEntity({
@@ -25,14 +37,5 @@ class AppFeatureIntroductionEntity {
       finishedGroupchatsPage:
           finishedGroupchatsPage ?? this.finishedGroupchatsPage,
     );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'finishedUsersPage': finishedUsersPage,
-      'finishedPrivateEventPage': finishedPrivateEventPage,
-      'finishedGroupchatsPage': finishedGroupchatsPage,
-      'finishedMessagesPage': finishedMessagesPage,
-    };
   }
 }

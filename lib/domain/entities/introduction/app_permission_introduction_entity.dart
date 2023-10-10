@@ -1,5 +1,13 @@
+import 'package:hive/hive.dart';
+
+part 'app_permission_introduction_entity.g.dart';
+
+@HiveType(typeId: 1)
 class AppPermissionIntroductionEntity {
+  @HiveField(0)
   final bool finishedNotificationPage;
+
+  @HiveField(1)
   final bool finishedMicrophonePage;
 
   AppPermissionIntroductionEntity({
@@ -17,12 +25,5 @@ class AppPermissionIntroductionEntity {
       finishedMicrophonePage:
           finishedMicrophonePage ?? this.finishedMicrophonePage,
     );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'finishedMicrophonePage': finishedMicrophonePage,
-      'finishedNotificationPage': finishedNotificationPage,
-    };
   }
 }

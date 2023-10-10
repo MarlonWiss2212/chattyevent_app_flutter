@@ -27,9 +27,9 @@ class LocationUseCases {
         latLng: latLng);
   }
 
-  Future<Either<NotificationAlert, LatLng>>
-      getCurrentLocationLatLngFromStorage() async {
-    return await locationRepository.getCurrentLocationLatLngFromStorage();
+  Either<NotificationAlert, LatLng>
+      getCurrentLocationLatLngFromStorage() {
+    return locationRepository.getCurrentLocationLatLngFromStorage();
   }
 
   Future<bool> locationServiceIsEnabled() async {

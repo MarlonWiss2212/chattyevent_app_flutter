@@ -1,4 +1,4 @@
-import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
+import 'package:chattyevent_app_flutter/application/bloc/auth/auth_state.dart';
 import 'package:chattyevent_app_flutter/application/bloc/message_stream/message_stream_cubit.dart';
 import 'package:chattyevent_app_flutter/domain/entities/chat_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/event/event_entity.dart';

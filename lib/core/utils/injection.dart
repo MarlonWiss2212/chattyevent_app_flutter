@@ -11,7 +11,6 @@ import 'package:chattyevent_app_flutter/application/bloc/message_stream/message_
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/requests/requests_cubit.dart';
 import 'package:chattyevent_app_flutter/application/provider/darkMode.dart';
-import 'package:chattyevent_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/ad_mob_repository.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/calendar_repository.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/chat_repository.dart';
@@ -81,7 +80,7 @@ import 'package:graphql/client.dart';
 import 'package:hive/hive.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
+import 'package:chattyevent_app_flutter/application/bloc/auth/auth_state.dart';
 import 'package:chattyevent_app_flutter/core/utils/graphql_utils.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/auth_repository.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/bought_amount_repository.dart';
@@ -269,7 +268,10 @@ class InjectionUtils {
       () => AudioPlayerRepositoryImpl(audioPlayerDataource: serviceLocator()),
     );
     serviceLocator.registerLazySingleton<AuthRepository>(
-      () => AuthRepositoryImpl(auth: FirebaseAuth.instance),
+      () => AuthRepositoryImpl(
+        auth: FirebaseAuth.instance,
+        persistHiveDatasource: serviceLocator(),
+      ),
     );
     serviceLocator.registerLazySingleton<OneSignalRepository>(
       () => OneSignalRepositoryImpl(),
@@ -341,12 +343,6 @@ class InjectionUtils {
       () => PersistHiveDatasourceImpl(box: box),
     );
 
-    // init this better for offline use
-    final tokenOrFailure = await serviceLocator<AuthUseCases>().refreshToken();
-    final String? token = tokenOrFailure.fold(
-      (_) => null,
-      (token) => token,
-    );
     serviceLocator.registerLazySingleton<AuthCubit>(
       () {
         final User? user =
@@ -356,16 +352,7 @@ class InjectionUtils {
                 );
 
         return AuthCubit(
-          AuthState(
-            currentUser: UserEntity(
-              authId: user?.uid ?? "",
-              id: "",
-            ),
-            token: token,
-            status: token != null
-                ? AuthStateStatus.loggedIn
-                : AuthStateStatus.initial,
-          ),
+          AuthState.standardState(user),
           oneSignalUseCases: serviceLocator(),
           notificationCubit: serviceLocator(),
           authUseCases: serviceLocator(),

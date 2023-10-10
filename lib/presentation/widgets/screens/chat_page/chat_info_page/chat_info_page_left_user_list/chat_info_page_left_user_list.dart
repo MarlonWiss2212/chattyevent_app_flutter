@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletons/skeletons.dart';
-import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
+import 'package:chattyevent_app_flutter/application/bloc/auth/auth_state.dart';
 import 'package:chattyevent_app_flutter/application/bloc/current_groupchat/current_chat_cubit.dart';
 import 'package:chattyevent_app_flutter/domain/entities/groupchat/groupchat_user_entity.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/chat_page/chat_info_page/chat_info_page_left_user_list/chat_info_page_left_user_list_item.dart';

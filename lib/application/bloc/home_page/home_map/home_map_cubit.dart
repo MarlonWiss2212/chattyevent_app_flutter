@@ -26,7 +26,7 @@ class HomeMapCubit extends Cubit<HomeMapState> {
 
   Future<void> setCurrentLocation({bool fromStorageFirst = true}) async {
     if (fromStorageFirst) {
-      await setCurrentLocationFromStorage();
+      setCurrentLocationFromStorage();
     }
 
     final Either<NotificationAlert, Position> locationOrFailure =
@@ -44,9 +44,9 @@ class HomeMapCubit extends Cubit<HomeMapState> {
     );
   }
 
-  Future<void> setCurrentLocationFromStorage() async {
+  void setCurrentLocationFromStorage() {
     final Either<NotificationAlert, LatLng> locationOrFailure =
-        await locationUseCases.getCurrentLocationLatLngFromStorage();
+        locationUseCases.getCurrentLocationLatLngFromStorage();
 
     locationOrFailure.fold(
       (_) => null,

@@ -1,8 +1,13 @@
+import 'package:chattyevent_app_flutter/application/bloc/auth/auth_state.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
 
 abstract class AuthRepository {
+  Future<Either<NotificationAlert, Unit>> saveAuthStateToStorage({
+    required AuthState state,
+  });
+  Either<NotificationAlert, AuthState> getAuthStateFromStorage();
   Either<NotificationAlert, User> getFirebaseUser();
   Future<Either<NotificationAlert, UserCredential>> loginWithEmailAndPassword({
     required String email,

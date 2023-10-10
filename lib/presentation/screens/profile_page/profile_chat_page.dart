@@ -9,7 +9,7 @@ import 'package:chattyevent_app_flutter/presentation/widgets/screens/profile_pag
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
+import 'package:chattyevent_app_flutter/application/bloc/auth/auth_state.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:chattyevent_app_flutter/core/utils/injection.dart';
 import 'package:dartz/dartz.dart' as dz;

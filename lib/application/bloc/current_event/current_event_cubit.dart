@@ -15,7 +15,7 @@ import 'package:chattyevent_app_flutter/infastructure/filter/request/find_one_re
 import 'package:chattyevent_app_flutter/infastructure/filter/request/find_requests_filter.dart';
 import 'package:collection/collection.dart';
 import 'package:dartz/dartz.dart';
-import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
+import 'package:chattyevent_app_flutter/application/bloc/auth/auth_state.dart';
 import 'package:chattyevent_app_flutter/application/bloc/chat/chat_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/home_page/home_event/home_event_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';

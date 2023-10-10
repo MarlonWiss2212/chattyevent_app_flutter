@@ -1,3 +1,5 @@
+import 'package:chattyevent_app_flutter/application/bloc/auth/auth_state.dart';
+import 'package:chattyevent_app_flutter/infastructure/datasources/local/persist_hive_datasource.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:dartz/dartz.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
@@ -6,7 +8,11 @@ import 'package:chattyevent_app_flutter/domain/repositories/auth_repository.dart
 
 class AuthRepositoryImpl implements AuthRepository {
   final FirebaseAuth auth;
-  AuthRepositoryImpl({required this.auth});
+  final PersistHiveDatasource persistHiveDatasource;
+  AuthRepositoryImpl({
+    required this.auth,
+    required this.persistHiveDatasource,
+  });
 
   @override
   Future<Either<NotificationAlert, UserCredential>> loginWithEmailAndPassword({
@@ -204,6 +210,31 @@ class AuthRepositoryImpl implements AuthRepository {
   }) async {
     try {
       await auth.setLanguageCode(languageCode);
+      return const Right(unit);
+    } catch (e) {
+      return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
+    }
+  }
+
+  @override
+  Either<NotificationAlert, AuthState> getAuthStateFromStorage() {
+    try {
+      final state = persistHiveDatasource.get<AuthState>(key: "authState");
+      return Right(state);
+    } catch (e) {
+      return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
+    }
+  }
+
+  @override
+  Future<Either<NotificationAlert, Unit>> saveAuthStateToStorage({
+    required AuthState state,
+  }) async {
+    try {
+      await persistHiveDatasource.put<AuthState>(
+        key: "authState",
+        value: state,
+      );
       return const Right(unit);
     } catch (e) {
       return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));

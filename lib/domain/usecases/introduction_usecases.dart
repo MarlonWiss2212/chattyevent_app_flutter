@@ -19,7 +19,7 @@ class IntroductionUseCases {
 
   Future<Either<NotificationAlert, IntroductionEntity>>
       getIntroductionFromStorageIfNullCreateNew() async {
-    final response = await introductionRepository.getIntroductionFromStorage();
+    final response = introductionRepository.getIntroductionFromStorage();
     return response.fold(
       (alert) async {
         await introductionRepository.saveIntroductionInStorage(
@@ -36,7 +36,7 @@ class IntroductionUseCases {
             ),
           ),
         );
-        return await introductionRepository.getIntroductionFromStorage();
+        return introductionRepository.getIntroductionFromStorage();
       },
       (r) => Right(r),
     );

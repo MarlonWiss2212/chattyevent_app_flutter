@@ -10,7 +10,7 @@ import 'package:chattyevent_app_flutter/domain/usecases/request_usecases.dart';
 import 'package:chattyevent_app_flutter/infastructure/filter/request/find_one_request_filter.dart';
 import 'package:chattyevent_app_flutter/infastructure/filter/request/find_requests_filter.dart';
 import 'package:dartz/dartz.dart';
-import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
+import 'package:chattyevent_app_flutter/application/bloc/auth/auth_state.dart';
 import 'package:chattyevent_app_flutter/application/bloc/chat/chat_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:chattyevent_app_flutter/infastructure/dto/groupchat/groupchat_left_user/create_groupchat_left_user_dto.dart';

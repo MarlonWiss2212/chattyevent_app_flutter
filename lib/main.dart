@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:chattyevent_app_flutter/application/bloc/auth/auth_state_status.dart';
 import 'package:chattyevent_app_flutter/application/bloc/imprint/imprint_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/internet_connection/internet_connection_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/introduction/introduction_cubit.dart';
@@ -17,7 +18,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
-import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
+import 'package:chattyevent_app_flutter/application/bloc/auth/auth_state.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:chattyevent_app_flutter/application/provider/darkMode.dart';
 import 'package:chattyevent_app_flutter/core/utils/injection.dart';

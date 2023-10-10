@@ -1,10 +1,8 @@
-import 'dart:convert';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:chattyevent_app_flutter/core/utils/failure_helper.dart';
 import 'package:chattyevent_app_flutter/domain/entities/introduction/introduction_entity.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/introduction_repository.dart';
 import 'package:chattyevent_app_flutter/infastructure/datasources/local/persist_hive_datasource.dart';
-import 'package:chattyevent_app_flutter/infastructure/models/introduction/introduction_model.dart';
 import 'package:dartz/dartz.dart';
 
 class IntroductionRepositoryImpl extends IntroductionRepository {
@@ -17,20 +15,20 @@ class IntroductionRepositoryImpl extends IntroductionRepository {
   Future<void> saveIntroductionInStorage({
     required IntroductionEntity introduction,
   }) async {
-    return await persistHiveDatasource.put<String>(
+    return await persistHiveDatasource.put<IntroductionEntity>(
       key: "introduction",
-      value: json.encode(introduction.toJson()),
+      value: introduction,
     );
   }
 
   @override
   Either<NotificationAlert, IntroductionEntity> getIntroductionFromStorage() {
     try {
-      final String response = persistHiveDatasource.get<String>(
+      final IntroductionEntity response =
+          persistHiveDatasource.get<IntroductionEntity>(
         key: "introduction",
       );
-      final Map<String, dynamic> convertedJson = json.decode(response);
-      return Right(IntroductionModel.fromJson(convertedJson));
+      return Right(response);
     } catch (e) {
       return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
     }

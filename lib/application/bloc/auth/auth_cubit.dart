@@ -1,20 +1,4 @@
-import 'dart:async';
-import 'package:chattyevent_app_flutter/core/utils/injection.dart';
-import 'package:chattyevent_app_flutter/domain/usecases/one_signal_use_cases.dart';
-import 'package:chattyevent_app_flutter/infastructure/dto/user/update_user_dto.dart';
-import 'package:chattyevent_app_flutter/domain/usecases/permission_usecases.dart';
-import 'package:chattyevent_app_flutter/presentation/router/router.dart';
-import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
-import 'package:dartz/dartz.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:graphql/client.dart';
-import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
-import 'package:chattyevent_app_flutter/infastructure/filter/user/find_one_user_filter.dart';
-import 'package:chattyevent_app_flutter/domain/entities/user/user_entity.dart';
-import 'package:chattyevent_app_flutter/domain/usecases/auth_usecases.dart';
-import 'package:chattyevent_app_flutter/domain/usecases/user_usecases.dart';
-part 'auth_state.dart';
+part of 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
   final AuthUseCases authUseCases;
@@ -30,7 +14,23 @@ class AuthCubit extends Cubit<AuthState> {
     required this.authUseCases,
     this.userUseCases,
     required this.permissionUseCases,
-  });
+  }) {
+    final Either<NotificationAlert, AuthState> stateOrFailure =
+        authUseCases.getAuthStateFromStorage();
+
+    stateOrFailure.fold(
+      (alert) {
+        notificationCubit.newAlert(notificationAlert: alert);
+      },
+      (newState) => emit(newState),
+    );
+  }
+
+  @override
+  Future<void> emit(AuthState state) async {
+    await authUseCases.saveAuthStateToStorage(state: state);
+    super.emit(state);
+  }
 
   Future setCurrentUserFromFirebaseViaApi() async {
     final authUserOrFailure = authUseCases.getFirebaseUser();
@@ -65,7 +65,7 @@ class AuthCubit extends Cubit<AuthState> {
         notificationCubit.newAlert(notificationAlert: alert);
       },
       (user) async {
-        emitState(currentUser: user);
+        await emitState(currentUser: user);
         await oneSignalUseCases.login(userId: user.id);
       },
     );
@@ -85,7 +85,7 @@ class AuthCubit extends Cubit<AuthState> {
       );
       return;
     }
-    emitState(status: AuthStateStatus.loading);
+    await emitState(status: AuthStateStatus.loading);
 
     final Either<NotificationAlert, UserCredential> authUserOrFailureString =
         await authUseCases.loginWithEmailAndPassword(
@@ -93,13 +93,13 @@ class AuthCubit extends Cubit<AuthState> {
       password: password,
     );
 
-    authUserOrFailureString.fold(
-      (alert) {
+    await authUserOrFailureString.fold(
+      (alert) async {
         notificationCubit.newAlert(notificationAlert: alert);
-        emitState(status: AuthStateStatus.initial);
+        await emitState(status: AuthStateStatus.initial);
       },
       (authUser) async {
-        emitState(
+        await emitState(
           status: AuthStateStatus.loggedIn,
           token: await authUser.user?.getIdToken(),
         );
@@ -131,7 +131,7 @@ class AuthCubit extends Cubit<AuthState> {
       );
       return;
     }
-    emitState(status: AuthStateStatus.loading);
+    await emitState(status: AuthStateStatus.loading);
 
     final Either<NotificationAlert, UserCredential> authUserOrFailureString =
         await authUseCases.registerWithEmailAndPassword(
@@ -139,13 +139,13 @@ class AuthCubit extends Cubit<AuthState> {
       password: password,
     );
 
-    authUserOrFailureString.fold(
-      (alert) {
-        emitState(status: AuthStateStatus.initial);
+    await authUserOrFailureString.fold(
+      (alert) async {
+        await emitState(status: AuthStateStatus.initial);
         notificationCubit.newAlert(notificationAlert: alert);
       },
       (authUser) async {
-        emitState(
+        await emitState(
           status: AuthStateStatus.loggedIn,
           token: await authUser.user?.getIdToken(),
         );
@@ -158,12 +158,12 @@ class AuthCubit extends Cubit<AuthState> {
     Either<NotificationAlert, Unit> sendEmailOrFailure =
         await authUseCases.sendEmailVerification();
 
-    sendEmailOrFailure.fold(
+    await sendEmailOrFailure.fold(
       (alert) {
         notificationCubit.newAlert(notificationAlert: alert);
       },
-      (_) {
-        emitState(sendedVerificationEmail: true);
+      (_) async {
+        await emitState(sendedVerificationEmail: true);
       },
     );
   }
@@ -243,9 +243,10 @@ class AuthCubit extends Cubit<AuthState> {
 
   Future refreshAuthToken({bool force = false}) async {
     final token = await authUseCases.refreshToken(force: force);
-    token.fold(
+    await token.fold(
       (alert) => notificationCubit.newAlert(notificationAlert: alert),
-      (token) => token != state.token ? emitState(token: token) : null,
+      (token) async =>
+          token != state.token ? await emitState(token: token) : null,
     );
   }
 
@@ -254,10 +255,10 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future logout() async {
-    emitState(status: AuthStateStatus.loading);
+    await emitState(status: AuthStateStatus.loading);
     await authUseCases.logout();
     await InjectionUtils.resetAuthenticatedLocator();
-    emit(AuthState(
+    await emit(AuthState(
       currentUser: UserEntity(authId: "", id: ""),
       status: AuthStateStatus.logout,
     ));
@@ -273,13 +274,13 @@ class AuthCubit extends Cubit<AuthState> {
       updateUserDto: updateUserDto,
     );
 
-    userOrFailure.fold(
-      (alert) {
+    await userOrFailure.fold(
+      (alert) async {
         notificationCubit.newAlert(notificationAlert: alert);
-        emitState(userException: alert.exception);
+        await emitState(userException: alert.exception);
       },
-      (user) {
-        emitState(currentUser: user);
+      (user) async {
+        await emitState(currentUser: user);
       },
     );
   }
@@ -294,13 +295,13 @@ class AuthCubit extends Cubit<AuthState> {
       ),
     );
 
-    userOrFailure.fold(
-      (alert) {
+    await userOrFailure.fold(
+      (alert) async {
         notificationCubit.newAlert(notificationAlert: alert);
-        emitState(userException: alert.exception);
+        await emitState(userException: alert.exception);
       },
-      (user) {
-        emitState(currentUser: user);
+      (user) async {
+        await emitState(currentUser: user);
       },
     );
   }
@@ -311,13 +312,13 @@ class AuthCubit extends Cubit<AuthState> {
     }
     final deletedOrAlert = await authUseCases.deleteUser();
 
-    deletedOrAlert.fold(
+    await deletedOrAlert.fold(
       (alert) {
         notificationCubit.newAlert(notificationAlert: alert);
       },
-      (worked) {
+      (worked) async {
         userUseCases!.deleteUserViaApi();
-        emit(AuthState(
+        await emit(AuthState(
           currentUser: UserEntity(authId: "", id: ""),
           status: AuthStateStatus.logout,
         ));
@@ -325,7 +326,7 @@ class AuthCubit extends Cubit<AuthState> {
     );
   }
 
-  void emitState({
+  Future<void> emitState({
     AuthStateStatus? status,
     String? token,
     UserEntity? currentUser,
@@ -333,8 +334,8 @@ class AuthCubit extends Cubit<AuthState> {
     bool? dataprotectionCheckbox,
     OperationException? userException,
     bool resetUserException = false,
-  }) {
-    emit(AuthState(
+  }) async {
+    await emit(AuthState(
       status: status ?? AuthStateStatus.initial,
       token: token ?? state.token,
       currentUser: currentUser ?? state.currentUser,

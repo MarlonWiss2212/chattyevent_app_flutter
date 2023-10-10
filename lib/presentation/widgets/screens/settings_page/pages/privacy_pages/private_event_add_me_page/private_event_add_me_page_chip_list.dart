@@ -1,4 +1,4 @@
-import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
+import 'package:chattyevent_app_flutter/application/bloc/auth/auth_state.dart';
 import 'package:chattyevent_app_flutter/application/bloc/user_search/user_search_cubit.dart';
 import 'package:chattyevent_app_flutter/core/enums/user/private_event_add_me_permission_enum.dart';
 import 'package:chattyevent_app_flutter/infastructure/dto/user/update_user_dto.dart';

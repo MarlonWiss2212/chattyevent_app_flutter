@@ -1,3 +1,4 @@
+import 'package:chattyevent_app_flutter/application/bloc/auth/auth_state.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/one_signal_repository.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -11,6 +12,16 @@ class AuthUseCases {
     required this.authRepository,
     required this.oneSignalRepository,
   });
+
+  Either<NotificationAlert, AuthState> getAuthStateFromStorage() {
+    return authRepository.getAuthStateFromStorage();
+  }
+
+  Future<Either<NotificationAlert, Unit>> saveAuthStateToStorage({
+    required AuthState state,
+  }) {
+    return authRepository.saveAuthStateToStorage(state: state);
+  }
 
   Future<Either<NotificationAlert, Unit>> setLanguageCode({
     required String languageCode,

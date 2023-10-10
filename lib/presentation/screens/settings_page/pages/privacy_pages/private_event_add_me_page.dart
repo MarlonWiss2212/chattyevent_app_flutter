@@ -1,5 +1,5 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
+import 'package:chattyevent_app_flutter/application/bloc/auth/auth_state.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/user_search/user_search_cubit.dart';
 import 'package:chattyevent_app_flutter/core/utils/injection.dart';

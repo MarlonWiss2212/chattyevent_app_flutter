@@ -2,7 +2,7 @@ import 'package:chattyevent_app_flutter/core/enums/user_relation/user_relation_s
 import 'package:chattyevent_app_flutter/infastructure/filter/user_relation/find_followers_filter.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:chattyevent_app_flutter/application/bloc/auth/auth_cubit.dart';
+import 'package:chattyevent_app_flutter/application/bloc/auth/auth_state.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:chattyevent_app_flutter/infastructure/filter/limit_offset_filter.dart';
 import 'package:chattyevent_app_flutter/infastructure/filter/user/find_users_filter.dart';
