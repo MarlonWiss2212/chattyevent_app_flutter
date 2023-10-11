@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:chattyevent_app_flutter/application/bloc/add_event/add_event_cubit.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/button.dart';
 import 'package:easy_localization/easy_localization.dart';
