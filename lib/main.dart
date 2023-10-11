@@ -20,7 +20,7 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_state.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
-import 'package:chattyevent_app_flutter/application/provider/darkMode.dart';
+import 'package:chattyevent_app_flutter/application/provider/dark_mode.dart';
 import 'package:chattyevent_app_flutter/core/utils/injection.dart';
 import 'package:chattyevent_app_flutter/firebase_options.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';

@@ -79,7 +79,7 @@ class EventTabInfoStatus extends StatelessWidget {
                           if (state.event.status !=
                               EventStatusEnum.cancelled) ...[
                             PopupMenuItem(
-                              value: EventStatusEnum.undecided,
+                              value: EventStatusEnum.cancelled,
                               child: const Text(
                                 "eventPage.tabs.infoTab.statusButton.cancelledText",
                               ).tr(),

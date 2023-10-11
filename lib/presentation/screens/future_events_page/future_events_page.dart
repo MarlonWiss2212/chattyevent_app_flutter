@@ -60,7 +60,9 @@ class FutureEventsPage extends StatelessWidget {
               } else if (state.futureEvents.isEmpty) {
                 return SliverFillRemaining(
                   child: Center(
-                      child: Text("futureEventPage.noFutureEventsText").tr()),
+                    child:
+                        const Text("futureEventPage.noFutureEventsText").tr(),
+                  ),
                 );
               }
 

@@ -10,7 +10,7 @@ import 'package:chattyevent_app_flutter/application/bloc/introduction/introducti
 import 'package:chattyevent_app_flutter/application/bloc/message_stream/message_stream_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/requests/requests_cubit.dart';
-import 'package:chattyevent_app_flutter/application/provider/darkMode.dart';
+import 'package:chattyevent_app_flutter/application/provider/dark_mode.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/ad_mob_repository.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/calendar_repository.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/chat_repository.dart';

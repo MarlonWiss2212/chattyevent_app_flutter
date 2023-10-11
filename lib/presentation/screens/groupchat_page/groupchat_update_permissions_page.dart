@@ -1,7 +1,7 @@
 import 'package:chattyevent_app_flutter/application/bloc/current_groupchat/current_chat_cubit.dart';
 import 'package:chattyevent_app_flutter/core/enums/groupchat/groupchat_permission_enum.dart';
 import 'package:chattyevent_app_flutter/infastructure/dto/groupchat/update_groupchat_dto.dart';
-import 'package:chattyevent_app_flutter/infastructure/dto/groupchat/update_groupchat_permissions_dto%20copy.dart';
+import 'package:chattyevent_app_flutter/infastructure/dto/groupchat/update_groupchat_permissions_dto.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/groupchat_permissions_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

@@ -27,18 +27,16 @@ class AuthState {
   @HiveField(1)
   final String? token;
 
-  @HiveField(2)
   final UserEntity currentUser;
 
-  @HiveField(3)
+  @HiveField(2)
   final bool dataprotectionCheckbox;
 
-  @HiveField(4)
+  @HiveField(3)
   final bool sendedResetPasswordEmail;
-  @HiveField(5)
+  @HiveField(4)
   final bool sendedVerificationEmail;
 
-  @HiveField(6)
   final OperationException? userException;
 
   factory AuthState.standardState(User? user) {

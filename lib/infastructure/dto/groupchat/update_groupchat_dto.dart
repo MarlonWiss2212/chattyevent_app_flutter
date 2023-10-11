@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:chattyevent_app_flutter/infastructure/dto/groupchat/update_groupchat_permissions_dto%20copy.dart';
+import 'package:chattyevent_app_flutter/infastructure/dto/groupchat/update_groupchat_permissions_dto.dart';
 
 class UpdateGroupchatDto {
   final String? title;

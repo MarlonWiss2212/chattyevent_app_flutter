@@ -219,7 +219,9 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Either<NotificationAlert, AuthState> getAuthStateFromStorage() {
     try {
-      final state = persistHiveDatasource.get<AuthState>(key: "authState");
+      final AuthState state = persistHiveDatasource.get<AuthState>(
+        key: "authState",
+      );
       return Right(state);
     } catch (e) {
       return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
