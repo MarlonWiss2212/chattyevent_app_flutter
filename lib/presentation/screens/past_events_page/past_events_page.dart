@@ -3,6 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ionicons/ionicons.dart';
 import 'package:skeletons/skeletons.dart';
 import 'package:chattyevent_app_flutter/application/bloc/home_page/home_event/home_event_cubit.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/event_list/event_list_item.dart';
@@ -83,7 +84,7 @@ class PastEventsPage extends StatelessWidget {
                           BlocProvider.of<HomeEventCubit>(context)
                               .getPastEventsViaApi();
                         },
-                        icon: const Icon(Icons.add_circle),
+                        icon: const Icon(Ionicons.arrow_down_circle_outline),
                       );
                     }
                   },

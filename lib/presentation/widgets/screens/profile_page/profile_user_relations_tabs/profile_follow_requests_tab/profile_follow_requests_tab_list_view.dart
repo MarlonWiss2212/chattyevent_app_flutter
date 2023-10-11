@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/profile_page/profile_page_cubit.dart';
 import 'package:chattyevent_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/user_list/user_list_tile.dart';
+import 'package:ionicons/ionicons.dart';
 
 class ProfileFollowRequestsTabListView extends StatelessWidget {
   final List<UserEntity> followRequests;
@@ -84,7 +85,7 @@ class ProfileFollowRequestsTabListView extends StatelessWidget {
           } else {
             return IconButton(
               onPressed: loadMore,
-              icon: const Icon(Icons.add_circle),
+              icon: const Icon(Ionicons.arrow_down_circle_outline),
             );
           }
         },

@@ -225,8 +225,6 @@
           "cancelledText": "Abgesagt",
           "undecidedText": "Unentschieden"
         },
-        "eventDateText": "Datum: ",
-        "eventEndDateText": "Enddatum: ",
         "memberPermissionsText": "Mitgliederberechtigungen"
       }
     },

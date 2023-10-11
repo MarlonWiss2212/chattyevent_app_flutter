@@ -7,6 +7,7 @@ import 'package:chattyevent_app_flutter/application/bloc/current_event/current_e
 import 'package:chattyevent_app_flutter/presentation/widgets/general/event_list/event_list_item.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/chat_page/chat_future_private_event_page/chat_future_private_event_page_skeleton_list.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:ionicons/ionicons.dart';
 
 @RoutePage()
 class GroupchatfutureEventsPage extends StatelessWidget {
@@ -84,7 +85,7 @@ class GroupchatfutureEventsPage extends StatelessWidget {
                           BlocProvider.of<CurrentGroupchatCubit>(context)
                               .getFutureConnectedPrivateEventsFromApi();
                         },
-                        icon: const Icon(Icons.add_circle),
+                        icon: const Icon(Ionicons.arrow_down_circle_outline),
                       );
                     }
                   },

@@ -3,6 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ionicons/ionicons.dart';
 import 'package:skeletons/skeletons.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_state.dart';
 import 'package:chattyevent_app_flutter/application/bloc/shopping_list/my_shopping_list_cubit.dart';
@@ -125,7 +126,7 @@ class _ShoppingListPageState extends State<ShoppingListPage> {
                           BlocProvider.of<MyShoppingListCubit>(context)
                               .getShoppingListViaApi();
                         },
-                        icon: const Icon(Icons.add_circle),
+                        icon: const Icon(Ionicons.arrow_down_circle_outline),
                       );
                     }
                   },

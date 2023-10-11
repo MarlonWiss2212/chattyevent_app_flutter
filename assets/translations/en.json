@@ -225,8 +225,6 @@
           "cancelledText": "Cancelled",
           "undecidedText": "Undecided"
         },
-        "eventDateText": "Event date: ",
-        "eventEndDateText": "Event end date: ",
         "memberPermissionsText": "Member permissions"
       }
     },

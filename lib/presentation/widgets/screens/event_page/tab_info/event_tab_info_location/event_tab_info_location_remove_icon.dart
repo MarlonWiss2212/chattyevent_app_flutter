@@ -12,6 +12,7 @@ class EventTabInfoLocationRemoveIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IconButton(
+      padding: const EdgeInsets.all(0),
       onPressed: () async {
         await showDialog(
           context: context,

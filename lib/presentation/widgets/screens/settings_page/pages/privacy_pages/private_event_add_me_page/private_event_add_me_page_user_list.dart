@@ -8,6 +8,7 @@ import 'package:chattyevent_app_flutter/presentation/widgets/general/user_list/u
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ionicons/ionicons.dart';
 import 'package:skeletons/skeletons.dart';
 
 class PrivateEventAddMePageUserList extends StatelessWidget {
@@ -100,7 +101,7 @@ class PrivateEventAddMePageUserList extends StatelessWidget {
               loadMore: true,
             );
           },
-          icon: const Icon(Icons.add_circle),
+          icon: const Icon(Ionicons.arrow_down_circle_outline),
         );
       }
     }
