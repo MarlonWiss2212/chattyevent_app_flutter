@@ -24,22 +24,15 @@ class OpenMapsButton extends StatelessWidget {
       child: InkWell(
         borderRadius: BorderRadius.circular(8),
         onTap: () => openMaps(context),
-        child: Ink(
-          padding: const EdgeInsets.all(12),
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.surface,
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: Row(
-            children: [
-              const Icon(Ionicons.map),
-              const SizedBox(width: 16),
-              Text(
-                "general.openInMapsText",
-                style: Theme.of(context).textTheme.labelLarge,
-              ).tr(),
-            ],
-          ),
+        child: Row(
+          children: [
+            const Icon(Ionicons.map),
+            const SizedBox(width: 16),
+            Text(
+              "general.openInMapsText",
+              style: Theme.of(context).textTheme.labelLarge,
+            ).tr(),
+          ],
         ),
       ),
     );

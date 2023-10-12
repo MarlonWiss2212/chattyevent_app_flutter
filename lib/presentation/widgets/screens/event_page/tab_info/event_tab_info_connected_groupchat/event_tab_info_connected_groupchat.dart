@@ -9,31 +9,28 @@ class EventTabInfoGroupchatTo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8),
-      child: BlocBuilder<CurrentEventCubit, CurrentEventState>(
-        builder: (context, state) {
-          if (state.groupchat != null || state.loadingGroupchat) {
-            if (state.groupchat != null) {
-              return EventTabInfoGroupchatToTile(groupchat: state.groupchat!);
-            } else {
-              return SkeletonListTile(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                hasSubtitle: true,
-                titleStyle: const SkeletonLineStyle(width: 100, height: 22),
-                subtitleStyle: const SkeletonLineStyle(
-                  width: double.infinity,
-                  height: 16,
-                ),
-                leadingStyle: const SkeletonAvatarStyle(
-                  shape: BoxShape.circle,
-                ),
-              );
-            }
+    return BlocBuilder<CurrentEventCubit, CurrentEventState>(
+      builder: (context, state) {
+        if (state.groupchat != null || state.loadingGroupchat) {
+          if (state.groupchat != null) {
+            return EventTabInfoGroupchatToTile(groupchat: state.groupchat!);
+          } else {
+            return SkeletonListTile(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              hasSubtitle: true,
+              titleStyle: const SkeletonLineStyle(width: 100, height: 22),
+              subtitleStyle: const SkeletonLineStyle(
+                width: double.infinity,
+                height: 16,
+              ),
+              leadingStyle: const SkeletonAvatarStyle(
+                shape: BoxShape.circle,
+              ),
+            );
           }
-          return Container();
-        },
-      ),
+        }
+        return Container();
+      },
     );
   }
 }

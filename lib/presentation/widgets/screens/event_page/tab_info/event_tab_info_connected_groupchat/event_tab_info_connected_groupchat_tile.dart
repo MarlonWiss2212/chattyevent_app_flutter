@@ -14,30 +14,7 @@ class EventTabInfoGroupchatToTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      leading: CircleAvatar(
-        backgroundImage: groupchat.profileImageLink != null
-            ? CachedNetworkImageProvider(
-                groupchat.profileImageLink!,
-                cacheKey: groupchat.profileImageLink!.split("?")[0],
-              )
-            : null,
-        backgroundColor: groupchat.profileImageLink == null
-            ? Theme.of(context).colorScheme.surface
-            : null,
-      ),
-      title: Hero(
-        tag: "${groupchat.id} title",
-        child: Text(
-          groupchat.title ?? "",
-          style: Theme.of(context).textTheme.titleMedium,
-        ),
-      ),
-      subtitle: const Text(
-        "eventPage.tabs.infoTab.connectedGroupchatText",
-        softWrap: true,
-        overflow: TextOverflow.ellipsis,
-      ).tr(),
+    return InkWell(
       onTap: () {
         AutoRouter.of(context).root.push(
               GroupchatRouteWrapper(
@@ -46,6 +23,51 @@ class EventTabInfoGroupchatToTile extends StatelessWidget {
               ),
             );
       },
+      borderRadius: BorderRadius.circular(8),
+      child: Ink(
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8),
+          color: Theme.of(context).colorScheme.surface,
+        ),
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(minHeight: 50),
+          child: Row(
+            children: [
+              CircleAvatar(
+                backgroundImage: groupchat.profileImageLink != null
+                    ? CachedNetworkImageProvider(
+                        groupchat.profileImageLink!,
+                        cacheKey: groupchat.profileImageLink!.split("?")[0],
+                      )
+                    : null,
+                backgroundColor: groupchat.profileImageLink == null
+                    ? Theme.of(context).colorScheme.surface
+                    : null,
+              ),
+              const SizedBox(width: 8),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Hero(
+                    tag: "${groupchat.id} title",
+                    child: Text(
+                      groupchat.title ?? "",
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                  ),
+                  const Text(
+                    "eventPage.tabs.infoTab.connectedGroupchatText",
+                    softWrap: true,
+                    overflow: TextOverflow.ellipsis,
+                  ).tr(),
+                ],
+              ),
+              const SizedBox(width: 8),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

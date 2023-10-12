@@ -18,14 +18,13 @@ class EventTabInfoLocationMap extends StatelessWidget {
             state.event.eventLocation!.geoJson != null &&
             state.event.eventLocation!.geoJson!.coordinates != null) {
           return Container(
-            width: size.width,
-            padding: const EdgeInsets.symmetric(horizontal: 8),
-            height: min(size.width, 300),
+            width: size.width - 16,
+            height: min(size.width - 16, 300),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(5),
             ),
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(8.0),
+              borderRadius: BorderRadius.circular(5),
               child: GoogleMap(
                 mapToolbarEnabled: false,
                 zoomControlsEnabled: false,
@@ -61,14 +60,11 @@ class EventTabInfoLocationMap extends StatelessWidget {
             ),
           );
         } else if (state.loadingEvent) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: SkeletonAvatar(
-              style: SkeletonAvatarStyle(
-                width: size.width,
-                height: min(size.width, 300),
-                borderRadius: BorderRadius.circular(8.0),
-              ),
+          return SkeletonAvatar(
+            style: SkeletonAvatarStyle(
+              width: size.width,
+              height: min(size.width, 300),
+              borderRadius: BorderRadius.circular(8.0),
             ),
           );
         } else {

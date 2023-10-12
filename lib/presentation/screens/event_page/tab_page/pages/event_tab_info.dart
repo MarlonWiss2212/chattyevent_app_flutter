@@ -9,6 +9,7 @@ import 'package:chattyevent_app_flutter/presentation/widgets/screens/event_page/
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/event_page/tab_info/event_tab_info_location/event_tab_info_location.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/event_page/tab_info/event_tab_info_status.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 @RoutePage()
 class EventTabInfo extends StatelessWidget {
@@ -22,19 +23,32 @@ class EventTabInfo extends StatelessWidget {
           onRefresh: () => BlocProvider.of<CurrentEventCubit>(context)
               .reloadEventStandardDataViaApi(),
         ),
-        SliverList(
-          delegate: SliverChildListDelegate(
-            const [
-              EventTabInfoCoverImage(),
-              SizedBox(height: 20),
-              EventTabInfoDescription(),
-              EventTabInfoGroupchatTo(),
-              EventTabInfoEventDate(),
-              EventTabInfoStatus(),
-              EventTabInfoLocation(),
-              EventTabInfoUpdatePermissionsListTile(),
-              SizedBox(height: 8),
-            ],
+        SliverPadding(
+          padding: const EdgeInsets.all(8),
+          sliver: SliverList(
+            delegate: SliverChildListDelegate(
+              [
+                const EventTabInfoCoverImage(),
+                const SizedBox(height: 16),
+                const EventTabInfoDescription(),
+                const SizedBox(height: 16),
+                const EventTabInfoGroupchatTo(),
+                const SizedBox(height: 16),
+                StaggeredGrid.count(
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 16,
+                  crossAxisSpacing: 16,
+                  children: const [
+                    EventTabInfoEventDate(),
+                    EventTabInfoStatus(),
+                    EventTabInfoLocation(),
+                  ],
+                ),
+                const SizedBox(height: 16),
+                const EventTabInfoUpdatePermissionsListTile(),
+                const SizedBox(height: 16),
+              ],
+            ),
           ),
         ),
       ],

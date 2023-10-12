@@ -63,13 +63,16 @@ class _EditInputTextFieldState extends State<EditInputTextField> {
   Widget build(BuildContext context) {
     controller.text = widget.text;
     if (!editing) {
-      return InkWell(
-        onTap:
-            widget.editable ? () => setState(() => editing = !editing) : null,
-        child: Text(
-          widget.text,
-          style: widget.textStyle,
-          overflow: widget.textOverflow,
+      return Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap:
+              widget.editable ? () => setState(() => editing = !editing) : null,
+          child: Text(
+            widget.text,
+            style: widget.textStyle,
+            overflow: widget.textOverflow,
+          ),
         ),
       );
     } else if (widget.keyboardType == TextInputType.multiline) {

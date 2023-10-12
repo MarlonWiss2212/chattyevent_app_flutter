@@ -5,7 +5,6 @@ import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ionicons/ionicons.dart';
 
 class EventTabInfoUpdatePermissionsListTile extends StatelessWidget {
   const EventTabInfoUpdatePermissionsListTile({super.key});
@@ -18,19 +17,38 @@ class EventTabInfoUpdatePermissionsListTile extends StatelessWidget {
             BlocProvider.of<AuthCubit>(context).state.currentUser.id) {
           return const SizedBox();
         }
-        return ListTile(
-          leading: const Icon(Icons.security),
-          title: Text(
-            "eventPage.tabs.infoTab.memberPermissionsText",
-            style: Theme.of(context).textTheme.titleMedium,
-            overflow: TextOverflow.ellipsis,
-          ).tr(),
-          trailing: const Icon(Ionicons.chevron_forward),
+        return InkWell(
+          borderRadius: BorderRadius.circular(8),
           onTap: () {
             AutoRouter.of(context).push(
               const EventUpdatePermissionsRoute(),
             );
           },
+          child: Ink(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              color: Theme.of(context).colorScheme.surface,
+            ),
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(minHeight: 50),
+              child: Row(
+                children: [
+                  const Icon(
+                    Icons.security,
+                    size: 20,
+                  ),
+                  const SizedBox(width: 12),
+                  Text(
+                    "eventPage.tabs.infoTab.memberPermissionsText",
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ).tr()
+                ],
+              ),
+            ),
+          ),
         );
       },
     );

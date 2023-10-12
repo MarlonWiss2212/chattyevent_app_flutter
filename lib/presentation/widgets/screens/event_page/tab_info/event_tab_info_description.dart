@@ -12,39 +12,47 @@ class EventTabInfoDescription extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CurrentEventCubit, CurrentEventState>(
-      builder: (context, state) {
-        if (state.event.description == null && state.loadingEvent) {
-          return const SkeletonLine();
-        }
+    return Container(
+      constraints: const BoxConstraints(minHeight: 50),
+      padding: const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        color: Theme.of(context).colorScheme.surface,
+      ),
+      child: BlocBuilder<CurrentEventCubit, CurrentEventState>(
+        builder: (context, state) {
+          if (state.event.description == null && state.loadingEvent) {
+            return const SkeletonLine();
+          }
 
-        final String? description = state.event.description;
-        final Widget widget = Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8),
-          child: EditInputTextField(
-            textOverflow: TextOverflow.visible,
-            text: description != null && description.isNotEmpty
-                ? description
-                : "general.noDescriptionText".tr(),
-            keyboardType: TextInputType.multiline,
-            maxLines: 10,
-            textStyle: Theme.of(context).textTheme.titleMedium,
-            editable: state.getCurrentEventUser()?.role ==
-                EventUserRoleEnum.organizer,
-            onSaved: (text) {
-              BlocProvider.of<CurrentEventCubit>(context).updateCurrentEvent(
-                updateEventDto: UpdateEventDto(
-                  description: text,
-                ),
-              );
-            },
-          ),
-        );
-        if (description == null || description.isEmpty) {
-          return Center(child: widget);
-        }
-        return widget;
-      },
+          final String? description = state.event.description;
+          final Widget widget = Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: EditInputTextField(
+              textOverflow: TextOverflow.visible,
+              text: description != null && description.isNotEmpty
+                  ? description
+                  : "general.noDescriptionText".tr(),
+              keyboardType: TextInputType.multiline,
+              maxLines: 10,
+              textStyle: Theme.of(context).textTheme.titleMedium,
+              editable: state.getCurrentEventUser()?.role ==
+                  EventUserRoleEnum.organizer,
+              onSaved: (text) {
+                BlocProvider.of<CurrentEventCubit>(context).updateCurrentEvent(
+                  updateEventDto: UpdateEventDto(
+                    description: text,
+                  ),
+                );
+              },
+            ),
+          );
+          if (description == null || description.isEmpty) {
+            return Center(child: widget);
+          }
+          return widget;
+        },
+      ),
     );
   }
 }

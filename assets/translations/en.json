@@ -202,7 +202,7 @@
       "infoTab": {
         "connectedGroupchatText": "Connected groupchat",
         "addressButton": {
-          "leftEmptyText": "Address: ",
+          "text": "Address",
           "rightEmptyText": "Add address",
           "removeAddressDialog": {
             "title": "Remove address",
@@ -220,11 +220,13 @@
           "deleteCoverImageDescription": "Do you want to delete the event cover image?"
         },
         "statusButton": {
-          "leftText": "Status: ",
           "takesPlaceText": "Takes place",
           "cancelledText": "Cancelled",
           "undecidedText": "Undecided"
         },
+        "statusText": "Status",
+        "eventDateText": "Date",
+        "eventEndDateText": "(End date)",
         "memberPermissionsText": "Member permissions"
       }
     },

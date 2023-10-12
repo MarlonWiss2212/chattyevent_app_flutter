@@ -63,28 +63,14 @@ class EventHorizontalListItem extends StatelessWidget {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(children: [
-                    Container(
-                      width: 15,
-                      height: 15,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: event.status == EventStatusEnum.takesplace
-                            ? Colors.green
-                            : event.status == EventStatusEnum.cancelled
-                                ? Colors.red
-                                : event.status == EventStatusEnum.undecided
-                                    ? Colors.grey
-                                    : null,
-                      ),
-                    ),
-                    const SizedBox(width: 8),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 12, left: 8, right: 8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
                     Hero(
                       tag: "${event.id} title",
                       child: Text(
@@ -94,17 +80,26 @@ class EventHorizontalListItem extends StatelessWidget {
                             ),
                       ),
                     ),
-                  ]),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: Text(
-                      DateFormat.yMd().add_jm().format(event.eventDate),
-                      style: Theme.of(context).textTheme.bodySmall?.apply(
-                            color: Colors.white,
-                          ),
+                    Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                          color: event.status == EventStatusEnum.takesplace
+                              ? Colors.green
+                              : event.status == EventStatusEnum.cancelled
+                                  ? Colors.red
+                                  : event.status == EventStatusEnum.undecided
+                                      ? Colors.grey
+                                      : null,
+                          borderRadius: BorderRadius.circular(8)),
+                      child: Text(
+                        DateFormat.yMd().add_jm().format(event.eventDate),
+                        style: Theme.of(context).textTheme.bodySmall?.apply(
+                              color: Colors.white,
+                            ),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ],

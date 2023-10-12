@@ -12,8 +12,8 @@ import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
 class EventTabInfoLocationData extends StatelessWidget {
   const EventTabInfoLocationData({super.key});
 
-  Widget _addressRow({
-    required Widget rightElement,
+  Widget _updateRouteButton({
+    required Widget child,
     required CurrentEventState state,
     required BuildContext context,
   }) {
@@ -25,29 +25,7 @@ class EventTabInfoLocationData extends StatelessWidget {
                 const EventUpdateLocationRoute(),
               )
           : null,
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Row(
-          children: [
-            const Icon(Ionicons.compass),
-            const SizedBox(width: 8),
-            Flexible(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    "eventPage.tabs.infoTab.addressButton.leftEmptyText",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ).tr(),
-                  rightElement,
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
+      child: child,
     );
   }
 
@@ -57,30 +35,53 @@ class EventTabInfoLocationData extends StatelessWidget {
       builder: (context, state) {
         return Column(
           children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const Icon(
+                  Ionicons.location,
+                  size: 20,
+                ),
+                const SizedBox(width: 12),
+                Text(
+                  "eventPage.tabs.infoTab.addressButton.text",
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                ).tr()
+              ],
+            ),
+            const SizedBox(height: 8),
             if (state.event.eventLocation?.address != null &&
                 state.event.eventLocation!.address!.city != null &&
                 state.event.eventLocation!.address!.street != null &&
                 state.event.eventLocation!.address!.housenumber != null &&
                 state.event.eventLocation!.address!.zip != null &&
                 state.event.eventLocation!.address!.country != null) ...[
-              _addressRow(
+              _updateRouteButton(
                 context: context,
                 state: state,
-                rightElement: Row(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Wrap(
                       children: [
                         Text(
-                          "${state.event.eventLocation!.address!.country}, ${state.event.eventLocation!.address!.city}, ${state.event.eventLocation!.address!.zip}",
-                          style: Theme.of(context).textTheme.bodyMedium,
+                          "${state.event.eventLocation!.address!.country}, ${state.event.eventLocation!.address!.city}, ${state.event.eventLocation!.address!.zip}, ",
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium
+                              ?.copyWith(fontWeight: FontWeight.bold),
                         ),
                         Text(
                           "${state.event.eventLocation!.address!.street} ${state.event.eventLocation!.address!.housenumber}",
-                          style: Theme.of(context).textTheme.bodyMedium,
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium
+                              ?.copyWith(fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 8),
                     if (state.currentUserAllowedWithPermission(
                       permissionCheckValue:
                           state.event.permissions?.changeAddress,
@@ -91,13 +92,10 @@ class EventTabInfoLocationData extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 8),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                child: OpenMapsButton(
-                  query: BlocProvider.of<CurrentEventCubit>(context)
-                      .state
-                      .getLocationQueryForMaps(),
-                ),
+              OpenMapsButton(
+                query: BlocProvider.of<CurrentEventCubit>(context)
+                    .state
+                    .getLocationQueryForMaps(),
               ),
             ] else if (state.loadingEvent) ...[
               const SkeletonLine(),
@@ -114,12 +112,19 @@ class EventTabInfoLocationData extends StatelessWidget {
                 ),
               )
             ] else ...[
-              _addressRow(
+              _updateRouteButton(
                 context: context,
                 state: state,
-                rightElement: const Text(
-                  "eventPage.tabs.infoTab.addressButton.rightEmptyText",
-                ).tr(),
+                child: Row(
+                  children: [
+                    Text(
+                      "eventPage.tabs.infoTab.addressButton.rightEmptyText",
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                    ).tr(),
+                  ],
+                ),
               ),
             ],
           ],

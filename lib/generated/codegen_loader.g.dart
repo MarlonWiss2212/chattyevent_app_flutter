@@ -218,7 +218,7 @@ class CodegenLoader extends AssetLoader{
       "infoTab": {
         "connectedGroupchatText": "Verbundener Gruppenchat",
         "addressButton": {
-          "leftEmptyText": "Adresse: ",
+          "text": "Adresse",
           "rightEmptyText": "Adresse hinzufügen",
           "removeAddressDialog": {
             "title": "Adresse entfernen",
@@ -236,13 +236,13 @@ class CodegenLoader extends AssetLoader{
           "deleteCoverImageDescription": "Möchten Sie das Titelbild des Event wirklich löschen?"
         },
         "statusButton": {
-          "leftText": "Status: ",
           "takesPlaceText": "Findet statt",
           "cancelledText": "Abgesagt",
           "undecidedText": "Unentschieden"
         },
-        "eventDateText": "Datum: ",
-        "eventEndDateText": "Enddatum: ",
+        "statusText": "Status",
+        "eventDateText": "Datum",
+        "eventEndDateText": "(Enddatum)",
         "memberPermissionsText": "Mitgliederberechtigungen"
       }
     },
@@ -757,7 +757,7 @@ static const Map<String,dynamic> en = {
       "infoTab": {
         "connectedGroupchatText": "Connected groupchat",
         "addressButton": {
-          "leftEmptyText": "Address: ",
+          "text": "Address",
           "rightEmptyText": "Add address",
           "removeAddressDialog": {
             "title": "Remove address",
@@ -775,13 +775,13 @@ static const Map<String,dynamic> en = {
           "deleteCoverImageDescription": "Do you want to delete the event cover image?"
         },
         "statusButton": {
-          "leftText": "Status: ",
           "takesPlaceText": "Takes place",
           "cancelledText": "Cancelled",
           "undecidedText": "Undecided"
         },
-        "eventDateText": "Event date: ",
-        "eventEndDateText": "Event end date: ",
+        "statusText": "Status",
+        "eventDateText": "Date",
+        "eventEndDateText": "(End date)",
         "memberPermissionsText": "Member permissions"
       }
     },
