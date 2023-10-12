@@ -1,5 +1,6 @@
 import 'package:auto_route/annotations.dart';
 import 'package:chattyevent_app_flutter/application/bloc/current_event/current_event_cubit.dart';
+import 'package:chattyevent_app_flutter/core/extensions/list_space_between_extension.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/event_page/tab_info/event_tab_info_connected_groupchat/event_tab_info_connected_groupchat.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/event_page/tab_info/event_tab_info_update_permissions_list_tile.dart';
 import 'package:flutter/cupertino.dart';
@@ -29,11 +30,8 @@ class EventTabInfo extends StatelessWidget {
             delegate: SliverChildListDelegate(
               [
                 const EventTabInfoCoverImage(),
-                const SizedBox(height: 16),
                 const EventTabInfoDescription(),
-                const SizedBox(height: 16),
                 const EventTabInfoGroupchatTo(),
-                const SizedBox(height: 16),
                 StaggeredGrid.count(
                   crossAxisCount: 2,
                   mainAxisSpacing: 16,
@@ -44,10 +42,8 @@ class EventTabInfo extends StatelessWidget {
                     EventTabInfoLocation(),
                   ],
                 ),
-                const SizedBox(height: 16),
                 const EventTabInfoUpdatePermissionsListTile(),
-                const SizedBox(height: 16),
-              ],
+              ].withSpaceBetween(height: 16),
             ),
           ),
         ),
