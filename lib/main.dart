@@ -50,12 +50,12 @@ Future<void> main() async {
     ...futures,
     InjectionUtils.initialize(),
     OneSignalUtils.initialize(),
-    EasyLocalization.ensureInitialized(),
   ]);
 
   //set locales
   final String languageCode = LocalizationUtils.systemLocale.split("_")[0];
   await Future.wait([
+    EasyLocalization.ensureInitialized(),
     serviceLocator<AuthUseCases>().setLanguageCode(languageCode: languageCode),
     //serviceLocator<OneSignalUseCases>().setLanguageCode(
     //  languageCode: languageCode,
