@@ -88,13 +88,12 @@ class EventHorizontalListItem extends StatelessWidget {
                               : event.status == EventStatusEnum.cancelled
                                   ? Colors.red
                                   : event.status == EventStatusEnum.undecided
-                                      ? Colors.grey
+                                      ? Theme.of(context).colorScheme.surface
                                       : null,
                           borderRadius: BorderRadius.circular(8)),
                       child: Text(
                         DateFormat.yMd().add_jm().format(event.eventDate),
                         style: Theme.of(context).textTheme.bodySmall?.apply(
-                              color: Colors.white,
                             ),
                       ),
                     ),

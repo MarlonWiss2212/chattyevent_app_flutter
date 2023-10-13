@@ -68,7 +68,7 @@ class EventTabInfoStatus extends StatelessWidget {
                               "eventPage.tabs.infoTab.statusText",
                               style: Theme.of(context)
                                   .textTheme
-                                  .titleLarge
+                                  .titleMedium
                                   ?.copyWith(
                                     fontWeight: FontWeight.bold,
                                   ),

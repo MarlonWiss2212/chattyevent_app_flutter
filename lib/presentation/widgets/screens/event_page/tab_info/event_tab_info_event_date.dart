@@ -106,7 +106,7 @@ class EventTabInfoEventDate extends StatelessWidget {
                       const SizedBox(width: 12),
                       Text(
                         "eventPage.tabs.infoTab.eventDateText",
-                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                               fontWeight: FontWeight.bold,
                             ),
                       ).tr()

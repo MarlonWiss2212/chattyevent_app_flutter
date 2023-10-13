@@ -45,7 +45,7 @@ class EventTabInfoLocationData extends StatelessWidget {
                 const SizedBox(width: 12),
                 Text(
                   "eventPage.tabs.infoTab.addressButton.text",
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
                 ).tr()
