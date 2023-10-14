@@ -211,7 +211,10 @@ class InjectionUtils {
       ),
     );
     serviceLocator.registerLazySingleton<OneSignalUseCases>(
-      () => OneSignalUseCases(oneSignalRepository: serviceLocator()),
+      () => OneSignalUseCases(
+        oneSignalRepository: serviceLocator(),
+        permissionRepository: serviceLocator(),
+      ),
     );
     serviceLocator.registerLazySingleton<SecureStorageUseCases>(
       () => SecureStorageUseCases(

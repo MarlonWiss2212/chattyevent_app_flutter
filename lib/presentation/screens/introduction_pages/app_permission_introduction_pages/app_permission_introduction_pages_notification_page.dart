@@ -1,7 +1,9 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:chattyevent_app_flutter/application/bloc/introduction/introduction_cubit.dart';
 import 'package:chattyevent_app_flutter/core/utils/injection.dart';
+import 'package:chattyevent_app_flutter/domain/usecases/one_signal_use_cases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/permission_usecases.dart';
+import 'package:chattyevent_app_flutter/presentation/router/router.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/button.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -64,6 +66,14 @@ class AppPermissionIntroductionPagesNotificationPage extends StatelessWidget {
                     onTap: () async {
                       await serviceLocator<PermissionUseCases>()
                           .requestNotificationPermission();
+                      serviceLocator<OneSignalUseCases>()
+                          .setNotificationReceivedHandlerIfIHavePermission(
+                        appRouter: serviceLocator<AppRouter>(),
+                      );
+                      serviceLocator<OneSignalUseCases>()
+                          .setNotificationOpenedHandlerIfIHavePermission(
+                        appRouter: serviceLocator<AppRouter>(),
+                      );
                       // ignore: use_build_context_synchronously
                       navigateToNextPage(context);
                     },

@@ -28,10 +28,10 @@ class _AuthorizedPageState extends State<AuthorizedPage> {
     super.initState();
     final OneSignalUseCases oneSignalUseCases =
         serviceLocator<OneSignalUseCases>();
-    oneSignalUseCases.setNotificationReceivedHandler(
+    oneSignalUseCases.setNotificationReceivedHandlerIfIHavePermission(
       appRouter: serviceLocator<AppRouter>(),
     );
-    oneSignalUseCases.setNotificationOpenedHandler(
+    oneSignalUseCases.setNotificationOpenedHandlerIfIHavePermission(
       appRouter: serviceLocator<AppRouter>(),
     );
   }
