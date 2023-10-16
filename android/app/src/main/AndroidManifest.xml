@@ -29,7 +29,7 @@
           android:hardwareAccelerated="true"
           android:windowSoftInputMode="adjustResize"
         >
-
+            <meta-data android:name="flutter_deeplinking_enabled" android:value="true" />
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />

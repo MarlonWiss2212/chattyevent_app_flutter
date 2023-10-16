@@ -31,9 +31,6 @@ class _AuthorizedPageState extends State<AuthorizedPage> {
     oneSignalUseCases.setNotificationReceivedHandlerIfIHavePermission(
       appRouter: serviceLocator<AppRouter>(),
     );
-    oneSignalUseCases.setNotificationOpenedHandlerIfIHavePermission(
-      appRouter: serviceLocator<AppRouter>(),
-    );
   }
 
   @override

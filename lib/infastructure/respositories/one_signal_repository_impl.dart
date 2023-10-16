@@ -42,26 +42,6 @@ class OneSignalRepositoryImpl implements OneSignalRepository {
   }
 
   @override
-  Either<NotificationAlert, Unit> setNotificationOpenedHandler({
-    required AppRouter appRouter,
-  }) {
-    try {
-      OneSignal.Notifications.addClickListener((event) {
-        final String? route = event.notification.launchUrl?.split(
-          "chattyevent.com",
-        )[1];
-
-        if (route != null) {
-          appRouter.pushNamed(route);
-        }
-      });
-      return const Right(unit);
-    } catch (e) {
-      return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
-    }
-  }
-
-  @override
   Either<NotificationAlert, Unit> setNotificationReceivedHandler({
     required AppRouter appRouter,
   }) {

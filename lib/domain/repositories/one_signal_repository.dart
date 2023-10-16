@@ -6,9 +6,6 @@ import 'package:chattyevent_app_flutter/application/bloc/notification/notificati
 abstract class OneSignalRepository {
   Future<Either<NotificationAlert, Unit>> login({required String userId});
   Future<Either<NotificationAlert, Unit>> logout();
-  Either<NotificationAlert, Unit> setNotificationOpenedHandler({
-    required AppRouter appRouter,
-  });
   Either<NotificationAlert, Unit> setNotificationReceivedHandler({
     required AppRouter appRouter,
   });

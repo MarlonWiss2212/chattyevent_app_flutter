@@ -28,26 +28,6 @@ class OneSignalUseCases {
   }
 
   Future<Either<NotificationAlert, Unit>>
-      setNotificationOpenedHandlerIfIHavePermission({
-    required AppRouter appRouter,
-  }) async {
-    final permissionStatus =
-        await permissionRepository.getNotificationPermissionStatus();
-    if (permissionStatus == PermissionStatus.granted) {
-      return oneSignalRepository.setNotificationOpenedHandler(
-        appRouter: appRouter,
-      );
-    }
-    return Left(
-      NotificationAlert(
-        title: "Keine Berechtigung",
-        message:
-            "Du musst erst die Berechtigung geben bevor du auf Notifications drücken kannst",
-      ),
-    );
-  }
-
-  Future<Either<NotificationAlert, Unit>>
       setNotificationReceivedHandlerIfIHavePermission({
     required AppRouter appRouter,
   }) async {

@@ -70,10 +70,6 @@ class AppPermissionIntroductionPagesNotificationPage extends StatelessWidget {
                           .setNotificationReceivedHandlerIfIHavePermission(
                         appRouter: serviceLocator<AppRouter>(),
                       );
-                      serviceLocator<OneSignalUseCases>()
-                          .setNotificationOpenedHandlerIfIHavePermission(
-                        appRouter: serviceLocator<AppRouter>(),
-                      );
                       // ignore: use_build_context_synchronously
                       navigateToNextPage(context);
                     },
