@@ -17,21 +17,21 @@ class EventTabInfoUpdatePermissionsListTile extends StatelessWidget {
             BlocProvider.of<AuthCubit>(context).state.currentUser.id) {
           return const SizedBox();
         }
-        return InkWell(
-          borderRadius: BorderRadius.circular(8),
-          onTap: () {
-            AutoRouter.of(context).push(
-              const EventUpdatePermissionsRoute(),
-            );
-          },
-          child: Ink(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              color: Theme.of(context).colorScheme.surface,
-            ),
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(minHeight: 50),
+        return ConstrainedBox(
+          constraints: const BoxConstraints(minHeight: 50),
+          child: InkWell(
+            borderRadius: BorderRadius.circular(8),
+            onTap: () {
+              AutoRouter.of(context).push(
+                const EventUpdatePermissionsRoute(),
+              );
+            },
+            child: Ink(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                color: Theme.of(context).colorScheme.surface,
+              ),
               child: Row(
                 children: [
                   const Icon(
