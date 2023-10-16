@@ -1,5 +1,5 @@
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
-import 'package:chattyevent_app_flutter/core/enums/notification/notification_type_enum.dart';
+//import 'package:chattyevent_app_flutter/core/enums/notification/notification_type_enum.dart';
 import 'package:chattyevent_app_flutter/core/utils/failure_helper.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/one_signal_repository.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.dart';
@@ -47,7 +47,10 @@ class OneSignalRepositoryImpl implements OneSignalRepository {
   }) {
     try {
       OneSignal.Notifications.addClickListener((event) {
-        final String? route = event.notification.additionalData?['route'];
+        final String? route = event.notification.launchUrl?.split(
+          "chattyevent.com",
+        )[1];
+
         if (route != null) {
           appRouter.pushNamed(route);
         }
@@ -66,22 +69,14 @@ class OneSignalRepositoryImpl implements OneSignalRepository {
       OneSignal.Notifications.addForegroundWillDisplayListener((event) {
         event.preventDefault();
 
-        final Map<String, dynamic>? additionalData =
-            event.notification.additionalData;
-        if (additionalData == null) {
-          event.notification.display();
-          return;
-        }
+        final String launchUrl = event.notification.launchUrl?.split(
+              "chattyevent.com",
+            )[1] ??
+            "";
 
         final currentPath = appRouter.currentPath;
-        if (currentPath == additionalData["route"]) {
-          final NotificationTypeEnum? type = additionalData["type"] != null
-              ? NotificationTypeEnumExtension.fromValue(additionalData["type"])
-              : null;
-
-          if (type == NotificationTypeEnum.messageadded) {
-            return;
-          }
+        if (currentPath == launchUrl) {
+          return;
         }
 
         event.notification.display();

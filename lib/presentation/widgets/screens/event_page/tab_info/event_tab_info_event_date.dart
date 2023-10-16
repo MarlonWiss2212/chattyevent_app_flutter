@@ -130,7 +130,7 @@ class EventTabInfoEventDate extends StatelessWidget {
                                 state.event.eventDate,
                               ),
                           style:
-                              Theme.of(context).textTheme.bodyLarge?.copyWith(
+                              Theme.of(context).textTheme.bodyMedium?.copyWith(
                                     fontWeight: FontWeight.bold,
                                   ),
                         ),
@@ -161,7 +161,7 @@ class EventTabInfoEventDate extends StatelessWidget {
                                     ),
                                 style: Theme.of(context)
                                     .textTheme
-                                    .bodyLarge
+                                    .bodyMedium
                                     ?.copyWith(
                                       fontWeight: FontWeight.bold,
                                     ),

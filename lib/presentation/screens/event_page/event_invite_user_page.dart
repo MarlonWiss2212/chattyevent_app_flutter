@@ -16,18 +16,6 @@ class EventInviteUserPage extends StatefulWidget {
 }
 
 class _EventInviteUserPageState extends State<EventInviteUserPage> {
-  @override
-  void initState() {
-    BlocProvider.of<UserSearchCubit>(context).getFollowedViaApi(
-      notTheseUserIds: BlocProvider.of<CurrentEventCubit>(context)
-          .state
-          .eventUsers
-          .map((e) => e.id)
-          .toList(),
-    );
-    super.initState();
-  }
-
   String text = "";
 
   Future<void> _reloadRequest(CurrentEventState state) async {

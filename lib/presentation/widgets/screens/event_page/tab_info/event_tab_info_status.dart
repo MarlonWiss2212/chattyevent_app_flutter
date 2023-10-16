@@ -31,7 +31,7 @@ class EventTabInfoStatus extends StatelessWidget {
       text,
       style: Theme.of(context)
           .textTheme
-          .bodyLarge
+          .bodyMedium
           ?.copyWith(fontWeight: FontWeight.bold),
     );
   }
