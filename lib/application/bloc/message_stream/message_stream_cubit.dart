@@ -27,23 +27,13 @@ class MessageStreamCubit extends Cubit<MessageStreamState> {
     eitherAlertOrStream.then(
       (value) => value.fold(
         (alert) => notificationCubit.newAlert(
-          notificationAlert: NotificationAlert(
-            title: "Nachrichten error",
-            message:
-                "Fehler beim herstellen einer Verbindung um live nachrichten zu erhalten",
-          ),
+          notificationAlert: alert,
         ),
         (subscription) {
           _subscription = subscription.listen(
             (event) {
               event.fold(
-                (error) => notificationCubit.newAlert(
-                  notificationAlert: NotificationAlert(
-                    title: "Nachrichten error",
-                    message:
-                        "Fehler beim herstellen einer Verbindung um live nachrichten zu erhalten",
-                  ),
-                ),
+                (error) => notificationCubit.newAlert(notificationAlert: error),
                 (message) => emit(MessageStreamState(addedMessage: message)),
               );
             },
