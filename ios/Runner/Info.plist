@@ -5,18 +5,20 @@
 	<key>FlutterDeepLinkingEnabled</key>
 	<true/>
 	<key>CFBundleURLTypes</key>
-  <array>
-    <dict>
-      <key>CFBundleTypeRole</key>
-      <string>Editor</string>
-      <key>CFBundleURLName</key>
-      <string>chattyevent.com</string>
-      <key>CFBundleURLSchemes</key>
-      <array>
-        <string>chattyevent</string>
-      </array>
-    </dict>
-  </array>
+	<array>
+		<dict>
+		<key>CFBundleTypeRole</key>
+		<string>Editor</string>
+		<key>CFBundleURLName</key>
+		<string>chattyevent.com</string>
+		<key>CFBundleURLSchemes</key>
+		<array>
+			<string>chattyevent</string>
+		</array>
+		</dict>
+	</array>
+	<key>NSUserTrackingUsageDescription</key>
+	<string>We use cookies for personalized ads do you agree that option?</string>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>

@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:chattyevent_app_flutter/core/utils/failure_helper.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/ad_mob_repository.dart';
@@ -19,8 +22,26 @@ class AdMobRepositoryImpl implements AdMobRepository {
       requestConsentInformation() async {
     try {
       final consentInformation =
-          await FlutterFundingChoices.requestConsentInformation();
+          await FlutterFundingChoices.requestConsentInformation(isAndroid: Platform.isAndroid,);
       return Right(consentInformation);
+    } catch (e) {
+      return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
+    }
+  }
+  
+  @override
+  Future<Either<NotificationAlert, TrackingStatus>> requestiOSAppTrackingInfo() async {
+   try {
+      return Right(await AppTrackingTransparency.trackingAuthorizationStatus);
+    } catch (e) {
+      return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
+    }
+  }
+  
+  @override
+  Future<Either<NotificationAlert, TrackingStatus>> showiOSAppTracking() async {
+    try {
+      return Right(await AppTrackingTransparency.requestTrackingAuthorization());
     } catch (e) {
       return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
     }

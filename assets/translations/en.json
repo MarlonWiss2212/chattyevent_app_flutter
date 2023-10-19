@@ -303,10 +303,6 @@
   },
   "introductionPages": {
     "permissionPages": {
-      "general": {
-        "requestPermissionText": "Request permission",
-        "dontRequestPermissionText": "Don't request permission"
-      },
       "microphonePage": {
         "text": "If you want to use the microphone for e.g. voice messages. Please press request"
       },

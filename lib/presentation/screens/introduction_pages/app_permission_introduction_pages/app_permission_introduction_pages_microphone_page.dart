@@ -47,32 +47,17 @@ class AppPermissionIntroductionPagesMicrophonePage extends StatelessWidget {
               style: Theme.of(context).textTheme.titleMedium,
             ).tr(),
             const SizedBox(),
-            Row(
-              children: [
-                Flexible(
-                  child: Button(
-                    onTap: () => navigateToNextPage(context),
-                    color: Theme.of(context).colorScheme.surface,
-                    text:
-                        "introductionPages.permissionPages.general.dontRequestPermissionText"
-                            .tr(),
-                  ),
-                ),
-                const SizedBox(width: 8),
-                Flexible(
-                  child: Button(
-                    onTap: () async {
-                      await serviceLocator<PermissionUseCases>()
-                          .requestMicrophonePermission();
-                      // ignore: use_build_context_synchronously
-                      navigateToNextPage(context);
-                    },
-                    text:
-                        "introductionPages.permissionPages.general.requestPermissionText"
-                            .tr(),
-                  ),
-                ),
-              ],
+            SizedBox(
+              width: double.infinity,
+              child: Button(
+                onTap: () async {
+                  await serviceLocator<PermissionUseCases>()
+                      .requestMicrophonePermission();
+                  // ignore: use_build_context_synchronously
+                  navigateToNextPage(context);
+                },
+                text: "general.continueText".tr(),
+              ),
             ),
           ],
         ),
