@@ -158,12 +158,16 @@ class EventModel extends EventEntity {
       ${alsoLatestMessage ? """
       latestMessage {
         _id
+        type
+        typeActionAffectedUserId
         readBy
         message
         messageToReactTo {
           _id
           readBy
           message
+          type
+          typeActionAffectedUserId
           fileLinks
           eventTo
           updatedAt

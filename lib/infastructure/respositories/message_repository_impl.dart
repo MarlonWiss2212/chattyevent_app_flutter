@@ -61,8 +61,12 @@ class MessageRepositoryImpl implements MessageRepository {
           createMessage(createMessageInput: \$input, file: \$file, voiceMessage: \$voiceMessage) {
             _id
             message
+            type
+            typeActionAffectedUserId
             messageToReactTo {
               _id
+              type
+              typeActionAffectedUserId
               message
               readBy
               fileLinks
@@ -140,9 +144,13 @@ class MessageRepositoryImpl implements MessageRepository {
           findMessages(filter: \$input, limitOffsetInput: \$limitOffsetFilter) {
             _id
             message
+            type
+            typeActionAffectedUserId
             messageToReactTo {
               _id
               message
+              type
+              typeActionAffectedUserId
               readBy
               fileLinks
               voiceMessageLink
@@ -230,6 +238,8 @@ class MessageRepositoryImpl implements MessageRepository {
           messageAdded(addedMessageInput: \$addedMessageInput) {
             _id
             message
+            type
+            typeActionAffectedUserId
             readBy
             currentLocation {
               geoJson {
@@ -246,6 +256,8 @@ class MessageRepositoryImpl implements MessageRepository {
             }
             messageToReactTo {
               _id
+              type
+              typeActionAffectedUserId
               message
               readBy
               fileLinks

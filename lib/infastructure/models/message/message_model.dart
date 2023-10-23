@@ -1,3 +1,4 @@
+import 'package:chattyevent_app_flutter/core/enums/message/message_type_enum.dart';
 import 'package:chattyevent_app_flutter/domain/entities/message/message_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/message/message_location_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/message/message_to_react_to_entity.dart';
@@ -8,6 +9,8 @@ class MessageModel extends MessageEntity {
   MessageModel({
     required String id,
     String? message,
+    String? typeActionAffectedUserId,
+    MessageTypeEnum? type,
     List<String>? fileLinks,
     MessageToReactToEntity? messageToReactTo,
     required String createdBy,
@@ -22,6 +25,8 @@ class MessageModel extends MessageEntity {
   }) : super(
           id: id,
           readBy: readBy,
+          typeActionAffectedUserId: typeActionAffectedUserId,
+          type: type,
           currentLocation: currentLocation,
           message: message,
           fileLinks: fileLinks,
@@ -56,6 +61,10 @@ class MessageModel extends MessageEntity {
       id: json['_id'],
       message: json['message'],
       fileLinks: fileLinks,
+      typeActionAffectedUserId: json['typeActionAffectedUserId'],
+      type: json['type'] != null
+          ? MessageTypeEnumExtension.fromValue(json['type'])
+          : null,
       voiceMessageLink: json['voiceMessageLink'],
       currentLocation: json['currentLocation'] != null
           ? MessageLocationModel.fromJson(json['currentLocation'])

@@ -52,11 +52,15 @@ class ChatRepositoryImpl implements ChatRepository {
                 _id
                 readBy
                 message
+                type
+                typeActionAffectedUserId
                 messageToReactTo {
                   _id
                   readBy
                   message
                   fileLinks
+                  type
+                  typeActionAffectedUserId
                   userTo
                   updatedAt
                   createdBy

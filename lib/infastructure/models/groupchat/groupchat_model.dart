@@ -81,12 +81,16 @@ class GroupchatModel extends GroupchatEntity {
       _id
       readBy
       message
+      type
+      typeActionAffectedUserId
       messageToReactTo {
         _id
         readBy
         message
         fileLinks
         groupchatTo
+        type
+        typeActionAffectedUserId
         createdBy
         createdAt
         updatedAt
