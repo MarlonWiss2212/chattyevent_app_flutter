@@ -475,10 +475,10 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
       findMessagesFilter: FindMessagesFilter(userTo: state.user.id),
       limitOffsetFilter: LimitOffsetFilter(
         limit: reload
-            ? state.messages.length > 20
+            ? state.messages.length > 50
                 ? state.messages.length
-                : 20
-            : 20,
+                : 50
+            : 50,
         offset: reload ? 0 : state.messages.length,
       ),
     );

@@ -37,6 +37,7 @@ class CodegenLoader extends AssetLoader{
     "openInMapsText": "In Karten öffnen",
     "kickText": "Rauswerfen",
     "chatText": "Chat",
+    "eventText": "Event",
     "removeText": "Entfernen",
     "errorText": "Fehler",
     "noDescriptionText": "Keine Beschreibung",
@@ -125,6 +126,13 @@ class CodegenLoader extends AssetLoader{
       "readByContainer": {
         "title": "Gelesen von:",
         "emptyMessage": "Niemand hat die Nachricht gelesen"
+      },
+      "notificationContainer": {
+        "userJoinedText": "Der Benutzer {username} ist dem {type} beigetreten.",
+        "userJoinedByInvitationText": "Der Benutzer {affectedUsername} ist dem {type} beigetreten auf Einladung von {createdByUsername}.",
+        "userLeftText": "Der Benutzer {username} hat den {type} verlassen.",
+        "userAddedByText": "Der Benutzer {affectedUsername} ist dem {type} beigetreten. Er/Sie wurde von {createdByUsername} hinzugefügt.",
+        "userKickedByText": "Der Benutzer {affectedUsername} ist nicht mehr im {type}. Er/Sie wurde von {createdByUsername} entfernt."
       }
     },
     "chatMessageInput": {
@@ -319,10 +327,6 @@ class CodegenLoader extends AssetLoader{
   },
   "introductionPages": {
     "permissionPages": {
-      "general": {
-        "requestPermissionText": "Berechtigung anfordern",
-        "dontRequestPermissionText": "Keine Berechtigung anfordern"
-      },
       "microphonePage": {
         "text": "Wenn Sie das Mikrofon beispielsweise für Sprachnachrichten verwenden möchten, drücken Sie bitte auf Anfordern."
       },
@@ -576,6 +580,7 @@ static const Map<String,dynamic> en = {
     "openInMapsText": "Open in maps",
     "kickText": "Kick",
     "chatText": "Chat",
+    "eventText": "Event",
     "removeText": "Remove",
     "errorText": "Error",
     "noDescriptionText": "No description",
@@ -664,6 +669,13 @@ static const Map<String,dynamic> en = {
       "readByContainer": {
         "title": "Read By:",
         "emptyMessage": "Nobody read the message"
+      },
+      "notificationContainer": {
+        "userJoinedText": "User {username} has joined the {type}.",
+        "userJoinedByInvitationText": "User {affectedUsername} has joined the {type} by invitation from {createdByUsername}.",
+        "userLeftText": "User {username} has left the {type}.",
+        "userAddedByText": "User {affectedUsername} has joined the {type}. He/She was added by {createdByUsername}.",
+        "userKickedByText": "User {affectedUsername} is no longer in the {type}. He/She was kicked by {createdByUsername}."
       }
     },
     "chatMessageInput": {
@@ -858,10 +870,6 @@ static const Map<String,dynamic> en = {
   },
   "introductionPages": {
     "permissionPages": {
-      "general": {
-        "requestPermissionText": "Request permission",
-        "dontRequestPermissionText": "Don't request permission"
-      },
       "microphonePage": {
         "text": "If you want to use the microphone for e.g. voice messages. Please press request"
       },

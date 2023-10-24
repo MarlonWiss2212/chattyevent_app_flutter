@@ -8,6 +8,7 @@ import 'package:chattyevent_app_flutter/presentation/widgets/general/chat_messag
 import 'package:chattyevent_app_flutter/presentation/widgets/general/dialog/image_fullscreen_dialog.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/open_maps_button.dart';
 import 'package:collection/collection.dart';
+import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -50,6 +51,7 @@ class ChatMessageContainerMainContainer extends StatelessWidget {
           if (message.messageToReactTo != null) ...{
             ChatMessageReactMessageContainer(
               messageToReactTo: message.messageToReactTo!,
+              usersOrNotificationText: Left(users),
               user: findUser(
                     message.messageToReactTo!.createdBy,
                   ) ??

@@ -1,6 +1,8 @@
+import 'package:chattyevent_app_flutter/core/enums/message/message_type_enum.dart';
 import 'package:chattyevent_app_flutter/domain/entities/message/message_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/chat_message/chat_message_container.dart';
+import 'package:chattyevent_app_flutter/presentation/widgets/general/chat_message/chat_message_notification_container.dart';
 import 'package:flutter/material.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:intl/intl.dart';
@@ -60,15 +62,23 @@ class _ChatMessageListState extends State<ChatMessageList> {
       itemBuilder: (context, message) {
         return Padding(
           padding: message.id == widget.messages.first.id
-              ? const EdgeInsets.only(bottom: 50)
+              ? const EdgeInsets.only(bottom: 60)
               : const EdgeInsets.all(0),
-          child: ChatMessageContainer(
-            key: ObjectKey(message.id),
-            users: widget.users,
-            usersCount: widget.usersCount,
-            message: message,
-            currentUserId: widget.currentUserId,
-          ),
+          child: message.type != MessageTypeEnum.defaultMessage
+              ? ChatMessageNotificationContainer(
+                  key: ObjectKey(message.id),
+                  users: widget.users,
+                  usersCount: widget.usersCount,
+                  message: message,
+                  currentUserId: widget.currentUserId,
+                )
+              : ChatMessageContainer(
+                  key: ObjectKey(message.id),
+                  users: widget.users,
+                  usersCount: widget.usersCount,
+                  message: message,
+                  currentUserId: widget.currentUserId,
+                ),
         );
       },
       elements: widget.messages,
@@ -104,8 +114,8 @@ class _ChatMessageListState extends State<ChatMessageList> {
           ),
         );
       },
-      groupSeparatorBuilder: (_) => const SizedBox(height: 4),
-      separator: const SizedBox(height: 4),
+      groupSeparatorBuilder: (_) => const SizedBox(height: 8),
+      separator: const SizedBox(height: 12),
     );
   }
 }

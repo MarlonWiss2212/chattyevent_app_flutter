@@ -21,6 +21,7 @@
     "openInMapsText": "In Karten öffnen",
     "kickText": "Rauswerfen",
     "chatText": "Chat",
+    "eventText": "Event",
     "removeText": "Entfernen",
     "errorText": "Fehler",
     "noDescriptionText": "Keine Beschreibung",
@@ -109,6 +110,13 @@
       "readByContainer": {
         "title": "Gelesen von:",
         "emptyMessage": "Niemand hat die Nachricht gelesen"
+      },
+      "notificationContainer": {
+        "userJoinedText": "Der Benutzer {username} ist dem {type} beigetreten.",
+        "userJoinedByInvitationText": "Der Benutzer {affectedUsername} ist dem {type} beigetreten auf Einladung von {createdByUsername}.",
+        "userLeftText": "Der Benutzer {username} hat den {type} verlassen.",
+        "userAddedByText": "Der Benutzer {affectedUsername} ist dem {type} beigetreten. Er/Sie wurde von {createdByUsername} hinzugefügt.",
+        "userKickedByText": "Der Benutzer {affectedUsername} ist nicht mehr im {type}. Er/Sie wurde von {createdByUsername} entfernt."
       }
     },
     "chatMessageInput": {

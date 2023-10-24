@@ -450,10 +450,10 @@ class CurrentEventCubit extends Cubit<CurrentEventState> {
       ),
       limitOffsetFilter: LimitOffsetFilter(
         limit: reload
-            ? state.messages.length > 20
+            ? state.messages.length > 50
                 ? state.messages.length
-                : 20
-            : 20,
+                : 50
+            : 50,
         offset: reload ? 0 : state.messages.length,
       ),
     );

@@ -2,23 +2,24 @@ import 'package:chattyevent_app_flutter/application/bloc/add_message/add_message
 import 'package:chattyevent_app_flutter/core/utils/injection.dart';
 import 'package:chattyevent_app_flutter/domain/entities/message/message_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/user/user_entity.dart';
+import 'package:chattyevent_app_flutter/domain/usecases/message_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/vibration_usecases.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/chat_message/chat_message_container_bottom_container.dart';
-import 'package:chattyevent_app_flutter/presentation/widgets/general/chat_message/chat_message_container_main_container.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/chat_message/chat_message_read_by_bottom_dialog.dart';
 import 'package:collection/collection.dart';
+import 'package:dartz/dartz.dart' as dz;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:swipe_to/swipe_to.dart';
 import 'package:chattyevent_app_flutter/domain/entities/message/message_and_user_entity.dart';
 
-class ChatMessageContainer extends StatefulWidget {
+class ChatMessageNotificationContainer extends StatefulWidget {
   final List<UserEntity> users;
   final MessageEntity message;
   final int usersCount;
   final String currentUserId;
 
-  const ChatMessageContainer({
+  const ChatMessageNotificationContainer({
     super.key,
     required this.users,
     required this.usersCount,
@@ -27,51 +28,54 @@ class ChatMessageContainer extends StatefulWidget {
   });
 
   @override
-  State<ChatMessageContainer> createState() => _ChatMessageContainerState();
+  State<ChatMessageNotificationContainer> createState() =>
+      _ChatMessageNotificationContainerState();
 }
 
-class _ChatMessageContainerState extends State<ChatMessageContainer> {
+class _ChatMessageNotificationContainerState
+    extends State<ChatMessageNotificationContainer> {
+  final MessageUseCases messageUseCases = authenticatedLocator();
+
   double scale = 1;
+
   UserEntity? findUser(String id) => widget.users.firstWhereOrNull(
         (element) => element.id == id,
       );
 
   @override
   Widget build(BuildContext context) {
-    final UserEntity? foundUser = findUser(widget.message.createdBy);
+    final maxWidth = MediaQuery.of(context).size.width * 0.8;
 
-    final isCurrentUser = foundUser?.id == widget.currentUserId;
+    final UserEntity? createdBy = findUser(widget.message.createdBy);
 
-    return AnimatedScale(
-      scale: scale,
-      duration: const Duration(milliseconds: 100),
-      child: SwipeTo(
-        iconColor: Theme.of(context).colorScheme.onBackground,
-        onRightSwipe: () {
-          if (foundUser != null) {
-            BlocProvider.of<AddMessageCubit>(context).reactToMessage(
-              messageToReactToWithUser: MessageAndUserEntity(
-                message: widget.message,
-                user: foundUser,
-              ),
-            );
-          }
-        },
-        child: Align(
-          alignment:
-              isCurrentUser ? Alignment.centerRight : Alignment.centerLeft,
-          child: Column(
-            crossAxisAlignment: isCurrentUser
-                ? CrossAxisAlignment.end
-                : CrossAxisAlignment.start,
-            children: [
-              if (!isCurrentUser) ...[
-                Text(
-                  foundUser?.username ?? "",
-                  style: Theme.of(context).textTheme.labelLarge,
+    late String notificationText = messageUseCases.translateCustomMessage(
+      message: dz.Left(widget.message),
+      isGroupchatMessage: widget.message.groupchatTo != null,
+      users: widget.users,
+      createdBy: createdBy,
+      affectedId: widget.message.typeActionAffectedUserId,
+    );
+
+    return ConstrainedBox(
+      constraints: BoxConstraints(maxWidth: maxWidth),
+      child: AnimatedScale(
+        scale: scale,
+        duration: const Duration(milliseconds: 100),
+        child: SwipeTo(
+          iconColor: Theme.of(context).colorScheme.onBackground,
+          onRightSwipe: () {
+            if (createdBy != null) {
+              BlocProvider.of<AddMessageCubit>(context).reactToMessage(
+                messageToReactToWithUser: MessageAndUserEntity(
+                  message: widget.message,
+                  user: createdBy,
+                  notificationText: notificationText,
                 ),
-                const SizedBox(height: 4),
-              ],
+              );
+            }
+          },
+          child: Column(
+            children: [
               GestureDetector(
                 onTapDown: (details) async {
                   setState(() {
@@ -99,17 +103,22 @@ class _ChatMessageContainerState extends State<ChatMessageContainer> {
                     ),
                   );
                 },
-                child: ChatMessageContainerMainContainer(
-                  currentUserId: widget.currentUserId,
-                  isCurrentUser: isCurrentUser,
-                  message: widget.message,
-                  users: widget.users,
+                child: Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    color: Theme.of(context).colorScheme.surface,
+                  ),
+                  child: Text(
+                    notificationText,
+                    textAlign: TextAlign.center,
+                  ),
                 ),
               ),
               const SizedBox(height: 4),
               ChatMessageContainerBottomContainer(
                 usersCount: widget.usersCount,
-                isCurrentUser: isCurrentUser,
+                isCurrentUser: true,
                 message: widget.message,
               ),
             ],
