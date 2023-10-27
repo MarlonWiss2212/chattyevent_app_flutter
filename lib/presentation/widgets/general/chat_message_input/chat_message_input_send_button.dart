@@ -42,6 +42,13 @@ class ChatMessageInputSendButton extends StatelessWidget {
           return StreamBuilder(
             stream: state.isRecordingVoiceMessageStream,
             builder: (context, snapshot) {
+              final Duration duration =
+                  snapshot.hasData ? snapshot.data!.duration : Duration.zero;
+
+              String twoDigits(int n) => n.toString().padLeft(2);
+              final twoDigitsMin = twoDigits(duration.inMinutes.remainder(60));
+              final twoDigitsSec = twoDigits(duration.inSeconds.remainder(60));
+
               return Ink(
                 width: snapshot.connectionState == ConnectionState.waiting
                     ? 100
@@ -55,18 +62,22 @@ class ChatMessageInputSendButton extends StatelessWidget {
                       ? Theme.of(context).colorScheme.surface.withOpacity(.8)
                       : Theme.of(context).colorScheme.surface.withOpacity(.6),
                 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: snapshot.connectionState == ConnectionState.waiting
-                      ? const [
-                          Icon(Ionicons.mic, size: 50),
-                        ]
-                      : const [
+                child: snapshot.connectionState == ConnectionState.waiting
+                    ? Column(
+                        children: [
+                          const Icon(Ionicons.mic, size: 50),
+                          const SizedBox(height: 10),
+                          Text("$twoDigitsMin:$twoDigitsSec"),
+                        ],
+                      )
+                    : const Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
                           Icon(Ionicons.send, size: 10),
                           Text("/"),
                           Icon(Ionicons.mic, size: 10),
                         ],
-                ),
+                      ),
               );
             },
           );
