@@ -46,7 +46,7 @@ class AddMessageCubit extends Cubit<AddMessageState> {
   }) async {
     final vibrate = await vibrationUseCases.vibrate(
       duration: 50,
-      amplitude: 50,
+      intensity: 50,
     );
     vibrate.fold(
       (alert) => null, //notificationCubit.newAlert(notificationAlert: alert),
@@ -131,7 +131,7 @@ class AddMessageCubit extends Cubit<AddMessageState> {
 
     final vibrate = await vibrationUseCases.vibrate(
       duration: 50,
-      amplitude: 80,
+      intensity: 80,
     );
     vibrate.fold(
       (alert) => null, //notificationCubit.newAlert(notificationAlert: alert),
@@ -162,7 +162,7 @@ class AddMessageCubit extends Cubit<AddMessageState> {
     emitState(removeVoiceMessageStream: true);
     final vibrate = await vibrationUseCases.vibrate(
       duration: 50,
-      amplitude: 80,
+      intensity: 80,
     );
     vibrate.fold(
       (alert) => null, //notificationCubit.newAlert(notificationAlert: alert),

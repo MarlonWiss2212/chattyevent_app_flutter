@@ -91,7 +91,7 @@ class _ChatMessageNotificationContainerState
                 onLongPress: () async {
                   await serviceLocator<VibrationUseCases>().vibrate(
                     duration: 50,
-                    amplitude: 80,
+                    intensity: 80,
                   );
                   // ignore: use_build_context_synchronously
                   showModalBottomSheet(
