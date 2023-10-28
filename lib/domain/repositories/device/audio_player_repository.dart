@@ -14,5 +14,8 @@ abstract class AudioPlayerRepository {
   Future<Either<NotificationAlert, void>> setAudioViaUrl({
     required String url,
   });
+  Future<Either<NotificationAlert, void>> setAudioViaAsset({
+    required String path,
+  });
   Future<Either<NotificationAlert, Unit>> closePlayer();
 }

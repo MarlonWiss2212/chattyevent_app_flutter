@@ -150,7 +150,7 @@ class ChatMessageContainerMainContainer extends StatelessWidget {
           ],
           if (message.voiceMessageLink != null) ...[
             ChatMessageContainerVoiceMessage(
-              voiceMessageLink: message.voiceMessageLink!,
+              voiceMessage: Left(message.voiceMessageLink!),
             ),
           ],
           if (message.message != null && message.message!.isNotEmpty) ...{

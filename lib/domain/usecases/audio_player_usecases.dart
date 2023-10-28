@@ -40,6 +40,12 @@ class AudioPlayerUseCases {
     return audioPlayerRepository.setAudioViaUrl(url: url);
   }
 
+  Future<Either<NotificationAlert, void>> setAudioViaAsset({
+    required String path,
+  }) async {
+    return audioPlayerRepository.setAudioViaAsset(path: path);
+  }
+
   Future<Either<NotificationAlert, void>> seek({
     required Duration position,
   }) {
