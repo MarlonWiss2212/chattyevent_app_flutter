@@ -32,8 +32,9 @@ class PrivateEventTabUsersLeftUserListItem extends StatelessWidget {
           : null,
       user: leftPrivateEventUser,
       items: state.currentUserAllowedWithPermission(
-        permissionCheckValue: state.event.permissions?.addUsers,
-      )
+                permissionCheckValue: state.event.permissions?.addUsers,
+              ) &&
+              event.privateEventData?.groupchatTo == ""
           ? [
               PopupMenuItem<void Function(void)>(
                 child: const Text("general.addText").tr(),

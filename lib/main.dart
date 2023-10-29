@@ -35,7 +35,7 @@ Future<void> main() async {
     Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform),
     HiveUtils.initialize(),
     LocalizationUtils.init(),
-    dotenv.load(fileName: '.env'),
+    dotenv.load(fileName: '.dev.env'),
   ]);
 
   final List<Future> futures = [];

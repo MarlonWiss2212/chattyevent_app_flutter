@@ -15,7 +15,8 @@ class ChatMessageInputVoiceMessage extends StatelessWidget {
       duration: const Duration(milliseconds: 200),
       curve: Curves.easeInOut,
       child: BlocBuilder<AddMessageCubit, AddMessageState>(
-        buildWhen: (p, c) => p.voiceMessage?.path != c.voiceMessage?.path,
+        buildWhen: (p, c) =>
+            p.voiceMessage?.hashCode != c.voiceMessage?.hashCode,
         builder: (context, state) {
           if (state.voiceMessage != null) {
             return Column(
@@ -44,8 +45,9 @@ class ChatMessageInputVoiceMessage extends StatelessWidget {
                               Expanded(
                                 child: ChatMessageContainerVoiceMessage(
                                   key: ObjectKey(state.voiceMessage),
-                                  voiceMessage:
-                                      dz.Right(state.voiceMessage!.path),
+                                  voiceMessage: dz.Right(
+                                    state.voiceMessage!.path,
+                                  ),
                                 ),
                               ),
                             ],
