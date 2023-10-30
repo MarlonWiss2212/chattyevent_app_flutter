@@ -53,6 +53,7 @@ class TabChatMessageArea extends StatelessWidget {
           );
         }
         return ChatMessageList(
+          key: Key("${state.event.id} chatMessageList"),
           messages: state.messages,
           users: [...state.eventUsers, ...state.eventLeftUsers],
           usersCount: state.eventUsers.length,

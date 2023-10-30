@@ -4,6 +4,7 @@ import 'package:chattyevent_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/chat_message/chat_message_container.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/chat_message/chat_message_notification_container.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:intl/intl.dart';
 
@@ -57,6 +58,7 @@ class _ChatMessageListState extends State<ChatMessageList> {
   Widget build(BuildContext context) {
     return GroupedListView<MessageEntity, String>(
       cacheExtent: 500,
+      key: widget.key,
       controller: _scrollController,
       padding: const EdgeInsets.symmetric(vertical: 4),
       itemBuilder: (context, message) {
@@ -66,19 +68,31 @@ class _ChatMessageListState extends State<ChatMessageList> {
               : const EdgeInsets.all(0),
           child: message.type != MessageTypeEnum.defaultMessage
               ? ChatMessageNotificationContainer(
-                  key: ObjectKey(message.id),
+                  key: Key(message.id),
                   users: widget.users,
                   usersCount: widget.usersCount,
                   message: message,
                   currentUserId: widget.currentUserId,
                 )
               : ChatMessageContainer(
-                  key: ObjectKey(message.id),
+                  key: Key(message.id),
                   users: widget.users,
                   usersCount: widget.usersCount,
                   message: message,
                   currentUserId: widget.currentUserId,
-                ),
+                )
+                  .animate(
+                      key: widget.messages.first.id == message.id
+                          ? ObjectKey(message)
+                          : null)
+                  .move(
+                    curve: Curves.easeInOutCirc,
+                    duration: const Duration(milliseconds: 600),
+                    begin: message.createdBy == widget.currentUserId
+                        ? const Offset(200, 400)
+                        : const Offset(-200, 400),
+                    end: const Offset(0, 0),
+                  ),
         );
       },
       elements: widget.messages,

@@ -54,6 +54,7 @@ class ChatPageMessageArea extends StatelessWidget {
         }
 
         return ChatMessageList(
+          key: Key("${state.currentChat.id} chatMessageList"),
           messages: state.messages,
           users: [...state.users, ...state.leftUsers],
           usersCount: state.users.length,
