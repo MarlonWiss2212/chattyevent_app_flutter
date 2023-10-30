@@ -46,8 +46,6 @@ class ProfileChatPageMessageArea extends StatelessWidget {
             },
           );
         }
-        print("hijopfgerwhiogrei");
-
         final currentUser =
             BlocProvider.of<AuthCubit>(context).state.currentUser;
         return ChatMessageList(
