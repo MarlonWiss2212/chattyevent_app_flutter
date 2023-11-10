@@ -21,9 +21,11 @@ class MessageModel extends MessageEntity {
     MessageLocationEntity? currentLocation,
     required List<String> readBy,
     String? voiceMessageLink,
+    required bool deleted,
     required DateTime updatedAt,
   }) : super(
           id: id,
+          deleted: deleted,
           readBy: readBy,
           typeActionAffectedUserId: typeActionAffectedUserId,
           type: type,
@@ -59,6 +61,7 @@ class MessageModel extends MessageEntity {
 
     return MessageModel(
       id: json['_id'],
+      deleted: json["deleted"],
       message: json['message'],
       fileLinks: fileLinks,
       typeActionAffectedUserId: json['typeActionAffectedUserId'],

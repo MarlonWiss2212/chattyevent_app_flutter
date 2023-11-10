@@ -19,6 +19,9 @@ class ProfileChatPageMessageArea extends StatelessWidget {
         if (previous.loadingMessages != current.loadingMessages) {
           return true;
         }
+        if (previous.deletingMessageId != current.deletingMessageId) {
+          return true;
+        }
         return false;
       },
       builder: (context, state) {
@@ -57,6 +60,8 @@ class ProfileChatPageMessageArea extends StatelessWidget {
           loadMoreMessages: () {
             return BlocProvider.of<ProfilePageCubit>(context).loadMessages();
           },
+          deleteMessage: (id) => BlocProvider.of<ProfilePageCubit>(context)
+              .deleteMessageViaApi(id: id),
         );
       },
     );

@@ -123,9 +123,12 @@ class CodegenLoader extends AssetLoader{
         "currentLocationText": "Aktueller Standort",
         "audioText": "Audio"
       },
-      "readByContainer": {
+      "bottomDialog": {
         "title": "Gelesen von:",
         "emptyMessage": "Niemand hat die Nachricht gelesen"
+      },
+      "deletedMessage": {
+        "text": "Die Nachricht wurde gelöscht"
       },
       "notificationContainer": {
         "userJoinedText": "Der Benutzer {username} ist dem {type} beigetreten.",
@@ -666,7 +669,10 @@ static const Map<String,dynamic> en = {
         "currentLocationText": "Current Location",
         "audioText": "Audio"
       },
-      "readByContainer": {
+      "deletedMessage": {
+        "text": "The message was deleted"
+      },
+      "bottomDialog": {
         "title": "Read By:",
         "emptyMessage": "Nobody read the message"
       },

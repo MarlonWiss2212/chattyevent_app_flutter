@@ -19,6 +19,9 @@ class TabChatMessageArea extends StatelessWidget {
         if (previous.loadingMessages != current.loadingMessages) {
           return true;
         }
+        if (previous.deletingMessageId != current.deletingMessageId) {
+          return true;
+        }
         if (previous.eventUsers.length != current.eventUsers.length) {
           return true;
         }
@@ -62,6 +65,8 @@ class TabChatMessageArea extends StatelessWidget {
           loadMoreMessages: () {
             return BlocProvider.of<CurrentEventCubit>(context).loadMessages();
           },
+          deleteMessage: (id) => BlocProvider.of<CurrentEventCubit>(context)
+              .deleteMessageViaApi(id: id),
         );
       },
     );

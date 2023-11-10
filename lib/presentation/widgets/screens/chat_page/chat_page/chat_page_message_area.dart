@@ -19,6 +19,9 @@ class ChatPageMessageArea extends StatelessWidget {
         if (previous.loadingMessages != current.loadingMessages) {
           return true;
         }
+        if (previous.deletingMessageId != current.deletingMessageId) {
+          return true;
+        }
         if (previous.users.length != current.users.length) {
           return true;
         }
@@ -62,6 +65,8 @@ class ChatPageMessageArea extends StatelessWidget {
               BlocProvider.of<AuthCubit>(context).state.currentUser.id,
           loadMoreMessages: () =>
               BlocProvider.of<CurrentGroupchatCubit>(context).loadMessages(),
+          deleteMessage: (id) => BlocProvider.of<CurrentGroupchatCubit>(context)
+              .deleteMessageViaApi(id: id),
         );
       },
     );

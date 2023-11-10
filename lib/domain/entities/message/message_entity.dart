@@ -7,6 +7,7 @@ class MessageEntity {
   final String? message;
   final String? typeActionAffectedUserId;
   final MessageTypeEnum? type;
+  final bool deleted;
   final List<String>? fileLinks;
   final String? voiceMessageLink;
   final MessageToReactToEntity? messageToReactTo;
@@ -22,6 +23,7 @@ class MessageEntity {
   MessageEntity({
     required this.id,
     this.type,
+    required this.deleted,
     this.typeActionAffectedUserId,
     this.groupchatTo,
     this.eventTo,

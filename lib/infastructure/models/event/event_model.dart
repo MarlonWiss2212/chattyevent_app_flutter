@@ -159,6 +159,7 @@ class EventModel extends EventEntity {
       latestMessage {
         _id
         type
+        deleted
         typeActionAffectedUserId
         readBy
         message
@@ -167,6 +168,7 @@ class EventModel extends EventEntity {
           readBy
           message
           type
+          deleted
           typeActionAffectedUserId
           fileLinks
           eventTo

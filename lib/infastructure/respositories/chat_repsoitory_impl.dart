@@ -53,6 +53,7 @@ class ChatRepositoryImpl implements ChatRepository {
                 readBy
                 message
                 type
+                deleted
                 typeActionAffectedUserId
                 messageToReactTo {
                   _id
@@ -60,6 +61,7 @@ class ChatRepositoryImpl implements ChatRepository {
                   message
                   fileLinks
                   type
+                  deleted
                   typeActionAffectedUserId
                   userTo
                   updatedAt

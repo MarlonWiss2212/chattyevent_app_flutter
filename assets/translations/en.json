@@ -107,7 +107,10 @@
         "currentLocationText": "Current Location",
         "audioText": "Audio"
       },
-      "readByContainer": {
+      "deletedMessage": {
+        "text": "The message was deleted"
+      },
+      "bottomDialog": {
         "title": "Read By:",
         "emptyMessage": "Nobody read the message"
       },

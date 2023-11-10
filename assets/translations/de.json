@@ -39,8 +39,8 @@
         "message": "Sie sind wieder mit dem Internet verbunden"
       },
       "noInternetIsThereAlert": {
-          "title": "Keine Internetverbindung",
-          "message": "Sie haben die Verbindung zum Internet verloren"
+        "title": "Keine Internetverbindung",
+        "message": "Sie haben die Verbindung zum Internet verloren"
       }
     },
     "amountIsntANumberAlert": {
@@ -107,9 +107,12 @@
         "currentLocationText": "Aktueller Standort",
         "audioText": "Audio"
       },
-      "readByContainer": {
+      "bottomDialog": {
         "title": "Gelesen von:",
         "emptyMessage": "Niemand hat die Nachricht gelesen"
+      },
+      "deletedMessage": {
+        "text": "Die Nachricht wurde gelöscht"
       },
       "notificationContainer": {
         "userJoinedText": "Der Benutzer {username} ist dem {type} beigetreten.",

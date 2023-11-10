@@ -5,7 +5,7 @@ import 'package:chattyevent_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/message_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/vibration_usecases.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/chat_message/chat_message_container_bottom_container.dart';
-import 'package:chattyevent_app_flutter/presentation/widgets/general/chat_message/chat_message_read_by_bottom_dialog.dart';
+import 'package:chattyevent_app_flutter/presentation/widgets/general/chat_message/chat_message_bottom_dialog.dart';
 import 'package:collection/collection.dart';
 import 'package:dartz/dartz.dart' as dz;
 import 'package:flutter/material.dart';
@@ -18,11 +18,13 @@ class ChatMessageNotificationContainer extends StatefulWidget {
   final MessageEntity message;
   final int usersCount;
   final String currentUserId;
+  final Future<void> Function(String id) deleteMessage;
 
   const ChatMessageNotificationContainer({
     super.key,
     required this.users,
     required this.usersCount,
+    required this.deleteMessage,
     required this.message,
     required this.currentUserId,
   });
@@ -96,10 +98,12 @@ class _ChatMessageNotificationContainerState
                   // ignore: use_build_context_synchronously
                   showModalBottomSheet(
                     context: context,
-                    builder: (closeContext) => ChatMessageReadByBottomDialog(
+                    builder: (closeContext) => ChatMessageBottomDialog(
                       closeContext: closeContext,
+                      message: widget.message,
+                      currentUserId: widget.currentUserId,
+                      deleteMessage: widget.deleteMessage,
                       users: widget.users,
-                      readByIds: widget.message.readBy,
                     ),
                   );
                 },

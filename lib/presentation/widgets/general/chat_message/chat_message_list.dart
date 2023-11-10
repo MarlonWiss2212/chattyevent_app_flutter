@@ -14,12 +14,14 @@ class ChatMessageList extends StatefulWidget {
   final int usersCount;
   final String currentUserId;
   final Future<void> Function() loadMoreMessages;
+  final Future<void> Function(String id) deleteMessage;
 
   const ChatMessageList({
     super.key,
     required this.messages,
     required this.currentUserId,
     required this.users,
+    required this.deleteMessage,
     required this.usersCount,
     required this.loadMoreMessages,
   });
@@ -69,6 +71,7 @@ class _ChatMessageListState extends State<ChatMessageList> {
           child: message.type != MessageTypeEnum.defaultMessage
               ? ChatMessageNotificationContainer(
                   key: Key(message.id),
+                  deleteMessage: widget.deleteMessage,
                   users: widget.users,
                   usersCount: widget.usersCount,
                   message: message,
@@ -76,6 +79,7 @@ class _ChatMessageListState extends State<ChatMessageList> {
                 )
               : ChatMessageContainer(
                   key: Key(message.id),
+                  deleteMessage: widget.deleteMessage,
                   users: widget.users,
                   usersCount: widget.usersCount,
                   message: message,

@@ -6,6 +6,7 @@ import 'package:chattyevent_app_flutter/domain/entities/chat_entity.dart';
 import 'package:chattyevent_app_flutter/infastructure/filter/message/find_messages_filter.dart';
 import 'package:chattyevent_app_flutter/domain/entities/message/message_entity.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/message_usecases.dart';
+import 'package:chattyevent_app_flutter/infastructure/filter/message/find_one_message_filter.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_state.dart';
@@ -512,6 +513,33 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
     return message;
   }
 
+  Future<void> deleteMessageViaApi({required String id}) async {
+    if (state.deletingMessageId != null) {
+      return;
+    }
+
+    emitState(deletingMessageId: id);
+
+    final updatedMessageOrFailure = await messageUseCases.deleteMessageViaApi(
+      filter: FindOneMessage(
+        id: id,
+      ),
+    );
+
+    updatedMessageOrFailure.fold(
+      (alert) {
+        notificationCubit.newAlert(notificationAlert: alert);
+        emitState(setDeletingMessageIdToNull: true);
+      },
+      (updatedMessage) {
+        List<MessageEntity> messages = state.messages;
+        final index = messages.indexWhere((element) => element.id == id);
+        messages[index] = updatedMessage;
+        emitState(messages: messages, setDeletingMessageIdToNull: true);
+      },
+    );
+  }
+
   emitState({
     UserEntity? user,
     ProfilePageStateStatus? status,
@@ -524,6 +552,8 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
     List<MessageEntity>? messages,
     bool? loadingMessages,
     bool replaceOrAddInOtherCubits = true,
+    String? deletingMessageId,
+    bool setDeletingMessageIdToNull = false,
   }) {
     final List<MessageEntity> allMessages = messages ?? state.messages;
     allMessages.sort((a, b) => b.createdAt.compareTo(a.createdAt));
@@ -541,6 +571,9 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
         : null;
 
     final newState = ProfilePageState(
+      deletingMessageId: setDeletingMessageIdToNull
+          ? null
+          : deletingMessageId ?? state.deletingMessageId,
       messages: allMessages,
       loadingMessages: loadingMessages ?? state.loadingMessages,
       user: newUser,

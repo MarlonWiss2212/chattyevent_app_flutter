@@ -11,6 +11,7 @@ import 'package:chattyevent_app_flutter/infastructure/filter/message/find_messag
 import 'package:chattyevent_app_flutter/domain/entities/chat_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/message/message_entity.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/message_usecases.dart';
+import 'package:chattyevent_app_flutter/infastructure/filter/message/find_one_message_filter.dart';
 import 'package:chattyevent_app_flutter/infastructure/filter/request/find_one_request_filter.dart';
 import 'package:chattyevent_app_flutter/infastructure/filter/request/find_requests_filter.dart';
 import 'package:collection/collection.dart';
@@ -546,6 +547,33 @@ class CurrentEventCubit extends Cubit<CurrentEventState> {
     return message;
   }
 
+  Future<void> deleteMessageViaApi({required String id}) async {
+    if (state.deletingMessageId != null) {
+      return;
+    }
+
+    emitState(deletingMessageId: id);
+
+    final updatedMessageOrFailure = await messageUseCases.deleteMessageViaApi(
+      filter: FindOneMessage(
+        id: id,
+      ),
+    );
+
+    updatedMessageOrFailure.fold(
+      (alert) {
+        notificationCubit.newAlert(notificationAlert: alert);
+        emitState(setDeletingMessageIdToNull: true);
+      },
+      (updatedMessage) {
+        List<MessageEntity> messages = state.messages;
+        final index = messages.indexWhere((element) => element.id == id);
+        messages[index] = updatedMessage;
+        emitState(messages: messages, setDeletingMessageIdToNull: true);
+      },
+    );
+  }
+
   void emitState({
     EventEntity? event,
     List<EventUserEntity>? eventUsers,
@@ -553,6 +581,7 @@ class CurrentEventCubit extends Cubit<CurrentEventState> {
     List<MessageEntity>? messages,
     List<RequestEntity>? invitations,
     GroupchatEntity? groupchat,
+    String? deletingMessageId,
     bool? loadingEvent,
     bool? loadingInvitations,
     bool? loadingGroupchat,
@@ -561,6 +590,7 @@ class CurrentEventCubit extends Cubit<CurrentEventState> {
     List<CurrentShoppingListItemState>? shoppingListItemStates,
     CurrentPrivateEventStateStatus? status,
     bool replaceOrAddInOtherCubits = true,
+    bool setDeletingMessageIdToNull = false,
   }) {
     final List<MessageEntity> allMessages = messages ?? state.messages;
     allMessages.sort((a, b) => b.createdAt.compareTo(a.createdAt));
@@ -584,6 +614,9 @@ class CurrentEventCubit extends Cubit<CurrentEventState> {
     final CurrentEventState newState = CurrentEventState(
       messages: allMessages,
       invitations: allInvitations,
+      deletingMessageId: setDeletingMessageIdToNull
+          ? null
+          : deletingMessageId ?? state.deletingMessageId,
       loadingInvitations: loadingInvitations ?? state.loadingInvitations,
       loadingMessages: loadingMessages ?? state.loadingMessages,
       currentUserIndex: newEventUsers.indexWhere(

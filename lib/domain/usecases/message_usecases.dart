@@ -4,6 +4,7 @@ import 'package:chattyevent_app_flutter/domain/entities/message/message_entity.d
 import 'package:chattyevent_app_flutter/domain/entities/message/message_to_react_to_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/message_repository.dart';
+import 'package:chattyevent_app_flutter/infastructure/filter/message/find_one_message_filter.dart';
 import 'package:collection/collection.dart';
 import 'package:dartz/dartz.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
@@ -109,5 +110,11 @@ class MessageUseCases {
     return messageRepository.getMessagesRealtimeViaApi(
       addedMessageFilter: addedMessageFilter,
     );
+  }
+
+  Future<Either<NotificationAlert, MessageEntity>> deleteMessageViaApi({
+    required FindOneMessage filter,
+  }) async {
+    return await messageRepository.deleteMessageViaApi(filter: filter);
   }
 }

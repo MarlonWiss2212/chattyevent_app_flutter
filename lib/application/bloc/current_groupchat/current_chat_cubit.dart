@@ -7,6 +7,7 @@ import 'package:chattyevent_app_flutter/domain/entities/chat_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/message/message_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/request/request_entity.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/request_usecases.dart';
+import 'package:chattyevent_app_flutter/infastructure/filter/message/find_one_message_filter.dart';
 import 'package:chattyevent_app_flutter/infastructure/filter/request/find_one_request_filter.dart';
 import 'package:chattyevent_app_flutter/infastructure/filter/request/find_requests_filter.dart';
 import 'package:dartz/dartz.dart';
@@ -547,5 +548,44 @@ class CurrentGroupchatCubit extends Cubit<CurrentGroupchatState> {
       replaceOrAddInOtherCubits: false,
     );
     return message;
+  }
+
+  Future<void> deleteMessageViaApi({required String id}) async {
+    if (state.deletingMessageId != null) {
+      return;
+    }
+
+    emit(CurrentGroupchatState.merge(
+      oldState: state,
+      deletingMessageId: id,
+      currentUserId: authCubit.state.currentUser.id,
+    ));
+
+    final updatedMessageOrFailure = await messageUseCases.deleteMessageViaApi(
+      filter: FindOneMessage(
+        id: id,
+      ),
+    );
+
+    updatedMessageOrFailure.fold(
+      (alert) {
+        notificationCubit.newAlert(notificationAlert: alert);
+        emit(CurrentGroupchatState.merge(
+          oldState: state,
+          setDeletingMessageIdToNull: true,
+          currentUserId: authCubit.state.currentUser.id,
+        ));
+      },
+      (updatedMessage) {
+        List<MessageEntity> messages = state.messages;
+        final index = messages.indexWhere((element) => element.id == id);
+        messages[index] = updatedMessage;
+        emit(CurrentGroupchatState.merge(
+            oldState: state,
+            setDeletingMessageIdToNull: true,
+            currentUserId: authCubit.state.currentUser.id,
+            messages: messages));
+      },
+    );
   }
 }
