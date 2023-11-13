@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:chattyevent_app_flutter/infastructure/filter/message/added_message_filter.dart';
 import 'package:chattyevent_app_flutter/domain/entities/message/message_entity.dart';
 import 'package:chattyevent_app_flutter/infastructure/filter/message/find_one_message_filter.dart';
+import 'package:chattyevent_app_flutter/infastructure/filter/message/updated_message_filter.dart';
 import 'package:chattyevent_app_flutter/infastructure/models/message/message_model.dart';
 import 'package:graphql/client.dart';
 import 'package:http/http.dart';
@@ -314,6 +315,107 @@ class MessageRepositoryImpl implements MessageRepository {
           }
           if (event.data != null) {
             final message = MessageModel.fromJson(event.data!['messageAdded']);
+            yield Right(message);
+          }
+        }
+      }
+
+      return Right(subscriptionToStream());
+    } catch (e) {
+      return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
+    }
+  }
+
+  @override
+  Future<
+          Either<NotificationAlert,
+              Stream<Either<NotificationAlert, MessageEntity>>>>
+      getUpdatedMessagesRealtimeViaApi({
+    required UpdatedMessageFilter updatedMessageFilter,
+  }) async {
+    try {
+      final Stream<QueryResult<Object?>> subscription =
+          await graphQlDatasource.subscription(
+        """
+        subscription(\$updatedMessageInput: UpdatedMessageInput!) {
+          messageUpdated(updatedMessageInput: \$updatedMessageInput) {
+            _id
+            message
+            deleted
+            type
+            typeActionAffectedUserId
+            readBy
+            currentLocation {
+              geoJson {
+                type
+                coordinates
+              }
+              address {
+                zip
+                city
+                country
+                street
+                housenumber
+              }
+            }
+            messageToReactTo {
+              _id
+              type
+              typeActionAffectedUserId
+              message
+              readBy
+              fileLinks
+              voiceMessageLink
+              messageToReactToId
+              groupchatTo
+              currentLocation {
+                geoJson {
+                  type
+                  coordinates
+                }
+                address {
+                  zip
+                  city
+                  country
+                  street
+                  housenumber
+                }
+              }
+              eventTo
+              userTo
+              updatedAt
+              createdBy
+              createdAt
+            }
+            groupchatTo
+            eventTo
+            userTo
+            fileLinks
+            voiceMessageLink
+            updatedAt
+            createdBy
+            createdAt
+          }
+        }
+      """,
+        variables: {
+          "updatedMessageInput": updatedMessageFilter.toMap(),
+        },
+      );
+
+      Stream<Either<NotificationAlert, MessageEntity>>
+          subscriptionToStream() async* {
+        await for (var event in subscription) {
+          if (event.hasException) {
+            yield Left(FailureHelper.graphqlFailureToNotificationAlert(
+              title: "Nachrichten Fehler",
+              response: event,
+            ));
+          }
+          if (event.data != null) {
+            final message = MessageModel.fromJson(
+              event.data!['messageUpdated'],
+            );
             yield Right(message);
           }
         }

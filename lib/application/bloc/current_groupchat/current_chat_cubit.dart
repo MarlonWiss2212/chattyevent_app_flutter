@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:chattyevent_app_flutter/application/bloc/message_stream/message_stream_cubit.dart';
 import 'package:chattyevent_app_flutter/core/enums/groupchat/groupchat_permission_enum.dart';
+import 'package:chattyevent_app_flutter/core/enums/message/message_stream_type_enum.dart';
 import 'package:chattyevent_app_flutter/core/enums/request/request_type_enum.dart';
 import 'package:chattyevent_app_flutter/core/response/groupchat/groupchat_add_user.response.dart';
 import 'package:chattyevent_app_flutter/domain/entities/chat_entity.dart';
@@ -59,8 +60,26 @@ class CurrentGroupchatCubit extends Cubit<CurrentGroupchatState> {
     required this.messageUseCases,
   }) {
     messageStreamCubit.stream.listen((event) {
-      if (event.addedMessage?.groupchatTo == state.currentChat.id) {
-        addMessage(message: event.addedMessage!);
+      if (event.message == null) {
+        return;
+      }
+      if (event.message?.groupchatTo == state.currentChat.id) {
+        if (event.streamType == MessageStreamTypeEnum.added) {
+          addMessage(message: event.message!);
+        } else {
+          List<MessageEntity> messages = state.messages;
+          final index = messages.indexWhere(
+            (element) => element.id == event.message!.id,
+          );
+          if (index != -1) {
+            messages[index] = event.message!;
+            emit(CurrentGroupchatState.merge(
+              oldState: state,
+              currentUserId: authCubit.state.currentUser.id,
+              messages: messages,
+            ));
+          }
+        }
       }
     });
   }

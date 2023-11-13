@@ -1,8 +1,10 @@
 part of 'message_stream_cubit.dart';
 
 class MessageStreamState {
-  final MessageEntity? addedMessage;
+  final MessageEntity? message;
+  final MessageStreamTypeEnum? streamType;
   MessageStreamState({
-    this.addedMessage,
+    this.message,
+    this.streamType,
   });
 }

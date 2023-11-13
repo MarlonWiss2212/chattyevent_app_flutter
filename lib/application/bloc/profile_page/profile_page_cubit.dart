@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:chattyevent_app_flutter/application/bloc/chat/chat_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/message_stream/message_stream_cubit.dart';
+import 'package:chattyevent_app_flutter/core/enums/message/message_stream_type_enum.dart';
 import 'package:chattyevent_app_flutter/core/enums/user_relation/user_relation_status_enum.dart';
 import 'package:chattyevent_app_flutter/domain/entities/chat_entity.dart';
 import 'package:chattyevent_app_flutter/infastructure/filter/message/find_messages_filter.dart';
@@ -44,11 +45,26 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
     required this.messageStreamCubit,
   }) {
     messageStreamCubit.stream.listen((event) {
-      if ((event.addedMessage?.createdBy == state.user.id &&
-              event.addedMessage?.userTo == authCubit.state.currentUser.id) ||
-          (event.addedMessage?.createdBy == authCubit.state.currentUser.id &&
-              event.addedMessage?.userTo == state.user.id)) {
-        addMessage(message: event.addedMessage!);
+      if (event.message == null) {
+        return;
+      }
+
+      if ((event.message?.createdBy == state.user.id &&
+              event.message?.userTo == authCubit.state.currentUser.id) ||
+          (event.message?.createdBy == authCubit.state.currentUser.id &&
+              event.message?.userTo == state.user.id)) {
+        if (event.streamType == MessageStreamTypeEnum.added) {
+          addMessage(message: event.message!);
+        } else {
+          List<MessageEntity> messages = state.messages;
+          final index = messages.indexWhere(
+            (element) => element.id == event.message!.id,
+          );
+          if (index != -1) {
+            messages[index] = event.message!;
+            emitState(messages: messages);
+          }
+        }
       }
     });
   }

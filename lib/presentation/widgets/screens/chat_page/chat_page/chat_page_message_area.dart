@@ -12,24 +12,6 @@ class ChatPageMessageArea extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CurrentGroupchatCubit, CurrentGroupchatState>(
-      buildWhen: (previous, current) {
-        if (previous.messages.length != current.messages.length) {
-          return true;
-        }
-        if (previous.loadingMessages != current.loadingMessages) {
-          return true;
-        }
-        if (previous.deletingMessageId != current.deletingMessageId) {
-          return true;
-        }
-        if (previous.users.length != current.users.length) {
-          return true;
-        }
-        if (previous.leftUsers.length != current.leftUsers.length) {
-          return true;
-        }
-        return false;
-      },
       builder: (context, state) {
         if (state.loadingMessages == false && state.messages.isEmpty) {
           return Center(

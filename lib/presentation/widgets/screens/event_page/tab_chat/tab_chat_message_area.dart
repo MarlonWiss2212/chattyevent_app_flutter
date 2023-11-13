@@ -12,24 +12,6 @@ class TabChatMessageArea extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CurrentEventCubit, CurrentEventState>(
-      buildWhen: (previous, current) {
-        if (previous.messages.length != current.messages.length) {
-          return true;
-        }
-        if (previous.loadingMessages != current.loadingMessages) {
-          return true;
-        }
-        if (previous.deletingMessageId != current.deletingMessageId) {
-          return true;
-        }
-        if (previous.eventUsers.length != current.eventUsers.length) {
-          return true;
-        }
-        if (previous.eventLeftUsers.length != current.eventLeftUsers.length) {
-          return true;
-        }
-        return false;
-      },
       builder: (context, state) {
         if (state.loadingMessages == false && state.messages.isEmpty) {
           return Center(

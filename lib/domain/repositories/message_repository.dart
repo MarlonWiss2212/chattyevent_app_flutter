@@ -4,6 +4,7 @@ import 'package:chattyevent_app_flutter/infastructure/filter/message/added_messa
 import 'package:chattyevent_app_flutter/infastructure/filter/message/find_messages_filter.dart';
 import 'package:chattyevent_app_flutter/domain/entities/message/message_entity.dart';
 import 'package:chattyevent_app_flutter/infastructure/filter/message/find_one_message_filter.dart';
+import 'package:chattyevent_app_flutter/infastructure/filter/message/updated_message_filter.dart';
 import 'package:dartz/dartz.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:chattyevent_app_flutter/infastructure/filter/limit_offset_filter.dart';
@@ -21,6 +22,12 @@ abstract class MessageRepository {
               Stream<Either<NotificationAlert, MessageEntity>>>>
       getMessagesRealtimeViaApi({
     required AddedMessageFilter addedMessageFilter,
+  });
+  Future<
+          Either<NotificationAlert,
+              Stream<Either<NotificationAlert, MessageEntity>>>>
+      getUpdatedMessagesRealtimeViaApi({
+    required UpdatedMessageFilter updatedMessageFilter,
   });
   Future<Either<NotificationAlert, MessageEntity>> deleteMessageViaApi({
     required FindOneMessage filter,

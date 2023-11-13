@@ -3,6 +3,7 @@ import 'package:chattyevent_app_flutter/application/bloc/message_stream/message_
 import 'package:chattyevent_app_flutter/core/enums/event/event_permission_enum.dart';
 import 'package:chattyevent_app_flutter/core/enums/event/event_user/event_user_role_enum.dart';
 import 'package:chattyevent_app_flutter/core/enums/event/event_user/event_user_status_enum.dart';
+import 'package:chattyevent_app_flutter/core/enums/message/message_stream_type_enum.dart';
 import 'package:chattyevent_app_flutter/core/enums/request/request_type_enum.dart';
 import 'package:chattyevent_app_flutter/core/response/event/event_add_user.response.dart';
 import 'package:chattyevent_app_flutter/domain/entities/request/request_entity.dart';
@@ -75,8 +76,22 @@ class CurrentEventCubit extends Cubit<CurrentEventState> {
     required this.messageStreamCubit,
   }) {
     messageStreamCubit.stream.listen((event) {
-      if (event.addedMessage?.eventTo == state.event.id) {
-        addMessage(message: event.addedMessage!);
+      if (event.message == null) {
+        return;
+      }
+      if (event.message?.eventTo == state.event.id) {
+        if (event.streamType == MessageStreamTypeEnum.added) {
+          addMessage(message: event.message!);
+        } else {
+          List<MessageEntity> messages = state.messages;
+          final index = messages.indexWhere(
+            (element) => element.id == event.message!.id,
+          );
+          if (index != -1) {
+            messages[index] = event.message!;
+            emitState(messages: messages);
+          }
+        }
       }
     });
   }
