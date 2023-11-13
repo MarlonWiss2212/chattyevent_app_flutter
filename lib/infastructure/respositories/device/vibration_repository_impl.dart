@@ -13,12 +13,12 @@ class VibrationRepositoryImpl implements VibrationRepository {
   @override
   Future<Either<NotificationAlert, Unit>> vibrate({
     int duration = 500,
-    int amplitude = -1,
+    int intensity = -1,
   }) async {
     try {
       await vibrationDatasource.vibrate(
         duration: duration,
-        amplitude: amplitude,
+        intensity: intensity,
       );
       return const Right(unit);
     } catch (e) {
@@ -27,9 +27,9 @@ class VibrationRepositoryImpl implements VibrationRepository {
   }
 
   @override
-  Future<Either<NotificationAlert, bool>> hasAmplitute() async {
+  Future<Either<NotificationAlert, bool>> hasCustomVibrationsSupport() async {
     try {
-      return Right(await vibrationDatasource.hasAmplitute());
+      return Right(await vibrationDatasource.hasCustomVibrationsSupport());
     } catch (e) {
       return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
     }

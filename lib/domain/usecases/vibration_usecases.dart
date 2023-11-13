@@ -8,9 +8,10 @@ class VibrationUseCases {
 
   Future<Either<NotificationAlert, Unit>> vibrate({
     int duration = 500,
-    int amplitude = -1,
+    int intensity = -1,
   }) async {
-    final hasAmplitute = (await vibrationRepository.hasAmplitute()).fold(
+    final hasCustomVibrationsSupport =
+        (await vibrationRepository.hasCustomVibrationsSupport()).fold(
       (alert) => false,
       (boolean) => boolean,
     );
@@ -22,7 +23,7 @@ class VibrationUseCases {
     if (hasVibrator) {
       await vibrationRepository.vibrate(
         duration: duration,
-        amplitude: hasAmplitute == true ? amplitude : -1,
+        intensity: hasCustomVibrationsSupport == true ? intensity : -1,
       );
       return const Right(unit);
     }

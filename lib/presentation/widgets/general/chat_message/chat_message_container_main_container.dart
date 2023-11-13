@@ -8,6 +8,8 @@ import 'package:chattyevent_app_flutter/presentation/widgets/general/chat_messag
 import 'package:chattyevent_app_flutter/presentation/widgets/general/dialog/image_fullscreen_dialog.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/open_maps_button.dart';
 import 'package:collection/collection.dart';
+import 'package:dartz/dartz.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -50,6 +52,7 @@ class ChatMessageContainerMainContainer extends StatelessWidget {
           if (message.messageToReactTo != null) ...{
             ChatMessageReactMessageContainer(
               messageToReactTo: message.messageToReactTo!,
+              usersOrNotificationText: Left(users),
               user: findUser(
                     message.messageToReactTo!.createdBy,
                   ) ??
@@ -148,7 +151,7 @@ class ChatMessageContainerMainContainer extends StatelessWidget {
           ],
           if (message.voiceMessageLink != null) ...[
             ChatMessageContainerVoiceMessage(
-              voiceMessageLink: message.voiceMessageLink!,
+              voiceMessage: Left(message.voiceMessageLink!),
             ),
           ],
           if (message.message != null && message.message!.isNotEmpty) ...{
@@ -158,6 +161,14 @@ class ChatMessageContainerMainContainer extends StatelessWidget {
               style: Theme.of(context).textTheme.bodyMedium,
             ),
           },
+          if (message.deleted) ...{
+            Wrap(
+              children: [
+                const Icon(Icons.delete_forever),
+                const Text("general.chatMessage.deletedMessage.text").tr()
+              ],
+            ),
+          }
         ].withSpaceBetween(height: 8),
       ),
     );

@@ -4,6 +4,7 @@ import 'package:flutter_sound/flutter_sound.dart';
 abstract class MicrophoneDatasource {
   Future<void> openRecorder();
   Future<void> closeRecorder();
+  Future<void> setSubscriptionDuration(Duration duration);
   Stream<RecordingDisposition>? isRecordingStream();
   bool isRecording();
   Future<void> startRecording();
@@ -48,5 +49,10 @@ class MicrophoneDatasourceImpl implements MicrophoneDatasource {
   @override
   Future<String?> stopRecording() {
     return recorder.stopRecorder();
+  }
+
+  @override
+  Future<void> setSubscriptionDuration(Duration duration) {
+    return recorder.setSubscriptionDuration(duration);
   }
 }

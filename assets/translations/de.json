@@ -21,6 +21,7 @@
     "openInMapsText": "In Karten öffnen",
     "kickText": "Rauswerfen",
     "chatText": "Chat",
+    "eventText": "Event",
     "removeText": "Entfernen",
     "errorText": "Fehler",
     "noDescriptionText": "Keine Beschreibung",
@@ -38,8 +39,8 @@
         "message": "Sie sind wieder mit dem Internet verbunden"
       },
       "noInternetIsThereAlert": {
-          "title": "Keine Internetverbindung",
-          "message": "Sie haben die Verbindung zum Internet verloren"
+        "title": "Keine Internetverbindung",
+        "message": "Sie haben die Verbindung zum Internet verloren"
       }
     },
     "amountIsntANumberAlert": {
@@ -106,9 +107,19 @@
         "currentLocationText": "Aktueller Standort",
         "audioText": "Audio"
       },
-      "readByContainer": {
+      "bottomDialog": {
         "title": "Gelesen von:",
         "emptyMessage": "Niemand hat die Nachricht gelesen"
+      },
+      "deletedMessage": {
+        "text": "Die Nachricht wurde gelöscht"
+      },
+      "notificationContainer": {
+        "userJoinedText": "Der Benutzer {username} ist dem {type} beigetreten.",
+        "userJoinedByInvitationText": "Der Benutzer {affectedUsername} ist dem {type} beigetreten auf Einladung von {createdByUsername}.",
+        "userLeftText": "Der Benutzer {username} hat den {type} verlassen.",
+        "userAddedByText": "Der Benutzer {affectedUsername} ist dem {type} beigetreten. Er/Sie wurde von {createdByUsername} hinzugefügt.",
+        "userKickedByText": "Der Benutzer {affectedUsername} ist nicht mehr im {type}. Er/Sie wurde von {createdByUsername} entfernt."
       }
     },
     "chatMessageInput": {

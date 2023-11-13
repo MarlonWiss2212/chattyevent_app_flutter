@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:chattyevent_app_flutter/infastructure/filter/message/added_message_filter.dart';
 import 'package:chattyevent_app_flutter/domain/entities/message/message_entity.dart';
+import 'package:chattyevent_app_flutter/infastructure/filter/message/find_one_message_filter.dart';
+import 'package:chattyevent_app_flutter/infastructure/filter/message/updated_message_filter.dart';
 import 'package:chattyevent_app_flutter/infastructure/models/message/message_model.dart';
 import 'package:graphql/client.dart';
 import 'package:http/http.dart';
@@ -61,8 +63,13 @@ class MessageRepositoryImpl implements MessageRepository {
           createMessage(createMessageInput: \$input, file: \$file, voiceMessage: \$voiceMessage) {
             _id
             message
+            type
+            typeActionAffectedUserId
+            deleted
             messageToReactTo {
               _id
+              type
+              typeActionAffectedUserId
               message
               readBy
               fileLinks
@@ -140,9 +147,14 @@ class MessageRepositoryImpl implements MessageRepository {
           findMessages(filter: \$input, limitOffsetInput: \$limitOffsetFilter) {
             _id
             message
+            deleted
+            type
+            typeActionAffectedUserId
             messageToReactTo {
               _id
               message
+              type
+              typeActionAffectedUserId
               readBy
               fileLinks
               voiceMessageLink
@@ -230,6 +242,9 @@ class MessageRepositoryImpl implements MessageRepository {
           messageAdded(addedMessageInput: \$addedMessageInput) {
             _id
             message
+            deleted
+            type
+            typeActionAffectedUserId
             readBy
             currentLocation {
               geoJson {
@@ -246,6 +261,8 @@ class MessageRepositoryImpl implements MessageRepository {
             }
             messageToReactTo {
               _id
+              type
+              typeActionAffectedUserId
               message
               readBy
               fileLinks
@@ -304,6 +321,194 @@ class MessageRepositoryImpl implements MessageRepository {
       }
 
       return Right(subscriptionToStream());
+    } catch (e) {
+      return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
+    }
+  }
+
+  @override
+  Future<
+          Either<NotificationAlert,
+              Stream<Either<NotificationAlert, MessageEntity>>>>
+      getUpdatedMessagesRealtimeViaApi({
+    required UpdatedMessageFilter updatedMessageFilter,
+  }) async {
+    try {
+      final Stream<QueryResult<Object?>> subscription =
+          await graphQlDatasource.subscription(
+        """
+        subscription(\$updatedMessageInput: UpdatedMessageInput!) {
+          messageUpdated(updatedMessageInput: \$updatedMessageInput) {
+            _id
+            message
+            deleted
+            type
+            typeActionAffectedUserId
+            readBy
+            currentLocation {
+              geoJson {
+                type
+                coordinates
+              }
+              address {
+                zip
+                city
+                country
+                street
+                housenumber
+              }
+            }
+            messageToReactTo {
+              _id
+              type
+              typeActionAffectedUserId
+              message
+              readBy
+              fileLinks
+              voiceMessageLink
+              messageToReactToId
+              groupchatTo
+              currentLocation {
+                geoJson {
+                  type
+                  coordinates
+                }
+                address {
+                  zip
+                  city
+                  country
+                  street
+                  housenumber
+                }
+              }
+              eventTo
+              userTo
+              updatedAt
+              createdBy
+              createdAt
+            }
+            groupchatTo
+            eventTo
+            userTo
+            fileLinks
+            voiceMessageLink
+            updatedAt
+            createdBy
+            createdAt
+          }
+        }
+      """,
+        variables: {
+          "updatedMessageInput": updatedMessageFilter.toMap(),
+        },
+      );
+
+      Stream<Either<NotificationAlert, MessageEntity>>
+          subscriptionToStream() async* {
+        await for (var event in subscription) {
+          if (event.hasException) {
+            yield Left(FailureHelper.graphqlFailureToNotificationAlert(
+              title: "Nachrichten Fehler",
+              response: event,
+            ));
+          }
+          if (event.data != null) {
+            final message = MessageModel.fromJson(
+              event.data!['messageUpdated'],
+            );
+            yield Right(message);
+          }
+        }
+      }
+
+      return Right(subscriptionToStream());
+    } catch (e) {
+      return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
+    }
+  }
+
+  @override
+  Future<Either<NotificationAlert, MessageEntity>> deleteMessageViaApi({
+    required FindOneMessage filter,
+  }) async {
+    try {
+      Map<String, dynamic> variables = {
+        "input": filter.toMap(),
+      };
+
+      final response = await graphQlDatasource.mutation(
+        """
+        mutation deleteMessage(\$input: FindOneMessageInput!) {
+          deleteMessage(filter: \$input) {
+            _id
+            message
+            deleted
+            type
+            typeActionAffectedUserId
+            messageToReactTo {
+              _id
+              type
+              typeActionAffectedUserId
+              message
+              readBy
+              fileLinks
+              voiceMessageLink
+              messageToReactToId
+              groupchatTo
+              currentLocation {
+                geoJson {
+                  type
+                  coordinates
+                }
+                address {
+                  zip
+                  city
+                  country
+                  street
+                  housenumber
+                }
+              }
+              eventTo
+              userTo
+              updatedAt
+              createdBy
+              createdAt
+            }
+            readBy
+            fileLinks
+            voiceMessageLink
+            groupchatTo
+            currentLocation {
+              geoJson {
+                type
+                coordinates
+              }
+              address {
+                zip
+                city
+                country
+                street
+                housenumber
+              }
+            }
+            eventTo
+            userTo
+            updatedAt
+            createdBy
+            createdAt
+          }
+        }
+      """,
+        variables: variables,
+      );
+
+      if (response.hasException) {
+        return Left(FailureHelper.graphqlFailureToNotificationAlert(
+          title: "Löschen Nachricht Fehler",
+          response: response,
+        ));
+      }
+      return Right(MessageModel.fromJson(response.data!["deleteMessage"]));
     } catch (e) {
       return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
     }

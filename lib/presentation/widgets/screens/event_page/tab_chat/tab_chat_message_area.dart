@@ -12,21 +12,6 @@ class TabChatMessageArea extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CurrentEventCubit, CurrentEventState>(
-      buildWhen: (previous, current) {
-        if (previous.messages.length != current.messages.length) {
-          return true;
-        }
-        if (previous.loadingMessages != current.loadingMessages) {
-          return true;
-        }
-        if (previous.eventUsers.length != current.eventUsers.length) {
-          return true;
-        }
-        if (previous.eventLeftUsers.length != current.eventLeftUsers.length) {
-          return true;
-        }
-        return false;
-      },
       builder: (context, state) {
         if (state.loadingMessages == false && state.messages.isEmpty) {
           return Center(
@@ -53,6 +38,7 @@ class TabChatMessageArea extends StatelessWidget {
           );
         }
         return ChatMessageList(
+          key: Key("${state.event.id} chatMessageList"),
           messages: state.messages,
           users: [...state.eventUsers, ...state.eventLeftUsers],
           usersCount: state.eventUsers.length,
@@ -61,6 +47,8 @@ class TabChatMessageArea extends StatelessWidget {
           loadMoreMessages: () {
             return BlocProvider.of<CurrentEventCubit>(context).loadMessages();
           },
+          deleteMessage: (id) => BlocProvider.of<CurrentEventCubit>(context)
+              .deleteMessageViaApi(id: id),
         );
       },
     );

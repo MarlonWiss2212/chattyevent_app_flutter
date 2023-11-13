@@ -1,12 +1,14 @@
 import 'dart:async';
 import 'package:chattyevent_app_flutter/application/bloc/message_stream/message_stream_cubit.dart';
 import 'package:chattyevent_app_flutter/core/enums/groupchat/groupchat_permission_enum.dart';
+import 'package:chattyevent_app_flutter/core/enums/message/message_stream_type_enum.dart';
 import 'package:chattyevent_app_flutter/core/enums/request/request_type_enum.dart';
 import 'package:chattyevent_app_flutter/core/response/groupchat/groupchat_add_user.response.dart';
 import 'package:chattyevent_app_flutter/domain/entities/chat_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/message/message_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/request/request_entity.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/request_usecases.dart';
+import 'package:chattyevent_app_flutter/infastructure/filter/message/find_one_message_filter.dart';
 import 'package:chattyevent_app_flutter/infastructure/filter/request/find_one_request_filter.dart';
 import 'package:chattyevent_app_flutter/infastructure/filter/request/find_requests_filter.dart';
 import 'package:dartz/dartz.dart';
@@ -58,8 +60,26 @@ class CurrentGroupchatCubit extends Cubit<CurrentGroupchatState> {
     required this.messageUseCases,
   }) {
     messageStreamCubit.stream.listen((event) {
-      if (event.addedMessage?.groupchatTo == state.currentChat.id) {
-        addMessage(message: event.addedMessage!);
+      if (event.message == null) {
+        return;
+      }
+      if (event.message?.groupchatTo == state.currentChat.id) {
+        if (event.streamType == MessageStreamTypeEnum.added) {
+          addMessage(message: event.message!);
+        } else {
+          List<MessageEntity> messages = state.messages;
+          final index = messages.indexWhere(
+            (element) => element.id == event.message!.id,
+          );
+          if (index != -1) {
+            messages[index] = event.message!;
+            emit(CurrentGroupchatState.merge(
+              oldState: state,
+              currentUserId: authCubit.state.currentUser.id,
+              messages: messages,
+            ));
+          }
+        }
       }
     });
   }
@@ -421,10 +441,10 @@ class CurrentGroupchatCubit extends Cubit<CurrentGroupchatState> {
       ),
       limitOffsetFilter: LimitOffsetFilter(
         limit: reload
-            ? state.messages.length > 20
+            ? state.messages.length > 50
                 ? state.messages.length
-                : 20
-            : 20,
+                : 50
+            : 50,
         offset: reload ? 0 : state.messages.length,
       ),
     );
@@ -547,5 +567,44 @@ class CurrentGroupchatCubit extends Cubit<CurrentGroupchatState> {
       replaceOrAddInOtherCubits: false,
     );
     return message;
+  }
+
+  Future<void> deleteMessageViaApi({required String id}) async {
+    if (state.deletingMessageId != null) {
+      return;
+    }
+
+    emit(CurrentGroupchatState.merge(
+      oldState: state,
+      deletingMessageId: id,
+      currentUserId: authCubit.state.currentUser.id,
+    ));
+
+    final updatedMessageOrFailure = await messageUseCases.deleteMessageViaApi(
+      filter: FindOneMessage(
+        id: id,
+      ),
+    );
+
+    updatedMessageOrFailure.fold(
+      (alert) {
+        notificationCubit.newAlert(notificationAlert: alert);
+        emit(CurrentGroupchatState.merge(
+          oldState: state,
+          setDeletingMessageIdToNull: true,
+          currentUserId: authCubit.state.currentUser.id,
+        ));
+      },
+      (updatedMessage) {
+        List<MessageEntity> messages = state.messages;
+        final index = messages.indexWhere((element) => element.id == id);
+        messages[index] = updatedMessage;
+        emit(CurrentGroupchatState.merge(
+            oldState: state,
+            setDeletingMessageIdToNull: true,
+            currentUserId: authCubit.state.currentUser.id,
+            messages: messages));
+      },
+    );
   }
 }

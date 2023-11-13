@@ -1,17 +1,23 @@
 import 'package:chattyevent_app_flutter/application/bloc/add_message/add_message_cubit.dart';
+import 'package:chattyevent_app_flutter/core/enums/message/message_type_enum.dart';
 import 'package:chattyevent_app_flutter/core/extensions/list_space_between_extension.dart';
+import 'package:chattyevent_app_flutter/core/utils/injection.dart';
 import 'package:chattyevent_app_flutter/domain/entities/message/message_to_react_to_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/user/user_entity.dart';
+import 'package:chattyevent_app_flutter/domain/usecases/message_usecases.dart';
+import 'package:collection/collection.dart';
+import 'package:dartz/dartz.dart' as dz;
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ionicons/ionicons.dart';
 
-class ChatMessageReactMessageContainer extends StatelessWidget {
+class ChatMessageReactMessageContainer extends StatefulWidget {
   final bool isInput;
   final String currentUserId;
   final MessageToReactToEntity messageToReactTo;
   final UserEntity user;
+  final dz.Either<List<UserEntity>, String?> usersOrNotificationText;
 
   const ChatMessageReactMessageContainer({
     Key? key,
@@ -19,7 +25,17 @@ class ChatMessageReactMessageContainer extends StatelessWidget {
     required this.messageToReactTo,
     required this.currentUserId,
     required this.isInput,
+    required this.usersOrNotificationText,
   }) : super(key: key);
+
+  @override
+  State<ChatMessageReactMessageContainer> createState() =>
+      _ChatMessageReactMessageContainerState();
+}
+
+class _ChatMessageReactMessageContainerState
+    extends State<ChatMessageReactMessageContainer> {
+  final MessageUseCases messageUseCases = authenticatedLocator();
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +44,7 @@ class ChatMessageReactMessageContainer extends StatelessWidget {
         return Container(
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            borderRadius: isInput
+            borderRadius: widget.isInput
                 ? const BorderRadius.only(
                     topLeft: Radius.circular(8),
                     topRight: Radius.circular(8),
@@ -43,7 +59,7 @@ class ChatMessageReactMessageContainer extends StatelessWidget {
               children: [
                 Container(
                   width: 4,
-                  color: user.id == currentUserId
+                  color: widget.user.id == widget.currentUserId
                       ? Theme.of(context).colorScheme.primaryContainer
                       : Theme.of(context).colorScheme.surface,
                 ),
@@ -56,7 +72,7 @@ class ChatMessageReactMessageContainer extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            user.username ?? "",
+                            widget.user.username ?? "",
                             style: Theme.of(context).textTheme.labelLarge,
                           ),
                           const SizedBox(width: 8),
@@ -65,12 +81,12 @@ class ChatMessageReactMessageContainer extends StatelessWidget {
                             children: [
                               Text(
                                 DateFormat.jm().format(
-                                  messageToReactTo.createdAt,
+                                  widget.messageToReactTo.createdAt,
                                 ),
                                 style: Theme.of(context).textTheme.labelMedium,
                               ),
                               const SizedBox(width: 8),
-                              if (isInput) ...{
+                              if (widget.isInput) ...{
                                 GestureDetector(
                                   onTap: () =>
                                       BlocProvider.of<AddMessageCubit>(context)
@@ -84,8 +100,8 @@ class ChatMessageReactMessageContainer extends StatelessWidget {
                           )
                         ],
                       ),
-                      if (messageToReactTo.fileLinks != null &&
-                          messageToReactTo.fileLinks!.isNotEmpty) ...[
+                      if (widget.messageToReactTo.fileLinks != null &&
+                          widget.messageToReactTo.fileLinks!.isNotEmpty) ...[
                         Row(
                           children: [
                             const Icon(Icons.file_copy),
@@ -97,7 +113,7 @@ class ChatMessageReactMessageContainer extends StatelessWidget {
                           ],
                         ),
                       ],
-                      if (messageToReactTo.currentLocation != null) ...[
+                      if (widget.messageToReactTo.currentLocation != null) ...[
                         Row(
                           children: [
                             const Icon(Ionicons.map),
@@ -110,7 +126,7 @@ class ChatMessageReactMessageContainer extends StatelessWidget {
                           ],
                         ),
                       ],
-                      if (messageToReactTo.voiceMessageLink != null) ...{
+                      if (widget.messageToReactTo.voiceMessageLink != null) ...{
                         Row(
                           children: [
                             const Icon(Ionicons.play),
@@ -123,9 +139,32 @@ class ChatMessageReactMessageContainer extends StatelessWidget {
                           ],
                         ),
                       },
-                      if (messageToReactTo.message != null) ...{
+                      if (widget.messageToReactTo.type !=
+                          MessageTypeEnum.defaultMessage) ...{
                         Text(
-                          messageToReactTo.message!,
+                          widget.usersOrNotificationText.fold(
+                            (users) => messageUseCases.translateCustomMessage(
+                              message: dz.Right(widget.messageToReactTo),
+                              isGroupchatMessage:
+                                  widget.messageToReactTo.groupchatTo != null,
+                              users: users,
+                              createdBy: users.firstWhereOrNull(
+                                (element) =>
+                                    element.id ==
+                                    widget.messageToReactTo.createdBy,
+                              ),
+                              affectedId: widget
+                                  .messageToReactTo.typeActionAffectedUserId,
+                            ),
+                            (text) => text ?? "",
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        )
+                      },
+                      if (widget.messageToReactTo.message != null) ...{
+                        Text(
+                          widget.messageToReactTo.message!,
                           overflow: TextOverflow.ellipsis,
                           style: Theme.of(context).textTheme.bodyMedium,
                         ),

@@ -82,6 +82,18 @@ class AudioPlayerRepositoryImpl implements AudioPlayerRepository {
   }
 
   @override
+  Future<Either<NotificationAlert, Unit>> setAudioViaAsset({
+    required String path,
+  }) async {
+    try {
+      await audioPlayerDataource.setAudioPlayerViaFile(path: path);
+      return const Right(unit);
+    } catch (e) {
+      return Left(FailureHelper.catchFailureToNotificationAlert(exception: e));
+    }
+  }
+
+  @override
   Future<Either<NotificationAlert, Unit>> seek({
     required Duration position,
   }) async {

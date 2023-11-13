@@ -1,7 +1,10 @@
+import 'package:chattyevent_app_flutter/core/enums/message/message_type_enum.dart';
 import 'package:chattyevent_app_flutter/domain/entities/message/message_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/chat_message/chat_message_container.dart';
+import 'package:chattyevent_app_flutter/presentation/widgets/general/chat_message/chat_message_notification_container.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:intl/intl.dart';
 
@@ -11,12 +14,14 @@ class ChatMessageList extends StatefulWidget {
   final int usersCount;
   final String currentUserId;
   final Future<void> Function() loadMoreMessages;
+  final Future<void> Function(String id) deleteMessage;
 
   const ChatMessageList({
     super.key,
     required this.messages,
     required this.currentUserId,
     required this.users,
+    required this.deleteMessage,
     required this.usersCount,
     required this.loadMoreMessages,
   });
@@ -55,20 +60,43 @@ class _ChatMessageListState extends State<ChatMessageList> {
   Widget build(BuildContext context) {
     return GroupedListView<MessageEntity, String>(
       cacheExtent: 500,
+      key: widget.key,
       controller: _scrollController,
       padding: const EdgeInsets.symmetric(vertical: 4),
       itemBuilder: (context, message) {
         return Padding(
           padding: message.id == widget.messages.first.id
-              ? const EdgeInsets.only(bottom: 50)
+              ? const EdgeInsets.only(bottom: 60)
               : const EdgeInsets.all(0),
-          child: ChatMessageContainer(
-            key: ObjectKey(message.id),
-            users: widget.users,
-            usersCount: widget.usersCount,
-            message: message,
-            currentUserId: widget.currentUserId,
-          ),
+          child: message.type != MessageTypeEnum.defaultMessage
+              ? ChatMessageNotificationContainer(
+                  key: Key(message.id),
+                  deleteMessage: widget.deleteMessage,
+                  users: widget.users,
+                  usersCount: widget.usersCount,
+                  message: message,
+                  currentUserId: widget.currentUserId,
+                )
+              : ChatMessageContainer(
+                  key: Key(message.id),
+                  deleteMessage: widget.deleteMessage,
+                  users: widget.users,
+                  usersCount: widget.usersCount,
+                  message: message,
+                  currentUserId: widget.currentUserId,
+                )
+                  .animate(
+                      key: widget.messages.first.id == message.id
+                          ? ObjectKey(message)
+                          : null)
+                  .move(
+                    curve: Curves.easeInOutCirc,
+                    duration: const Duration(milliseconds: 600),
+                    begin: message.createdBy == widget.currentUserId
+                        ? const Offset(200, 400)
+                        : const Offset(-200, 400),
+                    end: const Offset(0, 0),
+                  ),
         );
       },
       elements: widget.messages,
@@ -104,8 +132,8 @@ class _ChatMessageListState extends State<ChatMessageList> {
           ),
         );
       },
-      groupSeparatorBuilder: (_) => const SizedBox(height: 4),
-      separator: const SizedBox(height: 4),
+      groupSeparatorBuilder: (_) => const SizedBox(height: 8),
+      separator: const SizedBox(height: 12),
     );
   }
 }

@@ -4,15 +4,18 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:chattyevent_app_flutter/core/utils/injection.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/audio_player_usecases.dart';
+import 'package:dartz/dartz.dart' as dz;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ionicons/ionicons.dart';
 
 class ChatMessageContainerVoiceMessage extends StatefulWidget {
-  final String voiceMessageLink;
+  /// Left for Link and Right for Asset
+  final dz.Either<String, String> voiceMessage;
+
   const ChatMessageContainerVoiceMessage({
     super.key,
-    required this.voiceMessageLink,
+    required this.voiceMessage,
   });
 
   @override
@@ -33,8 +36,13 @@ class _ChatMessageContainerVoiceMessageState
 
   @override
   void initState() {
-    audioPlayerUseCases.setAudioViaUrl(
-      url: widget.voiceMessageLink,
+    widget.voiceMessage.fold(
+      (link) => audioPlayerUseCases.setAudioViaUrl(
+        url: link,
+      ),
+      (asset) => audioPlayerUseCases.setAudioViaAsset(
+        path: asset,
+      ),
     );
 
     audioPlayerUseCases.onPlayerChanged().fold(

@@ -1,5 +1,6 @@
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_state.dart';
 import 'package:chattyevent_app_flutter/application/bloc/message_stream/message_stream_cubit.dart';
+import 'package:chattyevent_app_flutter/core/enums/message/message_stream_type_enum.dart';
 import 'package:chattyevent_app_flutter/domain/entities/chat_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/event/event_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
@@ -23,65 +24,155 @@ class ChatCubit extends Cubit<ChatState> {
     required this.messageStreamCubit,
   }) : super(const ChatState(chats: [])) {
     messageStreamCubit.stream.listen((event) {
+      if (event.message == null) {
+        return;
+      }
+
       List<ChatEntity> chats = state.chats;
 
-      int index = 0;
-      for (final chat in chats) {
-        if (chat.event != null &&
-            chat.event?.id == event.addedMessage?.eventTo) {
-          final ChatEntity updatedChat = ChatEntity.merge(
-            newEntity: ChatEntity(
-              event: EventEntity.merge(
-                newEntity: EventEntity(
-                  id: chat.event!.id,
-                  eventDate: chat.event!.eventDate,
-                  latestMessage: event.addedMessage,
-                ),
-                oldEntity: chat.event!,
-              ),
-            ),
-            oldEntity: chat,
-          );
-          chats[index] = updatedChat;
-        } else if (chat.groupchat != null &&
-            chat.groupchat?.id == event.addedMessage?.groupchatTo) {
-          final ChatEntity updatedChat = ChatEntity.merge(
-            newEntity: ChatEntity(
-              groupchat: GroupchatEntity.merge(
-                newEntity: GroupchatEntity(
-                  id: chat.groupchat!.id,
-                  latestMessage: event.addedMessage,
-                ),
-                oldEntity: chat.groupchat!,
-              ),
-            ),
-            oldEntity: chat,
-          );
-          chats[index] = updatedChat;
-        } else if (chat.user != null &&
-            ((event.addedMessage?.createdBy == chat.user?.id &&
-                    event.addedMessage?.userTo ==
-                        authCubit.state.currentUser.id) ||
-                (event.addedMessage?.createdBy ==
-                        authCubit.state.currentUser.id &&
-                    event.addedMessage?.userTo == chat.user?.id))) {
-          final ChatEntity updatedChat = ChatEntity.merge(
-            newEntity: ChatEntity(
-              user: UserEntity.merge(
-                newEntity: UserEntity(
-                  id: chat.user!.id,
-                  authId: chat.user!.authId,
-                  latestMessage: event.addedMessage,
-                ),
-                oldEntity: chat.user!,
-              ),
-            ),
-            oldEntity: chat,
-          );
-          chats[index] = updatedChat;
+      for (int index = 0; index < chats.length; index++) {
+        final chat = chats[index];
+
+        bool isUpdateMessageValid() {
+          if (chat.event != null && chat.event?.id == event.message?.eventTo) {
+            return event.message?.createdAt != null &&
+                (chat.event!.latestMessage?.createdAt == null ||
+                    event.message!.createdAt
+                        .isAfter(chat.event!.latestMessage!.createdAt));
+          } else if (chat.groupchat != null &&
+              chat.groupchat?.id == event.message?.groupchatTo) {
+            return event.message?.createdAt != null &&
+                (chat.groupchat!.latestMessage?.createdAt == null ||
+                    event.message!.createdAt
+                        .isAfter(chat.groupchat!.latestMessage!.createdAt));
+          } else if (chat.user != null &&
+              ((event.message?.createdBy == chat.user?.id &&
+                      event.message?.userTo ==
+                          authCubit.state.currentUser.id) ||
+                  (event.message?.createdBy == authCubit.state.currentUser.id &&
+                      event.message?.userTo == chat.user?.id))) {
+            return event.message?.createdAt != null &&
+                (chat.user!.latestMessage?.createdAt == null ||
+                    event.message!.createdAt
+                        .isAfter(chat.user!.latestMessage!.createdAt));
+          }
+
+          return false;
         }
-        index++;
+
+        if (event.streamType == MessageStreamTypeEnum.updated) {
+          // Handle updated messages
+          if (isUpdateMessageValid()) {
+            if (chat.event != null &&
+                chat.event?.id == event.message?.eventTo) {
+              final updatedChat = ChatEntity.merge(
+                newEntity: ChatEntity(
+                  event: EventEntity.merge(
+                    newEntity: EventEntity(
+                      id: chat.event!.id,
+                      eventDate: chat.event!.eventDate,
+                      latestMessage: event.message,
+                    ),
+                    oldEntity: chat.event!,
+                  ),
+                ),
+                oldEntity: chat,
+              );
+              chats[index] = updatedChat;
+            } else if (chat.groupchat != null &&
+                chat.groupchat?.id == event.message?.groupchatTo) {
+              final updatedChat = ChatEntity.merge(
+                newEntity: ChatEntity(
+                  groupchat: GroupchatEntity.merge(
+                    newEntity: GroupchatEntity(
+                      id: chat.groupchat!.id,
+                      latestMessage: event.message,
+                    ),
+                    oldEntity: chat.groupchat!,
+                  ),
+                ),
+                oldEntity: chat,
+              );
+              chats[index] = updatedChat;
+            } else if (chat.user != null &&
+                ((event.message?.createdBy == chat.user?.id &&
+                        event.message?.userTo ==
+                            authCubit.state.currentUser.id) ||
+                    (event.message?.createdBy ==
+                            authCubit.state.currentUser.id &&
+                        event.message?.userTo == chat.user?.id))) {
+              final updatedChat = ChatEntity.merge(
+                newEntity: ChatEntity(
+                  user: UserEntity.merge(
+                    newEntity: UserEntity(
+                      id: chat.user!.id,
+                      authId: chat.user!.authId,
+                      latestMessage: event.message,
+                    ),
+                    oldEntity: chat.user!,
+                  ),
+                ),
+                oldEntity: chat,
+              );
+              chats[index] = updatedChat;
+            }
+          }
+        } else if (event.streamType == MessageStreamTypeEnum.added) {
+          // Handle added messages
+          if (chat.event != null && chat.event?.id == event.message?.eventTo) {
+            final addedChat = ChatEntity.merge(
+              newEntity: ChatEntity(
+                event: EventEntity.merge(
+                  newEntity: EventEntity(
+                    id: chat.event!.id,
+                    eventDate: chat.event!.eventDate,
+                    latestMessage: event.message,
+                  ),
+                  oldEntity: chat.event!,
+                ),
+              ),
+              oldEntity: chat,
+            );
+            chats[index] = addedChat;
+          } else if (chat.groupchat != null &&
+              chat.groupchat?.id == event.message?.groupchatTo) {
+            final addedChat = ChatEntity.merge(
+              newEntity: ChatEntity(
+                groupchat: GroupchatEntity.merge(
+                  newEntity: GroupchatEntity(
+                    id: chat.groupchat!.id,
+                    latestMessage: event.message,
+                  ),
+                  oldEntity: chat.groupchat!,
+                ),
+              ),
+              oldEntity: chat,
+            );
+            chats[index] = addedChat;
+          } else if (chat.user != null &&
+              ((event.message?.createdBy == chat.user?.id &&
+                      event.message?.userTo ==
+                          authCubit.state.currentUser.id) ||
+                  (event.message?.createdBy == authCubit.state.currentUser.id &&
+                      event.message?.userTo == chat.user?.id))) {
+            final addedChat = ChatEntity.merge(
+              newEntity: ChatEntity(
+                user: UserEntity.merge(
+                  newEntity: UserEntity(
+                    id: chat.user!.id,
+                    authId: chat.user!.authId,
+                    latestMessage: event.message,
+                  ),
+                  oldEntity: chat.user!,
+                ),
+              ),
+              oldEntity: chat,
+            );
+            chats[index] = addedChat;
+          }
+        }
       }
+
       emit(ChatState(chats: chats));
     });
   }

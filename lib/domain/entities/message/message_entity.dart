@@ -1,9 +1,13 @@
+import 'package:chattyevent_app_flutter/core/enums/message/message_type_enum.dart';
 import 'package:chattyevent_app_flutter/domain/entities/message/message_location_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/message/message_to_react_to_entity.dart';
 
 class MessageEntity {
   final String id;
   final String? message;
+  final String? typeActionAffectedUserId;
+  final MessageTypeEnum? type;
+  final bool deleted;
   final List<String>? fileLinks;
   final String? voiceMessageLink;
   final MessageToReactToEntity? messageToReactTo;
@@ -18,6 +22,9 @@ class MessageEntity {
 
   MessageEntity({
     required this.id,
+    this.type,
+    required this.deleted,
+    this.typeActionAffectedUserId,
     this.groupchatTo,
     this.eventTo,
     this.currentLocation,

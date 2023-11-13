@@ -1,3 +1,4 @@
+import 'package:chattyevent_app_flutter/core/enums/message/message_type_enum.dart';
 import 'package:chattyevent_app_flutter/domain/entities/message/message_location_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/message/message_to_react_to_entity.dart';
 import 'package:chattyevent_app_flutter/infastructure/models/message/message_location_model.dart';
@@ -6,6 +7,8 @@ class MessageToReactToModel extends MessageToReactToEntity {
   MessageToReactToModel({
     required String id,
     String? message,
+    String? typeActionAffectedUserId,
+    MessageTypeEnum? type,
     List<String>? fileLinks,
     String? messageToReactToId,
     required String createdBy,
@@ -21,6 +24,8 @@ class MessageToReactToModel extends MessageToReactToEntity {
           id: id,
           readBy: readBy,
           currentLocation: currentLocation,
+          typeActionAffectedUserId: typeActionAffectedUserId,
+          type: type,
           message: message,
           fileLinks: fileLinks,
           voiceMessageLink: voiceMessageLink,
@@ -53,6 +58,10 @@ class MessageToReactToModel extends MessageToReactToEntity {
     return MessageToReactToModel(
       id: json['_id'],
       message: json['message'],
+      typeActionAffectedUserId: json['typeActionAffectedUserId'],
+      type: json['type'] != null
+          ? MessageTypeEnumExtension.fromValue(json['type'])
+          : null,
       fileLinks: fileLinks,
       voiceMessageLink: json['voiceMessageLink'],
       currentLocation: json['currentLocation'] != null

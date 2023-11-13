@@ -5,7 +5,7 @@ import 'package:chattyevent_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/vibration_usecases.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/chat_message/chat_message_container_bottom_container.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/chat_message/chat_message_container_main_container.dart';
-import 'package:chattyevent_app_flutter/presentation/widgets/general/chat_message/chat_message_read_by_bottom_dialog.dart';
+import 'package:chattyevent_app_flutter/presentation/widgets/general/chat_message/chat_message_bottom_dialog.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,10 +17,12 @@ class ChatMessageContainer extends StatefulWidget {
   final MessageEntity message;
   final int usersCount;
   final String currentUserId;
+  final Future<void> Function(String id) deleteMessage;
 
   const ChatMessageContainer({
     super.key,
     required this.users,
+    required this.deleteMessage,
     required this.usersCount,
     required this.message,
     required this.currentUserId,
@@ -57,65 +59,64 @@ class _ChatMessageContainerState extends State<ChatMessageContainer> {
             );
           }
         },
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0),
-          child: Align(
-            alignment:
-                isCurrentUser ? Alignment.centerRight : Alignment.centerLeft,
-            child: Column(
-              crossAxisAlignment: isCurrentUser
-                  ? CrossAxisAlignment.end
-                  : CrossAxisAlignment.start,
-              children: [
-                if (!isCurrentUser) ...[
-                  Text(
-                    foundUser?.username ?? "",
-                    style: Theme.of(context).textTheme.labelLarge,
-                  ),
-                  const SizedBox(height: 4),
-                ],
-                GestureDetector(
-                  onTapDown: (details) async {
-                    setState(() {
-                      scale = .9;
-                    });
-                  },
-                  onTapUp: (details) => setState(() {
-                    scale = 1;
-                  }),
-                  onTapCancel: () => setState(() {
-                    scale = 1;
-                  }),
-                  onLongPress: () async {
-                    await serviceLocator<VibrationUseCases>().vibrate(
-                      duration: 50,
-                      amplitude: 80,
-                    );
-                    // ignore: use_build_context_synchronously
-                    showModalBottomSheet(
-                      context: context,
-                      builder: (closeContext) => ChatMessageReadByBottomDialog(
-                        closeContext: closeContext,
-                        users: widget.users,
-                        readByIds: widget.message.readBy,
-                      ),
-                    );
-                  },
-                  child: ChatMessageContainerMainContainer(
-                    currentUserId: widget.currentUserId,
-                    isCurrentUser: isCurrentUser,
-                    message: widget.message,
-                    users: widget.users,
-                  ),
+        child: Align(
+          alignment:
+              isCurrentUser ? Alignment.centerRight : Alignment.centerLeft,
+          child: Column(
+            crossAxisAlignment: isCurrentUser
+                ? CrossAxisAlignment.end
+                : CrossAxisAlignment.start,
+            children: [
+              if (!isCurrentUser) ...[
+                Text(
+                  foundUser?.username ?? "",
+                  style: Theme.of(context).textTheme.labelLarge,
                 ),
                 const SizedBox(height: 4),
-                ChatMessageContainerBottomContainer(
-                  usersCount: widget.usersCount,
+              ],
+              GestureDetector(
+                onTapDown: (details) async {
+                  setState(() {
+                    scale = .9;
+                  });
+                },
+                onTapUp: (details) => setState(() {
+                  scale = 1;
+                }),
+                onTapCancel: () => setState(() {
+                  scale = 1;
+                }),
+                onLongPress: () async {
+                  await serviceLocator<VibrationUseCases>().vibrate(
+                    duration: 50,
+                    intensity: 80,
+                  );
+                  // ignore: use_build_context_synchronously
+                  showModalBottomSheet(
+                    context: context,
+                    builder: (closeContext) => ChatMessageBottomDialog(
+                      closeContext: closeContext,
+                      users: widget.users,
+                      message: widget.message,
+                      currentUserId: widget.currentUserId,
+                      deleteMessage: widget.deleteMessage,
+                    ),
+                  );
+                },
+                child: ChatMessageContainerMainContainer(
+                  currentUserId: widget.currentUserId,
                   isCurrentUser: isCurrentUser,
                   message: widget.message,
+                  users: widget.users,
                 ),
-              ],
-            ),
+              ),
+              const SizedBox(height: 4),
+              ChatMessageContainerBottomContainer(
+                usersCount: widget.usersCount,
+                isCurrentUser: isCurrentUser,
+                message: widget.message,
+              ),
+            ],
           ),
         ),
       ),

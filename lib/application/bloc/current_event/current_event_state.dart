@@ -9,6 +9,7 @@ class CurrentEventState {
 
   final List<MessageEntity> messages;
   final bool loadingMessages;
+  final String? deletingMessageId;
 
   final List<RequestEntity> invitations;
   final bool loadingInvitations;
@@ -57,6 +58,7 @@ class CurrentEventState {
     required this.eventUsers,
     required this.eventLeftUsers,
     required this.shoppingListItemStates,
+    this.deletingMessageId,
     required this.loadingShoppingList,
     this.groupchat,
     required this.loadingEvent,

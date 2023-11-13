@@ -10,6 +10,8 @@ class CurrentGroupchatState {
   final List<MessageEntity> messages;
   final List<RequestEntity> invitations;
 
+  final String? deletingMessageId;
+
   //TODO
   //final List<GroupchatUser> requests;
 
@@ -42,6 +44,7 @@ class CurrentGroupchatState {
 
   const CurrentGroupchatState({
     required this.invitations,
+    this.deletingMessageId,
     required this.loadingInvitations,
     required this.currentUserIndex,
     required this.currentUserLeftChat,
@@ -85,10 +88,12 @@ class CurrentGroupchatState {
     List<EventEntity>? futureConnectedPrivateEvents,
     List<MessageEntity>? messages,
     List<RequestEntity>? invitations,
+    String? deletingMessageId,
     bool? loadingPrivateEvents,
     bool? currentUserLeftChat,
     bool? loadingChat,
     bool? loadingMessages,
+    bool setDeletingMessageIdToNull = false,
   }) {
     final List<MessageEntity> allMessages = messages ?? oldState.messages;
     allMessages.sort((a, b) => b.createdAt.compareTo(a.createdAt));
@@ -114,6 +119,9 @@ class CurrentGroupchatState {
       invitations: allInvitations,
       loadingInvitations: loadingInvitations ?? oldState.loadingInvitations,
       messages: allMessages,
+      deletingMessageId: setDeletingMessageIdToNull
+          ? null
+          : deletingMessageId ?? oldState.deletingMessageId,
       currentUserIndex: newUsers.indexWhere(
         (element) => element.id == currentUserId,
       ),

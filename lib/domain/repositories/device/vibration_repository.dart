@@ -3,9 +3,9 @@ import 'package:dartz/dartz.dart';
 
 abstract class VibrationRepository {
   Future<Either<NotificationAlert, bool>> hasVibrator();
-  Future<Either<NotificationAlert, bool>> hasAmplitute();
+  Future<Either<NotificationAlert, bool>> hasCustomVibrationsSupport();
   Future<Either<NotificationAlert, Unit>> vibrate({
     int duration = 500,
-    int amplitude = -1,
+    int intensity = -1,
   });
 }

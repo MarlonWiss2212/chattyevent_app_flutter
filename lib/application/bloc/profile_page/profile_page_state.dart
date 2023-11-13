@@ -24,9 +24,12 @@ class ProfilePageState {
   final List<UserEntity> followed;
   final ProfilePageStateFollowedStatus followedStatus;
 
+  final String? deletingMessageId;
+
   const ProfilePageState({
     required this.user,
     required this.messages,
+    this.deletingMessageId,
     required this.loadingMessages,
     this.status = ProfilePageStateStatus.initial,
     required this.followers,

@@ -21,6 +21,7 @@
     "openInMapsText": "Open in maps",
     "kickText": "Kick",
     "chatText": "Chat",
+    "eventText": "Event",
     "removeText": "Remove",
     "errorText": "Error",
     "noDescriptionText": "No description",
@@ -106,9 +107,19 @@
         "currentLocationText": "Current Location",
         "audioText": "Audio"
       },
-      "readByContainer": {
+      "deletedMessage": {
+        "text": "The message was deleted"
+      },
+      "bottomDialog": {
         "title": "Read By:",
         "emptyMessage": "Nobody read the message"
+      },
+      "notificationContainer": {
+        "userJoinedText": "User {username} has joined the {type}.",
+        "userJoinedByInvitationText": "User {affectedUsername} has joined the {type} by invitation from {createdByUsername}.",
+        "userLeftText": "User {username} has left the {type}.",
+        "userAddedByText": "User {affectedUsername} has joined the {type}. He/She was added by {createdByUsername}.",
+        "userKickedByText": "User {affectedUsername} is no longer in the {type}. He/She was kicked by {createdByUsername}."
       }
     },
     "chatMessageInput": {

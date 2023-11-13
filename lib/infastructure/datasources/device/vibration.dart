@@ -3,10 +3,10 @@ import 'package:vibration/vibration.dart';
 abstract class VibrationDatasource {
   Future<void> vibrate({
     required int duration,
-    required int amplitude,
+    required int intensity,
   });
   Future<bool> hasVibrator();
-  Future<bool> hasAmplitute();
+  Future<bool> hasCustomVibrationsSupport();
 }
 
 class VibrationDatasourceImpl implements VibrationDatasource {
@@ -16,15 +16,16 @@ class VibrationDatasourceImpl implements VibrationDatasource {
   }
 
   @override
-  Future<bool> hasAmplitute() async {
-    return await Vibration.hasAmplitudeControl() ?? false;
+  Future<bool> hasCustomVibrationsSupport() async {
+    return await Vibration.hasCustomVibrationsSupport() ?? false;
   }
 
   @override
   Future<void> vibrate({
     required int duration,
-    required int amplitude,
+    required int intensity,
   }) async {
-    return await Vibration.vibrate(duration: duration, amplitude: amplitude);
+    return await Vibration.vibrate(
+        duration: duration, intensities: [intensity]);
   }
 }

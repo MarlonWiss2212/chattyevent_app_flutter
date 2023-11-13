@@ -42,31 +42,46 @@ class ChatMessageInputSendButton extends StatelessWidget {
           return StreamBuilder(
             stream: state.isRecordingVoiceMessageStream,
             builder: (context, snapshot) {
+              final Duration duration =
+                  snapshot.hasData ? snapshot.data!.duration : Duration.zero;
+
+              String twoDigits(int n) => n.toString().padLeft(2, "0");
+              final twoDigitsMin = twoDigits(duration.inMinutes.remainder(60));
+              final twoDigitsSec = twoDigits(duration.inSeconds.remainder(60));
+
               return Ink(
-                width: snapshot.connectionState == ConnectionState.waiting
+                width: snapshot.connectionState == ConnectionState.active
                     ? 100
                     : 50,
-                height: snapshot.connectionState == ConnectionState.waiting
+                height: snapshot.connectionState == ConnectionState.active
                     ? 100
                     : 50,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: snapshot.connectionState == ConnectionState.waiting
+                  color: snapshot.connectionState == ConnectionState.active
                       ? Theme.of(context).colorScheme.surface.withOpacity(.8)
                       : Theme.of(context).colorScheme.surface.withOpacity(.6),
                 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: snapshot.connectionState == ConnectionState.waiting
-                      ? const [
-                          Icon(Ionicons.mic, size: 50),
-                        ]
-                      : const [
+                child: snapshot.connectionState == ConnectionState.active
+                    ? Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(Ionicons.mic, size: 50),
+                          const SizedBox(height: 10),
+                          Text(
+                            "$twoDigitsMin:$twoDigitsSec",
+                            style: Theme.of(context).textTheme.labelLarge,
+                          ),
+                        ],
+                      )
+                    : const Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
                           Icon(Ionicons.send, size: 10),
                           Text("/"),
                           Icon(Ionicons.mic, size: 10),
                         ],
-                ),
+                      ),
               );
             },
           );

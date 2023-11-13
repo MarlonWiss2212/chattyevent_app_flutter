@@ -9,6 +9,7 @@ abstract class AudioPlayerDatasource {
   Future<void> resume();
   Future<void> closePlayer();
   Future<void> setAudioPlayerViaUrl({required String url});
+  Future<void> setAudioPlayerViaFile({required String path});
 }
 
 class AudioPlayerDatasourceImpl implements AudioPlayerDatasource {
@@ -55,5 +56,10 @@ class AudioPlayerDatasourceImpl implements AudioPlayerDatasource {
   @override
   Future<void> setAudioPlayerViaUrl({required String url}) {
     return audioPlayer.setSourceUrl(url);
+  }
+
+  @override
+  Future<void> setAudioPlayerViaFile({required String path}) {
+    return audioPlayer.setSourceDeviceFile(path);
   }
 }

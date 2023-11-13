@@ -31,10 +31,9 @@ class HomeProfilePage extends StatelessWidget {
         messageStreamCubit: BlocProvider.of<MessageStreamCubit>(context),
         notificationCubit: BlocProvider.of<NotificationCubit>(context),
         authCubit: BlocProvider.of<AuthCubit>(context),
-      ),
+      )..getCurrentUserViaApi(),
       child: Builder(
         builder: (context) {
-          BlocProvider.of<ProfilePageCubit>(context).getCurrentUserViaApi();
           return HeroControllerScope(
             controller: HeroController(),
             child: const AutoRouter(),

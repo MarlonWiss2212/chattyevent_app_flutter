@@ -12,21 +12,6 @@ class ChatPageMessageArea extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CurrentGroupchatCubit, CurrentGroupchatState>(
-      buildWhen: (previous, current) {
-        if (previous.messages.length != current.messages.length) {
-          return true;
-        }
-        if (previous.loadingMessages != current.loadingMessages) {
-          return true;
-        }
-        if (previous.users.length != current.users.length) {
-          return true;
-        }
-        if (previous.leftUsers.length != current.leftUsers.length) {
-          return true;
-        }
-        return false;
-      },
       builder: (context, state) {
         if (state.loadingMessages == false && state.messages.isEmpty) {
           return Center(
@@ -54,6 +39,7 @@ class ChatPageMessageArea extends StatelessWidget {
         }
 
         return ChatMessageList(
+          key: Key("${state.currentChat.id} chatMessageList"),
           messages: state.messages,
           users: [...state.users, ...state.leftUsers],
           usersCount: state.users.length,
@@ -61,6 +47,8 @@ class ChatPageMessageArea extends StatelessWidget {
               BlocProvider.of<AuthCubit>(context).state.currentUser.id,
           loadMoreMessages: () =>
               BlocProvider.of<CurrentGroupchatCubit>(context).loadMessages(),
+          deleteMessage: (id) => BlocProvider.of<CurrentGroupchatCubit>(context)
+              .deleteMessageViaApi(id: id),
         );
       },
     );

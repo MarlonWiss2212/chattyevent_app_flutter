@@ -1,0 +1,1 @@
+enum MessageStreamTypeEnum { added, updated }
