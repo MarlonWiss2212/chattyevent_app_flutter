@@ -13,19 +13,29 @@ class EventTabInfoGroupchatTo extends StatelessWidget {
       builder: (context, state) {
         if (state.groupchat != null || state.loadingGroupchat) {
           if (state.groupchat != null) {
-            return EventTabInfoGroupchatToTile(groupchat: state.groupchat!);
+            return Column(
+              children: [
+                EventTabInfoGroupchatToTile(groupchat: state.groupchat!),
+                const SizedBox(height: 16),
+              ],
+            );
           } else {
-            return SkeletonListTile(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              hasSubtitle: true,
-              titleStyle: const SkeletonLineStyle(width: 100, height: 22),
-              subtitleStyle: const SkeletonLineStyle(
-                width: double.infinity,
-                height: 16,
-              ),
-              leadingStyle: const SkeletonAvatarStyle(
-                shape: BoxShape.circle,
-              ),
+            return Column(
+              children: [
+                SkeletonListTile(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  hasSubtitle: true,
+                  titleStyle: const SkeletonLineStyle(width: 100, height: 22),
+                  subtitleStyle: const SkeletonLineStyle(
+                    width: double.infinity,
+                    height: 16,
+                  ),
+                  leadingStyle: const SkeletonAvatarStyle(
+                    shape: BoxShape.circle,
+                  ),
+                ),
+                const SizedBox(height: 16),
+              ],
             );
           }
         }
