@@ -17,7 +17,10 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      return web;
+      throw UnsupportedError(
+        'DefaultFirebaseOptions have not been configured for web - '
+        'you can reconfigure this by running the FlutterFire CLI again.',
+      );
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -25,7 +28,10 @@ class DefaultFirebaseOptions {
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
-        return macos;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for macOS - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.windows:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for windows - '
@@ -43,16 +49,6 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyDFYBdBo6DwrVc_pHrnC73KZyxk3uwVM34',
-    appId: '1:386131382515:web:01d3b18b91e180c2d16786',
-    messagingSenderId: '386131382515',
-    projectId: 'social-media-app-3cc43',
-    authDomain: 'social-media-app-3cc43.firebaseapp.com',
-    storageBucket: 'social-media-app-3cc43.appspot.com',
-    measurementId: 'G-0R7608DVPX',
-  );
-
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyAlKcP6_QKfGgyH6k1a4oDkATunai21cq4',
     appId: '1:386131382515:android:e2c26128d13f9ee1d16786',
@@ -67,17 +63,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '386131382515',
     projectId: 'social-media-app-3cc43',
     storageBucket: 'social-media-app-3cc43.appspot.com',
-    iosClientId: '386131382515-0oes6c0b7ketdl3kl9mlh4rrp6s7fhfa.apps.googleusercontent.com',
-    iosBundleId: 'com.chattyevent.chattyevent',
-  );
-
-  static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyBbLDm26BA2ynBPSnRkd3bu2mzi91e22jM',
-    appId: '1:386131382515:ios:acf5b820214e411ad16786',
-    messagingSenderId: '386131382515',
-    projectId: 'social-media-app-3cc43',
-    storageBucket: 'social-media-app-3cc43.appspot.com',
-    iosClientId: '386131382515-0oes6c0b7ketdl3kl9mlh4rrp6s7fhfa.apps.googleusercontent.com',
+    iosClientId:
+        '386131382515-0oes6c0b7ketdl3kl9mlh4rrp6s7fhfa.apps.googleusercontent.com',
     iosBundleId: 'com.chattyevent.chattyevent',
   );
 }
