@@ -200,12 +200,12 @@ class EventTabInfoEventDate extends StatelessWidget {
                                   )
                               : null,
                           child: Text(
-                            "(End date)",
+                            "eventPage.tabs.infoTab.eventEndDateText",
                             style:
                                 Theme.of(context).textTheme.bodyLarge?.copyWith(
                                       fontWeight: FontWeight.bold,
                                     ),
-                          ),
+                          ).tr(),
                         ),
                       }
                     ],
