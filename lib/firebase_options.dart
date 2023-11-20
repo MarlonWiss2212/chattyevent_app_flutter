@@ -3,6 +3,7 @@
 import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 import 'package:flutter/foundation.dart'
     show defaultTargetPlatform, kIsWeb, TargetPlatform;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 /// Default [FirebaseOptions] for use with your Firebase apps.
 ///
@@ -24,9 +25,9 @@ class DefaultFirebaseOptions {
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
-        return android;
+        return android();
       case TargetPlatform.iOS:
-        return ios;
+        return ios();
       case TargetPlatform.macOS:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for macOS - '
@@ -49,22 +50,25 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAlKcP6_QKfGgyH6k1a4oDkATunai21cq4',
-    appId: '1:386131382515:android:e2c26128d13f9ee1d16786',
-    messagingSenderId: '386131382515',
-    projectId: 'social-media-app-3cc43',
-    storageBucket: 'social-media-app-3cc43.appspot.com',
-  );
+  static FirebaseOptions android() {
+    return FirebaseOptions(
+      apiKey: dotenv.get("FIREBASE_API_KEY_ANDROID"),
+      appId: dotenv.get("FIREBASE_ANDROID_APP_ID"),
+      messagingSenderId: dotenv.get("FIREBASE_MESSAGING_SENDER_ID"),
+      projectId: dotenv.get("FIREBASE_PROJECT_ID"),
+      storageBucket: dotenv.get("FIREBASE_STORAGE_BUCKET"),
+    );
+  }
 
-  static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBbLDm26BA2ynBPSnRkd3bu2mzi91e22jM',
-    appId: '1:386131382515:ios:acf5b820214e411ad16786',
-    messagingSenderId: '386131382515',
-    projectId: 'social-media-app-3cc43',
-    storageBucket: 'social-media-app-3cc43.appspot.com',
-    iosClientId:
-        '386131382515-0oes6c0b7ketdl3kl9mlh4rrp6s7fhfa.apps.googleusercontent.com',
-    iosBundleId: 'com.chattyevent.chattyevent',
-  );
+  static FirebaseOptions ios() {
+    return FirebaseOptions(
+      apiKey: dotenv.get("FIREBASE_API_KEY_IOS"),
+      appId: dotenv.get("FIREBASE_IOS_APP_ID"),
+      messagingSenderId: dotenv.get("FIREBASE_MESSAGING_SENDER_ID"),
+      projectId: dotenv.get("FIREBASE_PROJECT_ID"),
+      storageBucket: dotenv.get("FIREBASE_STORAGE_BUCKET"),
+      iosClientId: dotenv.get("FIREBASE_CLIENT_ID_IOS"),
+      iosBundleId: 'com.chattyevent.chattyevent',
+    );
+  }
 }

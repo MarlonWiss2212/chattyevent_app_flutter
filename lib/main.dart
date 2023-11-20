@@ -30,12 +30,13 @@ import 'core/utils/one_signal_utils.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: '.env');
 
   await Future.wait([
     Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform),
     HiveUtils.initialize(),
     LocalizationUtils.init(),
-    dotenv.load(fileName: '.env'),
+    OneSignalUtils.initialize(),
   ]);
 
   final List<Future> futures = [];
@@ -49,7 +50,6 @@ Future<void> main() async {
   await Future.wait([
     ...futures,
     InjectionUtils.initialize(),
-    OneSignalUtils.initialize(),
   ]);
 
   //set locales
