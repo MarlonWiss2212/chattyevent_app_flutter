@@ -393,9 +393,9 @@ class InjectionUtils {
 
   static void initializeAuthenticatedLocator() {
     // just for development so i can hot refresh
-    authenticatedLocator.reset(
-      dispose: false,
-    );
+    // authenticatedLocator.reset(
+    //   dispose: false,
+    // );
     // cubits
     authenticatedLocator.registerLazySingleton<ChatCubit>(
       () => ChatCubit(

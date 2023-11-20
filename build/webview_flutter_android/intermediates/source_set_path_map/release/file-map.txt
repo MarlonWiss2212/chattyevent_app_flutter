@@ -5,9 +5,9 @@ io.flutter.plugins.webviewflutter.webview_flutter_android-jetified-window-java-1
 io.flutter.plugins.webviewflutter.webview_flutter_android-webkit-1.7.0-4 C:\Users\marlo\.gradle\caches\transforms-3\ca5f88eed943f6108271e5f3ab47fe4a\transformed\webkit-1.7.0\res
 io.flutter.plugins.webviewflutter.webview_flutter_android-main-5 C:\Users\marlo\AppData\Local\Pub\Cache\hosted\pub.dev\webview_flutter_android-3.8.2\android\src\main\res
 io.flutter.plugins.webviewflutter.webview_flutter_android-release-6 C:\Users\marlo\AppData\Local\Pub\Cache\hosted\pub.dev\webview_flutter_android-3.8.2\android\src\release\res
-io.flutter.plugins.webviewflutter.webview_flutter_android-pngs-7 E:\SocialMediaProject\chattyevent_app_flutter\build\webview_flutter_android\generated\res\pngs\release
-io.flutter.plugins.webviewflutter.webview_flutter_android-resValues-8 E:\SocialMediaProject\chattyevent_app_flutter\build\webview_flutter_android\generated\res\resValues\release
-io.flutter.plugins.webviewflutter.webview_flutter_android-rs-9 E:\SocialMediaProject\chattyevent_app_flutter\build\webview_flutter_android\generated\res\rs\release
-io.flutter.plugins.webviewflutter.webview_flutter_android-mergeReleaseResources-10 E:\SocialMediaProject\chattyevent_app_flutter\build\webview_flutter_android\intermediates\incremental\release\mergeReleaseResources\merged.dir
-io.flutter.plugins.webviewflutter.webview_flutter_android-mergeReleaseResources-11 E:\SocialMediaProject\chattyevent_app_flutter\build\webview_flutter_android\intermediates\incremental\release\mergeReleaseResources\stripped.dir
-io.flutter.plugins.webviewflutter.webview_flutter_android-merged_res-12 E:\SocialMediaProject\chattyevent_app_flutter\build\webview_flutter_android\intermediates\merged_res\release
+io.flutter.plugins.webviewflutter.webview_flutter_android-pngs-7 E:\Coding\chattyevent_app_flutter\build\webview_flutter_android\generated\res\pngs\release
+io.flutter.plugins.webviewflutter.webview_flutter_android-resValues-8 E:\Coding\chattyevent_app_flutter\build\webview_flutter_android\generated\res\resValues\release
+io.flutter.plugins.webviewflutter.webview_flutter_android-rs-9 E:\Coding\chattyevent_app_flutter\build\webview_flutter_android\generated\res\rs\release
+io.flutter.plugins.webviewflutter.webview_flutter_android-mergeReleaseResources-10 E:\Coding\chattyevent_app_flutter\build\webview_flutter_android\intermediates\incremental\release\mergeReleaseResources\merged.dir
+io.flutter.plugins.webviewflutter.webview_flutter_android-mergeReleaseResources-11 E:\Coding\chattyevent_app_flutter\build\webview_flutter_android\intermediates\incremental\release\mergeReleaseResources\stripped.dir
+io.flutter.plugins.webviewflutter.webview_flutter_android-merged_res-12 E:\Coding\chattyevent_app_flutter\build\webview_flutter_android\intermediates\merged_res\release
