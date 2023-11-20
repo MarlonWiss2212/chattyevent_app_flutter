@@ -43,7 +43,7 @@ Future<void> main() async {
 
   if (!kIsWeb) {
     if (Platform.isAndroid || Platform.isIOS) {
-      futures.add(MobileAds.instance.initialize());
+      //futures.add(MobileAds.instance.initialize());
     }
   }
 
