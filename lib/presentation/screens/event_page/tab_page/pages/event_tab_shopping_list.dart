@@ -28,6 +28,7 @@ class EventTabShoppingList extends StatelessWidget {
         centerTitle: true,
         flexibleSpace: FlexibleSpaceBar(
           centerTitle: true,
+          titlePadding: EdgeInsets.zero,
           title: Text(
             "eventPage.tabs.shoppingListTab.title",
             style: TextStyle(

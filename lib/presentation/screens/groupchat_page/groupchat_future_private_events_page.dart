@@ -25,6 +25,7 @@ class GroupchatfutureEventsPage extends StatelessWidget {
             centerTitle: true,
             expandedHeight: 100,
             flexibleSpace: FlexibleSpaceBar(
+              titlePadding: EdgeInsets.zero,
               centerTitle: true,
               title: Text(
                 "groupchatPage.futurePrivateEventsPage.title",

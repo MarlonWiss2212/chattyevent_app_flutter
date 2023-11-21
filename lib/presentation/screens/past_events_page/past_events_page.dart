@@ -25,6 +25,7 @@ class PastEventsPage extends StatelessWidget {
             centerTitle: true,
             flexibleSpace: FlexibleSpaceBar(
               centerTitle: true,
+              titlePadding: EdgeInsets.zero,
               title: Text(
                 "pastEventsPage.tilte",
                 style: TextStyle(

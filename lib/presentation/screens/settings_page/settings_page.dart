@@ -23,6 +23,7 @@ class SettingsPage extends StatelessWidget {
             centerTitle: true,
             flexibleSpace: FlexibleSpaceBar(
               centerTitle: true,
+              titlePadding: EdgeInsets.zero,
               title: Text(
                 "settingsPage.title",
                 style: TextStyle(

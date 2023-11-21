@@ -47,6 +47,7 @@ class _GroupchatInfoPageState extends State<GroupchatInfoPage> {
             expandedHeight: 200,
             centerTitle: true,
             flexibleSpace: FlexibleSpaceBar(
+              titlePadding: EdgeInsets.zero,
               centerTitle: true,
               background: ChatInfoPageProfileImage(),
               title: ChatInfoPageTitle(),
