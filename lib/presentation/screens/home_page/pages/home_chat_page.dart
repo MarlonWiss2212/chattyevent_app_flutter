@@ -38,8 +38,8 @@ class _HomeChatPageState extends State<HomeChatPage> {
             expandedHeight: 100,
             centerTitle: true,
             flexibleSpace: FlexibleSpaceBar(
-              titlePadding: EdgeInsets.zero,
               centerTitle: true,
+              titlePadding: const EdgeInsets.only(bottom: 16),
               title: Text(
                 "homePage.pages.chatPage.title",
                 style: TextStyle(

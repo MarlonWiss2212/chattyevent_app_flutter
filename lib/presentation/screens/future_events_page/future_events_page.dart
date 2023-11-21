@@ -25,7 +25,7 @@ class FutureEventsPage extends StatelessWidget {
             expandedHeight: 100,
             flexibleSpace: FlexibleSpaceBar(
               centerTitle: true,
-              titlePadding: EdgeInsets.zero,
+              titlePadding: const EdgeInsets.only(bottom: 16),
               title: Text(
                 "futureEventPage.title",
                 style: TextStyle(

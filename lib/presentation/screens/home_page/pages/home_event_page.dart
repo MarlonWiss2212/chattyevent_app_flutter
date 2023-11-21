@@ -37,7 +37,7 @@ class _HomeEventPageState extends State<HomeEventPage> {
             centerTitle: true,
             flexibleSpace: FlexibleSpaceBar(
               centerTitle: true,
-              titlePadding: EdgeInsets.zero,
+              titlePadding: const EdgeInsets.only(bottom: 16),
               title: Text(
                 "homePage.pages.eventPage.title",
                 style: TextStyle(

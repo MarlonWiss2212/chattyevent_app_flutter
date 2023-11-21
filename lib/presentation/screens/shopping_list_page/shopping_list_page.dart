@@ -40,7 +40,7 @@ class _ShoppingListPageState extends State<ShoppingListPage> {
             centerTitle: true,
             flexibleSpace: FlexibleSpaceBar(
               centerTitle: true,
-              titlePadding: EdgeInsets.zero,
+              titlePadding: const EdgeInsets.only(bottom: 16),
               title: Hero(
                 tag: "ShoppingListTitle",
                 child: Text(

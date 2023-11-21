@@ -35,7 +35,7 @@ class StandardShoppingListItemPage extends StatelessWidget {
             leading: const AutoLeadingButton(),
             centerTitle: true,
             flexibleSpace: const FlexibleSpaceBar(
-              titlePadding: EdgeInsets.zero,
+              titlePadding: EdgeInsets.only(bottom: 16),
               centerTitle: true,
               title: CurrentShoppingListItemPageTitle(),
             ),

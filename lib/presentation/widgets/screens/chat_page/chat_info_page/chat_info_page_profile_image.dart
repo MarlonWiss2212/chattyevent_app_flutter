@@ -91,6 +91,10 @@ class ChatInfoPageProfileImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Color color = const Color(0xCC000000);
+    if (MediaQuery.of(context).platformBrightness == Brightness.light) {
+      color = const Color.fromARGB(204, 255, 255, 255);
+    }
     return BlocBuilder<CurrentGroupchatCubit, CurrentGroupchatState>(
       buildWhen: (p, c) =>
           p.currentChat.profileImageLink != c.currentChat.profileImageLink,
@@ -117,14 +121,15 @@ class ChatInfoPageProfileImage extends StatelessWidget {
                       fit: BoxFit.cover,
                     ),
                     Container(
-                      decoration: const BoxDecoration(
+                      decoration: BoxDecoration(
                         gradient: LinearGradient(
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,
                           colors: [
-                            Color(0xCC000000),
-                            Color(0x00000000),
-                            Color(0x00000000),
+                            color,
+                            const Color(0x00000000),
+                            const Color(0x00000000),
+                            color
                           ],
                         ),
                       ),

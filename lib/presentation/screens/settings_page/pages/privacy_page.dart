@@ -26,7 +26,7 @@ class _SettingsPrivacyPageState extends State<SettingsPrivacyPage> {
             expandedHeight: 100,
             centerTitle: true,
             flexibleSpace: FlexibleSpaceBar(
-              titlePadding: EdgeInsets.zero,
+              titlePadding: const EdgeInsets.only(bottom: 16),
               centerTitle: true,
               title: Text(
                 "settingsPage.privacyPage.title",

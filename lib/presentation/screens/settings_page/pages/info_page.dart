@@ -30,7 +30,7 @@ class _SettingsInfoPageState extends State<SettingsInfoPage> {
             centerTitle: true,
             flexibleSpace: FlexibleSpaceBar(
               centerTitle: true,
-              titlePadding: EdgeInsets.zero,
+              titlePadding: const EdgeInsets.only(bottom: 16),
               title: Text(
                 "settingsPage.infoPage.title",
                 style: TextStyle(

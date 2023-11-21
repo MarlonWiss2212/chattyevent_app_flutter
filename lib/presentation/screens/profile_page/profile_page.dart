@@ -33,7 +33,7 @@ class ProfilePage extends StatelessWidget {
             centerTitle: true,
             flexibleSpace: const FlexibleSpaceBar(
               centerTitle: true,
-              titlePadding: EdgeInsets.zero,
+              titlePadding: EdgeInsets.only(bottom: 16),
               title: ProfilePageTitle(),
             ),
             actions: const [
