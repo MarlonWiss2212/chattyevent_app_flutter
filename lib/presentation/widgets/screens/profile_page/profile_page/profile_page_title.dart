@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_state.dart';
 import 'package:chattyevent_app_flutter/application/bloc/profile_page/profile_page_cubit.dart';
-import 'package:chattyevent_app_flutter/infastructure/dto/user/update_user_dto.dart';
+import 'package:chattyevent_app_flutter/infrastructure/dto/user/update_user_dto.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/input_fields/edit_input_text_field.dart';
 
 class ProfilePageTitle extends StatelessWidget {

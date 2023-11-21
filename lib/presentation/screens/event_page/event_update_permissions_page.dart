@@ -1,7 +1,7 @@
 import 'package:chattyevent_app_flutter/application/bloc/current_event/current_event_cubit.dart';
 import 'package:chattyevent_app_flutter/core/enums/event/event_permission_enum.dart';
-import 'package:chattyevent_app_flutter/infastructure/dto/event/update_event_dto.dart';
-import 'package:chattyevent_app_flutter/infastructure/dto/event/update_event_permissions_dto.dart';
+import 'package:chattyevent_app_flutter/infrastructure/dto/event/update_event_dto.dart';
+import 'package:chattyevent_app_flutter/infrastructure/dto/event/update_event_permissions_dto.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/event_permissions_menu.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';

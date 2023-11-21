@@ -9,13 +9,13 @@ import 'package:chattyevent_app_flutter/domain/usecases/location_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/message_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/microphone_usecases.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/vibration_usecases.dart';
-import 'package:chattyevent_app_flutter/infastructure/dto/geocoding/create_geo_json_dto.dart';
-import 'package:chattyevent_app_flutter/infastructure/dto/message/create_message_location_dto.dart';
+import 'package:chattyevent_app_flutter/infrastructure/dto/geocoding/create_geo_json_dto.dart';
+import 'package:chattyevent_app_flutter/infrastructure/dto/message/create_message_location_dto.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:chattyevent_app_flutter/application/bloc/current_groupchat/current_chat_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
-import 'package:chattyevent_app_flutter/infastructure/dto/message/create_message_dto.dart';
+import 'package:chattyevent_app_flutter/infrastructure/dto/message/create_message_dto.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 
 part 'add_message_state.dart';

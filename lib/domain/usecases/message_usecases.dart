@@ -4,15 +4,15 @@ import 'package:chattyevent_app_flutter/domain/entities/message/message_entity.d
 import 'package:chattyevent_app_flutter/domain/entities/message/message_to_react_to_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/user/user_entity.dart';
 import 'package:chattyevent_app_flutter/domain/repositories/message_repository.dart';
-import 'package:chattyevent_app_flutter/infastructure/filter/message/find_one_message_filter.dart';
-import 'package:chattyevent_app_flutter/infastructure/filter/message/updated_message_filter.dart';
+import 'package:chattyevent_app_flutter/infrastructure/filter/message/find_one_message_filter.dart';
+import 'package:chattyevent_app_flutter/infrastructure/filter/message/updated_message_filter.dart';
 import 'package:collection/collection.dart';
 import 'package:dartz/dartz.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
-import 'package:chattyevent_app_flutter/infastructure/dto/message/create_message_dto.dart';
-import 'package:chattyevent_app_flutter/infastructure/filter/message/added_message_filter.dart';
-import 'package:chattyevent_app_flutter/infastructure/filter/message/find_messages_filter.dart';
-import 'package:chattyevent_app_flutter/infastructure/filter/limit_offset_filter.dart';
+import 'package:chattyevent_app_flutter/infrastructure/dto/message/create_message_dto.dart';
+import 'package:chattyevent_app_flutter/infrastructure/filter/message/added_message_filter.dart';
+import 'package:chattyevent_app_flutter/infrastructure/filter/message/find_messages_filter.dart';
+import 'package:chattyevent_app_flutter/infrastructure/filter/limit_offset_filter.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class MessageUseCases {

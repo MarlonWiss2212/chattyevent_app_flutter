@@ -6,7 +6,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:skeletons/skeletons.dart';
 import 'package:chattyevent_app_flutter/application/bloc/current_event/current_event_cubit.dart';
-import 'package:chattyevent_app_flutter/infastructure/dto/event/update_event_dto.dart';
+import 'package:chattyevent_app_flutter/infrastructure/dto/event/update_event_dto.dart';
 
 class EventTabInfoStatus extends StatelessWidget {
   const EventTabInfoStatus({super.key});

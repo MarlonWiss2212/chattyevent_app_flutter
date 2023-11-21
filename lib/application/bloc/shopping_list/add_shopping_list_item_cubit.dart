@@ -3,7 +3,7 @@ import 'package:dartz/dartz.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/current_event/current_event_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/shopping_list/current_shopping_list_item_cubit.dart';
-import 'package:chattyevent_app_flutter/infastructure/dto/shopping_list_item/create_shopping_list_item_dto.dart';
+import 'package:chattyevent_app_flutter/infrastructure/dto/shopping_list_item/create_shopping_list_item_dto.dart';
 import 'package:chattyevent_app_flutter/domain/entities/event/event_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/event/event_user_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/shopping_list_item/shopping_list_item_entity.dart';

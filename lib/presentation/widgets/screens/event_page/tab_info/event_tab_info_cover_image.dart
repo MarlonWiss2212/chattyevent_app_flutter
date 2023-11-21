@@ -5,7 +5,7 @@ import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletons/skeletons.dart';
 import 'package:chattyevent_app_flutter/application/bloc/current_event/current_event_cubit.dart';
-import 'package:chattyevent_app_flutter/infastructure/dto/event/update_event_dto.dart';
+import 'package:chattyevent_app_flutter/infrastructure/dto/event/update_event_dto.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/dialog/image_picker_dialog.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/dialog/accept_decline_dialog.dart';
 

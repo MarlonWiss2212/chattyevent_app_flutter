@@ -1,5 +1,5 @@
 import 'package:chattyevent_app_flutter/application/bloc/current_event/current_event_cubit.dart';
-import 'package:chattyevent_app_flutter/infastructure/dto/event/update_event_dto.dart';
+import 'package:chattyevent_app_flutter/infrastructure/dto/event/update_event_dto.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/dialog/accept_decline_dialog.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';

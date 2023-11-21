@@ -1,6 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_state.dart';
-import 'package:chattyevent_app_flutter/infastructure/dto/user/update_user_dto.dart';
+import 'package:chattyevent_app_flutter/infrastructure/dto/user/update_user_dto.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/button.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';

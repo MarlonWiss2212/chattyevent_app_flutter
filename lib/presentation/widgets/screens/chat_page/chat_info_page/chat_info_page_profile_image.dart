@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/current_groupchat/current_chat_cubit.dart';
-import 'package:chattyevent_app_flutter/infastructure/dto/groupchat/update_groupchat_dto.dart';
+import 'package:chattyevent_app_flutter/infrastructure/dto/groupchat/update_groupchat_dto.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/dialog/image_picker_dialog.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/dialog/accept_decline_dialog.dart';
 

@@ -4,8 +4,8 @@ import 'package:chattyevent_app_flutter/application/bloc/notification/notificati
 import 'package:chattyevent_app_flutter/core/enums/message/message_stream_type_enum.dart';
 import 'package:chattyevent_app_flutter/domain/entities/message/message_entity.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/message_usecases.dart';
-import 'package:chattyevent_app_flutter/infastructure/filter/message/added_message_filter.dart';
-import 'package:chattyevent_app_flutter/infastructure/filter/message/updated_message_filter.dart';
+import 'package:chattyevent_app_flutter/infrastructure/filter/message/added_message_filter.dart';
+import 'package:chattyevent_app_flutter/infrastructure/filter/message/updated_message_filter.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

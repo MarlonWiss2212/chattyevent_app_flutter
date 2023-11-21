@@ -4,7 +4,7 @@ import 'package:chattyevent_app_flutter/application/bloc/notification/notificati
 import 'package:chattyevent_app_flutter/core/utils/injection.dart';
 import 'package:chattyevent_app_flutter/core/utils/maps_helper.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/location_usecases.dart';
-import 'package:chattyevent_app_flutter/infastructure/filter/geocoding/geo_within_box_filter.dart';
+import 'package:chattyevent_app_flutter/infrastructure/filter/geocoding/geo_within_box_filter.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';

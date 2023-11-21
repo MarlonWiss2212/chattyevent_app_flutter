@@ -1,9 +1,9 @@
 import 'package:chattyevent_app_flutter/domain/entities/event/event_entity.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/location_usecases.dart';
-import 'package:chattyevent_app_flutter/infastructure/filter/event/find_events_filter.dart';
-import 'package:chattyevent_app_flutter/infastructure/filter/geocoding/geo_within_box_filter.dart';
-import 'package:chattyevent_app_flutter/infastructure/filter/geocoding/geo_within_filter.dart';
-import 'package:chattyevent_app_flutter/infastructure/filter/limit_offset_filter.dart';
+import 'package:chattyevent_app_flutter/infrastructure/filter/event/find_events_filter.dart';
+import 'package:chattyevent_app_flutter/infrastructure/filter/geocoding/geo_within_box_filter.dart';
+import 'package:chattyevent_app_flutter/infrastructure/filter/geocoding/geo_within_filter.dart';
+import 'package:chattyevent_app_flutter/infrastructure/filter/limit_offset_filter.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';

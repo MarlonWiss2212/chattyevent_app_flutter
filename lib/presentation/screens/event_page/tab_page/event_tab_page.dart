@@ -3,7 +3,7 @@ import 'package:chattyevent_app_flutter/presentation/widgets/general/custom_tab_
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/current_event/current_event_cubit.dart';
-import 'package:chattyevent_app_flutter/infastructure/dto/event/update_event_dto.dart';
+import 'package:chattyevent_app_flutter/infrastructure/dto/event/update_event_dto.dart';
 import 'package:chattyevent_app_flutter/presentation/router/router.gr.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/input_fields/edit_input_text_field.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/screens/event_page/tab_info/event_tab_info_delete_button.dart';

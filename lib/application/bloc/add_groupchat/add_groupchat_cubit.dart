@@ -1,13 +1,13 @@
 import 'dart:io';
 import 'package:chattyevent_app_flutter/core/enums/groupchat/groupchat_permission_enum.dart';
 import 'package:chattyevent_app_flutter/domain/entities/chat_entity.dart';
-import 'package:chattyevent_app_flutter/infastructure/dto/groupchat/create_groupchat_permissions_dto.dart';
+import 'package:chattyevent_app_flutter/infrastructure/dto/groupchat/create_groupchat_permissions_dto.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:chattyevent_app_flutter/application/bloc/chat/chat_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
-import 'package:chattyevent_app_flutter/infastructure/dto/groupchat/create_groupchat_dto.dart';
-import 'package:chattyevent_app_flutter/infastructure/dto/groupchat/groupchat_user/create_groupchat_user_from_create_groupchat_dto.dart';
+import 'package:chattyevent_app_flutter/infrastructure/dto/groupchat/create_groupchat_dto.dart';
+import 'package:chattyevent_app_flutter/infrastructure/dto/groupchat/groupchat_user/create_groupchat_user_from_create_groupchat_dto.dart';
 import 'package:chattyevent_app_flutter/domain/entities/groupchat/groupchat_entity.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/groupchat_usecases.dart';
 

@@ -3,9 +3,9 @@ import 'package:chattyevent_app_flutter/application/bloc/notification/notificati
 import 'package:chattyevent_app_flutter/domain/entities/chat_entity.dart';
 import 'package:chattyevent_app_flutter/domain/entities/request/request_entity.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/request_usecases.dart';
-import 'package:chattyevent_app_flutter/infastructure/filter/limit_offset_filter.dart';
-import 'package:chattyevent_app_flutter/infastructure/filter/request/find_one_request_filter.dart';
-import 'package:chattyevent_app_flutter/infastructure/filter/request/find_requests_filter.dart';
+import 'package:chattyevent_app_flutter/infrastructure/filter/limit_offset_filter.dart';
+import 'package:chattyevent_app_flutter/infrastructure/filter/request/find_one_request_filter.dart';
+import 'package:chattyevent_app_flutter/infrastructure/filter/request/find_requests_filter.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 part 'requests_state.dart';
 

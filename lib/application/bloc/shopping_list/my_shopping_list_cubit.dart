@@ -2,8 +2,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:chattyevent_app_flutter/application/bloc/notification/notification_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/shopping_list/current_shopping_list_item_cubit.dart';
-import 'package:chattyevent_app_flutter/infastructure/filter/limit_offset_filter.dart';
-import 'package:chattyevent_app_flutter/infastructure/filter/shopping_list_item/find_shopping_list_items_filter.dart';
+import 'package:chattyevent_app_flutter/infrastructure/filter/limit_offset_filter.dart';
+import 'package:chattyevent_app_flutter/infrastructure/filter/shopping_list_item/find_shopping_list_items_filter.dart';
 import 'package:chattyevent_app_flutter/domain/entities/shopping_list_item/shopping_list_item_entity.dart';
 import 'package:chattyevent_app_flutter/domain/usecases/shopping_list_item_usecases.dart';
 

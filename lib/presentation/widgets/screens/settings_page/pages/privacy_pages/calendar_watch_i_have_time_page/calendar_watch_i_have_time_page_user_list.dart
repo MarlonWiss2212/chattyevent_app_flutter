@@ -1,9 +1,9 @@
 import 'package:chattyevent_app_flutter/application/bloc/auth/auth_state.dart';
 import 'package:chattyevent_app_flutter/application/bloc/user_search/user_search_cubit.dart';
 import 'package:chattyevent_app_flutter/core/enums/user/calendar_watch_i_have_time_permission_enum.dart';
-import 'package:chattyevent_app_flutter/infastructure/dto/user/update_user_dto.dart';
-import 'package:chattyevent_app_flutter/infastructure/dto/user/update_user_permissions.dart';
-import 'package:chattyevent_app_flutter/infastructure/dto/user/update_user_permissions/update_calendar_watch_i_have_time_dto.dart';
+import 'package:chattyevent_app_flutter/infrastructure/dto/user/update_user_dto.dart';
+import 'package:chattyevent_app_flutter/infrastructure/dto/user/update_user_permissions.dart';
+import 'package:chattyevent_app_flutter/infrastructure/dto/user/update_user_permissions/update_calendar_watch_i_have_time_dto.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/user_list/user_list_tile.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';

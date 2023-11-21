@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chattyevent_app_flutter/application/bloc/add_event/add_event_cubit.dart';
 import 'package:chattyevent_app_flutter/application/bloc/user_search/user_search_cubit.dart';
-import 'package:chattyevent_app_flutter/infastructure/dto/event/event_user/create_event_user_from_event_dto.dart';
+import 'package:chattyevent_app_flutter/infrastructure/dto/event/event_user/create_event_user_from_event_dto.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/user_list/selectable_user_grid_list.dart';
 import 'package:chattyevent_app_flutter/presentation/widgets/general/user_list/selected_user_list.dart';
 
