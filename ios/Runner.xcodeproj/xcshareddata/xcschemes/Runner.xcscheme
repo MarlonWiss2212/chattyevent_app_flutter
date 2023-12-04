@@ -70,6 +70,109 @@
             ReferencedContainer = "container:Runner.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
+      <CommandLineArguments>
+         <CommandLineArgument
+            argument = "I_BASE_URL=api.chattyevent.com"
+            isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "ONE_SIGNAL_APP_ID=dec7557d-7707-40f1-a595-c8403b565e77"
+            isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "MESSAGE_ENCRYPTION_KEY=Nou5342kDndLfgrs90-u8@345jklnfds"
+            isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "FIREBASE_PROJECT_ID=social-media-app-3cc43"
+            isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "FIREBASE_MESSAGING_SENDER_ID=386131382515"
+            isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "FIREBASE_ANDROID_APP_ID=1:386131382515:android:e2c26128d13f9ee1d16786"
+            isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "FIREBASE_IOS_APP_ID=1:386131382515:ios:acf5b820214e411ad16786"
+            isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "FIREBASE_API_KEY_ANDROID=AIzaSyAlKcP6_QKfGgyH6k1a4oDkATunai21cq4"
+            isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "FIREBASE_API_KEY_IOS=AIzaSyBbLDm26BA2ynBPSnRkd3bu2mzi91e22jM"
+            isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "FIREBASE_STORAGE_BUCKET=social-media-app-3cc43.appspot.com"
+            isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "FIREBASE_CLIENT_ID_IOS=386131382515-0oes6c0b7ketdl3kl9mlh4rrp6s7fhfa.apps.googleusercontent.com"
+            isEnabled = "YES">
+         </CommandLineArgument>
+      </CommandLineArguments>
+      <EnvironmentVariables>
+         <EnvironmentVariable
+            key = "I_BASE_URL"
+            value = "api.chattyevent.com"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+         <EnvironmentVariable
+            key = "ONE_SIGNAL_APP_ID"
+            value = "dec7557d-7707-40f1-a595-c8403b565e77"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+         <EnvironmentVariable
+            key = "MESSAGE_ENCRYPTION_KEY"
+            value = "Nou5342kDndLfgrs90-u8@345jklnfds"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+         <EnvironmentVariable
+            key = "FIREBASE_PROJECT_ID"
+            value = "social-media-app-3cc43"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+         <EnvironmentVariable
+            key = "FIREBASE_MESSAGING_SENDER_ID"
+            value = "386131382515"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+         <EnvironmentVariable
+            key = "FIREBASE_ANDROID_APP_ID"
+            value = "1:386131382515:android:e2c26128d13f9ee1d16786"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+         <EnvironmentVariable
+            key = "FIREBASE_IOS_APP_ID"
+            value = "1:386131382515:ios:acf5b820214e411ad16786"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+         <EnvironmentVariable
+            key = "FIREBASE_API_KEY_ANDROID"
+            value = "AIzaSyAlKcP6_QKfGgyH6k1a4oDkATunai21cq4"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+         <EnvironmentVariable
+            key = "FIREBASE_API_KEY_IOS"
+            value = "AIzaSyBbLDm26BA2ynBPSnRkd3bu2mzi91e22jM"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+         <EnvironmentVariable
+            key = "FIREBASE_STORAGE_BUCKET"
+            value = "social-media-app-3cc43.appspot.com"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+         <EnvironmentVariable
+            key = "FIREBASE_CLIENT_ID_IOS"
+            value = "386131382515-0oes6c0b7ketdl3kl9mlh4rrp6s7fhfa.apps.googleusercontent.com"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+      </EnvironmentVariables>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Profile"
