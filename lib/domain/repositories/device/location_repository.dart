@@ -4,7 +4,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 abstract class LocationRepository {
-  /// Either return a NotificationAlert when an error occurred or
+  /// Either return a [NotificationAlert] when an error occurred or
   /// returns the current position
   Future<Either<NotificationAlert, Position>> getCurrentLocation();
 
@@ -16,7 +16,7 @@ abstract class LocationRepository {
     required LatLng latLng,
   });
 
-  /// Either return a NotificationAlert when an error occurred or
+  /// Either return a [NotificationAlert] when an error occurred or
   /// returns the current LatLng from the Storage
   Either<NotificationAlert, LatLng> getCurrentLocationLatLngFromStorage();
 }
