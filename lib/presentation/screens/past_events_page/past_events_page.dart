@@ -27,7 +27,7 @@ class PastEventsPage extends StatelessWidget {
               centerTitle: true,
               titlePadding: const EdgeInsets.only(bottom: 16),
               title: Text(
-                "pastEventsPage.title",
+                "pastEventPage.title",
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.onBackground,
                 ),
