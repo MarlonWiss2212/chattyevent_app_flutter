@@ -110,40 +110,6 @@ Future<void> main() async {
                     }
                   },
                 ),
-                BlocListener<InternetConnectionCubit, InternetConnectionState>(
-                  listenWhen: (p, c) => p.hasInternet != c.hasInternet,
-                  listener: (context, state) {
-                    if (state.hasInternet) {
-                      BlocProvider.of<NotificationCubit>(context).newAlert(
-                        notificationAlert: NotificationAlert(
-                          title:
-                              "general.notificationAlert.internetIsThereAlert.title"
-                                  .tr(),
-                          message:
-                              "general.notificationAlert.internetIsThereAlert.message"
-                                  .tr(),
-                          snackbar: true,
-                          snackBarColor:
-                              Theme.of(context).colorScheme.primaryContainer,
-                        ),
-                      );
-                    } else {
-                      BlocProvider.of<NotificationCubit>(context).newAlert(
-                        notificationAlert: NotificationAlert(
-                          title:
-                              "general.notificationAlert.noInternetIsThereAlert.title"
-                                  .tr(),
-                          message:
-                              "general.notificationAlert.noInternetIsThereAlert.message"
-                                  .tr(),
-                          snackbar: true,
-                          snackBarColor:
-                              Theme.of(context).colorScheme.errorContainer,
-                        ),
-                      );
-                    }
-                  },
-                )
               ],
               child: const App(),
             );
@@ -208,9 +174,44 @@ class _AppState extends State<App> {
                 title: 'ChattyEvent',
                 routerConfig: serviceLocator<AppRouter>().config(),
                 builder: (context, widget) {
-                  return ScrollConfiguration(
-                    behavior: const ScrollBehaviorModified(),
-                    child: widget!,
+                  return BlocListener<InternetConnectionCubit,
+                      InternetConnectionState>(
+                    listenWhen: (p, c) => p.hasInternet != c.hasInternet,
+                    listener: (context, state) {
+                      if (state.hasInternet) {
+                        BlocProvider.of<NotificationCubit>(context).newAlert(
+                          notificationAlert: NotificationAlert(
+                            title:
+                                "general.notificationAlert.internetIsThereAlert.title"
+                                    .tr(),
+                            message:
+                                "general.notificationAlert.internetIsThereAlert.message"
+                                    .tr(),
+                            snackbar: true,
+                            snackBarColor:
+                                Theme.of(context).colorScheme.primaryContainer,
+                          ),
+                        );
+                      } else {
+                        BlocProvider.of<NotificationCubit>(context).newAlert(
+                          notificationAlert: NotificationAlert(
+                            title:
+                                "general.notificationAlert.noInternetIsThereAlert.title"
+                                    .tr(),
+                            message:
+                                "general.notificationAlert.noInternetIsThereAlert.message"
+                                    .tr(),
+                            snackbar: true,
+                            snackBarColor:
+                                Theme.of(context).colorScheme.errorContainer,
+                          ),
+                        );
+                      }
+                    },
+                    child: ScrollConfiguration(
+                      behavior: const ScrollBehaviorModified(),
+                      child: widget!,
+                    ),
                   );
                 },
                 theme: ThemeData(
