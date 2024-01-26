@@ -62,12 +62,11 @@ class _ChatMessageListState extends State<ChatMessageList> {
       cacheExtent: 500,
       key: widget.key,
       controller: _scrollController,
-      padding: const EdgeInsets.symmetric(vertical: 4),
       itemBuilder: (context, message) {
         return Padding(
           padding: message.id == widget.messages.first.id
-              ? const EdgeInsets.only(bottom: 60)
-              : const EdgeInsets.all(0),
+              ? const EdgeInsets.only(bottom: 60, top: 6)
+              : const EdgeInsets.symmetric(vertical: 3),
           child: message.type != MessageTypeEnum.defaultMessage
               ? ChatMessageNotificationContainer(
                   key: Key(message.id),
@@ -84,20 +83,20 @@ class _ChatMessageListState extends State<ChatMessageList> {
                   usersCount: widget.usersCount,
                   message: message,
                   currentUserId: widget.currentUserId,
-                )
-                  .animate(
-                      key: widget.messages.first.id == message.id
-                          ? ObjectKey(message)
-                          : null)
-                  .move(
-                    curve: Curves.easeInOutCirc,
-                    duration: const Duration(milliseconds: 600),
-                    begin: message.createdBy == widget.currentUserId
-                        ? const Offset(200, 400)
-                        : const Offset(-200, 400),
-                    end: const Offset(0, 0),
-                  ),
-        );
+                ),
+        )
+            .animate(
+                key: widget.messages.first.id == message.id
+                    ? ObjectKey(message)
+                    : null)
+            .move(
+              curve: Curves.easeInOutCirc,
+              duration: const Duration(milliseconds: 600),
+              begin: message.createdBy == widget.currentUserId
+                  ? const Offset(200, 400)
+                  : const Offset(-200, 400),
+              end: const Offset(0, 0),
+            );
       },
       elements: widget.messages,
       useStickyGroupSeparators: true,
@@ -113,27 +112,28 @@ class _ChatMessageListState extends State<ChatMessageList> {
         ).toString();
       },
       groupHeaderBuilder: (messageEntity) {
-        return SizedBox(
-          height: 40,
-          child: Center(
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                color: Theme.of(context).colorScheme.surface,
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(8),
-                child: Text(
-                  DateFormat.yMMMd().format(messageEntity.createdAt),
-                  style: Theme.of(context).textTheme.labelLarge,
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 3),
+          child: SizedBox(
+            height: 40,
+            child: Center(
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  color: Theme.of(context).colorScheme.surface,
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: Text(
+                    DateFormat.yMMMd().format(messageEntity.createdAt),
+                    style: Theme.of(context).textTheme.labelLarge,
+                  ),
                 ),
               ),
             ),
           ),
         );
       },
-      groupSeparatorBuilder: (_) => const SizedBox(height: 8),
-      separator: const SizedBox(height: 12),
     );
   }
 }
